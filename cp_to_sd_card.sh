@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-MMC=/dev/sdd
 RFS=ext3
 
 function dl_xload_uboot {
@@ -96,10 +95,24 @@ function populate_rootfs {
 	sudo umount ./disk
 }
 
-dl_xload_uboot
-cleanup_sd
-create_partitions
-populate_boot
-populate_rootfs
+if [ -e ${DIR}/system.sh ]; then
+	. system.sh
+
+	if test "-$MMC-" = "--"
+	then
+ 		echo "MMC is not defined in system.sh"
+	else
+		dl_xload_uboot
+		cleanup_sd
+		create_partitions
+		populate_boot
+		populate_rootfs
+	fi
+else
+	echo "Missing system.sh, please copy system.sh.sample to system.sh and edit as needed"
+	echo "cp system.sh.sample system.sh"
+	echo "gedit system.sh"		
+fi
+
 
 

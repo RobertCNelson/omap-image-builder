@@ -1,0 +1,5 @@
+#!/bin/bash
+#copy as "system.sh" and tweak for your system
+
+#Use with Caution, mount locations can change... This define's SD/MMC card mount location for load_uImage.sh script.
+#MMC=/dev/sde
