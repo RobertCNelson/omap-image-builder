@@ -28,10 +28,10 @@ function dl_rootstock {
 
 function minimal_lucid {
 
-	sudo rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	sudo rm -f ${DIR}/deploy/vmlinuz-*
-	sudo rm -f ${DIR}/deploy/initrd.img-*
-	sudo rm -f ${DIR}/deploy/rootstock-*.log
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils \
@@ -42,10 +42,10 @@ function minimal_lucid {
 
 function gui_lucid {
 
-	sudo rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	sudo rm -f ${DIR}/deploy/vmlinuz-*
-	sudo rm -f ${DIR}/deploy/initrd.img-*
-	sudo rm -f ${DIR}/deploy/rootstock-*.log
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` \
