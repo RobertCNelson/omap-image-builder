@@ -18,6 +18,6 @@ cat > /etc/e2fsck.conf <<EOF
 
 EOF
 
-echo "/dev/mmcblk0p2   /   ext3   errors=remount-ro   0   1" >> /etc/fstab
+echo "/dev/mmcblk0p2   /   auto   errors=remount-ro   0   1" >> /etc/fstab
 
 

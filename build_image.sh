@@ -18,7 +18,8 @@ function dl_rootstock {
 
 
 function minimal_lucid {
-	sudo ${DIR}/project-rootstock/rootstock --fqdn beagleboard --seed wget,nano,linux-firmware,wireless-tools,usbutils \
+	sudo ${DIR}/project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
+	--seed wget,nano,linux-firmware,wireless-tools,usbutils \
 	--dist lucid --serial ttyS2 --script fixup.sh \
 	--kernel-image $LUCID_KERNEL
 }
