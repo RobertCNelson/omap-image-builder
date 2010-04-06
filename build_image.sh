@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+#MIRROR="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
+#MIRROR="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
+
 KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
 
 LUCID_ALPHA3="ubuntu-lucid-alpha3.1"
@@ -34,7 +37,7 @@ function minimal_lucid {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
-	--seed wget,nano,linux-firmware,wireless-tools,usbutils \
+	--seed wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
 
@@ -48,7 +51,7 @@ function gui_lucid {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
-	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` \
+	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
 }
@@ -78,4 +81,9 @@ dl_rootstock
 BUILD=$LUCID_BETA2$MINIMAL
 minimal_lucid
 compression
+
+BUILD=$LUCID_BETA2$GUI
+gui_lucid
+compression
+
 
