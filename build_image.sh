@@ -56,9 +56,9 @@ function gui_lucid {
 function compression {
 	rm -rfd ${DIR}/deploy/$BUILD || true
 	mkdir -p ${DIR}/deploy/$BUILD
-	sudo cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
-	sudo cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
-	sudo cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
 
 	echo "Starting Compression"
