@@ -38,6 +38,7 @@ function minimal_lucid {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
+	--components "main universe multiverse" \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
 
@@ -52,6 +53,7 @@ function gui_lucid {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
+	--components "main universe multiverse" \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
 }
