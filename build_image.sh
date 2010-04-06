@@ -13,9 +13,10 @@ LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l12/linux-ima
 DIR=$PWD
 
 function dl_rootstock {
-	rm -rfd ${DIR}/project-rootstock
+	rm -rfd ${DIR}/../project-rootstock
+	cd ${DIR}/../
 	bzr branch lp:project-rootstock
-	cd ${DIR}/project-rootstock
+	cd ${DIR}/../project-rootstock
 
 	echo "Applying local patches"
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
@@ -26,7 +27,7 @@ function dl_rootstock {
 
 
 function minimal_lucid {
-	sudo ${DIR}/project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
@@ -34,7 +35,7 @@ function minimal_lucid {
 }
 
 function gui_lucid {
-	sudo ${DIR}/project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed `cat xfce4-gui-packages | tr '\n' ','` \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL	
