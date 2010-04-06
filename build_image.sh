@@ -22,11 +22,17 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/02-rootstock-create-initramfs.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
-	cd ${DIR}/
+	cd ${DIR}/deploy/
 }
 
 
 function minimal_lucid {
+
+	sudo rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	sudo rm -f ${DIR}/deploy/vmlinuz-*
+	sudo rm -f ${DIR}/deploy/initrd.img-*
+	sudo rm -f ${DIR}/deploy/rootstock-*.log
+
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
@@ -35,10 +41,16 @@ function minimal_lucid {
 }
 
 function gui_lucid {
+
+	sudo rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	sudo rm -f ${DIR}/deploy/vmlinuz-*
+	sudo rm -f ${DIR}/deploy/initrd.img-*
+	sudo rm -f ${DIR}/deploy/rootstock-*.log
+
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
-	--seed `cat xfce4-gui-packages | tr '\n' ','` \
+	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
-	--kernel-image $LUCID_KERNEL	
+	--kernel-image $LUCID_KERNEL
 }
 
 function compression {
@@ -58,9 +70,9 @@ function compression {
 
 rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
-cd ${DIR}/deploy
 
 dl_rootstock
+
 BUILD=$LUCID_BETA2$MINIMAL
 minimal_lucid
 compression
