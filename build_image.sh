@@ -62,9 +62,11 @@ function compression {
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
 
 	echo "Starting Compression"
-	#tar cvfz $BUILD.tar.gz ${DIR}/deploy/$BUILD
-	#tar cvfj $BUILD.tar.bz2 ${DIR}/deploy/$BUILD
-	tar cvfJ $BUILD.tar.xz ${DIR}/deploy/$BUILD
+	cd ${DIR}/deploy/
+	#tar cvfz $BUILD.tar.gz ./$BUILD
+	#tar cvfj $BUILD.tar.bz2 ./$BUILD
+	tar cvfJ $BUILD.tar.xz ./$BUILD
+	cd ${DIR}/
 }
 
 
