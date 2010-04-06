@@ -1,0 +1,19 @@
+=== modified file 'rootstock'
+--- rootstock	2010-03-18 10:43:47 +0000
++++ rootstock	2010-04-06 14:20:56 +0000
+@@ -814,7 +814,13 @@
+ 
+ ${SWAPCMD}
+ 
+-echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
++if which lsb_release >/dev/null 2>&1 && [ "`lsb_release -is`" = Ubuntu ]; then
++  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
++  echo "deb ${MIRROR} ${DIST}-updates ${COMPONENTS}" >>/etc/apt/sources.list
++else
++  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
++  echo "deb http://security.debian.org/ ${DIST}/updates ${COMPONENTS}" >>/etc/apt/sources.list
++fi
+ ${EXRA_MIRROR_CMD}
+ 
+ ifconfig lo up
+
