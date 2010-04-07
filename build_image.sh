@@ -41,7 +41,6 @@ function minimal_lucid {
 	--components "main universe multiverse" \
 	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
-
 }
 
 function gui_lucid {
@@ -51,10 +50,10 @@ function gui_lucid {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
 	--components "main universe multiverse" \
-	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
+	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image $LUCID_KERNEL
 }
 
@@ -87,5 +86,4 @@ compression
 BUILD=$LUCID_BETA2$GUI
 gui_lucid
 compression
-
 

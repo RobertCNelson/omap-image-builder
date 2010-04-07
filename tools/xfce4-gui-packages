@@ -3,6 +3,7 @@ nano
 linux-firmware
 wireless-tools
 usbutils
+xserver-xorg-video-omap3
 xfce4
 xfce4-datetime-plugin
 xfce4-genmon-plugin
@@ -36,10 +37,8 @@ xtightvncviewer
 gnome-nettool
 network-manager-gnome
 cups-pdf
-bluez-gnome
 emacs23
 vim
-nano
 dosfstools
 grdesktop
 fennec
