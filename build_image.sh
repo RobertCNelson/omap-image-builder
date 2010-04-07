@@ -10,6 +10,7 @@ LUCID_BETA2="ubuntu-lucid-beta2"
 
 MINIMAL="-minimal-armel"
 GUI="-desktop-armel"
+NET="netbook-armel"
 
 LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l12/linux-image-2.6.32.11-l12_1.0lucid_armel.deb"
 
@@ -57,6 +58,20 @@ function gui_lucid {
 	--kernel-image $LUCID_KERNEL
 }
 
+function ubuntu-netbook_lucid {
+
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
+
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
+	--seed ubuntu-netbook $MIRROR \
+	--components "main universe multiverse" \
+	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--kernel-image $LUCID_KERNEL
+}
+
 function compression {
 	rm -rfd ${DIR}/deploy/$BUILD || true
 	mkdir -p ${DIR}/deploy/$BUILD
@@ -74,7 +89,7 @@ function compression {
 }
 
 
-rm -rfd ${DIR}/deploy || true
+sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
 dl_rootstock
@@ -83,7 +98,12 @@ BUILD=$LUCID_BETA2$MINIMAL
 minimal_lucid
 compression
 
-BUILD=$LUCID_BETA2$GUI
-gui_lucid
-compression
+#BUILD=$LUCID_BETA2$GUI
+#gui_lucid
+#compression
+
+#BUILD=$LUCID_BETA2$NET
+#ubuntu-netbook_lucid
+#compression
+
 
