@@ -118,8 +118,11 @@ additional options:
 -h --help
     this help
 
+--ignore_md5sum
+    skip md5sum check    
+
 EOF
-STOP=1
+STOP=1 
 }
 
 function checkparm {
@@ -140,6 +143,10 @@ while [ ! -z "$1" ]; do
             checkparm $2
             MMC="$2"
             ;;
+        --ignore_md5sum)
+            IGNORE_MD5SUM=1
+            ;;
+
     esac
     shift
 done
@@ -158,6 +165,10 @@ MD5SUM=$(stat -c%s /tmp/test.md5sum)
 
 sudo fdisk -l | grep ${MMC} | grep Disk > /tmp/fdisk.check
 FDISK=$(stat -c%s /tmp/fdisk.check)
+
+if [ "$IGNORE_MD5SUM" ] ; then
+  MD5SUM=0
+fi
 
 if [ $MD5SUM -ge 1 ] ; then
 	echo "MD5SUM check as failed, try re-downloading or tweak this script to ignore it."
