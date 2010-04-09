@@ -6,11 +6,11 @@ DIR=$PWD
 
 function dl_xload_uboot {
 
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.homeip.net:81/dl/omap/uboot/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
+wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
 
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.homeip.net:81/dl/omap/uboot/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
+wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
 
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.homeip.net:81/dl/omap/uboot/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin
+wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin
 
 }
 

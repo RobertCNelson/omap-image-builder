@@ -79,12 +79,19 @@ function compression {
 	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
+
+	echo "Calculating MD5SUMS" 
+	cd ${DIR}/deploy/$BUILD
+	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
-	tar cvfJ $BUILD.tar.xz ./$BUILD
+	#tar cvfJ $BUILD.tar.xz ./$BUILD
+	tar cvf $BUILD.tar ./$BUILD
+	7za a $BUILD.tar.7z $BUILD.tar
 	cd ${DIR}/
 }
 
