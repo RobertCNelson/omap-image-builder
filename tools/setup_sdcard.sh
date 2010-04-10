@@ -4,6 +4,7 @@
 
 unset MMC
 
+#Defaults
 RFS=ext3
 
 DIR=$PWD
@@ -70,6 +71,9 @@ p
 w
 ROOTFS
 
+echo ""
+echo "Creating ${RFS} Partition"
+echo ""
 sudo mkfs.${RFS} ${MMC}2
 
 }
@@ -126,6 +130,38 @@ function check_mmc {
  fi
 }
 
+function check_fs_type {
+ IN_VALID_FS=1
+
+ if test "-$FS_TYPE-" = "-ext2-"
+ then
+ RFS=ext2
+ unset IN_VALID_FS
+ fi
+
+ if test "-$FS_TYPE-" = "-ext3-"
+ then
+ RFS=ext3
+ unset IN_VALID_FS
+ fi
+
+ if test "-$FS_TYPE-" = "-ext4-"
+ then
+ RFS=ext4
+ unset IN_VALID_FS
+ fi
+
+ if test "-$FS_TYPE-" = "-btrfs-"
+ then
+ RFS=btrfs
+ unset IN_VALID_FS
+ fi
+
+ if [ "$IN_VALID_FS" ] ; then
+   usage
+ fi
+}
+
 function usage {
     echo "usage: $(basename $0) --mmc /dev/sdd"
 cat <<EOF
@@ -134,9 +170,15 @@ required options:
 --mmc </dev/sdX>
     Unformated MMC Card
 
-additional options:
+Additional/Optional options:
 -h --help
     this help
+
+--rootfs <fs_type>
+    ext2
+    ext3 - <set as default>
+    ext4
+    btrfs
 
 --ignore_md5sum
     skip md5sum check    
@@ -163,6 +205,11 @@ while [ ! -z "$1" ]; do
             checkparm $2
             MMC="$2"
             check_mmc 
+            ;;
+        --rootfs)
+            checkparm $2
+            FS_TYPE="$2"
+            check_fs_type 
             ;;
         --ignore_md5sum)
             IGNORE_MD5SUM=1
