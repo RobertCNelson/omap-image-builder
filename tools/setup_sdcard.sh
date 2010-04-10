@@ -6,6 +6,8 @@ unset MMC
 
 #Defaults
 RFS=ext3
+BOOT_LABEL=boot
+RFS_LABEL=rootfs
 
 DIR=$PWD
 
@@ -20,12 +22,10 @@ function dl_xload_uboot {
 }
 
 function cleanup_sd {
+ sudo umount ${MMC}1 &> /dev/null || true
+ sudo umount ${MMC}2 &> /dev/null || true
 
-sudo umount ${MMC}1 &> /dev/null || true
-sudo umount ${MMC}2 &> /dev/null || true
-
-sudo parted -s ${MMC} mklabel msdos
-
+ sudo parted -s ${MMC} mklabel msdos
 }
 
 function create_partitions {
@@ -44,7 +44,7 @@ p
 w
 END
 
-sudo mkfs.vfat -F 16 ${MMC}1
+sudo mkfs.vfat -F 16 ${MMC}1 -n ${BOOT_LABEL}
 
 sudo rm -rfd ./disk || true
 
@@ -74,7 +74,7 @@ ROOTFS
 echo ""
 echo "Creating ${RFS} Partition"
 echo ""
-sudo mkfs.${RFS} ${MMC}2
+sudo mkfs.${RFS} ${MMC}2 -L ${RFS_LABEL}
 
 }
 
@@ -180,6 +180,12 @@ Additional/Optional options:
     ext4
     btrfs
 
+--boot_label <boot_label>
+    boot partition label
+
+--rfs_label <rfs_label>
+    rootfs partition label
+
 --ignore_md5sum
     skip md5sum check    
 
@@ -210,6 +216,14 @@ while [ ! -z "$1" ]; do
             checkparm $2
             FS_TYPE="$2"
             check_fs_type 
+            ;;
+        --boot_label)
+            checkparm $2
+            BOOT_LABEL="$2"
+            ;;
+        --rfs_label)
+            checkparm $2
+            RFS_LABEL="$2"
             ;;
         --ignore_md5sum)
             IGNORE_MD5SUM=1
