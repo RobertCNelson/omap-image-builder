@@ -167,7 +167,7 @@ if [ ! "${STOP}" ] ; then
   [ "$REPLY" == "y" ] || STOP=1
  else
   echo ""
-  echo "Are you sure? I Don't see [${MMC}], here is what I see..."
+  echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
   echo ""
   sudo fdisk -l | grep /dev/ --color=never
   echo ""
