@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+#Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
+
 unset MMC
 unset STOP
 
@@ -25,13 +27,7 @@ function cleanup_sd {
 sudo umount ${MMC}1 || true
 sudo umount ${MMC}2 || true
 
-sudo fdisk ${MMC} << CLEAN
-d
-2
-d
-p
-w
-CLEAN
+sudo parted -s ${MMC} mklabel msdos
 
 }
 
@@ -146,7 +142,6 @@ while [ ! -z "$1" ]; do
         --ignore_md5sum)
             IGNORE_MD5SUM=1
             ;;
-
     esac
     shift
 done
