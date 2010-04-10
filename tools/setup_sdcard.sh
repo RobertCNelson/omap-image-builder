@@ -99,12 +99,10 @@ function populate_rootfs {
 }
 
 function check_mmc {
- rm -f /tmp/fdisk.check &> /dev/null || true
- sudo fdisk -l | grep "Disk ${MMC}" > /tmp/fdisk.check
- FDISK=$(stat -c%s /tmp/fdisk.check)
+ FDISK=$(sudo fdisk -l | grep "Disk ${MMC}" | awk '{print $2}')
 
- #FIXME, not sure why this isn't getting here with "/dev/sd"
- if [ $FDISK -ge 1 ] ; then
+ if test "-$FDISK-" = "-$MMC:-"
+ then
   echo ""
   echo "I see...fdisk"
   sudo fdisk -l | grep "Disk /dev/" --color=never
@@ -114,6 +112,7 @@ function check_mmc {
   echo ""
   read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
   [ "$REPLY" == "y" ] || exit
+  echo ""
  else
   echo ""
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
