@@ -179,15 +179,14 @@ if [ ! "${STOP}" ] ; then
 
 if [ ! "${STOP}" ] ; then
 
- #FIXME: Ugly
- rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
- wget -c --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
- md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
- MD5SUM=$(stat -c%s /tmp/test.md5sum)
-
-
  if [ "$IGNORE_MD5SUM" ] ; then
    MD5SUM=0
+ else
+  #FIXME: Ugly
+  rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
+  wget -c --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
+  md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
+  MD5SUM=$(stat -c%s /tmp/test.md5sum)
  fi
 
  if [ $MD5SUM -ge 1 ] ; then
@@ -201,5 +200,7 @@ if [ ! "${STOP}" ] ; then
 
  fi
 fi
+fi
+
 
 
