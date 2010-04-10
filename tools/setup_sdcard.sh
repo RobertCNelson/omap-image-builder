@@ -3,7 +3,6 @@
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
 unset MMC
-unset STOP
 
 RFS=ext3
 
@@ -118,7 +117,7 @@ additional options:
     skip md5sum check    
 
 EOF
-STOP=1 
+exit
 }
 
 function checkparm {
@@ -150,7 +149,6 @@ if [ ! "${MMC}" ];then
     usage
 fi
 
-if [ ! "${STOP}" ] ; then
  sudo fdisk -l | grep "Disk ${MMC}:" > /tmp/fdisk.check
  FDISK=$(stat -c%s /tmp/fdisk.check)
 
@@ -163,7 +161,7 @@ if [ ! "${STOP}" ] ; then
   mount | grep -v none | grep "/dev/" --color=never
   echo ""
   read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
-  [ "$REPLY" == "y" ] || STOP=1
+  [ "$REPLY" == "y" ] || exit
  else
   echo ""
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
@@ -173,11 +171,9 @@ if [ ! "${STOP}" ] ; then
   echo "System Mounts"
   mount | grep -v none | grep "/dev/" --color=never
   echo ""
-  STOP=1
+  exit
  fi
-fi
 
-if [ ! "${STOP}" ] ; then
  if [ "$IGNORE_MD5SUM" ] ; then
    MD5SUM=0
  else
@@ -198,7 +194,6 @@ if [ ! "${STOP}" ] ; then
 		populate_rootfs
 
  fi
-fi
 
 
 
