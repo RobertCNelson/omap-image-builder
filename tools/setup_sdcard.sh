@@ -22,8 +22,8 @@ wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/u-boot-bea
 
 function cleanup_sd {
 
-sudo umount ${MMC}1
-sudo umount ${MMC}2
+sudo umount ${MMC}1 || true
+sudo umount ${MMC}2 || true
 
 sudo fdisk ${MMC} << CLEAN
 d
@@ -65,7 +65,7 @@ sudo cp -v ${DIR}/deploy/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8b
 cd ./disk
 sync
 cd ..
-sudo umount ./disk
+sudo umount ./disk || true
 echo "done"
 
 sudo fdisk ${MMC} << ROOTFS
@@ -92,7 +92,7 @@ function populate_boot {
 
 	sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ./disk/boot.scr
 	sudo cp -v ./disk/boot.scr ./disk/boot.ini
-	sudo umount ./disk
+	sudo umount ./disk || true
 }
 
 function populate_rootfs {
@@ -103,7 +103,7 @@ function populate_rootfs {
 	sudo mount ${MMC}2 ./disk
 
 	sudo tar xfp ${DIR}/armel-rootfs-* -C ./disk/
-	sudo umount ./disk
+	sudo umount ./disk || true
 }
 
 function usage {
