@@ -152,33 +152,54 @@ fi
 
 if [ ! "${STOP}" ] ; then
 
-#FIXME: Ugly
-rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
-wget -c --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
-md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
-MD5SUM=$(stat -c%s /tmp/test.md5sum)
+ sudo fdisk -l | grep ${MMC} | grep Disk > /tmp/fdisk.check
+ FDISK=$(stat -c%s /tmp/fdisk.check)
 
-sudo fdisk -l | grep ${MMC} | grep Disk > /tmp/fdisk.check
-FDISK=$(stat -c%s /tmp/fdisk.check)
+ if [ $FDISK -ge 1 ] ; then
+  echo ""
+  echo "I see...fdisk"
+  sudo fdisk -l | grep /dev/ --color=never
+  echo ""
+  echo "System Mounts"
+  mount | grep -v none | grep "/dev/" --color=never
+  echo ""
+  read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
+  [ "$REPLY" == "y" ] || STOP=1
+ else
+  echo ""
+  echo "Are you sure? I Don't see [${MMC}], here is what I see..."
+  echo ""
+  sudo fdisk -l | grep /dev/ --color=never
+  echo ""
+  echo "System Mounts"
+  mount | grep -v none | grep "/dev/" --color=never
+  echo ""
+  STOP=1
+ fi
 
-if [ "$IGNORE_MD5SUM" ] ; then
-  MD5SUM=0
-fi
+if [ ! "${STOP}" ] ; then
 
-if [ $MD5SUM -ge 1 ] ; then
-	echo "MD5SUM check as failed, try re-downloading or tweak this script to ignore it."
-else
-	if [ $FDISK -ge 1 ] ; then
+ #FIXME: Ugly
+ rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
+ wget -c --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
+ md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
+ MD5SUM=$(stat -c%s /tmp/test.md5sum)
+
+
+ if [ "$IGNORE_MD5SUM" ] ; then
+   MD5SUM=0
+ fi
+
+ if [ $MD5SUM -ge 1 ] ; then
+ 	echo "MD5SUM check as failed, try re-downloading or tweak this script to ignore it."
+ else
 		dl_xload_uboot
 		cleanup_sd
 		create_partitions
 		populate_boot
 		populate_rootfs
-	else
-		echo "Are you sure? Here's what I see"
-		sudo fdisk -l
-	fi
-fi
+
+ fi
 fi
 
 
