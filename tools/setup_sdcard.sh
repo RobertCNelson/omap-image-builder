@@ -9,22 +9,19 @@ RFS=ext3
 DIR=$PWD
 
 function dl_xload_uboot {
+ sudo rm -rfd ${DIR}/deploy/ || true
+ mkdir -p ${DIR}/deploy/
 
-sudo rm -rfd ${DIR}/deploy/ || true
-mkdir -p ${DIR}/deploy/
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
 
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
-
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
-
-wget -c --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin
-
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin
 }
 
 function cleanup_sd {
 
-sudo umount ${MMC}1 || true
-sudo umount ${MMC}2 || true
+sudo umount ${MMC}1 &> /dev/null || true
+sudo umount ${MMC}2 &> /dev/null || true
 
 sudo parted -s ${MMC} mklabel msdos
 
@@ -101,6 +98,35 @@ function populate_rootfs {
 	sudo umount ./disk || true
 }
 
+function check_mmc {
+ rm -f /tmp/fdisk.check &> /dev/null || true
+ sudo fdisk -l | grep "Disk ${MMC}" > /tmp/fdisk.check
+ FDISK=$(stat -c%s /tmp/fdisk.check)
+
+ #FIXME, not sure why this isn't getting here with "/dev/sd"
+ if [ $FDISK -ge 1 ] ; then
+  echo ""
+  echo "I see...fdisk"
+  sudo fdisk -l | grep "Disk /dev/" --color=never
+  echo ""
+  echo "System Mounts"
+  mount | grep -v none | grep "/dev/" --color=never
+  echo ""
+  read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
+  [ "$REPLY" == "y" ] || exit
+ else
+  echo ""
+  echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
+  echo ""
+  sudo fdisk -l | grep "Disk /dev/" --color=never
+  echo ""
+  echo "System Mounts"
+  mount | grep -v none | grep "/dev/" --color=never
+  echo ""
+  exit
+ fi
+}
+
 function usage {
     echo "usage: $(basename $0) --mmc /dev/sdd"
 cat <<EOF
@@ -137,6 +163,7 @@ while [ ! -z "$1" ]; do
         --mmc)
             checkparm $2
             MMC="$2"
+            check_mmc 
             ;;
         --ignore_md5sum)
             IGNORE_MD5SUM=1
@@ -149,37 +176,12 @@ if [ ! "${MMC}" ];then
     usage
 fi
 
- sudo fdisk -l | grep "Disk ${MMC}:" > /tmp/fdisk.check
- FDISK=$(stat -c%s /tmp/fdisk.check)
-
- if [ $FDISK -ge 1 ] ; then
-  echo ""
-  echo "I see...fdisk"
-  sudo fdisk -l | grep "Disk /dev/" --color=never
-  echo ""
-  echo "System Mounts"
-  mount | grep -v none | grep "/dev/" --color=never
-  echo ""
-  read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
-  [ "$REPLY" == "y" ] || exit
- else
-  echo ""
-  echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
-  echo ""
-  sudo fdisk -l | grep "Disk /dev/" --color=never
-  echo ""
-  echo "System Mounts"
-  mount | grep -v none | grep "/dev/" --color=never
-  echo ""
-  exit
- fi
-
  if [ "$IGNORE_MD5SUM" ] ; then
    MD5SUM=0
  else
   #FIXME: Ugly
   rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
-  wget -c --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
+  wget -c --no-verbose --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
   md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
   MD5SUM=$(stat -c%s /tmp/test.md5sum)
  fi
