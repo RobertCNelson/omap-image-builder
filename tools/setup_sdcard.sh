@@ -151,14 +151,13 @@ if [ ! "${MMC}" ];then
 fi
 
 if [ ! "${STOP}" ] ; then
-
- sudo fdisk -l | grep ${MMC} | grep Disk > /tmp/fdisk.check
+ sudo fdisk -l | grep "Disk ${MMC}:" > /tmp/fdisk.check
  FDISK=$(stat -c%s /tmp/fdisk.check)
 
  if [ $FDISK -ge 1 ] ; then
   echo ""
   echo "I see...fdisk"
-  sudo fdisk -l | grep /dev/ --color=never
+  sudo fdisk -l | grep "Disk /dev/" --color=never
   echo ""
   echo "System Mounts"
   mount | grep -v none | grep "/dev/" --color=never
@@ -169,16 +168,16 @@ if [ ! "${STOP}" ] ; then
   echo ""
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
   echo ""
-  sudo fdisk -l | grep /dev/ --color=never
+  sudo fdisk -l | grep "Disk /dev/" --color=never
   echo ""
   echo "System Mounts"
   mount | grep -v none | grep "/dev/" --color=never
   echo ""
   STOP=1
  fi
+fi
 
 if [ ! "${STOP}" ] ; then
-
  if [ "$IGNORE_MD5SUM" ] ; then
    MD5SUM=0
  else
@@ -199,7 +198,6 @@ if [ ! "${STOP}" ] ; then
 		populate_rootfs
 
  fi
-fi
 fi
 
 
