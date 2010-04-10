@@ -92,13 +92,27 @@ function populate_boot {
 }
 
 function populate_rootfs {
-	echo ""
-	echo "Populating rootfs Partition"
-	echo "Be patient, this may take a few minutes"
-	echo ""
-	sudo mount ${MMC}2 ./disk
+ echo ""
+ echo "Populating rootfs Partition"
+ echo "Be patient, this may take a few minutes"
+ echo ""
+ sudo mount ${MMC}2 ./disk
 
-	sudo tar xfp ${DIR}/armel-rootfs-* -C ./disk/
+ sudo tar xfp ${DIR}/armel-rootfs-* -C ./disk/
+
+ if [ "$CREATE_SWAP" ] ; then
+  SPACE_LEFT=$(df ./disk/ | grep ${MMC}2 | awk '{print $4}')
+
+  let SIZE=$SWAP_SIZE*1024
+
+  if [ $SPACE_LEFT -ge $SIZE ] ; then
+   sudo dd if=/dev/zero of=./disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
+   sudo mkswap ./disk/mnt/SWAP.swap
+   echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ./disk/etc/fstab
+   else
+   echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
+  fi
+ fi
 	sudo umount ./disk || true
 }
 
@@ -186,6 +200,9 @@ Additional/Optional options:
 --rfs_label <rfs_label>
     rootfs partition label
 
+--swap_file <xxx>
+    Creats a Swap file of (xxx)MB's
+
 --ignore_md5sum
     skip md5sum check    
 
@@ -224,6 +241,11 @@ while [ ! -z "$1" ]; do
         --rfs_label)
             checkparm $2
             RFS_LABEL="$2"
+            ;;
+        --swap_file)
+            checkparm $2
+            SWAP_SIZE="$2"
+            CREATE_SWAP=1
             ;;
         --ignore_md5sum)
             IGNORE_MD5SUM=1
