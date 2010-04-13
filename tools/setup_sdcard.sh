@@ -15,6 +15,10 @@ function dl_xload_uboot {
  sudo rm -rfd ${DIR}/deploy/ || true
  mkdir -p ${DIR}/deploy/
 
+ echo ""
+ echo "Downloading X-loader and Uboot"
+ echo ""
+
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
 
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
@@ -22,6 +26,11 @@ function dl_xload_uboot {
 }
 
 function cleanup_sd {
+
+ echo ""
+ echo "Umounting Partitions"
+ echo ""
+
  sudo umount ${MMC}1 &> /dev/null || true
  sudo umount ${MMC}2 &> /dev/null || true
 
@@ -43,6 +52,10 @@ e
 p
 w
 END
+
+echo ""
+echo "Formating Boot Partition"
+echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}1 -n ${BOOT_LABEL}
 
@@ -72,23 +85,24 @@ w
 ROOTFS
 
 echo ""
-echo "Creating ${RFS} Partition"
+echo "Formating ${RFS} Partition"
 echo ""
 sudo mkfs.${RFS} ${MMC}2 -L ${RFS_LABEL}
 
 }
 
 function populate_boot {
-	echo ""
-	echo "Populating Boot Partition"
-	echo ""
-	sudo mount ${MMC}1 ./disk
-	sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ./disk/uImage
-	sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ./disk/uInitrd
+ echo ""
+ echo "Populating Boot Partition"
+ echo ""
+ sudo mount ${MMC}1 ./disk
+ sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ./disk/uImage
+ sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ./disk/uInitrd
 
-	sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ./disk/boot.scr
-	sudo cp -v ./disk/boot.scr ./disk/boot.ini
-	sudo umount ./disk || true
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ./disk/boot.scr
+ #for igepv2 users
+ sudo cp -v ./disk/boot.scr ./disk/boot.ini
+ sudo umount ./disk || true
 }
 
 function populate_rootfs {
@@ -101,6 +115,11 @@ function populate_rootfs {
  sudo tar xfp ${DIR}/armel-rootfs-* -C ./disk/
 
  if [ "$CREATE_SWAP" ] ; then
+
+  echo ""
+  echo "Creating SWAP File"
+  echo ""
+
   SPACE_LEFT=$(df ./disk/ | grep ${MMC}2 | awk '{print $4}')
 
   let SIZE=$SWAP_SIZE*1024
@@ -113,7 +132,8 @@ function populate_rootfs {
    echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
   fi
  fi
-	sudo umount ./disk || true
+
+ sudo umount ./disk || true
 }
 
 function check_mmc {
@@ -122,22 +142,24 @@ function check_mmc {
  if test "-$FDISK-" = "-$MMC:-"
  then
   echo ""
-  echo "I see...fdisk"
+  echo "I see..."
+  echo "sudo fdisk -l:"
   sudo fdisk -l | grep "Disk /dev/" --color=never
   echo ""
-  echo "System Mounts"
+  echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never
   echo ""
-  read -p "Are you 100% sure, on selecting [${MMC}] (y/n)?"
+  read -p "Are you 100% sure, on selecting [${MMC}] (y/n)? "
   [ "$REPLY" == "y" ] || exit
   echo ""
  else
   echo ""
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
   echo ""
+  echo "sudo fdisk -l:"
   sudo fdisk -l | grep "Disk /dev/" --color=never
   echo ""
-  echo "System Mounts"
+  echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never
   echo ""
   exit

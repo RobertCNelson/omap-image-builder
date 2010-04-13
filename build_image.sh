@@ -5,14 +5,32 @@
 
 KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
 
+#Lucid Schedule:
+#https://wiki.ubuntu.com/LucidReleaseSchedule
+#alpha-3 :
 LUCID_ALPHA3="ubuntu-lucid-alpha3.1"
+#beta-2 : April 8th
 LUCID_BETA2="ubuntu-lucid-beta2"
+#RC : April 22nd
+LUCID_RC="ubuntu-10.04-rc"
+#10.04 : April 29th
+#10.04.1 : July 29th
+
+LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-image-2.6.32.11-l13_1.0lucid_armel.deb"
+
+#Maverick Schedule:
+#https://wiki.ubuntu.com/MaverickReleaseSchedule
+#alpha-1 : June 3rd
+#alpha-2 : July 1st
+#alpha-3 : August 5th
+#alpha-4 : September 2nd
+#beta : September 23rd
+#10.10 : October 28th
 
 MINIMAL="-minimal-armel"
+XFCE="-xfce4-armel"
 GUI="-desktop-armel"
-NET="netbook-armel"
-
-LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l12/linux-image-2.6.32.11-l12_1.0lucid_armel.deb"
+NET="-netbook-armel"
 
 DIR=$PWD
 
@@ -30,7 +48,7 @@ function dl_rootstock {
 }
 
 
-function minimal_lucid {
+function minimal_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
 	rm -f ${DIR}/deploy/vmlinuz-*
@@ -40,11 +58,25 @@ function minimal_lucid {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
 	--components "main universe multiverse" \
-	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup.sh \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image $LUCID_KERNEL
 }
 
-function gui_lucid {
+function xfce4_armel {
+
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
+
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
+	--seed xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
+	--components "main universe multiverse" \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--kernel-image $LUCID_KERNEL
+}
+
+function gui_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
 	rm -f ${DIR}/deploy/vmlinuz-*
@@ -54,11 +86,11 @@ function gui_lucid {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
 	--components "main universe multiverse" \
-	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image $LUCID_KERNEL
 }
 
-function ubuntu-netbook_lucid {
+function netbook_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
 	rm -f ${DIR}/deploy/vmlinuz-*
@@ -68,7 +100,7 @@ function ubuntu-netbook_lucid {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
 	--seed ubuntu-netbook $MIRROR \
 	--components "main universe multiverse" \
-	--dist lucid --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image $LUCID_KERNEL
 }
 
@@ -101,16 +133,24 @@ mkdir -p ${DIR}/deploy
 
 dl_rootstock
 
-BUILD=$LUCID_BETA2$MINIMAL
-minimal_lucid
+DIST=lucid
+BUILD=$LUCID_RC$MINIMAL
+minimal_armel
 compression
 
-#BUILD=$LUCID_BETA2$GUI
-#gui_lucid
+#DIST=lucid
+#BUILD=$LUCID_RC$XFCE
+#xfce4_armel
 #compression
 
+#DIST=lucid
+#BUILD=$LUCID_BETA2$GUI
+#gui_armel
+#compression
+
+#DIST=lucid
 #BUILD=$LUCID_BETA2$NET
-#ubuntu-netbook_lucid
+#netbook_armel
 #compression
 
 
