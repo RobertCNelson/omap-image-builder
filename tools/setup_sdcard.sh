@@ -63,19 +63,19 @@ echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}1 -n ${BOOT_LABEL}
 
-sudo rm -rfd ./disk || true
+sudo rm -rfd ${DIR}/disk || true
 
-mkdir ./disk
-sudo mount ${MMC}1 ./disk
+mkdir ${DIR}/disk
+sudo mount ${MMC}1 ${DIR}/disk
 
-sudo cp -v ${DIR}/deploy/${MLO} ./disk/MLO
-sudo cp -v ${DIR}/deploy/${XLOAD} ./disk/x-load.bin.ift
-sudo cp -v ${DIR}/deploy/${UBOOT} ./disk/u-boot.bin
+sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
+sudo cp -v ${DIR}/deploy/${XLOAD} ${DIR}/disk/x-load.bin.ift
+sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
 
-cd ./disk
+cd ${DIR}/disk
 sync
-cd ..
-sudo umount ./disk || true
+cd ${DIR}
+sudo umount ${DIR}/disk || true
 echo "done"
 
 sudo fdisk ${MMC} << ROOTFS
@@ -99,14 +99,14 @@ function populate_boot {
  echo ""
  echo "Populating Boot Partition"
  echo ""
- sudo mount ${MMC}1 ./disk
- sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ./disk/uImage
- sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ./disk/uInitrd
+ sudo mount ${MMC}1 ${DIR}/disk
+ sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
+ sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ./disk/boot.scr
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
  #for igepv2 users
- sudo cp -v ./disk/boot.scr ./disk/boot.ini
- sudo umount ./disk || true
+ sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
+ sudo umount ${DIR}/disk || true
 }
 
 function populate_rootfs {
@@ -114,9 +114,9 @@ function populate_rootfs {
  echo "Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
  echo ""
- sudo mount ${MMC}2 ./disk
+ sudo mount ${MMC}2 ${DIR}/disk
 
- sudo tar xfp ${DIR}/armel-rootfs-* -C ./disk/
+ sudo tar xfp ${DIR}/armel-rootfs-* -C ${DIR}/disk/
 
  if [ "$CREATE_SWAP" ] ; then
 
@@ -124,20 +124,20 @@ function populate_rootfs {
   echo "Creating SWAP File"
   echo ""
 
-  SPACE_LEFT=$(df ./disk/ | grep ${MMC}2 | awk '{print $4}')
+  SPACE_LEFT=$(df ${DIR}/disk/ | grep ${MMC}2 | awk '{print $4}')
 
   let SIZE=$SWAP_SIZE*1024
 
   if [ $SPACE_LEFT -ge $SIZE ] ; then
-   sudo dd if=/dev/zero of=./disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
-   sudo mkswap ./disk/mnt/SWAP.swap
-   echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ./disk/etc/fstab
+   sudo dd if=/dev/zero of=${DIR}/disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
+   sudo mkswap ${DIR}/disk/mnt/SWAP.swap
+   echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ${DIR}/disk/etc/fstab
    else
    echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
   fi
  fi
 
- sudo umount ./disk || true
+ sudo umount ${DIR}/disk || true
 }
 
 function check_mmc {

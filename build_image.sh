@@ -3,7 +3,9 @@
 #MIRROR="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
 #MIRROR="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 
-KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
+#KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
+KARMIC_RELEASE="ubuntu-9.10.2"
+KARMIC_KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0karmic_armel.deb"
 
 #Lucid Schedule:
 #https://wiki.ubuntu.com/LucidReleaseSchedule
@@ -44,7 +46,7 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/02-rootstock-create-initramfs.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
-	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
+#	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
 	cd ${DIR}/deploy/
 }
 
@@ -60,7 +62,7 @@ function minimal_armel {
 	--seed wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
-	--kernel-image $LUCID_KERNEL
+	--kernel-image ${KERNEL}
 }
 
 function xfce4_armel {
@@ -74,7 +76,7 @@ function xfce4_armel {
 	--seed xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image $LUCID_KERNEL
+	--kernel-image ${KERNEL}
 }
 
 function gui_armel {
@@ -88,7 +90,7 @@ function gui_armel {
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image $LUCID_KERNEL
+	--kernel-image ${KERNEL}
 }
 
 function netbook_armel {
@@ -102,7 +104,7 @@ function netbook_armel {
 	--seed ubuntu-netbook $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image $LUCID_KERNEL
+	--kernel-image ${KERNEL}
 }
 
 function compression {
@@ -134,22 +136,32 @@ mkdir -p ${DIR}/deploy
 
 dl_rootstock
 
+#DIST=karmic
+#KERNEL=$KARMIC_KERNEL
+#BUILD=$KARMIC_RELEASE$MINIMAL
+#minimal_armel
+#compression
+
 DIST=lucid
+KERNEL=$LUCID_KERNEL
 BUILD=$LUCID_RC$MINIMAL
 minimal_armel
 compression
 
 #DIST=lucid
+#KERNEL=$LUCID_KERNEL
 #BUILD=$LUCID_RC$XFCE
 #xfce4_armel
 #compression
 
 #DIST=lucid
+#KERNEL=$LUCID_KERNEL
 #BUILD=$LUCID_BETA2$GUI
 #gui_armel
 #compression
 
 #DIST=lucid
+#KERNEL=$LUCID_KERNEL
 #BUILD=$LUCID_BETA2$NET
 #netbook_armel
 #compression
