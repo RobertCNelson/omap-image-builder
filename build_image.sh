@@ -44,6 +44,7 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/02-rootstock-create-initramfs.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
+	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
 	cd ${DIR}/deploy/
 }
 
