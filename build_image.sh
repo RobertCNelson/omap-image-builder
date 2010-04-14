@@ -136,17 +136,17 @@ mkdir -p ${DIR}/deploy
 
 dl_rootstock
 
-#DIST=karmic
-#KERNEL=$KARMIC_KERNEL
-#BUILD=$KARMIC_RELEASE$MINIMAL
-#minimal_armel
-#compression
-
-DIST=lucid
-KERNEL=$LUCID_KERNEL
-BUILD=$LUCID_RC$MINIMAL
+DIST=karmic
+KERNEL=$KARMIC_KERNEL
+BUILD=$KARMIC_RELEASE$MINIMAL
 minimal_armel
 compression
+
+#DIST=lucid
+#KERNEL=$LUCID_KERNEL
+#BUILD=$LUCID_RC$MINIMAL
+#minimal_armel
+#compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
