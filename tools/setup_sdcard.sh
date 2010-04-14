@@ -2,6 +2,11 @@
 
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
+MIRROR="http://rcn-ee.net/deb/tools/"
+MLO="MLO-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10"
+XLOAD="x-load-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10.bin.ift"
+UBOOT="u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin"
+
 unset MMC
 
 #Defaults
@@ -19,10 +24,9 @@ function dl_xload_uboot {
  echo "Downloading X-loader and Uboot"
  echo ""
 
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9
-
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ http://rcn-ee.net/deb/tools/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${MLO}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${XLOAD}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${UBOOT}
 }
 
 function cleanup_sd {
@@ -63,11 +67,11 @@ sudo rm -rfd ./disk || true
 
 mkdir ./disk
 sudo mount ${MMC}1 ./disk
-sudo cp -v ${DIR}/deploy/MLO-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9 ./disk/MLO
 
-sudo cp -v ${DIR}/deploy/x-load-beagleboard-1.44+r9+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r9.bin.ift ./disk/x-load.bin.ift
+sudo cp -v ${DIR}/deploy/${MLO} ./disk/MLO
+sudo cp -v ${DIR}/deploy/${XLOAD} ./disk/x-load.bin.ift
+sudo cp -v ${DIR}/deploy/${UBOOT} ./disk/u-boot.bin
 
-sudo cp -v ${DIR}/deploy/u-boot-beagleboard-2010.03-rc1+r44+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r44.bin ./disk/u-boot.bin
 cd ./disk
 sync
 cd ..
