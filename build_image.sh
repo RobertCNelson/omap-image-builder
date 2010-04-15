@@ -12,7 +12,7 @@ KARMIC_KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-i
 #alpha-3 :
 LUCID_ALPHA3="ubuntu-lucid-alpha3.1"
 #beta-2 : April 8th
-LUCID_BETA2="ubuntu-lucid-beta2"
+LUCID_BETA2="ubuntu-lucid-beta2.1"
 #RC : April 22nd
 LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
@@ -136,17 +136,17 @@ mkdir -p ${DIR}/deploy
 
 dl_rootstock
 
-DIST=karmic
-KERNEL=$KARMIC_KERNEL
-BUILD=$KARMIC_RELEASE$MINIMAL
-minimal_armel
-compression
-
-#DIST=lucid
-#KERNEL=$LUCID_KERNEL
-#BUILD=$LUCID_RC$MINIMAL
+#DIST=karmic
+#KERNEL=$KARMIC_KERNEL
+#BUILD=$KARMIC_RELEASE$MINIMAL
 #minimal_armel
 #compression
+
+DIST=lucid
+KERNEL=$LUCID_KERNEL
+BUILD=$LUCID_BETA2$MINIMAL
+minimal_armel
+compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
