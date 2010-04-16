@@ -8,7 +8,10 @@ broken_system_clock = true
 
 EOF
 
-echo "/dev/mmcblk0p2   /   auto   errors=remount-ro   0   1" >> /etc/fstab
+mkdir -p /boot/mmc
+
+echo "/dev/mmcblk0p2   /           auto   errors=remount-ro   0   1" >> /etc/fstab
+echo "/dev/mmcblk0p1   /boot/mmc   auto   defaults            0   0" >> /etc/fstab
 
 cat > /etc/X11/xorg.conf <<XORG
 
