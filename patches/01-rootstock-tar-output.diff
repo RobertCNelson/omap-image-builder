@@ -1,7 +1,7 @@
 === modified file 'rootstock'
---- rootstock	2010-03-18 10:43:47 +0000
-+++ rootstock	2010-03-22 17:34:51 +0000
-@@ -463,10 +463,10 @@
+--- rootstock	2010-04-15 21:57:01 +0000
++++ rootstock	2010-04-16 21:01:38 +0000
+@@ -469,10 +469,10 @@
      mount_image
  
      cd $MOUNTPOINT >>$LOG 2>&1

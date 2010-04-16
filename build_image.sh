@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+SYST=$(cat /etc/hostname)
+
 #MIRROR="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
 #MIRROR="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 
@@ -48,6 +50,11 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 #	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
+#nasty hack to use /dev/sda1
+if [ $SYST == "lvrm" ]; then
+	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
+        FORCE_SEC="--force-sec-hd /dev/sda1"
+fi
 	cd ${DIR}/deploy/
 }
 
@@ -105,7 +112,7 @@ function netbook_armel {
 	--seed ${UBOOT},ubuntu-netbook $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} ${FORCE_SEC}
 }
 
 function compression {
