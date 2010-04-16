@@ -1,3 +1,5 @@
+uboot-envtools
+uboot-mkimage
 wget
 nano
 linux-firmware

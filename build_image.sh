@@ -34,6 +34,8 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
+UBOOT="uboot-envtools,uboot-mkimage"
+
 DIR=$PWD
 
 function dl_rootstock {
@@ -58,7 +60,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
-	--seed wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
+	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
@@ -72,7 +74,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
-	--seed xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
+	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -100,7 +102,7 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
-	--seed ubuntu-netbook $MIRROR \
+	--seed ${UBOOT},ubuntu-netbook $MIRROR \
 	--components "main universe multiverse" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
