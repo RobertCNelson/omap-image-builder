@@ -115,9 +115,9 @@ function compression {
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
-	echo "Calculating MD5SUMS" 
-	cd ${DIR}/deploy/$BUILD
-	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
+#	echo "Calculating MD5SUMS" 
+#	cd ${DIR}/deploy/$BUILD
+#	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/

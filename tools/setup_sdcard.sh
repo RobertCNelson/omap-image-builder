@@ -230,9 +230,6 @@ Additional/Optional options:
 --swap_file <xxx>
     Creats a Swap file of (xxx)MB's
 
---ignore_md5sum
-    skip md5sum check    
-
 EOF
 exit
 }
@@ -274,9 +271,6 @@ while [ ! -z "$1" ]; do
             SWAP_SIZE="$2"
             CREATE_SWAP=1
             ;;
-        --ignore_md5sum)
-            IGNORE_MD5SUM=1
-            ;;
     esac
     shift
 done
@@ -285,26 +279,10 @@ if [ ! "${MMC}" ];then
     usage
 fi
 
- if [ "$IGNORE_MD5SUM" ] ; then
-   MD5SUM=0
- else
-  #FIXME: Ugly
-  rm -f /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums || true
-  wget -c --no-verbose --directory-prefix=/tmp http://www.rcn-ee.net/deb/rootfs/ubuntu-lucid-beta2-minimal-armel.md5sums
-  md5sum -c /tmp/ubuntu-lucid-beta2-minimal-armel.md5sums | grep -vi 'OK$' > /tmp/test.md5sum
-  MD5SUM=$(stat -c%s /tmp/test.md5sum)
- fi
-
- if [ $MD5SUM -ge 1 ] ; then
- 	echo "MD5SUM check as failed, try re-downloading or tweak this script to ignore it."
- else
-		dl_xload_uboot
-		cleanup_sd
-		create_partitions
-		populate_boot
-		populate_rootfs
-
- fi
-
+ dl_xload_uboot
+ cleanup_sd
+ create_partitions
+ populate_boot
+ populate_rootfs
 
 
