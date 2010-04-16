@@ -106,6 +106,12 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
+
+ cd ${DIR}/disk/
+ sync
+ sync
+ cd ${DIR}/
+
  sudo umount ${DIR}/disk || true
 }
 
@@ -136,6 +142,11 @@ function populate_rootfs {
    echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
   fi
  fi
+
+ cd ${DIR}/disk/
+ sync
+ sync
+ cd ${DIR}/
 
  sudo umount ${DIR}/disk || true
 }
