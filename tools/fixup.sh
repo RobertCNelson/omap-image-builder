@@ -8,10 +8,10 @@ broken_system_clock = true
 
 EOF
 
-mkdir -p /boot/mmc
+mkdir -p /boot/uboot
 
 echo "/dev/mmcblk0p2   /           auto   errors=remount-ro   0   1" >> /etc/fstab
-echo "/dev/mmcblk0p1   /boot/mmc   auto   defaults            0   0" >> /etc/fstab
+echo "/dev/mmcblk0p1   /boot/uboot auto   defaults            0   0" >> /etc/fstab
 
 cat > /etc/fw_env.config <<FW
 # Configuration file for fw_(printenv/saveenv) utility.
