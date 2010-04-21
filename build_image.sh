@@ -2,8 +2,11 @@
 
 SYST=$(cat /etc/hostname)
 
-#MIRROR="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
-#MIRROR="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
+#MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
+#MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
+#MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
+#MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+
 
 #KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
 KARMIC_RELEASE="ubuntu-9.10.2"
@@ -31,6 +34,7 @@ LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-ima
 #beta : September 23rd
 #10.10 : October 28th
 
+SQUEEZE_KERNEL="http://rcn-ee.net/deb/kernel/beagle/squeeze/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0squeeze_armel.deb"
 SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
 
 MINIMAL="-minimal-armel"
@@ -62,6 +66,7 @@ if [ $SYST == "lvrm" ]; then
 	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
         FORCE_SEC="--force-sec-hd /dev/sda1"
 fi
+	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
 	cd ${DIR}/deploy/
 }
 
@@ -164,6 +169,15 @@ COMPONENTS=$UBUNTU_COMPONENTS
 BUILD=$LUCID_BETA2$MINIMAL
 minimal_armel
 compression
+
+#DIST=squeeze
+#KERNEL=$SQUEEZE_KERNEL
+#COMPONENTS=$DEBIAN_COMPONENTS
+#MIRROR="--mirror http://ftp.us.debian.org/debian/"
+##MIRROR=$MIRROR_DEB
+#BUILD=squeeze$MINIMAL
+#minimal_armel
+#compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
