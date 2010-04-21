@@ -31,12 +31,17 @@ LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-ima
 #beta : September 23rd
 #10.10 : October 28th
 
+SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
+
 MINIMAL="-minimal-armel"
 XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
 UBOOT="uboot-envtools,uboot-mkimage"
+
+UBUNTU_COMPONENTS="--components \"main universe multiverse\""
+DEBIAN_COMPONENTS="--components \"main contrib non-free\""
 
 DIR=$PWD
 
@@ -68,7 +73,7 @@ function minimal_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
 	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
-	--components "main universe multiverse" \
+	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
 }
@@ -82,7 +87,7 @@ function xfce4_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
 	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
-	--components "main universe multiverse" \
+	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
@@ -96,7 +101,7 @@ function gui_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
-	--components "main universe multiverse" \
+	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
@@ -110,7 +115,7 @@ function netbook_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
 	--seed ${UBOOT},ubuntu-netbook $MIRROR \
-	--components "main universe multiverse" \
+	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
 }
@@ -146,30 +151,35 @@ dl_rootstock
 
 #DIST=karmic
 #KERNEL=$KARMIC_KERNEL
+#COMPONENTS=$UBUNTU_COMPONENTS
 #BUILD=$KARMIC_RELEASE$MINIMAL
 #minimal_armel
 #compression
 
 DIST=lucid
 KERNEL=$LUCID_KERNEL
+COMPONENTS=$UBUNTU_COMPONENTS
 BUILD=$LUCID_BETA2$MINIMAL
 minimal_armel
 compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
+#COMPONENTS=$UBUNTU_COMPONENTS
 #BUILD=$LUCID_RC$XFCE
 #xfce4_armel
 #compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
+#COMPONENTS=$UBUNTU_COMPONENTS
 #BUILD=$LUCID_BETA2$GUI
 #gui_armel
 #compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
+#COMPONENTS=$UBUNTU_COMPONENTS
 #BUILD=$LUCID_BETA2$NET
 #netbook_armel
 #compression
