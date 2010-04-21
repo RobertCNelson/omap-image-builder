@@ -43,6 +43,8 @@ UBOOT="uboot-envtools,uboot-mkimage"
 UBUNTU_COMPONENTS="--components \"main universe multiverse\""
 DEBIAN_COMPONENTS="--components \"main contrib non-free\""
 
+USER_PASS="--login ubuntu --password temppwd"
+
 DIR=$PWD
 
 function dl_rootstock {
@@ -71,7 +73,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 2G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 2G \
 	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
 	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
@@ -99,7 +101,7 @@ function gui_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
 	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
@@ -113,7 +115,7 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --login ubuntu --password temppwd  --imagesize 3G \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
 	--seed ${UBOOT},ubuntu-netbook $MIRROR \
 	$COMPONENTS \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
