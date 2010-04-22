@@ -79,8 +79,8 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 2G \
-	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
+	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
@@ -94,7 +94,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
-	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
+	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -107,8 +107,8 @@ function gui_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
-	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
+	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -121,8 +121,8 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
-	--seed ${UBOOT},ubuntu-netbook $MIRROR \
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
+	--seed ${UBOOT},ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
@@ -167,7 +167,7 @@ dl_rootstock
 DIST=lucid
 KERNEL=$LUCID_KERNEL
 COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
+#MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RC$MINIMAL
 minimal_armel
 compression
@@ -201,5 +201,4 @@ compression
 #BUILD=$LUCID_BETA2$NET
 #netbook_armel
 #compression
-
 
