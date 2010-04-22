@@ -19,7 +19,8 @@ cat > /etc/flash-kernel.conf <<FK
 echo "flash-kernel stopped:"
 echo "You are currently running the Community Kernel edition"
 echo "remove /etc/flash-kernel.conf to run Ubuntu's Kernel"
-exit
+DONT_FLASH=1
+exit 0
 
 FK
 

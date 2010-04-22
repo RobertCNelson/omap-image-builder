@@ -44,8 +44,8 @@ NET="-netbook-armel"
 
 UBOOT="uboot-envtools,uboot-mkimage"
 
-UBUNTU_COMPONENTS="--components \"main universe multiverse\""
-DEBIAN_COMPONENTS="--components \"main contrib non-free\""
+UBUNTU_COMPONENTS="main universe multiverse"
+DEBIAN_COMPONENTS="main contrib non-free"
 
 USER_PASS="--login ubuntu --password temppwd"
 
@@ -66,7 +66,8 @@ if [ $SYST == "lvrm" ]; then
 	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
         FORCE_SEC="--force-sec-hd /dev/sda1"
 fi
-	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
+#	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
+	patch -p0 < ${DIR}/patches/07-monitor-installer.diff
 	cd ${DIR}/deploy/
 }
 
@@ -80,7 +81,7 @@ function minimal_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 2G \
 	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils $MIRROR \
-	$COMPONENTS \
+	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
 }
@@ -94,7 +95,7 @@ function xfce4_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
 	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 $MIRROR \
-	$COMPONENTS \
+	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
@@ -108,7 +109,7 @@ function gui_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
 	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` $MIRROR \
-	$COMPONENTS \
+	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
@@ -122,7 +123,7 @@ function netbook_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard $USER_PASS --imagesize 3G \
 	--seed ${UBOOT},ubuntu-netbook $MIRROR \
-	$COMPONENTS \
+	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
 }
@@ -166,7 +167,8 @@ dl_rootstock
 DIST=lucid
 KERNEL=$LUCID_KERNEL
 COMPONENTS=$UBUNTU_COMPONENTS
-BUILD=$LUCID_BETA2$MINIMAL
+MIRROR=$MIRROR_UBU
+BUILD=$LUCID_RC$MINIMAL
 minimal_armel
 compression
 

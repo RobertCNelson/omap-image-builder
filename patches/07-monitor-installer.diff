@@ -1,0 +1,12 @@
+=== modified file 'rootstock'
+--- rootstock	2010-04-22 16:47:38 +0000
++++ rootstock	2010-04-22 16:48:23 +0000
+@@ -897,6 +897,7 @@
+     use_swap
+ fi
+ 
++cp $BUILDDIR/installer /tmp/installer >>$LOG 2>&1
+ mv $BUILDDIR/installer $MOUNTPOINT/bin/ >>$LOG 2>&1
+ chmod +x $MOUNTPOINT/bin/installer >>$LOG 2>&1
+ 
+
