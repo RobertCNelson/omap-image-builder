@@ -42,7 +42,7 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-UBOOT="uboot-envtools,uboot-mkimage"
+UBOOT="uboot-envtools,uboot-mkimage,"
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
@@ -80,7 +80,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
-	--seed ${UBOOT},wget,nano,linux-firmware,wireless-tools,usbutils ${MIRROR} \
+	--seed ${UBOOT}${EXTRA}wget,nano,wireless-tools,usbutils ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
@@ -94,7 +94,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
-	--seed ${UBOOT},xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,linux-firmware,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
+	--seed ${UBOOT}${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -122,7 +122,7 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
-	--seed ${UBOOT},ubuntu-netbook ${MIRROR} \
+	--seed ${UBOOT}${EXTRA}ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
@@ -164,22 +164,24 @@ dl_rootstock
 #minimal_armel
 #compression
 
-DIST=lucid
-KERNEL=$LUCID_KERNEL
-COMPONENTS=$UBUNTU_COMPONENTS
-#MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RC$MINIMAL
-minimal_armel
-compression
-
-#DIST=squeeze
-#KERNEL=$SQUEEZE_KERNEL
-#COMPONENTS=$DEBIAN_COMPONENTS
-#MIRROR="--mirror http://ftp.us.debian.org/debian/"
-##MIRROR=$MIRROR_DEB
-#BUILD=squeeze$MINIMAL
+#DIST=lucid
+#KERNEL=$LUCID_KERNEL
+#EXTRA="linux-firmware,"
+#COMPONENTS=$UBUNTU_COMPONENTS
+##MIRROR=$MIRROR_UBU
+#BUILD=$LUCID_RC$MINIMAL
 #minimal_armel
 #compression
+
+DIST=squeeze
+KERNEL=$SQUEEZE_KERNEL
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+COMPONENTS=$DEBIAN_COMPONENTS
+MIRROR="--mirror http://ftp.us.debian.org/debian/"
+#MIRROR=$MIRROR_DEB
+BUILD=squeeze$MINIMAL
+minimal_armel
+compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
