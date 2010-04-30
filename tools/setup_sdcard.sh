@@ -2,11 +2,6 @@
 
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
-MIRROR="http://rcn-ee.net/deb/tools/"
-MLO="MLO-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10"
-XLOAD="x-load-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10.bin.ift"
-UBOOT="u-boot-beagleboard-2010.03-rc1+r45+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r45.bin"
-
 unset MMC
 
 #Defaults
@@ -20,6 +15,15 @@ function dl_xload_uboot {
  sudo rm -rfd ${DIR}/deploy/ || true
  mkdir -p ${DIR}/deploy/
 
+ if test "-$SYSTEM-" = "-beagle-"
+ then
+
+ #beagle
+ MIRROR="http://rcn-ee.net/deb/tools/"
+ MLO="MLO-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10"
+ XLOAD="x-load-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10.bin.ift"
+ UBOOT="u-boot-beagleboard-2010.03-rc1+r48+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r48.bin"
+
  echo ""
  echo "Downloading X-loader and Uboot"
  echo ""
@@ -27,6 +31,7 @@ function dl_xload_uboot {
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${MLO}
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${XLOAD}
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${UBOOT}
+ fi
 }
 
 function cleanup_sd {
@@ -68,9 +73,11 @@ sudo rm -rfd ${DIR}/disk || true
 mkdir ${DIR}/disk
 sudo mount ${MMC}1 ${DIR}/disk
 
-sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
-sudo cp -v ${DIR}/deploy/${XLOAD} ${DIR}/disk/x-load.bin.ift
-sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
+if [ "$DO_UBOOT" ];then
+ sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
+ sudo cp -v ${DIR}/deploy/${XLOAD} ${DIR}/disk/x-load.bin.ift
+ sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
+fi
 
 cd ${DIR}/disk
 sync
@@ -103,7 +110,13 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.04" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
+ if [ "$IS_C4" ] ; then
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.10" -d ${DIR}/boot-c4.cmd ${DIR}/disk/boot.scr
+ else
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.10" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
+ fi
+
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "X-loader Nand" -d ${DIR}/flash.cmd ${DIR}/disk/flash.scr
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
 
@@ -191,6 +204,31 @@ function check_mmc {
  fi
 }
 
+function check_uboot_type {
+ IN_VALID_UBOOT=1
+ unset DO_UBOOT
+ unset IS_C4
+
+ if test "-$UBOOT_TYPE-" = "-beagle-"
+ then
+ SYSTEM=beagle
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ fi
+
+ if test "-$UBOOT_TYPE-" = "-beagle_c4-"
+ then
+ SYSTEM=beagle
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ IS_C4=1
+ fi
+
+ if [ "$IN_VALID_UBOOT" ] ; then
+   usage
+ fi
+}
+
 function check_fs_type {
  IN_VALID_FS=1
 
@@ -235,6 +273,10 @@ Additional/Optional options:
 -h --help
     this help
 
+--uboot <dev board>
+    beagle - <Bx, C2, C3>
+    beagle_c4 - <C4: force 720Mhz>
+
 --rootfs <fs_type>
     ext2
     ext3 - <set as default>
@@ -273,6 +315,11 @@ while [ ! -z "$1" ]; do
             MMC="$2"
             check_mmc 
             ;;
+        --uboot)
+            checkparm $2
+            UBOOT_TYPE="$2"
+            check_uboot_type 
+            ;;
         --rootfs)
             checkparm $2
             FS_TYPE="$2"
@@ -299,7 +346,9 @@ if [ ! "${MMC}" ];then
     usage
 fi
 
+if [ "$DO_UBOOT" ];then
  dl_xload_uboot
+fi
  cleanup_sd
  create_partitions
  populate_boot

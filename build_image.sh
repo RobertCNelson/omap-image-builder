@@ -21,6 +21,7 @@ LUCID_BETA2="ubuntu-lucid-beta2.1"
 #RC : April 22nd
 LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
+LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : July 29th
 
 LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-image-2.6.32.11-l13_1.0lucid_armel.deb"
@@ -135,6 +136,8 @@ function compression {
 	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/tools/boot-c4.cmd ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/tools/flash.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
 #	echo "Calculating MD5SUMS" 
@@ -164,29 +167,31 @@ dl_rootstock
 #minimal_armel
 #compression
 
+DIST=lucid
+KERNEL=$LUCID_KERNEL
+EXTRA="linux-firmware,"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$LUCID_RELEASE$MINIMAL
+minimal_armel
+compression
+
+#DIST=squeeze
+#KERNEL=$SQUEEZE_KERNEL
+#EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+#COMPONENTS=$DEBIAN_COMPONENTS
+#MIRROR="--mirror http://ftp.us.debian.org/debian/"
+##MIRROR=$MIRROR_DEB
+#BUILD=squeeze$MINIMAL
+#minimal_armel
+#compression
+
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
 #EXTRA="linux-firmware,"
 #COMPONENTS=$UBUNTU_COMPONENTS
-##MIRROR=$MIRROR_UBU
-#BUILD=$LUCID_RC$MINIMAL
-#minimal_armel
-#compression
-
-DIST=squeeze
-KERNEL=$SQUEEZE_KERNEL
-EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-COMPONENTS=$DEBIAN_COMPONENTS
-MIRROR="--mirror http://ftp.us.debian.org/debian/"
-#MIRROR=$MIRROR_DEB
-BUILD=squeeze$MINIMAL
-minimal_armel
-compression
-
-#DIST=lucid
-#KERNEL=$LUCID_KERNEL
-#COMPONENTS=$UBUNTU_COMPONENTS
-#BUILD=$LUCID_RC$XFCE
+#MIRROR=$MIRROR_UBU
+#BUILD=$LUCID_RELEASE$XFCE
 #xfce4_armel
 #compression
 
