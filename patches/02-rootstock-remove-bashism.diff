@@ -1,0 +1,13 @@
+=== modified file 'rootstock'
+--- rootstock	2010-05-03 17:00:48 +0000
++++ rootstock	2010-05-03 17:44:05 +0000
+@@ -378,7 +378,7 @@
+     KERNEL_IMAGE_CMD="dpkg -x /tmp/$KERNEL_IMG /"
+ 
+     KERNEL_IMG_REL=${KERNEL_IMG##*linux-image-}
+-    KERNEL_IMG_REL=${KERNEL_IMG_REL/_*_armel.deb}
++    KERNEL_IMG_REL=$(echo $KERNEL_IMG_REL | awk -F_ '{print $1}')
+ 
+     KERNEL_IMAGE_CREATE_INITRAMFS="update-initramfs -c -k $KERNEL_IMG_REL"
+ }
+

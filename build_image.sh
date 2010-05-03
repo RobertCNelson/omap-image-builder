@@ -60,6 +60,7 @@ function dl_rootstock {
 
 	echo "Applying local patches"
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
+	patch -p0 < ${DIR}/patches/02-rootstock-remove-bashism.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 #	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
 #nasty hack to use /dev/sda1
@@ -69,6 +70,7 @@ if [ $SYST == "lvrm" ]; then
 fi
 #	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
 	patch -p0 < ${DIR}/patches/07-monitor-installer.diff
+	bzr commit -m 'temp'
 	cd ${DIR}/deploy/
 }
 
