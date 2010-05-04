@@ -19,18 +19,26 @@ function dl_xload_uboot {
  then
 
  #beagle
- MIRROR="http://rcn-ee.net/deb/tools/"
- MLO="MLO-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10"
- XLOAD="x-load-beagleboard-1.44+r10+gitr1c9276af4d6a5b7014a7630a1abeddf3b3177563-r10.bin.ift"
- UBOOT="u-boot-beagleboard-2010.03-rc1+r48+gitr946351081bd14e8bf5816fc38b82e004a0e6b4fe-r48.bin"
+ MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
  echo "Downloading X-loader and Uboot"
  echo ""
 
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${MLO}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${XLOAD}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}${UBOOT}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+
+ MLO=$(cat ${DIR}/dl/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
+ XLOAD=$(cat ${DIR}/dl/bootloader | grep "ABI:1 XLOAD" | awk '{print $3}')
+ UBOOT=$(cat ${DIR}/dl/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
+
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${XLOAD}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+
+ MLO=${MLO##*/}
+ XLOAD=${XLOAD##*/}
+ UBOOT=${UBOOT##*/}
+
  fi
 }
 
@@ -111,9 +119,9 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
  if [ "$IS_C4" ] ; then
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.10" -d ${DIR}/boot-c4.cmd ${DIR}/disk/boot.scr
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot-c4.cmd ${DIR}/disk/boot.scr
  else
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ubuntu 10.10" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
  fi
 
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "X-loader Nand" -d ${DIR}/flash.cmd ${DIR}/disk/flash.scr
