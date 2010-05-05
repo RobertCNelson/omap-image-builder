@@ -9,10 +9,10 @@
 +
 +apt-get install wget
 +
-+wget http://192.168.1.26/debs/apt_0.7.25.3ubuntu7_armel.deb
-+wget http://192.168.1.26/debs/apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
-+wget http://192.168.1.26/debs/dpkg_1.15.5.6ubuntu4_armel.deb
-+wget http://192.168.1.26/debs/dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
++wget http://rcn-ee.homeip.net:81/dl/testing/rootstock/apt_0.7.25.3ubuntu7_armel.deb
++wget http://rcn-ee.homeip.net:81/dl/testing/rootstock/apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
++wget http://rcn-ee.homeip.net:81/dl/testing/rootstock/dpkg_1.15.5.6ubuntu4_armel.deb
++wget http://rcn-ee.homeip.net:81/dl/testing/rootstock/dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
 +
 +sudo dpkg -i apt_0.7.25.3ubuntu7_armel.deb
 +sudo dpkg -i apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
