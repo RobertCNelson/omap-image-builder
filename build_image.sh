@@ -62,7 +62,6 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/02-rootstock-remove-bashism.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
-#	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
 #nasty hack to use /dev/sda1
 if [ $SYST == "lvrm" ]; then
 	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
@@ -70,7 +69,10 @@ if [ $SYST == "lvrm" ]; then
 fi
 #	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
 	patch -p0 < ${DIR}/patches/07-monitor-installer.diff
-	bzr commit -m 'temp'
+#	bzr commit -m 'temp'
+#	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
+#	bzr commit -m 'temp'
+#exit
 	cd ${DIR}/deploy/
 }
 
@@ -173,7 +175,7 @@ DIST=lucid
 KERNEL=$LUCID_KERNEL
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
+#MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$MINIMAL
 minimal_armel
 compression

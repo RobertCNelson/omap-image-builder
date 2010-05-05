@@ -1,7 +1,7 @@
 === modified file 'rootstock'
---- rootstock	2010-04-14 04:09:10 +0000
-+++ rootstock	2010-04-14 04:09:42 +0000
-@@ -849,6 +849,19 @@
+--- rootstock	2010-05-05 03:23:27 +0000
++++ rootstock	2010-05-05 03:30:44 +0000
+@@ -876,11 +876,27 @@
  
  ${APT_UPDATE}
  
@@ -9,27 +9,36 @@
 +
 +apt-get install wget
 +
-+#http://ddebs.ubuntu.com/pool/main/a/apt/
-+wget http://ddebs.ubuntu.com/pool/main/a/apt/apt-dbgsym_0.7.25.3ubuntu6_armel.ddeb
++wget http://192.168.1.26/debs/apt_0.7.25.3ubuntu7_armel.deb
++wget http://192.168.1.26/debs/apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
++wget http://192.168.1.26/debs/dpkg_1.15.5.6ubuntu4_armel.deb
++wget http://192.168.1.26/debs/dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
 +
-+#http://ddebs.ubuntu.com/pool/main/d/dpkg/
-+wget http://ddebs.ubuntu.com/pool/main/d/dpkg/dpkg-dbgsym_1.15.5.6ubuntu3_armel.ddeb
-+
-+sudo dpkg -i apt-dbgsym_0.7.25.3ubuntu6_armel.ddeb
-+sudo dpkg -i dpkg-dbgsym_1.15.5.6ubuntu3_armel.ddeb
++sudo dpkg -i apt_0.7.25.3ubuntu7_armel.deb
++sudo dpkg -i apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
++sudo dpkg -i dpkg_1.15.5.6ubuntu4_armel.deb
++sudo dpkg -i dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
 +
  ${PACKAGE_CLEANUP}
  
++apt-get -y install gdb
++
  PKGCOUNT=\$(LANG=C apt-get -s install ${SELECTION} |grep "newly installed"|cut -d ',' -f2|tr -d ' [a-z]')
-@@ -866,6 +879,12 @@
+ echo "packagecount=\${PKGCOUNT:-1}"
+-[ -z "${SELECTION}" ] || apt-get -y ${APT_FORCE} install ${SELECTION}
++[ -z "${SELECTION}" ] || gdb -batch-silent -ex 'run' -ex 'backtrace full' --args /usr/bin/apt-get -y ${APT_FORCE} install ${SELECTION}
+ 
+ ${KERNEL_IMAGE_CMD}
+ ${KERNEL_IMAGE_CREATE_INITRAMFS}
+@@ -893,6 +909,12 @@
  
  ${OEM_CONFIG_ENABLE}
  
-+apt-get remove -y apt-dbgsym_0.7.25.3ubuntu6_armel.ddeb
-+apt-get remove -y dpkg-dbgsym_1.15.5.6ubuntu3_armel.ddeb
++apt-get remove -y apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
++apt-get remove -y dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
 +
-+rm -f apt-dbgsym_0.7.25.3ubuntu6_armel.ddeb
-+rm -f dpkg-dbgsym_1.15.5.6ubuntu3_armel.ddeb
++rm -f apt-dbgsym_0.7.25.3ubuntu7_armel.ddeb
++rm -f dpkg-dbgsym_1.15.5.6ubuntu4_armel.ddeb
 +
  ${PACKAGE_CLEANUP_SUB}
  
