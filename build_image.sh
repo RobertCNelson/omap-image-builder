@@ -2,15 +2,8 @@
 
 SYST=$(cat /etc/hostname)
 
-#MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
-#MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
-#MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
-#MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
-
-
 #KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
 KARMIC_RELEASE="ubuntu-9.10.2"
-KARMIC_KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0karmic_armel.deb"
 
 #Lucid Schedule:
 #https://wiki.ubuntu.com/LucidReleaseSchedule
@@ -24,8 +17,6 @@ LUCID_RC="ubuntu-10.04-rc"
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : July 29th
 
-LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-image-2.6.32.11-l13_1.0lucid_armel.deb"
-
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
 #alpha-1 : June 3rd
@@ -35,7 +26,6 @@ LUCID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/lucid/v2.6.32.11-l13/linux-ima
 #beta : September 23rd
 #10.10 : October 28th
 
-SQUEEZE_KERNEL="http://rcn-ee.net/deb/kernel/beagle/squeeze/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0squeeze_armel.deb"
 SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
 
 MINIMAL="-minimal-armel"
@@ -48,9 +38,23 @@ UBOOT="uboot-envtools,uboot-mkimage,"
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
 
-USER_PASS="--login ubuntu --password temppwd"
-
 DIR=$PWD
+
+function set_mirror {
+
+MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
+
+if [ $SYST == "work-p4" ]; then
+	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+fi
+
+if [ $SYST == "lvrm" ]; then
+	MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
+fi
+
+}
 
 function dl_rootstock {
 	rm -rfd ${DIR}/../project-rootstock
@@ -75,7 +79,6 @@ fi
 #exit
 	cd ${DIR}/deploy/
 }
-
 
 function minimal_armel {
 
@@ -155,40 +158,58 @@ function compression {
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 	tar cvf $BUILD.tar ./$BUILD
 	7za a $BUILD.tar.7z $BUILD.tar
-	cd ${DIR}/
+	cd ${DIR}/deploy/
+}
+
+function karmic_release {
+
+DIST=karmic
+KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0karmic_armel.deb"
+EXTRA="linux-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
+COMPONENTS=$UBUNTU_COMPONENTS
+BUILD=$KARMIC_RELEASE$MINIMAL
+minimal_armel
+compression
+
+}
+
+function lucid_release {
+
+DIST=lucid
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.3-l1/linux-image-2.6.33.3-l1_1.0lucid_armel.deb"
+EXTRA="linux-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$LUCID_RELEASE$MINIMAL
+minimal_armel
+compression
+
+}
+
+function squeeze_release {
+
+DIST=squeeze
+KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.3-x1/linux-image-2.6.33.3-x1_1.0squeeze_armel.deb"
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
+COMPONENTS=$DEBIAN_COMPONENTS
+MIRROR=$MIRROR_DEB
+BUILD=squeeze$MINIMAL
+minimal_armel
+compression
+
 }
 
 
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
+set_mirror
 dl_rootstock
 
-#DIST=karmic
-#KERNEL=$KARMIC_KERNEL
-#COMPONENTS=$UBUNTU_COMPONENTS
-#BUILD=$KARMIC_RELEASE$MINIMAL
-#minimal_armel
-#compression
-
-DIST=lucid
-KERNEL=$LUCID_KERNEL
-EXTRA="linux-firmware,"
-COMPONENTS=$UBUNTU_COMPONENTS
-#MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RELEASE$MINIMAL
-minimal_armel
-compression
-
-#DIST=squeeze
-#KERNEL=$SQUEEZE_KERNEL
-#EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-#COMPONENTS=$DEBIAN_COMPONENTS
-#MIRROR="--mirror http://ftp.us.debian.org/debian/"
-##MIRROR=$MIRROR_DEB
-#BUILD=squeeze$MINIMAL
-#minimal_armel
-#compression
+lucid_release
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
