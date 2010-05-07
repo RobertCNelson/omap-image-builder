@@ -1,0 +1,14 @@
+=== modified file 'rootstock'
+--- rootstock	2010-05-07 15:40:12 +0000
++++ rootstock	2010-05-07 15:41:20 +0000
+@@ -815,6 +815,9 @@
+ 
+ hostname -F /etc/hostname
+ 
++echo 3 > /proc/cpu/alignment
++echo "Warning about and fixing misaligned acesses from user programs"
++
+ dpkg-divert --add --local --divert /usr/sbin/invoke-rc.d.rootstock --rename /usr/sbin/invoke-rc.d
+ cp /bin/true /usr/sbin/invoke-rc.d
+ 
+

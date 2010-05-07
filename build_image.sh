@@ -78,6 +78,7 @@ if [ $SYST == "lvrm" ]; then
 fi
 #	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
 	patch -p0 < ${DIR}/patches/07-monitor-installer.diff
+	patch -p0 < ${DIR}/patches/force-alignment.diff
 #	bzr commit -m 'temp'
 #	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
 #	bzr commit -m 'temp'
