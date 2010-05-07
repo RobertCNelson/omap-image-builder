@@ -54,6 +54,11 @@ if [ $SYST == "work-celeron" ]; then
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 fi
 
+if [ $SYST == "voodoo-e6400" ]; then
+	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+fi
+
 if [ $SYST == "lvrm" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
