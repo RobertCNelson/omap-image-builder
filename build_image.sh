@@ -199,6 +199,19 @@ compression
 
 }
 
+function lucid_xfce4 {
+
+DIST=lucid
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.3-l1/linux-image-2.6.33.3-l1_1.0lucid_armel.deb"
+EXTRA="linux-firmware,"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$LUCID_RELEASE$XFCE
+xfce4_armel
+compression
+
+}
+
 function squeeze_release {
 
 DIST=squeeze
@@ -221,15 +234,6 @@ set_mirror
 dl_rootstock
 
 lucid_release
-
-#DIST=lucid
-#KERNEL=$LUCID_KERNEL
-#EXTRA="linux-firmware,"
-#COMPONENTS=$UBUNTU_COMPONENTS
-#MIRROR=$MIRROR_UBU
-#BUILD=$LUCID_RELEASE$XFCE
-#xfce4_armel
-#compression
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
