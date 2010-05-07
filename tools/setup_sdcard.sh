@@ -25,11 +25,12 @@ function dl_xload_uboot {
  echo "Downloading X-loader and Uboot"
  echo ""
 
+ rm -f ${DIR}/deploy/bootloader || true
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${DIR}/dl/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
- XLOAD=$(cat ${DIR}/dl/bootloader | grep "ABI:1 XLOAD" | awk '{print $3}')
- UBOOT=$(cat ${DIR}/dl/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
+ XLOAD=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 XLOAD" | awk '{print $3}')
+ UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${XLOAD}
