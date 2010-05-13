@@ -8,6 +8,7 @@ unset MMC
 RFS=ext3
 BOOT_LABEL=boot
 RFS_LABEL=rootfs
+PARTITION_PREFIX=""
 
 DIR=$PWD
 
@@ -49,8 +50,8 @@ function cleanup_sd {
  echo "Umounting Partitions"
  echo ""
 
- sudo umount ${MMC}1 &> /dev/null || true
- sudo umount ${MMC}2 &> /dev/null || true
+ sudo umount ${MMC}${PARTITION_PREFIX}1 &> /dev/null || true
+ sudo umount ${MMC}${PARTITION_PREFIX}2 &> /dev/null || true
 
  sudo parted -s ${MMC} mklabel msdos
 }
@@ -75,12 +76,12 @@ echo ""
 echo "Formating Boot Partition"
 echo ""
 
-sudo mkfs.vfat -F 16 ${MMC}1 -n ${BOOT_LABEL}
+sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
 
 sudo rm -rfd ${DIR}/disk || true
 
 mkdir ${DIR}/disk
-sudo mount ${MMC}1 ${DIR}/disk
+sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
 
 if [ "$DO_UBOOT" ];then
  sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
@@ -90,7 +91,7 @@ fi
 
 cd ${DIR}/disk
 sync
-cd ${DIR}
+cd ${DIR}/
 sudo umount ${DIR}/disk || true
 echo "done"
 
@@ -107,7 +108,7 @@ ROOTFS
 echo ""
 echo "Formating ${RFS} Partition"
 echo ""
-sudo mkfs.${RFS} ${MMC}2 -L ${RFS_LABEL}
+sudo mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL}
 
 }
 
@@ -115,7 +116,7 @@ function populate_boot {
  echo ""
  echo "Populating Boot Partition"
  echo ""
- sudo mount ${MMC}1 ${DIR}/disk
+ sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
@@ -152,7 +153,7 @@ function populate_rootfs {
  echo "Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
  echo ""
- sudo mount ${MMC}2 ${DIR}/disk
+ sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
 
  sudo tar xfp ${DIR}/armel-rootfs-* -C ${DIR}/disk/
 
@@ -162,7 +163,7 @@ function populate_rootfs {
   echo "Creating SWAP File"
   echo ""
 
-  SPACE_LEFT=$(df ${DIR}/disk/ | grep ${MMC}2 | awk '{print $4}')
+  SPACE_LEFT=$(df ${DIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
 
   let SIZE=$SWAP_SIZE*1024
 
@@ -323,6 +324,10 @@ while [ ! -z "$1" ]; do
         --mmc)
             checkparm $2
             MMC="$2"
+	    if [[ "${MMC}" =~ "mmcblk" ]]
+            then
+	        PARTITION_PREFIX="p"
+            fi
             check_mmc 
             ;;
         --uboot)
