@@ -6,6 +6,7 @@ linux-firmware
 wireless-tools
 usbutils
 xserver-xorg-video-omap3
+chromium-browser
 xfce4
 xfce4-datetime-plugin
 xfce4-genmon-plugin
@@ -19,8 +20,6 @@ ntfs-3g
 ntpdate
 udhcpd
 midori
-firefox
-swfdec-mozilla
 pidgin
 totem
 gthumb
@@ -28,8 +27,6 @@ fbreader
 abiword
 gnumeric
 evince
-openoffice.org
-gimp
 xournal
 gnome-games
 gcalctool
@@ -43,7 +40,6 @@ emacs23
 vim
 dosfstools
 grdesktop
-fennec
 mousepad
 gedit
 xfce4-terminal
