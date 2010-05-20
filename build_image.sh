@@ -210,7 +210,7 @@ EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
-xfce4_armel
+gui_armel
 compression
 
 }
@@ -236,7 +236,7 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-gui_armel
+lucid_xfce4
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
