@@ -236,7 +236,7 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_xfce4
+gui_armel
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL

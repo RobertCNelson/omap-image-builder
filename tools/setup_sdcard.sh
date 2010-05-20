@@ -12,6 +12,37 @@ PARTITION_PREFIX=""
 
 DIR=$PWD
 
+function detect_software {
+
+#Currently only Ubuntu and Debian..
+#Working on Fedora...	
+unset PACKAGE
+unset APT
+
+if [ ! $(which mkimage) ];then
+ echo "Missing uboot-mkimage"
+ PACKAGE="uboot-mkimage "
+ APT=1
+fi
+
+if [ ! $(which wget) ];then
+ echo "Missing wget"
+ PACKAGE="wget "
+ APT=1
+fi
+
+if [ ! $(which pv) ];then
+ echo "Missing pv"
+ PACKAGE="pv "
+ APT=1
+fi
+
+if [ "${APT}" ];then
+ echo "Installing Dependicies"
+ sudo aptitude install $PACKAGE
+fi
+}
+
 function dl_xload_uboot {
  sudo rm -rfd ${DIR}/deploy/ || true
  mkdir -p ${DIR}/deploy/
@@ -120,11 +151,7 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
- if [ "$IS_C4" ] ; then
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot-c4.cmd ${DIR}/disk/boot.scr
- else
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
- fi
 
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "X-loader Nand" -d ${DIR}/flash.cmd ${DIR}/disk/flash.scr
  #for igepv2 users
@@ -155,7 +182,7 @@ function populate_rootfs {
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
 
- sudo tar xfp ${DIR}/armel-rootfs-* -C ${DIR}/disk/
+ pv ${DIR}/armel-rootfs-* | sudo tar xfp - -C ${DIR}/disk/
 
  if [ "$CREATE_SWAP" ] ; then
 
@@ -218,21 +245,12 @@ function check_mmc {
 function check_uboot_type {
  IN_VALID_UBOOT=1
  unset DO_UBOOT
- unset IS_C4
 
  if test "-$UBOOT_TYPE-" = "-beagle-"
  then
  SYSTEM=beagle
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- fi
-
- if test "-$UBOOT_TYPE-" = "-beagle_c4-"
- then
- SYSTEM=beagle
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- IS_C4=1
  fi
 
  if [ "$IN_VALID_UBOOT" ] ; then
@@ -285,8 +303,7 @@ Additional/Optional options:
     this help
 
 --uboot <dev board>
-    beagle - <Bx, C2, C3>
-    beagle_c4 - <C4: force 720Mhz>
+    beagle - <Bx, C2/C3/C4>
 
 --rootfs <fs_type>
     ext2
@@ -360,6 +377,8 @@ done
 if [ ! "${MMC}" ];then
     usage
 fi
+
+ detect_software
 
 if [ "$DO_UBOOT" ];then
  dl_xload_uboot
