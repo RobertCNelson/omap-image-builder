@@ -1,0 +1,154 @@
+=== modified file 'rootstock'
+--- rootstock	2010-05-20 00:30:43 +0000
++++ rootstock	2010-05-20 00:34:14 +0000
+@@ -186,18 +186,26 @@
+ create_raw_image()
+ {
+     [ $QUIET ] || echo "I: Creating temporary Image"
+-    LANG=C qemu-img create $IMAGENAME $IMAGESIZE >$LOG 2>&1
+-    LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
+-    VOLID=$(blkid -o value $IMAGENAME|head -1)
++    if [ "$IS_NATIVE" ]; then
++        IMAGENAME="${BUILDDIR}/armel/"
++        mkdir -p ${IMAGENAME}
++        MOUNTPOINT=${IMAGENAME}
++    else
++        LANG=C qemu-img create $IMAGENAME $IMAGESIZE >$LOG 2>&1
++        LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
++        VOLID=$(blkid -o value $IMAGENAME|head -1)
++    fi
+ }
+ 
+ mount_image()
+ {
++if [ ! "$IS_NATIVE" ]; then
+     [ $QUIET ] || echo "I: Mounting temporary Image"
+     if [ ! -d $MOUNTPOINT ];then
+         mkdir -p $MOUNTPOINT >>$LOG 2>&1
+     fi
+     mount -o loop $IMAGENAME $MOUNTPOINT >>$LOG 2>&1
++fi
+ }
+ 
+ run_first_stage()
+@@ -278,6 +286,18 @@
+     [ $QUIET ] || echo "I: First stage install done"
+ }
+ 
++run_arm_chroot()
++{
++    [ $QUIET ] || echo "I: Using Native ARM Chroot"
++    chroot ${MOUNTPOINT} /bin/installer
++    sync
++    sync
++    umount -l ${MOUNTPOINT}/dev/pts
++    umount -l ${MOUNTPOINT}/proc
++    umount -l ${MOUNTPOINT}/sys
++    [ $QUIET ] || echo "I: Chroot done"
++}
++
+ run_vm()
+ {
+     # get kernel
+@@ -545,12 +565,29 @@
+ CACHEDIR="/var/cache/rootstock/archives"
+ EXRA_MIRROR_CMD=""
+ 
++ARCH=$(uname -m)
++unset IS_NATIVE
++
+ # we need root
+ if [ $(id -u) != 0 ];then
+     echo "must be run as root"
+     exit 2
+ fi
+ 
++if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
++    echo "Building on Native ARM"
++    IS_NATIVE=1
++    if [ "$ARCH" = "armv5tel" ];then
++
++    if [ "$DIST" = "karmic"] || [ "$DIST" = "lucid" ];then
++      echo "only jaunty is supported for armv5"
++      exit 1
++    fi
++
++    fi
++fi
++
++if [ ! "$IS_NATIVE" ];then
+ if [ ! $(which qemu-system-arm) ];then
+     echo "qemu not installed, please use:"
+     echo "sudo apt-get install qemu"
+@@ -558,6 +595,7 @@
+     echo "to install the qemu package !"
+     exit 1
+ fi
++fi
+ 
+ if [ ! $(which debootstrap) ];then
+     echo "debootstrap not installed, please use:"
+@@ -787,6 +825,8 @@
+ 
+ echo "${FQDN}" >$MOUNTPOINT/etc/hostname
+ 
++touch $MOUNTPOINT/etc/is_native
++
+ if [ "$KERNEL_IMAGE" ];then
+     setup_kernel_image
+ fi
+@@ -823,9 +863,13 @@
+ echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
+ ${EXRA_MIRROR_CMD}
+ 
+-ifconfig lo up
+-ifconfig eth0 up
+-dhclient eth0
++if [ -e /etc/is_native ]; then
++    echo "Networking already setup"
++else
++    ifconfig lo up
++    ifconfig eth0 up
++    dhclient eth0
++fi
+ 
+ locale-gen --no-purge en_GB.UTF-8 || true
+ locale-gen --no-purge ${NEWLOCALE} || true
+@@ -872,9 +916,13 @@
+     rm -f /rootstock-user-script
+ fi
+ 
+-mount -n -o remount,ro -t ext3 /dev/sda / || true
+-
+-rm /bin/installer && reboot -fp
++if [ -e /etc/is_native ]; then
++    rm /bin/installer
++    rm /etc/is_native
++else
++    mount -n -o remount,ro -t ext3 /dev/sda / || true
++    rm /bin/installer && reboot -fp
++fi
+ 
+ EOF
+ 
+@@ -894,11 +942,17 @@
+ mv $BUILDDIR/installer $MOUNTPOINT/bin/ >>$LOG 2>&1
+ chmod +x $MOUNTPOINT/bin/installer >>$LOG 2>&1
+ 
++if [ ! "$IS_NATIVE" ];then
+ # make sure we're not mounted
+ umount $MOUNTPOINT >>$LOG 2>&1
++fi
+ 
+-# run vm for second stage
+-run_vm
++if [ "$IS_NATIVE" ];then
++    run_arm_chroot
++else
++    # run vm for second stage
++    run_vm
++fi
+ 
+ # cache packages on host machine
+ if [ "$COPY_PACKAGE_CACHE" ];then
+

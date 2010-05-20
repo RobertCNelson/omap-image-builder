@@ -17,6 +17,9 @@ exit 0
 
 FK
 
+rm -f /tmp/*.deb
+rm -rfd /usr/src/linux-headers*
+
 cat > /etc/X11/xorg.conf <<XORG
 
 Section "Monitor"

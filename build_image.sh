@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 SYST=$(cat /etc/hostname)
+ARCH=$(uname -m)
 
 #KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
 KARMIC_RELEASE="ubuntu-9.10.2"
@@ -64,6 +65,11 @@ if [ $SYST == "lvrm" ]; then
 	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
 fi
 
+if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
+	MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
+fi
+
 }
 
 function dl_rootstock {
@@ -76,16 +82,12 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	patch -p0 < ${DIR}/patches/02-rootstock-remove-bashism.diff
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
+	patch -p0 < ${DIR}/patches/native-arm.diff
 #nasty hack to use /dev/sda1
-if [ $SYST == "lvrm" ]; then
-	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
-        FORCE_SEC="--force-sec-hd /dev/sda1"
-fi
-#	patch -p0 < ${DIR}/patches/06-debian-hacks.diff
-	patch -p0 < ${DIR}/patches/07-monitor-installer.diff
-	patch -p0 < ${DIR}/patches/force-alignment.diff
-#	bzr commit -m 'temp'
-#	patch -p0 < ${DIR}/patches/04-apt-dpkg-dbgsym-hack.diff
+#if [ $SYST == "lvrm" ]; then
+#	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
+#        FORCE_SEC="--force-sec-hd /dev/sda1"
+#fi
 #	bzr commit -m 'temp'
 #exit
 	cd ${DIR}/deploy/
@@ -112,7 +114,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
+	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
 	--seed ${UBOOT}${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
@@ -140,7 +142,7 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
+	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
 	--seed ${UBOOT}${EXTRA}ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
@@ -188,7 +190,7 @@ compression
 function lucid_release {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.3-l1/linux-image-2.6.33.3-l1_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.4-l3/linux-image-2.6.33.4-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -202,7 +204,7 @@ compression
 function lucid_xfce4 {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.3-l1/linux-image-2.6.33.3-l1_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.4-l3/linux-image-2.6.33.4-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -215,7 +217,7 @@ compression
 function squeeze_release {
 
 DIST=squeeze
-KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.3-x1/linux-image-2.6.33.3-x1_1.0squeeze_armel.deb"
+KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.4-x3/linux-image-2.6.33.4-x3_1.0squeeze_armel.deb"
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
@@ -233,7 +235,7 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_release
+lucid_xfce4
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
