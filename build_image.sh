@@ -157,7 +157,6 @@ function compression {
 	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/tools/boot-c4.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/flash.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
@@ -208,7 +207,7 @@ DIST=lucid
 KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.4-l3/linux-image-2.6.33.4-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
+#MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
 gui_armel
 compression
