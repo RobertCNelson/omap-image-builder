@@ -6,6 +6,7 @@ linux-firmware
 wireless-tools
 usbutils
 xserver-xorg-video-omap3
+xubuntu-artwork
 chromium-browser
 xfce4
 xfce4-datetime-plugin
@@ -62,7 +63,7 @@ xorg-build-macros
 libdrm-dev
 libdvdread-dev
 ffmpeg
-gdm
+xdm
 git-core
 subversion
 debhelper
