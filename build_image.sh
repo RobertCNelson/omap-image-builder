@@ -122,6 +122,20 @@ function xfce4_armel {
 	--kernel-image ${KERNEL}
 }
 
+function xubuntu_armel {
+
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
+
+	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
+	--seed ${UBOOT}${EXTRA}xubuntu-desktop,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
+	--components "${COMPONENTS}" \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--kernel-image ${KERNEL}
+}
+
 function gui_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
@@ -213,7 +227,7 @@ EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 #MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
-xfce4_armel
+xubuntu_armel
 compression
 
 }
