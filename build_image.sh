@@ -115,7 +115,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard --imagesize 2G \
+	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
 	--seed ${UBOOT}${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
@@ -194,7 +194,7 @@ compression
 function lucid_release {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.4-l3/linux-image-2.6.33.4-l3_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.5-l3/linux-image-2.6.33.5-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -208,12 +208,12 @@ compression
 function lucid_xfce4 {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.4-l3/linux-image-2.6.33.4-l3_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.5-l3/linux-image-2.6.33.5-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 #MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
-gui_armel
+xfce4_armel
 compression
 
 }
@@ -221,7 +221,7 @@ compression
 function squeeze_release {
 
 DIST=squeeze
-KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.4-x3/linux-image-2.6.33.4-x3_1.0squeeze_armel.deb"
+KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.5-x3/linux-image-2.6.33.5-x3_1.0squeeze_armel.deb"
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
