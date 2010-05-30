@@ -224,10 +224,11 @@ function lucid_xfce4 {
 DIST=lucid
 KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.5-l3/linux-image-2.6.33.5-l3_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 #MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
-xubuntu_armel
+gui_armel
 compression
 
 }
