@@ -21,11 +21,12 @@ LUCID_RELEASE="ubuntu-10.04"
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
 #alpha-1 : June 3rd
+MAVERICK_ALPHA="ubuntu-maverick-alpha1"
 #alpha-2 : July 1st
 #alpha-3 : August 5th
 #alpha-4 : September 2nd
 #beta : September 23rd
-#10.10 : October 28th
+#10.10 : October 10th
 
 SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
 
@@ -208,7 +209,7 @@ compression
 function lucid_release {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.5-l3/linux-image-2.6.33.5-l3_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l1/linux-image-2.6.34-l1_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -222,7 +223,7 @@ compression
 function lucid_xfce4 {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.33.5-l3/linux-image-2.6.33.5-l3_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l1/linux-image-2.6.34-l1_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -233,10 +234,24 @@ compression
 
 }
 
+function maverick_release {
+
+DIST=maverick
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34-l1/linux-image-2.6.34-l1_1.0maverick_armel.deb"
+EXTRA="linux-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$MAVERICK_ALPHA$MINIMAL
+minimal_armel
+compression
+
+}
+
 function squeeze_release {
 
 DIST=squeeze
-KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.33.5-x3/linux-image-2.6.33.5-x3_1.0squeeze_armel.deb"
+KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.34-x1/linux-image-2.6.34-x1_1.0squeeze_armel.deb"
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
@@ -251,10 +266,10 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-set_mirror
+#set_mirror
 dl_rootstock
 
-lucid_xfce4
+maverick_release
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
