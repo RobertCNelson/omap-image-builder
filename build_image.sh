@@ -241,7 +241,7 @@ KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l2/linux-image-2.6.34-l2_1.0lucid_ar
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
+#MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
 toucbook_armel
 compression
