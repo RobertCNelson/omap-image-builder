@@ -151,6 +151,20 @@ function gui_armel {
 	--kernel-image ${KERNEL}
 }
 
+function toucbook_armel {
+
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
+
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
+	--seed `cat ${DIR}/tools/touchbook | tr '\n' ','` ${MIRROR} \
+	--components "${COMPONENTS}" \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--kernel-image ${KERNEL}
+}
+
 function netbook_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
@@ -223,13 +237,13 @@ compression
 function lucid_xfce4 {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l1/linux-image-2.6.34-l1_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l2/linux-image-2.6.34-l2_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
-#MIRROR=$MIRROR_UBU
+MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE$XFCE
-gui_armel
+toucbook_armel
 compression
 
 }
@@ -269,7 +283,7 @@ mkdir -p ${DIR}/deploy
 #set_mirror
 dl_rootstock
 
-maverick_release
+lucid_xfce4
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
