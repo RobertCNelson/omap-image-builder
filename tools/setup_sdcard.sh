@@ -214,14 +214,14 @@ function populate_rootfs {
 
 function check_mmc {
  DISK_NAME="Disk|Platte"
- FDISK=$(sudo fdisk -l | grep "[${DISK_NAME}] ${MMC}" | awk '{print $2}')
+ FDISK=$(sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] ${MMC}" | awk '{print $2}')
 
  if test "-$FDISK-" = "-$MMC:-"
  then
   echo ""
   echo "I see..."
   echo "sudo fdisk -l:"
-  sudo fdisk -l | grep "[${DISK_NAME}] /dev/" --color=never
+  sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] /dev/" --color=never
   echo ""
   echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never
@@ -234,7 +234,7 @@ function check_mmc {
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
   echo ""
   echo "sudo fdisk -l:"
-  sudo fdisk -l | grep "[${DISK_NAME}] /dev/" --color=never
+  sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] /dev/" --color=never
   echo ""
   echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never
@@ -282,6 +282,12 @@ function check_fs_type {
 
  if test "-$FS_TYPE-" = "-btrfs-"
  then
+
+  if [ ! $(which mkfs.btrfs) ];then
+   echo "Missing btrfs tools"
+   sudo aptitude install btrfs-tools
+  fi
+
  RFS=btrfs
  unset IN_VALID_FS
  fi

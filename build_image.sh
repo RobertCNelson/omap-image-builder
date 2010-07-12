@@ -35,7 +35,7 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-UBOOT="uboot-envtools,uboot-mkimage,"
+MINIMAL_APT="uboot-envtools,uboot-mkimage,wget,nano,wireless-tools,usbutils,btrfs-tools"
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
@@ -103,7 +103,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
-	--seed ${UBOOT}${EXTRA}wget,nano,wireless-tools,usbutils ${MIRROR} \
+	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
@@ -117,7 +117,7 @@ function xfce4_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
-	--seed ${UBOOT}${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
+	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -131,7 +131,7 @@ function xubuntu_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 2G \
-	--seed ${UBOOT}${EXTRA}xubuntu-desktop,wget,nano,wireless-tools,usbutils,xserver-xorg-video-omap3 ${MIRROR} \
+	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -173,7 +173,7 @@ function netbook_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
-	--seed ${UBOOT}${EXTRA}ubuntu-netbook ${MIRROR} \
+	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
