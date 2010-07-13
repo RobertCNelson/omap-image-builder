@@ -23,6 +23,7 @@ LUCID_RELEASE="ubuntu-10.04"
 #alpha-1 : June 3rd
 MAVERICK_ALPHA="ubuntu-maverick-alpha1"
 #alpha-2 : July 1st
+MAVERICK_ALPHA="ubuntu-maverick-alpha2"
 #alpha-3 : August 5th
 #alpha-4 : September 2nd
 #beta : September 23rd
@@ -251,12 +252,12 @@ compression
 function maverick_release {
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34-l1/linux-image-2.6.34-l1_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc4-dl5/linux-image-2.6.35-rc4-dl5_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_ALPHA$MINIMAL
+BUILD=$MAVERICK_ALPHA2$MINIMAL
 minimal_armel
 compression
 
@@ -280,10 +281,10 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-#set_mirror
+set_mirror
 dl_rootstock
 
-lucid_xfce4
+maverick_release 
 
 #DIST=lucid
 #KERNEL=$LUCID_KERNEL
