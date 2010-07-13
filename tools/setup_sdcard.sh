@@ -70,6 +70,30 @@ function dl_xload_uboot {
  UBOOT=${UBOOT##*/}
 
  fi
+
+ if test "-$SYSTEM-" = "-fairlane-"
+ then
+
+ MIRROR="http://rcn-ee.net/deb/"
+
+ echo ""
+ echo "Downloading X-loader and Uboot"
+ echo ""
+
+ rm -f ${DIR}/deploy/bootloader || true
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+
+ MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:3 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:3 UBOOT" | awk '{print $3}')
+
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+
+ MLO=${MLO##*/}
+ UBOOT=${UBOOT##*/}
+
+ fi
+
 }
 
 function cleanup_sd {
@@ -250,6 +274,13 @@ function check_uboot_type {
  DO_UBOOT=1
  fi
 
+ if test "-$UBOOT_TYPE-" = "-fairlane-"
+ then
+ SYSTEM=fairlane
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ fi
+
  if [ "$IN_VALID_UBOOT" ] ; then
    usage
  fi
@@ -307,6 +338,7 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4>
+    fairlane - <A>
 
 --rootfs <fs_type>
     ext2
