@@ -23,7 +23,7 @@ LUCID_RELEASE="ubuntu-10.04"
 #alpha-1 : June 3rd
 MAVERICK_ALPHA="ubuntu-maverick-alpha1"
 #alpha-2 : July 1st
-MAVERICK_ALPHA="ubuntu-maverick-alpha2"
+MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
 #alpha-3 : August 5th
 #alpha-4 : September 2nd
 #beta : September 23rd
