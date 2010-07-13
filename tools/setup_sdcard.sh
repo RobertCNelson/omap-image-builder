@@ -61,15 +61,12 @@ function dl_xload_uboot {
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
 
  MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
- XLOAD=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 XLOAD" | awk '{print $3}')
  UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${XLOAD}
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
 
  MLO=${MLO##*/}
- XLOAD=${XLOAD##*/}
  UBOOT=${UBOOT##*/}
 
  fi
@@ -116,7 +113,6 @@ sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
 
 if [ "$DO_UBOOT" ];then
  sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
- sudo cp -v ${DIR}/deploy/${XLOAD} ${DIR}/disk/x-load.bin.ift
  sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
 fi
 
