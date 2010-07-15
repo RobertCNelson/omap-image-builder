@@ -82,17 +82,14 @@ function dl_rootstock {
 
 	echo "Applying local patches"
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
-	patch -p0 < ${DIR}/patches/02-rootstock-remove-bashism.diff
+	bzr commit -m 'tar output'
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
-	patch -p0 < ${DIR}/patches/native-arm.diff
-	patch -p0 < ${DIR}/patches/native-arm-fix.diff
-#nasty hack to use /dev/sda1
-#if [ $SYST == "lvrm" ]; then
-#	patch -p0 < ${DIR}/patches/05-use-real-hardware.diff
-#        FORCE_SEC="--force-sec-hd /dev/sda1"
-#fi
-#	bzr commit -m 'temp'
-#exit
+	bzr commit -m 'source updates'
+
+#disable till resynced to new rootless patches
+#	patch -p0 < ${DIR}/patches/native-arm.diff
+#	patch -p0 < ${DIR}/patches/native-arm-fix.diff
+
 	cd ${DIR}/deploy/
 }
 
