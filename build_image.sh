@@ -85,10 +85,8 @@ function dl_rootstock {
 	bzr commit -m 'tar output'
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
-
-#disable till resynced to new rootless patches
-#	patch -p0 < ${DIR}/patches/native-arm.diff
-#	patch -p0 < ${DIR}/patches/native-arm-fix.diff
+	patch -p0 < ${DIR}/patches/native-arm.diff
+	bzr commit -m 'native arm'
 
 	cd ${DIR}/deploy/
 }
@@ -249,7 +247,7 @@ compression
 function maverick_release {
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc4-dl5/linux-image-2.6.35-rc4-dl5_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc5-dl6/linux-image-2.6.35-rc5-dl6_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS

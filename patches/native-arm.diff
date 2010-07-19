@@ -1,23 +1,26 @@
 === modified file 'rootstock'
---- rootstock	2010-05-20 00:30:43 +0000
-+++ rootstock	2010-05-20 00:34:14 +0000
-@@ -186,18 +186,26 @@
- create_raw_image()
+--- rootstock	2010-07-19 15:59:22 +0000
++++ rootstock	2010-07-19 16:16:22 +0000
+@@ -228,9 +228,15 @@
+ 
+ create_qemu_image()
  {
-     [ $QUIET ] || echo "I: Creating temporary Image"
--    LANG=C qemu-img create $IMAGENAME $IMAGESIZE >$LOG 2>&1
+-    [ $QUIET ] || echo "I: Creating temporary qemu Image to be used as rootfs"
+-    LANG=C qemu-img create $IMAGENAME ${IMAGESIZE}k >$LOG 2>&1
 -    LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
--    VOLID=$(blkid -o value $IMAGENAME|head -1)
 +    if [ "$IS_NATIVE" ]; then
 +        IMAGENAME="${BUILDDIR}/armel/"
 +        mkdir -p ${IMAGENAME}
 +        MOUNTPOINT=${IMAGENAME}
 +    else
-+        LANG=C qemu-img create $IMAGENAME $IMAGESIZE >$LOG 2>&1
-+        LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
-+        VOLID=$(blkid -o value $IMAGENAME|head -1)
++	    [ $QUIET ] || echo "I: Creating temporary qemu Image to be used as rootfs"
++    	LANG=C qemu-img create $IMAGENAME ${IMAGESIZE}k >$LOG 2>&1
++	    LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
 +    fi
  }
+ 
+ create_rootfs_image()
+@@ -245,6 +251,7 @@
  
  mount_image()
  {
@@ -25,13 +28,15 @@
      [ $QUIET ] || echo "I: Mounting temporary Image"
      if [ ! -d $MOUNTPOINT ];then
          mkdir -p $MOUNTPOINT >>$LOG 2>&1
+@@ -254,6 +261,7 @@
+     else
+         mount -o loop $IMAGENAME $MOUNTPOINT >>$LOG 2>&1
      fi
-     mount -o loop $IMAGENAME $MOUNTPOINT >>$LOG 2>&1
 +fi
  }
  
- run_first_stage()
-@@ -278,6 +286,18 @@
+ umount_image()
+@@ -356,6 +364,18 @@
      [ $QUIET ] || echo "I: First stage install done"
  }
  
@@ -50,16 +55,16 @@
  run_vm()
  {
      # get kernel
-@@ -545,12 +565,29 @@
- CACHEDIR="/var/cache/rootstock/archives"
- EXRA_MIRROR_CMD=""
+@@ -817,12 +837,29 @@
+     usage
+ fi
  
 +ARCH=$(uname -m)
 +unset IS_NATIVE
 +
  # we need root
- if [ $(id -u) != 0 ];then
-     echo "must be run as root"
+ if [ $(id -u) != 0 ] && [ ! "$NOROOT" ];then
+     echo "You should run $PROGRAM as root unless you explicitly request it by giving --no-root"
      exit 2
  fi
  
@@ -80,7 +85,7 @@
  if [ ! $(which qemu-system-arm) ];then
      echo "qemu not installed, please use:"
      echo "sudo apt-get install qemu"
-@@ -558,6 +595,7 @@
+@@ -830,6 +867,7 @@
      echo "to install the qemu package !"
      exit 1
  fi
@@ -88,17 +93,19 @@
  
  if [ ! $(which debootstrap) ];then
      echo "debootstrap not installed, please use:"
-@@ -787,6 +825,8 @@
+@@ -933,6 +971,10 @@
  
- echo "${FQDN}" >$MOUNTPOINT/etc/hostname
+ echo "${FQDN}" >$ROOTFS/etc/hostname
  
-+touch $MOUNTPOINT/etc/is_native
++if [ "$IS_NATIVE" ];then
++    touch $MOUNTPOINT/etc/is_native
++fi
 +
  if [ "$KERNEL_IMAGE" ];then
      setup_kernel_image
  fi
-@@ -823,9 +863,13 @@
- echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
+@@ -981,9 +1023,13 @@
+ #fi
  ${EXRA_MIRROR_CMD}
  
 -ifconfig lo up
@@ -114,7 +121,7 @@
  
  locale-gen --no-purge en_GB.UTF-8 || true
  locale-gen --no-purge ${NEWLOCALE} || true
-@@ -872,9 +916,13 @@
+@@ -1030,9 +1076,13 @@
      rm -f /rootstock-user-script
  fi
  
@@ -131,13 +138,17 @@
  
  EOF
  
-@@ -894,11 +942,17 @@
- mv $BUILDDIR/installer $MOUNTPOINT/bin/ >>$LOG 2>&1
- chmod +x $MOUNTPOINT/bin/installer >>$LOG 2>&1
+@@ -1052,15 +1102,21 @@
+ mv $BUILDDIR/installer $ROOTFS/bin/ >>$LOG 2>&1
+ chmod +x $ROOTFS/bin/installer >>$LOG 2>&1
  
 +if [ ! "$IS_NATIVE" ];then
- # make sure we're not mounted
- umount $MOUNTPOINT >>$LOG 2>&1
+ if [ "$NOROOT" ];then
+     # if user, creates the ext3 fs for qemu, based on the rootfs
+     create_rootfs_image
+ else
+     umount_image
+ fi
 +fi
  
 -# run vm for second stage
