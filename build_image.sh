@@ -88,6 +88,8 @@ function dl_rootstock {
 	bzr commit -m 'source updates'
 	patch -p0 < ${DIR}/patches/native-arm.diff
 	bzr commit -m 'native arm'
+	patch -p0 < ${DIR}/patches/native-arm-recover-hostname.diff
+	bzr commit -m 'native arm recover hostname'
 
 	cd ${DIR}/deploy/
 }
