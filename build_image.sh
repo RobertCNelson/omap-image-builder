@@ -16,7 +16,8 @@ LUCID_BETA2="ubuntu-lucid-beta2.1"
 LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
 LUCID_RELEASE="ubuntu-10.04"
-#10.04.1 : July 29th
+#10.04.1 : August 12th
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
 
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
@@ -63,13 +64,13 @@ if [ $SYST == "voodoo-e6400" ]; then
 fi
 
 if [ $SYST == "lvrm" ]; then
-	MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
+	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
 fi
 
 if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
-	MIRROR_UBU="--mirror http://192.168.1.27:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.1.27:3142/ftp.us.debian.org/debian/"
+	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
+	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
 fi
 
 }
@@ -155,7 +156,7 @@ function toucbook_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
-	--seed `cat ${DIR}/tools/touchbook | tr '\n' ','` ${MIRROR} \
+	--seed ${MINIMAL_APT},${EXTRA}$(cat ${DIR}/tools/touchbook | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -219,12 +220,12 @@ compression
 function lucid_release {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l1/linux-image-2.6.34-l1_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.1-l2/linux-image-2.6.34.1-l2_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RELEASE$MINIMAL
+BUILD=$LUCID_RELEASE_10_04_1$MINIMAL
 minimal_armel
 compression
 
@@ -233,12 +234,12 @@ compression
 function lucid_xfce4 {
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34-l2/linux-image-2.6.34-l2_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.1-l2/linux-image-2.6.34.1-l2_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
-USER_PASS="--login ubuntu --password temppwd"
+#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
-#MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RELEASE$XFCE
+MIRROR=$MIRROR_UBU
+BUILD=$LUCID_RELEASE_10_04_1$XFCE
 toucbook_armel
 compression
 
@@ -279,19 +280,7 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-maverick_release 
+lucid_release
+lucid_xfce4
 
-#DIST=lucid
-#KERNEL=$LUCID_KERNEL
-#COMPONENTS=$UBUNTU_COMPONENTS
-#BUILD=$LUCID_BETA2$GUI
-#gui_armel
-#compression
-
-#DIST=lucid
-#KERNEL=$LUCID_KERNEL
-#COMPONENTS=$UBUNTU_COMPONENTS
-#BUILD=$LUCID_BETA2$NET
-#netbook_armel
-#compression
 
