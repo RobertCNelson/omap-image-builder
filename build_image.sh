@@ -17,7 +17,7 @@ LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 12th
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1-pre-rc1"
 
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
@@ -279,10 +279,10 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-set_mirror
+#set_mirror
 dl_rootstock
 
 lucid_release
-lucid_xfce4
+#lucid_xfce4
 
 
