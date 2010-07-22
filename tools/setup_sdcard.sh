@@ -3,6 +3,8 @@
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
 unset MMC
+unset NO_NAND
+unset DO_NAND
 
 #Defaults
 RFS=ext3
@@ -49,6 +51,39 @@ function dl_xload_uboot {
 
  if test "-$SYSTEM-" = "-beagle-"
  then
+
+cat > /tmp/boot.cmd <<beagle_boot_cmd
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=12M omapfb.mode=dvi:1280x720MR-16@60 fixrtc buddy=\${buddy} mpurate=\${mpurate}
+boot
+
+beagle_boot_cmd
+
+if [ ! "${NO_NAND}" ];then
+
+cat > /tmp/user.cmd <<beagle_user_cmd
+echo "Starting NAND UPGRADE, do not REMOVE SD CARD or POWER till Complete"
+fatload mmc 0:1 0x80200000 MLO
+nandecc hw
+nand erase 0 80000
+nand write 0x80200000 0 20000
+nand write 0x80200000 20000 20000
+nand write 0x80200000 40000 20000
+nand write 0x80200000 60000 20000
+
+fatload mmc 0:1 0x80300000 u-boot.bin
+nandecc sw
+nand erase 80000 160000
+nand write 0x80300000 80000 160000
+nand erase 260000 20000
+echo "UPGRADE Complete, REMOVE SD CARD and DELETE this boot.scr"
+exit
+
+beagle_user_cmd
+
+DO_NAND=1
+
+fi
 
  #beagle
  MIRROR="http://rcn-ee.net/deb/"
@@ -172,8 +207,14 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
-
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "X-loader Nand" -d ${DIR}/flash.cmd ${DIR}/disk/flash.scr
+
+#Disabled till August 12th.. (10.04.1)
+# sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
+#if [ "${DO_NAND}" ];then
+# sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
+#fi
+
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
 
@@ -276,6 +317,14 @@ function check_uboot_type {
  DO_UBOOT=1
  fi
 
+ if test "-$UBOOT_TYPE-" = "-beagle_xm-"
+ then
+ SYSTEM=beagle
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ NO_NAND=1
+ fi
+
  if test "-$UBOOT_TYPE-" = "-fairlane-"
  then
  SYSTEM=fairlane
@@ -340,6 +389,7 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4>
+    beagle_xm
     fairlane - <A>
 
 --rootfs <fs_type>
