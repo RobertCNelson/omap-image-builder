@@ -177,13 +177,15 @@ function populate_boot {
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
 
- echo "#!/bin/sh" > /tmp/rebuild_uinitrd.sh
- echo "" >> /tmp/rebuild_uinitrd.sh
- echo "DIR=\$PWD" >> /tmp/rebuild_uinitrd.sh
- echo "sudo mount -o remount,rw \${DIR}" >> /tmp/rebuild_uinitrd.sh
- echo "sudo update-initramfs -u -k \$(uname -r)" >> /tmp/rebuild_uinitrd.sh
- echo "sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) \${DIR}/uInitrd" >> /tmp/rebuild_uinitrd.sh
- echo "" >> /tmp/rebuild_uinitrd.sh
+cat > /tmp/rebuild_uinitrd.sh <<rebuild_uinitrd
+#!/bin/sh
+
+DIR=\$PWD
+sudo mount -o remount,rw \${DIR}
+sudo update-initramfs -u -k \$(uname -r)
+sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) \${DIR}/uInitrd
+
+rebuild_uinitrd
 
  sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/rebuild_uinitrd.sh
  sudo chmod +x ${DIR}/disk/rebuild_uinitrd.sh
