@@ -279,10 +279,10 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-#set_mirror
+set_mirror
 dl_rootstock
 
 lucid_release
-#lucid_xfce4
+lucid_xfce4
 
 
