@@ -44,6 +44,15 @@ DEBIAN_COMPONENTS="main contrib non-free"
 
 DIR=$PWD
 
+function reset_vars {
+
+unset DIST
+unset KERNEL
+unset EXTRA
+unset USER_PASS
+
+}
+
 function set_mirror {
 
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
@@ -208,6 +217,8 @@ fi
 
 function karmic_release {
 
+reset_vars
+
 DIST=karmic
 KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0karmic_armel.deb"
 EXTRA="linux-firmware,"
@@ -220,6 +231,8 @@ compression
 }
 
 function lucid_release {
+
+reset_vars
 
 DIST=lucid
 KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.1-l2/linux-image-2.6.34.1-l2_1.0lucid_armel.deb"
@@ -235,6 +248,8 @@ compression
 
 function lucid_xfce4 {
 
+reset_vars
+
 DIST=lucid
 KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.1-l2/linux-image-2.6.34.1-l2_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
@@ -249,6 +264,8 @@ compression
 
 function maverick_release {
 
+reset_vars
+
 DIST=maverick
 KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc5-dl6/linux-image-2.6.35-rc5-dl6_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
@@ -262,6 +279,8 @@ compression
 }
 
 function squeeze_release {
+
+reset_vars
 
 DIST=squeeze
 KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.34-x1/linux-image-2.6.34-x1_1.0squeeze_armel.deb"
