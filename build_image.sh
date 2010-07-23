@@ -153,7 +153,7 @@ function gui_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn beagleboard ${USER_PASS} --imagesize 3G \
-	--seed `cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ','` ${MIRROR} \
+	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
@@ -257,7 +257,7 @@ EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE_10_04_1$XFCE
-toucbook_armel
+gui_armel
 compression
 
 }
