@@ -1,34 +1,31 @@
 === modified file 'rootstock'
---- rootstock	2010-07-19 15:59:22 +0000
-+++ rootstock	2010-07-19 16:16:22 +0000
-@@ -228,9 +228,15 @@
+--- rootstock	2010-07-27 13:50:46 +0000
++++ rootstock	2010-07-27 13:59:34 +0000
+@@ -233,9 +233,15 @@
  
  create_qemu_image()
  {
--    [ $QUIET ] || echo "I: Creating temporary qemu Image to be used as rootfs"
--    LANG=C qemu-img create $IMAGENAME ${IMAGESIZE}k >$LOG 2>&1
--    LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
 +    if [ "$IS_NATIVE" ]; then
 +        IMAGENAME="${BUILDDIR}/armel/"
 +        mkdir -p ${IMAGENAME}
 +        MOUNTPOINT=${IMAGENAME}
 +    else
-+	    [ $QUIET ] || echo "I: Creating temporary qemu Image to be used as rootfs"
-+    	LANG=C qemu-img create $IMAGENAME ${IMAGESIZE}k >$LOG 2>&1
-+	    LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
-+    fi
+     log "I: Creating temporary qemu Image to be used as rootfs"
+     LANG=C qemu-img create $IMAGENAME ${IMAGESIZE}k >$LOG 2>&1
+     LANG=C mkfs.ext3 -F $IMAGENAME >>$LOG 2>&1
++	fi
  }
  
  create_rootfs_image()
-@@ -245,6 +251,7 @@
+@@ -253,6 +259,7 @@
  
  mount_image()
  {
 +if [ ! "$IS_NATIVE" ]; then
-     [ $QUIET ] || echo "I: Mounting temporary Image"
+     log "I: Mounting temporary Image"
      if [ ! -d $MOUNTPOINT ];then
          mkdir -p $MOUNTPOINT >>$LOG 2>&1
-@@ -254,6 +261,7 @@
+@@ -262,6 +269,7 @@
      else
          mount -o loop $IMAGENAME $MOUNTPOINT >>$LOG 2>&1
      fi
@@ -36,26 +33,30 @@
  }
  
  umount_image()
-@@ -356,6 +364,18 @@
-     [ $QUIET ] || echo "I: First stage install done"
+@@ -355,6 +363,22 @@
+     log "I: First stage install done"
  }
  
 +run_arm_chroot()
 +{
-+    [ $QUIET ] || echo "I: Using Native ARM Chroot"
++    log "I: Using Native ARM Chroot"
 +    chroot ${MOUNTPOINT} /bin/installer
 +    sync
 +    sync
++
++    # recover Host's hostname after chroot messes with it
++    hostname $(cat /etc/hostname)
++
 +    umount -l ${MOUNTPOINT}/dev/pts
 +    umount -l ${MOUNTPOINT}/proc
 +    umount -l ${MOUNTPOINT}/sys
-+    [ $QUIET ] || echo "I: Chroot done"
++    log "I: Chroot done"
 +}
 +
  run_vm()
  {
      # get kernel
-@@ -817,12 +837,29 @@
+@@ -827,6 +851,9 @@
      usage
  fi
  
@@ -65,7 +66,8 @@
  # we need root
  if [ $(id -u) != 0 ] && [ ! "$NOROOT" ];then
      echo "You should run $PROGRAM as root unless you explicitly request it by giving --no-root"
-     exit 2
+@@ -843,6 +870,20 @@
+     clean_package_cache
  fi
  
 +if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
@@ -85,7 +87,7 @@
  if [ ! $(which qemu-system-arm) ];then
      echo "qemu not installed, please use:"
      echo "sudo apt-get install qemu"
-@@ -830,6 +867,7 @@
+@@ -850,6 +891,7 @@
      echo "to install the qemu package !"
      exit 1
  fi
@@ -93,7 +95,7 @@
  
  if [ ! $(which debootstrap) ];then
      echo "debootstrap not installed, please use:"
-@@ -933,6 +971,10 @@
+@@ -924,6 +966,10 @@
  
  echo "${FQDN}" >$ROOTFS/etc/hostname
  
@@ -104,7 +106,7 @@
  if [ "$KERNEL_IMAGE" ];then
      setup_kernel_image
  fi
-@@ -981,9 +1023,13 @@
+@@ -972,9 +1018,13 @@
  #fi
  ${EXRA_MIRROR_CMD}
  
@@ -121,7 +123,7 @@
  
  locale-gen --no-purge en_GB.UTF-8 || true
  locale-gen --no-purge ${NEWLOCALE} || true
-@@ -1030,9 +1076,13 @@
+@@ -1041,9 +1091,13 @@
      rm -f /rootstock-user-script
  fi
  
@@ -138,7 +140,7 @@
  
  EOF
  
-@@ -1052,15 +1102,21 @@
+@@ -1063,15 +1117,21 @@
  mv $BUILDDIR/installer $ROOTFS/bin/ >>$LOG 2>&1
  chmod +x $ROOTFS/bin/installer >>$LOG 2>&1
  

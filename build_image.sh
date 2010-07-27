@@ -97,8 +97,6 @@ function dl_rootstock {
 	bzr commit -m 'source updates'
 	patch -p0 < ${DIR}/patches/native-arm.diff
 	bzr commit -m 'native arm'
-	patch -p0 < ${DIR}/patches/native-arm-recover-hostname.diff
-	bzr commit -m 'native arm recover hostname'
 
 	cd ${DIR}/deploy/
 }
@@ -267,13 +265,29 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc5-dl6/linux-image-2.6.35-rc5-dl6_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl11/linux-image-2.6.35-rc6-dl11_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_ALPHA2$MINIMAL
 minimal_armel
+compression
+
+}
+
+function maverick_xfce4 {
+
+reset_vars
+
+DIST=maverick
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl11/linux-image-2.6.35-rc6-dl11_1.0maverick_armel.deb"
+EXTRA="linux-firmware,"
+#USER_PASS="--login ubuntu --password temppwd"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$MAVERICK_ALPHA2$XFCE
+gui_armel
 compression
 
 }
@@ -301,7 +315,9 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_release
-lucid_xfce4
+#lucid_release
+#lucid_xfce4
+maverick_release
+#maverick_xfce4
 
 
