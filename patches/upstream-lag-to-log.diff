@@ -1,0 +1,13 @@
+=== modified file 'rootstock'
+--- rootstock	2010-07-27 02:04:33 +0000
++++ rootstock	2010-07-27 14:21:27 +0000
+@@ -473,7 +473,7 @@
+     test -d $ROOTFS/tmp/|| mkdir -p $ROOTFS/tmp/
+     cp $DIR/dl/$KERNEL_IMG  $ROOTFS/tmp
+ 
+-    lag "I: $KERNEL_IMG download complete"
++    log "I: $KERNEL_IMG download complete"
+     #Hack dpkg -i fails, no postinstall script is run anyways, so lets just extract it.
+     KERNEL_IMAGE_CMD="dpkg -x /tmp/$KERNEL_IMG /"
+ 
+

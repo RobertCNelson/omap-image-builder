@@ -91,6 +91,10 @@ function dl_rootstock {
 	cd ${DIR}/../project-rootstock
 
 	echo "Applying local patches"
+
+	patch -p0 < ${DIR}/patches/upstream-lag-to-log.diff
+	bzr commit -m 'lag to log upstream'
+
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	bzr commit -m 'tar output'
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
