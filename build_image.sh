@@ -96,8 +96,6 @@ function dl_rootstock {
 	bzr commit -m 'tar output'
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
-	patch -p0 < ${DIR}/patches/native-arm.diff
-	bzr commit -m 'native arm'
 
 	cd ${DIR}/deploy/
 }
@@ -268,7 +266,7 @@ reset_vars
 DIST=maverick
 KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl11/linux-image-2.6.35-rc6-dl11_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
-USER_PASS="--login ubuntu --password temppwd"
+#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_ALPHA2$MINIMAL
