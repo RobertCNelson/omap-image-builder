@@ -190,8 +190,8 @@ function compression {
 	cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/tools/flash.cmd ${DIR}/deploy/$BUILD
+#	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
+#	cp -v ${DIR}/tools/flash.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
 #	echo "Calculating MD5SUMS" 

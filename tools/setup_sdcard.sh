@@ -59,6 +59,19 @@ boot
 
 beagle_boot_cmd
 
+
+ if test "-$ADDON-" = "-pico-"
+ then
+
+cat > /tmp/boot.cmd <<beagle_pico_boot_cmd
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=12M omapfb.mode=dvi:800x600MR-16@60 fixrtc buddy=\${buddy} mpurate=\${mpurate}
+boot
+
+beagle_pico_boot_cmd
+
+ fi
+
 if [ ! "${NO_NAND}" ];then
 
 cat > /tmp/user.cmd <<beagle_user_cmd
@@ -163,7 +176,7 @@ echo ""
 echo "Formating Boot Partition"
 echo ""
 
-sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
+sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
 
 sudo rm -rfd ${DIR}/disk || true
 
@@ -194,7 +207,7 @@ ROOTFS
 echo ""
 echo "Formating ${RFS} Partition"
 echo ""
-sudo mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL}
+sudo mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL} &>> ${DIR}/sd.log
 
 }
 
@@ -206,14 +219,11 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${DIR}/boot.cmd ${DIR}/disk/boot.scr
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "X-loader Nand" -d ${DIR}/flash.cmd ${DIR}/disk/flash.scr
-
-#Disabled till August 12th.. (10.04.1)
-# sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
-#if [ "${DO_NAND}" ];then
-# sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
-#fi
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
+ sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
+if [ "${DO_NAND}" ];then
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
+fi
 
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
@@ -221,15 +231,42 @@ function populate_boot {
 cat > /tmp/rebuild_uinitrd.sh <<rebuild_uinitrd
 #!/bin/sh
 
-DIR=\$PWD
-sudo mount -o remount,rw \${DIR}
+cd /boot/uboot
+sudo mount -o remount,rw /boot/uboot
 sudo update-initramfs -u -k \$(uname -r)
-sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) \${DIR}/uInitrd
+sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
 
 rebuild_uinitrd
 
- sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/rebuild_uinitrd.sh
- sudo chmod +x ${DIR}/disk/rebuild_uinitrd.sh
+cat > /tmp/boot_scripts.sh <<rebuild_scripts
+#!/bin/sh
+
+cd /boot/uboot
+sudo mount -o remount,rw /boot/uboot
+sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
+
+rebuild_scripts
+
+cat > /tmp/fix_zippy2.sh <<fix_zippy2
+#!/bin/sh
+#based off a script from cwillu
+#make sure to have a jumper on JP1 (write protect)
+
+if sudo i2cdump -y 2 0x50 | grep "00: 00 01 00 01 01 00 00 00"; then
+    sudo i2cset -y 2 0x50 0x03 0x02
+fi
+
+fix_zippy2
+
+ sudo mkdir -p ${DIR}/disk/tools
+ sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/tools/rebuild_uinitrd.sh
+ sudo chmod +x ${DIR}/disk/tools/rebuild_uinitrd.sh
+
+ sudo cp -v /tmp/boot_scripts.sh ${DIR}/disk/tools/boot_scripts.sh
+ sudo chmod +x ${DIR}/disk/tools/boot_scripts.sh
+
+ sudo cp -v /tmp/fix_zippy2.sh ${DIR}/disk/tools/fix_zippy2.sh
+ sudo chmod +x ${DIR}/disk/tools/fix_zippy2.sh
 
  cd ${DIR}/disk/
  sync
@@ -337,6 +374,21 @@ function check_uboot_type {
  fi
 }
 
+function check_addon_type {
+ IN_VALID_ADDON=1
+
+ if test "-$ADDON_TYPE-" = "-pico-"
+ then
+ ADDON=pico
+ unset IN_VALID_ADDON
+ fi
+
+ if [ "$IN_VALID_ADDON" ] ; then
+   usage
+ fi
+}
+
+
 function check_fs_type {
  IN_VALID_FS=1
 
@@ -390,7 +442,9 @@ Additional/Optional options:
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4>
     beagle_xm
-    fairlane - <A>
+
+--addon <device>
+    pico
 
 --rootfs <fs_type>
     ext2
@@ -438,6 +492,11 @@ while [ ! -z "$1" ]; do
             checkparm $2
             UBOOT_TYPE="$2"
             check_uboot_type 
+            ;;
+        --addon)
+            checkparm $2
+            ADDON_TYPE="$2"
+            check_addon_type 
             ;;
         --rootfs)
             checkparm $2
