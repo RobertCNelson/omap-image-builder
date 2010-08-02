@@ -1,0 +1,25 @@
+=== modified file 'rootstock'
+--- rootstock	2010-08-02 19:34:34 +0000
++++ rootstock	2010-08-02 19:36:29 +0000
+@@ -1129,13 +1129,13 @@
+     echo "I: Enabling firstboot configuration (as no user/password" \
+          "definition was found at the argument list)"
+     PACKAGE="oem-config"
+-    if [ -n "\$(dpkg -l xserver-xorg 2>/dev/null|grep ^ii)" ];then
+-        if [ \$(which gdm) ];then
+-            PACKAGE="oem-config-gtk"
+-        elif [ \$(which kdm) ];then
+-            PACKAGE="oem-config-kde"
+-        fi
+-    fi
++#    if [ -n "\$(dpkg -l xserver-xorg 2>/dev/null|grep ^ii)" ];then
++#        if [ \$(which gdm) ];then
++#            PACKAGE="oem-config-gtk"
++#        elif [ \$(which kdm) ];then
++#            PACKAGE="oem-config-kde"
++#        fi
++#    fi
+     apt-get install -y --no-install-recommends \$PACKAGE
+     touch /var/lib/oem-config/run
+     rm /usr/lib/ubiquity/plugins/ubi-tasks.py*
+

@@ -97,6 +97,9 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
 
+	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
+	bzr commit -m 'just use oem-config, it works great in the mimimal'
+
 	cd ${DIR}/deploy/
 }
 
@@ -264,7 +267,7 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl11/linux-image-2.6.35-rc6-dl11_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl12/linux-image-2.6.35-rc6-dl12_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -280,7 +283,7 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl11/linux-image-2.6.35-rc6-dl11_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-rc6-dl12/linux-image-2.6.35-rc6-dl12_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -314,8 +317,8 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-#lucid_release
-#lucid_xfce4
+lucid_release
+lucid_xfce4
 maverick_release
 #maverick_xfce4
 
