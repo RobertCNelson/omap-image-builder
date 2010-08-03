@@ -1,0 +1,12 @@
+=== modified file 'rootstock'
+--- rootstock	2010-08-03 14:34:32 +0000
++++ rootstock	2010-08-03 14:35:20 +0000
+@@ -1110,6 +1110,7 @@
+ PKGCOUNT=\$(LANG=C apt-get -s install ${SELECTION} |grep "newly installed"|cut -d ',' -f2|tr -d ' [a-z]')
+ echo "packagecount=\${PKGCOUNT:-1}"
+ [ -z "${SELECTION}" ] || apt-get -y ${APT_FORCE} install ${SELECTION}
++aptitude -y safe-upgrade
+ 
+ groupadd admin || true
+ echo '%admin  ALL=(ALL) ALL' >>/etc/sudoers
+

@@ -3,8 +3,6 @@
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
 unset MMC
-unset NO_NAND
-unset DO_NAND
 
 #Defaults
 RFS=ext3
@@ -17,7 +15,7 @@ DIR=$PWD
 function detect_software {
 
 #Currently only Ubuntu and Debian..
-#Working on Fedora...	
+#Working on Fedora...
 unset PACKAGE
 unset APT
 
@@ -53,6 +51,10 @@ function dl_xload_uboot {
  then
 
 cat > /tmp/boot.cmd <<beagle_boot_cmd
+if test "\${beaglerev}" = "xMA"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv mpurate 800
+fi
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
 setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=12M omapfb.mode=dvi:1280x720MR-16@60 fixrtc buddy=\${buddy} mpurate=\${mpurate}
 boot
@@ -64,6 +66,10 @@ beagle_boot_cmd
  then
 
 cat > /tmp/boot.cmd <<beagle_pico_boot_cmd
+if test "\${beaglerev}" = "xMA"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv mpurate 800
+fi
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
 setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=12M omapfb.mode=dvi:800x600MR-16@60 fixrtc buddy=\${buddy} mpurate=\${mpurate}
 boot
@@ -72,9 +78,14 @@ beagle_pico_boot_cmd
 
  fi
 
-if [ ! "${NO_NAND}" ];then
-
 cat > /tmp/user.cmd <<beagle_user_cmd
+
+if test "\${beaglerev}" = "xMA"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=12M omapfb.mode=dvi:1280x720MR-16@60 fixrtc buddy=\${buddy} mpurate=800
+boot
+else
 echo "Starting NAND UPGRADE, do not REMOVE SD CARD or POWER till Complete"
 fatload mmc 0:1 0x80200000 MLO
 nandecc hw
@@ -91,12 +102,9 @@ nand write 0x80300000 80000 160000
 nand erase 260000 20000
 echo "UPGRADE Complete, REMOVE SD CARD and DELETE this boot.scr"
 exit
+fi
 
 beagle_user_cmd
-
-DO_NAND=1
-
-fi
 
  #beagle
  MIRROR="http://rcn-ee.net/deb/"
@@ -221,9 +229,8 @@ function populate_boot {
 
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
-if [ "${DO_NAND}" ];then
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
-fi
+ sudo cp /tmp/user.cmd ${DIR}/disk/user.cmd
 
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
@@ -244,6 +251,8 @@ cat > /tmp/boot_scripts.sh <<rebuild_scripts
 cd /boot/uboot
 sudo mount -o remount,rw /boot/uboot
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
+sudo cp /boot/uboot/boot.scr /boot/uboot/boot.ini
+sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
 
 rebuild_scripts
 
@@ -354,14 +363,6 @@ function check_uboot_type {
  DO_UBOOT=1
  fi
 
- if test "-$UBOOT_TYPE-" = "-beagle_xm-"
- then
- SYSTEM=beagle
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- NO_NAND=1
- fi
-
  if test "-$UBOOT_TYPE-" = "-fairlane-"
  then
  SYSTEM=fairlane
@@ -440,8 +441,7 @@ Additional/Optional options:
     this help
 
 --uboot <dev board>
-    beagle - <Bx, C2/C3/C4>
-    beagle_xm
+    beagle - <Bx, C2/C3/C4, xMA>
 
 --addon <device>
     pico
