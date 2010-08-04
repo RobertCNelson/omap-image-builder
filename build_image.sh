@@ -272,12 +272,13 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+#KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34.2-l2/linux-image-2.6.34.2-l2_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_ALPHA2$MINIMAL
+BUILD=$MAVERICK_ALPHA3$MINIMAL
 minimal_armel
 compression
 
@@ -288,12 +289,13 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+#KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34.2-l2/linux-image-2.6.34.2-l2_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_ALPHA2$XFCE
+BUILD=$MAVERICK_ALPHA3$XFCE
 gui_armel
 compression
 
@@ -322,8 +324,8 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_release
-lucid_xfce4
+#lucid_release
+#lucid_xfce4
 maverick_release
 #maverick_xfce4
 
