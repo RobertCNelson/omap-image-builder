@@ -17,7 +17,7 @@ LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 12th
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1-pre-rc1"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
 
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
@@ -26,6 +26,7 @@ MAVERICK_ALPHA="ubuntu-maverick-alpha1"
 #alpha-2 : July 1st
 MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
 #alpha-3 : August 5th
+MAVERICK_ALPHA3="ubuntu-maverick-alpha3"
 #alpha-4 : September 2nd
 #beta : September 23rd
 #10.10 : October 10th
@@ -37,7 +38,7 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-MINIMAL_APT="uboot-envtools,uboot-mkimage,wget,nano,wireless-tools,usbutils,btrfs-tools,i2c-tools,pastebinit"
+MINIMAL_APT="uboot-envtools,uboot-mkimage,wget,nano,wireless-tools,usbutils,btrfs-tools,i2c-tools,pastebinit,aptitude,wpasupplicant"
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
@@ -272,7 +273,7 @@ reset_vars
 
 DIST=maverick
 KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-EXTRA="linux-firmware,rootstock,"
+EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -288,7 +289,7 @@ reset_vars
 
 DIST=maverick
 KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-EXTRA="linux-firmware,rootstock,"
+EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
