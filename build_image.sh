@@ -91,9 +91,9 @@ function dl_rootstock {
 	bzr branch lp:project-rootstock
 	cd ${DIR}/../project-rootstock
 
-	echo "Applying local patches"
-	bzr revert -r 122
-	bzr commit -m 'safe too'
+#	echo "Applying local patches"
+#	bzr revert -r 123
+#	bzr commit -m 'safe too'
 
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	bzr commit -m 'tar output'
