@@ -38,7 +38,7 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-MINIMAL_APT="uboot-envtools,uboot-mkimage,wget,nano,wireless-tools,usbutils,btrfs-tools,i2c-tools,pastebinit,aptitude,wpasupplicant"
+MINIMAL_APT="aptitude,btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
