@@ -9,10 +9,11 @@ echo "/dev/mmcblk0p1   /boot/uboot auto   defaults            0   0" >> /etc/fst
 cat > /etc/flash-kernel.conf <<FK
 #!/bin/sh
 
+UBOOT_PART=/dev/mmcblk0p1
+
 echo "flash-kernel stopped:"
-echo "You are currently running the Community Kernel edition"
-echo "remove /etc/flash-kernel.conf to run Ubuntu's Kernel"
-DONT_FLASH=1
+echo "You are currently running an image built by rcn-ee.net running an rcn-ee"
+echo "kernel, to use Ubuntu's Kernel remove the next line"
 exit 0
 
 FK
