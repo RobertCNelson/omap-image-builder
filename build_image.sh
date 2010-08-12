@@ -3,9 +3,6 @@
 SYST=$(cat /etc/hostname)
 ARCH=$(uname -m)
 
-#KARMIC_RELEASE="ubuntu-9.10-minimal-armel-1.1"
-KARMIC_RELEASE="ubuntu-9.10.2"
-
 #Lucid Schedule:
 #https://wiki.ubuntu.com/LucidReleaseSchedule
 #alpha-3 :
@@ -16,8 +13,16 @@ LUCID_BETA2="ubuntu-lucid-beta2.1"
 LUCID_RC="ubuntu-10.04-rc"
 #10.04 : April 29th
 LUCID_RELEASE="ubuntu-10.04"
-#10.04.1 : August 12th
+#10.04.1 : August 17th
 LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
+
+#We will see if i go this far...
+#10.04.2 : January 27th
+LUCID_RELEASE_10_04_2="ubuntu-10.04.2"
+#10.04.3 : July 29th 2011
+LUCID_RELEASE_10_04_3="ubuntu-10.04.3"
+#10.04.4 : January 22th 2012
+LUCID_RELEASE_10_04_4="ubuntu-10.04.4"
 
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
@@ -27,9 +32,12 @@ MAVERICK_ALPHA="ubuntu-maverick-alpha1"
 MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
 #alpha-3 : August 5th
 MAVERICK_ALPHA3="ubuntu-maverick-alpha3"
-#alpha-4 : September 2nd
-#beta : September 23rd
+#beta : September 2nd
+MAVERICK_BETA="ubuntu-maverick-beta"
+#RC : April 22nd
+MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
+MAVERICK_RELEASE="ubuntu-10.10"
 
 SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
 
@@ -218,21 +226,6 @@ else
 	7za a $BUILD.tar.7z $BUILD.tar
 fi
 	cd ${DIR}/deploy/
-}
-
-function karmic_release {
-
-reset_vars
-
-DIST=karmic
-KERNEL="http://rcn-ee.net/deb/kernel/beagle/karmic/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0karmic_armel.deb"
-EXTRA="linux-firmware,"
-USER_PASS="--login ubuntu --password temppwd"
-COMPONENTS=$UBUNTU_COMPONENTS
-BUILD=$KARMIC_RELEASE$MINIMAL
-minimal_armel
-compression
-
 }
 
 function lucid_release {
