@@ -328,7 +328,7 @@ function populate_rootfs {
 }
 
 function check_mmc {
- DISK_NAME="Disk|Platte"
+ DISK_NAME="Disk|Platte|Disco"
  FDISK=$(sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] ${MMC}" | awk '{print $2}')
 
  if test "-$FDISK-" = "-$MMC:-"

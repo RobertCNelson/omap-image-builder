@@ -233,7 +233,7 @@ function lucid_release {
 reset_vars
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -249,7 +249,7 @@ function lucid_xfce4 {
 reset_vars
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0lucid_armel.deb"
+KERNEL="http://rcn-ee.net/deb/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS

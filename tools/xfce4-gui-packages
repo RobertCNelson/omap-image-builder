@@ -6,6 +6,7 @@ linux-firmware
 wireless-tools
 usbutils
 xserver-xorg-video-omap3
+build-essential
 xubuntu-artwork
 chromium-browser
 xfce4
