@@ -34,12 +34,10 @@ MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
 MAVERICK_ALPHA3="ubuntu-maverick-alpha3"
 #beta : September 2nd
 MAVERICK_BETA="ubuntu-maverick-beta"
-#RC : April 22nd
+#RC : September 22nd
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
 MAVERICK_RELEASE="ubuntu-10.10"
-
-SID_KERNEL="http://rcn-ee.net/deb/kernel/beagle/sid/v2.6.32.11-x13/linux-image-2.6.32.11-x13_1.0sid_armel.deb"
 
 MINIMAL="-minimal-armel"
 XFCE="-xfce4-armel"
@@ -209,8 +207,6 @@ function compression {
 	cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
-#	cp -v ${DIR}/tools/boot.cmd ${DIR}/deploy/$BUILD
-#	cp -v ${DIR}/tools/flash.cmd ${DIR}/deploy/$BUILD
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
 #	echo "Calculating MD5SUMS" 
@@ -258,7 +254,6 @@ reset_vars
 DIST=lucid
 latest_stable
 EXTRA="linux-firmware,"
-#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE_10_04_1$MINIMAL
@@ -274,7 +269,6 @@ reset_vars
 DIST=lucid
 latest_stable
 EXTRA="linux-firmware,"
-#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE_10_04_1$XFCE
@@ -290,7 +284,6 @@ reset_vars
 DIST=maverick
 latest_stable
 EXTRA="linux-firmware,"
-#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_ALPHA3$MINIMAL
@@ -306,7 +299,6 @@ reset_vars
 DIST=maverick
 latest_stable
 EXTRA="linux-firmware,"
-#USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_ALPHA3$XFCE
