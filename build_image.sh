@@ -65,6 +65,7 @@ unset USER_PASS
 function set_mirror {
 
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
+DEB_MIRROR="http://rcn-ee.net/deb"
 
 if [ $SYST == "work-p4" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
@@ -84,11 +85,13 @@ fi
 if [ $SYST == "lvrm" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
+	DEB_MIRROR="http://192.168.1.90:81/dl/mirrors/deb"
 fi
 
 if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
 	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
+	DEB_MIRROR="http://192.168.1.90:81/dl/mirrors/deb"
 fi
 
 }
@@ -233,7 +236,7 @@ function lucid_release {
 reset_vars
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
+KERNEL="${DEB_MIRROR}/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -249,7 +252,7 @@ function lucid_xfce4 {
 reset_vars
 
 DIST=lucid
-KERNEL="http://rcn-ee.net/deb/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
+KERNEL="${DEB_MIRROR}/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -265,8 +268,8 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-#KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
+#KERNEL="${DEB_MIRROR}/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+KERNEL="${DEB_MIRROR}/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -282,8 +285,8 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
-#KERNEL="http://rcn-ee.net/deb/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-KERNEL="http://rcn-ee.net/deb/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
+#KERNEL="${DEB_MIRROR}/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
+KERNEL="${DEB_MIRROR}/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -299,7 +302,7 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
-KERNEL="http://rcn-ee.net/deb/squeeze/v2.6.34-x1/linux-image-2.6.34-x1_1.0squeeze_armel.deb"
+KERNEL="${DEB_MIRROR}/squeeze/v2.6.34-x1/linux-image-2.6.34-x1_1.0squeeze_armel.deb"
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
