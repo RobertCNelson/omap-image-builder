@@ -236,7 +236,7 @@ function lucid_release {
 reset_vars
 
 DIST=lucid
-KERNEL="${DEB_MIRROR}/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0${DIST}_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -252,7 +252,7 @@ function lucid_xfce4 {
 reset_vars
 
 DIST=lucid
-KERNEL="${DEB_MIRROR}/lucid/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0lucid_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0${DIST}_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -268,8 +268,8 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-#KERNEL="${DEB_MIRROR}/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-KERNEL="${DEB_MIRROR}/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
+#KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0${DIST}_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0${DIST}_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -285,8 +285,8 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
-#KERNEL="${DEB_MIRROR}/maverick/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0maverick_armel.deb"
-KERNEL="${DEB_MIRROR}/maverick/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0maverick_armel.deb"
+#KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0${DIST}_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0${DIST}_armel.deb"
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -302,7 +302,7 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
-KERNEL="${DEB_MIRROR}/squeeze/v2.6.34-x1/linux-image-2.6.34-x1_1.0squeeze_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34-x1/linux-image-2.6.34-x1_1.0${DIST}_armel.deb"
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
