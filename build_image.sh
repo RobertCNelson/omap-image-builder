@@ -204,9 +204,19 @@ function netbook_armel {
 function compression {
 	rm -rfd ${DIR}/deploy/$BUILD || true
 	mkdir -p ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
-	cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
+
+	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
+		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
+	fi
+
+	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
+		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
+	fi
+
+	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
+		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
+	fi
+
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
 
 #	echo "Calculating MD5SUMS" 
