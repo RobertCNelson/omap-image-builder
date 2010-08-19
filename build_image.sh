@@ -231,12 +231,32 @@ fi
 	cd ${DIR}/deploy/
 }
 
+function latest_stable {
+
+DL_DIST=${DIST}
+if [ $DIST == "lucid" ]; then
+	DL_DIST=maverick
+fi
+
+if [ -f /tmp/LATEST ] ; then
+	rm -f /tmp/LATEST
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DL_DIST}/LATEST
+FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 STABLE" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
+
+KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+
+}
+
 function lucid_release {
 
 reset_vars
 
 DIST=lucid
-KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0${DIST}_armel.deb"
+latest_stable
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -252,7 +272,7 @@ function lucid_xfce4 {
 reset_vars
 
 DIST=lucid
-KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35.2-l0/linux-image-2.6.35.2-l0_1.0${DIST}_armel.deb"
+latest_stable
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -268,8 +288,7 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-#KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0${DIST}_armel.deb"
-KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0${DIST}_armel.deb"
+latest_stable
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -285,8 +304,7 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
-#KERNEL="${DEB_MIRROR}/${DIST}/v2.6.35-dl13/linux-image-2.6.35-dl13_1.0${DIST}_armel.deb"
-KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34.3-l2/linux-image-2.6.34.3-l2_1.0${DIST}_armel.deb"
+latest_stable
 EXTRA="linux-firmware,"
 #USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -302,7 +320,7 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
-KERNEL="${DEB_MIRROR}/${DIST}/v2.6.34-x1/linux-image-2.6.34-x1_1.0${DIST}_armel.deb"
+latest_stable
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
