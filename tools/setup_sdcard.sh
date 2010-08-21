@@ -274,7 +274,7 @@ fi
 fix_zippy2
 
 cat > /tmp/latest_kernel.sh <<latest_kernel
-#!/bin/sh
+#!/bin/bash
 DIST=\$(lsb_release -cs)
 
 #enable testing
@@ -290,7 +290,11 @@ function run_upgrade {
 
 }
 
-function upgrade_sys {
+function check_latest {
+
+ if [ -f /tmp/LATEST ] ; then
+  rm -f /tmp/LATEST &> /dev/null
+ fi
 
  wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/\${DIST}/LATEST
 
@@ -302,15 +306,14 @@ function upgrade_sys {
 
  KERNEL_DL_VER=\$(echo \${KERNEL_DL} | awk -F'/' '{print \$6}')
 
- CURRENT_KER=v
- CURRENT_KER+=\$(uname -r)
+ CURRENT_KER="v\$(uname -r)"
 
  if [ \${CURRENT_KER} != \${KERNEL_DL_VER} ]; then
   run_upgrade
  fi
 }
 
-upgrade_sys
+check_latest
 
 latest_kernel
 
