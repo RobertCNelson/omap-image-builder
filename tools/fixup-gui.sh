@@ -8,13 +8,27 @@ echo "/dev/mmcblk0p1   /boot/uboot auto   defaults            0   0" >> /etc/fst
 
 cat > /etc/flash-kernel.conf <<FK
 #!/bin/sh
-
 UBOOT_PART=/dev/mmcblk0p1
 
-echo "flash-kernel stopped:"
+echo "flash-kernel stopped by: /etc/flash-kernel.conf"
 echo "You are currently running an image built by rcn-ee.net running an rcn-ee"
 echo "kernel, to use Ubuntu's Kernel remove the next line"
-exit 0
+USE_RCN_EE_KERNEL=1
+
+if [ "\$USE_RCN_EE_KERNEL" ] ; then
+
+DIST=\$(lsb_release -cs)
+
+case "$DIST" in
+    lucid)
+            exit 0
+        ;;
+    maverick)
+            FLASH_KERNEL_SKIP=yes
+        ;;
+esac
+
+fi
 
 FK
 
