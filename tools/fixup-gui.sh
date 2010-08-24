@@ -19,7 +19,7 @@ if [ "\$USE_RCN_EE_KERNEL" ] ; then
 
 DIST=\$(lsb_release -cs)
 
-case "$DIST" in
+case "\$DIST" in
     lucid)
             exit 0
         ;;
