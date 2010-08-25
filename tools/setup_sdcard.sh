@@ -345,7 +345,13 @@ function populate_rootfs {
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
 
- pv ${DIR}/armel-rootfs-* | sudo tar xfp - -C ${DIR}/disk/
+ if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
+   pv ${DIR}/armel-rootfs-*.tgz | sudo tar xzfp - -C ${DIR}/disk/
+ fi
+
+ if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
+   pv ${DIR}/armel-rootfs-*.tar | sudo tar xfp - -C ${DIR}/disk/
+ fi
 
  if [ "$CREATE_SWAP" ] ; then
 
