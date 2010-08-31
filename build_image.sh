@@ -296,7 +296,7 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_ALPHA3$MINIMAL
+BUILD=$MAVERICK_BETA$MINIMAL
 minimal_armel
 compression
 
@@ -311,7 +311,7 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_ALPHA3$XFCE
+BUILD=$MAVERICK_BETA$XFCE
 gui_armel
 compression
 
@@ -340,8 +340,8 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_release
-lucid_xfce4
-#maverick_release
-#maverick_xfce4
+#lucid_release
+#lucid_xfce4
+maverick_release
+maverick_xfce4
 
