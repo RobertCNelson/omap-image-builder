@@ -138,6 +138,14 @@ beagle_boot_scripts
  UBOOT=${UBOOT##*/}
 
         ;;
+    igepv2)
+
+ #MLO=${MLO##*/}
+ #UBOOT=${UBOOT##*/}
+ MLO=NA
+ UBOOT=NA
+
+        ;;
     fairlane)
 
  MIRROR="http://rcn-ee.net/deb/"
@@ -424,19 +432,29 @@ function check_uboot_type {
  IN_VALID_UBOOT=1
  unset DO_UBOOT
 
- if test "-$UBOOT_TYPE-" = "-beagle-"
- then
+case "$UBOOT_TYPE" in
+    beagle)
+
  SYSTEM=beagle
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- fi
 
- if test "-$UBOOT_TYPE-" = "-fairlane-"
- then
+        ;;
+    igepv2)
+
+ SYSTEM=igepv2
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+
+        ;;
+    fairlane)
+
  SYSTEM=fairlane
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- fi
+
+        ;;
+esac
 
  if [ "$IN_VALID_UBOOT" ] ; then
    usage
@@ -461,26 +479,26 @@ function check_addon_type {
 function check_fs_type {
  IN_VALID_FS=1
 
- if test "-$FS_TYPE-" = "-ext2-"
- then
+case "$FS_TYPE" in
+    ext2)
+
  RFS=ext2
  unset IN_VALID_FS
- fi
 
- if test "-$FS_TYPE-" = "-ext3-"
- then
+        ;;
+    ext3)
+
  RFS=ext3
  unset IN_VALID_FS
- fi
 
- if test "-$FS_TYPE-" = "-ext4-"
- then
+        ;;
+    ext4)
+
  RFS=ext4
  unset IN_VALID_FS
- fi
 
- if test "-$FS_TYPE-" = "-btrfs-"
- then
+        ;;
+    btrfs)
 
   if [ ! $(which mkfs.btrfs) ];then
    echo "Missing btrfs tools"
@@ -489,7 +507,9 @@ function check_fs_type {
 
  RFS=btrfs
  unset IN_VALID_FS
- fi
+
+        ;;
+esac
 
  if [ "$IN_VALID_FS" ] ; then
    usage
@@ -510,6 +530,7 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA>
+    igepv2 - (no u-boot or MLO yet>
 
 --addon <device>
     pico
