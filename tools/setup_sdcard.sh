@@ -216,10 +216,12 @@ sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
 if [ "$DO_UBOOT" ];then
  if ls ${DIR}/deploy/${MLO} >/dev/null 2>&1;then
  sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
+ rm -f ${DIR}/deploy/${MLO} || true
  fi
 
  if ls ${DIR}/deploy/${UBOOT} >/dev/null 2>&1;then
  sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
+ rm -f ${DIR}/deploy/${UBOOT} || true
  fi
 fi
 
@@ -254,10 +256,17 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
+ if ls /tmp/boot.cmd >/dev/null 2>&1;then
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
+ rm -f /tmp/boot.cmd || true
+ fi
+
+ if ls /tmp/user.cmd >/dev/null 2>&1;then
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
  sudo cp /tmp/user.cmd ${DIR}/disk/user.cmd
+ rm -f /tmp/user.cmd || true
+ fi
 
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
