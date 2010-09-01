@@ -381,15 +381,14 @@ function populate_rootfs {
 }
 
 function check_mmc {
- DISK_NAME="Disk|Platte|Disco"
- FDISK=$(sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] ${MMC}" | awk '{print $2}')
+ FDISK=$(sudo LC_ALL=C sfdisk -l 2>/dev/null | grep "[Disk] ${MMC}" | awk '{print $2}')
 
  if test "-$FDISK-" = "-$MMC:-"
  then
   echo ""
   echo "I see..."
-  echo "sudo fdisk -l:"
-  sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] /dev/" --color=never
+  echo "sudo sfdisk -l:"
+  sudo LC_ALL=C sfdisk -l 2>/dev/null | grep "[Disk] /dev/" --color=never
   echo ""
   echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never
@@ -401,8 +400,8 @@ function check_mmc {
   echo ""
   echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
   echo ""
-  echo "sudo fdisk -l:"
-  sudo fdisk -l 2>/dev/null | grep "[${DISK_NAME}] /dev/" --color=never
+  echo "sudo sfdisk -l:"
+  sudo LC_ALL=C sfdisk -l 2>/dev/null | grep "[Disk] /dev/" --color=never
   echo ""
   echo "mount:"
   mount | grep -v none | grep "/dev/" --color=never

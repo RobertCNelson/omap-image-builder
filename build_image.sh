@@ -343,5 +343,5 @@ dl_rootstock
 #lucid_release
 #lucid_xfce4
 maverick_release
-maverick_xfce4
+#maverick_xfce4
 
