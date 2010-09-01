@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+#Latest can be found at:
+#http://bazaar.launchpad.net/~beagleboard-kernel/%2Bjunk/image-builder/annotate/head:/tools/setup_sdcard.sh
+
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
 unset MMC
