@@ -5,7 +5,7 @@
 unset MMC
 
 #Defaults
-RFS=ext3
+RFS=ext4
 BOOT_LABEL=boot
 RFS_LABEL=rootfs
 PARTITION_PREFIX=""
@@ -504,9 +504,8 @@ Additional/Optional options:
     pico
 
 --rootfs <fs_type>
-    ext2
-    ext3 - <set as default>
-    ext4
+    ext3
+    ext4 - <set as default>
     btrfs
 
 --boot_label <boot_label>
