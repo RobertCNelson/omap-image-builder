@@ -6,6 +6,7 @@
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
 unset MMC
+unset SWAP_BOOT_USER
 
 #Defaults
 RFS=ext4
@@ -252,6 +253,18 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
+#Some boards, like my xM Prototype have the user button polarity reversed
+#in that case user.scr gets loaded over boot.scr
+if [ "$SWAP_BOOT_USER" ] ; then
+ if ls /tmp/boot.cmd >/dev/null 2>&1;then
+  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/user.scr
+  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
+  sudo cp /tmp/boot.cmd ${DIR}/disk/user.cmd
+  rm -f /tmp/boot.cmd || true
+  rm -f /tmp/user.cmd || true
+ fi
+fi
+
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
@@ -448,6 +461,15 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
 
         ;;
+    beagle-proto)
+#hidden: proto button bug
+
+ SYSTEM=beagle
+ SWAP_BOOT_USER=1
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+
+        ;;
     igepv2)
 
  SYSTEM=igepv2
@@ -456,6 +478,7 @@ case "$UBOOT_TYPE" in
 
         ;;
     fairlane)
+#hidden: unreleased
 
  SYSTEM=fairlane
  unset IN_VALID_UBOOT
