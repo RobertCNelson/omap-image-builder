@@ -203,8 +203,13 @@ mkdir ${DIR}/disk
 sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
 
 if [ "$DO_UBOOT" ];then
+ if ls ${DIR}/deploy/${MLO} >/dev/null 2>&1;then
  sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
+ fi
+
+ if ls ${DIR}/deploy/${UBOOT} >/dev/null 2>&1;then
  sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
+ fi
 fi
 
 cd ${DIR}/disk
