@@ -47,8 +47,8 @@ function dl_xload_uboot {
  sudo rm -rfd ${DIR}/deploy/ || true
  mkdir -p ${DIR}/deploy/
 
- if test "-$SYSTEM-" = "-beagle-"
- then
+case "$SYSTEM" in
+    beagle)
 
 cat > /tmp/boot.cmd <<beagle_boot_cmd
 if test "\${beaglerev}" = "xMA"; then
@@ -131,10 +131,8 @@ beagle_user_cmd
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
 
- fi
-
- if test "-$SYSTEM-" = "-fairlane-"
- then
+        ;;
+    fairlane)
 
  MIRROR="http://rcn-ee.net/deb/"
 
@@ -154,7 +152,8 @@ beagle_user_cmd
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
 
- fi
+        ;;
+esac
 
 }
 
