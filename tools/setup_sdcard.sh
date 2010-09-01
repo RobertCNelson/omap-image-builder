@@ -43,12 +43,7 @@ if [ "${APT}" ];then
 fi
 }
 
-function dl_xload_uboot {
- sudo rm -rfd ${DIR}/deploy/ || true
- mkdir -p ${DIR}/deploy/
-
-case "$SYSTEM" in
-    beagle)
+function beagle_boot_scripts {
 
 cat > /tmp/boot.cmd <<beagle_boot_cmd
 if test "\${beaglerev}" = "xMA"; then
@@ -62,7 +57,6 @@ setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait
 boot
 
 beagle_boot_cmd
-
 
  if test "-$ADDON-" = "-pico-"
  then
@@ -111,6 +105,18 @@ exit
 fi
 
 beagle_user_cmd
+
+}
+
+
+function dl_xload_uboot {
+ sudo rm -rfd ${DIR}/deploy/ || true
+ mkdir -p ${DIR}/deploy/
+
+case "$SYSTEM" in
+    beagle)
+
+beagle_boot_scripts
 
  #beagle
  MIRROR="http://rcn-ee.net/deb/"
