@@ -82,12 +82,8 @@ beagle_pico_boot_cmd
 cat > /tmp/user.cmd <<beagle_user_cmd
 
 if test "\${beaglerev}" = "xMA"; then
-echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
-setenv dvimode 1280x720MR-16@60
-setenv vram 12MB
-setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc buddy=\${buddy} mpurate=800
-boot
+echo "xMA doesnt have NAND"
+exit
 else
 echo "Starting NAND UPGRADE, do not REMOVE SD CARD or POWER till Complete"
 fatload mmc 0:1 0x80200000 MLO
