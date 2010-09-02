@@ -202,8 +202,13 @@ function cleanup_sd {
  echo "Umounting Partitions"
  echo ""
 
- sudo umount ${MMC}${PARTITION_PREFIX}1 &> /dev/null || true
- sudo umount ${MMC}${PARTITION_PREFIX}2 &> /dev/null || true
+ NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
+
+ for (( c=1; c<=$NUM_MOUNTS; c++ ))
+ do
+  DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
+  sudo umount ${DRIVE} &> /dev/null || true
+ done
 
  sudo parted -s ${MMC} mklabel msdos
 }
