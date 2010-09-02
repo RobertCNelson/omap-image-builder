@@ -258,9 +258,7 @@ function populate_boot {
 if [ "$SWAP_BOOT_USER" ] ; then
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
   sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/user.scr
-  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
   sudo cp /tmp/boot.cmd ${DIR}/disk/user.cmd
-  rm -f /tmp/boot.cmd || true
   rm -f /tmp/user.cmd || true
  fi
 fi
