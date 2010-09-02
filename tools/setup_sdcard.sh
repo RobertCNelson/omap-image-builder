@@ -5,6 +5,10 @@
 
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
+#Debug Tips
+#oem-config username/password
+#add: "debug-oem-config" to bootargs
+
 unset MMC
 unset SWAP_BOOT_USER
 
