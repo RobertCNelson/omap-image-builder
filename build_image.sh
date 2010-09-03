@@ -69,6 +69,8 @@ MINIMAL_APT="btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
 
+DEB_MIRROR="http://rcn-ee.net/deb"
+
 DIR=$PWD
 
 function reset_vars {
@@ -83,7 +85,6 @@ unset USER_PASS
 function set_mirror {
 
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
-DEB_MIRROR="http://rcn-ee.net/deb"
 
 if [ $SYST == "work-p4" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
