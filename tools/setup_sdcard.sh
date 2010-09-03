@@ -67,7 +67,7 @@ if [ ! $(which pv) ];then
 fi
 
 if [ "${APT}" ];then
- echo "Installing Dependicies"
+ echo "Installing Dependencies"
  sudo aptitude install $PACKAGE
 fi
 }
@@ -199,7 +199,7 @@ esac
 function cleanup_sd {
 
  echo ""
- echo "Umounting Partitions"
+ echo "Unmountting Partitions"
  echo ""
 
  NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
@@ -230,7 +230,7 @@ w
 END
 
 echo ""
-echo "Formating Boot Partition"
+echo "Formatting Boot Partition"
 echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
