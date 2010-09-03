@@ -50,19 +50,19 @@ unset APT
 
 if [ ! $(which mkimage) ];then
  echo "Missing uboot-mkimage"
- PACKAGE="uboot-mkimage "
+ PACKAGE="$PACKAGE uboot-mkimage "
  APT=1
 fi
 
 if [ ! $(which wget) ];then
  echo "Missing wget"
- PACKAGE="wget "
+ PACKAGE="$PACKAGE wget "
  APT=1
 fi
 
 if [ ! $(which pv) ];then
  echo "Missing pv"
- PACKAGE="pv "
+ PACKAGE="$PACKAGE pv "
  APT=1
 fi
 
