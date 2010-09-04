@@ -283,6 +283,9 @@ function populate_boot {
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
+
+if [ "$DO_UBOOT" ];then
+
 #Some boards, like my xM Prototype have the user button polarity reversed
 #in that case user.scr gets loaded over boot.scr
 if [ "$SWAP_BOOT_USER" ] ; then
@@ -307,6 +310,8 @@ fi
 
  #for igepv2 users
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
+
+fi
 
 cat > /tmp/rebuild_uinitrd.sh <<rebuild_uinitrd
 #!/bin/sh
