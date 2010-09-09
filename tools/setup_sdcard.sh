@@ -328,9 +328,13 @@ cat > /tmp/boot_scripts.sh <<rebuild_scripts
 
 cd /boot/uboot
 sudo mount -o remount,rw /boot/uboot
+if ls /boot/uboot/boot.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
+fi
 sudo cp /boot/uboot/boot.scr /boot/uboot/boot.ini
+if ls /boot/uboot/user.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
+fi
 
 rebuild_scripts
 
