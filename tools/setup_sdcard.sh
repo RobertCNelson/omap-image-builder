@@ -133,6 +133,18 @@ beagle_user_cmd
 
 }
 
+function touchbook_boot_scripts {
+
+cat > /tmp/boot.cmd <<touchbook_boot_cmd
+setenv dvimode 1024x600MR-16@60
+setenv vram 12MB
+setenv bootcmd 'mmcinit; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=tty1 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc mpurate=\${mpurate}
+boot
+
+touchbook_boot_cmd
+
+}
 
 function dl_xload_uboot {
  sudo rm -rfd ${DIR}/deploy/ || true
@@ -169,6 +181,28 @@ beagle_boot_scripts
  #UBOOT=${UBOOT##*/}
  MLO=NA
  UBOOT=NA
+        ;;
+    touchbook)
+
+touchbook_boot_scripts
+
+ MIRROR="http://rcn-ee.net/deb/"
+
+ echo ""
+ echo "Downloading X-loader and Uboot"
+ echo ""
+
+ rm -f ${DIR}/deploy/bootloader || true
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+
+ MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:5 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:5 UBOOT" | awk '{print $3}')
+
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+
+ MLO=${MLO##*/}
+ UBOOT=${UBOOT##*/}
 
         ;;
     fairlane)
@@ -510,6 +544,13 @@ case "$UBOOT_TYPE" in
     igepv2)
 
  SYSTEM=igepv2
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+
+        ;;
+    touchbook)
+
+ SYSTEM=touchbook
  unset IN_VALID_UBOOT
  DO_UBOOT=1
 
