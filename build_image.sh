@@ -320,7 +320,7 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_BETA$MINIMAL
+BUILD=$MAVERICK_RC$MINIMAL
 minimal_armel
 compression
 
@@ -335,8 +335,8 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_BETA$XFCE
-gui_armel
+BUILD=$MAVERICK_RC$XFCE
+xubuntu_armel
 compression
 
 }
@@ -367,5 +367,4 @@ dl_rootstock
 #lucid_release
 #lucid_xfce4
 maverick_release
-#maverick_xfce4
-
+maverick_xfce4
