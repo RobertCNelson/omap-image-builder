@@ -32,6 +32,7 @@
 
 unset MMC
 unset SWAP_BOOT_USER
+unset DEFAULT_USER
 
 #Defaults
 RFS=ext4
@@ -463,6 +464,10 @@ function populate_rootfs {
    pv ${DIR}/armel-rootfs-*.tar | sudo tar xfp - -C ${DIR}/disk/
  fi
 
+if [ "$DEFAULT_USER" ] ; then
+ sudo rm -f ${DIR}/disk/var/lib/oem-config/run || true
+fi
+
  if [ "$CREATE_SWAP" ] ; then
 
   echo ""
@@ -626,7 +631,7 @@ esac
 }
 
 function usage {
-    echo "usage: $(basename $0) --mmc /dev/sdd"
+    echo "usage: $(basename $0) --mmc /dev/sdX --uboot <dev board> --swap_file <50Mb mininum>"
 cat <<EOF
 
 required options:
@@ -639,10 +644,14 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA>
-    igepv2 - (no u-boot or MLO yet>
+    igepv2 - <no u-boot or MLO yet>
+    touchbook - <custom u-boot/MLO>
 
 --addon <device>
     pico
+
+--use-default-user
+    (useful for serial only modes and when oem-config is broken)
 
 --rootfs <fs_type>
     ext3
@@ -699,6 +708,9 @@ while [ ! -z "$1" ]; do
             checkparm $2
             FS_TYPE="$2"
             check_fs_type 
+            ;;
+        --use-default-user)
+            DEFAULT_USER=1
             ;;
         --boot_label)
             checkparm $2
