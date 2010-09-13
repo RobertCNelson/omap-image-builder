@@ -1,0 +1,35 @@
+=== modified file 'rootstock'
+--- rootstock	2010-09-13 14:31:45 +0000
++++ rootstock	2010-09-13 14:33:49 +0000
+@@ -1131,7 +1131,7 @@
+ groupadd admin || true
+ echo '%admin  ALL=(ALL) ALL' >>/etc/sudoers
+ 
+-if [ "${NEWUSER}" ] && [ "${PASSWD}" ];then
++#if [ "${NEWUSER}" ] && [ "${PASSWD}" ];then
+     if ! ERROR=\$(useradd -G "${DEFGROUPS}" -s /bin/bash -m -p ${PW} -c "${FULLNAME}" ${NEWUSER} 2>&1);then
+         echo "E: Failed to add user '${NEWUSER}'"
+         echo "E: \$ERROR"
+@@ -1140,9 +1140,9 @@
+              "avoid using existing group names"
+         exit 1
+     fi
+-else
+-    echo "I: Enabling firstboot configuration (as no user/password" \
+-         "definition was found at the argument list)"
++#else
++#    echo "I: Enabling firstboot configuration (as no user/password" \
++#         "definition was found at the argument list)"
+     PACKAGE="oem-config"
+     if [ -n "\$(dpkg -l xserver-xorg 2>/dev/null|grep ^ii)" ];then
+         if [ \$(which gdm) ];then
+@@ -1154,7 +1154,7 @@
+     apt-get install -y --no-install-recommends \$PACKAGE
+     touch /var/lib/oem-config/run
+     rm /usr/lib/ubiquity/plugins/ubi-tasks.py*
+-fi
++#fi
+ 
+ ${KERNEL_IMAGE_CMD}
+ ${KERNEL_IMAGE_CREATE_INITRAMFS}
+

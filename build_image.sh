@@ -132,11 +132,14 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/upgrade-old-debootstrap-packages.diff
 	bzr commit -m 'update old debootstrap packages..'
 
-	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
-	bzr commit -m 'just use oem-config, it works great in the mimimal'
+	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
+	bzr commit -m 'set default user name and use oemconfig..'
 
-	patch -p0 < ${DIR}/patches/oem-config-bisect.diff
-	bzr commit -m 'work around lp bug lp-628587'
+#	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
+#	bzr commit -m 'just use oem-config, it works great in the mimimal'
+
+#	patch -p0 < ${DIR}/patches/oem-config-bisect.diff
+#	bzr commit -m 'work around lp bug lp-628587'
 
 	cd ${DIR}/deploy/
 }
@@ -321,6 +324,7 @@ EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RC$MINIMAL
+USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
 
@@ -336,6 +340,7 @@ EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RC$XFCE
+USER_PASS="--login ubuntu --password temppwd"
 xubuntu_armel
 compression
 
