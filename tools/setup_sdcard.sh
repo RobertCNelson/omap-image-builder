@@ -428,6 +428,41 @@ check_latest
 
 latest_kernel
 
+cat > /tmp/get_chrome.sh <<latest_chrome
+#!/bin/sh
+
+#setup libs
+
+sudo apt-get install libnss3-1d
+
+sudo ln -sf /usr/lib/libsmime3.so /usr/lib/libsmime3.so.12
+sudo ln -sf /usr/lib/libnssutil3.so /usr/lib/libnssutil3.so.12
+sudo ln -sf /usr/lib/libnss3.so /usr/lib/libnss3.so.12
+
+sudo ln -sf /usr/lib/libplds4.so /usr/lib/libplds4.so.8
+sudo ln -sf /usr/lib/libplc4.so /usr/lib/libplc4.so.8
+sudo ln -sf /usr/lib/libnspr4.so /usr/lib/libnspr4.so.8libnss3-1d
+
+if [ -f /tmp/LATEST ] ; then
+ rm -f /tmp/LATEST &> /dev/null
+fi
+
+if [ -f /tmp/chrome-linux.zip ] ; then
+ rm -f /tmp/chrome-linux.zip &> /dev/null
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://build.chromium.org/buildbot/snapshots/chromium-rel-arm/LATEST
+
+CHROME_VER=\$(cat /tmp/LATEST)
+
+wget --directory-prefix=/tmp/ http://build.chromium.org/buildbot/snapshots/chromium-rel-arm/\${CHROME_VER}/chrome-linux.zip
+
+if [ -f /tmp/chrome-linux.zip ] ; then
+ unzip /tmp/chrome-linux.zip -o -d ~/
+fi
+
+latest_chrome
+
  sudo mkdir -p ${DIR}/disk/tools
  sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/tools/rebuild_uinitrd.sh
  sudo chmod +x ${DIR}/disk/tools/rebuild_uinitrd.sh
@@ -440,6 +475,9 @@ latest_kernel
 
  sudo cp -v /tmp/latest_kernel.sh ${DIR}/disk/tools/latest_kernel.sh
  sudo chmod +x ${DIR}/disk/tools/latest_kernel.sh
+
+ sudo cp -v /tmp/get_chrome.sh ${DIR}/disk/tools/get_chrome.sh
+ sudo chmod +x ${DIR}/disk/tools/get_chrome.sh
 
  cd ${DIR}/disk/
  sync
