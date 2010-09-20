@@ -441,7 +441,7 @@ sudo ln -sf /usr/lib/libnss3.so /usr/lib/libnss3.so.12
 
 sudo ln -sf /usr/lib/libplds4.so /usr/lib/libplds4.so.8
 sudo ln -sf /usr/lib/libplc4.so /usr/lib/libplc4.so.8
-sudo ln -sf /usr/lib/libnspr4.so /usr/lib/libnspr4.so.8libnss3-1d
+sudo ln -sf /usr/lib/libnspr4.so /usr/lib/libnspr4.so.8
 
 if [ -f /tmp/LATEST ] ; then
  rm -f /tmp/LATEST &> /dev/null
