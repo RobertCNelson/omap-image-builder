@@ -428,12 +428,19 @@ check_latest
 
 latest_kernel
 
+cat > /tmp/minimal_xfce.sh <<basic_xfce
+#!/bin/sh
+
+sudo aptitude -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3
+
+basic_xfce
+
 cat > /tmp/get_chrome.sh <<latest_chrome
 #!/bin/sh
 
 #setup libs
 
-sudo apt-get install libnss3-1d
+sudo apt-get -y install libnss3-1d unzip libxss1
 
 sudo ln -sf /usr/lib/libsmime3.so /usr/lib/libsmime3.so.12
 sudo ln -sf /usr/lib/libnssutil3.so /usr/lib/libnssutil3.so.12
@@ -457,9 +464,29 @@ CHROME_VER=\$(cat /tmp/LATEST)
 
 wget --directory-prefix=/tmp/ http://build.chromium.org/buildbot/snapshots/chromium-rel-arm/\${CHROME_VER}/chrome-linux.zip
 
+sudo mkdir -p /opt/chrome-linux/
+sudo chown -R \$USER:\$USER /opt/chrome-linux/
+
 if [ -f /tmp/chrome-linux.zip ] ; then
- unzip /tmp/chrome-linux.zip -o -d ~/
+ unzip -o /tmp/chrome-linux.zip -d /opt/
 fi
+
+cat > /tmp/chrome.desktop <<chrome_launcher
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+Exec=/opt/chrome-linux/chrome %u
+Icon=web-browser
+StartupNotify=false
+Terminal=false
+Categories=X-XFCE;X-Xfce-Toplevel;
+OnlyShowIn=XFCE;
+Name=Chromium
+
+chrome_launcher
+
+sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 
 latest_chrome
 
@@ -475,6 +502,9 @@ latest_chrome
 
  sudo cp -v /tmp/latest_kernel.sh ${DIR}/disk/tools/latest_kernel.sh
  sudo chmod +x ${DIR}/disk/tools/latest_kernel.sh
+
+ sudo cp -v /tmp/minimal_xfce.sh ${DIR}/disk/tools/minimal_xfce.sh
+ sudo chmod +x ${DIR}/disk/tools/minimal_xfce.sh
 
  sudo cp -v /tmp/get_chrome.sh ${DIR}/disk/tools/get_chrome.sh
  sudo chmod +x ${DIR}/disk/tools/get_chrome.sh
