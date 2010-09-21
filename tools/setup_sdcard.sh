@@ -217,8 +217,8 @@ touchbook_boot_scripts
  rm -f ${DIR}/deploy/bootloader || true
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:3 MLO" | awk '{print $3}')
- UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:3 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:2 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:2 UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
  wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
@@ -315,7 +315,9 @@ function populate_boot {
  echo "Populating Boot Partition"
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
+ echo "uImage"
  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
+ echo "uInitrd"
  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
 
@@ -344,7 +346,9 @@ fi
  fi
 
  #for igepv2 users
+ if ls ${DIR}/disk/boot.scr >/dev/null 2>&1;then
  sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
+ fi
 
 fi
 
