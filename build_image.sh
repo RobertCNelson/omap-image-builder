@@ -341,7 +341,7 @@ COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RC$XFCE
 USER_PASS="--login ubuntu --password temppwd"
-xubuntu_armel
+xfce4_armel
 compression
 
 }
@@ -371,5 +371,5 @@ dl_rootstock
 
 #lucid_release
 #lucid_xfce4
-maverick_release
+#maverick_release
 maverick_xfce4
