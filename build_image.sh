@@ -54,7 +54,7 @@ MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
 MAVERICK_ALPHA3="ubuntu-maverick-alpha3"
 #beta : September 2nd
 MAVERICK_BETA="ubuntu-maverick-beta"
-#RC : September 22nd
+#RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
 MAVERICK_RELEASE="ubuntu-10.10"
