@@ -494,7 +494,32 @@ sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 
 latest_chrome
 
- sudo mkdir -p ${DIR}/disk/tools
+cat > /tmp/gst-dsp.sh <<gst_dsp
+#!/bin/sh
+
+sudo apt-get -y install git-core pkg-config build-essential gstreamer-tools libgstreamer0.10-dev
+
+git clone git://github.com/felipec/gst-dsp.git
+cd gst-dsp
+make CROSS_COMPILE= 
+sudo make install
+
+cd ..
+
+gst_dsp
+
+cat > /tmp/gst-omapfb.sh <<gst_omapfb
+#!/bin/sh
+
+git clone git://github.com/felipec/gst-omapfb.git
+cd gst-omapfb
+make CROSS_COMPILE= 
+sudo make install
+cd ..
+
+gst_omapfb
+
+ sudo mkdir -p ${DIR}/disk/tools/dsp
  sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/tools/rebuild_uinitrd.sh
  sudo chmod +x ${DIR}/disk/tools/rebuild_uinitrd.sh
 
@@ -512,6 +537,12 @@ latest_chrome
 
  sudo cp -v /tmp/get_chrome.sh ${DIR}/disk/tools/get_chrome.sh
  sudo chmod +x ${DIR}/disk/tools/get_chrome.sh
+
+ sudo cp -v /tmp/gst-dsp.sh  ${DIR}/disk/tools/dsp/gst-dsp.sh
+ sudo chmod +x ${DIR}/disk/tools/dsp/gst-dsp.sh
+
+ sudo cp -v /tmp/gst-omapfb.sh ${DIR}/disk/tools/dsp/gst-omapfb.sh
+ sudo chmod +x ${DIR}/disk/tools/dsp/gst-omapfb.sh
 
  cd ${DIR}/disk/
  sync

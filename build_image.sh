@@ -372,7 +372,7 @@ mkdir -p ${DIR}/deploy
 set_mirror
 dl_rootstock
 
-lucid_release
+#lucid_release
 #lucid_xfce4
 maverick_release
 maverick_xfce4
