@@ -35,7 +35,7 @@ LUCID_RC="ubuntu-10.04-rc"
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 17th
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1.1"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r1"
 
 #We will see if i go this far...
 #10.04.2 : January 27th
@@ -369,10 +369,10 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-set_mirror
+#set_mirror
 dl_rootstock
 
-#lucid_release
+lucid_release
 #lucid_xfce4
-maverick_release
+#maverick_release
 maverick_xfce4
