@@ -133,8 +133,9 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/upgrade-old-debootstrap-packages.diff
 	bzr commit -m 'update old debootstrap packages..'
 
-	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
-	bzr commit -m 'set default user name and use oemconfig..'
+#disable with debian
+#	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
+#	bzr commit -m 'set default user name and use oemconfig..'
 
 #	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
 #	bzr commit -m 'just use oem-config, it works great in the mimimal'
@@ -369,10 +370,12 @@ compression
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
-#set_mirror
+set_mirror
 dl_rootstock
 
-lucid_release
+#lucid_release
 #lucid_xfce4
 #maverick_release
-maverick_xfce4
+#maverick_xfce4
+squeeze_release
+

@@ -1,19 +1,97 @@
 === modified file 'rootstock'
---- rootstock	2010-04-16 21:05:00 +0000
-+++ rootstock	2010-04-16 21:05:15 +0000
-@@ -820,7 +820,13 @@
+--- rootstock	2010-08-04 23:20:39 +0000
++++ rootstock	2010-10-06 21:54:27 +0000
+@@ -485,7 +485,7 @@
+ {
+     log "I: Setting up serial tty in image"
+ 
+-    if [ "$DIST" = "jaunty" ];then
++    if [ "$DIST" = "jaunty" ] || [ "$DIST" = "lenny" ];then
+         test -d $ROOTFS/etc/event.d/|| mkdir -p $ROOTFS/etc/event.d/
+         cat > $ROOTFS/etc/event.d/$SERIAL_TTYS <<EOF
+ start on runlevel 2
+@@ -787,10 +787,12 @@
+         -m|--mirror)
+             MIRROR="$2"
+             shift 2
++            DEB_MIRROR=1
+             ;;
+         -c|--components)
+             COMPONENTS="$(echo $2|tr ',' ' ')"
+             shift 2
++            DEB_COMPONENTS=1
+             ;;
+         -t|--timezone)
+             if [ ! "$(echo $2|grep '/')" ];then
+@@ -910,6 +912,16 @@
+     usage
+ fi
+ 
++if [ "$DIST" = "lenny" ] || [ "$DIST" = "squeeze" ] || [ "$DIST" = "sid" ];then
++
++    if [ ! $DEB_MIRROR ] && [ ! $DEB_COMPONENTS };then
++		echo "for debian add: --mirror http://ftp.us.debian.org/debian/"
++		echo "and add: --components \"main contrib\""
++		usage
++	fi
++
++fi
++
+ # we need root
+ if [ $(id -u) != 0 ] && [ ! "$NOROOT" ];then
+     echo "You should run $PROGRAM as root unless you explicitly request it by giving --no-root"
+@@ -984,6 +996,8 @@
+ AREA=${TZONE%%/*}
+ ZONE=${TZONE#*/}
+ 
++
++
+ # generate the user password
+ PW=$(perl -e 'print crypt($ARGV[0], "qemuonarm")', $PASSWD)
+ 
+@@ -1089,7 +1103,14 @@
  
  ${SWAPCMD}
  
 -echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
-+#if which lsb_release >/dev/null 2>&1 && [ "`lsb_release -is`" = Ubuntu ]; then
-+  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
-+  echo "deb ${MIRROR} ${DIST}-updates ${COMPONENTS}" >>/etc/apt/sources.list
-+#else
++#if which dpkg-vendor >/dev/null 2>&1 && [ "`dpkg-vendor --query vendor`" = Ubuntu ]; then
 +#  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
-+#  echo "deb http://security.debian.org/ ${DIST}/updates ${COMPONENTS}" >>/etc/apt/sources.list
++#  echo "deb ${MIRROR} ${DIST}-updates ${COMPONENTS}" >>/etc/apt/sources.list
++#else
++  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
++  echo "deb http://security.debian.org/ ${DIST}/updates ${COMPONENTS}" >>/etc/apt/sources.list
 +#fi
++
  ${EXRA_MIRROR_CMD}
  
- ifconfig lo up
+ if [ "$RUNVM" ];then
+@@ -1098,8 +1119,8 @@
+     dhclient eth0
+ fi
+ 
+-locale-gen --no-purge en_GB.UTF-8 || true
+-locale-gen --no-purge ${NEWLOCALE} || true
++which locale-gen >/dev/null 2>&1 && locale-gen --no-purge en_GB.UTF-8 || true
++which locale-gen >/dev/null 2>&1 && locale-gen --no-purge ${NEWLOCALE} || true
+ echo LANG=${NEWLOCALE} >>/etc/default/locale
+ 
+ sed -i -e 's/^XKBMODEL=.*\$/XKBMODEL="${XKBM}"/' /etc/default/console-setup || true
+@@ -1153,7 +1174,16 @@
+ 
+ ${PACKAGE_CLEANUP_SUB}
+ 
+-passwd -l root || true
++if which dpkg-vendor >/dev/null 2>&1 && [ "`dpkg-vendor --query vendor`" = Ubuntu ]; then
++  passwd -l root || true
++else
++
++passwd <<ROOTPASSWD
++root
++root
++ROOTPASSWD
++
++fi
+ 
+ rm -f /usr/sbin/invoke-rc.d
+ dpkg-divert --remove --rename /usr/sbin/invoke-rc.d
 
