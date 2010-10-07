@@ -1,7 +1,16 @@
 === modified file 'rootstock'
 --- rootstock	2010-08-04 23:20:39 +0000
-+++ rootstock	2010-10-06 21:54:27 +0000
-@@ -485,7 +485,7 @@
++++ rootstock	2010-10-07 00:17:54 +0000
+@@ -38,6 +38,8 @@
+ PROGRAM="$(basename $0)"
+ VERSION="0.1.99.4"
+ 
++unset IS_DEBIAN
++
+ log()
+ {
+     [ $QUIET ] || echo "$*"
+@@ -485,7 +487,7 @@
  {
      log "I: Setting up serial tty in image"
  
@@ -10,7 +19,7 @@
          test -d $ROOTFS/etc/event.d/|| mkdir -p $ROOTFS/etc/event.d/
          cat > $ROOTFS/etc/event.d/$SERIAL_TTYS <<EOF
  start on runlevel 2
-@@ -787,10 +787,12 @@
+@@ -787,10 +789,12 @@
          -m|--mirror)
              MIRROR="$2"
              shift 2
@@ -23,7 +32,7 @@
              ;;
          -t|--timezone)
              if [ ! "$(echo $2|grep '/')" ];then
-@@ -910,6 +912,16 @@
+@@ -910,6 +914,16 @@
      usage
  fi
  
@@ -34,22 +43,13 @@
 +		echo "and add: --components \"main contrib\""
 +		usage
 +	fi
-+
++    IS_DEBIAN=1
 +fi
 +
  # we need root
  if [ $(id -u) != 0 ] && [ ! "$NOROOT" ];then
      echo "You should run $PROGRAM as root unless you explicitly request it by giving --no-root"
-@@ -984,6 +996,8 @@
- AREA=${TZONE%%/*}
- ZONE=${TZONE#*/}
- 
-+
-+
- # generate the user password
- PW=$(perl -e 'print crypt($ARGV[0], "qemuonarm")', $PASSWD)
- 
-@@ -1089,7 +1103,14 @@
+@@ -1089,7 +1103,19 @@
  
  ${SWAPCMD}
  
@@ -58,14 +58,19 @@
 +#  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
 +#  echo "deb ${MIRROR} ${DIST}-updates ${COMPONENTS}" >>/etc/apt/sources.list
 +#else
++
++if [ "$IS_DEBIAN" ];then
 +  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
 +  echo "deb http://security.debian.org/ ${DIST}/updates ${COMPONENTS}" >>/etc/apt/sources.list
-+#fi
++else
++  echo "deb ${MIRROR} ${DIST} ${COMPONENTS}" >/etc/apt/sources.list
++  echo "deb ${MIRROR} ${DIST}-updates ${COMPONENTS}" >>/etc/apt/sources.list
++fi
 +
  ${EXRA_MIRROR_CMD}
  
  if [ "$RUNVM" ];then
-@@ -1098,8 +1119,8 @@
+@@ -1098,8 +1124,8 @@
      dhclient eth0
  fi
  
@@ -76,20 +81,21 @@
  echo LANG=${NEWLOCALE} >>/etc/default/locale
  
  sed -i -e 's/^XKBMODEL=.*\$/XKBMODEL="${XKBM}"/' /etc/default/console-setup || true
-@@ -1153,7 +1174,16 @@
+@@ -1153,7 +1179,17 @@
  
  ${PACKAGE_CLEANUP_SUB}
  
 -passwd -l root || true
-+if which dpkg-vendor >/dev/null 2>&1 && [ "`dpkg-vendor --query vendor`" = Ubuntu ]; then
-+  passwd -l root || true
-+else
++if [ "$IS_DEBIAN" ];then
 +
 +passwd <<ROOTPASSWD
 +root
 +root
 +ROOTPASSWD
 +
++#if which dpkg-vendor >/dev/null 2>&1 && [ "`dpkg-vendor --query vendor`" = Ubuntu ]; then
++else
++  passwd -l root || true
 +fi
  
  rm -f /usr/sbin/invoke-rc.d

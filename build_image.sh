@@ -327,7 +327,7 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_RC$MINIMAL
+BUILD=$MAVERICK_RELEASE$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
@@ -343,7 +343,7 @@ latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_RC$XFCE
+BUILD=$MAVERICK_RELEASE$XFCE
 USER_PASS="--login ubuntu --password temppwd"
 xfce4_armel
 compression
@@ -375,7 +375,7 @@ dl_rootstock
 
 #lucid_release
 #lucid_xfce4
-#maverick_release
+maverick_release
 #maverick_xfce4
 squeeze_release
 
