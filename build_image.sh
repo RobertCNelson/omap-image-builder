@@ -60,6 +60,21 @@ MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
 MAVERICK_RELEASE="ubuntu-10.10"
 
+#Natty Schedule:
+#https://wiki.ubuntu.com/NattyReleaseSchedule
+#alpha-1 : December 2nd
+NATTY_ALPHA="ubuntu-natty-alpha1"
+#alpha-2 : February 3rd
+NATTY_ALPHA2="ubuntu-natty-alpha2"
+#alpha-3 : March 3rd
+NATTY_ALPHA3="ubuntu-natty-alpha3"
+#beta : March 31st
+NATTY_BETA="ubuntu-natty-beta"
+#RC : April 21st
+NATTY_RC="ubuntu-11.04-rc"
+#10.10 : April 28th
+NATTY_RELEASE="ubuntu-11.04"
+
 MINIMAL="-minimal-armel"
 XFCE="-xfce4-armel"
 GUI="-desktop-armel"
@@ -366,6 +381,22 @@ compression
 
 }
 
+function natty_release {
+
+reset_vars
+
+DIST=natty
+latest_stable
+EXTRA="linux-firmware,"
+COMPONENTS=$UBUNTU_COMPONENTS
+MIRROR=$MIRROR_UBU
+BUILD=$NATTY_ALPHA$MINIMAL
+USER_PASS="--login ubuntu --password temppwd"
+minimal_armel
+compression
+
+}
+
 
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
@@ -375,7 +406,8 @@ dl_rootstock
 
 #lucid_release
 #lucid_xfce4
-maverick_release
+#maverick_release
 #maverick_xfce4
 squeeze_release
+natty_release
 
