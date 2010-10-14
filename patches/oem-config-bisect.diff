@@ -6,14 +6,14 @@
  #    fi
      apt-get install -y --no-install-recommends \$PACKAGE
 +    apt-get remove -y ubiquity-frontend-debconf ubiquity-ubuntu-artwork ubiquity oem-config-debconf oem-config
-+OEM=2.3.3
++OEM=2.4.8.1
 +
 +    #apt-get install -y --no-install-recommends libatk1.0-0 libcairo2 libcheese-gtk18 libfontconfig1 libfreetype6 libgdk-pixbuf2.0-0 libgtk2.0-0 libpango1.0-0
-+    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/ubiquity-frontend-debconf_2.3.3_all.deb
-+    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/ubiquity-ubuntu-artwork_2.3.3_all.deb
-+    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/ubiquity_2.3.3_armel.deb
-+    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/oem-config-debconf_2.3.3_all.deb
-+    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/oem-config_2.3.3_all.deb
++    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/2.4.8.1/ubiquity-frontend-debconf_2.4.8.1_all.deb
++    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/2.4.8.1/ubiquity-ubuntu-artwork_2.4.8.1_all.deb
++    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/2.4.8.1/ubiquity_2.4.8.1_armel.deb
++    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/2.4.8.1/oem-config-debconf_2.4.8.1_all.deb
++    wget http://rcn-ee.homeip.net:81/testing/lp-628587/ubiquity/2.4.8.1/oem-config_2.4.8.1_all.deb
 +    dpkg -i *.deb
 +    rm -f *.deb
      touch /var/lib/oem-config/run

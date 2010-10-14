@@ -159,8 +159,8 @@ function dl_rootstock {
 #	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
 #	bzr commit -m 'just use oem-config, it works great in the mimimal'
 
-#	patch -p0 < ${DIR}/patches/oem-config-bisect.diff
-#	bzr commit -m 'work around lp bug lp-628587'
+	patch -p0 < ${DIR}/patches/oem-config-bisect.diff
+	bzr commit -m 'work around lp bug lp-628587'
 
 	cd ${DIR}/deploy/
 }
