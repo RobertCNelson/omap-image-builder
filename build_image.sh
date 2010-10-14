@@ -143,14 +143,18 @@ function dl_rootstock {
 
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	bzr commit -m 'tar output'
+
+	patch -p0 < ${DIR}/patches/tar-use-numeric-owner.diff
+	bzr commit -m 'use numeric-owner'
+
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
 	patch -p0 < ${DIR}/patches/upgrade-old-debootstrap-packages.diff
 	bzr commit -m 'update old debootstrap packages..'
 
 #disable with debian
-#	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
-#	bzr commit -m 'set default user name and use oemconfig..'
+	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
+	bzr commit -m 'set default user name and use oemconfig..'
 
 #	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
 #	bzr commit -m 'just use oem-config, it works great in the mimimal'
@@ -406,8 +410,8 @@ dl_rootstock
 
 #lucid_release
 #lucid_xfce4
-#maverick_release
+maverick_release
 #maverick_xfce4
-squeeze_release
-natty_release
+#squeeze_release
+#natty_release
 

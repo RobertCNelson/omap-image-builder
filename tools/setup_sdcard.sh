@@ -560,11 +560,11 @@ function populate_rootfs {
  sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
 
  if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tgz | sudo tar xzfp - -C ${DIR}/disk/
+   pv ${DIR}/armel-rootfs-*.tgz | sudo tar --numeric-owner --preserve-permissions -xzf - -C ${DIR}/disk/
  fi
 
  if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tar | sudo tar xfp - -C ${DIR}/disk/
+   pv ${DIR}/armel-rootfs-*.tar | sudo tar --numeric-owner --preserve-permissions -xf - -C ${DIR}/disk/
  fi
 
 if [ "$DEFAULT_USER" ] ; then

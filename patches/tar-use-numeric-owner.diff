@@ -1,0 +1,13 @@
+=== modified file 'rootstock'
+--- rootstock	2010-10-14 17:09:40 +0000
++++ rootstock	2010-10-14 17:11:06 +0000
+@@ -654,7 +654,7 @@
+     mount_image
+ 
+     cd $MOUNTPOINT >>$LOG 2>&1
+-    LANG=C tar cvf ../armel-rootfs-$STAMP.tar . >>$LOG 2>&1
++    LANG=C tar --numeric-owner -cvf ../armel-rootfs-$STAMP.tar . >>$LOG 2>&1
+     mv ../armel-rootfs-$STAMP.tar $DIR >>$LOG 2>&1
+ 
+     echo "I: ARM rootfs created as $DIR/armel-rootfs-$STAMP.tar"
+
