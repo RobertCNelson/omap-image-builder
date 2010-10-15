@@ -317,11 +317,17 @@ function populate_boot {
  echo "Populating Boot Partition"
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
- echo "uImage"
- sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Linux" -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
- echo "uInitrd"
- sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
 
+ if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
+  LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
+  echo "uImage"
+  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n ${LINUX_VER} -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
+ fi
+
+ if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
+  echo "uInitrd"
+  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
+ fi
 
 if [ "$DO_UBOOT" ];then
 
