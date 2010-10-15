@@ -76,6 +76,7 @@ fi
 function beagle_boot_scripts {
 
 cat > /tmp/boot.cmd <<beagle_boot_cmd
+echo "Debug: Demo Image Install"
 if test "\${beaglerev}" = "xMA"; then
 echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
 setenv mpurate 800
@@ -92,6 +93,7 @@ beagle_boot_cmd
  then
 
 cat > /tmp/boot.cmd <<beagle_pico_boot_cmd
+echo "Debug: Demo Image Install"
 if test "\${beaglerev}" = "xMA"; then
 echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
 setenv mpurate 800
