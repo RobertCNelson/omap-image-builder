@@ -33,6 +33,7 @@
 unset MMC
 unset SWAP_BOOT_USER
 unset DEFAULT_USER
+unset DEBUG
 
 #Defaults
 RFS=ext4
@@ -71,6 +72,27 @@ if [ "${APT}" ];then
  echo "Installing Dependencies"
  sudo aptitude install $PACKAGE
 fi
+}
+
+function beagle_debug_scripts {
+
+cat > /tmp/boot.cmd <<beagle_debug_cmd
+echo "Full Debug"
+if test "\${beaglerev}" = "xMA"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv mpurate 800
+fi
+setenv dvimode 1280x720MR-16@60
+setenv vram 12MB
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs earlyprintk debug-oem-config console=ttyS2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc buddy=\${buddy} mpurate=\${mpurate}
+boot
+
+beagle_debug_cmd
+
+rm -f /tmp/user.cmd || true
+cp /tmp/boot.cmd /tmp/user.cmd
+
 }
 
 function beagle_boot_scripts {
@@ -156,7 +178,11 @@ function dl_xload_uboot {
 case "$SYSTEM" in
     beagle)
 
-beagle_boot_scripts
+if [ "$DEBUG" ];then
+ beagle_debug_scripts
+else
+ beagle_boot_scripts
+fi
 
  #beagle
  MIRROR="http://rcn-ee.net/deb/"
@@ -777,6 +803,9 @@ Additional/Optional options:
 --swap_file <xxx>
     Creats a Swap file of (xxx)MB's
 
+--debug
+    enable all debug options for troubleshooting
+
 EOF
 exit
 }
@@ -834,6 +863,9 @@ while [ ! -z "$1" ]; do
             checkparm $2
             SWAP_SIZE="$2"
             CREATE_SWAP=1
+            ;;
+        --debug)
+            DEBUG=1
             ;;
     esac
     shift
