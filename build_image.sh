@@ -418,11 +418,11 @@ lucid_release
 
 unset USE_OEM
 dl_rootstock
-maverick_xfce4
+maverick_release
 
-
+#all
 #lucid_xfce4
-#maverick_release
+#maverick_xfce4
 #squeeze_release
 #natty_release
 
