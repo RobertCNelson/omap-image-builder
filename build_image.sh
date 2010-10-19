@@ -23,6 +23,8 @@
 SYST=$(cat /etc/hostname)
 ARCH=$(uname -m)
 
+unset USE_OEM
+
 #Lucid Schedule:
 #https://wiki.ubuntu.com/LucidReleaseSchedule
 #alpha-3 :
@@ -35,7 +37,7 @@ LUCID_RC="ubuntu-10.04-rc"
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 17th
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r1"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r2"
 
 #We will see if i go this far...
 #10.04.2 : January 27th
@@ -58,7 +60,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10"
+MAVERICK_RELEASE="ubuntu-10.10-r1"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -152,9 +154,12 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/upgrade-old-debootstrap-packages.diff
 	bzr commit -m 'update old debootstrap packages..'
 
+
+if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
 	bzr commit -m 'set default user name and use oemconfig..'
+fi
 
 #	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
 #	bzr commit -m 'just use oem-config, it works great in the mimimal'
@@ -406,12 +411,18 @@ sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
 set_mirror
-dl_rootstock
 
-#lucid_release
+USE_OEM=1
+dl_rootstock
+lucid_release
+
+unset USE_OEM
+dl_rootstock
+maverick_xfce4
+
+
 #lucid_xfce4
 #maverick_release
-maverick_xfce4
 #squeeze_release
 #natty_release
 

@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 #
 # Latest can be found at:
-# http://bazaar.launchpad.net/~beagleboard-kernel/%2Bjunk/image-builder/annotate/head:/tools/setup_sdcard.sh
+# http://github.com/RobertCNelson/omap-image-builder/blob/master/tools/setup_sdcard.sh
 
 #Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage, md5sum
 
@@ -386,6 +386,46 @@ fi
 
 fi
 
+cat > /tmp/readme.txt <<script_readme
+
+These can be run from anywhere, but just in case change to "cd /boot/uboot"
+
+Tools:
+
+ /tools/rebuild_uinitrd.sh
+
+Updated with a custom uImage and modules? Run "./tools/rebuild_uinitrd.sh" to regenerate the uInitrd used on boot...
+
+ /tools/rebuild_uinitrd.sh
+
+Modified boot.cmd or user.cmd and want to run your new boot args? Run "./tools/rebuild_uinitrd.sh" to regenerate boot.scr/user.scr...
+
+ /tools/fix_zippy2.sh
+
+Early zippy2 boards had the wrong id in eeprom (zippy1).. Put a jumper on eeprom pin and run "./tools/fix_zippy2.sh" to update the eeprom contents for zippy2.
+
+Kernel:
+
+ "./tools/latest_kernel.sh"
+
+Update to the latest rcn-ee.net kernel.. still some bugs in running from /boot/uboot..
+
+Applications:
+
+ "./tools/minimal_xfce.sh"
+
+Install minimal xfce shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
+
+ "./tools/get_chrome.sh"
+
+Install Google's Chrome web browswer.
+
+DSP work in progress.
+
+ /tools/dsp/*
+
+script_readme
+
 cat > /tmp/rebuild_uinitrd.sh <<rebuild_uinitrd
 #!/bin/sh
 
@@ -434,8 +474,12 @@ function run_upgrade {
  wget --no-verbose --directory-prefix=/tmp/ \${KERNEL_DL}
 
  if [ -f /tmp/install-me.sh ] ; then
-  . /tmp/install-me.sh
+  mv /tmp/install-me.sh ~/
  fi
+
+echo "switch to home directory and run"
+echo "cd ~/"
+echo ". install-me.sh"
 
 }
 
@@ -554,6 +598,9 @@ cd ..
 gst_omapfb
 
  sudo mkdir -p ${DIR}/disk/tools/dsp
+
+ sudo cp -v /tmp/readme.txt ${DIR}/disk/tools/readme.txt
+
  sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/tools/rebuild_uinitrd.sh
  sudo chmod +x ${DIR}/disk/tools/rebuild_uinitrd.sh
 
