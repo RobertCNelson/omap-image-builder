@@ -292,16 +292,11 @@ fi
 
 function latest_stable {
 
-DL_DIST=${DIST}
-if [ $DIST == "lucid" ]; then
-	DL_DIST=maverick
-fi
-
 if [ -f /tmp/LATEST ] ; then
 	rm -f /tmp/LATEST
 fi
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DL_DIST}/LATEST
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
 FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 STABLE" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
