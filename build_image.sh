@@ -343,7 +343,7 @@ reset_vars
 
 DIST=maverick
 latest_stable
-EXTRA="linux-firmware,"
+EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RELEASE$MINIMAL
@@ -359,7 +359,7 @@ reset_vars
 
 DIST=maverick
 latest_stable
-EXTRA="linux-firmware,"
+EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RELEASE$XFCE
