@@ -184,7 +184,7 @@ fi
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "Downloading X-loader and Uboot"
+ echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
  rm -f ${DIR}/deploy/bootloader || true
@@ -214,7 +214,7 @@ touchbook_boot_scripts
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "Downloading X-loader and Uboot"
+ echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
  rm -f ${DIR}/deploy/bootloader || true
@@ -235,7 +235,7 @@ touchbook_boot_scripts
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "Downloading X-loader and Uboot"
+ echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
  rm -f ${DIR}/deploy/bootloader || true
@@ -258,7 +258,7 @@ esac
 function cleanup_sd {
 
  echo ""
- echo "Unmountting Partitions"
+ echo "2 / 7: Unmountting Partitions"
  echo ""
 
  NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
@@ -289,7 +289,7 @@ w
 END
 
 echo ""
-echo "Formatting Boot Partition"
+echo "3 / 7: Formatting Boot Partition"
 echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
@@ -328,7 +328,7 @@ w
 ROOTFS
 
 echo ""
-echo "Formating ${RFS} Partition"
+echo "4 / 7: Formating ${RFS} Partition"
 echo ""
 sudo mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL} &>> ${DIR}/sd.log
 
@@ -336,7 +336,7 @@ sudo mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL} &>> ${DIR}/sd.log
 
 function populate_boot {
  echo ""
- echo "Populating Boot Partition"
+ echo "5 / 7: Populating Boot Partition"
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
 
@@ -631,7 +631,7 @@ gst_omapfb
 
 function populate_rootfs {
  echo ""
- echo "Populating rootfs Partition"
+ echo "6 / 7: Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
  echo ""
  sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
@@ -651,7 +651,7 @@ fi
  if [ "$CREATE_SWAP" ] ; then
 
   echo ""
-  echo "Creating SWAP File"
+  echo "Extra: Creating SWAP File"
   echo ""
 
   SPACE_LEFT=$(df ${DIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
@@ -673,6 +673,10 @@ fi
  cd ${DIR}/
 
  sudo umount ${DIR}/disk || true
+
+ echo ""
+ echo "7 / 7: setup_sdcard.sh script complete"
+ echo ""
 }
 
 function check_mmc {
@@ -823,7 +827,7 @@ Additional/Optional options:
     this help
 
 --uboot <dev board>
-    beagle - <Bx, C2/C3/C4, xMA>
+    beagle - <Bx, C2/C3/C4, xMA, xMB>
     igepv2 - <no u-boot or MLO yet>
 
 --addon <device>

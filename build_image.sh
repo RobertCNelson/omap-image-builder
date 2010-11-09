@@ -415,6 +415,8 @@ unset USE_OEM
 dl_rootstock
 maverick_release
 
+squeeze_release
+
 #all
 #lucid_xfce4
 #maverick_xfce4
