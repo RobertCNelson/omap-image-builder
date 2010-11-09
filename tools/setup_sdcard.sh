@@ -99,6 +99,10 @@ if test "\${beaglerev}" = "xMA"; then
 echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
 setenv mpurate 800
 fi
+if test "\${beaglerev}" = "xMB"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv mpurate 800
+fi
 setenv dvimode 1280x720MR-16@60
 setenv vram 12MB
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
@@ -113,6 +117,10 @@ beagle_boot_cmd
 cat > /tmp/boot.cmd <<beagle_pico_boot_cmd
 echo "Debug: Demo Image Install"
 if test "\${beaglerev}" = "xMA"; then
+echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
+setenv mpurate 800
+fi
+if test "\${beaglerev}" = "xMB"; then
 echo "Kernel is not ready for 1Ghz limiting to 800Mhz"
 setenv mpurate 800
 fi
@@ -131,6 +139,9 @@ cat > /tmp/user.cmd <<beagle_user_cmd
 if test "\${beaglerev}" = "xMA"; then
 echo "xMA doesnt have NAND"
 exit
+else if test "\${beaglerev}" = "xMB"; then
+echo "xMB doesnt have NAND"
+exit
 else
 echo "Starting NAND UPGRADE, do not REMOVE SD CARD or POWER till Complete"
 fatload mmc 0:1 0x80200000 MLO
@@ -148,6 +159,7 @@ nand write 0x80300000 80000 160000
 nand erase 260000 20000
 echo "UPGRADE Complete, REMOVE SD CARD and DELETE this boot.scr"
 exit
+fi
 fi
 
 beagle_user_cmd
