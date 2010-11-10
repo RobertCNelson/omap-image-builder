@@ -37,7 +37,7 @@ LUCID_RC="ubuntu-10.04-rc"
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 17th
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r2"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r3"
 
 #We will see if i go this far...
 #10.04.2 : January 27th
@@ -60,7 +60,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r1"
+MAVERICK_RELEASE="ubuntu-10.10-r2"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -415,8 +415,7 @@ unset USE_OEM
 dl_rootstock
 maverick_release
 
-squeeze_release
-
+#squeeze_release
 #all
 #lucid_xfce4
 #maverick_xfce4
