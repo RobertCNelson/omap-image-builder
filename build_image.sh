@@ -86,6 +86,7 @@ MINIMAL_APT="btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
+DEB_ARMHF_COMPONENTS="main"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
@@ -103,31 +104,37 @@ unset USER_PASS
 function set_mirror {
 
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
+MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
 
 if [ $SYST == "work-p4" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
 if [ $SYST == "work-celeron" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
 if [ $SYST == "voodoo-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
+	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
 if [ $SYST == "lvrm" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
+	MIRROR_DEB_ARMHF="--mirror http://192.168.1.90:3142/ftp.debian-ports.org/debian/"
 	DEB_MIRROR="http://192.168.1.90:81/dl/mirrors/deb"
 fi
 
 if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
 	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
+	MIRROR_DEB_ARMHF="--mirror http://192.168.1.90:3142/ftp.debian-ports.org/debian/"
 	DEB_MIRROR="http://192.168.1.90:81/dl/mirrors/deb"
 fi
 
@@ -182,6 +189,19 @@ function minimal_armel {
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
+}
+
+function minimal_armel_nokernel {
+
+	rm -f ${DIR}/deploy/armel-rootfs-*.tar
+	rm -f ${DIR}/deploy/vmlinuz-*
+	rm -f ${DIR}/deploy/initrd.img-*
+	rm -f ${DIR}/deploy/rootstock-*.log
+
+	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
+	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
+	--components "${COMPONENTS}" \
+	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh
 }
 
 function xfce4_armel {
@@ -401,21 +421,38 @@ compression
 
 }
 
+function armhf_release {
+
+reset_vars
+
+DIST=unstable
+EXTRA="initramfs-tools,"
+COMPONENTS=$DEB_ARMHF_COMPONENTS
+MIRROR=$MIRROR_DEB_ARMHF
+BUILD=armhf$MINIMAL
+USER_PASS="--login ubuntu --password temppwd"
+minimal_armel_nokernel
+compression
+
+}
+
 
 sudo rm -rfd ${DIR}/deploy || true
 mkdir -p ${DIR}/deploy
 
 set_mirror
 
-USE_OEM=1
-dl_rootstock
-lucid_release
+#USE_OEM=1
+#dl_rootstock
+#lucid_release
 
 unset USE_OEM
 dl_rootstock
-maverick_release
-
+#maverick_release
 #squeeze_release
+
+armhf_release
+
 #all
 #lucid_xfce4
 #maverick_xfce4
