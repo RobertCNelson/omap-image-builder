@@ -298,7 +298,7 @@ function cleanup_sd {
 
 function create_partitions {
 
-sudo fdisk ${MMC} << END
+sudo fdisk -H 255 -S 63 ${MMC} << END
 n
 p
 1
