@@ -42,6 +42,7 @@ RFS_LABEL=rootfs
 PARTITION_PREFIX=""
 
 DIR=$PWD
+TEMPDIR=$(mktemp -d)
 
 function detect_software {
 
@@ -192,8 +193,8 @@ panda_boot_cmd
 
 }
 function dl_xload_uboot {
- sudo rm -rfd ${DIR}/deploy/ || true
- mkdir -p ${DIR}/deploy/
+ mkdir -p ${TEMPDIR}/dl/${DIST}
+ mkdir -p ${DIR}/dl/${DIST}
 
 case "$SYSTEM" in
     beagle)
@@ -211,14 +212,13 @@ fi
  echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
- rm -f ${DIR}/deploy/bootloader || true
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
- UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
 
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
 
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
@@ -241,14 +241,13 @@ touchbook_boot_scripts
  echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
- rm -f ${DIR}/deploy/bootloader || true
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:5 MLO" | awk '{print $3}')
- UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:5 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5 UBOOT" | awk '{print $3}')
 
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
 
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
@@ -264,14 +263,13 @@ panda_boot_scripts
  echo "1 / 7: Downloading X-loader and Uboot"
  echo ""
 
- rm -f ${DIR}/deploy/bootloader || true
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MIRROR}tools/latest/bootloader
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${DIR}/deploy/bootloader | grep "ABI:2 MLO" | awk '{print $3}')
- UBOOT=$(cat ${DIR}/deploy/bootloader | grep "ABI:2 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:2 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:2 UBOOT" | awk '{print $3}')
 
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${MLO}
- wget -c --no-verbose --directory-prefix=${DIR}/deploy/ ${UBOOT}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+ wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
 
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
@@ -320,27 +318,25 @@ echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
 
-sudo rm -rfd ${DIR}/disk || true
-
-mkdir ${DIR}/disk
-sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
+mkdir ${TEMPDIR}/disk
+sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 
 if [ "$DO_UBOOT" ];then
- if ls ${DIR}/deploy/${MLO} >/dev/null 2>&1;then
- sudo cp -v ${DIR}/deploy/${MLO} ${DIR}/disk/MLO
- rm -f ${DIR}/deploy/${MLO} || true
+ if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
+ sudo cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+ rm -f ${TEMPDIR}/dl/${MLO} || true
  fi
 
- if ls ${DIR}/deploy/${UBOOT} >/dev/null 2>&1;then
- sudo cp -v ${DIR}/deploy/${UBOOT} ${DIR}/disk/u-boot.bin
- rm -f ${DIR}/deploy/${UBOOT} || true
+ if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
+ sudo cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/dl/u-boot.bin
+ rm -f ${TEMPDIR}/dl/${UBOOT} || true
  fi
 fi
 
-cd ${DIR}/disk
+cd ${TEMPDIR}/disk
 sync
 cd ${DIR}/
-sudo umount ${DIR}/disk || true
+sudo umount ${TEMPDIR}/disk || true
 echo "done"
 
 sudo fdisk ${MMC} << ROOTFS
@@ -369,12 +365,12 @@ function populate_boot {
  if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
   LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
   echo "uImage"
-  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n ${LINUX_VER} -d ${DIR}/vmlinuz-* ${DIR}/disk/uImage
+  sudo mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n ${LINUX_VER} -d ${DIR}/vmlinuz-* ${TEMPDIR}/disk/uImage
  fi
 
  if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
   echo "uInitrd"
-  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${DIR}/disk/uInitrd
+  sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${TEMPDIR}/disk/uInitrd
  fi
 
 if [ "$DO_UBOOT" ];then
@@ -383,21 +379,21 @@ if [ "$DO_UBOOT" ];then
 #in that case user.scr gets loaded over boot.scr
 if [ "$SWAP_BOOT_USER" ] ; then
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
-  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/user.scr
+  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/user.scr
   sudo cp /tmp/boot.cmd ${DIR}/disk/user.cmd
   rm -f /tmp/user.cmd || true
  fi
 fi
 
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${DIR}/disk/boot.scr
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/boot.scr
  sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
  rm -f /tmp/boot.cmd || true
  fi
 
  if ls /tmp/user.cmd >/dev/null 2>&1;then
- sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${DIR}/disk/user.scr
- sudo cp /tmp/user.cmd ${DIR}/disk/user.cmd
+ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${TEMPDIR}/disk/user.scr
+ sudo cp /tmp/user.cmd ${TEMPDIR}/disk/user.cmd
  rm -f /tmp/user.cmd || true
  fi
 
@@ -465,6 +461,9 @@ cd /boot/uboot
 sudo mount -o remount,rw /boot/uboot
 if ls /boot/uboot/boot.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
+fi
+if ls /boot/uboot/serial.cmd >/dev/null 2>&1;then
+sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/serial.cmd /boot/uboot/boot.scr
 fi
 sudo cp /boot/uboot/boot.scr /boot/uboot/boot.ini
 if ls /boot/uboot/user.cmd >/dev/null 2>&1;then
@@ -619,40 +618,37 @@ cd ..
 
 gst_omapfb
 
- sudo mkdir -p ${DIR}/disk/tools/dsp
+ sudo mkdir -p ${TEMPDIR}/disk/tools/dsp
+ sudo cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
+ sudo cp -v /tmp/rebuild_uinitrd.sh ${TEMPDIR}/disk/tools/rebuild_uinitrd.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/rebuild_uinitrd.sh
 
- sudo cp -v /tmp/readme.txt ${DIR}/disk/tools/readme.txt
+ sudo cp -v /tmp/boot_scripts.sh ${TEMPDIR}/disk/tools/boot_scripts.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/boot_scripts.sh
 
- sudo cp -v /tmp/rebuild_uinitrd.sh ${DIR}/disk/tools/rebuild_uinitrd.sh
- sudo chmod +x ${DIR}/disk/tools/rebuild_uinitrd.sh
+ sudo cp -v /tmp/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/fix_zippy2.sh
 
- sudo cp -v /tmp/boot_scripts.sh ${DIR}/disk/tools/boot_scripts.sh
- sudo chmod +x ${DIR}/disk/tools/boot_scripts.sh
+ sudo cp -v /tmp/latest_kernel.sh ${TEMPDIR}/disk/tools/latest_kernel.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/latest_kernel.sh
 
- sudo cp -v /tmp/fix_zippy2.sh ${DIR}/disk/tools/fix_zippy2.sh
- sudo chmod +x ${DIR}/disk/tools/fix_zippy2.sh
+ sudo cp -v /tmp/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
 
- sudo cp -v /tmp/latest_kernel.sh ${DIR}/disk/tools/latest_kernel.sh
- sudo chmod +x ${DIR}/disk/tools/latest_kernel.sh
+ sudo cp -v /tmp/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/get_chrome.sh
 
- sudo cp -v /tmp/minimal_xfce.sh ${DIR}/disk/tools/minimal_xfce.sh
- sudo chmod +x ${DIR}/disk/tools/minimal_xfce.sh
+ sudo cp -v /tmp/gst-dsp.sh  ${TEMPDIR}/disk/tools/dsp/gst-dsp.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/dsp/gst-dsp.sh
 
- sudo cp -v /tmp/get_chrome.sh ${DIR}/disk/tools/get_chrome.sh
- sudo chmod +x ${DIR}/disk/tools/get_chrome.sh
+ sudo cp -v /tmp/gst-omapfb.sh ${TEMPDIR}/disk/tools/dsp/gst-omapfb.sh
+ sudo chmod +x ${TEMPDIR}/disk/tools/dsp/gst-omapfb.sh
 
- sudo cp -v /tmp/gst-dsp.sh  ${DIR}/disk/tools/dsp/gst-dsp.sh
- sudo chmod +x ${DIR}/disk/tools/dsp/gst-dsp.sh
+cd ${TEMPDIR}/disk
+sync
+cd ${DIR}/
+sudo umount ${TEMPDIR}/disk || true
 
- sudo cp -v /tmp/gst-omapfb.sh ${DIR}/disk/tools/dsp/gst-omapfb.sh
- sudo chmod +x ${DIR}/disk/tools/dsp/gst-omapfb.sh
-
- cd ${DIR}/disk/
- sync
- sync
- cd ${DIR}/
-
- sudo umount ${DIR}/disk || true
 }
 
 function populate_rootfs {
@@ -660,18 +656,18 @@ function populate_rootfs {
  echo "6 / 7: Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
  echo ""
- sudo mount ${MMC}${PARTITION_PREFIX}2 ${DIR}/disk
+ sudo mount ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk
 
  if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tgz | sudo tar --numeric-owner --preserve-permissions -xzf - -C ${DIR}/disk/
+   pv ${DIR}/armel-rootfs-*.tgz | sudo tar --numeric-owner --preserve-permissions -xzf - -C ${TEMPDIR}/disk/
  fi
 
  if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tar | sudo tar --numeric-owner --preserve-permissions -xf - -C ${DIR}/disk/
+   pv ${DIR}/armel-rootfs-*.tar | sudo tar --numeric-owner --preserve-permissions -xf - -C ${TEMPDIR}/disk/
  fi
 
 if [ "$DEFAULT_USER" ] ; then
- sudo rm -f ${DIR}/disk/var/lib/oem-config/run || true
+ sudo rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
 fi
 
  if [ "$CREATE_SWAP" ] ; then
@@ -680,25 +676,25 @@ fi
   echo "Extra: Creating SWAP File"
   echo ""
 
-  SPACE_LEFT=$(df ${DIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
+  SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
 
   let SIZE=$SWAP_SIZE*1024
 
   if [ $SPACE_LEFT -ge $SIZE ] ; then
-   sudo dd if=/dev/zero of=${DIR}/disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
+   sudo dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
    sudo mkswap ${DIR}/disk/mnt/SWAP.swap
-   echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ${DIR}/disk/etc/fstab
+   echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ${TEMPDIR}/disk/etc/fstab
    else
    echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
   fi
  fi
 
- cd ${DIR}/disk/
+ cd ${TEMPDIR}/disk/
  sync
  sync
  cd ${DIR}/
 
- sudo umount ${DIR}/disk || true
+ sudo umount ${TEMPDIR}/disk || true
 
  echo ""
  echo "7 / 7: setup_sdcard.sh script complete"
