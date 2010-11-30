@@ -69,9 +69,30 @@ if [ ! $(which pv) ];then
  APT=1
 fi
 
+if [ ! $(which mkfs.vfat) ];then
+ echo "Missing mkfs.vfat"
+ PACKAGE+="dosfstools "
+ APT=1
+fi
+
+if [ ! $(which mkfs.btrfs) ];then
+ echo "Missing btrfs tools"
+ PACKAGE+="btrfs-tools "
+ APT=1
+fi
+
+if [ ! $(which partprobe) ];then
+ echo "Missing partprobe"
+ PACKAGE+="parted "
+ APT=1
+fi
+
 if [ "${APT}" ];then
- echo "Installing Dependencies"
- sudo aptitude install $PACKAGE
+ echo ""
+ echo "Please Install Missing Dependencies"
+ echo "Ubuntu/Debian: sudo apt-get install $PACKAGE"
+ echo ""
+ exit
 fi
 }
 
@@ -825,11 +846,6 @@ case "$FS_TYPE" in
 
         ;;
     btrfs)
-
-  if [ ! $(which mkfs.btrfs) ];then
-   echo "Missing btrfs tools"
-   sudo aptitude install btrfs-tools
-  fi
 
  RFS=btrfs
  unset IN_VALID_FS
