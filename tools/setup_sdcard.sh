@@ -360,7 +360,7 @@ function populate_boot {
  echo ""
  echo "5 / 7: Populating Boot Partition"
  echo ""
- sudo mount ${MMC}${PARTITION_PREFIX}1 ${DIR}/disk
+ sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 
  if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
   LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
@@ -380,7 +380,7 @@ if [ "$DO_UBOOT" ];then
 if [ "$SWAP_BOOT_USER" ] ; then
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
   sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/user.scr
-  sudo cp /tmp/boot.cmd ${DIR}/disk/user.cmd
+  sudo cp /tmp/boot.cmd ${TEMPDIR}/disk/user.cmd
   rm -f /tmp/user.cmd || true
  fi
 fi
@@ -398,8 +398,8 @@ fi
  fi
 
  #for igepv2 users
- if ls ${DIR}/disk/boot.scr >/dev/null 2>&1;then
- sudo cp -v ${DIR}/disk/boot.scr ${DIR}/disk/boot.ini
+ if ls ${TEMPDIR}/disk/boot.scr >/dev/null 2>&1;then
+ sudo cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/boot.ini
  fi
 
 fi
@@ -682,7 +682,7 @@ fi
 
   if [ $SPACE_LEFT -ge $SIZE ] ; then
    sudo dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
-   sudo mkswap ${DIR}/disk/mnt/SWAP.swap
+   sudo mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
    echo "/mnt/SWAP.swap  none  swap  sw  0 0" | sudo tee -a ${TEMPDIR}/disk/etc/fstab
    else
    echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
