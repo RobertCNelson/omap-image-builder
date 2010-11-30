@@ -319,6 +319,7 @@ echo ""
 sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
 
 mkdir ${TEMPDIR}/disk
+sudo partprobe ${MMC}
 sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 
 if [ "$DO_UBOOT" ];then
@@ -358,7 +359,7 @@ function populate_boot {
  echo ""
  echo "5 / 7: Populating Boot Partition"
  echo ""
- sudo partprobe ${MMC}${PARTITION_PREFIX}
+ sudo partprobe ${MMC}
  sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 
  if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
@@ -655,7 +656,7 @@ function populate_rootfs {
  echo "6 / 7: Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
  echo ""
- sudo partprobe ${MMC}${PARTITION_PREFIX}
+ sudo partprobe ${MMC}
  sudo mount ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk
 
  if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
