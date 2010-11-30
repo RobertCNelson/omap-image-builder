@@ -385,7 +385,7 @@ fi
 
  if ls /tmp/boot.cmd >/dev/null 2>&1;then
  sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/boot.scr
- sudo cp /tmp/boot.cmd ${DIR}/disk/boot.cmd
+ sudo cp /tmp/boot.cmd ${TEMPDIR}/disk/boot.cmd
  rm -f /tmp/boot.cmd || true
  fi
 
