@@ -324,12 +324,10 @@ sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 if [ "$DO_UBOOT" ];then
  if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
  sudo cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
- rm -f ${TEMPDIR}/dl/${MLO} || true
  fi
 
  if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
- sudo cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/dl/u-boot.bin
- rm -f ${TEMPDIR}/dl/${UBOOT} || true
+ sudo cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
  fi
 fi
 
