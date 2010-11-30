@@ -312,6 +312,9 @@ p
 w
 END
 
+sync
+sudo partprobe ${MMC}
+
 echo ""
 echo "3 / 7: Formatting Boot Partition"
 echo ""
@@ -347,6 +350,9 @@ p
 p
 w
 ROOTFS
+
+sync
+sudo partprobe ${MMC}
 
 echo ""
 echo "4 / 7: Formating ${RFS} Partition"
