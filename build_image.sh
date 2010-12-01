@@ -435,7 +435,7 @@ reset_vars
 DIST=natty
 SERIAL=ttyO2
 latest_testing
-EXTRA="linux-firmware,"
+EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$NATTY_ALPHA$MINIMAL
