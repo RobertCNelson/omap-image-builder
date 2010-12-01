@@ -26,6 +26,9 @@ case "\$DIST" in
     maverick)
             FLASH_KERNEL_SKIP=yes
         ;;
+    natty)
+            FLASH_KERNEL_SKIP=yes
+        ;;
 esac
 
 fi

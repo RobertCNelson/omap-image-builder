@@ -579,7 +579,7 @@ latest_kernel
 cat > /tmp/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
 
-sudo aptitude -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3
+sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3
 
 basic_xfce
 

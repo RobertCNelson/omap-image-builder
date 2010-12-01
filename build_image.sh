@@ -37,7 +37,7 @@ LUCID_RC="ubuntu-10.04-rc"
 LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 17th
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r3"
+LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r4"
 
 #We will see if i go this far...
 #10.04.2 : January 27th
@@ -60,7 +60,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r2"
+MAVERICK_RELEASE="ubuntu-10.10-r3"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -187,7 +187,7 @@ function minimal_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL}
 }
 
@@ -201,7 +201,7 @@ function minimal_armel_nokernel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup.sh
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh
 }
 
 function xfce4_armel {
@@ -214,7 +214,7 @@ function xfce4_armel {
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
 
@@ -228,7 +228,7 @@ function xubuntu_armel {
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
 
@@ -242,7 +242,7 @@ function gui_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
 
@@ -256,7 +256,7 @@ function toucbook_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}$(cat ${DIR}/tools/touchbook | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL}
 }
 
@@ -270,7 +270,7 @@ function netbook_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ttyS2 --script ${DIR}/tools/fixup-gui.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC}
 }
 
@@ -325,11 +325,30 @@ KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_ar
 
 }
 
+function latest_testing {
+
+if [ -f /tmp/LATEST ] ; then
+	rm -f /tmp/LATEST
+fi
+
+#wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
+#use maverick till natty is built..
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/maverick/LATEST
+FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 TESTING" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
+
+KERNEL="${DEB_MIRROR}/maverick/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0maverick_armel.deb"
+#KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+
+}
+
 function lucid_release {
 
 reset_vars
 
 DIST=lucid
+SERIAL=ttyS2
 latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -346,6 +365,7 @@ function lucid_xfce4 {
 reset_vars
 
 DIST=lucid
+SERIAL=ttyS2
 latest_stable
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -362,6 +382,7 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
+SERIAL=ttyS2
 latest_stable
 EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -378,6 +399,7 @@ function maverick_xfce4 {
 reset_vars
 
 DIST=maverick
+SERIAL=ttyS2
 latest_stable
 EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
@@ -394,6 +416,7 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
+SERIAL=ttyS2
 latest_stable
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
@@ -410,7 +433,8 @@ function natty_release {
 reset_vars
 
 DIST=natty
-latest_stable
+SERIAL=ttyO2
+latest_testing
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -426,6 +450,7 @@ function armhf_release {
 reset_vars
 
 DIST=unstable
+SERIAL=ttyS2
 EXTRA="initramfs-tools,"
 COMPONENTS=$DEB_ARMHF_COMPONENTS
 MIRROR=$MIRROR_DEB_ARMHF
@@ -442,16 +467,20 @@ mkdir -p ${DIR}/deploy
 
 set_mirror
 
-#USE_OEM=1
-#dl_rootstock
-#lucid_release
+USE_OEM=1
+dl_rootstock
+lucid_release
 
 unset USE_OEM
 dl_rootstock
-#maverick_release
-#squeeze_release
+maverick_release
+squeeze_release
 
-armhf_release
+USE_OEM=1
+dl_rootstock
+natty_release
+
+#armhf_release
 
 #all
 #lucid_xfce4

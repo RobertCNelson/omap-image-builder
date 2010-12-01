@@ -5,8 +5,8 @@
  groupadd fuse || true
  
  ${APT_UPDATE}
-+apt-get -y ${APT_FORCE} install aptitude
-+aptitude -y safe-upgrade
++#apt-get -y ${APT_FORCE} install aptitude
++apt-get -y upgrade
  
  ${PACKAGE_CLEANUP}
  

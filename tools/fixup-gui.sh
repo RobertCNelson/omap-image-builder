@@ -26,12 +26,21 @@ case "\$DIST" in
     maverick)
             FLASH_KERNEL_SKIP=yes
         ;;
+    natty)
+            FLASH_KERNEL_SKIP=yes
+        ;;
 esac
 
 fi
 
 FK
 
+#so far only in maverick/natty, so this is for lucid
+if [ ! $(which devmem2) ];then
+ wget http://ports.ubuntu.com/pool/universe/d/devmem2/devmem2_0.0-0ubuntu1_armel.deb
+ dpkg -i devmem2_0.0-0ubuntu1_armel.deb
+ rm -f devmem2_0.0-0ubuntu1_armel.deb
+fi
 rm -f /tmp/*.deb
 rm -rfd /usr/src/linux-headers*
 
