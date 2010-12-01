@@ -44,6 +44,12 @@ PARTITION_PREFIX=""
 DIR=$PWD
 TEMPDIR=$(mktemp -d)
 
+if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
+ echo "Error: no armel-rootfs-* file"
+ echo "Make sure your in the right dir..."
+ exit
+fi
+
 function detect_software {
 
 #Currently only Ubuntu and Debian..
@@ -342,25 +348,36 @@ echo ""
 
 sudo mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
 
-mkdir ${TEMPDIR}/disk
+mkdir -p ${TEMPDIR}/disk
 sudo partprobe ${MMC}
-sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
 
-if [ "$DO_UBOOT" ];then
- if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
- sudo cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
- fi
+if sudo mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
- if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
- sudo cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
- fi
+	if [ "$DO_UBOOT" ];then
+	 if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
+	 sudo cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+	 fi
+
+	 if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
+	 sudo cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+	 fi
+	fi
+
+	cd ${TEMPDIR}/disk
+	sync
+	cd ${DIR}/
+	sudo umount ${TEMPDIR}/disk || true
+
+	echo ""
+	echo "Initial Boot Partition Created"
+	echo ""
+else
+	echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk for initial boot partition creation"
+	echo "and copy MLO & u-boot.bin..."
+	echo "Please retry running the script, sometimes rebooting your system helps."
+	echo ""
+	exit
 fi
-
-cd ${TEMPDIR}/disk
-sync
-cd ${DIR}/
-sudo umount ${TEMPDIR}/disk || true
-echo "done"
 
 sudo fdisk ${MMC} << ROOTFS
 n
@@ -387,7 +404,8 @@ function populate_boot {
  echo "5 / 7: Populating Boot Partition"
  echo ""
  sudo partprobe ${MMC}
- sudo mount ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk
+
+ if sudo mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
  if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
   LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
@@ -676,6 +694,16 @@ sync
 cd ${DIR}/
 sudo umount ${TEMPDIR}/disk || true
 
+	echo ""
+	echo "Finished populating Boot Partition"
+	echo ""
+else
+	echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+	echo "Please retry running the script, sometimes rebooting your system helps."
+	echo ""
+	exit
+fi
+
 }
 
 function populate_rootfs {
@@ -684,7 +712,8 @@ function populate_rootfs {
  echo "Be patient, this may take a few minutes"
  echo ""
  sudo partprobe ${MMC}
- sudo mount ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk
+
+ if sudo mount -t ${RFS} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 
  if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
    pv ${DIR}/armel-rootfs-*.tgz | sudo tar --numeric-owner --preserve-permissions -xzf - -C ${TEMPDIR}/disk/
@@ -723,6 +752,16 @@ fi
  cd ${DIR}/
 
  sudo umount ${TEMPDIR}/disk || true
+
+	echo ""
+	echo "Finished populating rootfs Partition"
+	echo ""
+else
+	echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+	echo "Please retry running the script, sometimes rebooting your system helps."
+	echo ""
+	exit
+fi
 
  echo ""
  echo "7 / 7: setup_sdcard.sh script complete"
