@@ -733,6 +733,10 @@ fi
   echo "Extra: Creating SWAP File"
   echo ""
 
+  echo "SWAP BUG creation note:"
+  echo "IF this takes a long time, open another command terminal and run dmesg"
+  echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
+
   SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
 
   let SIZE=$SWAP_SIZE*1024
