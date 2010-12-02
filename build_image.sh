@@ -331,15 +331,12 @@ if [ -f /tmp/LATEST ] ; then
 	rm -f /tmp/LATEST
 fi
 
-#wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
-#use maverick till natty is built..
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/maverick/LATEST
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
 FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 TESTING" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
 
-KERNEL="${DEB_MIRROR}/maverick/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0maverick_armel.deb"
-#KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
 
 }
 
@@ -383,7 +380,9 @@ reset_vars
 
 DIST=maverick
 SERIAL=ttyS2
+#SERIAL=ttyO2
 latest_stable
+#latest_testing
 EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -467,18 +466,18 @@ mkdir -p ${DIR}/deploy
 
 set_mirror
 
-USE_OEM=1
-dl_rootstock
-lucid_release
+#USE_OEM=1
+#dl_rootstock
+#lucid_release
 
 unset USE_OEM
 dl_rootstock
 maverick_release
-squeeze_release
+#squeeze_release
 
-USE_OEM=1
-dl_rootstock
-natty_release
+#unset USE_OEM
+#dl_rootstock
+#natty_release
 
 #armhf_release
 
