@@ -119,7 +119,7 @@ fi
 unset FDISK_DOS
 
 if fdisk -v | grep 2.18 >/dev/null ; then
- FDISK_DOS="-c=dos"
+ FDISK_DOS="-b 512 -c=dos"
 fi
 
 }
@@ -351,7 +351,7 @@ fdisk -H 255 -S 63 ${FDISK_DOS} ${MMC} << END
 n
 p
 1
-1
+
 +64M
 a
 1
