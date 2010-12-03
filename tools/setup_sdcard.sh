@@ -113,6 +113,15 @@ if [ "${NEEDS_PACKAGE}" ];then
  echo ""
  exit
 fi
+
+#Software Qwerks
+#fdisk 2.18, dos no longer default
+unset FDISK_DOS
+
+if fdisk -v | grep 2.18 >/dev/null ; then
+ FDISK_DOS="-c=dos"
+fi
+
 }
 
 function beagle_debug_scripts {
@@ -338,7 +347,7 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-fdisk -H 255 -S 63 ${MMC} << END
+fdisk -H 255 -S 63 ${FDISK_DOS} ${MMC} << END
 n
 p
 1
