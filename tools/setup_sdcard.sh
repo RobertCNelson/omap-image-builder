@@ -59,49 +59,57 @@ function detect_software {
 
 #Currently only Ubuntu and Debian..
 #Working on Fedora...
-unset PACKAGE
-unset APT
+unset DEB_PACKAGE
+unset RPM_PACKAGE
+unset NEEDS_PACKAGE
 
 if [ ! $(which mkimage) ];then
  echo "Missing uboot-mkimage"
- PACKAGE="uboot-mkimage "
- APT=1
+ DEB_PACKAGE="uboot-mkimage "
+ RPM_PACKAGE="uboot-tools "
+ NEEDS_PACKAGE=1
 fi
 
 if [ ! $(which wget) ];then
  echo "Missing wget"
- PACKAGE+="wget "
- APT=1
+ DEB_PACKAGE+="wget "
+ RPM_PACKAGE+="wget "
+ NEEDS_PACKAGE=1
 fi
 
 if [ ! $(which pv) ];then
  echo "Missing pv"
- PACKAGE+="pv "
- APT=1
+ DEB_PACKAGE+="pv "
+ RPM_PACKAGE+="pv "
+ NEEDS_PACKAGE=1
 fi
 
 if [ ! $(which mkfs.vfat) ];then
  echo "Missing mkfs.vfat"
- PACKAGE+="dosfstools "
- APT=1
+ DEB_PACKAGE+="dosfstools "
+ RPM_PACKAGE+="dosfstools "
+ NEEDS_PACKAGE=1
 fi
 
 if [ ! $(which mkfs.btrfs) ];then
  echo "Missing btrfs tools"
- PACKAGE+="btrfs-tools "
- APT=1
+ DEB_PACKAGE+="btrfs-tools "
+ RPM_PACKAGE+="btrfs-progs "
+ NEEDS_PACKAGE=1
 fi
 
 if [ ! $(which partprobe) ];then
  echo "Missing partprobe"
- PACKAGE+="parted "
- APT=1
+ DEB_PACKAGE+="parted "
+ RPM_PACKAGE+="parted "
+ NEEDS_PACKAGE=1
 fi
 
-if [ "${APT}" ];then
+if [ "${NEEDS_PACKAGE}" ];then
  echo ""
  echo "Please Install Missing Dependencies"
- echo "Ubuntu/Debian: sudo apt-get install $PACKAGE"
+ echo "Ubuntu/Debian: sudo apt-get install $DEB_PACKAGE"
+ echo "Fedora: as root: yum install $RPM_PACKAGE"
  echo ""
  exit
 fi
