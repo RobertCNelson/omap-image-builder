@@ -106,32 +106,13 @@ function set_mirror {
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
 
-if [ $SYST == "work-p4" ]; then
+if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
-if [ $SYST == "work-celeron" ]; then
-	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
-	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
-fi
-
-if [ $SYST == "voodoo-e6400" ]; then
-	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
-	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
-fi
-
-if [ $SYST == "lvrm" ]; then
-	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
-	MIRROR_DEB_ARMHF="--mirror http://192.168.1.90:3142/ftp.debian-ports.org/debian/"
-	DEB_MIRROR="http://192.168.1.90:81/dl/mirrors/deb"
-fi
-
-if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
+if [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.90:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.90:3142/ftp.us.debian.org/debian/"
 	MIRROR_DEB_ARMHF="--mirror http://192.168.1.90:3142/ftp.debian-ports.org/debian/"
