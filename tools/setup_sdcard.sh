@@ -347,7 +347,7 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-sudo fdisk ${MMC} << END
+sudo fdisk ${FDISK_DOS} ${MMC} << END
 n
 p
 1
