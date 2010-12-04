@@ -349,27 +349,14 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-fdisk ${FDISK_DOS} ${MMC} << END
-n
-p
-1
-1
-+64M
-a
-1
-t
-e
-n
-p
-2
+parted --script ${MMC} mkpart primary fat16 0 64
 
+unset END_DEVICE
+END_DEVICE=$(parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $3}' | cut -d "M" -f1)
 
-p
-w
-END
+parted --script ${MMC} mkpart primary ext2 64 ${END_DEVICE}
 
 sync
-partprobe ${MMC}
 
 echo ""
 echo "3 / 7: Formatting Boot Partition"
