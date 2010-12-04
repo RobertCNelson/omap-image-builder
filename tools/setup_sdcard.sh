@@ -119,9 +119,7 @@ fi
 unset FDISK_DOS
 
 if fdisk -v | grep 2.18 >/dev/null ; then
- FDISK_DOS="-b 512 -c=dos"
- echo "broken fdisk"
- exit
+ FDISK_DOS="-c=dos -u=cylinders"
 fi
 
 }
@@ -349,12 +347,27 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-parted --script ${MMC} mkpart primary fat16 0 64
+sudo fdisk ${MMC} << END
+n
+p
+1
+1
++64M
+a
+1
+t
+e
+p
+w
+END
+
+unset END_BOOT
+END_BOOT=$(parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
 unset END_DEVICE
 END_DEVICE=$(parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $3}' | cut -d "M" -f1)
 
-parted --script ${MMC} mkpart primary ext2 64 ${END_DEVICE}
+parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
 
 sync
 
