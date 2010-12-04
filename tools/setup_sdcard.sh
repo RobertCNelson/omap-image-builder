@@ -258,8 +258,7 @@ fi
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "1 / 7: Downloading X-loader and Uboot"
- echo ""
+ echo "1 / 9: Downloading X-loader and Uboot"
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
@@ -287,8 +286,7 @@ touchbook_boot_scripts
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "1 / 7: Downloading X-loader and Uboot"
- echo ""
+ echo "1 / 9: Downloading X-loader and Uboot"
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
@@ -309,8 +307,7 @@ panda_boot_scripts
  MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
- echo "1 / 7: Downloading X-loader and Uboot"
- echo ""
+ echo "1 / 9: Downloading X-loader and Uboot"
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
@@ -331,8 +328,7 @@ esac
 function cleanup_sd {
 
  echo ""
- echo "2 / 7: Unmountting Partitions"
- echo ""
+ echo "2 / 9: Unmountting Partitions"
 
  NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
 
@@ -347,7 +343,9 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-sudo fdisk ${FDISK_DOS} ${MMC} << END
+echo ""
+echo "3 / 9: Creating Boot Partition"
+fdisk ${FDISK_DOS} ${MMC} << END
 n
 p
 1
@@ -361,6 +359,8 @@ p
 w
 END
 
+echo ""
+echo "4 / 9: Creating ${RFS} Partition"
 unset END_BOOT
 END_BOOT=$(parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
@@ -368,60 +368,35 @@ unset END_DEVICE
 END_DEVICE=$(parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $3}' | cut -d "M" -f1)
 
 parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
-
 sync
 
 echo ""
-echo "3 / 7: Formatting Boot Partition"
-echo ""
-
+echo "5 / 9: Formatting Boot Partition"
 mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL} &> ${DIR}/sd.log
 
-mkdir -p ${TEMPDIR}/disk
-partprobe ${MMC}
-
-if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
-
-	if [ "$DO_UBOOT" ];then
-	 if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
-	  cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
-	 fi
-
-	 if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
-	  cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
-	 fi
-	fi
-
-	cd ${TEMPDIR}/disk
-	sync
-	cd ${DIR}/
-	umount ${TEMPDIR}/disk || true
-
-	echo ""
-	echo "Initial Boot Partition Created"
-	echo ""
-else
-	echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk for initial boot partition creation"
-	echo "and copy MLO & u-boot.bin..."
-	echo "Please retry running the script, sometimes rebooting your system helps."
-	echo ""
-	exit
-fi
-
 echo ""
-echo "4 / 7: Formating ${RFS} Partition"
-echo ""
+echo "6 / 9: Formating ${RFS} Partition"
 mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL} &>> ${DIR}/sd.log
 
 }
 
 function populate_boot {
  echo ""
- echo "5 / 7: Populating Boot Partition"
- echo ""
+ echo "7 / 9: Populating Boot Partition"
  partprobe ${MMC}
+ mkdir -p ${TEMPDIR}/disk
 
  if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
+
+ if [ "$DO_UBOOT" ];then
+  if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
+   cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+  fi
+
+  if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
+   cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+  fi
+ fi
 
  if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
   LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
@@ -712,8 +687,8 @@ umount ${TEMPDIR}/disk || true
 
 	echo ""
 	echo "Finished populating Boot Partition"
-	echo ""
 else
+	echo ""
 	echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
 	echo "Please retry running the script, sometimes rebooting your system helps."
 	echo ""
@@ -724,9 +699,8 @@ fi
 
 function populate_rootfs {
  echo ""
- echo "6 / 7: Populating rootfs Partition"
+ echo "8 / 9: Populating rootfs Partition"
  echo "Be patient, this may take a few minutes"
- echo ""
  partprobe ${MMC}
 
  if mount -t ${RFS} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
@@ -775,8 +749,8 @@ fi
 
 	echo ""
 	echo "Finished populating rootfs Partition"
-	echo ""
 else
+	echo ""
 	echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
 	echo "Please retry running the script, sometimes rebooting your system helps."
 	echo ""
@@ -784,8 +758,7 @@ else
 fi
 
  echo ""
- echo "7 / 7: setup_sdcard.sh script complete"
- echo ""
+ echo "9 / 9: setup_sdcard.sh script complete"
 }
 
 function check_mmc {
@@ -932,7 +905,6 @@ Additional/Optional options:
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA, xMB>
     igepv2 - <no u-boot or MLO yet>
-    panda - <A1>
 
 --addon <device>
     pico
