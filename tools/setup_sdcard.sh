@@ -120,6 +120,8 @@ unset FDISK_DOS
 
 if fdisk -v | grep 2.18 >/dev/null ; then
  FDISK_DOS="-b 512 -c=dos"
+ echo "broken fdisk"
+ exit
 fi
 
 }
@@ -347,16 +349,21 @@ parted -s ${MMC} mklabel msdos
 
 function create_partitions {
 
-fdisk -H 255 -S 63 ${FDISK_DOS} ${MMC} << END
+fdisk ${FDISK_DOS} ${MMC} << END
 n
 p
 1
-
+1
 +64M
 a
 1
 t
 e
+n
+p
+2
+
+
 p
 w
 END
@@ -400,19 +407,6 @@ else
 	echo ""
 	exit
 fi
-
-fdisk ${MMC} << ROOTFS
-n
-p
-2
-
-
-p
-w
-ROOTFS
-
-sync
-partprobe ${MMC}
 
 echo ""
 echo "4 / 7: Formating ${RFS} Partition"
