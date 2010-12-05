@@ -723,7 +723,7 @@ fi
   echo "Extra: Creating SWAP File"
   echo ""
   echo "SWAP BUG creation note:"
-  echo "IF this takes a long time, (more then 5mins) open another command terminal and run dmesg"
+  echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
   echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
   echo ""
 
