@@ -362,10 +362,10 @@ END
 echo ""
 echo "4 / 9: Creating ${RFS} Partition"
 unset END_BOOT
-END_BOOT=$(parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
+END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
 unset END_DEVICE
-END_DEVICE=$(parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $3}' | cut -d "M" -f1)
+END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $3}' | cut -d "M" -f1)
 
 parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
 sync
