@@ -449,15 +449,16 @@ mkdir -p ${DIR}/deploy
 
 set_mirror
 
-USE_OEM=1
-dl_rootstock
-lucid_release
+#USE_OEM=1
+#dl_rootstock
+#lucid_release
 
 unset USE_OEM
 dl_rootstock
-maverick_release
-squeeze_release
+#maverick_release
 natty_release
+
+#squeeze_release
 
 #unset USE_OEM
 #dl_rootstock
