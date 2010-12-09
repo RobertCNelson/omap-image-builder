@@ -570,6 +570,7 @@ latest_kernel
 cat > /tmp/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
 
+sudo apt-get update
 sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3
 
 basic_xfce
@@ -579,6 +580,7 @@ cat > /tmp/get_chrome.sh <<latest_chrome
 
 #setup libs
 
+sudo apt-get update
 sudo apt-get -y install libnss3-1d unzip libxss1
 
 sudo ln -sf /usr/lib/libsmime3.so /usr/lib/libsmime3.so.12
