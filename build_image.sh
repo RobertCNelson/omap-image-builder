@@ -360,10 +360,10 @@ function maverick_release {
 reset_vars
 
 DIST=maverick
-SERIAL=ttyS2
-#SERIAL=ttyO2
-latest_stable
-#latest_testing
+#SERIAL=ttyS2
+SERIAL=ttyO2
+#latest_stable
+latest_testing
 EXTRA="linux-firmware,devmem2,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -455,8 +455,8 @@ set_mirror
 
 unset USE_OEM
 dl_rootstock
-#maverick_release
-natty_release
+maverick_release
+#natty_release
 
 #squeeze_release
 
