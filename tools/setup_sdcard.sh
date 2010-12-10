@@ -896,6 +896,8 @@ function usage {
     echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board> --swap_file <50Mb mininum>"
 cat <<EOF
 
+Bugs: email "bugs at rcn-ee.com"
+
 required options:
 --mmc </dev/sdX>
     Unformated MMC Card
