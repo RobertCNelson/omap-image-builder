@@ -39,6 +39,7 @@ unset MMC
 unset SWAP_BOOT_USER
 unset DEFAULT_USER
 unset DEBUG
+unset BETA
 
 #Defaults
 RFS=ext4
@@ -262,8 +263,14 @@ fi
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:1 MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:1 UBOOT" | awk '{print $3}')
+ if [ "$BETA" ];then
+  ABI="ABX"
+ else
+  ABI="ABI"
+ fi
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1 UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
@@ -311,8 +318,14 @@ panda_boot_scripts
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:2 MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:2 UBOOT" | awk '{print $3}')
+ if [ "$BETA" ];then
+  ABI="ABX"
+ else
+  ABI="ABI"
+ fi
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2 MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2 UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
@@ -990,6 +1003,9 @@ while [ ! -z "$1" ]; do
             checkparm $2
             SWAP_SIZE="$2"
             CREATE_SWAP=1
+            ;;
+        --beta)
+            BETA=1
             ;;
         --debug)
             DEBUG=1
