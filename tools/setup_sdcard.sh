@@ -208,7 +208,7 @@ nandecc sw
 nand erase 80000 160000
 nand write 0x80300000 80000 160000
 nand erase 260000 20000
-echo "UPGRADE Complete, REMOVE SD CARD and DELETE this boot.scr"
+echo "FLASH UPGRADE Complete"
 exit
 fi
 fi
