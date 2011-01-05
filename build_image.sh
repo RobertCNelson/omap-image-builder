@@ -326,8 +326,9 @@ function lucid_release {
 reset_vars
 
 DIST=lucid
-SERIAL=ttyS2
-latest_stable
+SERIAL=ttyO2
+#latest_stable
+latest_testing
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
@@ -338,29 +339,11 @@ compression
 
 }
 
-function lucid_xfce4 {
-
-reset_vars
-
-DIST=lucid
-SERIAL=ttyS2
-latest_stable
-EXTRA="linux-firmware,"
-COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RELEASE_10_04_1$XFCE
-USER_PASS="--login ubuntu --password temppwd"
-gui_armel
-compression
-
-}
-
 function maverick_release {
 
 reset_vars
 
 DIST=maverick
-#SERIAL=ttyS2
 SERIAL=ttyO2
 #latest_stable
 latest_testing
@@ -374,30 +357,14 @@ compression
 
 }
 
-function maverick_xfce4 {
-
-reset_vars
-
-DIST=maverick
-SERIAL=ttyS2
-latest_stable
-EXTRA="linux-firmware,devmem2,"
-COMPONENTS=$UBUNTU_COMPONENTS
-MIRROR=$MIRROR_UBU
-BUILD=$MAVERICK_RELEASE$XFCE
-USER_PASS="--login ubuntu --password temppwd"
-xfce4_armel
-compression
-
-}
-
 function squeeze_release {
 
 reset_vars
 
 DIST=squeeze
-SERIAL=ttyS2
-latest_stable
+SERIAL=ttyO2
+#latest_stable
+latest_testing
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 COMPONENTS=$DEBIAN_COMPONENTS
@@ -413,7 +380,6 @@ function natty_release {
 reset_vars
 
 DIST=natty
-#SERIAL=ttyS2
 SERIAL=ttyO2
 #latest_stable
 latest_testing
@@ -449,16 +415,16 @@ mkdir -p ${DIR}/deploy
 
 set_mirror
 
-#USE_OEM=1
-#dl_rootstock
-#lucid_release
+USE_OEM=1
+dl_rootstock
+lucid_release
 
 unset USE_OEM
 dl_rootstock
 maverick_release
 natty_release
 
-#squeeze_release
+squeeze_release
 
 #unset USE_OEM
 #dl_rootstock
