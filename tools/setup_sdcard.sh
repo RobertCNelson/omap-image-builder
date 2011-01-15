@@ -644,30 +644,117 @@ sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 
 latest_chrome
 
-cat > /tmp/gst-dsp.sh <<gst_dsp
+cat > /tmp/dsp-init <<gst_dsp
 #!/bin/sh
+
+case "\$1" in
+	start)
+		modprobe mailbox_mach
+		modprobe bridgedriver base_img=/lib/dsp/baseimage.dof
+		;;
+esac
+
+dspscript
+
+cat > /tmp/install-dsp-init.sh <<installDSP
+#!/bin/bash
+
+DIR=\$PWD
+
+if [ \$(uname -m) == "armv7l" ] ; then
+
+# if [ -e  \${DIR}/dsp_libs.tar.gz ]; then
+
+#  echo "Extracting target files to rootfs"
+#  sudo tar xf dsp_libs.tar.gz -C /
+
+  if which lsb_release >/dev/null 2>&1 && [ "\$(lsb_release -is)" = Ubuntu ]; then
+
+    if [ \$(lsb_release -sc) == "jaunty" ]; then
+      sudo cp /uboot/boot/tools/dsp/dsp-init /etc/rcS.d/S61dsp.sh
+      sudo chmod +x /etc/rcS.d/S61dsp.sh
+    else
+      #karmic/lucid/maverick/etc
+      sudo cp /uboot/boot/tools/dsp/dsp-init /etc/init.d/dsp
+      sudo chmod +x /etc/init.d/dsp
+      sudo update-rc.d dsp defaults
+    fi
+
+  else
+
+    sudo cp /uboot/boot/tools/dsp/dsp-init /etc/init.d/dsp
+    sudo chmod +x /etc/init.d/dsp
+    sudo update-rc.d dsp defaults
+
+  fi
+
+# else
+#  echo "dsp_libs.tar.gz is missing"
+#  exit
+# fi
+
+else
+ echo "This script is to be run on an armv7 platform"
+ exit
+fi
+
+installDSP
+
+cat > /tmp/install-gst-dsp.sh <<installgst
+#!/bin/bash
+
+DIR=\$HOME
+
+function no_connection {
+
+echo "setup internet connection before running.."
+exit
+
+}
+
+ping -c 1 -w 100 www.google.com  | grep "ttl=" || no_connection
 
 sudo apt-get -y install git-core pkg-config build-essential gstreamer-tools libgstreamer0.10-dev
 
+mkdir -p \${DIR}/git/
+
+if ! ls \${DIR}/git/gst-dsp >/dev/null 2>&1;then
+cd \${DIR}/git/
 git clone git://github.com/felipec/gst-dsp.git
-cd gst-dsp
+fi
+
+cd \${DIR}/git/gst-dsp
+make clean
+git pull
 make CROSS_COMPILE= 
 sudo make install
+cd \${DIR}/
 
-cd ..
-
-gst_dsp
-
-cat > /tmp/gst-omapfb.sh <<gst_omapfb
-#!/bin/sh
-
+if ! ls \${DIR}/git/gst-omapfb >/dev/null 2>&1;then
+cd \${DIR}/git/
 git clone git://github.com/felipec/gst-omapfb.git
-cd gst-omapfb
+fi
+
+cd \${DIR}/git/gst-omapfb
+make clean
+git pull
 make CROSS_COMPILE= 
 sudo make install
-cd ..
+cd \${DIR}/
 
-gst_omapfb
+if ! ls \${DIR}/git/dsp-tools >/dev/null 2>&1;then
+cd \${DIR}/git/
+git clone git://github.com/felipec/dsp-tools.git
+fi
+
+cd \${DIR}/git/dsp-tools
+make clean
+git pull
+make CROSS_COMPILE= 
+sudo make install
+cd \${DIR}/
+
+installgst
 
  mkdir -p ${TEMPDIR}/disk/tools/dsp
  cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
@@ -689,11 +776,14 @@ gst_omapfb
  cp -v /tmp/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
  chmod +x ${TEMPDIR}/disk/tools/get_chrome.sh
 
- cp -v /tmp/gst-dsp.sh  ${TEMPDIR}/disk/tools/dsp/gst-dsp.sh
- chmod +x ${TEMPDIR}/disk/tools/dsp/gst-dsp.sh
+ cp -v /tmp/dsp-init ${TEMPDIR}/disk/tools/dsp/dsp-init
+ chmod +x ${TEMPDIR}/disk/tools/dsp/dsp-init
 
- cp -v /tmp/gst-omapfb.sh ${TEMPDIR}/disk/tools/dsp/gst-omapfb.sh
- chmod +x ${TEMPDIR}/disk/tools/dsp/gst-omapfb.sh
+ cp -v /tmp/install-dsp-init.sh ${TEMPDIR}/disk/tools/dsp/install-dsp-init.sh 
+ chmod +x ${TEMPDIR}/disk/tools/dsp/install-dsp-init.sh 
+
+ cp -v /tmp/install-gst-dsp.sh ${TEMPDIR}/disk/tools/dsp/install-gst-dsp.sh
+ chmod +x ${TEMPDIR}/disk/tools/dsp/install-gst-dsp.sh
 
 cd ${TEMPDIR}/disk
 sync
