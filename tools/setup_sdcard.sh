@@ -252,6 +252,8 @@ function dl_xload_uboot {
  echo ""
  echo "1 / 9: Downloading X-loader and Uboot"
 
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+
 case "$SYSTEM" in
     beagle)
 
@@ -262,7 +264,6 @@ else
 fi
 
  #beagle
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
  if [ "$BETA" ];then
   ABI="ABX"
@@ -291,8 +292,6 @@ fi
 
 touchbook_boot_scripts
 
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
-
  if [ "$BETA" ];then
   ABI="ABX"
  else
@@ -312,8 +311,6 @@ touchbook_boot_scripts
     panda)
 
 panda_boot_scripts
-
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
  if [ "$BETA" ];then
   ABI="ABX"
