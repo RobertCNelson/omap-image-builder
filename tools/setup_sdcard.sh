@@ -254,6 +254,12 @@ function dl_xload_uboot {
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
+ if [ "$BETA" ];then
+  ABI="ABX"
+ else
+  ABI="ABI"
+ fi
+
 case "$SYSTEM" in
     beagle)
 
@@ -264,12 +270,6 @@ else
 fi
 
  #beagle
-
- if [ "$BETA" ];then
-  ABI="ABX"
- else
-  ABI="ABI"
- fi
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $3}')
@@ -292,12 +292,6 @@ fi
 
 touchbook_boot_scripts
 
- if [ "$BETA" ];then
-  ABI="ABX"
- else
-  ABI="ABI"
- fi
-
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $3}')
 
@@ -311,12 +305,6 @@ touchbook_boot_scripts
     panda)
 
 panda_boot_scripts
-
- if [ "$BETA" ];then
-  ABI="ABX"
- else
-  ABI="ABI"
- fi
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $3}')
