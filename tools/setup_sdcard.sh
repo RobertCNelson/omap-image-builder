@@ -249,6 +249,8 @@ function dl_xload_uboot {
 
  MIRROR="http://rcn-ee.net/deb/"
 
+ echo ""
+ echo "1 / 9: Downloading X-loader and Uboot"
 
 case "$SYSTEM" in
     beagle)
@@ -260,10 +262,6 @@ else
 fi
 
  #beagle
-
- echo ""
- echo "1 / 9: Downloading X-loader and Uboot"
-
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
  if [ "$BETA" ];then
@@ -293,9 +291,6 @@ fi
 
 touchbook_boot_scripts
 
- echo ""
- echo "1 / 9: Downloading X-loader and Uboot"
-
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
  if [ "$BETA" ];then
@@ -317,9 +312,6 @@ touchbook_boot_scripts
     panda)
 
 panda_boot_scripts
-
- echo ""
- echo "1 / 9: Downloading X-loader and Uboot"
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
