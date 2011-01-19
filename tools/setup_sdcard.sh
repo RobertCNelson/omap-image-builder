@@ -298,8 +298,14 @@ touchbook_boot_scripts
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5:MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5:UBOOT" | awk '{print $3}')
+ if [ "$BETA" ];then
+  ABI="ABX"
+ else
+  ABI="ABI"
+ fi
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
