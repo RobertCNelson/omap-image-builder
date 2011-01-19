@@ -247,6 +247,9 @@ function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
 
+ MIRROR="http://rcn-ee.net/deb/"
+
+
 case "$SYSTEM" in
     beagle)
 
@@ -257,7 +260,6 @@ else
 fi
 
  #beagle
- MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
  echo "1 / 9: Downloading X-loader and Uboot"
@@ -291,8 +293,6 @@ fi
 
 touchbook_boot_scripts
 
- MIRROR="http://rcn-ee.net/deb/"
-
  echo ""
  echo "1 / 9: Downloading X-loader and Uboot"
 
@@ -317,8 +317,6 @@ touchbook_boot_scripts
     panda)
 
 panda_boot_scripts
-
- MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
  echo "1 / 9: Downloading X-loader and Uboot"
