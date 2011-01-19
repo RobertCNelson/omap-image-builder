@@ -242,6 +242,7 @@ boot
 panda_boot_cmd
 
 }
+
 function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
@@ -269,8 +270,8 @@ fi
   ABI="ABI"
  fi
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1 MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
@@ -297,8 +298,8 @@ touchbook_boot_scripts
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5 MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5:MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "ABI:5:UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
@@ -324,8 +325,8 @@ panda_boot_scripts
   ABI="ABI"
  fi
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2 MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2 UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $3}')
 
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
