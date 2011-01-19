@@ -269,24 +269,16 @@ else
  beagle_boot_scripts
 fi
 
- #beagle
-
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $3}')
-
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
-
- MLO=${MLO##*/}
- UBOOT=${UBOOT##*/}
 
         ;;
     igepv2)
 
- #MLO=${MLO##*/}
- #UBOOT=${UBOOT##*/}
- MLO=NA
- UBOOT=NA
+exit
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $3}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:UBOOT" | awk '{print $3}')
+
         ;;
     touchbook)
 
@@ -294,12 +286,6 @@ touchbook_boot_scripts
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $3}')
-
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
-
- MLO=${MLO##*/}
- UBOOT=${UBOOT##*/}
 
         ;;
     panda)
@@ -309,14 +295,14 @@ panda_boot_scripts
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $3}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $3}')
 
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
- wget -c --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
+        ;;
+esac
+
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
 
  MLO=${MLO##*/}
  UBOOT=${UBOOT##*/}
-
-        ;;
-esac
 
 }
 
