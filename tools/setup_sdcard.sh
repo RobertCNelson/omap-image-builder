@@ -612,7 +612,7 @@ sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 
 latest_chrome
 
-cat > /tmp/dsp-init <<gst_dsp
+cat > /tmp/dsp-init <<dspscript
 #!/bin/sh
 
 case "\$1" in
