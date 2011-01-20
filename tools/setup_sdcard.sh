@@ -269,31 +269,31 @@ else
  beagle_boot_scripts
 fi
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $2}')
 
         ;;
     igepv2)
 
 exit
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:UBOOT" | awk '{print $2}')
 
         ;;
     touchbook)
 
 touchbook_boot_scripts
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $2}')
 
         ;;
     panda)
 
 panda_boot_scripts
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $3}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $3}')
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $2}')
 
         ;;
 esac
