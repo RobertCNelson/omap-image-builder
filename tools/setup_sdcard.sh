@@ -236,10 +236,24 @@ cat > /tmp/boot.cmd <<panda_boot_cmd
 setenv dvimode 1024x600MR-16@60
 setenv vram 16MB
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc mpurate=600
+setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
 boot
 
 panda_boot_cmd
+
+}
+
+
+function crane_boot_scripts {
+
+cat > /tmp/boot.cmd <<crane_boot_cmd
+setenv dvimode 1024x600MR-16@60
+setenv vram 16MB
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
+boot
+
+crane_boot_cmd
 
 }
 
@@ -294,6 +308,14 @@ panda_boot_scripts
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $2}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $2}')
+
+        ;;
+    crane)
+
+crane_boot_scripts
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:6:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:6:UBOOT" | awk '{print $2}')
 
         ;;
 esac
@@ -902,6 +924,13 @@ case "$UBOOT_TYPE" in
     panda)
 
  SYSTEM=panda
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+
+        ;;
+    crane)
+
+ SYSTEM=crane
  unset IN_VALID_UBOOT
  DO_UBOOT=1
 
