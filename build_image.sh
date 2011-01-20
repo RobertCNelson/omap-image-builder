@@ -321,6 +321,21 @@ KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_ar
 
 }
 
+function latest_experimental {
+
+if [ -f /tmp/LATEST ] ; then
+	rm -f /tmp/LATEST
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
+FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 EXPERIMENTAL" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
+
+KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+
+}
+
 function lucid_release {
 
 reset_vars
