@@ -82,7 +82,7 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-MINIMAL_APT="btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
+MINIMAL_APT="btrfs-tools,cpufrequtils,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
 
 UBUNTU_COMPONENTS="main universe multiverse"
 DEBIAN_COMPONENTS="main contrib non-free"
@@ -398,7 +398,7 @@ DIST=natty
 SERIAL=ttyO2
 #latest_stable
 latest_testing
-EXTRA="linux-firmware,devmem2,"
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$NATTY_ALPHA$MINIMAL
