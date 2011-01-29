@@ -22,6 +22,7 @@
 
 SYST=$(cat /etc/hostname)
 ARCH=$(uname -m)
+TIME=$(date +%y%m%d)
 
 unset USE_OEM
 
@@ -256,29 +257,29 @@ function netbook_armel {
 }
 
 function compression {
-	rm -rfd ${DIR}/deploy/$BUILD || true
-	mkdir -p ${DIR}/deploy/$BUILD
+	rm -rfd ${DIR}/deploy/${TIME}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/$BUILD
+		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/$BUILD
+		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/$BUILD
+		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
-	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/$BUILD
+	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
 
 #	echo "Calculating MD5SUMS" 
 #	cd ${DIR}/deploy/$BUILD
 #	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/
+	cd ${DIR}/deploy/${TIME}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -424,9 +425,7 @@ compression
 
 }
 
-
-sudo rm -rfd ${DIR}/deploy || true
-mkdir -p ${DIR}/deploy
+mkdir -p ${DIR}/deploy/${TIME}
 
 set_mirror
 
