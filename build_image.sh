@@ -39,10 +39,10 @@ LUCID_RELEASE="ubuntu-10.04"
 #10.04.1 : August 17th
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
 LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r4"
+#10.04.2 : January 27th
+LUCID_RELEASE_10_04_2="ubuntu-10.04.2-r0"
 
 #We will see if i go this far...
-#10.04.2 : January 27th
-LUCID_RELEASE_10_04_2="ubuntu-10.04.2"
 #10.04.3 : July 29th 2011
 LUCID_RELEASE_10_04_3="ubuntu-10.04.3"
 #10.04.4 : January 22th 2012
@@ -348,7 +348,7 @@ latest_testing
 EXTRA="linux-firmware,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$LUCID_RELEASE_10_04_1$MINIMAL
+BUILD=$LUCID_RELEASE_10_04_2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
