@@ -61,14 +61,14 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r3"
+MAVERICK_RELEASE="ubuntu-10.10-r4"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
 #alpha-1 : December 2nd
 NATTY_ALPHA="ubuntu-natty-alpha1-r1"
 #alpha-2 : February 3rd
-NATTY_ALPHA2="ubuntu-natty-alpha2"
+NATTY_ALPHA2="ubuntu-natty-alpha2-r0"
 #alpha-3 : March 3rd
 NATTY_ALPHA3="ubuntu-natty-alpha3"
 #beta : March 31st
@@ -402,7 +402,7 @@ latest_testing
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
-BUILD=$NATTY_ALPHA$MINIMAL
+BUILD=$NATTY_ALPHA2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
@@ -438,7 +438,7 @@ dl_rootstock
 maverick_release
 natty_release
 
-squeeze_release
+#squeeze_release
 
 #unset USE_OEM
 #dl_rootstock
