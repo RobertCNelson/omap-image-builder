@@ -1009,6 +1009,7 @@ Additional/Optional options:
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA, xMB>
     igepv2 - <no u-boot or MLO yet>
+    panda - <dvi not working yet>
 
 --addon <device>
     pico
