@@ -926,6 +926,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=panda
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ DEFAULT_USER=1
 
         ;;
     crane)
