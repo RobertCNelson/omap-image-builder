@@ -1,0 +1,2 @@
+deb http://ports.ubuntu.com/ubuntu-ports natty main universe multiverse
+deb http://ports.ubuntu.com/ubuntu-ports natty-updates main universe multiverse

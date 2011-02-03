@@ -1,0 +1,2 @@
+deb http://ports.ubuntu.com/ubuntu-ports lucid main universe multiverse
+deb http://ports.ubuntu.com/ubuntu-ports lucid-updates main universe multiverse

@@ -128,9 +128,8 @@ function dl_rootstock {
 	bzr branch lp:project-rootstock
 	cd ${DIR}/../project-rootstock
 
-#	echo "Applying local patches"
-#	bzr revert -r 123
-#	bzr commit -m 'safe too'
+	patch -p0 < ${DIR}/patches/apt-source-fix.diff
+	bzr commit -m 'Svein Seldal apt source fix'
 
 	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
 	bzr commit -m 'tar output'
@@ -140,21 +139,12 @@ function dl_rootstock {
 
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
-	patch -p0 < ${DIR}/patches/upgrade-old-debootstrap-packages.diff
-	bzr commit -m 'update old debootstrap packages..'
-
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
 	bzr commit -m 'set default user name and use oemconfig..'
 fi
-
-#	patch -p0 < ${DIR}/patches/dont-bother-with-gtk-or-kde-just-use-oem-config.diff
-#	bzr commit -m 'just use oem-config, it works great in the mimimal'
-
-#	patch -p0 < ${DIR}/patches/oem-config-bisect.diff
-#	bzr commit -m 'work around lp bug lp-628587'
 
 	cd ${DIR}/deploy/
 }
@@ -170,7 +160,7 @@ function minimal_armel {
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function minimal_armel_nokernel {
@@ -183,7 +173,7 @@ function minimal_armel_nokernel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
 	--components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function xfce4_armel {
@@ -197,7 +187,7 @@ function xfce4_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function xubuntu_armel {
@@ -211,7 +201,7 @@ function xubuntu_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function gui_armel {
@@ -225,7 +215,7 @@ function gui_armel {
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function toucbook_armel {
@@ -239,7 +229,7 @@ function toucbook_armel {
 	--seed ${MINIMAL_APT},${EXTRA}$(cat ${DIR}/tools/touchbook | tr '\n' ',') ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL}
+	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function netbook_armel {
@@ -253,7 +243,7 @@ function netbook_armel {
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} ${FORCE_SEC}
+	--kernel-image ${KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
 function compression {
