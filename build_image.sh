@@ -85,10 +85,6 @@ NET="-netbook-armel"
 
 MINIMAL_APT="btrfs-tools,cpufrequtils,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
 
-UBUNTU_COMPONENTS="main universe multiverse"
-DEBIAN_COMPONENTS="main contrib non-free"
-DEB_ARMHF_COMPONENTS="main"
-
 DEB_MIRROR="http://rcn-ee.net/deb"
 
 DIR=$PWD
@@ -158,7 +154,6 @@ function minimal_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -172,7 +167,6 @@ function minimal_armel_nokernel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
 
@@ -185,7 +179,6 @@ function xfce4_armel {
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -199,7 +192,6 @@ function xubuntu_armel {
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -213,7 +205,6 @@ function gui_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -227,7 +218,6 @@ function toucbook_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}$(cat ${DIR}/tools/touchbook | tr '\n' ',') ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -241,7 +231,6 @@ function netbook_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
-	--components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
 }
@@ -336,7 +325,6 @@ SERIAL=ttyO2
 #latest_stable
 latest_testing
 EXTRA="linux-firmware,"
-COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE_10_04_2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
@@ -354,7 +342,6 @@ SERIAL=ttyO2
 #latest_stable
 latest_testing
 EXTRA="linux-firmware,devmem2,"
-COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RELEASE$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
@@ -373,7 +360,6 @@ SERIAL=ttyO2
 latest_testing
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
-COMPONENTS=$DEBIAN_COMPONENTS
 MIRROR=$MIRROR_DEB
 BUILD=squeeze$MINIMAL
 minimal_armel
@@ -390,7 +376,6 @@ SERIAL=ttyO2
 #latest_stable
 latest_testing
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
-COMPONENTS=$UBUNTU_COMPONENTS
 MIRROR=$MIRROR_UBU
 BUILD=$NATTY_ALPHA2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
@@ -406,7 +391,6 @@ reset_vars
 DIST=unstable
 SERIAL=ttyS2
 EXTRA="initramfs-tools,"
-COMPONENTS=$DEB_ARMHF_COMPONENTS
 MIRROR=$MIRROR_DEB_ARMHF
 BUILD=armhf$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
