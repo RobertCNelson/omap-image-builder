@@ -233,7 +233,7 @@ touchbook_boot_cmd
 function panda_boot_scripts {
 
 cat > /tmp/boot.cmd <<panda_boot_cmd
-setenv dvimode 1024x600MR-16@60
+setenv dvimode 1280x720MR-16@60
 setenv vram 16MB
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
 setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
@@ -247,7 +247,7 @@ panda_boot_cmd
 function crane_boot_scripts {
 
 cat > /tmp/boot.cmd <<crane_boot_cmd
-setenv dvimode 1024x600MR-16@60
+setenv dvimode 1280x720MR-16@60
 setenv vram 16MB
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
 setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
