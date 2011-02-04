@@ -217,6 +217,19 @@ beagle_user_cmd
 
 }
 
+function igepv2_boot_scripts {
+
+cat > /tmp/boot.cmd <<igepv2_boot_cmd
+setenv dvimode 1280x720MR-16@60
+setenv vram 12MB
+setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
+setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
+boot
+
+igepv2_boot_cmd
+
+}
+
 function touchbook_boot_scripts {
 
 cat > /tmp/boot.cmd <<touchbook_boot_cmd
@@ -242,7 +255,6 @@ boot
 panda_boot_cmd
 
 }
-
 
 function crane_boot_scripts {
 
@@ -289,12 +301,19 @@ fi
         ;;
     igepv2)
 
+echo "igepv2 not ready"
 exit
+
+igepv2_boot_scripts
+
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $2}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:UBOOT" | awk '{print $2}')
 
         ;;
     touchbook)
+
+echo "touchbook not ready"
+exit
 
 touchbook_boot_scripts
 
@@ -311,6 +330,9 @@ panda_boot_scripts
 
         ;;
     crane)
+
+echo "crane not ready"
+exit
 
 crane_boot_scripts
 
@@ -434,11 +456,6 @@ fi
  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${TEMPDIR}/disk/user.scr
  cp /tmp/user.cmd ${TEMPDIR}/disk/user.cmd
  rm -f /tmp/user.cmd || true
- fi
-
- #for igepv2 users
- if ls ${TEMPDIR}/disk/boot.scr >/dev/null 2>&1;then
- cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/boot.ini
  fi
 
 fi
@@ -1009,7 +1026,6 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA, xMB>
-    igepv2 - <no u-boot or MLO yet>
     panda - <dvi not working yet>
 
 --addon <device>
