@@ -400,7 +400,7 @@ echo "5 / 9: Formatting Boot Partition"
 mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
 
 echo ""
-echo "6 / 9: Formating ${RFS} Partition"
+echo "6 / 9: Formatting ${RFS} Partition"
 mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL}
 
 }
