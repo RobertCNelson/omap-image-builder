@@ -123,6 +123,13 @@ if fdisk -v | grep 2.18 >/dev/null ; then
  FDISK_DOS="-c=dos -u=cylinders"
 fi
 
+#Check for gnu-fdisk
+#FIXME: GNU Fdisk seems to halt at "Using /dev/xx" when trying to script it..
+if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
+ echo "Sorry, this script currently doesn't work with GNU Fdisk"
+ exit
+fi
+
 }
 
 function beagle_debug_scripts {
