@@ -411,9 +411,9 @@ lucid_release
 unset USE_OEM
 dl_rootstock
 maverick_release
-natty_release
+#natty_release
 
-#squeeze_release
+squeeze_release
 
 #unset USE_OEM
 #dl_rootstock

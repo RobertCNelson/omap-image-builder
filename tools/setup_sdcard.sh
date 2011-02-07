@@ -363,7 +363,7 @@ function cleanup_sd {
   umount ${DRIVE} &> /dev/null || true
  done
 
-parted -s ${MMC} mklabel msdos
+parted --script ${MMC} mklabel msdos
 }
 
 function create_partitions {
@@ -376,13 +376,15 @@ p
 1
 1
 +64M
-a
-1
 t
 e
 p
 w
 END
+
+sync
+
+parted --script ${MMC} set 1 boot on
 
 echo ""
 echo "4 / 9: Creating ${RFS} Partition"
