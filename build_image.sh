@@ -237,29 +237,29 @@ function netbook_armel {
 }
 
 function compression {
-	rm -rfd ${DIR}/deploy/${TIME}/$BUILD || true
-	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
+	rm -rfd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
+		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}/$BUILD
+		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}/$BUILD
+		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 	fi
 
-	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
+	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 
 #	echo "Calculating MD5SUMS" 
 #	cd ${DIR}/deploy/$BUILD
 #	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/${TIME}/
+	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -271,49 +271,20 @@ else
 fi
 	cd ${DIR}/deploy/
 }
-
-function latest_stable {
-
-if [ -f /tmp/LATEST ] ; then
-	rm -f /tmp/LATEST
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
-FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 STABLE" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
-
-KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
-
-}
-
-function latest_testing {
+function kernel_select {
 
 if [ -f /tmp/LATEST ] ; then
 	rm -f /tmp/LATEST
 fi
 
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
-FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 TESTING" | awk '{print $3}')
+FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 ${KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
 
 KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
 
-}
-
-function latest_experimental {
-
-if [ -f /tmp/LATEST ] ; then
-	rm -f /tmp/LATEST
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
-FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 EXPERIMENTAL" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
-
-KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+echo "Using: ${KERNEL}"
 
 }
 
@@ -323,8 +294,7 @@ reset_vars
 
 DIST=lucid
 SERIAL=ttyO2
-#latest_stable
-latest_testing
+kernel_select
 EXTRA="linux-firmware,"
 MIRROR=$MIRROR_UBU
 BUILD=$LUCID_RELEASE_10_04_2$MINIMAL
@@ -340,8 +310,7 @@ reset_vars
 
 DIST=maverick
 SERIAL=ttyO2
-#latest_stable
-latest_testing
+kernel_select
 EXTRA="linux-firmware,devmem2,"
 MIRROR=$MIRROR_UBU
 BUILD=$MAVERICK_RELEASE$MINIMAL
@@ -357,8 +326,7 @@ reset_vars
 
 DIST=squeeze
 SERIAL=ttyO2
-#latest_stable
-latest_testing
+kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
@@ -374,8 +342,7 @@ reset_vars
 
 DIST=natty
 SERIAL=ttyO2
-#latest_stable
-latest_testing
+kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 BUILD=$NATTY_ALPHA2$MINIMAL
@@ -390,7 +357,8 @@ function armhf_release {
 reset_vars
 
 DIST=unstable
-SERIAL=ttyS2
+SERIAL=ttyO2
+kernel_select
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 BUILD=armhf$MINIMAL
@@ -404,6 +372,10 @@ mkdir -p ${DIR}/deploy/${TIME}
 
 set_mirror
 
+KERNEL_SEL="STABLE"
+#KERNEL_SEL="TESTING"
+#KERNEL_SEL="EXPERIMENTAL"
+
 USE_OEM=1
 dl_rootstock
 lucid_release
@@ -411,19 +383,6 @@ lucid_release
 unset USE_OEM
 dl_rootstock
 maverick_release
-#natty_release
-
+natty_release
 squeeze_release
-
-#unset USE_OEM
-#dl_rootstock
-#natty_release
-
-#armhf_release
-
-#all
-#lucid_xfce4
-#maverick_xfce4
-#squeeze_release
-#natty_release
 
