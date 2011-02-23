@@ -368,8 +368,6 @@ compression
 
 }
 
-mkdir -p ${DIR}/deploy/${TIME}
-
 set_mirror
 
 KERNEL_SEL="STABLE"
