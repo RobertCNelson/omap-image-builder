@@ -336,6 +336,22 @@ compression
 
 }
 
+function wheezy_release {
+
+reset_vars
+
+DIST=wheezy
+SERIAL=ttyO2
+kernel_select
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+USER_PASS="--login ubuntu --password temppwd"
+MIRROR=$MIRROR_DEB
+BUILD=${DIST}$MINIMAL
+minimal_armel
+compression
+
+}
+
 function natty_release {
 
 reset_vars
