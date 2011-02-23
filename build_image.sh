@@ -386,3 +386,14 @@ maverick_release
 natty_release
 squeeze_release
 
+KERNEL_SEL="TESTING"
+USE_OEM=1
+dl_rootstock
+lucid_release
+
+unset USE_OEM
+dl_rootstock
+maverick_release
+natty_release
+squeeze_release
+
