@@ -402,7 +402,6 @@ KERNEL_SEL="STABLE"
 USE_OEM=1
 dl_rootstock
 lucid_release
-exit
 
 unset USE_OEM
 dl_rootstock
