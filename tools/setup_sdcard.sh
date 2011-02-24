@@ -475,15 +475,11 @@ These can be run from anywhere, but just in case change to "cd /boot/uboot"
 
 Tools:
 
- /tools/rebuild_uinitrd.sh
+ "./tools/update_boot_files.sh"
 
-Updated with a custom uImage and modules? Run "./tools/rebuild_uinitrd.sh" to regenerate the uInitrd used on boot...
+Updated with a custom uImage and modules or modified the boot.cmd/user.com files with new boot args? Run "./tools/update_boot_files.sh" to regenerate all boot files...
 
- /tools/rebuild_uinitrd.sh
-
-Modified boot.cmd or user.cmd and want to run your new boot args? Run "./tools/rebuild_uinitrd.sh" to regenerate boot.scr/user.scr...
-
- /tools/fix_zippy2.sh
+ "./tools/fix_zippy2.sh"
 
 Early zippy2 boards had the wrong id in eeprom (zippy1).. Put a jumper on eeprom pin and run "./tools/fix_zippy2.sh" to update the eeprom contents for zippy2.
 
@@ -509,7 +505,7 @@ DSP work in progress.
 
 script_readme
 
-cat > /tmp/rebuild_uinitrd.sh <<rebuild_uinitrd
+cat > /tmp/update_boot_files.sh <<update_boot_files
 #!/bin/sh
 
 cd /boot/uboot
@@ -517,13 +513,6 @@ sudo mount -o remount,rw /boot/uboot
 sudo update-initramfs -u -k \$(uname -r)
 sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
 
-rebuild_uinitrd
-
-cat > /tmp/boot_scripts.sh <<rebuild_scripts
-#!/bin/sh
-
-cd /boot/uboot
-sudo mount -o remount,rw /boot/uboot
 if ls /boot/uboot/boot.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
 fi
@@ -535,7 +524,7 @@ if ls /boot/uboot/user.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
 fi
 
-rebuild_scripts
+update_boot_files
 
 cat > /tmp/fix_zippy2.sh <<fix_zippy2
 #!/bin/sh
@@ -774,11 +763,9 @@ installgst
 
  mkdir -p ${TEMPDIR}/disk/tools/dsp
  cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
- cp -v /tmp/rebuild_uinitrd.sh ${TEMPDIR}/disk/tools/rebuild_uinitrd.sh
- chmod +x ${TEMPDIR}/disk/tools/rebuild_uinitrd.sh
 
- cp -v /tmp/boot_scripts.sh ${TEMPDIR}/disk/tools/boot_scripts.sh
- chmod +x ${TEMPDIR}/disk/tools/boot_scripts.sh
+ cp -v /tmp/rebuild_uinitrd.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
+ chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
 
  cp -v /tmp/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
  chmod +x ${TEMPDIR}/disk/tools/fix_zippy2.sh
