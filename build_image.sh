@@ -241,15 +241,19 @@ function compression {
 	mkdir -p ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
-		cp -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+	fi
+
+	if ls ${DIR}/deploy/rootstock-*.log >/dev/null 2>&1;then
+		rm -f ${DIR}/deploy/rootstock-*.log || true
 	fi
 
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
@@ -262,15 +266,18 @@ function compression {
 	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
-	time tar cvfJ $BUILD.tar.xz ./$BUILD
-#if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
-#	tar cvf $BUILD.tar ./$BUILD
-#else
-	time tar cvf $BUILD.tar ./$BUILD
-	time 7za a $BUILD.tar.7z $BUILD.tar
-#fi
+	#tar cvfJ $BUILD.tar.xz ./$BUILD
+
+if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
+	tar cvf $BUILD.tar ./$BUILD
+else
+	tar cvf $BUILD.tar ./$BUILD
+	xz -z -7 -v $BUILD.tar
+fi
+
 	cd ${DIR}/deploy/
 }
+
 function kernel_select {
 
 if [ -f /tmp/LATEST ] ; then
