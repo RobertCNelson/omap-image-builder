@@ -764,7 +764,7 @@ installgst
  mkdir -p ${TEMPDIR}/disk/tools/dsp
  cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
- cp -v /tmp/rebuild_uinitrd.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
+ cp -v /tmp/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
  chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
 
  cp -v /tmp/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
