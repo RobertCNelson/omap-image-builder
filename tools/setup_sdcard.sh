@@ -243,7 +243,7 @@ cat > /tmp/boot.cmd <<touchbook_boot_cmd
 setenv dvimode 1024x600MR-16@60
 setenv vram 12MB
 setenv bootcmd 'mmc init; fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=tty1 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc mpurate=600
+setenv bootargs console=ttyO2,115200n8 console=tty1 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc mpurate=600
 boot
 
 touchbook_boot_cmd
@@ -318,9 +318,6 @@ igepv2_boot_scripts
 
         ;;
     touchbook)
-
-echo "touchbook not ready"
-exit
 
 touchbook_boot_scripts
 
