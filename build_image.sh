@@ -40,7 +40,7 @@ LUCID_RELEASE="ubuntu-10.04"
 #LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
 LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r4"
 #10.04.2 : January 27th
-LUCID_RELEASE_10_04_2="ubuntu-10.04.2-r0"
+LUCID_RELEASE_10_04_2="ubuntu-10.04.2-r1"
 
 #We will see if i go this far...
 #10.04.3 : July 29th 2011
@@ -61,7 +61,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r4"
+MAVERICK_RELEASE="ubuntu-10.10-r5"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -70,11 +70,11 @@ NATTY_ALPHA="ubuntu-natty-alpha1-r1"
 #alpha-2 : February 3rd
 NATTY_ALPHA2="ubuntu-natty-alpha2-r0"
 #alpha-3 : March 3rd
-NATTY_ALPHA3="ubuntu-natty-alpha3"
+NATTY_ALPHA3="ubuntu-natty-alpha3-r0"
 #beta : March 31st
-NATTY_BETA="ubuntu-natty-beta"
-#RC : April 21st
-NATTY_RC="ubuntu-11.04-rc"
+NATTY_BETA1="ubuntu-natty-beta1"
+#RC : April 14th
+NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
 NATTY_RELEASE="ubuntu-11.04"
 
@@ -368,7 +368,7 @@ SERIAL=ttyO2
 kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
-BUILD=$NATTY_ALPHA2$MINIMAL
+BUILD=$NATTY_ALPHA3$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
