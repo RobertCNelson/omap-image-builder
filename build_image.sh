@@ -88,8 +88,8 @@ MINIMAL_APT="btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
-DEB_COMPONENTS="main contrib non-free"
-UBU_COMPONENTS="main universe multiverse"
+DEB_COMPONENTS="main,contrib,non-free"
+UBU_COMPONENTS="main,universe,multiverse"
 
 DIR=$PWD
 
