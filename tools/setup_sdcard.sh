@@ -507,8 +507,16 @@ cat > /tmp/update_boot_files.sh <<update_boot_files
 
 cd /boot/uboot
 sudo mount -o remount,rw /boot/uboot
+
+if ! ls /boot/initrd.img-\$(uname -r) >/dev/null 2>&1;then
+sudo update-initramfs -c -k \$(uname -r)
+else
 sudo update-initramfs -u -k \$(uname -r)
+fi
+
+if ls /boot/initrd.img-\$(uname -r) >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
+fi
 
 if ls /boot/uboot/boot.cmd >/dev/null 2>&1;then
 sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
