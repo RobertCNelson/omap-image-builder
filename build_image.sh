@@ -297,7 +297,7 @@ SERIAL=ttyO2
 kernel_select
 EXTRA="linux-firmware,"
 MIRROR=$MIRROR_UBU
-COMPONENTS=${UBU_COMPONENTS}
+COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$LUCID_RELEASE_10_04_2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
@@ -315,7 +315,7 @@ SERIAL=ttyO2
 kernel_select
 EXTRA="linux-firmware,devmem2,"
 MIRROR=$MIRROR_UBU
-COMPONENTS=${UBU_COMPONENTS}
+COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$MAVERICK_RELEASE$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
@@ -333,7 +333,7 @@ SERIAL=ttyO2
 kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
-COMPONENTS=${UBU_COMPONENTS}
+COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$NATTY_ALPHA3$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
@@ -351,7 +351,7 @@ kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
-COMPONENTS=${DEB_COMPONENTS}
+COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL
 minimal_armel
 compression
@@ -368,7 +368,7 @@ kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
-COMPONENTS=${DEB_COMPONENTS}
+COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL
 minimal_armel
 compression
@@ -384,7 +384,7 @@ SERIAL=ttyO2
 kernel_select
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
-COMPONENTS=${DEB_COMPONENTS}
+COMPONENTS="${DEB_COMPONENTS}"
 BUILD=armhf$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel_nokernel
