@@ -215,19 +215,6 @@ function gui_armel {
 	--kernel-image ${KERNEL} --apt-upgrade
 }
 
-function toucbook_armel {
-
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
-
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA}$(cat ${DIR}/tools/touchbook | tr '\n' ',') ${MIRROR} --components ${COMPONENTS} \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade
-}
-
 function netbook_armel {
 
 	rm -f ${DIR}/deploy/armel-rootfs-*.tar
