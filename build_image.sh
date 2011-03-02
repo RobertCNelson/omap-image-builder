@@ -158,7 +158,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components ${COMPONENTS} \
+	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL} --apt-upgrade
 }
@@ -171,7 +171,7 @@ function minimal_armel_nokernel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components ${COMPONENTS} \
+	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade
 }
 
@@ -184,7 +184,7 @@ function xfce4_armel {
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 \
-	${MIRROR} --components ${COMPONENTS} \
+	${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade
 }
@@ -197,7 +197,7 @@ function xubuntu_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components ${COMPONENTS} \
+	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade
 }
@@ -210,7 +210,7 @@ function gui_armel {
 	rm -f ${DIR}/deploy/rootstock-*.log
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components ${COMPONENTS} \
+	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	--kernel-image ${KERNEL} --apt-upgrade
 }
