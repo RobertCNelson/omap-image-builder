@@ -300,6 +300,7 @@ echo "Using: ${KERNEL}"
 
 }
 
+#10.04
 function lucid_release {
 
 reset_vars
@@ -317,6 +318,7 @@ compression
 
 }
 
+#10.10
 function maverick_release {
 
 reset_vars
@@ -328,6 +330,24 @@ EXTRA="linux-firmware,devmem2,"
 MIRROR=$MIRROR_UBU
 COMPONENTS=${UBU_COMPONENTS}
 BUILD=$MAVERICK_RELEASE$MINIMAL
+USER_PASS="--login ubuntu --password temppwd"
+minimal_armel
+compression
+
+}
+
+#11.04
+function natty_release {
+
+reset_vars
+
+DIST=natty
+SERIAL=ttyO2
+kernel_select
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS=${UBU_COMPONENTS}
+BUILD=$NATTY_ALPHA3$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
@@ -363,23 +383,6 @@ USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS=${DEB_COMPONENTS}
 BUILD=${DIST}$MINIMAL
-minimal_armel
-compression
-
-}
-
-function natty_release {
-
-reset_vars
-
-DIST=natty
-SERIAL=ttyO2
-kernel_select
-EXTRA="linux-firmware,devmem2,u-boot-tools,"
-MIRROR=$MIRROR_UBU
-COMPONENTS=${UBU_COMPONENTS}
-BUILD=$NATTY_ALPHA3$MINIMAL
-USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
 
