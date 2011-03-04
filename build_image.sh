@@ -238,12 +238,12 @@ function compression {
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
-if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
-	tar cvf $BUILD.tar ./$BUILD
-else
+#if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
+#	tar cvf $BUILD.tar ./$BUILD
+#else
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
-fi
+#fi
 
 	cd ${DIR}/deploy/
 }
