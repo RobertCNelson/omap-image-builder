@@ -1024,7 +1024,7 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA, xMB>
-    igepv2
+    igepv2 - <serial mode only>
     panda - <serial mode only>
 
 --addon <device>
