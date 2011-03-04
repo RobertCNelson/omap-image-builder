@@ -39,7 +39,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r5"
+MAVERICK_RELEASE="ubuntu-10.10-r6"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -294,7 +294,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_ALPHA3$MINIMAL
+BUILD=$NATTY_BETA1$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
@@ -354,28 +354,25 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
-#set_mirror
+set_mirror
+dl_rootstock
+
+#USE_OEM=1
+#lucid..
+
+#unset USE_OEM
+#anything else
 
 KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
 #KERNEL_SEL="EXPERIMENTAL"
 
-#USE_OEM=1
-#dl_rootstock
-
-unset USE_OEM
-dl_rootstock
 maverick_release
 natty_release
-
-
-exit
 squeeze_release
 
 KERNEL_SEL="TESTING"
 
-unset USE_OEM
-dl_rootstock
 maverick_release
 natty_release
 squeeze_release
