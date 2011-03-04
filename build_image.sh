@@ -91,6 +91,10 @@ DEB_MIRROR="http://rcn-ee.net/deb"
 DEB_COMPONENTS="main,contrib,non-free"
 UBU_COMPONENTS="main,universe,multiverse"
 
+MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
+MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
+MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
+
 DIR=$PWD
 
 function reset_vars {
@@ -103,10 +107,6 @@ unset USER_PASS
 }
 
 function set_mirror {
-
-MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
-MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
-MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
 
 if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
@@ -394,7 +394,7 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
-set_mirror
+#set_mirror
 
 KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
@@ -408,6 +408,9 @@ unset USE_OEM
 dl_rootstock
 maverick_release
 natty_release
+
+
+exit
 squeeze_release
 
 KERNEL_SEL="TESTING"

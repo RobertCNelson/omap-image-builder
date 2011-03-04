@@ -308,9 +308,6 @@ fi
         ;;
     igepv2)
 
-echo "igepv2 not ready"
-exit
-
 igepv2_boot_scripts
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $2}')
@@ -1027,7 +1024,8 @@ Additional/Optional options:
 
 --uboot <dev board>
     beagle - <Bx, C2/C3/C4, xMA, xMB>
-    panda - <dvi not working yet>
+    igepv2
+    panda - <serial mode only>
 
 --addon <device>
     pico
