@@ -26,28 +26,6 @@ TIME=$(date +%y%m%d)
 
 unset USE_OEM
 
-#Lucid Schedule:
-#https://wiki.ubuntu.com/LucidReleaseSchedule
-#alpha-3 :
-LUCID_ALPHA3="ubuntu-lucid-alpha3.1"
-#beta-2 : April 8th
-LUCID_BETA2="ubuntu-lucid-beta2.1"
-#RC : April 22nd
-LUCID_RC="ubuntu-10.04-rc"
-#10.04 : April 29th
-LUCID_RELEASE="ubuntu-10.04"
-#10.04.1 : August 17th
-#LUCID_RELEASE_10_04_1="ubuntu-10.04.1"
-LUCID_RELEASE_10_04_1="ubuntu-10.04.1-r4"
-#10.04.2 : January 27th
-LUCID_RELEASE_10_04_2="ubuntu-10.04.2-r1"
-
-#We will see if i go this far...
-#10.04.3 : July 29th 2011
-LUCID_RELEASE_10_04_3="ubuntu-10.04.3"
-#10.04.4 : January 22th 2012
-LUCID_RELEASE_10_04_4="ubuntu-10.04.4"
-
 #Maverick Schedule:
 #https://wiki.ubuntu.com/MaverickReleaseSchedule
 #alpha-1 : June 3rd
@@ -287,24 +265,6 @@ echo "Using: ${KERNEL}"
 
 }
 
-#10.04
-function lucid_release {
-
-reset_vars
-
-DIST=lucid
-SERIAL=ttyO2
-kernel_select
-EXTRA="linux-firmware,"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$LUCID_RELEASE_10_04_2$MINIMAL
-USER_PASS="--login ubuntu --password temppwd"
-minimal_armel
-compression
-
-}
-
 #10.10
 function maverick_release {
 
@@ -400,9 +360,8 @@ KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
 #KERNEL_SEL="EXPERIMENTAL"
 
-USE_OEM=1
-dl_rootstock
-lucid_release
+#USE_OEM=1
+#dl_rootstock
 
 unset USE_OEM
 dl_rootstock
@@ -414,9 +373,6 @@ exit
 squeeze_release
 
 KERNEL_SEL="TESTING"
-USE_OEM=1
-dl_rootstock
-lucid_release
 
 unset USE_OEM
 dl_rootstock
