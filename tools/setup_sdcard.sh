@@ -57,10 +57,10 @@ if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
 fi
 
 #Software Qwerks
-#fdisk 2.18, dos no longer default
+#fdisk 2.18.x/2.19.x, dos no longer default
 unset FDISK_DOS
 
-if fdisk -v | grep 2.18 >/dev/null ; then
+if fdisk -v | grep 2.1[8-9] >/dev/null ; then
  FDISK_DOS="-c=dos -u=cylinders"
 fi
 
