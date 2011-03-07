@@ -40,6 +40,7 @@ unset SWAP_BOOT_USER
 unset DEFAULT_USER
 unset DEBUG
 unset BETA
+unset FDISK_DEBUG
 
 #Defaults
 RFS=ext4
@@ -59,6 +60,11 @@ fi
 #Software Qwerks
 #fdisk 2.18.x/2.19.x, dos no longer default
 unset FDISK_DOS
+
+if [ "$FDISK_DEBUG" ];then
+ echo "Debug: fdisk version:"
+ fdisk -v
+fi
 
 if fdisk -v | grep 2.1[8-9] >/dev/null ; then
  FDISK_DOS="-c=dos -u=cylinders"
@@ -372,6 +378,11 @@ sync
 
 parted --script ${MMC} set 1 boot on
 
+if [ "$FDISK_DEBUG" ];then
+ echo "Debug: Partition 1 layout:"
+ fdisk -l ${MMC}
+fi
+
 echo ""
 echo "4 / 9: Creating ${RFS} Partition"
 unset END_BOOT
@@ -382,6 +393,12 @@ END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 
 
 parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
 sync
+
+if [ "$FDISK_DEBUG" ];then
+ echo "Debug: ${RFS} Partition"
+ echo "parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}"
+ fdisk -l ${MMC}
+fi
 
 echo ""
 echo "5 / 9: Formatting Boot Partition"
@@ -1035,6 +1052,9 @@ Additional/Optional options:
 --debug
     enable all debug options for troubleshooting
 
+--fdisk-debug
+    debug fdisk/parted/etc..
+
 EOF
 exit
 }
@@ -1098,6 +1118,9 @@ while [ ! -z "$1" ]; do
             ;;
         --debug)
             DEBUG=1
+            ;;
+        --fdisk-debug)
+            FDISK_DEBUG=1
             ;;
     esac
     shift
