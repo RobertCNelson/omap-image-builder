@@ -295,7 +295,7 @@ function dl_xload_uboot {
  fi
 
 case "$SYSTEM" in
-    beagle)
+    beagle_bx)
 
 if [ "$DEBUG" ];then
  beagle_debug_scripts
@@ -307,6 +307,20 @@ fi
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $2}')
  UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $2}')
+
+        ;;
+    beagle)
+
+if [ "$DEBUG" ];then
+ beagle_debug_scripts
+ boot_scr_to_uenv_txt
+else
+ beagle_boot_scripts
+ boot_scr_to_uenv_txt
+fi
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:7:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:7:UBOOT" | awk '{print $2}')
 
         ;;
     igepv2)
@@ -800,6 +814,13 @@ function check_uboot_type {
  unset DO_UBOOT
 
 case "$UBOOT_TYPE" in
+    beagle_bx)
+
+ SYSTEM=beagle_bx
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+
+        ;;
     beagle)
 
  SYSTEM=beagle
@@ -906,9 +927,9 @@ function usage {
     echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board> --swap_file <50Mb mininum>"
 cat <<EOF
 
-Bugs: email "bugs at rcn-ee.com"
+Bugs email: "bugs at rcn-ee.com"
 
-required options:
+Required Options:
 --mmc </dev/sdX>
     Unformated MMC Card
 
@@ -917,7 +938,8 @@ Additional/Optional options:
     this help
 
 --uboot <dev board>
-    beagle - <Bx, C2/C3/C4, xMA, xMB>
+    beagle_bx - <Ax/Bx Models>
+    beagle - <Cx, xM A/B/C>
     igepv2 - <serial mode only>
     panda - <serial mode only>
 
