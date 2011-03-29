@@ -512,10 +512,6 @@ Install minimal xfce shell, make sure to have network setup: "sudo ifconfig -a" 
 
 Install Google's Chrome web browswer.
 
-DSP work in progress.
-
- /tools/dsp/*
-
 script_readme
 
 cat > /tmp/update_boot_files.sh <<update_boot_files
@@ -670,119 +666,7 @@ sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 
 latest_chrome
 
-cat > /tmp/dsp-init <<dspscript
-#!/bin/sh
-
-case "\$1" in
-	start)
-		modprobe mailbox_mach
-		modprobe bridgedriver base_img=/lib/dsp/baseimage.dof
-		;;
-esac
-
-dspscript
-
-cat > /tmp/install-dsp-init.sh <<installDSP
-#!/bin/bash
-
-DIR=\$PWD
-
-if [ \$(uname -m) == "armv7l" ] ; then
-
-# if [ -e  \${DIR}/dsp_libs.tar.gz ]; then
-
-#  echo "Extracting target files to rootfs"
-#  sudo tar xf dsp_libs.tar.gz -C /
-
-  if which lsb_release >/dev/null 2>&1 && [ "\$(lsb_release -is)" = Ubuntu ]; then
-
-    if [ \$(lsb_release -sc) == "jaunty" ]; then
-      sudo cp /uboot/boot/tools/dsp/dsp-init /etc/rcS.d/S61dsp.sh
-      sudo chmod +x /etc/rcS.d/S61dsp.sh
-    else
-      #karmic/lucid/maverick/etc
-      sudo cp /uboot/boot/tools/dsp/dsp-init /etc/init.d/dsp
-      sudo chmod +x /etc/init.d/dsp
-      sudo update-rc.d dsp defaults
-    fi
-
-  else
-
-    sudo cp /uboot/boot/tools/dsp/dsp-init /etc/init.d/dsp
-    sudo chmod +x /etc/init.d/dsp
-    sudo update-rc.d dsp defaults
-
-  fi
-
-# else
-#  echo "dsp_libs.tar.gz is missing"
-#  exit
-# fi
-
-else
- echo "This script is to be run on an armv7 platform"
- exit
-fi
-
-installDSP
-
-cat > /tmp/install-gst-dsp.sh <<installgst
-#!/bin/bash
-
-DIR=\$HOME
-
-function no_connection {
-
-echo "setup internet connection before running.."
-exit
-
-}
-
-ping -c 1 -w 100 www.google.com  | grep "ttl=" || no_connection
-
-sudo apt-get -y install git-core pkg-config build-essential gstreamer-tools libgstreamer0.10-dev
-
-mkdir -p \${DIR}/git/
-
-if ! ls \${DIR}/git/gst-dsp >/dev/null 2>&1;then
-cd \${DIR}/git/
-git clone git://github.com/felipec/gst-dsp.git
-fi
-
-cd \${DIR}/git/gst-dsp
-make clean
-git pull
-make CROSS_COMPILE= 
-sudo make install
-cd \${DIR}/
-
-if ! ls \${DIR}/git/gst-omapfb >/dev/null 2>&1;then
-cd \${DIR}/git/
-git clone git://github.com/felipec/gst-omapfb.git
-fi
-
-cd \${DIR}/git/gst-omapfb
-make clean
-git pull
-make CROSS_COMPILE= 
-sudo make install
-cd \${DIR}/
-
-if ! ls \${DIR}/git/dsp-tools >/dev/null 2>&1;then
-cd \${DIR}/git/
-git clone git://github.com/felipec/dsp-tools.git
-fi
-
-cd \${DIR}/git/dsp-tools
-make clean
-git pull
-make CROSS_COMPILE= 
-sudo make install
-cd \${DIR}/
-
-installgst
-
- mkdir -p ${TEMPDIR}/disk/tools/dsp
+ mkdir -p ${TEMPDIR}/disk/tools
  cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
  cp -v /tmp/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
@@ -799,15 +683,6 @@ installgst
 
  cp -v /tmp/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
  chmod +x ${TEMPDIR}/disk/tools/get_chrome.sh
-
- cp -v /tmp/dsp-init ${TEMPDIR}/disk/tools/dsp/dsp-init
- chmod +x ${TEMPDIR}/disk/tools/dsp/dsp-init
-
- cp -v /tmp/install-dsp-init.sh ${TEMPDIR}/disk/tools/dsp/install-dsp-init.sh 
- chmod +x ${TEMPDIR}/disk/tools/dsp/install-dsp-init.sh 
-
- cp -v /tmp/install-gst-dsp.sh ${TEMPDIR}/disk/tools/dsp/install-gst-dsp.sh
- chmod +x ${TEMPDIR}/disk/tools/dsp/install-gst-dsp.sh
 
 cd ${TEMPDIR}/disk
 sync
