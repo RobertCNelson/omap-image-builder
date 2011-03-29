@@ -267,6 +267,16 @@ crane_boot_cmd
 
 }
 
+function boot_scr_to_uenv_txt {
+
+cat > /tmp/uEnv.cmd <<uenv_boot_cmd
+bootenv=boot.scr
+loaduimage=fatload mmc \${mmcdev} \${loadaddr} \${bootenv}
+mmcboot=echo Running boot.scr script from mmc ...; source \${loadaddr}
+uenv_boot_cmd
+
+}
+
 function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
@@ -289,8 +299,10 @@ case "$SYSTEM" in
 
 if [ "$DEBUG" ];then
  beagle_debug_scripts
+ boot_scr_to_uenv_txt
 else
  beagle_boot_scripts
+ boot_scr_to_uenv_txt
 fi
 
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $2}')
@@ -461,6 +473,11 @@ fi
  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${TEMPDIR}/disk/user.scr
  cp /tmp/user.cmd ${TEMPDIR}/disk/user.cmd
  rm -f /tmp/user.cmd || true
+ fi
+
+ if ls /tmp/uEnv.cmd >/dev/null 2>&1;then
+ cp /tmp/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
+ rm -f /tmp/uEnv.cmd || true
  fi
 
 fi
