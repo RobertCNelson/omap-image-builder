@@ -620,7 +620,7 @@ cat > /tmp/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
 
 sudo apt-get update
-sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3
+sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3 network-manager
 
 basic_xfce
 
