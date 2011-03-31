@@ -948,8 +948,8 @@ Additional/Optional options:
 --uboot <dev board>
     beagle_bx - <Ax/Bx Models>
     beagle - <Cx, xM A/B/C>
+    panda -
     igepv2 - <serial mode only>
-    panda - <serial mode only>
 
 --addon <device>
     pico
