@@ -354,7 +354,8 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
-set_mirror
+#Disable set_mirror for release
+#set_mirror
 dl_rootstock
 
 #USE_OEM=1
@@ -363,17 +364,17 @@ dl_rootstock
 #unset USE_OEM
 #anything else
 
-KERNEL_SEL="STABLE"
-#KERNEL_SEL="TESTING"
+#KERNEL_SEL="STABLE"
+KERNEL_SEL="TESTING"
 #KERNEL_SEL="EXPERIMENTAL"
 
 maverick_release
 natty_release
-squeeze_release
+#squeeze_release
 
-KERNEL_SEL="TESTING"
+#KERNEL_SEL="TESTING"
 
-maverick_release
-natty_release
-squeeze_release
+#maverick_release
+#natty_release
+#squeeze_release
 
