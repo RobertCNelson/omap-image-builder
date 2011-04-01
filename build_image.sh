@@ -49,12 +49,27 @@ NATTY_ALPHA="ubuntu-natty-alpha1-r1"
 NATTY_ALPHA2="ubuntu-natty-alpha2-r0"
 #alpha-3 : March 3rd
 NATTY_ALPHA3="ubuntu-natty-alpha3-r0"
-#beta : March 31st
+#beta1 : March 31st
 NATTY_BETA1="ubuntu-natty-beta1"
-#RC : April 14th
+#beta2 : April 14th
 NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
-NATTY_RELEASE="ubuntu-11.04"
+NATTY_RELEASE="ubuntu-11.04-r0"
+
+#Oneiric Schedule:
+#https://wiki.ubuntu.com/OneiricReleaseSchedule
+#alpha-1 : June 2nd
+ONEIRIC_ALPHA="ubuntu-oneiric-alpha1"
+#alpha-2 : June  30th
+ONEIRIC_ALPHA2="ubuntu-oneiric-alpha2"
+#alpha-3 : August 4th
+ONEIRIC_ALPHA3="ubuntu-oneiric-alpha3"
+#beta1 : September 1st
+ONEIRIC_BETA1="ubuntu-oneiric-beta1"
+#beta2 : September 22nd
+ONEIRIC_BETA2="ubuntu-oneiric-beta2"
+#10.10 : October 10th
+ONEIRIC_RELEASE="ubuntu-11.10-r0"
 
 MINIMAL="-minimal-armel"
 XFCE="-xfce4-armel"
