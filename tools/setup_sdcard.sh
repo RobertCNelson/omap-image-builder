@@ -41,6 +41,7 @@ unset DEFAULT_USER
 unset DEBUG
 unset BETA
 unset FDISK_DEBUG
+unset BTRFS_FSTAB
 
 #Defaults
 RFS=ext4
@@ -743,6 +744,10 @@ if [ "$DEFAULT_USER" ] ; then
  rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
 fi
 
+if [ "$BTRFS_FSTAB" ] ; then
+ sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
+fi
+
  if [ "$CREATE_SWAP" ] ; then
 
   echo ""
@@ -922,6 +927,7 @@ case "$FS_TYPE" in
 
  RFS=btrfs
  unset IN_VALID_FS
+ BTRFS_FSTAB=1
 
         ;;
 esac
