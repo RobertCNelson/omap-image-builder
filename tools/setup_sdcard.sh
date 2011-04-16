@@ -855,15 +855,6 @@ case "$UBOOT_TYPE" in
  ABI_VER=3
 
         ;;
-    touchbook)
-
- SYSTEM=touchbook
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- HASMLO=1
- ABI_VER=5
-
-        ;;
     panda)
 
  SYSTEM=panda
@@ -871,6 +862,15 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  HASMLO=1
  ABI_VER=2
+
+        ;;
+    touchbook)
+
+ SYSTEM=touchbook
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ HASMLO=1
+ ABI_VER=5
 
         ;;
     crane)
@@ -957,7 +957,7 @@ Additional/Optional options:
 --uboot <dev board>
     beagle_bx - <Ax/Bx Models>
     beagle - <Cx, xM A/B/C>
-    panda -
+    panda - <dvi or serial>
     igepv2 - <serial mode only>
 
 --addon <device>
@@ -1016,7 +1016,7 @@ while [ ! -z "$1" ]; do
         --uboot)
             checkparm $2
             UBOOT_TYPE="$2"
-            check_uboot_type 
+            check_uboot_type
             ;;
         --addon)
             checkparm $2
@@ -1058,6 +1058,12 @@ while [ ! -z "$1" ]; do
 done
 
 if [ ! "${MMC}" ];then
+    echo "ERROR: --mmc undefined"
+    usage
+fi
+
+if [ "$IN_VALID_UBOOT" ] ; then
+    echo "ERROR: --uboot undefined"
     usage
 fi
 
