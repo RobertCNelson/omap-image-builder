@@ -42,6 +42,7 @@ unset DEBUG
 unset BETA
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
+unset ABI_VER
 
 #Defaults
 RFS=ext4
