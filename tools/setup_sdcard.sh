@@ -42,6 +42,7 @@ unset DEBUG
 unset BETA
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
+unset HASMLO
 unset ABI_VER
 
 #Defaults
@@ -352,14 +353,14 @@ crane_boot_scripts
         ;;
 esac
 
+if [ "${HASMLO}" ] ; then
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
-
-
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
-
  MLO=${MLO##*/}
+fi
+
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
  UBOOT=${UBOOT##*/}
 
 }
@@ -441,8 +442,10 @@ function populate_boot {
  if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
  if [ "$DO_UBOOT" ];then
-  if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
-   cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+  if [ "${HASMLO}" ] ; then
+   if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
+    cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+   fi
   fi
 
   if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
@@ -819,6 +822,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle_bx
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=1
 
         ;;
@@ -827,6 +831,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=7
 
         ;;
@@ -837,6 +842,7 @@ case "$UBOOT_TYPE" in
  SWAP_BOOT_USER=1
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=7
 
         ;;
@@ -845,6 +851,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=igepv2
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=3
 
         ;;
@@ -853,6 +860,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=touchbook
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=5
 
         ;;
@@ -861,7 +869,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=panda
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- DEFAULT_USER=1
+ HASMLO=1
  ABI_VER=2
 
         ;;
@@ -870,6 +878,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=crane
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ HASMLO=1
  ABI_VER=6
 
         ;;
