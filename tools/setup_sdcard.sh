@@ -314,9 +314,6 @@ else
  boot_scr_to_uenv_txt
 fi
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:1:UBOOT" | awk '{print $2}')
-
         ;;
     beagle)
 
@@ -328,32 +325,20 @@ else
  boot_scr_to_uenv_txt
 fi
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:7:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:7:UBOOT" | awk '{print $2}')
-
         ;;
     igepv2)
 
 igepv2_boot_scripts
-
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:3:UBOOT" | awk '{print $2}')
 
         ;;
     touchbook)
 
 touchbook_boot_scripts
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:5:UBOOT" | awk '{print $2}')
-
         ;;
     panda)
 
 panda_boot_scripts
-
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:2:UBOOT" | awk '{print $2}')
 
         ;;
     crane)
@@ -363,11 +348,12 @@ exit
 
 crane_boot_scripts
 
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:6:MLO" | awk '{print $2}')
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:6:UBOOT" | awk '{print $2}')
-
         ;;
 esac
+
+ MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
+
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
@@ -832,6 +818,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle_bx
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=1
 
         ;;
     beagle)
@@ -839,6 +826,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=7
 
         ;;
     beagle-proto)
@@ -848,6 +836,7 @@ case "$UBOOT_TYPE" in
  SWAP_BOOT_USER=1
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=7
 
         ;;
     igepv2)
@@ -855,6 +844,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=igepv2
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=3
 
         ;;
     touchbook)
@@ -862,6 +852,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=touchbook
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=5
 
         ;;
     panda)
@@ -870,6 +861,7 @@ case "$UBOOT_TYPE" in
  unset IN_VALID_UBOOT
  DO_UBOOT=1
  DEFAULT_USER=1
+ ABI_VER=2
 
         ;;
     crane)
@@ -877,6 +869,7 @@ case "$UBOOT_TYPE" in
  SYSTEM=crane
  unset IN_VALID_UBOOT
  DO_UBOOT=1
+ ABI_VER=6
 
         ;;
 esac
