@@ -30,11 +30,6 @@
 #oem-config username/password
 #add: "debug-oem-config" to bootargs
 
-if [[ $UID -ne 0 ]]; then
- echo "$0 must be run as sudo user or root"
- exit
-fi
-
 unset MMC
 unset SWAP_BOOT_USER
 unset DEFAULT_USER
@@ -53,6 +48,13 @@ PARTITION_PREFIX=""
 
 DIR=$PWD
 TEMPDIR=$(mktemp -d)
+
+function find_issue {
+
+if [[ $UID -ne 0 ]]; then
+ echo "$0 must be run as sudo user or root"
+ exit
+fi
 
 if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
  echo "Error: no armel-rootfs-* file"
@@ -79,6 +81,8 @@ if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
  echo "Sorry, this script currently doesn't work with GNU Fdisk"
  exit
 fi
+
+}
 
 function detect_software {
 
@@ -783,6 +787,9 @@ fi
 }
 
 function check_mmc {
+
+ find_issue
+
  FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "[Disk] ${MMC}" | awk '{print $2}')
 
  if test "-$FDISK-" = "-$MMC:-"
@@ -1067,6 +1074,7 @@ if [ "$IN_VALID_UBOOT" ] ; then
     usage
 fi
 
+ find_issue
  detect_software
 
 if [ "$DO_UBOOT" ];then
