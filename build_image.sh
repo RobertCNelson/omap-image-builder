@@ -309,7 +309,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_BETA2$MINIMAL
+BUILD=$NATTY_RELEASE$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
