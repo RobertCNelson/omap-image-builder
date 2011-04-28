@@ -316,6 +316,24 @@ compression
 
 }
 
+#11.10
+function oneiric_release {
+
+reset_vars
+
+DIST=oneiric
+SERIAL=ttyO2
+kernel_select
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS="${UBU_COMPONENTS}"
+BUILD=$ONEIRIC_ALPHA$MINIMAL
+USER_PASS="--login ubuntu --password temppwd"
+minimal_armel
+compression
+
+}
+
 function squeeze_release {
 
 reset_vars
@@ -385,11 +403,13 @@ KERNEL_SEL="STABLE"
 
 maverick_release
 natty_release
+oneiric_release
 squeeze_release
 
 KERNEL_SEL="TESTING"
 
 maverick_release
 natty_release
+oneiric_release
 squeeze_release
 
