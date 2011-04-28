@@ -39,7 +39,7 @@ MAVERICK_BETA="ubuntu-maverick-beta"
 #RC : September 30th
 MAVERICK_RC="ubuntu-10.10-rc"
 #10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r7"
+MAVERICK_RELEASE="ubuntu-10.10-r8"
 
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
@@ -54,7 +54,7 @@ NATTY_BETA1="ubuntu-natty-beta1"
 #beta2 : April 14th
 NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
-NATTY_RELEASE="ubuntu-11.04-r0"
+NATTY_RELEASE="ubuntu-11.04-r1"
 
 #Oneiric Schedule:
 #https://wiki.ubuntu.com/OneiricReleaseSchedule
@@ -370,7 +370,7 @@ compression
 mkdir -p ${DIR}/deploy/
 
 #Disable set_mirror for release
-#set_mirror
+set_mirror
 dl_rootstock
 
 #USE_OEM=1
@@ -385,7 +385,6 @@ KERNEL_SEL="STABLE"
 
 maverick_release
 natty_release
-exit
 squeeze_release
 
 KERNEL_SEL="TESTING"
