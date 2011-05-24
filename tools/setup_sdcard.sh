@@ -82,6 +82,11 @@ if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
  exit
 fi
 
+unset PARTED_ALIGN
+if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
+ PARTED_ALIGN="--align cylinder"
+fi
+
 }
 
 function detect_software {
@@ -418,12 +423,12 @@ END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{p
 unset END_DEVICE
 END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
 
-parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
+parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
 sync
 
 if [ "$FDISK_DEBUG" ];then
  echo "Debug: ${RFS} Partition"
- echo "parted --script --align cylinder ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}"
+ echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}"
  fdisk -l ${MMC}
 fi
 
