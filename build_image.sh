@@ -405,6 +405,7 @@ maverick_release
 natty_release
 oneiric_release
 squeeze_release
+wheezy_release
 
 KERNEL_SEL="TESTING"
 
@@ -412,4 +413,5 @@ maverick_release
 natty_release
 oneiric_release
 squeeze_release
+wheezy_release
 
