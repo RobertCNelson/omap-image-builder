@@ -76,7 +76,8 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-MINIMAL_APT="cpufrequtils,btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
+MINIMAL_APT="btrfs-tools,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
+#cpufrequtils
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
