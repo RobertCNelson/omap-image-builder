@@ -26,21 +26,6 @@ TIME=$(date +%y%m%d)
 
 unset USE_OEM
 
-#Maverick Schedule:
-#https://wiki.ubuntu.com/MaverickReleaseSchedule
-#alpha-1 : June 3rd
-MAVERICK_ALPHA="ubuntu-maverick-alpha1"
-#alpha-2 : July 1st
-MAVERICK_ALPHA2="ubuntu-maverick-alpha2"
-#alpha-3 : August 5th
-MAVERICK_ALPHA3="ubuntu-maverick-alpha3"
-#beta : September 2nd
-MAVERICK_BETA="ubuntu-maverick-beta"
-#RC : September 30th
-MAVERICK_RC="ubuntu-10.10-rc"
-#10.10 : October 10th
-MAVERICK_RELEASE="ubuntu-10.10-r8"
-
 #Natty Schedule:
 #https://wiki.ubuntu.com/NattyReleaseSchedule
 #alpha-1 : December 2nd
@@ -280,24 +265,6 @@ echo "Using: ${KERNEL}"
 
 }
 
-#10.10
-function maverick_release {
-
-reset_vars
-
-DIST=maverick
-SERIAL=ttyO2
-kernel_select
-EXTRA="linux-firmware,devmem2,"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$MAVERICK_RELEASE$MINIMAL
-USER_PASS="--login ubuntu --password temppwd"
-minimal_armel
-compression
-
-}
-
 #11.04
 function natty_release {
 
@@ -401,7 +368,6 @@ KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
 #KERNEL_SEL="EXPERIMENTAL"
 
-maverick_release
 natty_release
 oneiric_release
 squeeze_release
@@ -409,7 +375,6 @@ wheezy_release
 
 KERNEL_SEL="TESTING"
 
-maverick_release
 natty_release
 oneiric_release
 squeeze_release
