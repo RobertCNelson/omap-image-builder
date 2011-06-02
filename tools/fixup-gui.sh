@@ -32,6 +32,9 @@ case "\$DIST" in
     natty)
             FLASH_KERNEL_SKIP=yes
         ;;
+    oneiric)
+            FLASH_KERNEL_SKIP=yes
+        ;;
 esac
 
 fi
