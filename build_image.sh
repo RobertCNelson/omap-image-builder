@@ -355,7 +355,7 @@ compression
 mkdir -p ${DIR}/deploy/
 
 #Disable set_mirror for release
-set_mirror
+#set_mirror
 dl_rootstock
 
 #USE_OEM=1
