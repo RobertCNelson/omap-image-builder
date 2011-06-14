@@ -119,6 +119,9 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
 	bzr commit -m 'source updates'
 
+	patch -p0 < ${DIR}/patches/debug-wget.diff
+	bzr commit -m 'debug wget kernel dl'
+
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
@@ -257,9 +260,15 @@ fi
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
 FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 ${KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-KERNEL_VER=$(echo ${FTP_DIR} | sed 's/v//')
 
-KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/linux-image-${KERNEL_VER}_1.0${DIST}_armel.deb"
+if [ -f /tmp/index.html ] ; then
+	rm -f /tmp/index.html
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/${FTP_DIR}/
+ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+
+KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 
 echo "Using: ${KERNEL}"
 
