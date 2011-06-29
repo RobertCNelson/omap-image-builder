@@ -1,0 +1,13 @@
+=== modified file 'rootstock'
+--- rootstock	2011-06-29 20:10:26 +0000
++++ rootstock	2011-06-29 20:10:42 +0000
+@@ -942,7 +942,7 @@
+     IS_DEBIAN=1
+ fi
+ 
+-if [ "$DIST" = "lenny" ] || [ "$DIST" = "squeeze" ] || [ "$DIST" = "sid" ];then
++if [ "$DIST" = "lenny" ] || [ "$DIST" = "squeeze" ] || [ "$DIST" = "wheezy" ] || [ "$DIST" = "sid" ];then
+ 
+     if [ ! $DEB_MIRROR ] && [ ! $DEB_COMPONENTS };then
+ 		echo "for debian add: --mirror http://ftp.us.debian.org/debian/"
+

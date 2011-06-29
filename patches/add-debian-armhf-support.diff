@@ -1,0 +1,71 @@
+=== modified file 'rootstock'
+--- rootstock	2011-06-29 20:19:25 +0000
++++ rootstock	2011-06-29 20:20:26 +0000
+@@ -323,7 +323,7 @@
+     EXTRAOPTS=""
+     TARBALL=$CACHEDIR/debootstrap.tgz
+     DMIRROR="$MIRROR"
+-    DEFOPTS="--foreign --arch=armel"
++    DEFOPTS="--foreign"
+ 
+     if [ "$RESTORE_PACKAGE_CACHE" ];then
+         if [ ! -d $CACHEDIR ] || [ ! -f $TARBALL ];then
+@@ -342,7 +342,7 @@
+         EXTRAOPTS="--keep-debootstrap-dir --make-tarball=$TARBALL"
+         mkdir -p $CACHEDIR
+ 
+-        LANG=C fakeroot debootstrap $DEFOPTS $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
++        LANG=C fakeroot debootstrap $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
+         echo $! > $DBPID
+         while read line; do
+             log "${line}"
+@@ -356,7 +356,7 @@
+     mkfifo $DBFIFO
+ 
+     # using fakeroot so we're able to create the base rootfs as user
+-    LANG=C fakeroot debootstrap $DEFOPTS $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
++    LANG=C fakeroot debootstrap $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
+ 
+     echo $! > $DBPID
+     while read line; do
+@@ -743,10 +743,10 @@
+ CHROOT="eval TMPDIR=/tmp chroot"
+ 
+ # parse commandline options
+-GETOPT=`getopt -o hf:l:p:n:s:i:g:m:c:t:x:d:q --long help,fqdn:,login:,\
++GETOPT=`getopt -o hf:l:p:n:s:i:g:m:c:t:x:d:a:q --long help,fqdn:,login:,\
+ password:,fullname:,seed:,imagesize:,manifest:,mirror:,components:,timezone:,\
+ kblayout:,kbmodel:,kbvariant:,kboptions:,locale:,keepimage,notarball,script:,\
+-serial:,sources:,doswap,swapsize:,dist:,quiet,kernel-image:,copy-package-cache,\
++serial:,sources:,doswap,swapsize:,dist:,arch:,quiet,kernel-image:,copy-package-cache,\
+ restore-package-cache,clean-package-cache,extra-mirror:,no-root,version,apt-upgrade \
+ -n "$PROGRAM" -- "$@"`
+ if [ $? != 0 ]; then usage; exit 1; fi
+@@ -872,6 +872,10 @@
+             DIST="$2"
+             shift 2
+             ;;
++        -a|--arch)
++            DEFARCH="$2"
++            shift 2
++            ;;
+         -q|--quiet)
+             QUIET=1
+             shift
+@@ -928,6 +932,15 @@
+     usage
+ fi
+ 
++if [ "$DEFARCH" = "armhf" ];then
++    if [ ! $DEB_MIRROR ] && [ ! $DEB_COMPONENTS };then
++		echo "for debian armhf add: --mirror http://ftp.debian-ports.org/debian/"
++		echo "and add: --components \"main\""
++		usage
++	fi
++    IS_DEBIAN=1
++fi
++
+ if [ "$DIST" = "lenny" ] || [ "$DIST" = "squeeze" ] || [ "$DIST" = "sid" ];then
+ 
+     if [ ! $DEB_MIRROR ] && [ ! $DEB_COMPONENTS };then
+

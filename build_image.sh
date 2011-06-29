@@ -125,6 +125,12 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/switch-to-vexpress-vmlinuz.diff
 	bzr commit -m 'test using vexpress vmlinuz'
 
+	patch -p0 < ${DIR}/patches/add-debian-armhf-support.diff
+	bzr commit -m 'first pass at debian armhf support'
+
+	patch -p0 < ${DIR}/patches/add-wheezy-support.diff
+	bzr commit -m 'add detection of wheezy'
+
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
@@ -144,7 +150,7 @@ function minimal_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
-	--kernel-image ${KERNEL} --apt-upgrade
+	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function minimal_armel_nokernel {
@@ -156,7 +162,7 @@ function minimal_armel_nokernel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade --arch=${ARCH}
 }
 
 function xfce4_armel {
@@ -170,7 +176,7 @@ function xfce4_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 \
 	${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade
+	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function xubuntu_armel {
@@ -183,7 +189,7 @@ function xubuntu_armel {
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade
+	--kernel-image ${KERNEL} --apt-upgrade --arch=$ARCH
 }
 
 function gui_armel {
@@ -196,7 +202,7 @@ function gui_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade
+	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function netbook_armel {
@@ -209,7 +215,7 @@ function netbook_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list
+	--kernel-image ${KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
 }
 
 function compression {
@@ -290,6 +296,7 @@ MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$NATTY_RELEASE$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
+ARCH=armel
 minimal_armel
 compression
 
@@ -308,6 +315,7 @@ MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_ALPHA2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
+ARCH=armel
 minimal_armel
 compression
 
@@ -325,6 +333,7 @@ USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL
+ARCH=armel
 minimal_armel
 compression
 
@@ -342,6 +351,7 @@ USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL
+ARCH=armel
 minimal_armel
 compression
 
@@ -353,12 +363,13 @@ reset_vars
 
 DIST=unstable
 SERIAL=ttyO2
-kernel_select
+#kernel_select
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=armhf$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
+ARCH=armhf
 minimal_armel_nokernel
 compression
 
@@ -375,6 +386,8 @@ dl_rootstock
 
 #unset USE_OEM
 #anything else
+
+armhf_release
 
 KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
