@@ -395,8 +395,6 @@ dl_rootstock
 #unset USE_OEM
 #anything else
 
-armhf_release
-
 KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
 #KERNEL_SEL="EXPERIMENTAL"
@@ -413,3 +411,4 @@ oneiric_release
 squeeze_release
 wheezy_release
 
+armhf_release
