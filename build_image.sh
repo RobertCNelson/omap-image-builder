@@ -131,6 +131,12 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/add-wheezy-support.diff
 	bzr commit -m 'add detection of wheezy'
 
+	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
+	bzr commit -m 'use debian ports keyring'
+
+	patch -p0 < ${DIR}/patches/debian-unstable-no-updates.diff
+	bzr commit -m 'unstable doesnt have update repo'
+
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
@@ -359,6 +365,7 @@ compression
 
 function armhf_release {
 
+sudo apt-get install debian-ports-archive-keyring
 reset_vars
 
 DIST=unstable

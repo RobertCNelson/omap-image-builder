@@ -1,0 +1,39 @@
+=== modified file 'rootstock'
+--- rootstock	2011-06-29 20:20:57 +0000
++++ rootstock	2011-06-29 20:32:11 +0000
+@@ -342,7 +342,7 @@
+         EXTRAOPTS="--keep-debootstrap-dir --make-tarball=$TARBALL"
+         mkdir -p $CACHEDIR
+ 
+-        LANG=C fakeroot debootstrap $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
++        LANG=C fakeroot debootstrap $PORTS_KEYRING $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
+         echo $! > $DBPID
+         while read line; do
+             log "${line}"
+@@ -356,7 +356,7 @@
+     mkfifo $DBFIFO
+ 
+     # using fakeroot so we're able to create the base rootfs as user
+-    LANG=C fakeroot debootstrap $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
++    LANG=C fakeroot debootstrap $PORTS_KEYRING $DEFOPTS --arch=$DEFARCH $EXTRAOPTS $DIST $ROOTFS $DMIRROR >$DBFIFO 2>&1 &
+ 
+     echo $! > $DBPID
+     while read line; do
+@@ -932,6 +932,8 @@
+     usage
+ fi
+ 
++PORTS_KEYRING=''
++
+ if [ "$DEFARCH" = "armhf" ];then
+     if [ ! $DEB_MIRROR ] && [ ! $DEB_COMPONENTS };then
+ 		echo "for debian armhf add: --mirror http://ftp.debian-ports.org/debian/"
+@@ -939,6 +941,7 @@
+ 		usage
+ 	fi
+     IS_DEBIAN=1
++    PORTS_KEYRING="--keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg"
+ fi
+ 
+ if [ "$DIST" = "lenny" ] || [ "$DIST" = "squeeze" ] || [ "$DIST" = "wheezy" ] || [ "$DIST" = "sid" ];then
+
