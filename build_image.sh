@@ -122,6 +122,9 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/debug-wget.diff
 	bzr commit -m 'debug wget kernel dl'
 
+	patch -p0 < ${DIR}/patches/switch-to-vexpress-vmlinuz.diff
+	bzr commit -m 'test using vexpress vmlinuz'
+
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
