@@ -306,7 +306,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_ALPHA$MINIMAL
+BUILD=$ONEIRIC_ALPHA2$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 minimal_armel
 compression
