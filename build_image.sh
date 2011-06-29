@@ -131,9 +131,10 @@ function dl_rootstock {
 	patch -p0 < ${DIR}/patches/add-wheezy-support.diff
 	bzr commit -m 'add detection of wheezy'
 
+if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
 	bzr commit -m 'use debian ports keyring'
-
+fi
 	patch -p0 < ${DIR}/patches/debian-unstable-no-updates.diff
 	bzr commit -m 'unstable doesnt have update repo'
 
@@ -373,7 +374,7 @@ SERIAL=ttyO2
 #kernel_select
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
-COMPONENTS="${DEB_COMPONENTS}"
+COMPONENTS="main"
 BUILD=armhf$MINIMAL
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armhf
