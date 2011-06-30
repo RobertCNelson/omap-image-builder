@@ -173,7 +173,7 @@ function minimal_armel_nokernel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh --apt-upgrade --arch=${ARCH}
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-debian.sh --apt-upgrade --arch=${ARCH}
 }
 
 function xfce4_armel {
