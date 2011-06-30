@@ -135,8 +135,12 @@ if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
 	bzr commit -m 'use debian ports keyring'
 fi
+
 	patch -p0 < ${DIR}/patches/debian-unstable-no-updates.diff
 	bzr commit -m 'unstable doesnt have update repo'
+
+	patch -p0 < ${DIR}/patches/apt-force-packages.diff
+	bzr commit -m 'force deb packages'
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
@@ -372,7 +376,8 @@ reset_vars
 DIST=unstable
 SERIAL=ttyO2
 #kernel_select
-EXTRA="initramfs-tools,"
+EXTRA=''
+#EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
 BUILD=armhf$MINIMAL

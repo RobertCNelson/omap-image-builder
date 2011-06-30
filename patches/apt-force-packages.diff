@@ -1,0 +1,13 @@
+=== modified file 'rootstock'
+--- rootstock	2011-06-30 18:10:58 +0000
++++ rootstock	2011-06-30 18:11:56 +0000
+@@ -738,7 +738,7 @@
+ PACKAGE_CLEANUP_SUB="${PACKAGE_CLEANUP}"
+ APT_UPGRADE=""
+ APT_UPDATE="apt-get update"
+-APT_FORCE=""
++APT_FORCE="--force-yes"
+ EXRA_MIRROR_CMD=""
+ CHROOT="eval TMPDIR=/tmp chroot"
+ 
+
