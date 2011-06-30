@@ -45,7 +45,7 @@ NATTY_RELEASE="ubuntu-11.04-r2"
 #https://wiki.ubuntu.com/OneiricReleaseSchedule
 #alpha-1 : June 2nd
 ONEIRIC_ALPHA="ubuntu-oneiric-alpha1"
-#alpha-2 : June  30th
+#alpha-2 : July  7th
 ONEIRIC_ALPHA2="ubuntu-oneiric-alpha2"
 #alpha-3 : August 4th
 ONEIRIC_ALPHA3="ubuntu-oneiric-alpha3"
@@ -53,7 +53,7 @@ ONEIRIC_ALPHA3="ubuntu-oneiric-alpha3"
 ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
-#10.10 : October 10th
+#10.10 : October 13th
 ONEIRIC_RELEASE="ubuntu-11.10-r0"
 
 MINIMAL="-minimal-armel"
