@@ -386,7 +386,7 @@ compression
 mkdir -p ${DIR}/deploy/
 
 #Disable set_mirror for release
-#set_mirror
+set_mirror
 dl_rootstock
 
 #USE_OEM=1
@@ -401,9 +401,6 @@ KERNEL_SEL="STABLE"
 
 natty_release
 oneiric_release
-
-exit
-
 squeeze_release
 wheezy_release
 
