@@ -151,6 +151,8 @@ fi
 	patch -p0 < ${DIR}/patches/debian-make-sure-serial-is-setup.diff
 	bzr commit -m 'debian serial setup'
 
+	patch -p0 < ${DIR}/patches/with-no-update-initramfs-atleast-run-depmod.diff
+	bzr commit -m 'run atleast depmod'
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
