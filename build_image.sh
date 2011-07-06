@@ -375,15 +375,15 @@ reset_vars
 
 DIST=unstable
 SERIAL=ttyO2
-#kernel_select
+kernel_select
 EXTRA=''
 #EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
 BUILD=armhf$MINIMAL
-USER_PASS="--login ubuntu --password temppwd"
+USER_PASS="--login debian --password temppwd"
 ARCH=armhf
-minimal_armel_nokernel
+minimal_armel
 compression
 
 }
@@ -408,6 +408,7 @@ natty_release
 oneiric_release
 squeeze_release
 wheezy_release
+armhf_release
 
 KERNEL_SEL="TESTING"
 
@@ -415,5 +416,4 @@ natty_release
 oneiric_release
 squeeze_release
 wheezy_release
-
 armhf_release
