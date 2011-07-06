@@ -56,7 +56,7 @@ ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
 ONEIRIC_RELEASE="ubuntu-11.10-r0"
 
-MINIMAL="-minimal-armel"
+MINIMAL="-minimal"
 XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
@@ -141,6 +141,16 @@ fi
 
 	patch -p0 < ${DIR}/patches/apt-force-packages.diff
 	bzr commit -m 'force deb packages'
+
+	patch -p0 < ${DIR}/patches/apt-get-upgrade-needs-force.diff
+	bzr commit -m 'make sure upgrade use force too'
+
+	patch -p0 < "${DIR}/patches/check-for-update-initramfs.diff"
+	bzr commit -m 'this is not always built for armhf'
+
+	patch -p0 < ${DIR}/patches/debian-make-sure-serial-is-setup.diff
+	bzr commit -m 'debian serial setup'
+
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
@@ -305,7 +315,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_RELEASE$MINIMAL
+BUILD=$NATTY_RELEASE$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
@@ -324,7 +334,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_ALPHA2$MINIMAL
+BUILD=$ONEIRIC_ALPHA2$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
@@ -343,7 +353,7 @@ EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-f
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=squeeze$MINIMAL
+BUILD=squeeze$MINIMAL-armel
 ARCH=armel
 minimal_armel
 compression
@@ -361,7 +371,7 @@ EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-f
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL
+BUILD=${DIST}$MINIMAL-armel
 ARCH=armel
 minimal_armel
 compression
@@ -380,7 +390,7 @@ EXTRA=''
 #EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
-BUILD=armhf$MINIMAL
+BUILD=unstable$MINIMAL-armhf
 USER_PASS="--login debian --password temppwd"
 ARCH=armhf
 minimal_armel

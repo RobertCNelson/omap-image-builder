@@ -1,0 +1,14 @@
+=== modified file 'rootstock'
+--- rootstock	2011-07-06 15:08:10 +0000
++++ rootstock	2011-07-06 15:22:20 +0000
+@@ -1185,7 +1185,9 @@
+ fi
+ 
+ ${KERNEL_IMAGE_CMD}
++if which update-initramfs >/dev/null 2>&1; then
+ ${KERNEL_IMAGE_CREATE_INITRAMFS}
++fi
+ 
+ ${PACKAGE_CLEANUP_SUB}
+ 
+
