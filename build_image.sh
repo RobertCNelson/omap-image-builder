@@ -104,60 +104,17 @@ fi
 function dl_rootstock {
 	rm -rfd ${DIR}/../project-rootstock
 	cd ${DIR}/../
-	bzr branch lp:project-rootstock
+	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
-
-	patch -p0 < ${DIR}/patches/apt-source-fix.diff
-	bzr commit -m 'Svein Seldal apt source fix'
-
-	patch -p0 < ${DIR}/patches/01-rootstock-tar-output.diff
-	bzr commit -m 'tar output'
-
-	patch -p0 < ${DIR}/patches/tar-use-numeric-owner.diff
-	bzr commit -m 'use numeric-owner'
-
-	patch -p0 < ${DIR}/patches/03-rootstock-source-updates.diff
-	bzr commit -m 'source updates'
-
-	patch -p0 < ${DIR}/patches/debug-wget.diff
-	bzr commit -m 'debug wget kernel dl'
-
-	patch -p0 < ${DIR}/patches/switch-to-vexpress-vmlinuz.diff
-	bzr commit -m 'test using vexpress vmlinuz'
-
-	patch -p0 < ${DIR}/patches/add-debian-armhf-support.diff
-	bzr commit -m 'first pass at debian armhf support'
-
-	patch -p0 < ${DIR}/patches/add-wheezy-support.diff
-	bzr commit -m 'add detection of wheezy'
+        git checkout origin/rcn-ee-images -b rcn-ee-images
 
 if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
-	bzr commit -m 'use debian ports keyring'
 fi
-
-	patch -p0 < ${DIR}/patches/debian-unstable-no-updates.diff
-	bzr commit -m 'unstable doesnt have update repo'
-
-	patch -p0 < ${DIR}/patches/apt-force-packages.diff
-	bzr commit -m 'force deb packages'
-
-	patch -p0 < ${DIR}/patches/apt-get-upgrade-needs-force.diff
-	bzr commit -m 'make sure upgrade use force too'
-
-	patch -p0 < "${DIR}/patches/check-for-update-initramfs.diff"
-	bzr commit -m 'this is not always built for armhf'
-
-	patch -p0 < ${DIR}/patches/debian-make-sure-serial-is-setup.diff
-	bzr commit -m 'debian serial setup'
-
-	patch -p0 < ${DIR}/patches/with-no-update-initramfs-atleast-run-depmod.diff
-	bzr commit -m 'run atleast depmod'
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
 	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
-	bzr commit -m 'set default user name and use oemconfig..'
 fi
 
 	cd ${DIR}/deploy/
