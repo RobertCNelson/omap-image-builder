@@ -39,7 +39,7 @@ NATTY_BETA1="ubuntu-natty-beta1"
 #beta2 : April 14th
 NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
-NATTY_RELEASE="ubuntu-11.04-r2"
+NATTY_RELEASE="ubuntu-11.04-r3"
 
 #Oneiric Schedule:
 #https://wiki.ubuntu.com/OneiricReleaseSchedule
@@ -336,7 +336,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_ALPHA2$MINIMAL-armel
+BUILD=$ONEIRIC_ALPHA3$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
