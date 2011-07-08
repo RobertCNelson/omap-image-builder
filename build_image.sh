@@ -242,12 +242,12 @@ function compression {
 
 function kernel_select {
 
-if [ -f /tmp/LATEST ] ; then
-	rm -f /tmp/LATEST
+if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+	rm -f /tmp/LATEST-${SUBARCH}
 fi
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST
-FTP_DIR=$(cat /tmp/LATEST | grep "ABI:1 ${KERNEL_SEL}" | awk '{print $3}')
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST-${SUBARCH}
+FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 
 if [ -f /tmp/index.html ] ; then
@@ -368,6 +368,8 @@ dl_rootstock
 
 #unset USE_OEM
 #anything else
+
+SUBARCH="omap"
 
 KERNEL_SEL="STABLE"
 #KERNEL_SEL="TESTING"
