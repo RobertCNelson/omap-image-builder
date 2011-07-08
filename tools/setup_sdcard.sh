@@ -39,6 +39,7 @@ unset FDISK_DEBUG
 unset BTRFS_FSTAB
 unset HASMLO
 unset ABI_VER
+unset HAS_INITRD
 
 #Defaults
 RFS=ext4
@@ -60,6 +61,10 @@ if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
  echo "Error: no armel-rootfs-* file"
  echo "Make sure your in the right dir..."
  exit
+fi
+
+if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
+ HAS_INITRD=1
 fi
 
 #Software Qwerks
