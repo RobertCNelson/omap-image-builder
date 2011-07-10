@@ -345,8 +345,8 @@ reset_vars
 DIST=unstable
 SERIAL=ttyO2
 kernel_select
-EXTRA=''
-#EXTRA="initramfs-tools,"
+#EXTRA=''
+EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
 BUILD=unstable$MINIMAL-armhf
