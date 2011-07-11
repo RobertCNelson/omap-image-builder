@@ -175,7 +175,7 @@ kernel_select
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
-BUILD=unstable$MINIMAL-armhf-$SUBARCH
+BUILD=unstable$MINIMAL-armhf-$SUBARCH-${TIME}
 USER_PASS="--login debian --password temppwd"
 ARCH=armhf
 minimal_armel
