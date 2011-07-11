@@ -22,7 +22,7 @@
 
 SYST=$(cat /etc/hostname)
 ARCH=$(uname -m)
-TIME=$(date +%y%m%d)
+TIME=$(date +%Y-%m-%d)
 
 MINIMAL="-minimal"
 
