@@ -1,0 +1,28 @@
+From e135bede82206d3b5631c6070b81c6597004952c Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Thu, 14 Jul 2011 13:35:51 -0500
+Subject: [PATCH] bash if else workaround
+
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ rootstock |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/rootstock b/rootstock
+index d8d7ad0..d8a907d 100755
+--- a/rootstock
++++ b/rootstock
+@@ -1187,8 +1187,10 @@ fi
+ 
+ ${KERNEL_IMAGE_CMD}
+ if which update-initramfs >/dev/null 2>&1; then
++:
+ ${KERNEL_IMAGE_CREATE_INITRAMFS}
+ else
++:
+ ${KERNEL_IMAGE_DEPMOD}
+ fi
+ 
+-- 
+1.7.4.1
+
