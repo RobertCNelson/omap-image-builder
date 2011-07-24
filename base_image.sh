@@ -166,8 +166,13 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
-#Disable set_mirror for release
-set_mirror
+if ls ${DIR}/release >/dev/null 2>&1 ; then
+ echo "Building Release Package, no mirrors"
+else
+ echo "Building with mirror files"
+ set_mirror
+fi
+
 dl_rootstock
 
 squeeze_release
