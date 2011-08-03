@@ -385,6 +385,9 @@ KERNEL_SEL="STABLE"
 natty_release
 oneiric_release
 squeeze_release
+
+exit
+
 wheezy_release
 armhf_release
 
