@@ -75,6 +75,8 @@ function dl_rootstock {
 
 	git am ${DIR}/patches/0001-force-unmet-dependencies.patch
 
+	git am ${DIR}/patches/0001-etc-default-locale-doesnt-exist-in-fedora.patch
+
 if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
 fi
