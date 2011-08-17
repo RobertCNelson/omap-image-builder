@@ -167,7 +167,7 @@ echo "Using: ${KERNEL}"
 
 function armhf_release {
 
-sudo apt-get install debian-ports-archive-keyring
+#sudo apt-get install debian-ports-archive-keyring
 reset_vars
 
 DIST=unstable
