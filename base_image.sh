@@ -67,7 +67,7 @@ fi
 }
 
 function dl_rootstock {
-	rm -rfd ${DIR}/../project-rootstock
+	rm -rf ${DIR}/../project-rootstock
 	cd ${DIR}/../
 	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
@@ -100,7 +100,7 @@ function minimal_armel {
 }
 
 function compression {
-	rm -rfd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD || true
+	rm -rf ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD || true
 	mkdir -p ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then

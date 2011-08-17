@@ -42,5 +42,5 @@ fi
 FK
 
 rm -f /tmp/*.deb
-rm -rfd /usr/src/linux-headers*
+rm -rf /usr/src/linux-headers*
 

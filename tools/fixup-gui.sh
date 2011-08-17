@@ -49,7 +49,7 @@ if [ ! $(which devmem2) ];then
 fi
 
 rm -f /tmp/*.deb
-rm -rfd /usr/src/linux-headers*
+rm -rf /usr/src/linux-headers*
 
 cat > /etc/X11/xorg.conf <<XORG
 

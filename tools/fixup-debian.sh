@@ -10,5 +10,5 @@ echo "/dev/mmcblk0p1   /boot/uboot auto   defaults            0   0" >> /etc/fst
 echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
 
 rm -f /tmp/*.deb
-rm -rfd /usr/src/linux-headers*
+rm -rf /usr/src/linux-headers*
 
