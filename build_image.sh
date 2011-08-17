@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-SYST=$(cat /etc/hostname)
+SYST=$(uname -n)
 ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
