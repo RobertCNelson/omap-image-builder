@@ -730,6 +730,29 @@ function check_mmc {
  fi
 }
 
+function is_omap {
+ HASMLO=1
+ UIMAGE_ADDR="0x80300000"
+ UINITRD_ADDR="0x81600000"
+ SERIAL_CONSOLE="${SERIAL},115200n8"
+ ZRELADD="0x80008000"
+ SUBARCH="omap"
+ VIDEO_CONSOLE="console=tty0"
+ VIDEO_DRV="omapfb.mode=dvi"
+ VIDEO_TIMING="1280x720MR-16@60"
+}
+
+function is_imx53 {
+ UIMAGE_ADDR="0x70800000"
+ UINITRD_ADDR="0x72100000"
+ SERIAL_CONSOLE="${SERIAL},115200"
+ ZRELADD="0x70008000"
+ SUBARCH="imx"
+ VIDEO_CONSOLE="console=tty0"
+ VIDEO_DRV="mxcdi1fb"
+ VIDEO_TIMING="RGB24,1280x720M@60"
+}
+
 function check_uboot_type {
  IN_VALID_UBOOT=1
  unset DO_UBOOT
@@ -740,8 +763,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle_bx
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=1
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
     beagle)
@@ -749,8 +773,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=beagle
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=7
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
     beagle-proto)
@@ -760,8 +785,10 @@ case "$UBOOT_TYPE" in
  SWAP_BOOT_USER=1
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=7
+ SERIAL="ttyO2"
+ is_omap
+
 
         ;;
     igepv2)
@@ -769,8 +796,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=igepv2
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=3
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
     panda)
@@ -778,8 +806,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=panda
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=2
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
     touchbook)
@@ -787,8 +816,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=touchbook
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=5
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
     crane)
@@ -796,8 +826,9 @@ case "$UBOOT_TYPE" in
  SYSTEM=crane
  unset IN_VALID_UBOOT
  DO_UBOOT=1
- HASMLO=1
  ABI_VER=6
+ SERIAL="ttyO2"
+ is_omap
 
         ;;
 esac
