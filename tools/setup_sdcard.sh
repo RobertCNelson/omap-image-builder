@@ -142,7 +142,7 @@ fi
 
 function beagle_debug_scripts {
 
-cat > /tmp/boot.cmd <<beagle_debug_cmd
+cat > ${TEMPDIR}/boot.cmd <<beagle_debug_cmd
 echo "Full Debug"
 setenv dvimode 1280x720MR-16@60
 setenv vram 12MB
@@ -152,14 +152,14 @@ boot
 
 beagle_debug_cmd
 
-rm -f /tmp/user.cmd || true
-cp /tmp/boot.cmd /tmp/user.cmd
+rm -f ${TEMPDIR}/user.cmd || true
+cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/user.cmd
 
 }
 
 function beagle_boot_scripts {
 
-cat > /tmp/boot.cmd <<beagle_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<beagle_boot_cmd
 echo "Debug: Demo Image Install"
 setenv dvimode 1280x720MR-16@60
 setenv vram 12MB
@@ -172,7 +172,7 @@ beagle_boot_cmd
  if test "-$ADDON-" = "-pico-"
  then
 
-cat > /tmp/boot.cmd <<beagle_pico_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<beagle_pico_boot_cmd
 echo "Debug: Demo Image Install"
 setenv dvimode 800x600MR-16@60
 setenv vram 12MB
@@ -184,7 +184,7 @@ beagle_pico_boot_cmd
 
  fi
 
-cat > /tmp/user.cmd <<beagle_user_cmd
+cat > ${TEMPDIR}/user.cmd <<beagle_user_cmd
 
 if test "\${beaglerev}" = "xMA"; then
 echo "xMA doesnt have NAND"
@@ -218,7 +218,7 @@ beagle_user_cmd
 
 function igepv2_boot_scripts {
 
-cat > /tmp/boot.cmd <<igepv2_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<igepv2_boot_cmd
 setenv dvimode 1280x720MR-16@60
 setenv vram 12MB
 setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
@@ -231,7 +231,7 @@ igepv2_boot_cmd
 
 function touchbook_boot_scripts {
 
-cat > /tmp/boot.cmd <<touchbook_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<touchbook_boot_cmd
 setenv dvimode 1024x600MR-16@60
 setenv vram 12MB
 setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
@@ -244,7 +244,7 @@ touchbook_boot_cmd
 
 function panda_boot_scripts {
 
-cat > /tmp/boot.cmd <<panda_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<panda_boot_cmd
 setenv dvimode 1280x720MR-16@60
 setenv vram 16MB
 setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
@@ -257,7 +257,7 @@ panda_boot_cmd
 
 function crane_boot_scripts {
 
-cat > /tmp/boot.cmd <<crane_boot_cmd
+cat > ${TEMPDIR}/boot.cmd <<crane_boot_cmd
 setenv dvimode 1280x720MR-16@60
 setenv vram 16MB
 setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
@@ -270,7 +270,7 @@ crane_boot_cmd
 
 function boot_scr_to_uenv_txt {
 
-cat > /tmp/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
 bootenv=boot.scr
 loaduimage=fatload mmc \${mmcdev} \${loadaddr} \${bootenv}
 mmcboot=echo Running boot.scr script from mmc ...; source \${loadaddr}
@@ -459,33 +459,33 @@ if [ "$DO_UBOOT" ];then
 #Some boards, like my xM Prototype have the user button polarity reversed
 #in that case user.scr gets loaded over boot.scr
 if [ "$SWAP_BOOT_USER" ] ; then
- if ls /tmp/boot.cmd >/dev/null 2>&1;then
-  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/user.scr
-  cp /tmp/boot.cmd ${TEMPDIR}/disk/user.cmd
-  rm -f /tmp/user.cmd || true
+ if ls ${TEMPDIR}/boot.cmd >/dev/null 2>&1;then
+  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/user.scr
+  cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/user.cmd
+  rm -f ${TEMPDIR}/user.cmd || true
  fi
 fi
 
- if ls /tmp/boot.cmd >/dev/null 2>&1;then
- mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /tmp/boot.cmd ${TEMPDIR}/disk/boot.scr
- cp /tmp/boot.cmd ${TEMPDIR}/disk/boot.cmd
- rm -f /tmp/boot.cmd || true
+ if ls ${TEMPDIR}/boot.cmd >/dev/null 2>&1;then
+ mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.scr
+ cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.cmd
+ rm -f ${TEMPDIR}/boot.cmd || true
  fi
 
- if ls /tmp/user.cmd >/dev/null 2>&1;then
- mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /tmp/user.cmd ${TEMPDIR}/disk/user.scr
- cp /tmp/user.cmd ${TEMPDIR}/disk/user.cmd
- rm -f /tmp/user.cmd || true
+ if ls ${TEMPDIR}/user.cmd >/dev/null 2>&1;then
+ mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d ${TEMPDIR}/user.cmd ${TEMPDIR}/disk/user.scr
+ cp ${TEMPDIR}/user.cmd ${TEMPDIR}/disk/user.cmd
+ rm -f ${TEMPDIR}/user.cmd || true
  fi
 
- if ls /tmp/uEnv.cmd >/dev/null 2>&1;then
- cp /tmp/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
- rm -f /tmp/uEnv.cmd || true
+ if ls ${TEMPDIR}/uEnv.cmd >/dev/null 2>&1;then
+ cp ${TEMPDIR}/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
+ rm -f ${TEMPDIR}/uEnv.cmd || true
  fi
 
 fi
 
-cat > /tmp/readme.txt <<script_readme
+cat > ${TEMPDIR}/readme.txt <<script_readme
 
 These can be run from anywhere, but just in case change to "cd /boot/uboot"
 
@@ -517,7 +517,7 @@ Install Google's Chrome web browswer.
 
 script_readme
 
-cat > /tmp/update_boot_files.sh <<update_boot_files
+cat > ${TEMPDIR}/update_boot_files.sh <<update_boot_files
 #!/bin/sh
 
 cd /boot/uboot
@@ -546,7 +546,7 @@ fi
 
 update_boot_files
 
-cat > /tmp/fix_zippy2.sh <<fix_zippy2
+cat > ${TEMPDIR}/fix_zippy2.sh <<fix_zippy2
 #!/bin/sh
 #based off a script from cwillu
 #make sure to have a jumper on JP1 (write protect)
@@ -557,7 +557,7 @@ fi
 
 fix_zippy2
 
-cat > /tmp/latest_kernel.sh <<latest_kernel
+cat > ${TEMPDIR}/latest_kernel.sh <<latest_kernel
 #!/bin/bash
 DIST=\$(lsb_release -cs)
 
@@ -605,7 +605,7 @@ check_latest
 
 latest_kernel
 
-cat > /tmp/minimal_xfce.sh <<basic_xfce
+cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
 
 sudo apt-get update
@@ -613,7 +613,7 @@ sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg
 
 basic_xfce
 
-cat > /tmp/get_chrome.sh <<latest_chrome
+cat > ${TEMPDIR}/get_chrome.sh <<latest_chrome
 #!/bin/sh
 
 #setup libs
@@ -670,21 +670,21 @@ sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
 latest_chrome
 
  mkdir -p ${TEMPDIR}/disk/tools
- cp -v /tmp/readme.txt ${TEMPDIR}/disk/tools/readme.txt
+ cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
- cp -v /tmp/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
+ cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
  chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
 
- cp -v /tmp/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
+ cp -v ${TEMPDIR}/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
  chmod +x ${TEMPDIR}/disk/tools/fix_zippy2.sh
 
- cp -v /tmp/latest_kernel.sh ${TEMPDIR}/disk/tools/latest_kernel.sh
+ cp -v ${TEMPDIR}/latest_kernel.sh ${TEMPDIR}/disk/tools/latest_kernel.sh
  chmod +x ${TEMPDIR}/disk/tools/latest_kernel.sh
 
- cp -v /tmp/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
+ cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
  chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
 
- cp -v /tmp/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
+ cp -v ${TEMPDIR}/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
  chmod +x ${TEMPDIR}/disk/tools/get_chrome.sh
 
 cd ${TEMPDIR}/disk
