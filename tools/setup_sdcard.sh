@@ -699,8 +699,6 @@ fi
 
 function check_mmc {
 
- find_issue
-
  FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "[Disk] ${MMC}" | awk '{print $2}')
 
  if test "-$FDISK-" = "-$MMC:-"
@@ -903,6 +901,9 @@ Additional/Optional options:
 -h --help
     this help
 
+--probe-mmc
+    List all partitions
+
 --uboot <dev board>
     beagle_bx - <Ax/Bx Models>
     beagle - <Cx, xM A/B/C>
@@ -953,6 +954,10 @@ while [ ! -z "$1" ]; do
             usage
             MMC=1
             ;;
+        --probe-mmc)
+            MMC="/dev/idontknow"
+            check_mmc
+            ;;
         --mmc)
             checkparm $2
             MMC="$2"
@@ -960,6 +965,7 @@ while [ ! -z "$1" ]; do
             then
 	        PARTITION_PREFIX="p"
             fi
+            find_issue
             check_mmc 
             ;;
         --uboot)
