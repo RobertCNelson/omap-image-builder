@@ -140,131 +140,15 @@ fi
 
 }
 
-function beagle_debug_scripts {
+function boot_files_template {
 
-cat > ${TEMPDIR}/boot.cmd <<beagle_debug_cmd
-echo "Full Debug"
-setenv dvimode 1280x720MR-16@60
+cat > ${TEMPDIR}/boot.cmd <<boot_cmd
+setenv dvimode VIDEO_TIMING
 setenv vram 12MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs earlyprintk debug-oem-config console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc buddy=\${buddy}
+setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
+setenv bootargs console=SERIAL_CONSOLE VIDEO_CONSOLE root=/dev/mmcblk0p5 rootwait ro VIDEO_RAM VIDEO_DEVICE:VIDEO_MODE fixrtc buddy=\${buddy} mpurate=\${mpurate}
 boot
-
-beagle_debug_cmd
-
-rm -f ${TEMPDIR}/user.cmd || true
-cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/user.cmd
-
-}
-
-function beagle_boot_scripts {
-
-cat > ${TEMPDIR}/boot.cmd <<beagle_boot_cmd
-echo "Debug: Demo Image Install"
-setenv dvimode 1280x720MR-16@60
-setenv vram 12MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc buddy=\${buddy} mpurate=\${mpurate}
-boot
-
-beagle_boot_cmd
-
- if test "-$ADDON-" = "-pico-"
- then
-
-cat > ${TEMPDIR}/boot.cmd <<beagle_pico_boot_cmd
-echo "Debug: Demo Image Install"
-setenv dvimode 800x600MR-16@60
-setenv vram 12MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc buddy=\${buddy} mpurate=\${mpurate}
-boot
-
-beagle_pico_boot_cmd
-
- fi
-
-cat > ${TEMPDIR}/user.cmd <<beagle_user_cmd
-
-if test "\${beaglerev}" = "xMA"; then
-echo "xMA doesnt have NAND"
-exit
-else if test "\${beaglerev}" = "xMC"; then
-echo "xMC doesnt have NAND"
-exit
-else
-echo "Starting NAND UPGRADE, do not REMOVE SD CARD or POWER till Complete"
-fatload mmc 0:1 0x80200000 MLO
-nandecc hw
-nand erase 0 80000
-nand write 0x80200000 0 20000
-nand write 0x80200000 20000 20000
-nand write 0x80200000 40000 20000
-nand write 0x80200000 60000 20000
-
-fatload mmc 0:1 0x80300000 u-boot.bin
-nandecc sw
-nand erase 80000 160000
-nand write 0x80300000 80000 160000
-nand erase 260000 20000
-echo "FLASH UPGRADE Complete"
-exit
-fi
-fi
-
-beagle_user_cmd
-
-}
-
-function igepv2_boot_scripts {
-
-cat > ${TEMPDIR}/boot.cmd <<igepv2_boot_cmd
-setenv dvimode 1280x720MR-16@60
-setenv vram 12MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
-boot
-
-igepv2_boot_cmd
-
-}
-
-function touchbook_boot_scripts {
-
-cat > ${TEMPDIR}/boot.cmd <<touchbook_boot_cmd
-setenv dvimode 1024x600MR-16@60
-setenv vram 12MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty1 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc mpurate=600
-boot
-
-touchbook_boot_cmd
-
-}
-
-function panda_boot_scripts {
-
-cat > ${TEMPDIR}/boot.cmd <<panda_boot_cmd
-setenv dvimode 1280x720MR-16@60
-setenv vram 16MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
-boot
-
-panda_boot_cmd
-
-}
-
-function crane_boot_scripts {
-
-cat > ${TEMPDIR}/boot.cmd <<crane_boot_cmd
-setenv dvimode 1280x720MR-16@60
-setenv vram 16MB
-setenv bootcmd 'fatload mmc 0:1 0x80300000 uImage; fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80300000 0x81600000'
-setenv bootargs console=ttyO2,115200n8 console=tty0 root=/dev/mmcblk0p2 rootwait ro vram=\${vram} omapfb.mode=dvi:\${dvimode} fixrtc
-boot
-
-crane_boot_cmd
+boot_cmd
 
 }
 
@@ -295,53 +179,45 @@ function dl_xload_uboot {
   ABI="ABI"
  fi
 
-case "$SYSTEM" in
-    beagle_bx)
+ boot_files_template
+ boot_scr_to_uenv_txt
 
-if [ "$DEBUG" ];then
- beagle_debug_scripts
- boot_scr_to_uenv_txt
-else
- beagle_boot_scripts
- boot_scr_to_uenv_txt
+if test "-$ADDON-" = "-pico-"
+then
+ VIDEO_TIMING="640x480MR-16@60"
 fi
 
-        ;;
-    beagle)
+ #Set uImage boot address
+ sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/boot.cmd
 
-if [ "$DEBUG" ];then
- beagle_debug_scripts
- boot_scr_to_uenv_txt
+ #Set uInitrd boot address
+ sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/boot.cmd
+
+ #Set the Serial Console
+ sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/boot.cmd
+
+if [ "$SERIAL_MODE" ];then
+ sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/boot.cmd
+ sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/boot.cmd
 else
- beagle_boot_scripts
- boot_scr_to_uenv_txt
+ #Enable Video Console
+ sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/boot.cmd
 fi
 
-        ;;
-    igepv2)
+ if [ "$PRINTK" ];then
+  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/boot.cmd
+ fi
 
-igepv2_boot_scripts
-
-        ;;
-    touchbook)
-
-touchbook_boot_scripts
-
-        ;;
-    panda)
-
-panda_boot_scripts
-
-        ;;
-    crane)
-
-echo "crane not ready"
-exit
-
-crane_boot_scripts
-
-        ;;
-esac
+echo ""
+echo "Debug: U-Boot boot script"
+echo ""
+cat ${TEMPDIR}/boot.cmd
+echo ""
 
 if [ "${HASMLO}" ] ; then
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
@@ -817,6 +693,7 @@ case "$UBOOT_TYPE" in
  ABI_VER=5
  SERIAL="ttyO2"
  is_omap
+ VIDEO_TIMING="1024x600MR-16@60"
 
         ;;
     crane)
