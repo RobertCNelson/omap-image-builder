@@ -495,16 +495,6 @@ Tools:
 
 Updated with a custom uImage and modules or modified the boot.cmd/user.com files with new boot args? Run "./tools/update_boot_files.sh" to regenerate all boot files...
 
- "./tools/fix_zippy2.sh"
-
-Early zippy2 boards had the wrong id in eeprom (zippy1).. Put a jumper on eeprom pin and run "./tools/fix_zippy2.sh" to update the eeprom contents for zippy2.
-
-Kernel:
-
- "./tools/latest_kernel.sh"
-
-Update to the latest rcn-ee.net kernel.. still some bugs in running from /boot/uboot..
-
 Applications:
 
  "./tools/minimal_xfce.sh"
@@ -545,65 +535,6 @@ sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boo
 fi
 
 update_boot_files
-
-cat > ${TEMPDIR}/fix_zippy2.sh <<fix_zippy2
-#!/bin/sh
-#based off a script from cwillu
-#make sure to have a jumper on JP1 (write protect)
-
-if sudo i2cdump -y 2 0x50 | grep "00: 00 01 00 01 01 00 00 00"; then
-    sudo i2cset -y 2 0x50 0x03 0x02
-fi
-
-fix_zippy2
-
-cat > ${TEMPDIR}/latest_kernel.sh <<latest_kernel
-#!/bin/bash
-DIST=\$(lsb_release -cs)
-
-#enable testing
-#TESTING=1
-
-function run_upgrade {
-
- wget --no-verbose --directory-prefix=/tmp/ \${KERNEL_DL}
-
- if [ -f /tmp/install-me.sh ] ; then
-  mv /tmp/install-me.sh ~/
- fi
-
-echo "switch to home directory and run"
-echo "cd ~/"
-echo ". install-me.sh"
-
-}
-
-function check_latest {
-
- if [ -f /tmp/LATEST ] ; then
-  rm -f /tmp/LATEST &> /dev/null
- fi
-
- wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/\${DIST}/LATEST
-
- KERNEL_DL=\$(cat /tmp/LATEST | grep "ABI:1 STABLE" | awk '{print \$3}')
-
- if [ "\$TESTING" ] ; then
-  KERNEL_DL=\$(cat /tmp/LATEST | grep "ABI:1 TESTING" | awk '{print \$3}')
- fi
-
- KERNEL_DL_VER=\$(echo \${KERNEL_DL} | awk -F'/' '{print \$6}')
-
- CURRENT_KER="v\$(uname -r)"
-
- if [ \${CURRENT_KER} != \${KERNEL_DL_VER} ]; then
-  run_upgrade
- fi
-}
-
-check_latest
-
-latest_kernel
 
 cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
@@ -674,12 +605,6 @@ latest_chrome
 
  cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
  chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
-
- cp -v ${TEMPDIR}/fix_zippy2.sh ${TEMPDIR}/disk/tools/fix_zippy2.sh
- chmod +x ${TEMPDIR}/disk/tools/fix_zippy2.sh
-
- cp -v ${TEMPDIR}/latest_kernel.sh ${TEMPDIR}/disk/tools/latest_kernel.sh
- chmod +x ${TEMPDIR}/disk/tools/latest_kernel.sh
 
  cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
  chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
