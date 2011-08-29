@@ -41,11 +41,15 @@ fi
 
 FK
 
-#so far only in maverick/natty, so this is for lucid
-if [ ! $(which devmem2) ];then
- wget http://ports.ubuntu.com/pool/universe/d/devmem2/devmem2_0.0-0ubuntu1_armel.deb
- dpkg -i devmem2_0.0-0ubuntu1_armel.deb
- rm -f devmem2_0.0-0ubuntu1_armel.deb
+if which git >/dev/null 2>&1; then
+  cd /tmp/
+  git clone git://git.kernel.org/pub/scm/linux/kernel/git/dwmw2/linux-firmware.git
+  cd -
+
+  mkdir -p /lib/firmware/ti-connectivity
+  cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/ti-connectivity
+  cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
+  rm -rf /tmp/linux-firmware/
 fi
 
 rm -f /tmp/*.deb
