@@ -50,12 +50,18 @@ PARTITION_PREFIX=""
 DIR=$PWD
 TEMPDIR=$(mktemp -d)
 
-function find_issue {
+function check_root {
 
 if [[ $UID -ne 0 ]]; then
  echo "$0 must be run as sudo user or root"
  exit
 fi
+
+}
+
+function find_issue {
+
+check_root
 
 if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
  echo "Error: no armel-rootfs-* file"
@@ -833,6 +839,7 @@ while [ ! -z "$1" ]; do
             ;;
         --probe-mmc)
             MMC="/dev/idontknow"
+            check_root
             check_mmc
             ;;
         --mmc)
