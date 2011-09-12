@@ -321,7 +321,11 @@ function populate_boot {
   fi
 
   if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
-   cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+   if echo ${UBOOT} | grep img > /dev/null 2>&1;then
+    cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
+   else
+    cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+   fi
   fi
  fi
 
