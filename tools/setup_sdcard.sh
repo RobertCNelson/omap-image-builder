@@ -41,6 +41,9 @@ unset HASMLO
 unset ABI_VER
 unset HAS_INITRD
 
+unset SVIDEO_NTSC
+unset SVIDEO_PAL
+
 #Defaults
 RFS=ext4
 BOOT_LABEL=boot
@@ -193,6 +196,16 @@ then
  VIDEO_TIMING="640x480MR-16@60"
 fi
 
+ if [ "$SVIDEO_NTSC" ];then
+  VIDEO_DRV="omapfb.mode=tv"
+  VIDEO_TIMING="ntsc"
+ fi
+
+ if [ "$SVIDEO_PAL" ];then
+  VIDEO_DRV="omapfb.mode=tv"
+  VIDEO_TIMING="pal"
+ fi
+
  #Set uImage boot address
  sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/boot.cmd
 
@@ -212,7 +225,13 @@ else
  sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/boot.cmd
  sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/boot.cmd
  sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/boot.cmd
- sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/boot.cmd
+
+ if [ "$SVIDEO_NTSC" ] || [ "$SVIDEO_PAL" ];then
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/boot.cmd
+ else
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/boot.cmd
+ fi
+
 fi
 
  if [ "$PRINTK" ];then
@@ -817,6 +836,12 @@ Additional/Optional options:
 --swap_file <xxx>
     Creats a Swap file of (xxx)MB's
 
+--svideo-ntsc
+    force ntsc mode for svideo
+
+--svideo-pal
+    force pal mode for svideo
+
 --debug
     enable all debug options for troubleshooting
 
@@ -873,6 +898,12 @@ while [ ! -z "$1" ]; do
             ;;
         --use-default-user)
             DEFAULT_USER=1
+            ;;
+        --svideo-ntsc)
+            SVIDEO_NTSC=1
+            ;;
+        --svideo-pal)
+            SVIDEO_PAL=1
             ;;
         --boot_label)
             checkparm $2
