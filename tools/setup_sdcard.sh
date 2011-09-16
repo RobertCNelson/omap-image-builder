@@ -85,7 +85,7 @@ if [ "$FDISK_DEBUG" ];then
  fdisk -v
 fi
 
-if fdisk -v | grep 2.1[8-9] >/dev/null ; then
+if test $(sudo fdisk -v | grep -o -E '2\.[0-9]+' | cut -d'.' -f2) -ge 18 ; then
  FDISK_DOS="-c=dos -u=cylinders"
 fi
 
