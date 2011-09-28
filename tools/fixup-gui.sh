@@ -9,7 +9,7 @@ echo "/dev/mmcblk0p1   /boot/uboot auto   defaults            0   0" >> /etc/fst
 #Add eth0 to network interfaces, so ssh works on startup.
 echo ""  >> /etc/network/interfaces
 echo "# The primary network interface" >> /etc/network/interfaces
-echo "allow-hotplug eth0"  >> /etc/network/interfaces
+echo "auto eth0"  >> /etc/network/interfaces
 echo "iface eth0 inet dhcp"  >> /etc/network/interfaces
 echo "# Example to keep MAC address between reboots"  >> /etc/network/interfaces
 echo "#hwaddress ether DE:AD:BE:EF:CA:FE"  >> /etc/network/interfaces
