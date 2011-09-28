@@ -33,8 +33,10 @@ MINIMAL_APT="btrfs-tools,git-core,i2c-tools,nano,pastebinit,uboot-envtools,uboot
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
+UBU_COMPONENTS="main,universe,multiverse"
 DEB_COMPONENTS="main,contrib,non-free"
 
+MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
 
@@ -131,7 +133,7 @@ function compression {
 	cd ${DIR}/deploy/
 }
 
-function squeeze_release {
+function debian_release {
 
 reset_vars
 
@@ -141,6 +143,22 @@ MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL-armel-${TIME}
 USER_PASS="--login debian --password temppwd"
+ARCH=armel
+minimal_armel
+compression
+
+}
+
+function ubuntu_release {
+
+reset_vars
+
+DIST=natty
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS="${UBU_COMPONENTS}"
+BUILD=ubuntu-natty$MINIMAL-armel-${TIME}
+USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
 compression
@@ -175,5 +193,7 @@ fi
 
 dl_rootstock
 
-squeeze_release
+debian_release
+ubuntu_release
 armhf_release
+
