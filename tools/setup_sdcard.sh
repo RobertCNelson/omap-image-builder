@@ -447,6 +447,10 @@ cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 sudo apt-get update
 sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3 network-manager
 
+echo "Disabling eth0 in /etc/network/interfaces so xfce's network-manager works"
+sudo sed -i 's/auto eth0/#auto eth0/g' /etc/network/interfaces
+sudo sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' /etc/network/interfaces
+
 basic_xfce
 
 cat > ${TEMPDIR}/get_chrome.sh <<latest_chrome
