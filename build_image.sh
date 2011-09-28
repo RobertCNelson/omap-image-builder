@@ -61,8 +61,10 @@ XFCE="-xfce4-armel"
 GUI="-desktop-armel"
 NET="-netbook-armel"
 
-MINIMAL_APT="btrfs-tools,git-core,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
-#cpufrequtils
+MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
+MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,wireless-tools,wpasupplicant"
+#MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
