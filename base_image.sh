@@ -28,13 +28,15 @@ unset USE_OEM
 
 MINIMAL="-minimal"
 
-MINIMAL_APT="btrfs-tools,git-core,i2c-tools,nano,pastebinit,uboot-envtools,uboot-mkimage,usbutils,wget,wireless-tools,wpasupplicant"
-#cpufrequtils
+MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
+MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,usb-modeswitch,wireless-tools,wpasupplicant"
+#MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
-UBU_COMPONENTS="main,universe,multiverse"
 DEB_COMPONENTS="main,contrib,non-free"
+UBU_COMPONENTS="main,universe,multiverse"
 
 MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
@@ -112,10 +114,6 @@ function compression {
 	if ls ${DIR}/deploy/rootstock-*.log >/dev/null 2>&1;then
 		rm -f ${DIR}/deploy/rootstock-*.log || true
 	fi
-
-#	echo "Calculating MD5SUMS"
-#	cd ${DIR}/deploy/$BUILD
-#	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/

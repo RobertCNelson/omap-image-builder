@@ -63,7 +63,7 @@ NET="-netbook-armel"
 
 MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
 MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,wireless-tools,wpasupplicant"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,usb-modeswitch,wireless-tools,wpasupplicant"
 #MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
@@ -223,10 +223,6 @@ function compression {
 	fi
 
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
-
-#	echo "Calculating MD5SUMS" 
-#	cd ${DIR}/deploy/$BUILD
-#	md5sum ./* > ${DIR}/deploy/$BUILD.md5sums 2> /dev/null
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/
