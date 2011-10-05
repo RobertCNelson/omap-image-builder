@@ -926,6 +926,9 @@ while [ ! -z "$1" ]; do
             SWAP_SIZE="$2"
             CREATE_SWAP=1
             ;;
+        --earlyprintk)
+            PRINTK=1
+            ;;
         --beta)
             BETA=1
             ;;
