@@ -293,7 +293,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_BETA2$MINIMAL-armel
+BUILD=$ONEIRIC_RELEASE$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
@@ -382,6 +382,9 @@ KERNEL_SEL="STABLE"
 
 natty_release
 oneiric_release
+
+exit
+
 squeeze_release
 #wheezy_release
 armhf_release
