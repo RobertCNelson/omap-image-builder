@@ -446,7 +446,7 @@ cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 
 sudo apt-get update
 if lsb_release -c | grep oneiric ; then
-sudo apt-get -y install xfce4 xubuntu-artwork xserver-xorg-video-omap3 network-manager
+sudo apt-get -y install xubuntu-desktop
 else
 sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3 network-manager
 fi
