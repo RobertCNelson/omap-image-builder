@@ -316,6 +316,25 @@ compression
 
 }
 
+#12.04
+precise_armel_release {
+
+reset_vars
+
+DIST=precise
+SERIAL=ttyO2
+kernel_select
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS="${UBU_COMPONENTS}"
+BUILD=$PRECISE_CURRENT$MINIMAL-armel
+USER_PASS="--login ubuntu --password temppwd"
+ARCH=armel
+minimal_armel
+compression
+
+}
+
 function squeeze_release {
 
 reset_vars
@@ -397,6 +416,8 @@ KERNEL_SEL="STABLE"
 
 natty_release
 oneiric_release
+precise_armel_release
+#precise_armhf_release
 
 exit
 
@@ -408,6 +429,8 @@ KERNEL_SEL="TESTING"
 
 natty_release
 oneiric_release
+precise_armel_release
+#precise_armhf_release
 squeeze_release
 #wheezy_release
 armhf_release
