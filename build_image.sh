@@ -317,7 +317,7 @@ compression
 }
 
 #12.04
-precise_armel_release {
+function precise_armel_release {
 
 reset_vars
 
