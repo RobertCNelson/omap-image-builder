@@ -41,6 +41,8 @@ NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
 NATTY_RELEASE="ubuntu-11.04-r5"
 
+NATTY_CURRENT=${NATTY_RELEASE}
+
 #Oneiric Schedule:
 #https://wiki.ubuntu.com/OneiricReleaseSchedule
 #alpha-1 : June 2nd
@@ -55,6 +57,19 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
 ONEIRIC_RELEASE="ubuntu-11.10-r0"
+
+ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
+
+#Precise Schedule:
+#https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule?action=show&redirect=PreciseReleaseSchedule
+#alpha-1 : Dec 1st
+PRECISE_ALPHA="ubuntu-precise-alpha1"
+#alpha-2 : Feb 2nd
+#beta-1 : March 1st
+#beta-2 : March 29th
+#12.04 : April 26th
+
+PRECISE_CURRENT=${PRECISE_ALPHA}
 
 MINIMAL="-minimal"
 XFCE="-xfce4-armel"
@@ -274,7 +289,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_RELEASE$MINIMAL-armel
+BUILD=$NATTY_CURRENT$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
@@ -293,7 +308,7 @@ kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_RELEASE$MINIMAL-armel
+BUILD=$ONEIRIC_CURRENT$MINIMAL-armel
 USER_PASS="--login ubuntu --password temppwd"
 ARCH=armel
 minimal_armel
