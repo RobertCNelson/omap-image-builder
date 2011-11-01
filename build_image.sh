@@ -39,7 +39,7 @@ NATTY_BETA1="ubuntu-natty-beta1"
 #beta2 : April 14th
 NATTY_BETA2="ubuntu-natty-beta2"
 #10.10 : April 28th
-NATTY_RELEASE="ubuntu-11.04-r5"
+NATTY_RELEASE="ubuntu-11.04-r6"
 
 NATTY_CURRENT=${NATTY_RELEASE}
 
@@ -56,7 +56,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r0"
+ONEIRIC_RELEASE="ubuntu-11.10-r1"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
