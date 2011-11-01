@@ -170,14 +170,14 @@ reset_vars
 
 DIST=unstable
 SERIAL=ttyO2
+ARCH=armhf
 kernel_select
 #EXTRA=''
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
-BUILD=unstable$MINIMAL-armhf-$SUBARCH-${TIME}
+BUILD=$DIST$MINIMAL-$ARCH-$SUBARCH-${TIME}
 USER_PASS="--login debian --password temppwd"
-ARCH=armhf
 minimal_armel
 compression
 

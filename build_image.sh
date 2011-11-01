@@ -285,13 +285,13 @@ reset_vars
 
 DIST=natty
 SERIAL=ttyO2
+ARCH=armel
 kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_CURRENT$MINIMAL-armel
+BUILD=$NATTY_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
-ARCH=armel
 minimal_armel
 compression
 
@@ -304,13 +304,13 @@ reset_vars
 
 DIST=oneiric
 SERIAL=ttyO2
+ARCH=armel
 kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_CURRENT$MINIMAL-armel
+BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
-ARCH=armel
 minimal_armel
 compression
 
@@ -323,13 +323,13 @@ reset_vars
 
 DIST=precise
 SERIAL=ttyO2
+ARCH=armel
 kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$PRECISE_CURRENT$MINIMAL-armel
+BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
-ARCH=armel
 minimal_armel
 compression
 
@@ -341,13 +341,13 @@ reset_vars
 
 DIST=squeeze
 SERIAL=ttyO2
+ARCH=armel
 kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=squeeze$MINIMAL-armel
-ARCH=armel
+BUILD=squeeze$MINIMAL-$ARCH
 minimal_armel
 compression
 
@@ -359,13 +359,13 @@ reset_vars
 
 DIST=wheezy
 SERIAL=ttyO2
+ARCH=armel
 kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-armel
-ARCH=armel
+BUILD=${DIST}$MINIMAL-$ARCH
 minimal_armel
 compression
 
@@ -378,14 +378,14 @@ reset_vars
 
 DIST=unstable
 SERIAL=ttyO2
+ARCH=armhf
 kernel_select
 #EXTRA=''
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
 COMPONENTS="main"
-BUILD=unstable$MINIMAL-armhf
+BUILD=unstable$MINIMAL-$ARCH
 USER_PASS="--login debian --password temppwd"
-ARCH=armhf
 minimal_armel
 compression
 
