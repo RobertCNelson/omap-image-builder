@@ -155,7 +155,7 @@ cat > ${TEMPDIR}/boot.cmd <<boot_cmd
 setenv dvimode VIDEO_TIMING
 setenv vram 12MB
 setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
-setenv bootargs console=SERIAL_CONSOLE VIDEO_CONSOLE root=/dev/mmcblk0p2 rootwait ro VIDEO_RAM VIDEO_DEVICE:VIDEO_MODE fixrtc buddy=\${buddy} mpurate=\${mpurate}
+setenv bootargs console=SERIAL_CONSOLE VIDEO_CONSOLE root=/dev/mmcblk0p2 rootwait ro VIDEO_RAM VIDEO_DEVICE:VIDEO_MODE fixrtc buddy=\${buddy} buddy2=\${buddy2} mpurate=\${mpurate}
 boot
 boot_cmd
 
@@ -195,6 +195,11 @@ if test "-$ADDON-" = "-pico-"
 then
  VIDEO_TIMING="640x480MR-16@60"
 fi
+
+ if test "-$ADDON-" = "-ulcd-"
+ then
+ VIDEO_TIMING="800x480MR-16@60"
+ fi
 
  if [ "$SVIDEO_NTSC" ];then
   VIDEO_DRV="omapfb.mode=tv"
@@ -826,6 +831,7 @@ Additional/Optional options:
 
 --addon <device>
     pico
+    ulcd <beagle xm>
 
 --use-default-user
     (useful for serial only modes and when oem-config is broken)
