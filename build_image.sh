@@ -123,9 +123,6 @@ function dl_rootstock {
 	cd ${DIR}/../
 	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
-        git checkout origin/rcn-ee-images -b rcn-ee-images
-
-	patch -p1 < ${DIR}/patches/bash-if-else-workaround.diff
 
 if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff

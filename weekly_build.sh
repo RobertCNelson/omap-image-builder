@@ -73,9 +73,6 @@ function dl_rootstock {
 	cd ${DIR}/../
 	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
-        git checkout origin/rcn-ee-images -b rcn-ee-images
-
-	git am ${DIR}/patches/0001-force-unmet-dependencies.patch
 
 if [ "$ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
