@@ -73,7 +73,6 @@ PRECISE_CURRENT=${PRECISE_ALPHA}
 
 MINIMAL="-minimal"
 XFCE="-xfce4-armel"
-GUI="-desktop-armel"
 
 MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
 MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
@@ -186,19 +185,6 @@ function xubuntu_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=$ARCH
-}
-
-function gui_armel {
-
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
-
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
