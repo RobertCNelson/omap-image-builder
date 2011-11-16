@@ -74,7 +74,6 @@ PRECISE_CURRENT=${PRECISE_ALPHA}
 MINIMAL="-minimal"
 XFCE="-xfce4-armel"
 GUI="-desktop-armel"
-NET="-netbook-armel"
 
 MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
 MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
@@ -200,19 +199,6 @@ function gui_armel {
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
 	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
-}
-
-function netbook_armel {
-
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
-
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
 }
 
 function compression {
