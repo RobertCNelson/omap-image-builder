@@ -96,6 +96,7 @@ function reset_vars {
 
 unset DIST
 unset PRIMARY_KERNEL
+unset SECONDARY_KERNEL
 unset EXTRA
 unset USER_PASS
 
@@ -146,7 +147,7 @@ function minimal_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
-	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function minimal_armel_nokernel {
@@ -172,7 +173,7 @@ function xfce4_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 \
 	${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function xubuntu_armel {
@@ -185,7 +186,7 @@ function xubuntu_armel {
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} --apt-upgrade --arch=$ARCH
+	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=$ARCH
 }
 
 function gui_armel {
@@ -198,7 +199,7 @@ function gui_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function netbook_armel {
@@ -211,7 +212,7 @@ function netbook_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	${PRIMARY_KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
+	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
 }
 
 function compression {
@@ -275,6 +276,31 @@ echo "Using: ${PRIMARY_KERNEL}"
 
 }
 
+function secondary_kernel_select {
+
+if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+	rm -f /tmp/LATEST-${SUBARCH}
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST-${SUBARCH}
+FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+
+if [ -f /tmp/index.html ] ; then
+	rm -f /tmp/index.html
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/${FTP_DIR}/
+SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+
+SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
+
+echo "Using: ${SECONDARY_KERNEL}"
+
+}
+
+${SECONDARY_KERNEL}
+
 #11.04
 function natty_release {
 
@@ -284,6 +310,7 @@ DIST=natty
 SERIAL=ttyO2
 ARCH=armel
 kernel_select
+secondary_kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -410,6 +437,10 @@ SUBARCH="omap"
 PRIMARY_KERNEL_SEL="STABLE"
 #PRIMARY_KERNEL_SEL="TESTING"
 #PRIMARY_KERNEL_SEL="EXPERIMENTAL"
+
+SECONDARY_KERNEL_SEL="TESTING"
+#SECONDARY_KERNEL_SEL="EXPERIMENTAL"
+
 
 natty_release
 oneiric_release
