@@ -1,0 +1,62 @@
+U-Boot 2011.09-dirty (Nov 07 2011 - 10:39:26)
+
+OMAP3630/3730-GP ES1.1, CPU-OPP2, L3-165MHz, Max CPU Clock 1 Ghz
+OMAP3 Beagle board + LPDDR/NAND
+I2C:   ready
+DRAM:  512 MiB
+WARNING: Caches not enabled
+NAND:  0 MiB
+MMC:   OMAP SD/MMC: 0
+*** Warning - readenv() failed, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Beagle xM Rev A
+No EEPROM on expansion board
+No EEPROM on expansion board
+Die ID #107e00011ff00000015739eb0901800f
+Net:   Net Initialization Skipped
+No ethernet found.
+Hit any key to stop autoboot:  0 
+OMAP3 beagleboard.org # printenv
+
+baudrate=115200
+beaglerev=xMA
+bootcmd=if mmc rescan ${mmcdev}; then if userbutton; then setenv bootenv user.txt;fi;echo SD/MMC found on device ${mmcdev};if run loadbootenv; then echo Loaded environment from ${bootenv};run importbootenv;fi;if test -n $uenvcmd; then echo Running uenvcmd ...;run uenvcmd;fi;if run loaduimage; then run mmcboot;fi;fi;run nandboot;
+bootdelay=2
+bootenv=uEnv.txt
+bootfile=uImage.beagle
+buddy=none
+buddy2=none
+camera=none
+console=ttyO2,115200n8
+defaultdisplay=dvi
+dieid#=107e00011ff00000015739eb0901800f
+dvimode=640x480MR-16@60
+importbootenv=echo Importing environment from mmc ...; env import -t $loadaddr $filesize
+loadaddr=0x80200000
+loadbootenv=fatload mmc ${mmcdev} ${loadaddr} ${bootenv}
+loadramdisk=fatload mmc ${mmcdev} ${rdaddr} ramdisk.gz
+loaduimage=ext2load mmc ${mmcdev}:2 ${loadaddr} /boot/uImage
+loaduimagefat=fatload mmc ${mmcdev} ${loadaddr} uImage
+mmcargs=setenv bootargs console=${console} ${optargs} mpurate=${mpurate} buddy=${buddy} buddy2=${buddy2} camera=${camera} vram=${vram} omapfb.mode=dvi:${dvimode} omapdss.def_disp=${defaultdisplay} root=${mmcroot} rootfstype=${mmcrootfstype}
+mmcboot=echo Booting from mmc ...; run mmcargs; bootm ${loadaddr}
+mmcdev=0
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=ext3 rootwait
+mpurate=auto
+nandargs=setenv bootargs console=${console} ${optargs} mpurate=${mpurate} buddy=${buddy} camera=${camera} vram=${vram} omapfb.mode=dvi:${dvimode} omapdss.def_disp=${defaultdisplay} root=${nandroot} rootfstype=${nandrootfstype}
+nandboot=echo Booting from nand ...; run nandargs; nand read ${loadaddr} 280000 400000; bootm ${loadaddr}
+nandroot=/dev/mtdblock4 rw
+nandrootfstype=jffs2
+ramargs=setenv bootargs console=${console} ${optargs} mpurate=${mpurate} buddy=${buddy} vram=${vram} omapfb.mode=dvi:${dvimode} omapdss.def_disp=${defaultdisplay} root=${ramroot} rootfstype=${ramrootfstype}
+ramboot=echo Booting from ramdisk ...; run ramargs; bootm ${loadaddr}
+ramroot=/dev/ram0 rw ramdisk_size=65536 initrd=0x81000000,64M
+ramrootfstype=ext2
+rdaddr=0x81000000
+usbtty=cdc_acm
+vram=12M
+
+Environment size: 2128/131068 bytes
+OMAP3 beagleboard.org #
