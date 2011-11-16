@@ -40,6 +40,7 @@ unset BTRFS_FSTAB
 unset HASMLO
 unset ABI_VER
 unset HAS_INITRD
+unset SECONDARY_KERNEL
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -353,15 +354,27 @@ function populate_boot {
   fi
  fi
 
- if ls ${DIR}/vmlinuz-* >/dev/null 2>&1;then
-  LINUX_VER=$(ls ${DIR}/vmlinuz-* | awk -F'vmlinuz-' '{print $2}')
+if [ "$SECONDARY_KERNEL" ];then
+ if ls ${DIR}/vmlinuz-*d* >/dev/null 2>&1;then
+  VER="d"
+ elif ls ${DIR}/vmlinuz-*psp* >/dev/null 2>&1;then
+  VER="psp"
+ else
+  VER="x"
+ fi
+else
+ VER="x"
+fi
+
+ if ls ${DIR}/vmlinuz-*${VER}* >/dev/null 2>&1;then
+  LINUX_VER=$(ls ${DIR}/vmlinuz-*${VER}* | awk -F'vmlinuz-' '{print $2}')
   echo "uImage"
-  mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n ${LINUX_VER} -d ${DIR}/vmlinuz-* ${TEMPDIR}/disk/uImage
+  mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n ${LINUX_VER} -d ${DIR}/vmlinuz-*${VER}* ${TEMPDIR}/disk/uImage
  fi
 
- if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
+ if ls ${DIR}/initrd.img-*${VER}* >/dev/null 2>&1;then
   echo "uInitrd"
-  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-* ${TEMPDIR}/disk/uInitrd
+  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-*${VER}* ${TEMPDIR}/disk/uInitrd
  fi
 
 if [ "$DO_UBOOT" ];then
@@ -937,6 +950,9 @@ while [ ! -z "$1" ]; do
             ;;
         --beta)
             BETA=1
+            ;;
+        --secondary-kernel)
+            SECONDARY_KERNEL=1
             ;;
         --debug)
             DEBUG=1
