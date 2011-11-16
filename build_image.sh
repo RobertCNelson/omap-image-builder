@@ -95,7 +95,7 @@ DIR=$PWD
 function reset_vars {
 
 unset DIST
-unset KERNEL
+unset PRIMARY_KERNEL
 unset EXTRA
 unset USER_PASS
 
@@ -146,7 +146,7 @@ function minimal_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
-	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function minimal_armel_nokernel {
@@ -172,7 +172,7 @@ function xfce4_armel {
 	--seed ${MINIMAL_APT},${EXTRA}xfce4,gdm,xubuntu-gdm-theme,xubuntu-artwork,xserver-xorg-video-omap3 \
 	${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function xubuntu_armel {
@@ -185,7 +185,7 @@ function xubuntu_armel {
 	time sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}xubuntu-desktop,xserver-xorg-video-omap3 ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade --arch=$ARCH
+	${PRIMARY_KERNEL} --apt-upgrade --arch=$ARCH
 }
 
 function gui_armel {
@@ -198,7 +198,7 @@ function gui_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed $(cat ${DIR}/tools/xfce4-gui-packages | tr '\n' ',') ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
+	${PRIMARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function netbook_armel {
@@ -211,33 +211,33 @@ function netbook_armel {
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA}ubuntu-netbook ${MIRROR} \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-gui.sh \
-	--kernel-image ${KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
+	${PRIMARY_KERNEL} ${FORCE_SEC} --apt-upgrade --sources ${DIR}/tools/${DIST}.list --arch=${ARCH}
 }
 
 function compression {
-	rm -rf ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD || true
-	mkdir -p ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+	rm -rf ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/rootstock-*.log >/dev/null 2>&1;then
 		rm -f ${DIR}/deploy/rootstock-*.log || true
 	fi
 
-	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/
+	cd ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -259,7 +259,7 @@ if [ -f /tmp/LATEST-${SUBARCH} ] ; then
 fi
 
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_SEL}" | awk '{print $3}')
+FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 
 if [ -f /tmp/index.html ] ; then
@@ -269,9 +269,9 @@ fi
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/${FTP_DIR}/
 ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
 
-KERNEL="${DEB_MIRROR}/${DIST}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 
-echo "Using: ${KERNEL}"
+echo "Using: ${PRIMARY_KERNEL}"
 
 }
 
@@ -407,9 +407,9 @@ dl_rootstock
 
 SUBARCH="omap"
 
-KERNEL_SEL="STABLE"
-#KERNEL_SEL="TESTING"
-#KERNEL_SEL="EXPERIMENTAL"
+PRIMARY_KERNEL_SEL="STABLE"
+#PRIMARY_KERNEL_SEL="TESTING"
+#PRIMARY_KERNEL_SEL="EXPERIMENTAL"
 
 natty_release
 oneiric_release
@@ -422,7 +422,7 @@ squeeze_release
 #wheezy_release
 armhf_release
 
-KERNEL_SEL="TESTING"
+PRIMARY_KERNEL_SEL="TESTING"
 
 natty_release
 oneiric_release
