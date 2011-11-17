@@ -221,6 +221,9 @@ fi
  #Set the Serial Console
  sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/*.cmd
 
+ #Set filesystem type
+ sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/*.cmd
+
 if [ "$SERIAL_MODE" ];then
  sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/*.cmd
