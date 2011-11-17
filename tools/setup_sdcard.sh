@@ -818,11 +818,20 @@ esac
 function check_addon_type {
  IN_VALID_ADDON=1
 
- if test "-$ADDON_TYPE-" = "-pico-"
- then
+case "$ADDON_TYPE" in
+    pico)
+
  ADDON=pico
  unset IN_VALID_ADDON
- fi
+
+        ;;
+    ulcd)
+
+ ADDON=ulcd
+ unset IN_VALID_ADDON
+
+        ;;
+esac
 
  if [ "$IN_VALID_ADDON" ] ; then
    usage
