@@ -730,7 +730,6 @@ function is_imx53 {
 }
 
 function check_uboot_type {
- IN_VALID_UBOOT=1
  unset DO_UBOOT
 
 case "$UBOOT_TYPE" in
@@ -934,6 +933,8 @@ function checkparm {
         usage
     fi
 }
+
+IN_VALID_UBOOT=1
 
 # parse commandline options
 while [ ! -z "$1" ]; do
