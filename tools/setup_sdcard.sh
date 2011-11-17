@@ -263,12 +263,15 @@ fi
  sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/*.cmd
 
 if [ "$SERIAL_MODE" ];then
- sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/*.cmd
  sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/*.cmd
 else
  #Enable Video Console
+
+ #set console video: console=tty0
  sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/*.cmd
+
  sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/*.cmd
