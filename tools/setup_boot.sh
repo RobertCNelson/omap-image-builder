@@ -37,6 +37,7 @@ unset HASMLO
 unset ABI_VER
 unset HAS_INITRD
 unset SECONDARY_KERNEL
+unset USE_UENV
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -158,6 +159,90 @@ uenv_boot_cmd
 
 }
 
+function boot_uenv_txt_template {
+#(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
+
+case "$SYSTEM" in
+    beagle_bx)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+optargs=VIDEO_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+#dvi->defaultdisplay
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
+    beagle)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+optargs=VIDEO_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+#dvi->defaultdisplay
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
+    bone)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+mmc_args=run bootargs_defaults;setenv bootargs \${bootargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} ip=\${ip_method}
+
+mmc_load_uimage=run rcn_mmcloaduimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmc_args; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
+esac
+
+}
+
 function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
@@ -175,8 +260,12 @@ function dl_xload_uboot {
   ABI="ABI"
  fi
 
- boot_files_template
- boot_scr_to_uenv_txt
+ if [ "$USE_UENV" ];then
+  boot_uenv_txt_template
+ else
+  boot_files_template
+  boot_scr_to_uenv_txt
+ fi
 
 if test "-$ADDON-" = "-pico-"
 then
@@ -213,12 +302,15 @@ fi
  sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/*.cmd
 
 if [ "$SERIAL_MODE" ];then
- sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/*.cmd
  sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/*.cmd
 else
  #Enable Video Console
+
+ #set console video: console=tty0
  sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/*.cmd
+
  sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/*.cmd
@@ -446,7 +538,6 @@ function is_imx53 {
 }
 
 function check_uboot_type {
- IN_VALID_UBOOT=1
  unset DO_UBOOT
 
 case "$UBOOT_TYPE" in
@@ -457,6 +548,7 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  ABI_VER=1
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
@@ -467,18 +559,22 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  ABI_VER=7
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
     bone)
 
  SYSTEM=bone
- SWAP_BOOT_USER=1
  unset IN_VALID_UBOOT
  DO_UBOOT=1
  ABI_VER=10
  SERIAL="ttyO0"
+ USE_UENV=1
  is_omap
+ SECONDARY_KERNEL=1
+ unset VIDEO_OMAPFB_MODE
+ unset VIDEO_TIMING
 
         ;;
     igepv2)
@@ -532,11 +628,20 @@ esac
 function check_addon_type {
  IN_VALID_ADDON=1
 
- if test "-$ADDON_TYPE-" = "-pico-"
- then
+case "$ADDON_TYPE" in
+    pico)
+
  ADDON=pico
  unset IN_VALID_ADDON
- fi
+
+        ;;
+    ulcd)
+
+ ADDON=ulcd
+ unset IN_VALID_ADDON
+
+        ;;
+esac
 
  if [ "$IN_VALID_ADDON" ] ; then
    usage
@@ -563,7 +668,7 @@ Additional/Optional options:
 --uboot <dev board>
     beagle_bx - <Ax/Bx Models>
     beagle - <Cx, xM A/B/C>
-    bone - <BeagleBone>
+    bone - <BeagleBone A2>
     panda - <dvi or serial>
     igepv2 - <serial mode only>
 
@@ -596,6 +701,8 @@ function checkparm {
         usage
     fi
 }
+
+IN_VALID_UBOOT=1
 
 # parse commandline options
 while [ ! -z "$1" ]; do
