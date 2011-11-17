@@ -820,7 +820,7 @@ esac
 }
 
 function usage {
-    echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board> --swap_file <50Mb mininum>"
+    echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
 cat <<EOF
 
 Bugs email: "bugs at rcn-ee.com"
