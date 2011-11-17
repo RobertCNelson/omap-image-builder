@@ -40,6 +40,7 @@ unset HASMLO
 unset ABI_VER
 unset HAS_INITRD
 unset SECONDARY_KERNEL
+unset USE_UENV
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -171,6 +172,38 @@ uenv_boot_cmd
 
 }
 
+function boot_uenv_txt_template {
+#(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
+
+case "$SYSTEM" in
+    bone)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+mmc_args=run bootargs_defaults;setenv bootargs \${bootargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} ip=\${ip_method}
+
+mmc_load_uimage=run rcn_mmcloaduimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmc_args; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
+esac
+
+}
+
 function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
@@ -188,8 +221,12 @@ function dl_xload_uboot {
   ABI="ABI"
  fi
 
- boot_files_template
- boot_scr_to_uenv_txt
+ if [ "$USE_UENV" ];then
+  boot_uenv_txt_template
+ else
+  boot_files_template
+  boot_scr_to_uenv_txt
+ fi
 
 if test "-$ADDON-" = "-pico-"
 then
@@ -717,6 +754,20 @@ case "$UBOOT_TYPE" in
  is_omap
 
         ;;
+    bone)
+
+ SYSTEM=bone
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ ABI_VER=10
+ SERIAL="ttyO0"
+ USE_UENV=1
+ is_omap
+ SECONDARY_KERNEL=1
+ unset VIDEO_OMAPFB_MODE
+ unset VIDEO_TIMING
+
+        ;;
     igepv2)
 
  SYSTEM=igepv2
@@ -836,6 +887,7 @@ Additional/Optional options:
 --uboot <dev board>
     beagle_bx - <Ax/Bx Models>
     beagle - <Cx, xM A/B/C>
+    bone - <BeagleBone A2>
     panda - <dvi or serial>
     igepv2 - <serial mode only>
 
