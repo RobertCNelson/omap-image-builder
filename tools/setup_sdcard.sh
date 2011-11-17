@@ -587,7 +587,7 @@ fi
 if test "-$SERIAL-" != "-ttyO2-"
 then
  if ls ${TEMPDIR}/disk/etc/init/ttyO2.conf >/dev/null 2>&1;then
-  echo "Ubuntu: Serial Login: fixing /etc/init/tty02.conf to use ${SERIAL}"
+  echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
   mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
   sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
  fi
