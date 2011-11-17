@@ -176,6 +176,58 @@ function boot_uenv_txt_template {
 #(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
 
 case "$SYSTEM" in
+    beagle_bx)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+optargs=VIDEO_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+#dvi->defaultdisplay
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
+    beagle)
+
+cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+bootfile=uImage
+address_uimage=UIMAGE_ADDR
+address_uinitrd=UINITRD_ADDR
+
+console=SERIAL_CONSOLE
+optargs=VIDEO_CONSOLE
+
+defaultdisplay=VIDEO_OMAPFB_MODE
+dvimode=VIDEO_TIMING
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=FSTYPE rootwait fixrtc
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+
+#dvi->defaultdisplay
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_boot_cmd
+
+        ;;
     bone)
 
 cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
@@ -743,6 +795,7 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  ABI_VER=1
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
@@ -753,6 +806,7 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  ABI_VER=7
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
