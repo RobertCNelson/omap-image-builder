@@ -31,7 +31,6 @@
 #add: "debug-oem-config" to bootargs
 
 unset MMC
-unset SWAP_BOOT_USER
 unset DEFAULT_USER
 unset DEBUG
 unset BETA
@@ -389,16 +388,6 @@ fi
 
 if [ "$DO_UBOOT" ];then
 
-#Some boards, like my xM Prototype have the user button polarity reversed
-#in that case user.scr gets loaded over boot.scr
-if [ "$SWAP_BOOT_USER" ] ; then
- if ls ${TEMPDIR}/boot.cmd >/dev/null 2>&1;then
-  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/user.scr
-  cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/user.cmd
-  rm -f ${TEMPDIR}/user.cmd || true
- fi
-fi
-
  if ls ${TEMPDIR}/boot.cmd >/dev/null 2>&1;then
  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.scr
  cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.cmd
@@ -726,19 +715,6 @@ case "$UBOOT_TYPE" in
  ABI_VER=7
  SERIAL="ttyO2"
  is_omap
-
-        ;;
-    beagle-proto)
-#hidden: proto button bug
-
- SYSTEM=beagle
- SWAP_BOOT_USER=1
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- ABI_VER=7
- SERIAL="ttyO2"
- is_omap
-
 
         ;;
     igepv2)
