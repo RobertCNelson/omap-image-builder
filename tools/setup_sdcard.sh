@@ -205,11 +205,13 @@ fi
  if [ "$SVIDEO_NTSC" ];then
   VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="ntsc"
+  VIDEO_OMAPFB_MODE=tv
  fi
 
  if [ "$SVIDEO_PAL" ];then
   VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="pal"
+  VIDEO_OMAPFB_MODE=tv
  fi
 
  #Set uImage boot address
@@ -234,6 +236,9 @@ else
  sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/*.cmd
  sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/*.cmd
+
+ #set OMAP video: omapfb.mode=VIDEO_OMAPFB_MODE
+ sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/*.cmd
 
  if [ "$SVIDEO_NTSC" ] || [ "$SVIDEO_PAL" ];then
   sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/*.cmd
@@ -683,6 +688,7 @@ function is_omap {
  SUBARCH="omap"
  VIDEO_CONSOLE="console=tty0"
  VIDEO_DRV="omapfb.mode=dvi"
+ VIDEO_OMAPFB_MODE="dvi"
  VIDEO_TIMING="1280x720MR-16@60"
 }
 
