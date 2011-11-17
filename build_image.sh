@@ -254,7 +254,8 @@ DIST=natty
 SERIAL=ttyO2
 ARCH=armel
 kernel_select
-secondary_kernel_select
+#secondary_kernel_select
+SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/natty/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0natty_armel.deb"
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -274,6 +275,7 @@ DIST=oneiric
 SERIAL=ttyO2
 ARCH=armel
 kernel_select
+SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/oneiric/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0oneiric_armel.deb"
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -293,6 +295,7 @@ DIST=precise
 SERIAL=ttyO2
 ARCH=armel
 kernel_select
+SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/precise/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0precise_armel.deb"
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
