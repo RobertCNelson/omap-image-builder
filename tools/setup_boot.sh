@@ -192,49 +192,59 @@ fi
  if [ "$SVIDEO_NTSC" ];then
   VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="ntsc"
+  VIDEO_OMAPFB_MODE=tv
  fi
 
  if [ "$SVIDEO_PAL" ];then
   VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="pal"
+  VIDEO_OMAPFB_MODE=tv
  fi
 
  #Set uImage boot address
- sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/*.cmd
 
  #Set uInitrd boot address
- sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/*.cmd
 
  #Set the Serial Console
- sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/*.cmd
+
+ #Set filesystem type
+ sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/*.cmd
 
 if [ "$SERIAL_MODE" ];then
- sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/boot.cmd
- sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/boot.cmd
- sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_CONSOLE ::g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/*.cmd
+ sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/*.cmd
 else
  #Enable Video Console
- sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/boot.cmd
- sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/boot.cmd
- sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/boot.cmd
- sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/boot.cmd
+ sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/*.cmd
+
+ #set OMAP video: omapfb.mode=VIDEO_OMAPFB_MODE
+ sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/*.cmd
 
  if [ "$SVIDEO_NTSC" ] || [ "$SVIDEO_PAL" ];then
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/boot.cmd
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/*.cmd
  else
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/boot.cmd
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/*.cmd
  fi
 
 fi
 
  if [ "$PRINTK" ];then
-  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/boot.cmd
+  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/*.cmd
  fi
 
 echo ""
 echo "Debug: U-Boot boot script"
 echo ""
-cat ${TEMPDIR}/boot.cmd
+echo "-----------------------------"
+cat ${TEMPDIR}/*.cmd
+echo "-----------------------------"
 echo ""
 
 if [ "${HASMLO}" ] ; then
@@ -424,13 +434,14 @@ function check_mmc {
 
 function is_omap {
  HASMLO=1
- UIMAGE_ADDR="0x80300000"
- UINITRD_ADDR="0x81600000"
+ UIMAGE_ADDR="0x80200000"
+ UINITRD_ADDR="0x80A00000"
  SERIAL_CONSOLE="${SERIAL},115200n8"
  ZRELADD="0x80008000"
  SUBARCH="omap"
  VIDEO_CONSOLE="console=tty0"
  VIDEO_DRV="omapfb.mode=dvi"
+ VIDEO_OMAPFB_MODE="dvi"
  VIDEO_TIMING="1280x720MR-16@60"
 }
 
