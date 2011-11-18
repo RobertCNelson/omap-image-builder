@@ -373,7 +373,7 @@ function unmount_all_drive_partitions {
  parted --script ${MMC} mklabel msdos
 }
 
-function create_partitions {
+function uboot_in_boot_partition {
  echo ""
  echo "Using fdisk to create BOOT Partition"
  echo "-----------------------------"
@@ -409,6 +409,11 @@ if [ "$FDISK_DEBUG" ];then
  fdisk -l ${MMC}
  echo "-----------------------------"
 fi
+}
+
+function create_partitions {
+
+uboot_in_boot_partition
 
 echo ""
 echo "4 / 9: Creating ${RFS} Partition"
