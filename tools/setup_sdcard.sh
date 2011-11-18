@@ -36,7 +36,7 @@ unset DEBUG
 unset BETA
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
-unset HASMLO
+unset SPL_BOOT
 unset ABI_VER
 unset HAS_INITRD
 unset SECONDARY_KERNEL
@@ -345,7 +345,7 @@ cat ${TEMPDIR}/*.cmd
 echo "-----------------------------"
 echo ""
 
-if [ "${HASMLO}" ] ; then
+if [ "${SPL_BOOT}" ] ; then
  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
  MLO=${MLO##*/}
@@ -464,7 +464,7 @@ function populate_boot {
  if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
  if [ "$DO_UBOOT" ];then
-  if [ "${HASMLO}" ] ; then
+  if [ "${SPL_BOOT}" ] ; then
    if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
     cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
    fi
@@ -785,7 +785,7 @@ function check_mmc {
 }
 
 function is_omap {
- HASMLO=1
+ SPL_BOOT=1
  UIMAGE_ADDR="0x80200000"
  UINITRD_ADDR="0x80A00000"
  SERIAL_CONSOLE="${SERIAL},115200n8"
