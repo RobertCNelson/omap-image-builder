@@ -363,10 +363,10 @@ fi
 
 }
 
-function cleanup_sd {
-
+function unmount_all_drive_partitions {
  echo ""
- echo "2 / 9: Unmountting Partitions"
+ echo "Unmounting Partitions"
+ echo "-----------------------------"
 
  NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
 
@@ -376,7 +376,7 @@ function cleanup_sd {
   umount ${DRIVE} &> /dev/null || true
  done
 
-parted --script ${MMC} mklabel msdos
+ parted --script ${MMC} mklabel msdos
 }
 
 function create_partitions {
@@ -1096,7 +1096,7 @@ fi
 if [ "$DO_UBOOT" ];then
  dl_xload_uboot
 fi
- cleanup_sd
+ unmount_all_drive_partitions
  create_partitions
  populate_boot
  populate_rootfs
