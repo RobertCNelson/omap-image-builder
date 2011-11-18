@@ -78,16 +78,10 @@ if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
 fi
 
 #Software Qwerks
-#fdisk 2.18.x/2.19.x, dos no longer default
-unset FDISK_DOS
 
 if [ "$FDISK_DEBUG" ];then
  echo "Debug: fdisk version:"
  fdisk -v
-fi
-
-if test $(fdisk -v | grep -o -E '2\.[0-9]+' | cut -d'.' -f2) -ge 18 ; then
- FDISK_DOS="-c=dos -u=cylinders"
 fi
 
 #Check for gnu-fdisk
@@ -380,9 +374,17 @@ function unmount_all_drive_partitions {
 }
 
 function create_partitions {
+ echo ""
+ echo "Using fdisk to create BOOT Partition"
+ echo "-----------------------------"
 
-echo ""
-echo "3 / 9: Creating Boot Partition"
+ #With util-linux, 2.18.x/2.19.x, fdisk no longer has dos/cylinders mode on by default
+ unset FDISK_DOS
+
+ if test $(fdisk -v | grep -o -E '2\.[0-9]+' | cut -d'.' -f2) -ge 18 ; then
+  FDISK_DOS="-c=dos -u=cylinders"
+ fi
+
 fdisk ${FDISK_DOS} ${MMC} << END
 n
 p
@@ -395,13 +397,17 @@ p
 w
 END
 
-sync
+ sync
 
-parted --script ${MMC} set 1 boot on
+ echo "Setting Boot Partition's Boot Flag"
+ echo "-----------------------------"
+ parted --script ${MMC} set 1 boot on
 
 if [ "$FDISK_DEBUG" ];then
  echo "Debug: Partition 1 layout:"
+ echo "-----------------------------"
  fdisk -l ${MMC}
+ echo "-----------------------------"
 fi
 
 echo ""
