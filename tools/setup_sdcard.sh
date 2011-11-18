@@ -274,14 +274,14 @@ function dl_xload_uboot {
   boot_scr_to_uenv_txt
  fi
 
-if test "-$ADDON-" = "-pico-"
-then
- VIDEO_TIMING="640x480MR-16@60"
-fi
+ if test "-$ADDON-" = "-pico-"
+ then
+  VIDEO_TIMING="640x480MR-16@60"
+ fi
 
  if test "-$ADDON-" = "-ulcd-"
  then
- VIDEO_TIMING="800x480MR-16@60"
+  VIDEO_TIMING="800x480MR-16@60"
  fi
 
  if [ "$SVIDEO_NTSC" ];then
