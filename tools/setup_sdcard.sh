@@ -974,11 +974,11 @@ Additional/Optional options:
     List all partitions
 
 --uboot <dev board>
-    beagle_bx - <Ax/Bx Models>
-    beagle - <Cx, xM A/B/C>
-    bone - <BeagleBone A2>
-    panda - <dvi or serial>
+    beagle_bx - <BeagleBoard Ax/Bx>
+    beagle - <BeagleBoard Cx, xMA/B/C>
+    bone - <BeagleBone Ax>
     igepv2 - <serial mode only>
+    panda - <PandaBoard Ax>
 
 --addon <device>
     pico
