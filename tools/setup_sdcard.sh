@@ -254,45 +254,9 @@ esac
 
 }
 
-function dl_bootloader {
- echo ""
- echo "Downloading Device's Bootloader"
- echo "-----------------------------"
-
- mkdir -p ${TEMPDIR}/dl/${DIST}
- mkdir -p ${DIR}/dl/${DIST}
-
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
-
- if [ "$USE_BETA_BOOTLOADER" ];then
-  ABI="ABX"
- else
-  ABI="ABI"
- fi
-
- if [ "${SPL_BOOT}" ] ; then
-  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
-  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
-  MLO=${MLO##*/}
-  echo "SPL Bootloader: ${MLO}"
- fi
-
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
- UBOOT=${UBOOT##*/}
- echo "UBOOT Bootloader: ${UBOOT}"
-}
-
-function dl_xload_uboot {
-
- dl_bootloader
-
- if [ "$USE_UENV" ];then
-  boot_uenv_txt_template
- else
-  boot_files_template
-  boot_scr_to_uenv_txt
- fi
+function tweak_boot_scripts {
+# echo "Adding Device Specific info to bootscripts"
+# echo "-----------------------------"
 
  if test "-$ADDON-" = "-pico-"
  then
@@ -356,15 +320,49 @@ fi
  if [ "$PRINTK" ];then
   sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
  fi
+}
 
-echo ""
-echo "Debug: U-Boot boot script"
-echo ""
-echo "-----------------------------"
-cat ${TEMPDIR}/bootscripts/*.cmd
-echo "-----------------------------"
-echo ""
+function dl_bootloader {
+ echo ""
+ echo "Downloading Device's Bootloader"
+ echo "-----------------------------"
 
+ mkdir -p ${TEMPDIR}/dl/${DIST}
+ mkdir -p ${DIR}/dl/${DIST}
+
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+
+ if [ "$USE_BETA_BOOTLOADER" ];then
+  ABI="ABX"
+ else
+  ABI="ABI"
+ fi
+
+ if [ "${SPL_BOOT}" ] ; then
+  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
+  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+  MLO=${MLO##*/}
+  echo "SPL Bootloader: ${MLO}"
+ fi
+
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
+ UBOOT=${UBOOT##*/}
+ echo "UBOOT Bootloader: ${UBOOT}"
+}
+
+function dl_xload_uboot {
+
+ dl_bootloader
+
+ if [ "$USE_UENV" ];then
+  boot_uenv_txt_template
+  tweak_boot_scripts
+ else
+  boot_files_template
+  boot_scr_to_uenv_txt
+  tweak_boot_scripts
+ fi
 }
 
 function unmount_all_drive_partitions {
