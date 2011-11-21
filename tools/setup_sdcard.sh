@@ -254,12 +254,13 @@ esac
 
 }
 
-function dl_xload_uboot {
+function dl_bootloader {
+ echo ""
+ echo "Downloading Device's Bootloader"
+ echo "-----------------------------"
+
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
-
- echo ""
- echo "1 / 9: Downloading X-loader and Uboot"
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
@@ -268,6 +269,23 @@ function dl_xload_uboot {
  else
   ABI="ABI"
  fi
+
+ if [ "${SPL_BOOT}" ] ; then
+  MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
+  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
+  MLO=${MLO##*/}
+  echo "SPL Bootloader: ${MLO}"
+ fi
+
+ UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
+ wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
+ UBOOT=${UBOOT##*/}
+ echo "UBOOT Bootloader: ${UBOOT}"
+}
+
+function dl_xload_uboot {
+
+ dl_bootloader
 
  if [ "$USE_UENV" ];then
   boot_uenv_txt_template
@@ -346,16 +364,6 @@ echo "-----------------------------"
 cat ${TEMPDIR}/bootscripts/*.cmd
 echo "-----------------------------"
 echo ""
-
-if [ "${SPL_BOOT}" ] ; then
- MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:MLO" | awk '{print $2}')
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
- MLO=${MLO##*/}
-fi
-
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${ABI_VER}:UBOOT" | awk '{print $2}')
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
- UBOOT=${UBOOT##*/}
 
 }
 
