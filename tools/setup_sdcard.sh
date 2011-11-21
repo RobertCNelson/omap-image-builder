@@ -33,7 +33,7 @@
 unset MMC
 unset DEFAULT_USER
 unset DEBUG
-unset BETA
+unset USE_BETA_BOOTLOADER
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
 unset SPL_BOOT
@@ -263,7 +263,7 @@ function dl_xload_uboot {
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- if [ "$BETA" ];then
+ if [ "$USE_BETA_BOOTLOADER" ];then
   ABI="ABX"
  else
   ABI="ABI"
@@ -1092,8 +1092,8 @@ while [ ! -z "$1" ]; do
         --earlyprintk)
             PRINTK=1
             ;;
-        --beta)
-            BETA=1
+        --use-beta-bootloader)
+            USE_BETA_BOOTLOADER=1
             ;;
         --secondary-kernel)
             SECONDARY_KERNEL=1
