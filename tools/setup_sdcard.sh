@@ -351,8 +351,7 @@ fi
  fi
 }
 
-function dl_xload_uboot {
-
+function setup_bootscripts {
  if [ "$USE_UENV" ];then
   boot_uenv_txt_template
   tweak_boot_scripts
@@ -1126,7 +1125,7 @@ fi
  dl_bootloader
 
 if [ "$DO_UBOOT" ];then
- dl_xload_uboot
+ setup_bootscripts
 fi
  unmount_all_drive_partitions
  create_partitions
