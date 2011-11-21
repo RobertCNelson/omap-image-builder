@@ -45,6 +45,8 @@ unset USE_UENV
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
 
+MIRROR="http://rcn-ee.net/deb/"
+
 #Defaults
 RFS=ext4
 BOOT_LABEL=boot
@@ -255,8 +257,6 @@ esac
 function dl_xload_uboot {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
-
- MIRROR="http://rcn-ee.net/deb/"
 
  echo ""
  echo "1 / 9: Downloading X-loader and Uboot"
