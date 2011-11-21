@@ -146,7 +146,9 @@ fi
 
 function boot_files_template {
 
-cat > ${TEMPDIR}/boot.cmd <<boot_cmd
+mkdir -p ${TEMPDIR}/bootscripts/
+
+cat > ${TEMPDIR}/bootscripts/boot.cmd <<boot_cmd
 setenv dvimode VIDEO_TIMING
 setenv vram 12MB
 setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
@@ -158,7 +160,7 @@ boot_cmd
 
 function boot_scr_to_uenv_txt {
 
-cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootenv=boot.scr
 loaduimage=fatload mmc \${mmcdev} \${loadaddr} \${bootenv}
 mmcboot=echo Running boot.scr script from mmc ...; source \${loadaddr}
@@ -172,7 +174,7 @@ function boot_uenv_txt_template {
 case "$SYSTEM" in
     beagle_bx)
 
-cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
@@ -198,7 +200,7 @@ uenv_boot_cmd
         ;;
     beagle)
 
-cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
@@ -224,7 +226,7 @@ uenv_boot_cmd
         ;;
     bone)
 
-cat > ${TEMPDIR}/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
@@ -297,51 +299,51 @@ function dl_xload_uboot {
  fi
 
  #Set uImage boot address
- sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #Set uInitrd boot address
- sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #Set the Serial Console
- sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #Set filesystem type
- sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/bootscripts/*.cmd
 
 if [ "$SERIAL_MODE" ];then
- sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/*.cmd
- sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/*.cmd
- sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/bootscripts/*.cmd
 else
  #Enable Video Console
 
  #set console video: console=tty0
- sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
 
- sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/*.cmd
- sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/*.cmd
- sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #set OMAP video: omapfb.mode=VIDEO_OMAPFB_MODE
- sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/*.cmd
+ sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/*.cmd
 
  if [ "$SVIDEO_NTSC" ] || [ "$SVIDEO_PAL" ];then
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/*.cmd
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/bootscripts/*.cmd
  else
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/*.cmd
+  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/bootscripts/*.cmd
  fi
 
 fi
 
  if [ "$PRINTK" ];then
-  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/*.cmd
+  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
  fi
 
 echo ""
 echo "Debug: U-Boot boot script"
 echo ""
 echo "-----------------------------"
-cat ${TEMPDIR}/*.cmd
+cat ${TEMPDIR}/bootscripts/*.cmd
 echo "-----------------------------"
 echo ""
 
@@ -504,21 +506,21 @@ fi
 
 if [ "$DO_UBOOT" ];then
 
- if ls ${TEMPDIR}/boot.cmd >/dev/null 2>&1;then
- mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.scr
- cp ${TEMPDIR}/boot.cmd ${TEMPDIR}/disk/boot.cmd
- rm -f ${TEMPDIR}/boot.cmd || true
+ if ls ${TEMPDIR}/bootscripts/boot.cmd >/dev/null 2>&1;then
+ mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/bootscripts/boot.cmd ${TEMPDIR}/disk/boot.scr
+ cp ${TEMPDIR}/bootscripts/boot.cmd ${TEMPDIR}/disk/boot.cmd
+ rm -f ${TEMPDIR}/bootscripts/boot.cmd || true
  fi
 
- if ls ${TEMPDIR}/user.cmd >/dev/null 2>&1;then
- mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d ${TEMPDIR}/user.cmd ${TEMPDIR}/disk/user.scr
- cp ${TEMPDIR}/user.cmd ${TEMPDIR}/disk/user.cmd
- rm -f ${TEMPDIR}/user.cmd || true
+ if ls ${TEMPDIR}/bootscripts/user.cmd >/dev/null 2>&1;then
+ mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d ${TEMPDIR}/bootscripts/user.cmd ${TEMPDIR}/disk/user.scr
+ cp ${TEMPDIR}/bootscripts/user.cmd ${TEMPDIR}/disk/user.cmd
+ rm -f ${TEMPDIR}/bootscripts/user.cmd || true
  fi
 
- if ls ${TEMPDIR}/uEnv.cmd >/dev/null 2>&1;then
- cp ${TEMPDIR}/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
- rm -f ${TEMPDIR}/uEnv.cmd || true
+ if ls ${TEMPDIR}/bootscripts/uEnv.cmd >/dev/null 2>&1;then
+ cp ${TEMPDIR}/bootscripts/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
+ rm -f ${TEMPDIR}/bootscripts/uEnv.cmd || true
  fi
 
 fi
