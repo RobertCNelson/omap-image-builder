@@ -207,6 +207,7 @@ case "$SYSTEM" in
 
 cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
+bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
 
@@ -219,8 +220,8 @@ dvimode=VIDEO_TIMING
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FSTYPE rootwait fixrtc
 
-mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
-mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
 mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
@@ -233,6 +234,7 @@ uenv_boot_cmd
 
 cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
+bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
 
@@ -245,8 +247,8 @@ dvimode=VIDEO_TIMING
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FSTYPE rootwait fixrtc
 
-mmc_load_uimage=fatload mmc 0:1 \${address_uimage} uImage
-mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
 mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
@@ -259,6 +261,7 @@ uenv_boot_cmd
 
 cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 bootfile=uImage
+bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
 
@@ -270,8 +273,8 @@ dvimode=VIDEO_TIMING
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FSTYPE rootwait fixrtc
 
-rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} uImage
-mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} uInitrd
+rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 mmc_args=run bootargs_defaults;setenv bootargs \${bootargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} ip=\${ip_method}
 
