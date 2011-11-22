@@ -253,9 +253,10 @@ reset_vars
 DIST=natty
 SERIAL=ttyO2
 ARCH=armel
+SUBARCH="omap"
 kernel_select
-#secondary_kernel_select
-SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/natty/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0natty_armel.deb"
+SUBARCH="omap-psp"
+secondary_kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -274,8 +275,10 @@ reset_vars
 DIST=oneiric
 SERIAL=ttyO2
 ARCH=armel
+SUBARCH="omap"
 kernel_select
-SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/oneiric/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0oneiric_armel.deb"
+SUBARCH="omap-psp"
+secondary_kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -294,8 +297,10 @@ reset_vars
 DIST=precise
 SERIAL=ttyO2
 ARCH=armel
+SUBARCH="omap"
 kernel_select
-SECONDARY_KERNEL="--secondary-kernel-image http://rcn-ee.net/deb/precise/v3.1.0-psp1/linux-image-3.1.0-psp1_1.0precise_armel.deb"
+SUBARCH="omap-psp"
+secondary_kernel_select
 EXTRA="linux-firmware,devmem2,u-boot-tools,"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
@@ -313,7 +318,10 @@ reset_vars
 DIST=squeeze
 SERIAL=ttyO2
 ARCH=armel
+SUBARCH="omap"
 kernel_select
+SUBARCH="omap-psp"
+secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
@@ -331,7 +339,10 @@ reset_vars
 DIST=wheezy
 SERIAL=ttyO2
 ARCH=armel
+SUBARCH="omap"
 kernel_select
+SUBARCH="omap-psp"
+secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login ubuntu --password temppwd"
 MIRROR=$MIRROR_DEB
@@ -350,7 +361,10 @@ reset_vars
 DIST=unstable
 SERIAL=ttyO2
 ARCH=armhf
+SUBARCH="omap"
 kernel_select
+SUBARCH="omap-psp"
+secondary_kernel_select
 #EXTRA=''
 EXTRA="initramfs-tools,"
 MIRROR=$MIRROR_DEB_ARMHF
@@ -378,8 +392,6 @@ dl_rootstock
 
 #unset USE_OEM
 #anything else
-
-SUBARCH="omap"
 
 PRIMARY_KERNEL_SEL="STABLE"
 #PRIMARY_KERNEL_SEL="TESTING"
