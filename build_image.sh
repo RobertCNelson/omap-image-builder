@@ -75,7 +75,8 @@ MINIMAL="-minimal"
 
 MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
 MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,usb-modeswitch,wireless-tools,wpasupplicant"
+MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
@@ -397,7 +398,8 @@ PRIMARY_KERNEL_SEL="STABLE"
 #PRIMARY_KERNEL_SEL="TESTING"
 #PRIMARY_KERNEL_SEL="EXPERIMENTAL"
 
-SECONDARY_KERNEL_SEL="TESTING"
+SECONDARY_KERNEL_SEL="STABLE"
+#SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
 
