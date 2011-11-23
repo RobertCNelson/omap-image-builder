@@ -497,26 +497,23 @@ fi
 
 if [ "$DO_UBOOT" ];then
 
- if ls ${TEMPDIR}/bootscripts/boot.cmd >/dev/null 2>&1;then
+if [ "${USE_UENV}" ] ; then
+ echo "Copying uEnv.txt based boot scripts to Boot Partition"
+ echo "-----------------------------"
+ cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+ cat  ${TEMPDIR}/bootscripts/normal.cmd
+ echo "-----------------------------"
+else
+ echo "Copying boot.scr based boot scripts to Boot Partition"
+ echo "-----------------------------"
+ cp -v ${TEMPDIR}/bootscripts/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
+ cat ${TEMPDIR}/bootscripts/uEnv.cmd
+ echo "-----------------------------"
  mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d ${TEMPDIR}/bootscripts/boot.cmd ${TEMPDIR}/disk/boot.scr
- cp ${TEMPDIR}/bootscripts/boot.cmd ${TEMPDIR}/disk/boot.cmd
- cat ${TEMPDIR}/disk/boot.cmd
- rm -f ${TEMPDIR}/bootscripts/boot.cmd || true
- fi
-
- if ls ${TEMPDIR}/bootscripts/user.cmd >/dev/null 2>&1;then
- mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d ${TEMPDIR}/bootscripts/user.cmd ${TEMPDIR}/disk/user.scr
- cp ${TEMPDIR}/bootscripts/user.cmd ${TEMPDIR}/disk/user.cmd
- cat ${TEMPDIR}/disk/user.cmd
- rm -f ${TEMPDIR}/bootscripts/user.cmd || true
- fi
-
- if ls ${TEMPDIR}/bootscripts/normal.cmd >/dev/null 2>&1;then
- cp ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
- cat ${TEMPDIR}/disk/uEnv.txt
- rm -f ${TEMPDIR}/bootscripts/normal.cmd || true
- fi
-
+ cp -v ${TEMPDIR}/bootscripts/boot.cmd ${TEMPDIR}/disk/boot.cmd
+ cat ${TEMPDIR}/bootscripts/boot.cmd
+ echo "-----------------------------"
+fi
 fi
 
 cat > ${TEMPDIR}/readme.txt <<script_readme
