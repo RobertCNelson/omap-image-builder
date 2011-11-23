@@ -177,8 +177,6 @@ function dl_bootloader {
 
 function boot_files_template {
 
-mkdir -p ${TEMPDIR}/bootscripts/
-
 cat > ${TEMPDIR}/bootscripts/boot.cmd <<boot_cmd
 setenv dvimode VIDEO_TIMING
 setenv vram 12MB
@@ -214,7 +212,7 @@ defaultdisplay=VIDEO_OMAPFB_MODE
 dvimode=VIDEO_TIMING
 
 mmcroot=/dev/mmcblk0p2 ro
-mmcrootfstype=FSTYPE rootwait fixrtc
+mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 uenv_generic_boot_cmd
 
 case "$SYSTEM" in
@@ -298,7 +296,7 @@ function tweak_boot_scripts {
  sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #Set filesystem type
- sed -i -e 's:FSTYPE:'$RFS':g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:FINAL_FSTYPE:'$RFS':g' ${TEMPDIR}/bootscripts/*.cmd
 
 if [ "$SERIAL_MODE" ];then
  sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/bootscripts/*.cmd
@@ -331,6 +329,8 @@ fi
 }
 
 function setup_bootscripts {
+ mkdir -p ${TEMPDIR}/bootscripts/
+
  if [ "$USE_UENV" ];then
   boot_uenv_txt_template
   tweak_boot_scripts
