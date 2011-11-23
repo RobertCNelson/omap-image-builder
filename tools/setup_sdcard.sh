@@ -200,7 +200,7 @@ uenv_boot_cmd
 function boot_uenv_txt_template {
 #(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
 
-cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_generic_boot_cmd
+cat > ${TEMPDIR}/bootscripts/normal.cmd <<uenv_generic_normalboot_cmd
 bootfile=uImage
 bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
@@ -213,12 +213,12 @@ dvimode=VIDEO_TIMING
 
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
-uenv_generic_boot_cmd
+uenv_generic_normalboot_cmd
 
 case "$SYSTEM" in
     beagle_bx)
 
-cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
 optargs=VIDEO_CONSOLE
 
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
@@ -228,12 +228,11 @@ mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_boot_cmd
-
+uenv_normalboot_cmd
         ;;
     beagle)
 
-cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
@@ -241,20 +240,18 @@ mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_boot_cmd
-
+uenv_normalboot_cmd
         ;;
     bone)
 
-cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
 rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 mmc_args=run bootargs_defaults;setenv bootargs \${bootargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} ip=\${ip_method}
 
 mmc_load_uimage=run rcn_mmcloaduimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmc_args; bootm \${address_uimage} \${address_uinitrd}
-uenv_boot_cmd
-
+uenv_normalboot_cmd
         ;;
 esac
 
@@ -500,9 +497,9 @@ if [ "$DO_UBOOT" ];then
  rm -f ${TEMPDIR}/bootscripts/user.cmd || true
  fi
 
- if ls ${TEMPDIR}/bootscripts/uEnv.cmd >/dev/null 2>&1;then
- cp ${TEMPDIR}/bootscripts/uEnv.cmd ${TEMPDIR}/disk/uEnv.txt
- rm -f ${TEMPDIR}/bootscripts/uEnv.cmd || true
+ if ls ${TEMPDIR}/bootscripts/normal.cmd >/dev/null 2>&1;then
+ cp ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+ rm -f ${TEMPDIR}/bootscripts/normal.cmd || true
  fi
 
 fi
