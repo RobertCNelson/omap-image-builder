@@ -962,14 +962,6 @@ Bugs email: "bugs at rcn-ee.com"
 
 Required Options:
 --mmc </dev/sdX>
-    Unformated MMC Card
-
-Additional/Optional options:
--h --help
-    this help
-
---probe-mmc
-    List all partitions
 
 --uboot <dev board>
     beagle_bx - <BeagleBoard Ax/Bx>
@@ -1005,6 +997,14 @@ Additional/Optional options:
 --svideo-pal
     force pal mode for svideo
 
+Additional Options:
+-h --help
+    this help
+
+--probe-mmc
+    List all partitions: sudo ./mk_mmc.sh --probe-mmc
+
+Debug:
 --debug
     enable all debug options for troubleshooting
 
