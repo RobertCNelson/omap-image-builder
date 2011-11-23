@@ -202,23 +202,26 @@ uenv_boot_cmd
 function boot_uenv_txt_template {
 #(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
 
-case "$SYSTEM" in
-    beagle_bx)
-
-cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
+cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_generic_boot_cmd
 bootfile=uImage
 bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
 
 console=SERIAL_CONSOLE
-optargs=VIDEO_CONSOLE
 
 defaultdisplay=VIDEO_OMAPFB_MODE
 dvimode=VIDEO_TIMING
 
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FSTYPE rootwait fixrtc
+uenv_generic_boot_cmd
+
+case "$SYSTEM" in
+    beagle_bx)
+
+cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
+optargs=VIDEO_CONSOLE
 
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
@@ -232,21 +235,7 @@ uenv_boot_cmd
         ;;
     beagle)
 
-cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
-bootfile=uImage
-bootinitrd=uInitrd
-address_uimage=UIMAGE_ADDR
-address_uinitrd=UINITRD_ADDR
-
-console=SERIAL_CONSOLE
-optargs=VIDEO_CONSOLE
-
-defaultdisplay=VIDEO_OMAPFB_MODE
-dvimode=VIDEO_TIMING
-
-mmcroot=/dev/mmcblk0p2 ro
-mmcrootfstype=FSTYPE rootwait fixrtc
-
+cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
@@ -259,20 +248,7 @@ uenv_boot_cmd
         ;;
     bone)
 
-cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
-bootfile=uImage
-bootinitrd=uInitrd
-address_uimage=UIMAGE_ADDR
-address_uinitrd=UINITRD_ADDR
-
-console=SERIAL_CONSOLE
-
-defaultdisplay=VIDEO_OMAPFB_MODE
-dvimode=VIDEO_TIMING
-
-mmcroot=/dev/mmcblk0p2 ro
-mmcrootfstype=FSTYPE rootwait fixrtc
-
+cat >> ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
 rcn_mmcloaduimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
