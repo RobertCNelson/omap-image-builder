@@ -1071,6 +1071,7 @@ while [ ! -z "$1" ]; do
             SWAP_SIZE="$2"
             CREATE_SWAP=1
             ;;
+        --earlyprintk)
             PRINTK=1
             ;;
         --use-beta-bootloader)
