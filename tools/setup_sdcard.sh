@@ -178,10 +178,15 @@ function dl_bootloader {
 function boot_files_template {
 
 cat > ${TEMPDIR}/bootscripts/boot.cmd <<boot_cmd
+setenv defaultdisplay VIDEO_OMAPFB_MODE
 setenv dvimode VIDEO_TIMING
 setenv vram 12MB
+setenv console SERIAL_CONSOLE
+setenv optargs VIDEO_CONSOLE
+setenv mmcroot /dev/mmcblk0p2 ro
+setenv mmcrootfstype FINAL_FSTYPE rootwait fixrtc
 setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
-setenv bootargs console=SERIAL_CONSOLE VIDEO_CONSOLE root=/dev/mmcblk0p2 rootwait ro VIDEO_RAM VIDEO_DEVICE:VIDEO_MODE fixrtc
+setenv bootargs console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
 boot
 boot_cmd
 
@@ -225,7 +230,7 @@ mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -233,11 +238,13 @@ uenv_normalboot_cmd
     beagle)
 
 cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
+optargs=VIDEO_CONSOLE
+
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -272,13 +279,11 @@ function tweak_boot_scripts {
  fi
 
  if [ "$SVIDEO_NTSC" ];then
-  VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="ntsc"
   VIDEO_OMAPFB_MODE=tv
  fi
 
  if [ "$SVIDEO_PAL" ];then
-  VIDEO_DRV="omapfb.mode=tv"
   VIDEO_TIMING="pal"
   VIDEO_OMAPFB_MODE=tv
  fi
@@ -296,29 +301,36 @@ function tweak_boot_scripts {
  sed -i -e 's:FINAL_FSTYPE:'$RFS':g' ${TEMPDIR}/bootscripts/*.cmd
 
 if [ "$SERIAL_MODE" ];then
- sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/bootscripts/*.cmd
+ #console=CONSOLE
+ #Set the Serial Console
+ sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
+
+ #omap3/4 DSS:
+ #VIDEO_RAM
  sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e "s/VIDEO_DEVICE:VIDEO_MODE //g" ${TEMPDIR}/bootscripts/*.cmd
+ #omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+ sed -i -e 's:'\${defaultdisplay}'::g' ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/*.cmd
+ #omapfb.mode=: omapdss.def_disp=
+ sed -i -e "s/omapfb.mode=: //g" ${TEMPDIR}/bootscripts/*.cmd
+ sed -i -e 's:omapdss.def_disp= ::g' ${TEMPDIR}/bootscripts/*.cmd
+
 else
- #Enable Video Console
+ #Set the Video Console
+ sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
 
- #set console video: console=tty0
- sed -i -e 's:VIDEO_CONSOLE:'$VIDEO_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
-
+ #omap3/4 DSS:
+ #VIDEO_RAM
  sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e 's:VIDEO_DEVICE:'$VIDEO_DRV':g' ${TEMPDIR}/bootscripts/*.cmd
-
  #set OMAP video: omapfb.mode=VIDEO_OMAPFB_MODE
+ #defaultdisplay=VIDEO_OMAPFB_MODE
+ #dvimode=VIDEO_TIMING
  sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/*.cmd
-
- if [ "$SVIDEO_NTSC" ] || [ "$SVIDEO_PAL" ];then
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}' omapdss.def_disp=tv:g' ${TEMPDIR}/bootscripts/*.cmd
- else
-  sed -i -e 's:VIDEO_MODE:'\${dvimode}':g' ${TEMPDIR}/bootscripts/*.cmd
- fi
+ sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/*.cmd
 
 fi
+
+#fixme: broke mx51/53 and reenable VIDEO on final boot..
 
  if [ "$PRINTK" ];then
   sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
