@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 SYST=$(uname -n)
-ARCH=$(uname -m)
+HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 MINIMAL="-minimal"
@@ -59,7 +59,7 @@ if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e
 	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
-if [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ]; then
+if [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$HOST_ARCH" = "armv5tel" ] || [ "$HOST_ARCH" = "armv7l" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	MIRROR_DEB_ARMHF="--mirror http://192.168.1.95:3142/ftp.debian-ports.org/debian/"
@@ -74,7 +74,7 @@ function dl_rootstock {
 	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
 
-if [ "$ARCH" = "armv7l" ]; then
+if [ "$HOST_ARCH" = "armv7l" ]; then
 	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
 fi
 
@@ -127,12 +127,12 @@ function compression {
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
-#if [ "$ARCH" = "armv5tel" ] || [ "$ARCH" = "armv7l" ];then
-#	tar cvf $BUILD.tar ./$BUILD
-#else
+if ls ${DIR}/release >/dev/null 2>&1 ; then
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
-#fi
+else
+	tar cvf $BUILD.tar ./$BUILD
+fi
 
 	cd ${DIR}/deploy/
 }
