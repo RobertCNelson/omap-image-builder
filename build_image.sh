@@ -227,7 +227,7 @@ if [ -f /tmp/LATEST-${SUBARCH} ] ; then
 	rm -f /tmp/LATEST-${SUBARCH}
 fi
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/LATEST-${SUBARCH}
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
 FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 
@@ -235,10 +235,10 @@ if [ -f /tmp/index.html ] ; then
 	rm -f /tmp/index.html
 fi
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}/${FTP_DIR}/
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
 SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
 
-SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
+SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
 
 echo "Using: ${SECONDARY_KERNEL}"
 
