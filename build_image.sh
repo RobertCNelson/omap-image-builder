@@ -354,24 +354,22 @@ compression
 
 }
 
-function armhf_release {
+function sid_release {
 
-sudo apt-get install debian-ports-archive-keyring
 reset_vars
 
-DIST=unstable
+DIST=sid
 SERIAL=ttyO2
 ARCH=armhf
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-#EXTRA=''
-EXTRA="initramfs-tools,"
-MIRROR=$MIRROR_DEB_ARMHF
-COMPONENTS="main"
-BUILD=unstable$MINIMAL-$ARCH
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login debian --password temppwd"
+MIRROR=$MIRROR_DEB
+COMPONENTS="${DEB_COMPONENTS}"
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -402,13 +400,14 @@ SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
-
 natty_release
 oneiric_release
-precise_armel_release
-#precise_armhf_release
+sid_release
 
 exit
+
+precise_armel_release
+#precise_armhf_release
 
 squeeze_release
 #wheezy_release
