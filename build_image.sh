@@ -324,7 +324,7 @@ kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-USER_PASS="--login ubuntu --password temppwd"
+USER_PASS="--login debian --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL-$ARCH
@@ -345,7 +345,7 @@ kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-USER_PASS="--login ubuntu --password temppwd"
+USER_PASS="--login debian --password temppwd"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH
