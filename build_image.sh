@@ -402,24 +402,22 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 natty_release
 oneiric_release
-sid_release
-
-exit
-
 precise_armel_release
 #precise_armhf_release
 
 squeeze_release
-#wheezy_release
-armhf_release
+wheezy_release
+sid_release
 
 PRIMARY_KERNEL_SEL="TESTING"
+SECONDARY_KERNEL_SEL="TESTING"
 
 natty_release
 oneiric_release
 precise_armel_release
 #precise_armhf_release
+
 squeeze_release
-#wheezy_release
-armhf_release
+wheezy_release
+sid_release
 
