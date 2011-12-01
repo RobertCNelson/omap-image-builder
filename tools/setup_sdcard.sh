@@ -493,10 +493,13 @@ if [ -f ${DIR}/${VMLINUZ} ]; then
  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d ${DIR}/${VMLINUZ} ${TEMPDIR}/disk/${UIMAGE}
 fi
 
- if ls ${DIR}/initrd.img-*${VER}* >/dev/null 2>&1;then
-  echo "Using mkimagee to create uInitrd"
-  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/initrd.img-*${VER}* ${TEMPDIR}/disk/uInitrd
- fi
+INITRD="initrd.img-*${VER}*"
+UINITRD="uInitrd"
+
+if [ -f ${DIR}/${INITRD} ]; then
+ echo "Using mkimage to create uInitrd"
+ mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/${INITRD} ${TEMPDIR}/disk/${UINITRD}
+fi
 
 if [ "$DO_UBOOT" ];then
 
