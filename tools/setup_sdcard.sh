@@ -417,34 +417,46 @@ function dd_uboot_before_boot_partition {
  #parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext3 10 100
 }
 
+function calculate_rootfs_partition {
+ echo "Creating rootfs ${RFS} Partition"
+ echo "-----------------------------"
+
+ unset END_BOOT
+ END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
+
+ unset END_DEVICE
+ END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
+
+ parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
+ sync
+
+ if [ "$FDISK_DEBUG" ];then
+  echo "Debug: ${RFS} Partition"
+  echo "-----------------------------"
+  echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}"
+  fdisk -l ${MMC}
+ fi
+}
+
+function format_boot_partition {
+ echo "Formating Boot Partition"
+ echo "-----------------------------"
+ mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
+}
+
+function format_rootfs_partition {
+ echo "Formating rootfs Partition as ${RFS}"
+ echo "-----------------------------"
+ mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL}
+}
+
 function create_partitions {
 
 uboot_in_boot_partition
 
-echo ""
-echo "4 / 9: Creating ${RFS} Partition"
-unset END_BOOT
-END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
-
-unset END_DEVICE
-END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
-
-parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}
-sync
-
-if [ "$FDISK_DEBUG" ];then
- echo "Debug: ${RFS} Partition"
- echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${RFS} ${END_BOOT} ${END_DEVICE}"
- fdisk -l ${MMC}
-fi
-
-echo ""
-echo "5 / 9: Formatting Boot Partition"
-mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
-
-echo ""
-echo "6 / 9: Formatting ${RFS} Partition"
-mkfs.${RFS} ${MMC}${PARTITION_PREFIX}2 -L ${RFS_LABEL}
+ calculate_rootfs_partition
+ format_boot_partition
+ format_rootfs_partition
 
 }
 
