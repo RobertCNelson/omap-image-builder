@@ -39,6 +39,7 @@ unset BTRFS_FSTAB
 unset SPL_BOOT
 unset ABI_VER
 unset HAS_INITRD
+unset DD_UBOOT
 unset SECONDARY_KERNEL
 unset USE_UENV
 
@@ -452,7 +453,11 @@ function format_rootfs_partition {
 
 function create_partitions {
 
-uboot_in_boot_partition
+if [ "${DD_UBOOT}" ] ; then
+ dd_uboot_before_boot_partition
+else
+ uboot_in_boot_partition
+fi
 
  calculate_rootfs_partition
  format_boot_partition
