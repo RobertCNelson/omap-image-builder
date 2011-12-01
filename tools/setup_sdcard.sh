@@ -484,22 +484,24 @@ else
  VER="x"
 fi
 
-VMLINUZ="vmlinuz-*${VER}*"
-UIMAGE="uImage"
+ VMLINUZ="vmlinuz-*${VER}*"
+ UIMAGE="uImage"
 
-if [ -f ${DIR}/${VMLINUZ} ]; then
- LINUX_VER=$(ls ${DIR}/${VMLINUZ} | awk -F'vmlinuz-' '{print $2}')
- echo "Using mkimage to create uImage"
- mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d ${DIR}/${VMLINUZ} ${TEMPDIR}/disk/${UIMAGE}
-fi
+ if [ -f ${DIR}/${VMLINUZ} ]; then
+  LINUX_VER=$(ls ${DIR}/${VMLINUZ} | awk -F'vmlinuz-' '{print $2}')
+  echo "Using mkimage to create uImage"
+  echo "-----------------------------"
+  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d ${DIR}/${VMLINUZ} ${TEMPDIR}/disk/${UIMAGE}
+ fi
 
-INITRD="initrd.img-*${VER}*"
-UINITRD="uInitrd"
+ INITRD="initrd.img-*${VER}*"
+ UINITRD="uInitrd"
 
-if [ -f ${DIR}/${INITRD} ]; then
- echo "Using mkimage to create uInitrd"
- mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/${INITRD} ${TEMPDIR}/disk/${UINITRD}
-fi
+ if [ -f ${DIR}/${INITRD} ]; then
+  echo "Using mkimage to create uInitrd"
+  echo "-----------------------------"
+  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/${INITRD} ${TEMPDIR}/disk/${UINITRD}
+ fi
 
 if [ "$DO_UBOOT" ];then
 
