@@ -690,38 +690,44 @@ else
  echo "-----------------------------"
  exit
 fi
-
 }
 
 function populate_rootfs {
- echo ""
- echo "8 / 9: Populating rootfs Partition"
- echo "Be patient, this may take a few minutes"
+
+ echo "Populating rootfs Partition"
+ echo "Please be patient, this may take a few minutes, as its transfering a lot of files.."
+ echo "-----------------------------"
+
  partprobe ${MMC}
 
  if mount -t ${RFS} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 
  if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
    pv ${DIR}/armel-rootfs-*.tgz | tar --numeric-owner --preserve-permissions -xzf - -C ${TEMPDIR}/disk/
+   echo "Transfer of Base Rootfs Complete, syncing to disk"
+   echo "-----------------------------"
  fi
 
  if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
    pv ${DIR}/armel-rootfs-*.tar | tar --numeric-owner --preserve-permissions -xf - -C ${TEMPDIR}/disk/
+   echo "Transfer of Base Rootfs Complete, syncing to disk"
+   echo "-----------------------------"
  fi
 
-if [ "$DEFAULT_USER" ] ; then
- rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
-fi
+ if [ "$DEFAULT_USER" ] ; then
+  rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
+ fi
 
-if [ "$BTRFS_FSTAB" ] ; then
- sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
-fi
+ if [ "$BTRFS_FSTAB" ] ; then
+  sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
+ fi
 
 #So most of the default images use ttyO2, but the bone uses ttyO0, need to find a better way..
 if test "-$SERIAL-" != "-ttyO2-"
 then
  if ls ${TEMPDIR}/disk/etc/init/ttyO2.conf >/dev/null 2>&1;then
   echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
+  echo "-----------------------------"
   mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
   sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
  fi
@@ -729,13 +735,14 @@ fi
 
  if [ "$CREATE_SWAP" ] ; then
 
-  echo ""
+  echo "-----------------------------"
   echo "Extra: Creating SWAP File"
-  echo ""
+  echo "-----------------------------"
   echo "SWAP BUG creation note:"
   echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
   echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
-  echo ""
+  echo "Background: usually occured in days before Ubuntu Lucid.."
+  echo "-----------------------------"
 
   SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
 
@@ -757,18 +764,16 @@ fi
 
  umount ${TEMPDIR}/disk || true
 
-	echo ""
-	echo "Finished populating rootfs Partition"
+ echo "Finished populating rootfs Partition"
+ echo "-----------------------------"
 else
-	echo ""
-	echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
-	echo "Please retry running the script, sometimes rebooting your system helps."
-	echo ""
-	exit
+ echo "-----------------------------"
+ echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+ echo "Please retry running the script, sometimes rebooting your system helps."
+ echo "-----------------------------"
+ exit
 fi
-
- echo ""
- echo "9 / 9: setup_sdcard.sh script complete"
+ echo "setup_sdcard.sh script complete"
 }
 
 function check_mmc {
