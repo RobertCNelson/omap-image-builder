@@ -484,11 +484,14 @@ else
  VER="x"
 fi
 
- if ls ${DIR}/vmlinuz-*${VER}* >/dev/null 2>&1;then
-  LINUX_VER=$(ls ${DIR}/vmlinuz-*${VER}* | awk -F'vmlinuz-' '{print $2}')
-  echo "Using mkimage to create uImage"
-  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD}  -n ${LINUX_VER} -d ${DIR}/vmlinuz-*${VER}* ${TEMPDIR}/disk/uImage
- fi
+VMLINUZ="vmlinuz-*${VER}*"
+UIMAGE="uImage"
+
+if [ -f ${DIR}/${VMLINUZ} ]; then
+ LINUX_VER=$(ls ${DIR}/${VMLINUZ} | awk -F'vmlinuz-' '{print $2}')
+ echo "Using mkimage to create uImage"
+ mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d ${DIR}/${VMLINUZ} ${TEMPDIR}/disk/${UIMAGE}
+fi
 
  if ls ${DIR}/initrd.img-*${VER}* >/dev/null 2>&1;then
   echo "Using mkimagee to create uInitrd"
