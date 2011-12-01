@@ -58,12 +58,10 @@ DIR=$PWD
 TEMPDIR=$(mktemp -d)
 
 function check_root {
-
 if [[ $UID -ne 0 ]]; then
  echo "$0 must be run as sudo user or root"
  exit
 fi
-
 }
 
 function find_issue {
@@ -98,7 +96,6 @@ unset PARTED_ALIGN
 if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
  PARTED_ALIGN="--align cylinder"
 fi
-
 }
 
 function detect_software {
@@ -1072,7 +1069,7 @@ while [ ! -z "$1" ]; do
 	        PARTITION_PREFIX="p"
             fi
             find_issue
-            check_mmc 
+            check_mmc
             ;;
         --uboot)
             checkparm $2
