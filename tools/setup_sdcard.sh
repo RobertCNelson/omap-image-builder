@@ -462,44 +462,44 @@ fi
  calculate_rootfs_partition
  format_boot_partition
  format_rootfs_partition
-
 }
 
 function populate_boot {
- echo ""
- echo "7 / 9: Populating Boot Partition"
+ echo "Populating Boot Partition"
+ echo "-----------------------------"
+
  partprobe ${MMC}
  mkdir -p ${TEMPDIR}/disk
 
  if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
- if [ "$DO_UBOOT" ];then
   if [ "${SPL_BOOT}" ] ; then
-   if ls ${TEMPDIR}/dl/${MLO} >/dev/null 2>&1;then
+   if [ -f ${TEMPDIR}/dl/${MLO} ]; then
     cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
    fi
   fi
 
-  if ls ${TEMPDIR}/dl/${UBOOT} >/dev/null 2>&1;then
-   if echo ${UBOOT} | grep img > /dev/null 2>&1;then
-    cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
-   else
-    cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+  if [ ! "${DD_UBOOT}" ] ; then
+   if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
+    if echo ${UBOOT} | grep img > /dev/null 2>&1;then
+     cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
+    else
+     cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+    fi
    fi
   fi
- fi
 
-if [ "$SECONDARY_KERNEL" ];then
- if ls ${DIR}/vmlinuz-*d* >/dev/null 2>&1;then
-  VER="d"
- elif ls ${DIR}/vmlinuz-*psp* >/dev/null 2>&1;then
-  VER="psp"
- else
-  VER="x"
- fi
-else
- VER="x"
-fi
+  if [ "$SECONDARY_KERNEL" ];then
+   if [ -f ${DIR}/vmlinuz-*d* ]; then
+    VER="d"
+   elif [ -f ${DIR}/vmlinuz-*psp* ]; then
+    VER="psp"
+   else
+    VER="x"
+   fi
+  else
+   VER="x"
+  fi
 
  VMLINUZ="vmlinuz-*${VER}*"
  UIMAGE="uImage"
@@ -681,14 +681,14 @@ sync
 cd ${DIR}/
 umount ${TEMPDIR}/disk || true
 
-	echo ""
-	echo "Finished populating Boot Partition"
+ echo "Finished populating Boot Partition"
+ echo "-----------------------------"
 else
-	echo ""
-	echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
-	echo "Please retry running the script, sometimes rebooting your system helps."
-	echo ""
-	exit
+ echo "-----------------------------"
+ echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+ echo "Please retry running the script, sometimes rebooting your system helps."
+ echo "-----------------------------"
+ exit
 fi
 
 }
