@@ -357,9 +357,16 @@ function sid_release {
 
 reset_vars
 
+#MINIMAL_APT="git-core,nano,pastebinit,wget"
+##Broken:
+##MINIMAL_APT="${MINIMAL_APT},usbutils,i2c-tools,apache2,wireless-tools,wpasupplicant,btrfs-tools"
+#MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
+#MINIMAL_APT="${MINIMAL_APT},openssh-server"
+#MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
+#MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
+
 DIST=sid
 SERIAL=ttyO2
-ARCH=armhf
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -399,7 +406,6 @@ SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
-
 ARCH=armel
 natty_release
 oneiric_release
@@ -410,11 +416,14 @@ precise_release
 
 squeeze_release
 wheezy_release
-sid_release
+
+#ARCH=armhf
+#sid_release
 
 PRIMARY_KERNEL_SEL="TESTING"
 SECONDARY_KERNEL_SEL="TESTING"
 
+ARCH=armel
 natty_release
 oneiric_release
 precise_release
