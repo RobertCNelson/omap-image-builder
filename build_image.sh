@@ -291,13 +291,12 @@ compression
 }
 
 #12.04
-function precise_armel_release {
+function precise_release {
 
 reset_vars
 
 DIST=precise
 SERIAL=ttyO2
-ARCH=armel
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -400,10 +399,14 @@ SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
+
+ARCH=armel
 natty_release
 oneiric_release
-precise_armel_release
-#precise_armhf_release
+precise_release
+
+#ARCH=armhf
+#precise_release
 
 squeeze_release
 wheezy_release
@@ -414,8 +417,7 @@ SECONDARY_KERNEL_SEL="TESTING"
 
 natty_release
 oneiric_release
-precise_armel_release
-#precise_armhf_release
+precise_release
 
 squeeze_release
 wheezy_release
