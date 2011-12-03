@@ -42,6 +42,7 @@ unset HAS_INITRD
 unset DD_UBOOT
 unset SECONDARY_KERNEL
 unset USE_UENV
+unset DISABLE_ETH
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -719,6 +720,13 @@ function populate_rootfs {
   sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
  fi
 
+ if [ "$DISABLE_ETH" ] ; then
+  echo "Tweak: On selected board, theres no guarantee eth0 is connected or exists, so removing boot assumption..."
+  echo "-----------------------------"
+  sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+  sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+ fi
+
 #So most of the default images use ttyO2, but the bone uses ttyO0, need to find a better way..
 if test "-$SERIAL-" != "-ttyO2-"
 then
@@ -840,6 +848,7 @@ case "$UBOOT_TYPE" in
  ABI_VER=1
  SERIAL="ttyO2"
  USE_UENV=1
+ DISABLE_ETH=1
  is_omap
 
         ;;
