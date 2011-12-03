@@ -852,7 +852,19 @@ case "$UBOOT_TYPE" in
  is_omap
 
         ;;
-    beagle)
+    beagle_cx)
+
+ SYSTEM=beagle
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ ABI_VER=1
+ SERIAL="ttyO2"
+ USE_UENV=1
+ DISABLE_ETH=1
+ is_omap
+
+        ;;
+    beagle_xm)
 
  SYSTEM=beagle
  unset IN_VALID_UBOOT
@@ -999,7 +1011,8 @@ Required Options:
 
 --uboot <dev board>
     beagle_bx - <BeagleBoard Ax/Bx>
-    beagle - <BeagleBoard Cx, xMA/B/C>
+    beagle_cx - <BeagleBoard Cx>
+    beagle_xm - <BeagleBoard xMA/B/C>
     bone - <BeagleBone Ax>
     igepv2 - <serial mode only>
     panda - <PandaBoard Ax>
