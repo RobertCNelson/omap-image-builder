@@ -409,10 +409,12 @@ SECONDARY_KERNEL_SEL="STABLE"
 ARCH=armel
 natty_release
 oneiric_release
+#precise_release
+
+ARCH=armhf
 precise_release
 
-#ARCH=armhf
-#precise_release
+exit
 
 squeeze_release
 wheezy_release
