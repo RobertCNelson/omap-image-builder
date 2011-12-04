@@ -411,6 +411,8 @@ natty_release
 oneiric_release
 #precise_release
 
+exit
+#stil not ready on arm chroot
 ARCH=armhf
 precise_release
 
