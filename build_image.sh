@@ -137,7 +137,7 @@ function minimal_armel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
 	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
@@ -150,7 +150,7 @@ function minimal_armel_nokernel {
 
 	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup-debian.sh --apt-upgrade --arch=${ARCH}
+	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -256,6 +256,7 @@ MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$NATTY_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
+FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -278,6 +279,7 @@ MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
+FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -299,6 +301,7 @@ MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
 USER_PASS="--login ubuntu --password temppwd"
+FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -317,6 +320,7 @@ SUBARCH="omap-psp"
 secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login debian --password temppwd"
+FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL-$ARCH
@@ -338,6 +342,7 @@ SUBARCH="omap-psp"
 secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login debian --password temppwd"
+FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH
@@ -367,6 +372,7 @@ secondary_kernel_select
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login debian --password temppwd"
 MIRROR=$MIRROR_DEB
+FIXUPSCRIPT="fixup-debian.sh"
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
