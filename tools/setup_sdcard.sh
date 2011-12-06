@@ -751,14 +751,18 @@ function populate_rootfs {
   sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
  fi
 
-#So most of the default images use ttyO2, but the bone uses ttyO0, need to find a better way..
+#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
 if test "-$SERIAL-" != "-ttyO2-"
 then
- if ls ${TEMPDIR}/disk/etc/init/ttyO2.conf >/dev/null 2>&1;then
+ if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ]; then
   echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
   echo "-----------------------------"
   mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
   sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
+ elif [ -f ${TEMPDIR}/disk/etc/inittab ]; then
+  echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
+  echo "-----------------------------"
+  sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
  fi
 fi
 
