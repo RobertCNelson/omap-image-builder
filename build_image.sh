@@ -86,7 +86,6 @@ UBU_COMPONENTS="main,universe,multiverse"
 
 MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
 MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
-MIRROR_DEB_ARMHF="--mirror http://ftp.debian-ports.org/debian/"
 
 DIR=$PWD
 
@@ -105,13 +104,11 @@ function set_mirror {
 if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
-	MIRROR_DEB_ARMHF="--mirror http://192.168.0.10:3142/ftp.debian-ports.org/debian/"
 fi
 
 if [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$HOST_ARCH" = "armv5tel" ] || [ "$HOST_ARCH" = "armv7l" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
-	MIRROR_DEB_ARMHF="--mirror http://192.168.1.95:3142/ftp.debian-ports.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
 fi
 
@@ -122,10 +119,6 @@ function dl_rootstock {
 	cd ${DIR}/../
 	git clone git://github.com/RobertCNelson/project-rootstock.git
 	cd ${DIR}/../project-rootstock
-
-if [ "$HOST_ARCH" = "armv7l" ]; then
-	patch -p0 < ${DIR}/patches/add-debian-ports-keyring.diff
-fi
 
 if [ "${USE_OEM}" ] ; then
 #disable with debian
