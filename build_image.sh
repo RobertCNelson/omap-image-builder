@@ -355,13 +355,14 @@ function sid_release {
 
 reset_vars
 
-#MINIMAL_APT="git-core,nano,pastebinit,wget"
+MINIMAL_APT="git-core,nano,pastebinit,wget,i2c-tools"
 ##Broken:
-##MINIMAL_APT="${MINIMAL_APT},usbutils,i2c-tools,apache2,wireless-tools,wpasupplicant,btrfs-tools"
-#MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
-#MINIMAL_APT="${MINIMAL_APT},openssh-server"
-#MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
-#MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
+##MINIMAL_APT="${MINIMAL_APT},wireless-tools"
+##MINIMAL_APT="${MINIMAL_APT},usbutils,apache2,wpasupplicant,btrfs-tools"
+MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},openssh-server"
+MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
+MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DIST=sid
 SERIAL=ttyO2
@@ -404,6 +405,11 @@ PRIMARY_KERNEL_SEL="STABLE"
 SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
+
+ARCH=armhf
+sid_release
+
+exit
 
 ARCH=armel
 natty_release
