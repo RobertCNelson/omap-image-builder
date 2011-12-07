@@ -26,23 +26,6 @@ TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
 
-#Natty Schedule:
-#https://wiki.ubuntu.com/NattyReleaseSchedule
-#alpha-1 : December 2nd
-NATTY_ALPHA="ubuntu-natty-alpha1-r1"
-#alpha-2 : February 3rd
-NATTY_ALPHA2="ubuntu-natty-alpha2-r0"
-#alpha-3 : March 3rd
-NATTY_ALPHA3="ubuntu-natty-alpha3-r0"
-#beta1 : March 31st
-NATTY_BETA1="ubuntu-natty-beta1"
-#beta2 : April 14th
-NATTY_BETA2="ubuntu-natty-beta2"
-#10.10 : April 28th
-NATTY_RELEASE="ubuntu-11.04-r8"
-
-NATTY_CURRENT=${NATTY_RELEASE}
-
 #Oneiric Schedule:
 #https://wiki.ubuntu.com/OneiricReleaseSchedule
 #alpha-1 : June 2nd
@@ -239,29 +222,6 @@ echo "Using: ${SECONDARY_KERNEL}"
 
 ${SECONDARY_KERNEL}
 
-#11.04
-function natty_release {
-
-reset_vars
-
-DIST=natty
-SERIAL=ttyO2
-ARCH=armel
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA="linux-firmware,devmem2,u-boot-tools,"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$NATTY_CURRENT$MINIMAL-$ARCH
-USER_PASS="--login ubuntu --password temppwd"
-FIXUPSCRIPT="fixup.sh"
-minimal_armel
-compression
-
-}
-
 #11.10
 function oneiric_release {
 
@@ -407,7 +367,6 @@ SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
 ARCH=armel
-natty_release
 oneiric_release
 precise_release
 
@@ -422,7 +381,6 @@ PRIMARY_KERNEL_SEL="TESTING"
 SECONDARY_KERNEL_SEL="TESTING"
 
 ARCH=armel
-natty_release
 oneiric_release
 precise_release
 
