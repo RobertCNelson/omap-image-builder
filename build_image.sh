@@ -73,12 +73,6 @@ PRECISE_CURRENT=${PRECISE_ALPHA}
 
 MINIMAL="-minimal"
 
-MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
-MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
-MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
-
 DEB_MIRROR="http://rcn-ee.net/deb"
 
 DEB_COMPONENTS="main,contrib,non-free"
@@ -96,6 +90,12 @@ unset PRIMARY_KERNEL
 unset SECONDARY_KERNEL
 unset EXTRA
 unset USER_PASS
+
+MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
+MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
+MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 }
 
@@ -406,25 +406,17 @@ SECONDARY_KERNEL_SEL="STABLE"
 #SECONDARY_KERNEL_SEL="TESTING"
 #SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
-ARCH=armhf
-sid_release
-
-exit
-
 ARCH=armel
 natty_release
 oneiric_release
-#precise_release
-
-ARCH=armhf
 precise_release
 
-ARCH=armel
 squeeze_release
 wheezy_release
 
-#ARCH=armhf
-#sid_release
+ARCH=armhf
+precise_release
+sid_release
 
 PRIMARY_KERNEL_SEL="TESTING"
 SECONDARY_KERNEL_SEL="TESTING"
@@ -436,5 +428,9 @@ precise_release
 
 squeeze_release
 wheezy_release
+
+ARCH=armhf
+precise_release
 sid_release
+
 
