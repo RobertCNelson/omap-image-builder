@@ -375,7 +375,8 @@ wheezy_release
 
 ARCH=armhf
 precise_release
-sid_release
+wheezy_release
+#sid_release
 
 PRIMARY_KERNEL_SEL="TESTING"
 SECONDARY_KERNEL_SEL="TESTING"
@@ -389,6 +390,7 @@ wheezy_release
 
 ARCH=armhf
 precise_release
-sid_release
+wheezy_release
+#sid_release
 
 
