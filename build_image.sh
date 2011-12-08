@@ -66,6 +66,12 @@ MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 
 DIR=$PWD
 
+echo ""
+echo "debootstrap mininum"
+echo "wget http://ports.ubuntu.com/pool/main/d/debootstrap/debootstrap_1.0.38_all.deb"
+echo "sudo dpkg -i debootstrap_1*"
+echo ""
+
 function reset_vars {
 
 unset DIST
