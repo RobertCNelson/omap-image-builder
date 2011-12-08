@@ -295,7 +295,6 @@ reset_vars
 
 DIST=wheezy
 SERIAL=ttyO2
-ARCH=armel
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
