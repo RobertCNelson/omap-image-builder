@@ -104,17 +104,17 @@ fi
 }
 
 function dl_rootstock {
-	rm -rf ${DIR}/../project-rootstock
-	cd ${DIR}/../
-	git clone git://github.com/RobertCNelson/project-rootstock.git
-	cd ${DIR}/../project-rootstock
+ if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
+  mkdir -p ${DIR}/git/
+  cd ${DIR}/git/
+  git clone git://github.com/RobertCNelson/project-rootstock.git
+  cd ${DIR}/
+ fi
 
-if [ "${USE_OEM}" ] ; then
-#disable with debian
-	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
-fi
+ cd ${DIR}/git/project-rootstock
+ git pull
 
-	cd ${DIR}/deploy/
+ cd ${DIR}/deploy/
 }
 
 function minimal_armel {
@@ -124,7 +124,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
+	sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
 	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
@@ -137,7 +137,7 @@ function minimal_armel_nokernel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
+	sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} --apt-upgrade --arch=${ARCH}
 }

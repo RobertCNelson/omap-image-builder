@@ -57,7 +57,7 @@ if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 fi
 
-if [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$HOST_ARCH" = "armv5tel" ] || [ "$HOST_ARCH" = "armv7l" ]; then
+if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$HOST_ARCH" = "armv7l" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
@@ -66,17 +66,17 @@ fi
 }
 
 function dl_rootstock {
-	rm -rf ${DIR}/../project-rootstock
-	cd ${DIR}/../
-	git clone git://github.com/RobertCNelson/project-rootstock.git
-	cd ${DIR}/../project-rootstock
+ if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
+  mkdir -p ${DIR}/git/
+  cd ${DIR}/git/
+  git clone git://github.com/RobertCNelson/project-rootstock.git
+  cd ${DIR}/
+ fi
 
-if [ "${USE_OEM}" ] ; then
-#disable with debian
-	patch -p0 < ${DIR}/patches/oemconfig-and-user.diff
-fi
+ cd ${DIR}/git/project-rootstock
+ git pull
 
-	cd ${DIR}/deploy/
+ cd ${DIR}/deploy/
 }
 
 function minimal_armel {
@@ -86,7 +86,7 @@ function minimal_armel {
 	rm -f ${DIR}/deploy/initrd.img-*
 	rm -f ${DIR}/deploy/rootstock-*.log
 
-	sudo ${DIR}/../project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
+	sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
 	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/fixup.sh \
 	--kernel-image ${KERNEL} --apt-upgrade --arch=${ARCH}
