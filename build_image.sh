@@ -320,10 +320,10 @@ function sid_release {
 
 reset_vars
 
-MINIMAL_APT="git-core,nano,pastebinit,wget,i2c-tools"
+MINIMAL_APT="git-core,nano,pastebinit,wget,i2c-tools,usbutils,apache2,btrfs-tools"
+MINIMAL_APT="${MINIMAL_APT},wireless-tools"
 ##Broken:
-##MINIMAL_APT="${MINIMAL_APT},wireless-tools"
-##MINIMAL_APT="${MINIMAL_APT},usbutils,apache2,wpasupplicant,btrfs-tools"
+#MINIMAL_APT="${MINIMAL_APT},wpasupplicant"
 MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
 MINIMAL_APT="${MINIMAL_APT},openssh-server"
 MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
