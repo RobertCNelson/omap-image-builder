@@ -552,7 +552,7 @@ function populate_boot {
  if [ -f ${DIR}/${INITRD} ]; then
   echo "Using mkimage to create uInitrd"
   echo "-----------------------------"
-  check_initrd
+  #check_initrd
   mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/${INITRD} ${TEMPDIR}/disk/${UINITRD}
  fi
 
