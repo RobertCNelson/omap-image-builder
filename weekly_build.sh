@@ -345,6 +345,8 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
+set_mirror
+
 dl_rootstock
 
 PRIMARY_KERNEL_SEL="STABLE"
