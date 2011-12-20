@@ -86,10 +86,6 @@ MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
 MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
-FQDN="--fqdn omap"
-FULLNAME="--fullname \"Demo User\""
-IMAGE_SIZE="--imagesize 2G"
-
 SERIAL="ttyO2"
 
 }
@@ -140,7 +136,7 @@ function minimal_armel {
  echo "-------------------------"
  echo ""
 
- sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
+ sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
  --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
  --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
  ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
