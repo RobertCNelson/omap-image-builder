@@ -140,7 +140,7 @@ function minimal_armel {
  echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
  --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
  --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ --dist ${DIST} --serial ${SERIAL} \
  ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
  echo "-------------------------"
  echo ""
