@@ -86,6 +86,12 @@ MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
 MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
+FQDN="--fqdn omap"
+FULLNAME="--fullname \"Demo User\""
+IMAGE_SIZE="--imagesize 2G"
+
+SERIAL="ttyO2"
+
 }
 
 function set_mirror {
@@ -119,27 +125,25 @@ function dl_rootstock {
 
 function minimal_armel {
 
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
+ rm -f ${DIR}/deploy/armel-rootfs-*.tar || true
+ rm -f ${DIR}/deploy/vmlinuz-* || true
+ rm -f ${DIR}/deploy/initrd.img-* || true
+ rm -f ${DIR}/deploy/rootstock-*.log || true
 
-	sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
-	${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
-}
+ echo ""
+ echo "Running as:"
+ echo "-------------------------"
+ echo "sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
+ --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
+ echo "-------------------------"
+ echo ""
 
-function minimal_armel_nokernel {
-
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
-
-	sudo ${DIR}/git/project-rootstock/rootstock --fqdn omap ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} --apt-upgrade --arch=${ARCH}
+ sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
+ --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -234,8 +238,6 @@ function oneiric_release {
 reset_vars
 
 DIST=oneiric
-SERIAL=ttyO2
-ARCH=armel
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -257,7 +259,6 @@ function precise_release {
 reset_vars
 
 DIST=precise
-SERIAL=ttyO2
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -278,8 +279,6 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
-SERIAL=ttyO2
-ARCH=armel
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -300,7 +299,6 @@ function wheezy_release {
 reset_vars
 
 DIST=wheezy
-SERIAL=ttyO2
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -330,7 +328,6 @@ MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DIST=sid
-SERIAL=ttyO2
 SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
@@ -357,12 +354,6 @@ fi
 
 dl_rootstock
 
-#USE_OEM=1
-#lucid..
-
-#unset USE_OEM
-#anything else
-
 PRIMARY_KERNEL_SEL="STABLE"
 #PRIMARY_KERNEL_SEL="TESTING"
 #PRIMARY_KERNEL_SEL="EXPERIMENTAL"
@@ -382,20 +373,4 @@ ARCH=armhf
 precise_release
 wheezy_release
 #sid_release
-
-PRIMARY_KERNEL_SEL="TESTING"
-SECONDARY_KERNEL_SEL="TESTING"
-
-ARCH=armel
-oneiric_release
-precise_release
-
-squeeze_release
-wheezy_release
-
-ARCH=armhf
-precise_release
-wheezy_release
-#sid_release
-
 

@@ -28,11 +28,6 @@ unset USE_OEM
 
 MINIMAL="-minimal"
 
-MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
-MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,openssh-server,usb-modeswitch,wireless-tools,wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
-
 DEB_MIRROR="http://rcn-ee.net/deb"
 
 DEB_COMPONENTS="main,contrib,non-free"
@@ -43,12 +38,31 @@ MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 
 DIR=$PWD
 
+echo ""
+echo "debootstrap mininum"
+echo "wget http://ports.ubuntu.com/pool/main/d/debootstrap/debootstrap_1.0.38_all.deb"
+echo "sudo dpkg -i debootstrap_1*"
+echo ""
+
 function reset_vars {
 
 unset DIST
-unset KERNEL
+unset PRIMARY_KERNEL
+unset SECONDARY_KERNEL
 unset EXTRA
 unset USER_PASS
+
+MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
+MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
+MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
+MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
+
+FQDN="--fqdn dev"
+FULLNAME="--fullname \"Demo User\""
+IMAGE_SIZE="--imagesize 2G"
+
+SERIAL="ttyO2"
 
 }
 
@@ -83,14 +97,25 @@ function dl_rootstock {
 
 function minimal_armel {
 
-	rm -f ${DIR}/deploy/armel-rootfs-*.tar
-	rm -f ${DIR}/deploy/vmlinuz-*
-	rm -f ${DIR}/deploy/initrd.img-*
-	rm -f ${DIR}/deploy/rootstock-*.log
+ rm -f ${DIR}/deploy/armel-rootfs-*.tar || true
+ rm -f ${DIR}/deploy/vmlinuz-* || true
+ rm -f ${DIR}/deploy/initrd.img-* || true
+ rm -f ${DIR}/deploy/rootstock-*.log || true
 
-	sudo ${DIR}/git/project-rootstock/rootstock --fqdn dev ${USER_PASS} --fullname "Demo User" --imagesize 2G \
-	--seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
-	--dist ${DIST} --apt-upgrade --arch=${ARCH}
+ echo ""
+ echo "Running as:"
+ echo "-------------------------"
+ echo "sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
+ --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
+ echo "-------------------------"
+ echo ""
+
+ sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
+ --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -121,50 +146,140 @@ fi
 	cd ${DIR}/deploy/
 }
 
-function debian_release {
+function kernel_select {
+
+if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+	rm -f /tmp/LATEST-${SUBARCH}
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+
+if [ -f /tmp/index.html ] ; then
+	rm -f /tmp/index.html
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+
+PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+
+echo "Using: ${PRIMARY_KERNEL}"
+
+}
+
+function secondary_kernel_select {
+
+if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+	rm -f /tmp/LATEST-${SUBARCH}
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
+FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+
+if [ -f /tmp/index.html ] ; then
+	rm -f /tmp/index.html
+fi
+
+wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+
+SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
+
+echo "Using: ${SECONDARY_KERNEL}"
+
+}
+
+${SECONDARY_KERNEL}
+
+#11.10
+function oneiric_release {
+
+reset_vars
+
+DIST=oneiric
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS="${UBU_COMPONENTS}"
+BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
+USER_PASS="--login ubuntu --password temppwd"
+FIXUPSCRIPT="fixup.sh"
+minimal_armel
+compression
+
+}
+
+#12.04
+function precise_release {
+
+reset_vars
+
+DIST=precise
+EXTRA="linux-firmware,devmem2,u-boot-tools,"
+MIRROR=$MIRROR_UBU
+COMPONENTS="${UBU_COMPONENTS}"
+BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
+USER_PASS="--login ubuntu --password temppwd"
+FIXUPSCRIPT="fixup.sh"
+minimal_armel
+compression
+
+}
+
+function squeeze_release {
 
 reset_vars
 
 DIST=squeeze
-ARCH=armel
 EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+USER_PASS="--login debian --password temppwd"
+FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=$DIST$MINIMAL-$ARCH-${TIME}
-USER_PASS="--login debian --password temppwd"
+BUILD=squeeze$MINIMAL-$ARCH
 minimal_armel
 compression
 
 }
 
-function ubuntu_release {
+function wheezy_release {
 
 reset_vars
 
-DIST=natty
-ARCH=armel
-EXTRA="linux-firmware,devmem2,u-boot-tools,"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=ubuntu-$DIST$MINIMAL-$ARCH-${TIME}
-USER_PASS="--login ubuntu --password temppwd"
+DIST=wheezy
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
+USER_PASS="--login debian --password temppwd"
+FIXUPSCRIPT="fixup-debian.sh"
+MIRROR=$MIRROR_DEB
+COMPONENTS="${DEB_COMPONENTS}"
+BUILD=${DIST}$MINIMAL-$ARCH
 minimal_armel
 compression
 
 }
 
-function armhf_release {
+function sid_release {
 
-sudo apt-get install debian-ports-archive-keyring
 reset_vars
 
-DIST=unstable
-ARCH=armhf
-EXTRA="initramfs-tools,"
-MIRROR=$MIRROR_DEB_ARMHF
-COMPONENTS="main"
-BUILD=$DIST$MINIMAL-$ARCH-${TIME}
+MINIMAL_APT="git-core,nano,pastebinit,wget,i2c-tools,usbutils,apache2,btrfs-tools"
+MINIMAL_APT="${MINIMAL_APT},wireless-tools"
+##Broken:
+#MINIMAL_APT="${MINIMAL_APT},wpasupplicant"
+MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
+MINIMAL_APT="${MINIMAL_APT},openssh-server"
+MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
+MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
+
+DIST=sid
+EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
 USER_PASS="--login debian --password temppwd"
+MIRROR=$MIRROR_DEB
+FIXUPSCRIPT="fixup-debian.sh"
+COMPONENTS="${DEB_COMPONENTS}"
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -181,7 +296,15 @@ fi
 
 dl_rootstock
 
-debian_release
-ubuntu_release
-armhf_release
+ARCH=armel
+oneiric_release
+precise_release
+
+squeeze_release
+wheezy_release
+
+ARCH=armhf
+precise_release
+wheezy_release
+#sid_release
 
