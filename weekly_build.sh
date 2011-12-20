@@ -86,12 +86,16 @@ MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
 MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
-FQDN="--fqdn omap"
-FULLNAME="--fullname \"Demo User\""
-IMAGE_SIZE="--imagesize 2G"
+#Hostname:
+FQDN="omap"
+
+USER_LOGIN="ubuntu"
+USER_PASS="temppwd"
+USER_NAME="Demo User"
 
 SERIAL="ttyO2"
 
+IMAGESIZE="2G"
 }
 
 function set_mirror {
@@ -133,16 +137,18 @@ function minimal_armel {
  echo ""
  echo "Running as:"
  echo "-------------------------"
- echo "sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
- --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
+ --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
+ --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
  --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
  ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
  echo "-------------------------"
  echo ""
 
- sudo ${DIR}/git/project-rootstock/rootstock ${FQDN} ${USER_PASS} ${FULLNAME} ${IMAGE_SIZE} \
- --seed ${MINIMAL_APT},${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
+ --login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
+ --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+ --dist ${DIST} --serial ${SERIAL} \
  ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
@@ -238,12 +244,10 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA="linux-firmware,devmem2,u-boot-tools,"
+EXTRA=",linux-firmware,devmem2,u-boot-tools"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
-USER_PASS="--login ubuntu --password temppwd"
-FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -259,12 +263,10 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA="linux-firmware,devmem2,u-boot-tools,"
+EXTRA=",linux-firmware,devmem2,u-boot-tools"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
-USER_PASS="--login ubuntu --password temppwd"
-FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -279,9 +281,8 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-USER_PASS="--login debian --password temppwd"
-FIXUPSCRIPT="fixup-debian.sh"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=squeeze$MINIMAL-$ARCH
@@ -299,9 +300,8 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-USER_PASS="--login debian --password temppwd"
-FIXUPSCRIPT="fixup-debian.sh"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH
@@ -328,10 +328,9 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA="initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,"
-USER_PASS="--login debian --password temppwd"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
-FIXUPSCRIPT="fixup-debian.sh"
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
