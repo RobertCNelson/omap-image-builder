@@ -162,10 +162,6 @@ function compression {
 		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 	fi
 
-	if ls ${DIR}/deploy/rootstock-*.log >/dev/null 2>&1;then
-		rm -f ${DIR}/deploy/rootstock-*.log || true
-	fi
-
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 
 	echo "Starting Compression"
