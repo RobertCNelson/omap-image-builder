@@ -51,7 +51,7 @@ FK
 
 if which git >/dev/null 2>&1; then
   cd /tmp/
-  git clone git://git.kernel.org/pub/scm/linux/kernel/git/dwmw2/linux-firmware.git
+  git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
   cd -
 
   mkdir -p /lib/firmware/ti-connectivity

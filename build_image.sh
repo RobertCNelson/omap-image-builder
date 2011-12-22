@@ -288,7 +288,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=squeeze$MINIMAL-$ARCH
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -308,7 +308,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -364,13 +364,10 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-precise_release
-
 squeeze_release
-wheezy_release
 
 ARCH=armhf
 precise_release
-wheezy_release
-#sid_release
+#wheezy_release
+sid_release
 
