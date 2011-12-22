@@ -634,7 +634,7 @@ cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
 
 sudo apt-get update
-if lsb_release -c | grep oneiric ; then
+if lsb_release -c | grep -E 'oneiric|precise' ; then
 sudo apt-get -y install xubuntu-desktop
 else
 sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3 network-manager
@@ -642,6 +642,7 @@ fi
 
 echo "Disabling eth0 in /etc/network/interfaces so xfce's network-manager works"
 sudo sed -i 's/auto eth0/#auto eth0/g' /etc/network/interfaces
+sudo sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' /etc/network/interfaces
 sudo sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' /etc/network/interfaces
 
 basic_xfce
@@ -764,6 +765,7 @@ function populate_rootfs {
   echo "Tweak: On selected board, theres no guarantee eth0 is connected or exists, so removing boot assumption..."
   echo "-----------------------------"
   sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+  sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
   sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
  fi
 
