@@ -767,6 +767,16 @@ function populate_rootfs {
   sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
   sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
   sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+ else
+  if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
+   echo "Ubuntu: with no eth cable connected it can take up to 2 mins to login, removing upstart sleep call"
+   echo "-----------------------------"
+   echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
+   echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
+   echo "-----------------------------"
+   sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+   sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+  fi
  fi
 
 #So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
