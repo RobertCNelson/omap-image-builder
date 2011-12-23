@@ -348,6 +348,8 @@ mkdir -p ${DIR}/deploy/
 
 if ls ${DIR}/release >/dev/null 2>&1 ; then
  echo "Building Release Package, no mirrors"
+ #dreamhost seems to be getting dos'd, so use local mirror for release
+ DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
 else
  echo "Building with mirror files"
  set_mirror
