@@ -32,6 +32,7 @@ if which git >/dev/null 2>&1; then
   wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
 fi
 
-rm -f /tmp/*.deb
-rm -rf /usr/src/linux-headers*
+rm -f /tmp/*.deb || true
+rm -rf /usr/src/linux-headers* || true
+rm -f /rootstock-user-script || true
 
