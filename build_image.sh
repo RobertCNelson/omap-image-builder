@@ -177,9 +177,14 @@ function compression {
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
-if ls ${DIR}/release >/dev/null 2>&1 ; then
+if [ -f ${DIR}/release ] ; then
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
+    if [ $SYST == "panda-a1-1gb" ]; then
+     if [ -d /mnt/farm/testing/pending/ ] ; then
+      cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
+     fi
+    fi
 else
 	tar cvf $BUILD.tar ./$BUILD
 fi
