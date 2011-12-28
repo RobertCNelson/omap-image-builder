@@ -229,7 +229,7 @@ mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifomode=5
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -243,7 +243,7 @@ mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
 #dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifomode=5
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
