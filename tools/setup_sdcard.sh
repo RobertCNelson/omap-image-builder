@@ -363,6 +363,49 @@ function tweak_boot_scripts {
   fi
  fi
 
+ if [ "${IS_IMX}" ] ; then
+  sed -i -e 's/ETH_ADDR //g' ${TEMPDIR}/bootscripts/*.cmd
+
+  #not used:
+  sed -i -e 's:SCR_VRAM::g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/*.cmd
+
+  #setenv framebuffer VIDEO_FB
+  #setenv dvimode VIDEO_TIMING
+  sed -i -e 's:SCR_FB:setenv framebuffer VIDEO_FB:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:SCR_TIMING:setenv dvimode VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/*.cmd
+
+  #framebuffer=VIDEO_FB
+  #dvimode=VIDEO_TIMING
+  sed -i -e 's:UENV_FB:framebuffer=VIDEO_FB:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/*.cmd
+
+  #video=\${framebuffer}:${dvimode}
+  sed -i -e 's/VIDEO_DISPLAY/'video=\${framebuffer}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/*.cmd
+
+  FILE="*.cmd"
+  if [ "$SERIAL_MODE" ];then
+   #Set the Serial Console: console=CONSOLE
+   sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
+
+   #mx53: In serial mode, NetInstall needs all traces of VIDEO removed..
+
+   #video=\${framebuffer}:\${dvimode}
+   sed -i -e 's:'\${framebuffer}'::g' ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/${FILE}
+   #video=:
+   sed -i -e "s/video=: //g" ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e "s/video=://g" ${TEMPDIR}/bootscripts/${FILE}
+  else
+   #Set the Video Console
+   #Set the Video Console
+   sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
+
+   sed -i -e 's:VIDEO_FB:'$VIDEO_FB':g' ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${FILE}
+  fi
+ fi
+
  if [ "$PRINTK" ];then
   sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
  fi
@@ -907,7 +950,7 @@ function is_imx53 {
  ZRELADD="0x70008000"
  SUBARCH="imx"
  VIDEO_CONSOLE="console=tty0"
- VIDEO_DRV="mxcdi1fb"
+ VIDEO_FB="mxcdi1fb"
  VIDEO_TIMING="RGB24,1280x720M@60"
  primary_id="imx"
  secondary_id="imx"
@@ -1018,6 +1061,17 @@ case "$UBOOT_TYPE" in
  BOOTLOADER="CRANEBOARD"
  SERIAL="ttyO2"
  is_omap
+
+        ;;
+    mx53loco)
+
+ SYSTEM=mx53loco
+ unset IN_VALID_UBOOT
+ DO_UBOOT=1
+ DD_UBOOT=1
+ BOOTLOADER="MX53LOCO"
+ SERIAL="ttymxc0"
+ is_imx53
 
         ;;
 esac
