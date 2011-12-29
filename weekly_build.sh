@@ -176,7 +176,7 @@ function compression {
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
-if ls ${DIR}/release >/dev/null 2>&1 ; then
+if [ -f ${DIR}/release ] ; then
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
 else
@@ -285,7 +285,7 @@ EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=squeeze$MINIMAL-$ARCH
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -304,7 +304,7 @@ EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -313,15 +313,6 @@ compression
 function sid_release {
 
 reset_vars
-
-MINIMAL_APT="git-core,nano,pastebinit,wget,i2c-tools,usbutils,apache2,btrfs-tools"
-MINIMAL_APT="${MINIMAL_APT},wireless-tools"
-##Broken:
-#MINIMAL_APT="${MINIMAL_APT},wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
-MINIMAL_APT="${MINIMAL_APT},openssh-server"
-MINIMAL_APT="${MINIMAL_APT},usb-modeswitch"
-MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
 
 DIST=sid
 SUBARCH="omap"
