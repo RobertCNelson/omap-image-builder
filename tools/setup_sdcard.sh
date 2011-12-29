@@ -177,15 +177,15 @@ function dl_bootloader {
 function boot_files_template {
 
 cat > ${TEMPDIR}/bootscripts/boot.cmd <<boot_cmd
-setenv defaultdisplay VIDEO_OMAPFB_MODE
-setenv dvimode VIDEO_TIMING
-setenv vram 12MB
+SCR_FB
+SCR_TIMING
+SCR_VRAM
 setenv console SERIAL_CONSOLE
 setenv optargs VIDEO_CONSOLE
 setenv mmcroot /dev/mmcblk0p2 ro
 setenv mmcrootfstype FINAL_FSTYPE rootwait fixrtc
 setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
-setenv bootargs console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+setenv bootargs console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} VIDEO_DISPLAY
 boot
 boot_cmd
 
@@ -210,10 +210,12 @@ bootinitrd=uInitrd
 address_uimage=UIMAGE_ADDR
 address_uinitrd=UINITRD_ADDR
 
+UENV_VRAM
+
 console=SERIAL_CONSOLE
 
-defaultdisplay=VIDEO_OMAPFB_MODE
-dvimode=VIDEO_TIMING
+UENV_FB
+UENV_TIMING
 
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
@@ -228,8 +230,7 @@ optargs=VIDEO_CONSOLE
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
-#dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -242,8 +243,7 @@ optargs=VIDEO_CONSOLE
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
-#dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} musb_hdrc.fifo_mode=5
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -256,8 +256,7 @@ optargs=VIDEO_CONSOLE
 mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
 mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
 
-#dvi->defaultdisplay
-mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_RAM omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay} root=\${mmcroot} rootfstype=\${mmcrootfstype}
+mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype}
 
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
@@ -278,8 +277,10 @@ esac
 }
 
 function tweak_boot_scripts {
-# echo "Adding Device Specific info to bootscripts"
+ #debug -|-
+# echo "NetInstall Boot Script: Generic"
 # echo "-----------------------------"
+# cat ${TEMPDIR}/bootscripts/netinstall.cmd
 
  if test "-$ADDON-" = "-pico-"
  then
@@ -313,37 +314,54 @@ function tweak_boot_scripts {
  #Set filesystem type
  sed -i -e 's:FINAL_FSTYPE:'$RFS':g' ${TEMPDIR}/bootscripts/*.cmd
 
-if [ "$SERIAL_MODE" ];then
- #console=CONSOLE
- #Set the Serial Console
- sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
+ if [ "${IS_OMAP}" ] ; then
+  sed -i -e 's/ETH_ADDR //g' ${TEMPDIR}/bootscripts/*.cmd
 
- #omap3/4 DSS:
- #VIDEO_RAM
- sed -i -e 's:VIDEO_RAM ::g' ${TEMPDIR}/bootscripts/*.cmd
- #omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
- sed -i -e 's:'\${defaultdisplay}'::g' ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/*.cmd
- #omapfb.mode=: omapdss.def_disp=
- sed -i -e "s/omapfb.mode=: //g" ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e 's:omapdss.def_disp= ::g' ${TEMPDIR}/bootscripts/*.cmd
+  #setenv defaultdisplay VIDEO_OMAPFB_MODE
+  #setenv dvimode VIDEO_TIMING
+  #setenv vram 12MB
+  sed -i -e 's:SCR_VRAM:setenv vram 12MB:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:SCR_FB:setenv defaultdisplay VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:SCR_TIMING:setenv dvimode VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/*.cmd
 
-else
- #Set the Video Console
- sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
+  #defaultdisplay=VIDEO_OMAPFB_MODE
+  #dvimode=VIDEO_TIMING
+  #vram=12MB
+  sed -i -e 's:UENV_VRAM:vram=12MB:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:UENV_FB:defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/*.cmd
 
- #omap3/4 DSS:
- #VIDEO_RAM
- sed -i -e 's:VIDEO_RAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
- #set OMAP video: omapfb.mode=VIDEO_OMAPFB_MODE
- #defaultdisplay=VIDEO_OMAPFB_MODE
- #dvimode=VIDEO_TIMING
- sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/*.cmd
- sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/*.cmd
+  #vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+  sed -i -e 's:VIDEO_DISPLAY:TMP_VRAM TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/*.cmd
+  sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/*.cmd
 
-fi
+  FILE="*.cmd"
+  if [ "$SERIAL_MODE" ];then
+   #Set the Serial Console: console=CONSOLE
+   sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
 
-#fixme: broke mx51/53 and reenable VIDEO on final boot..
+   #omap3/4: In serial mode, NetInstall needs all traces of VIDEO removed..
+   #drop: vram=\${vram}
+   sed -i -e 's:'vram=\${vram}' ::g' ${TEMPDIR}/bootscripts/${FILE}
+
+   #omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+   sed -i -e 's:'\${defaultdisplay}'::g' ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/${FILE}
+   #omapfb.mode=: omapdss.def_disp=
+   sed -i -e "s/omapfb.mode=: //g" ${TEMPDIR}/bootscripts/${FILE}
+   #uenv seems to have an extra space (beagle_xm)
+   sed -i -e 's:omapdss.def_disp= ::g' ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e 's:omapdss.def_disp=::g' ${TEMPDIR}/bootscripts/${FILE}
+  else
+   #Set the Video Console
+   sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
+
+   sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${FILE}
+   sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${FILE}
+  fi
+ fi
 
  if [ "$PRINTK" ];then
   sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
@@ -866,6 +884,7 @@ function check_mmc {
 }
 
 function is_omap {
+ IS_OMAP=1
  SPL_BOOT=1
  UIMAGE_ADDR="0x80300000"
  UINITRD_ADDR="0x81600000"
@@ -881,6 +900,7 @@ function is_omap {
 }
 
 function is_imx53 {
+ IS_IMX=1
  UIMAGE_ADDR="0x70800000"
  UINITRD_ADDR="0x72100000"
  SERIAL_CONSOLE="${SERIAL},115200"
