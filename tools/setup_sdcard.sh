@@ -524,17 +524,14 @@ function populate_boot {
    fi
   fi
 
-  if [ "$SECONDARY_KERNEL" ];then
-   if [ -f ${DIR}/vmlinuz-*d* ]; then
-    VER="d"
-   elif [ -f ${DIR}/vmlinuz-*psp* ]; then
-    VER="psp"
-   else
-    VER="x"
-   fi
-  else
-   VER="x"
+ VER=${primary_id}
+
+ if [ "$SECONDARY_KERNEL" ] ; then
+  VER=${secondary_id}
+  if [ ! -f ${DIR}/vmlinuz-*${kernelid}* ] ; then
+   VER=${primary_id}
   fi
+ fi
 
  VMLINUZ="vmlinuz-*${VER}*"
  UIMAGE="uImage"
@@ -879,6 +876,8 @@ function is_omap {
  VIDEO_DRV="omapfb.mode=dvi"
  VIDEO_OMAPFB_MODE="dvi"
  VIDEO_TIMING="1280x720MR-16@60"
+ primary_id="x"
+ secondary_id="d"
 }
 
 function is_imx53 {
@@ -890,6 +889,8 @@ function is_imx53 {
  VIDEO_CONSOLE="console=tty0"
  VIDEO_DRV="mxcdi1fb"
  VIDEO_TIMING="RGB24,1280x720M@60"
+ primary_id="imx"
+ secondary_id="imx"
 }
 
 function check_uboot_type {
@@ -943,7 +944,7 @@ case "$UBOOT_TYPE" in
 # mmc driver fails to load with this setting
 # UIMAGE_ADDR="0x80200000"
 # UINITRD_ADDR="0x80A00000"
- SECONDARY_KERNEL=1
+ primary_id="psp"
  unset VIDEO_OMAPFB_MODE
  unset VIDEO_TIMING
 
