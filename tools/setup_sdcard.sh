@@ -221,6 +221,19 @@ mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 uenv_generic_normalboot_cmd
 
+if test "-$ADDON-" = "-ulcd-"
+then
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<ulcd_uenv_normalboot_cmd
+
+lcd1=i2c mw 40 00 00; i2c mw 40 04 80; i2c mw 40 0d 05; i2c mw 40 0d 15
+lcd2=i2c mw 40 0c 25; mw 49056090 10000000
+lcd3=i2c mw 40 04 30; i2c mw 40 0c 21; i2c mw 40 04 80; i2c mw 40 04 70; i2c mw 40 04 60
+lcd4=i2c mw 40 04 50; i2c mw 40 04 40; i2c mw 40 04 30; i2c mw 40 04 20
+uenvcmd=i2c dev 1; run lcd1; i2c dev 0
+
+ulcd_uenv_normalboot_cmd
+fi
+
 case "$SYSTEM" in
     beagle_bx)
 
@@ -850,6 +863,44 @@ then
   echo "-----------------------------"
   sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
  fi
+fi
+
+if test "-$ADDON-" = "-ulcd-"
+then
+cat >> ${TEMPDIR}/disk/etc/init.d/ulcd-init <<ulcd_init_script
+#!/bin/sh
+#
+# Pulled from an Angstrom esc image:
+#
+
+init_ulcd() {
+    echo 
+    i2cset -y 2 0x40 0x00 0x00
+    i2cset -y 2 0x40 0x04 0x80
+    i2cset -y 2 0x40 0x0d 0x05
+    i2cset -y 2 0x40 0x0d 0x15
+}
+
+case "\$1" in
+      start) 
+             echo -n "Initializing BeagleBoardToys ULCD..."
+             init_ulcd
+             echo "  done"
+             ;;
+       stop) 
+             echo "Nothing to do"
+             ;;
+        restart) 
+             echo "Nothing to do"
+             ;;
+        *)
+             echo "\$0 <start/stop/restart>"
+             ;;
+esac
+
+ulcd_init_script
+
+chmod +x ${TEMPDIR}/disk/etc/init.d/ulcd-init
 fi
 
  if [ "$CREATE_SWAP" ] ; then
