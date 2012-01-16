@@ -84,7 +84,7 @@ MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
 MINIMAL_APT="${MINIMAL_APT},i2c-tools,uboot-envtools,uboot-mkimage"
 MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
 MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},cpufrequtils"
+MINIMAL_APT="${MINIMAL_APT},cpufrequtils,fbset"
 
 #Hostname:
 FQDN="omap"
