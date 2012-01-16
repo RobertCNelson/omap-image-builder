@@ -310,6 +310,23 @@ compression
 
 }
 
+function wheezy_release_armhf {
+
+reset_vars
+
+ARCH=armhf
+DIST=wheezy
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+USER_LOGIN="debian"
+MIRROR=$MIRROR_DEB
+COMPONENTS="${DEB_COMPONENTS}"
+BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+minimal_armel
+compression
+
+}
+
+
 function sid_release {
 
 reset_vars
@@ -354,4 +371,7 @@ ARCH=armhf
 precise_release
 #wheezy_release
 sid_release
+
+#Testing:
+wheezy_release_armhf
 
