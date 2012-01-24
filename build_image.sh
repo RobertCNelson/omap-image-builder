@@ -367,6 +367,6 @@ squeeze_release
 
 ARCH=armhf
 precise_release
-#wheezy_release
-sid_release
+wheezy_release
+
 
