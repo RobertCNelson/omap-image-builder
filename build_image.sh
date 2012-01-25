@@ -107,7 +107,7 @@ if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e
 	DEB_MIRROR="http://192.168.0.10/dl/mirrors/deb"
 fi
 
-if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" = "panda-a1-1gb" ]; then
+if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "panda-a1-1gb" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
@@ -343,10 +343,12 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
-if ls ${DIR}/release >/dev/null 2>&1 ; then
+if [ -f ${DIR}/release ] ; then
  echo "Building Release Package, no mirrors"
- #dreamhost seems to be getting dos'd, so use local mirror for release
- DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
+ if [ "$SYST" == "panda-a1-1gb" ]; then
+  #use local kernel *.deb files from synced mirror
+  DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
+ fi
 else
  echo "Building with mirror files"
  set_mirror
