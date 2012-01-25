@@ -39,7 +39,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r3"
+ONEIRIC_RELEASE="ubuntu-11.10-r4"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -48,11 +48,12 @@ ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 #alpha-1 : Dec 1st
 PRECISE_ALPHA="ubuntu-precise-alpha1"
 #alpha-2 : Feb 2nd
+PRECISE_ALPHA2="ubuntu-preicse-alpha2"
 #beta-1 : March 1st
 #beta-2 : March 29th
 #12.04 : April 26th
 
-PRECISE_CURRENT=${PRECISE_ALPHA}
+PRECISE_CURRENT=${PRECISE_ALPHA2}
 
 MINIMAL="-minimal"
 
