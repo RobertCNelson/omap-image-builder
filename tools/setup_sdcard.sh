@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2011 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2012 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,6 +48,8 @@ unset SVIDEO_NTSC
 unset SVIDEO_PAL
 
 MIRROR="http://rcn-ee.net/deb/"
+BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb/"
+unset RCNEEDOWN
 
 #Defaults
 RFS=ext4
@@ -153,7 +155,14 @@ function dl_bootloader {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
 
+ ping -c 1 -w 10 www.rcn-ee.net | grep "ttl=" || echo "rcn-ee.net down, using mirror" ; MIRROR=${BACKUP_MIRROR} ; RCNEEDOWN=1
+
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+
+ if [ "$RCNEEDOWN" ];then
+  sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/bootloader
+  sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/bootloader
+ fi
 
  if [ "$USE_BETA_BOOTLOADER" ];then
   ABI="ABX2"
