@@ -147,6 +147,14 @@ fi
 
 }
 
+function rcn-ee_down_use_mirror {
+ echo ""
+ echo "rcn-ee.net down, using mirror"
+ echo "-----------------------------"
+ MIRROR=${BACKUP_MIRROR}
+ RCNEEDOWN=1
+}
+
 function dl_bootloader {
  echo ""
  echo "Downloading Device's Bootloader"
@@ -155,7 +163,7 @@ function dl_bootloader {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p ${DIR}/dl/${DIST}
 
- ping -c 1 -w 10 www.rcn-ee.net | grep "ttl=" || echo "rcn-ee.net down, using mirror" ; MIRROR=${BACKUP_MIRROR} ; RCNEEDOWN=1
+ ping -c 1 -w 10 www.rcn-ee.net | grep "ttl=" || rcn-ee_down_use_mirror
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
