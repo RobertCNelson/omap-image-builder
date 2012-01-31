@@ -1218,7 +1218,7 @@ Additional Options:
     this help
 
 --probe-mmc
-    List all partitions: sudo ./mk_mmc.sh --probe-mmc
+    List all partitions: sudo ./setup_sdcard.sh --probe-mmc
 
 Debug:
 --debug
