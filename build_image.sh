@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2011 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2012 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -384,7 +384,7 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-#squeeze_release
+squeeze_release
 
 ARCH=armhf
 precise_release
