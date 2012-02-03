@@ -24,6 +24,8 @@ SYST=$(uname -n)
 HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
+RELEASE_HOST="panda-es-b1-1gb"
+
 unset USE_OEM
 
 #Oneiric Schedule:
@@ -107,7 +109,7 @@ if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e
 	DEB_MIRROR="http://192.168.0.10/dl/mirrors/deb"
 fi
 
-if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "panda-a1-1gb" ]; then
+if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
@@ -181,7 +183,7 @@ function compression {
 if [ -f ${DIR}/release ] ; then
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
-    if [ $SYST == "panda-a1-1gb" ]; then
+    if [ $SYST == "${RELEASE_HOST}" ]; then
      if [ -d /mnt/farm/testing/pending/ ] ; then
       cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
      fi
@@ -360,7 +362,7 @@ mkdir -p ${DIR}/deploy/
 
 if [ -f ${DIR}/release ] ; then
  echo "Building Release Package, no mirrors"
- if [ "$SYST" == "panda-a1-1gb" ]; then
+ if [ "$SYST" == "${RELEASE_HOST}" ]; then
   #use local kernel *.deb files from synced mirror
   DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
  fi
