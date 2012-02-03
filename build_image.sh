@@ -50,7 +50,7 @@ ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 #alpha-1 : Dec 1st
 PRECISE_ALPHA="ubuntu-precise-alpha1"
 #alpha-2 : Feb 2nd
-PRECISE_ALPHA2="ubuntu-preicse-alpha2"
+PRECISE_ALPHA2="ubuntu-precise-alpha2"
 #beta-1 : March 1st
 #beta-2 : March 29th
 #12.04 : April 26th
