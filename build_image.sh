@@ -195,6 +195,11 @@ fi
 
 function kernel_select {
 
+unset OVERRIDE
+OVERRIDE="v3.2.2-x4"
+
+if [ ! "${OVERRIDE}" ] ; then
+
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
 	rm -f /tmp/LATEST-${SUBARCH}
 fi
@@ -202,6 +207,9 @@ fi
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
 FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+else
+FTP_DIR=${OVERRIDE}
+fi
 
 if [ -f /tmp/index.html ] ; then
 	rm -f /tmp/index.html
@@ -218,6 +226,10 @@ echo "Using: ${PRIMARY_KERNEL}"
 
 function secondary_kernel_select {
 
+unset OVERRIDE
+OVERRIDE="v3.2.0-psp1"
+
+if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
 	rm -f /tmp/LATEST-${SUBARCH}
 fi
@@ -225,6 +237,9 @@ fi
 wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
 FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
 FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+else
+FTP_DIR=${OVERRIDE}
+fi
 
 if [ -f /tmp/index.html ] ; then
 	rm -f /tmp/index.html
@@ -366,7 +381,7 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-squeeze_release
+#squeeze_release
 
 ARCH=armhf
 precise_release
