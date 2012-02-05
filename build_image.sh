@@ -56,7 +56,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 #12.04 : April 26th
 
-PRECISE_CURRENT=${PRECISE_BETA1}
+PRECISE_CURRENT=${PRECISE_ALPHA2}
 
 MINIMAL="-minimal"
 
@@ -199,7 +199,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.2-x4"
+OVERRIDE="v3.2.3-x4"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -384,7 +384,7 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-squeeze_release
+#squeeze_release
 
 ARCH=armhf
 precise_release
