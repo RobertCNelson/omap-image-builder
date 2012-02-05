@@ -58,6 +58,9 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 
 PRECISE_CURRENT=${PRECISE_ALPHA2}
 
+SQUEEZE_CURRENT="debian-6.0.4"
+WHEEZY_CURRENT="debian-wheezy"
+
 MINIMAL="-minimal"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
@@ -313,7 +316,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -333,7 +336,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -384,7 +387,7 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-#squeeze_release
+squeeze_release
 
 ARCH=armhf
 precise_release
