@@ -41,7 +41,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r5"
+ONEIRIC_RELEASE="ubuntu-11.10-r6"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -56,7 +56,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 #12.04 : April 26th
 
-PRECISE_CURRENT=${PRECISE_ALPHA2}
+PRECISE_CURRENT=${PRECISE_BETA1}
 
 SQUEEZE_CURRENT="debian-6.0.4"
 WHEEZY_CURRENT="debian-wheezy"
@@ -107,7 +107,7 @@ IMAGESIZE="2G"
 
 function set_mirror {
 
-if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "voodoo-e6400" ]; then
+if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "work-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.0.10/dl/mirrors/deb"
@@ -202,7 +202,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.3-x4"
+#OVERRIDE="v3.2.3-x4"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -233,7 +233,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.0-psp1"
+#OVERRIDE="v3.2.0-psp1"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
