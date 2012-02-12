@@ -305,7 +305,9 @@ ARCH=armel
 oneiric_release
 precise_release
 
+if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
+fi
 wheezy_release
 
 ARCH=armhf

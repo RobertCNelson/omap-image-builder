@@ -400,7 +400,9 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
+if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
+fi
 
 ARCH=armhf
 precise_release
