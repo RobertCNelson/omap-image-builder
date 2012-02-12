@@ -364,6 +364,19 @@ compression
 
 mkdir -p ${DIR}/deploy/
 
+RAMTMP_TEST=$(cat /etc/default/rcS | grep -v "#" | grep RAMTMP | awk -F"=" '{print $2}')
+
+if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
+ if [ -f /etc/default/rcS ] ; then
+  if [ "-${RAMTMP_TEST}-" == "-yes-" ] ; then
+   echo "ERROR: Using chroot on ARM: stopping as RAMTMP set to yes, on debian /tmp is usually mounted as nodev."
+   echo "Please change RAMTMP to no in /etc/default/rcS and reboot. Otherwise debootstrap will fail."
+   echo ""
+   exit
+  fi
+ fi
+fi
+
 if [ -f ${DIR}/release ] ; then
  echo "Building Release Package, no mirrors"
  if [ "$SYST" == "${RELEASE_HOST}" ]; then
