@@ -47,6 +47,10 @@ unset DISABLE_ETH
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
 
+unset LOCAL_SPL
+unset LOCAL_BOOTLOADER
+unset USE_LOCAL_BOOT
+
 MIRROR="http://rcn-ee.net/deb/"
 BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb/"
 unset RCNEEDOWN
@@ -153,6 +157,20 @@ function rcn-ee_down_use_mirror {
  echo "-----------------------------"
  MIRROR=${BACKUP_MIRROR}
  RCNEEDOWN=1
+}
+
+function local_bootloader {
+ echo ""
+ echo "Using Locally Stored Device Bootloader"
+ echo "-----------------------------"
+
+ if [ "${SPL_BOOT}" ] ; then
+  MLO=${LOCAL_SPL}
+  echo "SPL Bootloader: ${MLO}"
+ fi
+
+ UBOOT=${LOCAL_BOOTLOADER}
+ echo "Bootloader: ${UBOOT}"
 }
 
 function dl_bootloader {
@@ -603,11 +621,23 @@ function populate_boot {
   fi
 
   if [ ! "${DD_UBOOT}" ] ; then
-   if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
-    if echo ${UBOOT} | grep img > /dev/null 2>&1;then
-     cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
+   if [ ! "${LOCAL_BOOTLOADER}" ] ; then
+    if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
+     if echo ${UBOOT} | grep img > /dev/null 2>&1;then
+      cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
+     else
+      cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+     fi
+    fi
+   else
+    if echo ${UBOOT} | grep u-boot > /dev/null 2>&1;then
+     if echo ${UBOOT} | grep img > /dev/null 2>&1;then
+      cp -v ${UBOOT} ${TEMPDIR}/disk/u-boot.img
+     else
+      cp -v ${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+     fi
     else
-     cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+     cp -v ${UBOOT} ${TEMPDIR}/disk/barebox.bin
     fi
    fi
   fi
@@ -1299,6 +1329,17 @@ while [ ! -z "$1" ]; do
             SWAP_SIZE="$2"
             CREATE_SWAP=1
             ;;
+        --spl)
+            checkparm $2
+            LOCAL_SPL="$2"
+            SPL_BOOT=1
+            USE_LOCAL_BOOT=1
+            ;;
+        --bootloader)
+            checkparm $2
+            LOCAL_BOOTLOADER="$2"
+            USE_LOCAL_BOOT=1
+            ;;
         --earlyprintk)
             PRINTK=1
             ;;
@@ -1330,7 +1371,11 @@ fi
 
  find_issue
  detect_software
+if [ "$USE_LOCAL_BOOT" ] ; then
+ local_bootloader
+else
  dl_bootloader
+fi
 
 if [ "$DO_UBOOT" ];then
  setup_bootscripts
