@@ -740,10 +740,6 @@ Applications:
 
 Install minimal xfce shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
 
- "./tools/get_chrome.sh"
-
-Install Google's Chrome web browswer.
-
 script_readme
 
 cat > ${TEMPDIR}/update_boot_files.sh <<update_boot_files
@@ -794,62 +790,6 @@ sudo sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' /etc/network/interf
 
 basic_xfce
 
-cat > ${TEMPDIR}/get_chrome.sh <<latest_chrome
-#!/bin/sh
-
-#setup libs
-
-sudo apt-get update
-sudo apt-get -y install libnss3-1d unzip libxss1
-
-sudo ln -sf /usr/lib/libsmime3.so /usr/lib/libsmime3.so.12
-sudo ln -sf /usr/lib/libnssutil3.so /usr/lib/libnssutil3.so.12
-sudo ln -sf /usr/lib/libnss3.so /usr/lib/libnss3.so.12
-
-sudo ln -sf /usr/lib/libplds4.so /usr/lib/libplds4.so.8
-sudo ln -sf /usr/lib/libplc4.so /usr/lib/libplc4.so.8
-sudo ln -sf /usr/lib/libnspr4.so /usr/lib/libnspr4.so.8
-
-if [ -f /tmp/LATEST ] ; then
- rm -f /tmp/LATEST &> /dev/null
-fi
-
-if [ -f /tmp/chrome-linux.zip ] ; then
- rm -f /tmp/chrome-linux.zip &> /dev/null
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://build.chromium.org/buildbot/snapshots/chromium-rel-arm/LATEST
-
-CHROME_VER=\$(cat /tmp/LATEST)
-
-wget --directory-prefix=/tmp/ http://build.chromium.org/buildbot/snapshots/chromium-rel-arm/\${CHROME_VER}/chrome-linux.zip
-
-sudo mkdir -p /opt/chrome-linux/
-sudo chown -R \$USER:\$USER /opt/chrome-linux/
-
-if [ -f /tmp/chrome-linux.zip ] ; then
- unzip -o /tmp/chrome-linux.zip -d /opt/
-fi
-
-cat > /tmp/chrome.desktop <<chrome_launcher
-[Desktop Entry]
-Version=1.0
-Type=Application
-Encoding=UTF-8
-Exec=/opt/chrome-linux/chrome %u
-Icon=web-browser
-StartupNotify=false
-Terminal=false
-Categories=X-XFCE;X-Xfce-Toplevel;
-OnlyShowIn=XFCE;
-Name=Chromium
-
-chrome_launcher
-
-sudo mv /tmp/chrome.desktop /usr/share/applications/chrome.desktop
-
-latest_chrome
-
  mkdir -p ${TEMPDIR}/disk/tools
  cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
@@ -858,9 +798,6 @@ latest_chrome
 
  cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
  chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
-
- cp -v ${TEMPDIR}/get_chrome.sh ${TEMPDIR}/disk/tools/get_chrome.sh
- chmod +x ${TEMPDIR}/disk/tools/get_chrome.sh
 
 cd ${TEMPDIR}/disk
 sync
