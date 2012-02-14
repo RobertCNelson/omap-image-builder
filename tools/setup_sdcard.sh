@@ -1303,7 +1303,7 @@ while [ ! -z "$1" ]; do
             then
 	        PARTITION_PREFIX="p"
             fi
-            find_issue
+            check_root
             check_mmc
             ;;
         --uboot)
