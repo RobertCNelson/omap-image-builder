@@ -866,12 +866,16 @@ function populate_rootfs {
    pv ${DIR}/armel-rootfs-*.tgz | tar --numeric-owner --preserve-permissions -xzf - -C ${TEMPDIR}/disk/
    echo "Transfer of Base Rootfs Complete, syncing to disk"
    echo "-----------------------------"
+   sync
+   sync
  fi
 
  if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
    pv ${DIR}/armel-rootfs-*.tar | tar --numeric-owner --preserve-permissions -xf - -C ${TEMPDIR}/disk/
    echo "Transfer of Base Rootfs Complete, syncing to disk"
    echo "-----------------------------"
+   sync
+   sync
  fi
 
  if [ "$DEFAULT_USER" ] ; then
