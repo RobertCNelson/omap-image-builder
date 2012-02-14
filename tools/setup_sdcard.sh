@@ -883,18 +883,20 @@ function populate_rootfs {
  fi
 
  if [ "$BTRFS_FSTAB" ] ; then
+  echo "Using btrfs was selected as the rootfs, modifing /etc/fstab..."
   sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
+  echo "-----------------------------"
  fi
 
  if [ "$DISABLE_ETH" ] ; then
-  echo "Tweak: On selected board, theres no guarantee eth0 is connected or exists, so removing boot assumption..."
-  echo "-----------------------------"
+  echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
   sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
   sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
   sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+  echo "-----------------------------"
  else
   if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
-   echo "Ubuntu: with no eth cable connected it can take up to 2 mins to login, removing upstart sleep call"
+   echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
    echo "-----------------------------"
    echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
    echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
