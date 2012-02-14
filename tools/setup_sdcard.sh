@@ -61,7 +61,7 @@ BOOT_LABEL=boot
 RFS_LABEL=rootfs
 PARTITION_PREFIX=""
 
-DIR=$PWD
+DIR="$PWD"
 TEMPDIR=$(mktemp -d)
 
 function check_root {
@@ -75,13 +75,18 @@ function find_issue {
 
 check_root
 
-if ! ls ${DIR}/armel-rootfs-* >/dev/null 2>&1;then
+ROOTFS=$(ls "${DIR}/" | grep rootfs)
+if [ "-${ROOTFS}-" != "--" ] ; then
+ echo "Debug: ARM rootfs: ${ROOTFS}"
+else
  echo "Error: no armel-rootfs-* file"
  echo "Make sure your in the right dir..."
  exit
 fi
 
-if ls ${DIR}/initrd.img-* >/dev/null 2>&1;then
+INITRD=$(ls "${DIR}/" | grep initrd.img | head -n 1)
+if [ "-${INITRD}-" != "--" ] ; then
+ echo "Debug: image has initrd.img: HAS_INITRD=1"
  HAS_INITRD=1
 fi
 
@@ -179,7 +184,7 @@ function dl_bootloader {
  echo "-----------------------------"
 
  mkdir -p ${TEMPDIR}/dl/${DIST}
- mkdir -p ${DIR}/dl/${DIST}
+ mkdir -p "${DIR}/dl/${DIST}"
 
  ping -c 1 -w 10 www.rcn-ee.net | grep "ttl=" || rcn-ee_down_use_mirror
 
@@ -587,22 +592,22 @@ function fix_armhf_initrd {
  echo "-----------------------------"
  mkdir -p ${TEMPDIR}/fix-initrd/
  cd ${TEMPDIR}/fix-initrd/
- zcat ${DIR}/${INITRD} | cpio -i -d
+ zcat "${DIR}/${INITRD}" | cpio -i -d
  cp -v ${TEMPDIR}/fix-initrd/lib/ld-linux.so.* ${TEMPDIR}/fix-initrd/lib/arm-linux-gnueabihf/
- find . | cpio -o -H newc | gzip -9 > ${DIR}/${INITRD}
+ find . | cpio -o -H newc | gzip -9 > "${DIR}/${INITRD}"
  echo "-----------------------------"
- cd ${DIR}/
+ cd "${DIR}/"
 }
 
 function check_armhf_initrd {
- zcat ${DIR}/${INITRD} | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf/ld-linux || fix_armhf_initrd
+ zcat "${DIR}/${INITRD}" | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf/ld-linux || fix_armhf_initrd
  echo "-----------------------------"
 }
 
 function check_initrd {
  echo "Checking initrd..."
  echo "-----------------------------"
- zcat ${DIR}/${INITRD} | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf && check_armhf_initrd
+ zcat "${DIR}/${INITRD}" | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf && check_armhf_initrd
 }
 
 function populate_boot {
@@ -644,31 +649,31 @@ function populate_boot {
 
  VER=${primary_id}
 
+ #Help select the correct kernel image "x" vs "psp"/"imx" depending on what board is selected
  if [ "$SECONDARY_KERNEL" ] ; then
   VER=${secondary_id}
-  if [ ! -f ${DIR}/vmlinuz-*${kernelid}* ] ; then
+  VMLINUZ_TEST=$(ls "${DIR}/" | grep vmlinuz- | grep ${kernelid})
+  if [ "-${VMLINUZ_TEST}-" == "--" ] ; then
    VER=${primary_id}
   fi
  fi
 
- VMLINUZ="vmlinuz-*${VER}*"
  UIMAGE="uImage"
-
- if [ -f ${DIR}/${VMLINUZ} ]; then
-  LINUX_VER=$(ls ${DIR}/${VMLINUZ} | awk -F'vmlinuz-' '{print $2}')
-  echo "Using mkimage to create uImage"
+ VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
+ if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
+  LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
+  echo "Debug: using mkimage to create uImage out of: ${VMLINUZ_FILE}"
   echo "-----------------------------"
-  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d ${DIR}/${VMLINUZ} ${TEMPDIR}/disk/${UIMAGE}
+  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
  fi
 
- INITRD="initrd.img-*${VER}*"
  UINITRD="uInitrd"
-
- if [ -f ${DIR}/${INITRD} ]; then
-  echo "Using mkimage to create uInitrd"
+ INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
+ if [ "-${INITRD_FILE}-" != "--" ] ; then
+  echo "Debug: using mkimage to create uInitrd out of: ${INITRD_FILE}"
   echo "-----------------------------"
   #check_initrd
-  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${DIR}/${INITRD} ${TEMPDIR}/disk/${UINITRD}
+  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
  fi
 
 if [ "$DO_UBOOT" ];then
@@ -832,7 +837,7 @@ latest_chrome
 
 cd ${TEMPDIR}/disk
 sync
-cd ${DIR}/
+cd "${DIR}/"
 
  echo "Debug: Contents of Boot Partition"
  echo "-----------------------------"
@@ -862,16 +867,11 @@ function populate_rootfs {
 
  if mount -t ${RFS} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 
- if ls ${DIR}/armel-rootfs-*.tgz >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tgz | tar --numeric-owner --preserve-permissions -xzf - -C ${TEMPDIR}/disk/
-   echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
-   sync
-   sync
-   echo "-----------------------------"
- fi
+ echo ${ROOTFS} | grep tgz && DECOM="xzf"
+ echo ${ROOTFS} | grep tar && DECOM="xf"
 
- if ls ${DIR}/armel-rootfs-*.tar >/dev/null 2>&1;then
-   pv ${DIR}/armel-rootfs-*.tar | tar --numeric-owner --preserve-permissions -xf - -C ${TEMPDIR}/disk/
+ if [ -f "${DIR}/${ROOTFS}" ] ; then
+   pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
    echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
    sync
    sync
@@ -950,7 +950,7 @@ fi
  cd ${TEMPDIR}/disk/
  sync
  sync
- cd ${DIR}/
+ cd "${DIR}/"
 
  umount ${TEMPDIR}/disk || true
 
