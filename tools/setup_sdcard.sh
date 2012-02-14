@@ -521,19 +521,19 @@ function uboot_in_boot_partition {
  echo ""
  echo "Using fdisk to create BOOT Partition"
  echo "-----------------------------"
+ echo "Debug: now using FDISK_FIRST_SECTOR over fdisk's depreciated method..."
 
- #With util-linux, 2.18.x/2.19.x, fdisk no longer has dos/cylinders mode on by default
- unset FDISK_DOS
-
+ #With util-linux, 2.18+, the first sector is now 2048...
+ FDISK_FIRST_SECTOR="1"
  if test $(fdisk -v | grep -o -E '2\.[0-9]+' | cut -d'.' -f2) -ge 18 ; then
-  FDISK_DOS="-c=dos -u=cylinders"
+  FDISK_FIRST_SECTOR="2048"
  fi
 
-fdisk ${FDISK_DOS} ${MMC} << END
+fdisk ${MMC} << END
 n
 p
 1
-1
+${FDISK_FIRST_SECTOR}
 +64M
 t
 e
