@@ -311,6 +311,32 @@ mmcargs=setenv bootargs console=\${console} \${optargs} mpurate=\${mpurate} budd
 loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 uenv_normalboot_cmd
         ;;
+    panda)
+
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
+optargs=VIDEO_CONSOLE
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
+
+mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_normalboot_cmd
+        ;;
+    panda_es)
+
+cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
+optargs=VIDEO_CONSOLE
+
+mmc_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
+mmc_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
+
+mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype}
+
+loaduimage=run mmc_load_uimage; run mmc_load_uinitrd; echo Booting from mmc ...; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+uenv_normalboot_cmd
+        ;;
     bone)
 
 cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
@@ -1100,16 +1126,18 @@ case "$UBOOT_TYPE" in
  DO_UBOOT=1
  BOOTLOADER="PANDABOARD"
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
     panda_es)
 
- SYSTEM=panda
+ SYSTEM=panda_es
  unset IN_VALID_UBOOT
  DO_UBOOT=1
  BOOTLOADER="PANDABOARD_ES"
  SERIAL="ttyO2"
+ USE_UENV=1
  is_omap
 
         ;;
