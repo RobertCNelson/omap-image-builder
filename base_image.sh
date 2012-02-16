@@ -203,7 +203,7 @@ function oneiric_release {
 reset_vars
 
 DIST=oneiric
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
@@ -219,7 +219,7 @@ function precise_release {
 reset_vars
 
 DIST=precise
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH

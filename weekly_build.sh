@@ -39,7 +39,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r3"
+ONEIRIC_RELEASE="ubuntu-11.10-r6"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -48,11 +48,16 @@ ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 #alpha-1 : Dec 1st
 PRECISE_ALPHA="ubuntu-precise-alpha1"
 #alpha-2 : Feb 2nd
+PRECISE_ALPHA2="ubuntu-precise-alpha2-1"
 #beta-1 : March 1st
+PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 #12.04 : April 26th
 
-PRECISE_CURRENT=${PRECISE_ALPHA}
+PRECISE_CURRENT=${PRECISE_BETA1}
+
+SQUEEZE_CURRENT="debian-6.0.4"
+WHEEZY_CURRENT="debian-wheezy"
 
 MINIMAL="-minimal"
 
@@ -245,7 +250,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
@@ -264,7 +269,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
@@ -286,7 +291,7 @@ EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -305,7 +310,7 @@ EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
