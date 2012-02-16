@@ -272,7 +272,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
@@ -292,7 +292,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools"
+EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
