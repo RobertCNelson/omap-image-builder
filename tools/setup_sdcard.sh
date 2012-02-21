@@ -1128,11 +1128,25 @@ case "$UBOOT_TYPE" in
  is_imx53
 
         ;;
-esac
-
- if [ "$IN_VALID_UBOOT" ] ; then
-   usage
- fi
+	*)
+		cat <<-__EOF__
+			-----------------------------
+			ERROR: This script does not currently recognize the selected: [--uboot ${UBOOT_TYPE}] option..
+			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
+			-----------------------------
+			-Supported TI Devices:-------
+			beagle_bx - <BeagleBoard Ax/Bx>
+			beagle_cx - <BeagleBoard Cx>
+			beagle_xm - <BeagleBoard xMA/B/C>
+			bone - <BeagleBone Ax>
+			igepv2 - <serial mode only>
+			panda - <PandaBoard Ax>
+			panda_es - <PandaBoard ES>
+			-----------------------------
+		__EOF__
+		exit
+        	;;
+	esac
 }
 
 function check_addon_type {
