@@ -182,11 +182,11 @@ fi
 }
 
 function rcn-ee_down_use_mirror {
- echo ""
- echo "rcn-ee.net down, using mirror"
- echo "-----------------------------"
- MIRROR=${BACKUP_MIRROR}
- RCNEEDOWN=1
+	echo ""
+	echo "rcn-ee.net down, switching to slower backup mirror"
+	echo "-----------------------------"
+	MIRROR=${BACKUP_MIRROR}
+	RCNEEDOWN=1
 }
 
 function local_bootloader {
@@ -211,14 +211,15 @@ function dl_bootloader {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p "${DIR}/dl/${DIST}"
 
- ping -c 1 -w 10 www.rcn-ee.net | grep "ttl=" || rcn-ee_down_use_mirror
+	echo "Checking rcn-ee.net to see if server is up and responding to pings..."
+	ping -c 3 -w 10 www.rcn-ee.net | grep "ttl=" &> /dev/null || rcn-ee_down_use_mirror
 
  wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- if [ "$RCNEEDOWN" ];then
-  sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/bootloader
-  sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/bootloader
- fi
+	if [ "$RCNEEDOWN" ];then
+		sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/bootloader
+		sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/bootloader
+	fi
 
  if [ "$USE_BETA_BOOTLOADER" ];then
   ABI="ABX2"
@@ -233,10 +234,10 @@ function dl_bootloader {
   echo "SPL Bootloader: ${MLO}"
  fi
 
- UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${BOOTLOADER}:BOOT" | awk '{print $2}')
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
- UBOOT=${UBOOT##*/}
- echo "UBOOT Bootloader: ${UBOOT}"
+	UBOOT=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${BOOTLOADER}:BOOT" | awk '{print $2}')
+	wget --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
+	UBOOT=${UBOOT##*/}
+	echo "UBOOT Bootloader: ${UBOOT}"
 }
 
 function boot_files_template {
