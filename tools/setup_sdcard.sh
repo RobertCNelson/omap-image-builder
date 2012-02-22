@@ -47,6 +47,7 @@ unset ADDON
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
+unset enable_kms
 
 unset LOCAL_SPL
 unset LOCAL_BOOTLOADER
@@ -432,6 +433,18 @@ function tweak_boot_scripts {
  if [ "${IS_OMAP}" ] ; then
   sed -i -e 's/ETH_ADDR //g' ${TEMPDIR}/bootscripts/*.cmd
 
+		if [ "${enable_kms}" ] ; then
+			sed -i -e 's:SCR_VRAM::g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:SCR_FB::g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:SCR_TIMING::g' ${TEMPDIR}/bootscripts/*.cmd
+
+			sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:UENV_FB::g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:UENV_TIMING::g' ${TEMPDIR}/bootscripts/*.cmd
+
+			sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/*.cmd
+		else
+
   #setenv defaultdisplay VIDEO_OMAPFB_MODE
   #setenv dvimode VIDEO_TIMING
   #setenv vram VIDEO_OMAP_RAM
@@ -451,6 +464,7 @@ function tweak_boot_scripts {
   sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
   sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/*.cmd
   sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/*.cmd
+		fi
 
   FILE="*.cmd"
   if [ "$SERIAL_MODE" ];then
@@ -1366,6 +1380,9 @@ while [ ! -z "$1" ]; do
             ;;
         --fdisk-debug)
             FDISK_DEBUG=1
+            ;;
+        --enable-kms)
+            enable_kms=1
             ;;
     esac
     shift
