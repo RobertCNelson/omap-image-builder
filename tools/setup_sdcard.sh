@@ -43,6 +43,7 @@ unset DD_UBOOT
 unset SECONDARY_KERNEL
 unset USE_UENV
 unset DISABLE_ETH
+unset ADDON
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -70,6 +71,22 @@ function is_element_of {
 		[ $testelt = $validelt ] && return 0
 	done
 	return 1
+}
+
+#########################################################################
+#
+#  Define valid "--addon" values.
+#
+#########################################################################
+
+VALID_ADDONS="pico ulcd"
+
+function is_valid_addon {
+	if is_element_of $1 "${VALID_ADDONS}" ] ; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 function check_root {
@@ -1157,30 +1174,6 @@ case "$UBOOT_TYPE" in
 	esac
 }
 
-function check_addon_type {
- IN_VALID_ADDON=1
-
-case "$ADDON_TYPE" in
-    pico)
-
- ADDON=pico
- unset IN_VALID_ADDON
-
-        ;;
-    ulcd)
-
- ADDON=ulcd
- unset IN_VALID_ADDON
-
-        ;;
-esac
-
- if [ "$IN_VALID_ADDON" ] ; then
-   usage
- fi
-}
-
-
 function check_fs_type {
  IN_VALID_FS=1
 
@@ -1235,7 +1228,7 @@ Required Options:
     panda - <PandaBoard Ax>
     panda_es - <PandaBoard ES>
 
---addon <device>
+--addon <additional peripheral device>
     pico
     ulcd <beagle xm>
 
@@ -1318,8 +1311,7 @@ while [ ! -z "$1" ]; do
             ;;
         --addon)
             checkparm $2
-            ADDON_TYPE="$2"
-            check_addon_type 
+            ADDON=$2
             ;;
         --rootfs)
             checkparm $2
@@ -1378,14 +1370,21 @@ while [ ! -z "$1" ]; do
     shift
 done
 
-if [ ! "${MMC}" ];then
-    echo "ERROR: --mmc undefined"
-    usage
+if [ ! "${MMC}" ] ; then
+	echo "ERROR: --mmc undefined"
+	usage
 fi
 
 if [ "$IN_VALID_UBOOT" ] ; then
-    echo "ERROR: --uboot undefined"
-    usage
+	echo "ERROR: --uboot undefined"
+	usage
+fi
+
+if [ -n ${ADDON} ] ; then
+	if ! is_valid_addon ${ADDON} ; then
+		echo "ERROR: ${ADDON} is not a valid addon type"
+		usage
+	fi
 fi
 
  find_issue
