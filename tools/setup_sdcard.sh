@@ -136,50 +136,37 @@ if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
 fi
 }
 
+function check_for_command {
+	if ! which "$1" > /dev/null ; then
+		echo -n "You're missing command $1"
+		NEEDS_COMMAND=1
+		if [ -n "$2" ] ; then
+			echo -n " (consider installing package $2)"
+		fi
+		echo
+	fi
+}
+
 function detect_software {
+	unset NEEDS_COMMAND
 
-unset NEEDS_PACKAGE
+	check_for_command mkimage uboot-mkimage
+	check_for_command mkfs.vfat dosfstools
+	check_for_command mkfs.btrfs btrfs-tools
+	check_for_command wget wget
+	check_for_command pv pv
+	check_for_command parted parted
+	check_for_command partprobe parted
 
-if [ ! $(which mkimage) ];then
- echo "Missing uboot-mkimage"
- NEEDS_PACKAGE=1
-fi
-
-if [ ! $(which wget) ];then
- echo "Missing wget"
- NEEDS_PACKAGE=1
-fi
-
-if [ ! $(which pv) ];then
- echo "Missing pv"
- NEEDS_PACKAGE=1
-fi
-
-if [ ! $(which mkfs.vfat) ];then
- echo "Missing mkfs.vfat"
- NEEDS_PACKAGE=1
-fi
-
-if [ ! $(which mkfs.btrfs) ];then
- echo "Missing btrfs tools"
- NEEDS_PACKAGE=1
-fi
-
-if [ ! $(which partprobe) ];then
- echo "Missing partprobe"
- NEEDS_PACKAGE=1
-fi
-
-if [ "${NEEDS_PACKAGE}" ];then
- echo ""
- echo "Your System is Missing some dependencies"
- echo "Ubuntu/Debian: sudo apt-get install uboot-mkimage wget pv dosfstools btrfs-tools parted"
- echo "Fedora: as root: yum install uboot-tools wget pv dosfstools btrfs-progs parted"
- echo "Gentoo: emerge u-boot-tools wget pv dosfstools btrfs-progs parted"
- echo ""
- exit
-fi
-
+	if [ "${NEEDS_COMMAND}" ] ; then
+		echo ""
+		echo "Your system is missing some dependencies"
+		echo "Ubuntu/Debian: sudo apt-get install uboot-mkimage wget pv dosfstools btrfs-tools parted"
+		echo "Fedora: as root: yum install uboot-tools wget pv dosfstools btrfs-progs parted"
+		echo "Gentoo: emerge u-boot-tools wget pv dosfstools btrfs-progs parted"
+		echo ""
+		exit
+	fi
 }
 
 function rcn-ee_down_use_mirror {
