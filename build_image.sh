@@ -202,7 +202,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.3-x4"
+OVERRIDE="v3.2.7-x5"
 
 if [ ! "${OVERRIDE}" ] ; then
 
