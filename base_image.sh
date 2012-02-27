@@ -24,6 +24,8 @@ SYST=$(uname -n)
 HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
+RELEASE_HOST="panda-es-b1-1gb"
+
 unset USE_OEM
 
 ONEIRIC_CURRENT="ubuntu-11.10"
@@ -147,6 +149,11 @@ function compression {
 if [ -f ${DIR}/release ] ; then
 	tar cvf $BUILD.tar ./$BUILD
 	xz -z -7 -v $BUILD.tar
+    if [ $SYST == "${RELEASE_HOST}" ]; then
+     if [ -d /mnt/farm/testing/pending/ ] ; then
+      cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
+     fi
+    fi
 else
 	tar cvf $BUILD.tar ./$BUILD
 fi
