@@ -26,6 +26,11 @@ TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
 
+ONEIRIC_CURRENT="ubuntu-11.10"
+PRECISE_CURRENT="ubuntu-12.04"
+SQUEEZE_CURRENT="debian-6.0.4"
+WHEEZY_CURRENT="debian-wheezy"
+
 MINIMAL="-minimal"
 
 DEB_MIRROR="http://rcn-ee.net/deb"
@@ -206,7 +211,7 @@ DIST=oneiric
 EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
+BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
 FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
@@ -222,7 +227,7 @@ DIST=precise
 EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
+BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
 FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
@@ -239,7 +244,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH
+BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
@@ -255,7 +260,7 @@ USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH
+BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
