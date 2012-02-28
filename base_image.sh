@@ -66,7 +66,7 @@ MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplic
 MINIMAL_APT="${MINIMAL_APT},cpufrequtils,fbset"
 
 #Hostname:
-FQDN="omap"
+FQDN="devel"
 
 USER_LOGIN="ubuntu"
 USER_PASS="temppwd"
@@ -120,16 +120,14 @@ function minimal_armel {
  echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
  --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
  --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
- ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
+ --dist ${DIST} --apt-upgrade --arch=${ARCH} "
  echo "-------------------------"
  echo ""
 
  sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
  --login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
  --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
- ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
+ --dist ${DIST} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -161,54 +159,6 @@ fi
 	cd ${DIR}/deploy/
 }
 
-function kernel_select {
-
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
-
-echo "Using: ${PRIMARY_KERNEL}"
-
-}
-
-function secondary_kernel_select {
-
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
-
-echo "Using: ${SECONDARY_KERNEL}"
-
-}
-
-${SECONDARY_KERNEL}
-
 #11.10
 function oneiric_release {
 
@@ -219,7 +169,6 @@ EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
-FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -235,7 +184,6 @@ EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 MIRROR=$MIRROR_UBU
 COMPONENTS="${UBU_COMPONENTS}"
 BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
-FIXUPSCRIPT="fixup.sh"
 minimal_armel
 compression
 
@@ -248,7 +196,6 @@ reset_vars
 DIST=squeeze
 EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
@@ -264,7 +211,6 @@ reset_vars
 DIST=wheezy
 EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
@@ -281,7 +227,6 @@ DIST=sid
 EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
-FIXUPSCRIPT="fixup-debian.sh"
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
 minimal_armel
@@ -313,17 +258,7 @@ fi
 
 dl_rootstock
 
-ARCH=armel
-oneiric_release
-precise_release
-
 if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
 fi
-wheezy_release
-
-ARCH=armhf
-precise_release
-wheezy_release
-
 
