@@ -258,6 +258,8 @@ fi
 
 dl_rootstock
 
+ARCH=armel
+
 if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
 fi
