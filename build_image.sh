@@ -365,16 +365,23 @@ compression
 mkdir -p ${DIR}/deploy/
 
 RAMTMP_TEST=$(cat /etc/default/rcS | grep -v "#" | grep RAMTMP | awk -F"=" '{print $2}')
-
-if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
- if [ -f /etc/default/rcS ] ; then
-  if [ "-${RAMTMP_TEST}-" == "-yes-" ] ; then
-   echo "ERROR: Using chroot on ARM: stopping as RAMTMP set to yes, on debian /tmp is usually mounted as nodev."
-   echo "Please change RAMTMP to no in /etc/default/rcS and reboot. Otherwise debootstrap will fail."
-   echo ""
-   exit
-  fi
- fi
+if [ -f /etc/default/rcS ] ; then
+	if [ "-${RAMTMP_TEST}-" == "-yes-" ] ; then
+		if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
+			echo ""
+			echo "ERROR"
+			echo "With RAMTMP=yes in /etc/default/rcS on ARM, debootstrap will fail, as /tmp is mounted as nodev."
+			echo "Please modify /etc/default/rcS and set RAMTMP=no and reboot."
+			echo ""
+			exit
+		else
+			echo ""
+			echo "WARNING"
+			echo "With RAMTMP=yes in /etc/default/rcS, this script will probally fail due to running out of memory."
+			echo "Please modify /etc/default/rcS and set RAMTMP=no and reboot."
+			echo ""
+		fi
+	fi
 fi
 
 if [ -f ${DIR}/release ] ; then
