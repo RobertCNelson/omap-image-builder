@@ -46,7 +46,7 @@ ONEIRIC_RELEASE="ubuntu-11.10-r6"
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
 #Precise Schedule:
-#https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule?action=show&redirect=PreciseReleaseSchedule
+#https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule
 #alpha-1 : Dec 1st
 PRECISE_ALPHA="ubuntu-precise-alpha1"
 #alpha-2 : Feb 2nd
@@ -54,9 +54,10 @@ PRECISE_ALPHA2="ubuntu-precise-alpha2-1"
 #beta-1 : March 1st
 PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
+PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
 
-PRECISE_CURRENT=${PRECISE_BETA1}
+PRECISE_CURRENT=${PRECISE_BETA2}
 
 SQUEEZE_CURRENT="debian-6.0.4"
 WHEEZY_CURRENT="debian-wheezy"
@@ -202,7 +203,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.7-x5"
+#OVERRIDE="v3.2.7-x5"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -233,7 +234,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.0-psp3"
+#OVERRIDE="v3.2.0-psp3"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
