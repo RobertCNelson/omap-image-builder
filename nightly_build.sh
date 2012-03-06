@@ -303,7 +303,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
@@ -322,7 +322,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
@@ -341,7 +341,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
