@@ -203,7 +203,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.7-x5"
+OVERRIDE="v3.2.9-x5"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -234,7 +234,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.0-psp3"
+OVERRIDE="v3.2.0-psp3"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
@@ -312,7 +312,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
