@@ -796,6 +796,11 @@ Applications:
 
 Install minimal xfce shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
 
+Drivers:
+ "./build_omapdrm_drivers.sh"
+
+omapdrm kms video driver, at some point this will be packaged by default for newer distro's at that time this script wont be needed...
+
 script_readme
 
 cat > ${TEMPDIR}/update_boot_files.sh <<update_boot_files
@@ -846,6 +851,65 @@ sudo sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' /etc/network/interf
 
 basic_xfce
 
+	cat > ${TEMPDIR}/build_omapdrm_drivers.sh <<-__EOF__
+		#!/bin/bash
+
+		#package list from:
+		#http://anonscm.debian.org/gitweb/?p=collab-maint/xf86-video-omap.git;a=blob;f=debian/control;hb=HEAD
+
+		sudo apt-get update ; sudo apt-get -y install debhelper dh-autoreconf libdrm-dev libudev-dev libxext-dev pkg-config x11proto-core-dev x11proto-fonts-dev x11proto-gl-dev x11proto-xf86dri-dev xutils-dev xserver-xorg-dev
+
+		if [ ! -f /home/\${USER}/git/xf86-video-omap/.git/config ] ; then
+			git clone git://github.com/robclark/xf86-video-omap.git /home/\${USER}/git/xf86-video-omap/
+		fi
+
+		if [ ! -f /home/\${USER}/git/libdrm/.git/config ] ; then
+			git clone git://github.com/robclark/libdrm.git /home/\${USER}/git/libdrm/
+		fi
+
+		DPKG_ARCH=\$(dpkg --print-architecture | grep arm)
+		case "\${DPKG_ARCH}" in
+		armel)
+			gnu="gnueabi"
+			;;
+		armhf)
+			gnu="gnueabihf"
+			;;
+		esac
+
+		echo ""
+		echo "Building omap libdrm"
+		echo ""
+
+		cd /home/\${USER}/git/libdrm/
+		make distclean &> /dev/null
+		git checkout master -f
+		git pull
+		git branch libdrm-build -D || true
+		git checkout origin/HEAD -b libdrm-build
+
+		./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-\${gnu} --disable-libkms --disable-intel --disable-radeon --enable-omap-experimental-api
+
+		make
+		sudo make install
+
+		echo ""
+		echo "Building omap DDX"
+		echo ""
+
+		cd /home/\${USER}/git/xf86-video-omap/
+		make distclean &> /dev/null
+		git checkout master -f
+		git pull
+		git branch omap-build -D || true
+		git checkout origin/HEAD -b omap-build
+
+		./autogen.sh --prefix=/usr
+		make
+		sudo make install
+
+	__EOF__
+
  mkdir -p ${TEMPDIR}/disk/tools
  cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
@@ -854,6 +918,10 @@ basic_xfce
 
  cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
  chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
+
+	cp -v ${TEMPDIR}/build_omapdrm_drivers.sh ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
+	chmod +x ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
+
 
 cd ${TEMPDIR}/disk
 sync
