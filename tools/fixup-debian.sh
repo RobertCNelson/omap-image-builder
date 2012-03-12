@@ -15,6 +15,12 @@ echo "auto eth0"  >> /etc/network/interfaces
 echo "iface eth0 inet dhcp"  >> /etc/network/interfaces
 echo "# Example to keep MAC address between reboots"  >> /etc/network/interfaces
 echo "#hwaddress ether DE:AD:BE:EF:CA:FE"  >> /etc/network/interfaces
+echo "" >> /etc/network/interfaces
+echo "# WiFi Example" >> /etc/network/interfaces
+echo "#auto wlan0" >> /etc/network/interfaces
+echo "#iface wlan0 inet dhcp" >> /etc/network/interfaces
+echo "#    wpa-ssid \"essid\"" >> /etc/network/interfaces
+echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 
 #smsc95xx kevent workaround/hack
 echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
