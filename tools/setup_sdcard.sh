@@ -272,24 +272,25 @@ uenv_boot_cmd
 }
 
 function boot_uenv_txt_template {
-#(rcn-ee)in a way these are better then boot.scr, but each target is going to have a slightly different entry point..
+	#(rcn-ee)in a way these are better then boot.scr
+	#but each target is going to have a slightly different entry point..
 
-cat > ${TEMPDIR}/bootscripts/normal.cmd <<uenv_generic_normalboot_cmd
-bootfile=uImage
-bootinitrd=uInitrd
-address_uimage=UIMAGE_ADDR
-address_uinitrd=UINITRD_ADDR
+	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		bootfile=uImage
+		bootinitrd=uInitrd
+		address_uimage=UIMAGE_ADDR
+		address_uinitrd=UINITRD_ADDR
 
-UENV_VRAM
+		UENV_VRAM
+		UENV_FB
+		UENV_TIMING
 
-console=SERIAL_CONSOLE
+		console=SERIAL_CONSOLE
 
-UENV_FB
-UENV_TIMING
+		mmcroot=/dev/mmcblk0p2 ro
+		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-mmcroot=/dev/mmcblk0p2 ro
-mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
-uenv_generic_normalboot_cmd
+	__EOF__
 
 if test "-$ADDON-" = "-ulcd-"
 then
