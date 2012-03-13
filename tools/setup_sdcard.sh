@@ -307,71 +307,39 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
-case "$SYSTEM" in
-    beagle_bx)
+	case "${SYSTEM}" in
+	beagle_bx|beagle_cx)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+		__EOF__
+		;;
+	beagle_xm)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    beagle_cx)
+		__EOF__
+		;;
+	crane|panda|panda_es)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+		__EOF__
+		;;
+	bone)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			deviceargs=setenv device_args ip=\${ip_method}
+			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
 
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    beagle_xm)
-
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
-
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    crane)
-
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args
-
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    panda)
-
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args
-
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    panda_es)
-
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-optargs=VIDEO_CONSOLE
-deviceargs=setenv device_args
-
-loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-    bone)
-
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<uenv_normalboot_cmd
-deviceargs=setenv device_args ip=\${ip_method}
-
-mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
-uenv_normalboot_cmd
-        ;;
-esac
-
+		__EOF__
+		;;
+	esac
 }
 
 function tweak_boot_scripts {
