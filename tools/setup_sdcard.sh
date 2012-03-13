@@ -292,15 +292,13 @@ function boot_uenv_txt_template {
 
 	__EOF__
 
-if test "-$ADDON-" = "-ulcd-"
-then
-cat >> ${TEMPDIR}/bootscripts/normal.cmd <<ulcd_uenv_normalboot_cmd
+	if [ "x${ADDON}" == "xulcd" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			lcd1=i2c mw 40 00 00; i2c mw 40 04 80; i2c mw 40 0d 05
+			uenvcmd=i2c dev 1; run lcd1; i2c dev 0
 
-lcd1=i2c mw 40 00 00; i2c mw 40 04 80; i2c mw 40 0d 05
-uenvcmd=i2c dev 1; run lcd1; i2c dev 0
-
-ulcd_uenv_normalboot_cmd
-fi
+		__EOF__
+	fi
 
 case "$SYSTEM" in
     beagle_bx)
