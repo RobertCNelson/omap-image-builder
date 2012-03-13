@@ -1128,129 +1128,99 @@ function is_imx53 {
 }
 
 function check_uboot_type {
- unset DO_UBOOT
+	unset DO_UBOOT
+	unset IN_VALID_UBOOT
 
-case "$UBOOT_TYPE" in
-    beagle_bx)
+	case "${UBOOT_TYPE}" in
+	beagle_bx)
+		SYSTEM="beagle_bx"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBOARD_BX"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		DISABLE_ETH=1
+		is_omap
+		;;
+	beagle_cx)
+		SYSTEM="beagle_cx"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBOARD_CX"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		DISABLE_ETH=1
+		is_omap
+		;;
+	beagle_xm)
+		SYSTEM="beagle_xm"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBOARD_XM"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		is_omap
+		;;
+	bone)
+		SYSTEM="bone"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBONE_A"
+		SERIAL="ttyO0"
+		USE_UENV=1
+		is_omap
 
- SYSTEM=beagle_bx
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="BEAGLEBOARD_BX"
- SERIAL="ttyO2"
- USE_UENV=1
- DISABLE_ETH=1
- is_omap
-
-        ;;
-    beagle_cx)
-
- SYSTEM=beagle_cx
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="BEAGLEBOARD_CX"
- SERIAL="ttyO2"
- USE_UENV=1
- DISABLE_ETH=1
- is_omap
-
-        ;;
-    beagle_xm)
-
- SYSTEM=beagle_xm
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="BEAGLEBOARD_XM"
- SERIAL="ttyO2"
- USE_UENV=1
- is_omap
-
-        ;;
-    bone)
-
- SYSTEM=bone
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="BEAGLEBONE_A"
- SERIAL="ttyO0"
- USE_UENV=1
- is_omap
-# mmc driver fails to load with this setting
-# UIMAGE_ADDR="0x80200000"
-# UINITRD_ADDR="0x80A00000"
- primary_id="psp"
- unset VIDEO_OMAPFB_MODE
- unset VIDEO_TIMING
-
-        ;;
-    igepv2)
-
- SYSTEM=igepv2
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="IGEP00X0"
- SERIAL="ttyO2"
- is_omap
-
-        ;;
-    panda)
-
- SYSTEM=panda
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="PANDABOARD"
- SERIAL="ttyO2"
- USE_UENV=1
- is_omap
- VIDEO_OMAP_RAM="16MB"
-
-        ;;
-    panda_es)
-
- SYSTEM=panda_es
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="PANDABOARD_ES"
- SERIAL="ttyO2"
- USE_UENV=1
- is_omap
- VIDEO_OMAP_RAM="16MB"
-
-        ;;
-    touchbook)
-
- SYSTEM=touchbook
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="TOUCHBOOK"
- SERIAL="ttyO2"
- is_omap
- VIDEO_TIMING="1024x600MR-16@60"
-
-        ;;
-    crane)
-
- SYSTEM=crane
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- BOOTLOADER="CRANEBOARD"
- SERIAL="ttyO2"
- USE_UENV=1
- is_omap
-
-        ;;
-    mx53loco)
-
- SYSTEM=mx53loco
- unset IN_VALID_UBOOT
- DO_UBOOT=1
- DD_UBOOT=1
- BOOTLOADER="MX53LOCO"
- SERIAL="ttymxc0"
- is_imx53
-
-        ;;
+		primary_id="psp"
+		unset VIDEO_OMAPFB_MODE
+		unset VIDEO_TIMING
+		;;
+	igepv2)
+		SYSTEM="igepv2"
+		DO_UBOOT=1
+		BOOTLOADER="IGEP00X0"
+		SERIAL="ttyO2"
+		is_omap
+		;;
+	panda)
+		SYSTEM="panda"
+		DO_UBOOT=1
+		BOOTLOADER="PANDABOARD"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		is_omap
+		VIDEO_OMAP_RAM="16MB"
+		;;
+	panda_es)
+		SYSTEM="panda_es"
+		DO_UBOOT=1
+		BOOTLOADER="PANDABOARD_ES"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		is_omap
+		VIDEO_OMAP_RAM="16MB"
+		;;
+	touchbook)
+		SYSTEM="touchbook"
+		DO_UBOOT=1
+		BOOTLOADER="TOUCHBOOK"
+		SERIAL="ttyO2"
+		is_omap
+		VIDEO_TIMING="1024x600MR-16@60"
+		;;
+	crane)
+		SYSTEM="crane"
+		DO_UBOOT=1
+		BOOTLOADER="CRANEBOARD"
+		SERIAL="ttyO2"
+		USE_UENV=1
+		is_omap
+		;;
+	mx53loco)
+		SYSTEM="mx53loco"
+		DO_UBOOT=1
+		DD_UBOOT=1
+		BOOTLOADER="MX53LOCO"
+		SERIAL="ttymxc0"
+		is_imx53
+		;;
 	*)
+		IN_VALID_UBOOT=1
 		cat <<-__EOF__
 			-----------------------------
 			ERROR: This script does not currently recognize the selected: [--uboot ${UBOOT_TYPE}] option..
