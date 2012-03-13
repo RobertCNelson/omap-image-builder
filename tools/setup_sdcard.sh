@@ -1097,20 +1097,35 @@ function check_mmc {
 }
 
 function is_omap {
- IS_OMAP=1
- SPL_BOOT=1
- UIMAGE_ADDR="0x80300000"
- UINITRD_ADDR="0x81600000"
- SERIAL_CONSOLE="${SERIAL},115200n8"
- ZRELADD="0x80008000"
- SUBARCH="omap"
- VIDEO_CONSOLE="console=tty0"
- VIDEO_DRV="omapfb.mode=dvi"
- VIDEO_OMAP_RAM="12MB"
- VIDEO_OMAPFB_MODE="dvi"
- VIDEO_TIMING="1280x720MR-16@60"
- primary_id="x"
- secondary_id="d"
+	IS_OMAP=1
+	SPL_BOOT=1
+	SUBARCH="omap"
+
+	UIMAGE_ADDR="0x80300000"
+	UINITRD_ADDR="0x81600000"
+
+	ZRELADD="0x80008000"
+
+	SERIAL_CONSOLE="${SERIAL},115200n8"
+
+	VIDEO_CONSOLE="console=tty0"
+
+	#Older DSS2 omapfb framebuffer driver:
+	VIDEO_DRV="omapfb.mode=dvi"
+	VIDEO_OMAP_RAM="12MB"
+	VIDEO_OMAPFB_MODE="dvi"
+	VIDEO_TIMING="1280x720MR-16@60"
+
+	#KMS Video Options (overrides when edid fails)
+	# From: ls /sys/class/drm/
+	# Unknown-1 might be s-video..
+	KMS_VIDEO_RESOLUTION="1280x720"
+	KMS_VIDEOA="video=DVI-D-1"
+	KMS_VIDEOB=""
+
+	#Kernel Options
+	primary_id="x"
+	secondary_id="d"
 }
 
 function is_imx53 {
@@ -1185,6 +1200,7 @@ function check_uboot_type {
 		USE_UENV=1
 		is_omap
 		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
 		;;
 	panda_es)
 		SYSTEM="panda_es"
@@ -1194,6 +1210,7 @@ function check_uboot_type {
 		USE_UENV=1
 		is_omap
 		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
 		;;
 	touchbook)
 		SYSTEM="touchbook"
