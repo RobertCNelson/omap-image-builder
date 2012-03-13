@@ -245,30 +245,28 @@ function dl_bootloader {
 }
 
 function boot_files_template {
+	cat > ${TEMPDIR}/bootscripts/boot.cmd <<-__EOF__
+		SCR_FB
+		SCR_TIMING
+		SCR_VRAM
+		setenv console SERIAL_CONSOLE
+		setenv optargs VIDEO_CONSOLE
+		setenv mmcroot /dev/mmcblk0p2 ro
+		setenv mmcrootfstype FINAL_FSTYPE rootwait fixrtc
+		setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
+		setenv bootargs console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} VIDEO_DISPLAY
+		boot
 
-cat > ${TEMPDIR}/bootscripts/boot.cmd <<boot_cmd
-SCR_FB
-SCR_TIMING
-SCR_VRAM
-setenv console SERIAL_CONSOLE
-setenv optargs VIDEO_CONSOLE
-setenv mmcroot /dev/mmcblk0p2 ro
-setenv mmcrootfstype FINAL_FSTYPE rootwait fixrtc
-setenv bootcmd 'fatload mmc 0:1 UIMAGE_ADDR uImage; fatload mmc 0:1 UINITRD_ADDR uInitrd; bootm UIMAGE_ADDR UINITRD_ADDR'
-setenv bootargs console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} VIDEO_DISPLAY
-boot
-boot_cmd
-
+	__EOF__
 }
 
 function boot_scr_to_uenv_txt {
+	cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<-__EOF__
+		bootenv=boot.scr
+		loaduimage=fatload mmc \${mmcdev} \${loadaddr} \${bootenv}
+		mmcboot=echo Running boot.scr script from mmc ...; source \${loadaddr}
 
-cat > ${TEMPDIR}/bootscripts/uEnv.cmd <<uenv_boot_cmd
-bootenv=boot.scr
-loaduimage=fatload mmc \${mmcdev} \${loadaddr} \${bootenv}
-mmcboot=echo Running boot.scr script from mmc ...; source \${loadaddr}
-uenv_boot_cmd
-
+	__EOF__
 }
 
 function boot_uenv_txt_template {
