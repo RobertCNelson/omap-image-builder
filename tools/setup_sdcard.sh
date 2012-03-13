@@ -383,12 +383,12 @@ function tweak_boot_scripts {
 	# echo "-----------------------------"
 	# cat ${TEMPDIR}/bootscripts/netinstall.cmd
 
-	if ["x${ADDON}" == "xpico" ] ; then
+	if [ "x${ADDON}" == "xpico" ] ; then
 		VIDEO_TIMING="640x480MR-16@60"
 		KMS_VIDEO_RESOLUTION="640x48"
 	fi
 
-	if ["x${ADDON}" == "xulcd" ] ; then
+	if [ "x${ADDON}" == "xulcd" ] ; then
 		VIDEO_TIMING="800x480MR-16@60"
 		KMS_VIDEO_RESOLUTION="800x480"
 	fi
