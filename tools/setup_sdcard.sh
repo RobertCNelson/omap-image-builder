@@ -24,7 +24,8 @@
 # Latest can be found at:
 # http://github.com/RobertCNelson/omap-image-builder/blob/master/tools/setup_sdcard.sh
 
-#Notes: need to check for: parted, fdisk, wget, mkfs.*, mkimage
+#REQUIREMENTS:
+#uEnv.txt bootscript support
 
 #Debug Tips
 #oem-config username/password
@@ -1158,15 +1159,6 @@ function check_uboot_type {
 		is_omap
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
-		;;
-	touchbook)
-		SYSTEM="touchbook"
-		DO_UBOOT=1
-		BOOTLOADER="TOUCHBOOK"
-		SERIAL="ttyO2"
-		is_omap
-		VIDEO_TIMING="1024x600MR-16@60"
-		KMS_VIDEO_RESOLUTION="1024x600"
 		;;
 	crane)
 		SYSTEM="crane"
