@@ -322,7 +322,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	crane|panda|panda_es)
+	igepv2|crane|panda|panda_es|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -1136,6 +1136,7 @@ function check_uboot_type {
 		DO_UBOOT=1
 		BOOTLOADER="IGEP00X0"
 		SERIAL="ttyO2"
+		USE_UENV=1
 		is_omap
 		;;
 	panda)
@@ -1181,6 +1182,7 @@ function check_uboot_type {
 		DD_UBOOT=1
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
+		USE_UENV=1
 		is_imx53
 		;;
 	*)
