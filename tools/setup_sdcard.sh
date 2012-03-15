@@ -637,23 +637,27 @@ function populate_boot {
   fi
  fi
 
- UIMAGE="uImage"
- VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
- if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
-  LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
-  echo "Debug: using mkimage to create uImage out of: ${VMLINUZ_FILE}"
-  echo "-----------------------------"
-  mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
- fi
+		UIMAGE="uImage"
+		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
+		if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
+			LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
+			echo "Debug: using mkimage to create uImage out of: ${VMLINUZ_FILE}"
+			echo "-----------------------------"
+			mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
+			echo "Debug: zImage for future u-boot bootz support"
+			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+		fi
 
- UINITRD="uInitrd"
- INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
- if [ "-${INITRD_FILE}-" != "--" ] ; then
-  echo "Debug: using mkimage to create uInitrd out of: ${INITRD_FILE}"
-  echo "-----------------------------"
-  #check_initrd
-  mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
- fi
+		UINITRD="uInitrd"
+		INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
+		if [ "-${INITRD_FILE}-" != "--" ] ; then
+			echo "Debug: using mkimage to create uInitrd out of: ${INITRD_FILE}"
+			echo "-----------------------------"
+			#check_initrd
+			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
+			echo "Debug: initrd.img for future u-boot bootz support"
+			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+		fi
 
 		if [ "${DO_UBOOT}" ];then
 			echo "Copying uEnv.txt based boot scripts to Boot Partition"
