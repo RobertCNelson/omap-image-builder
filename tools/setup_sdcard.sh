@@ -43,11 +43,12 @@ unset HAS_INITRD
 unset DD_UBOOT
 unset SECONDARY_KERNEL
 unset DISABLE_ETH
+unset USE_KMS
+unset KMS_OVERRIDE
 unset ADDON
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
-unset enable_kms
 
 unset LOCAL_SPL
 unset LOCAL_BOOTLOADER
@@ -248,15 +249,19 @@ function boot_uenv_txt_template {
 	#(rcn-ee)in a way these are better then boot.scr
 	#but each target is going to have a slightly different entry point..
 
-	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+	if [ ! "${USE_KMS}" ] ; then
+		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			UENV_VRAM
+			UENV_FB
+			UENV_TIMING
+		__EOF__
+	fi
+
+	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		bootfile=uImage
 		bootinitrd=uInitrd
 		address_uimage=UIMAGE_ADDR
 		address_uinitrd=UINITRD_ADDR
-
-		UENV_VRAM
-		UENV_FB
-		UENV_TIMING
 
 		console=SERIAL_CONSOLE
 
@@ -323,11 +328,15 @@ function tweak_boot_scripts {
 
 	if [ "x${ADDON}" == "xpico" ] ; then
 		VIDEO_TIMING="640x480MR-16@60"
-		KMS_VIDEO_RESOLUTION="640x48"
+		KMS_OVERRIDE=1
+		KMS_VIDEOA="video=DVI-D-1"
+		KMS_VIDEO_RESOLUTION="640x480"
 	fi
 
 	if [ "x${ADDON}" == "xulcd" ] ; then
 		VIDEO_TIMING="800x480MR-16@60"
+		KMS_OVERRIDE=1
+		KMS_VIDEOA="video=DVI-D-1"
 		KMS_VIDEO_RESOLUTION="800x480"
 	fi
 
@@ -355,15 +364,6 @@ function tweak_boot_scripts {
 
  if [ "${IS_OMAP}" ] ; then
   sed -i -e 's/ETH_ADDR //g' ${TEMPDIR}/bootscripts/*.cmd
-
-		if [ "${enable_kms}" ] ; then
-			sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/*.cmd
-			sed -i -e 's:UENV_FB::g' ${TEMPDIR}/bootscripts/*.cmd
-			sed -i -e 's:UENV_TIMING::g' ${TEMPDIR}/bootscripts/*.cmd
-
-			sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/*.cmd
-		else
-
   #defaultdisplay=VIDEO_OMAPFB_MODE
   #dvimode=VIDEO_TIMING
   #vram=VIDEO_OMAP_RAM
@@ -371,11 +371,18 @@ function tweak_boot_scripts {
   sed -i -e 's:UENV_FB:defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/*.cmd
   sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/*.cmd
 
-  #vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
-  sed -i -e 's:VIDEO_DISPLAY:TMP_VRAM TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/*.cmd
-  sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
-  sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/*.cmd
-  sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/*.cmd
+		if [ ! "${USE_KMS}" ] ; then
+			#vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+			sed -i -e 's:VIDEO_DISPLAY:TMP_VRAM TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/*.cmd
+			sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/*.cmd
+		else
+			if [ "${KMS_OVERRIDE}" ] ; then
+				sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/*.cmd
+			else
+				sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/*.cmd
+			fi
 		fi
 
   FILE="*.cmd"
@@ -1057,6 +1064,19 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		;;
+	beagle_xm_kms)
+		SYSTEM="beagle_xm"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBOARD_XM"
+		SERIAL="ttyO2"
+		USE_KMS=1
+		is_omap
+
+		unset VIDEO_DRV
+		unset VIDEO_OMAP_RAM
+		unset VIDEO_OMAPFB_MODE
+		unset VIDEO_TIMING
+		;;
 	bone)
 		SYSTEM="bone"
 		DO_UBOOT=1
@@ -1092,6 +1112,21 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
+		;;
+	panda_kms)
+		SYSTEM="panda_es"
+		DO_UBOOT=1
+		BOOTLOADER="PANDABOARD_ES"
+		SERIAL="ttyO2"
+		USE_KMS=1
+		is_omap
+
+		unset VIDEO_DRV
+		unset VIDEO_OMAP_RAM
+		unset VIDEO_OMAPFB_MODE
+		unset VIDEO_TIMING
+
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
 	crane)
@@ -1286,9 +1321,6 @@ while [ ! -z "$1" ]; do
             ;;
         --fdisk-debug)
             FDISK_DEBUG=1
-            ;;
-        --enable-kms)
-            enable_kms=1
             ;;
     esac
     shift
