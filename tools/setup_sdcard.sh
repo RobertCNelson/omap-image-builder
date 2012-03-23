@@ -187,7 +187,6 @@ function detect_software {
 }
 
 function rcn-ee_down_use_mirror {
-	echo ""
 	echo "rcn-ee.net down, switching to slower backup mirror"
 	echo "-----------------------------"
 	MIRROR=${BACKUP_MIRROR}
@@ -216,10 +215,13 @@ function dl_bootloader {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p "${DIR}/dl/${DIST}"
 
-	echo "Checking rcn-ee.net to see if server is up and responding to pings..."
-	ping -c 3 -w 10 www.rcn-ee.net | grep "ttl=" &> /dev/null || rcn-ee_down_use_mirror
+	echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
+	wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
 
- wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+	if [ ! -f ${TEMPDIR}/dl/bootloader ] ; then
+		rcn-ee_down_use_mirror
+		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+	fi
 
 	if [ "$RCNEEDOWN" ];then
 		sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/bootloader
