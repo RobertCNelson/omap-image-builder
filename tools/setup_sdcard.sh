@@ -816,6 +816,31 @@ basic_xfce
 
 	__EOF__
 
+	cat > ${TEMPDIR}/suspend_mount_debug.sh <<-__EOF__
+		#!/bin/bash
+
+		if ! id | grep -q root; then
+		        echo "must be run as root"
+		        exit
+		fi
+
+		mkdir -p /debug
+		mount -t debugfs debugfs /debug
+
+	__EOF__
+
+	cat > ${TEMPDIR}/suspend.sh <<-__EOF__
+		#!/bin/bash
+
+		if ! id | grep -q root; then
+		        echo "must be run as root"
+		        exit
+		fi
+
+		echo mem > /sys/power/state
+
+	__EOF__
+
  mkdir -p ${TEMPDIR}/disk/tools
  cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
@@ -829,6 +854,11 @@ basic_xfce
 	cp -v ${TEMPDIR}/build_omapdrm_drivers.sh ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
 	chmod +x ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
 
+	cp -v ${TEMPDIR}/suspend_mount_debug.sh ${TEMPDIR}/disk/tools/
+	chmod +x ${TEMPDIR}/disk/tools/suspend_mount_debug.sh
+
+	cp -v ${TEMPDIR}/suspend.sh ${TEMPDIR}/disk/tools/
+	chmod +x ${TEMPDIR}/disk/tools/suspend.sh
 
 cd ${TEMPDIR}/disk
 sync
