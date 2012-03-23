@@ -766,7 +766,7 @@ basic_xfce
 		fi
 
 		if [ ! -f /home/\${USER}/git/libdrm/.git/config ] ; then
-			git clone git://github.com/robclark/libdrm.git /home/\${USER}/git/libdrm/
+			git clone git://github.com/RobertCNelson/libdrm.git /home/\${USER}/git/libdrm/
 		fi
 
 		DPKG_ARCH=\$(dpkg --print-architecture | grep arm)
@@ -788,7 +788,7 @@ basic_xfce
 		git checkout master -f
 		git pull
 		git branch libdrm-build -D || true
-		git checkout origin/HEAD -b libdrm-build
+		git checkout omap-v2012.3-2 -b libdrm-build
 
 		./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-\${gnu} --disable-libkms --disable-intel --disable-radeon --enable-omap-experimental-api
 
