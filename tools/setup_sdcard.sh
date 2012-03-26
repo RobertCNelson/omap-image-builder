@@ -748,21 +748,21 @@ basic_xfce
 		sudo apt-get update ; sudo apt-get -y install debhelper dh-autoreconf libdrm-dev libudev-dev libxext-dev pkg-config x11proto-core-dev x11proto-fonts-dev x11proto-gl-dev x11proto-xf86dri-dev xutils-dev xserver-xorg-dev
 
 		if [ ! -f /home/\${USER}/git/xf86-video-omap/.git/config ] ; then
-			git clone git://github.com/robclark/xf86-video-omap.git /home/\${USER}/git/xf86-video-omap/
+		        git clone git://github.com/robclark/xf86-video-omap.git /home/\${USER}/git/xf86-video-omap/
 		fi
 
 		if [ ! -f /home/\${USER}/git/libdrm/.git/config ] ; then
-			git clone git://github.com/RobertCNelson/libdrm.git /home/\${USER}/git/libdrm/
+		        git clone git://github.com/RobertCNelson/libdrm.git /home/\${USER}/git/libdrm/
 		fi
 
 		DPKG_ARCH=\$(dpkg --print-architecture | grep arm)
 		case "\${DPKG_ARCH}" in
 		armel)
-			gnu="gnueabi"
-			;;
+		        gnu="gnueabi"
+		        ;;
 		armhf)
-			gnu="gnueabihf"
-			;;
+		        gnu="gnueabihf"
+		        ;;
 		esac
 
 		echo ""
@@ -774,7 +774,7 @@ basic_xfce
 		git checkout master -f
 		git pull
 		git branch libdrm-build -D || true
-		git checkout omap-v2012.3-2 -b libdrm-build
+		git checkout origin/omap-v2012.3-2 -b libdrm-build
 
 		./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-\${gnu} --disable-libkms --disable-intel --disable-radeon --enable-omap-experimental-api
 
@@ -825,8 +825,8 @@ basic_xfce
 
 	__EOF__
 
- mkdir -p ${TEMPDIR}/disk/tools
- cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
+	mkdir -p ${TEMPDIR}/disk/tools
+	cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
  cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
  chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
