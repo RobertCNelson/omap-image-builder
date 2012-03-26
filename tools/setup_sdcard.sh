@@ -45,7 +45,6 @@ unset USE_KMS
 unset KMS_OVERRIDE
 
 unset FDISK_DEBUG
-unset DISABLE_ETH
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -1053,6 +1052,7 @@ function is_imx53 {
 function check_uboot_type {
 	unset DO_UBOOT
 	unset IN_VALID_UBOOT
+	unset DISABLE_ETH
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
