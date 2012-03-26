@@ -34,7 +34,6 @@ BOOT_LABEL="boot"
 PARTITION_PREFIX=""
 
 unset MMC
-unset BOOTLOADER
 unset USE_BETA_BOOTLOADER
 unset DD_UBOOT
 unset ADDON
