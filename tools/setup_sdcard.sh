@@ -44,9 +44,7 @@ unset ADDON
 unset USE_KMS
 unset KMS_OVERRIDE
 
-unset USE_BETA_BOOTLOADER
 unset FDISK_DEBUG
-unset BTRFS_FSTAB
 unset HAS_INITRD
 unset SECONDARY_KERNEL
 unset DISABLE_ETH
@@ -1364,7 +1362,8 @@ if ! is_valid_rootfs_type ${ROOTFS_TYPE} ; then
 	exit
 fi
 
-if [ "${ROOTFS_TYPE}" = "btrfs" ] ; then
+unset BTRFS_FSTAB
+if [ "x${ROOTFS_TYPE}" == "xbtrfs" ] ; then
 	BTRFS_FSTAB=1
 fi
 
