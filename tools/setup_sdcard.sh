@@ -44,7 +44,6 @@ unset ADDON
 unset USE_KMS
 unset KMS_OVERRIDE
 
-unset DEBUG
 unset USE_BETA_BOOTLOADER
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
@@ -1341,9 +1340,6 @@ while [ ! -z "$1" ]; do
             ;;
         --secondary-kernel)
             SECONDARY_KERNEL=1
-            ;;
-        --debug)
-            DEBUG=1
             ;;
         --fdisk-debug)
             FDISK_DEBUG=1
