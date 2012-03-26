@@ -1212,9 +1212,6 @@ Required Options:
     pico
     ulcd <beagle xm>
 
---use-default-user
-    (useful for serial only modes and when oem-config is broken)
-
 --rootfs <fs_type>
     ext2
     ext3
@@ -1244,9 +1241,6 @@ Additional Options:
     List all partitions: sudo ./setup_sdcard.sh --probe-mmc
 
 Debug:
---debug
-    enable all debug options for troubleshooting
-
 --fdisk-debug
     debug fdisk/parted/etc..
 
