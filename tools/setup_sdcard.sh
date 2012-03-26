@@ -44,7 +44,6 @@ unset ADDON
 unset USE_KMS
 unset KMS_OVERRIDE
 
-unset DEFAULT_USER
 unset DEBUG
 unset USE_BETA_BOOTLOADER
 unset FDISK_DEBUG
@@ -905,10 +904,6 @@ function populate_rootfs {
 			echo "-----------------------------"
 		fi
 
- if [ "$DEFAULT_USER" ] ; then
-  rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
- fi
-
  if [ "$BTRFS_FSTAB" ] ; then
   echo "btrfs selected as rootfs type, modifing /etc/fstab..."
   sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
@@ -1307,9 +1302,6 @@ while [ ! -z "$1" ]; do
         --rootfs)
             checkparm $2
             ROOTFS_TYPE="$2"
-            ;;
-        --use-default-user)
-            DEFAULT_USER=1
             ;;
         --svideo-ntsc)
             SVIDEO_NTSC=1
