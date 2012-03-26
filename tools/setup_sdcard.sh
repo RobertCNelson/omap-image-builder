@@ -892,16 +892,17 @@ function populate_rootfs {
 
  if mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 
- echo ${ROOTFS} | grep tgz && DECOM="xzf"
- echo ${ROOTFS} | grep tar && DECOM="xf"
+		if [ -f "${DIR}/${ROOTFS}" ] ; then
 
- if [ -f "${DIR}/${ROOTFS}" ] ; then
-   pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
-   echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
-   sync
-   sync
-   echo "-----------------------------"
- fi
+			echo "${DIR}/${ROOTFS}" | grep ".tgz" && DECOM="xzf"
+			echo "${DIR}/${ROOTFS}" | grep ".tar" && DECOM="xf"
+
+			pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
+			echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
+			sync
+			sync
+			echo "-----------------------------"
+		fi
 
  if [ "$DEFAULT_USER" ] ; then
   rm -f ${TEMPDIR}/disk/var/lib/oem-config/run || true
