@@ -30,25 +30,28 @@
 MIRROR="http://rcn-ee.net/deb"
 BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
 
-#Debug Tips
-#oem-config username/password
-#add: "debug-oem-config" to bootargs
+BOOT_LABEL="boot"
+PARTITION_PREFIX=""
 
 unset MMC
+unset SPL_BOOT
+unset BOOTLOADER
+unset USE_BETA_BOOTLOADER
+unset DD_UBOOT
+unset ADDON
+
+#Common KMS:
+unset USE_KMS
+unset KMS_OVERRIDE
+
 unset DEFAULT_USER
 unset DEBUG
 unset USE_BETA_BOOTLOADER
 unset FDISK_DEBUG
 unset BTRFS_FSTAB
-unset SPL_BOOT
-unset BOOTLOADER
 unset HAS_INITRD
-unset DD_UBOOT
 unset SECONDARY_KERNEL
 unset DISABLE_ETH
-unset USE_KMS
-unset KMS_OVERRIDE
-unset ADDON
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
@@ -59,9 +62,7 @@ unset USE_LOCAL_BOOT
 
 #Defaults
 ROOTFS_TYPE=ext4
-BOOT_LABEL=boot
 ROOTFS_LABEL=rootfs
-PARTITION_PREFIX=""
 
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
