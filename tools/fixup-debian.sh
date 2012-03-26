@@ -43,30 +43,6 @@ if which git >/dev/null 2>&1; then
   wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
 fi
 
-	DPKG_ARCH=$(dpkg --print-architecture | grep arm)
-	case "${DPKG_ARCH}" in
-	armel)
-		ARCH="armel"
-		;;
-	armhf)
-		ARCH="armhf"
-		;;
-	esac
-
-if [ "x${ARCH}" == "xarmhf" ] ; then
-	#just temp, till sid's isc-dhcp-client gets pulled into wheezy...
-	DHCLIENT=$(dpkg -l | grep isc-dhcp-client | awk '{print $2}')
-	if [ "x${DHCLIENT}" != "xisc-dhcp-client" ] ; then
-		mkdir -p /tmp/dhclient/
-		wget --directory-prefix=/tmp/dhclient/ ${ISC_PKG_MIRROR}/isc-dhcp-client_4.2.2-2_armhf.deb
-		wget --directory-prefix=/tmp/dhclient/ ${ISC_PKG_MIRROR}/isc-dhcp-common_4.2.2-2_armhf.deb
-		dpkg -i /tmp/dhclient/*.deb
-		apt-get -f install
-		apt-get clean
-		rm -rf /tmp/dhclient/ || true
-	fi
-fi
-
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
 rm -f /rootstock-user-script || true
