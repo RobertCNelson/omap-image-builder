@@ -45,7 +45,6 @@ unset USE_KMS
 unset KMS_OVERRIDE
 
 unset FDISK_DEBUG
-unset SECONDARY_KERNEL
 unset DISABLE_ETH
 
 unset SVIDEO_NTSC
@@ -632,16 +631,7 @@ function populate_boot {
    fi
   fi
 
- VER=${primary_id}
-
- #Help select the correct kernel image "x" vs "psp"/"imx" depending on what board is selected
- if [ "$SECONDARY_KERNEL" ] ; then
-  VER=${secondary_id}
-  VMLINUZ_TEST=$(ls "${DIR}/" | grep vmlinuz- | grep ${kernelid})
-  if [ "-${VMLINUZ_TEST}-" == "--" ] ; then
-   VER=${primary_id}
-  fi
- fi
+		VER=${primary_id}
 
 		UIMAGE="uImage"
 		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
@@ -1045,7 +1035,6 @@ function is_omap {
 
 	#Kernel Options
 	primary_id="x"
-	secondary_id="d"
 }
 
 function is_imx53 {
@@ -1059,7 +1048,6 @@ function is_imx53 {
  VIDEO_FB="mxcdi1fb"
  VIDEO_TIMING="RGB24,1280x720M@60"
  primary_id="imx"
- secondary_id="imx"
 }
 
 function check_uboot_type {
@@ -1335,9 +1323,6 @@ while [ ! -z "$1" ]; do
             ;;
         --use-beta-bootloader)
             USE_BETA_BOOTLOADER=1
-            ;;
-        --secondary-kernel)
-            SECONDARY_KERNEL=1
             ;;
         --fdisk-debug)
             FDISK_DEBUG=1
