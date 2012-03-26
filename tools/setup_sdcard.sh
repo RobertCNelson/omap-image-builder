@@ -27,6 +27,9 @@
 #REQUIREMENTS:
 #uEnv.txt bootscript support
 
+MIRROR="http://rcn-ee.net/deb"
+BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
+
 #Debug Tips
 #oem-config username/password
 #add: "debug-oem-config" to bootargs
@@ -53,10 +56,6 @@ unset SVIDEO_PAL
 unset LOCAL_SPL
 unset LOCAL_BOOTLOADER
 unset USE_LOCAL_BOOT
-
-MIRROR="http://rcn-ee.net/deb"
-BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
-unset RCNEEDOWN
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -215,6 +214,7 @@ function dl_bootloader {
  mkdir -p ${TEMPDIR}/dl/${DIST}
  mkdir -p "${DIR}/dl/${DIST}"
 
+	unset RCNEEDOWN
 	echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
 	wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
 
