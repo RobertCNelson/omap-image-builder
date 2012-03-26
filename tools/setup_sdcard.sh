@@ -54,8 +54,8 @@ unset LOCAL_SPL
 unset LOCAL_BOOTLOADER
 unset USE_LOCAL_BOOT
 
-MIRROR="http://rcn-ee.net/deb/"
-BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb/"
+MIRROR="http://rcn-ee.net/deb"
+BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
 unset RCNEEDOWN
 
 #Defaults
@@ -216,11 +216,11 @@ function dl_bootloader {
  mkdir -p "${DIR}/dl/${DIST}"
 
 	echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
-	wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+	wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
 
 	if [ ! -f ${TEMPDIR}/dl/bootloader ] ; then
 		rcn-ee_down_use_mirror
-		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}tools/latest/bootloader
+		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
 	fi
 
 	if [ "$RCNEEDOWN" ];then
