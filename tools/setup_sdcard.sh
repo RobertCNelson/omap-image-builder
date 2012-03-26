@@ -45,7 +45,6 @@ unset USE_KMS
 unset KMS_OVERRIDE
 
 unset FDISK_DEBUG
-unset HAS_INITRD
 unset SECONDARY_KERNEL
 unset DISABLE_ETH
 
@@ -123,11 +122,12 @@ else
  exit
 fi
 
-INITRD=$(ls "${DIR}/" | grep initrd.img | head -n 1)
-if [ "-${INITRD}-" != "--" ] ; then
- echo "Debug: image has initrd.img: HAS_INITRD=1"
- HAS_INITRD=1
-fi
+	unset HAS_INITRD
+	INITRD=$(ls "${DIR}/" | grep initrd.img | head -n 1)
+	if [ "-${INITRD}-" != "--" ] ; then
+		echo "Debug: image has initrd.img: HAS_INITRD=1"
+		HAS_INITRD=1
+	fi
 
 #Software Qwerks
 
