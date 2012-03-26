@@ -1034,17 +1034,14 @@ function is_omap {
 	primary_id="x"
 }
 
-function is_imx53 {
- IS_IMX=1
- UIMAGE_ADDR="0x70800000"
- UINITRD_ADDR="0x72100000"
- SERIAL_CONSOLE="${SERIAL},115200"
- ZRELADD="0x70008000"
- SUBARCH="imx"
- VIDEO_CONSOLE="console=tty0"
- VIDEO_FB="mxcdi1fb"
- VIDEO_TIMING="RGB24,1280x720M@60"
- primary_id="imx"
+function is_imx {
+	IS_IMX=1
+	SERIAL_CONSOLE="${SERIAL},115200"
+	SUBARCH="imx"
+	VIDEO_CONSOLE="console=tty0"
+	VIDEO_FB="mxcdi1fb"
+	VIDEO_TIMING="RGB24,1280x720M@60"
+	primary_id="imx"
 }
 
 function check_uboot_type {
@@ -1149,13 +1146,27 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		;;
+	mx51evk)
+		SYSTEM="mx51evk"
+		DO_UBOOT=1
+		DD_UBOOT=1
+		BOOTLOADER="MX51EVK"
+		SERIAL="ttymxc0"
+		is_imx
+		ZRELADD="0x90008000"
+		UIMAGE_ADDR="0x90800000"
+		UINITRD_ADDR="0x92100000"
+		;;
 	mx53loco)
 		SYSTEM="mx53loco"
 		DO_UBOOT=1
 		DD_UBOOT=1
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
-		is_imx53
+		is_imx
+		ZRELADD="0x70008000"
+		UIMAGE_ADDR="0x70800000"
+		UINITRD_ADDR="0x72100000"
 		;;
 	*)
 		IN_VALID_UBOOT=1
