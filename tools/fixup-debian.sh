@@ -45,11 +45,11 @@ fi
 if [ -f /etc/sudoers ] ; then
 	rm -f /etc/sudoers || true
 	apt-get -y install sudo
-	useradd -G sudo debian
+	usermod -aG sudo debian
 fi
 
 #serial access as a normal user:
-useradd -G dialout debian
+usermod -aG  dialout debian
 
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
