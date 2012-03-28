@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-ISC_PKG_MIRROR="http://rcn-ee.homeip.net:81/dl/deb-sbuild/wheezy-armhf/isc-dhcp-4.2.2"
-
 mkdir -p /boot/uboot
 
 echo "/dev/mmcblk0p2   /           auto   errors=remount-ro   0   1" >> /etc/fstab
@@ -35,13 +33,20 @@ if which git >/dev/null 2>&1; then
   cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
   rm -rf /tmp/linux-firmware/
 
-	#ti wilink bluetooth, needs to be in /lib/firmware/
-	cp -v /lib/firmware/ti-connectivity/*.bts /lib/firmware/
-
   #v3.1+ needs 1.9.4 version of the firmware
   rm -f /lib/firmware/carl9170-1.fw || true
   wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
 fi
+
+#rootstock seems to leave an almost blank /etc/sudoers hanging, remove and just install sudo
+if [ -f /etc/sudoers ] ; then
+	rm -f /etc/sudoers || true
+	apt-get -y install sudo
+	usermod -aG sudo debian
+fi
+
+#serial access as a normal user:
+usermod -aG  dialout debian
 
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true

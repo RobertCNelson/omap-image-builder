@@ -69,13 +69,21 @@ if which git >/dev/null 2>&1; then
   cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
   rm -rf /tmp/linux-firmware/
 
-	#ti wilink bluetooth, needs to be in /lib/firmware/
-	cp -v /lib/firmware/ti-connectivity/*.bts /lib/firmware/
-
   #v3.1+ needs 1.9.4 version of the firmware
   rm -f /lib/firmware/carl9170-1.fw || true
   wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
 fi
+
+#just for a bluetooth binary...
+cp /etc/apt/sources.list /etc/apt/sources.bak
+echo "deb http://ppa.launchpad.net/linaro-maintainers/overlay/ubuntu precise main" >> /etc/apt/sources.list
+apt-get update
+apt-get -y --force-yes install ti-uim
+apt-get clean
+rm -f /etc/apt/sources.list || true
+mv /etc/apt/sources.bak /etc/apt/sources.list
+apt-get update
+apt-get clean
 
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
