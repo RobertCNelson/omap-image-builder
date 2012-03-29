@@ -41,7 +41,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r6"
+ONEIRIC_RELEASE="ubuntu-11.10-r7"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
