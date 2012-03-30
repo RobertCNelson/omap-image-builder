@@ -47,7 +47,7 @@ DIR=$PWD
 
 echo ""
 echo "debootstrap mininum"
-echo "wget http://ports.ubuntu.com/pool/main/d/debootstrap/debootstrap_1.0.38_all.deb"
+echo "wget http://ports.ubuntu.com/pool/main/d/debootstrap/debootstrap_1.0.39_all.deb"
 echo "sudo dpkg -i debootstrap_1*"
 echo ""
 
