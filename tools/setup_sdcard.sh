@@ -252,21 +252,35 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
+	if [ ! "${USE_ZIMAGE}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			bootfile=uImage
+			bootinitrd=uInitrd
+			boot=bootm
+
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			bootfile=zImage
+			bootinitrd=initrd.img
+			boot=bootz
+
+		__EOF__
+	fi
+
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		bootfile=uImage
-		bootinitrd=uInitrd
-		address_uimage=UIMAGE_ADDR
-		address_uinitrd=UINITRD_ADDR
+		address_image=IMAGE_ADDR
+		address_initrd=INITRD_ADDR
 
 		console=SERIAL_CONSOLE
 
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		xyz_load_uimage=fatload mmc 0:1 \${address_uimage} \${bootfile}
-		xyz_load_uinitrd=fatload mmc 0:1 \${address_uinitrd} \${bootinitrd}
+		xyz_load_image=fatload mmc 0:1 \${address_image} \${bootfile}
+		xyz_load_initrd=fatload mmc 0:1 \${address_initrd} \${bootinitrd}
 
-		xyz_mmcboot=run xyz_load_uimage; run xyz_load_uinitrd; echo Booting from mmc ...
+		xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
 
@@ -285,7 +299,7 @@ function boot_uenv_txt_template {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}
 
 		__EOF__
 		;;
@@ -293,7 +307,15 @@ function boot_uenv_txt_template {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}
+
+		__EOF__
+		;;
+	beagle_xm_zimage)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}:\${filesize}
 
 		__EOF__
 		;;
@@ -301,14 +323,22 @@ function boot_uenv_txt_template {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}
+
+		__EOF__
+		;;
+	panda_es_zimage)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}:\${filesize}
 
 		__EOF__
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			deviceargs=setenv device_args ip=\${ip_method}
-			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; bootm \${address_uimage} \${address_uinitrd}
+			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}
 
 		__EOF__
 		;;
@@ -345,11 +375,11 @@ function tweak_boot_scripts {
   VIDEO_OMAPFB_MODE=tv
  fi
 
- #Set uImage boot address
- sed -i -e 's:UIMAGE_ADDR:'$UIMAGE_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
+ #Set kernel boot address
+ sed -i -e 's:IMAGE_ADDR:'$IMAGE_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
 
- #Set uInitrd boot address
- sed -i -e 's:UINITRD_ADDR:'$UINITRD_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
+ #Set initrd boot address
+ sed -i -e 's:INITRD_ADDR:'$INITRD_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
 
  #Set the Serial Console
  sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
@@ -1006,8 +1036,8 @@ function is_omap {
 	SPL_BOOT=1
 	SUBARCH="omap"
 
-	UIMAGE_ADDR="0x80300000"
-	UINITRD_ADDR="0x81600000"
+	IMAGE_ADDR="0x80300000"
+	INITRD_ADDR="0x81600000"
 
 	ZRELADD="0x80008000"
 
@@ -1047,6 +1077,7 @@ function check_uboot_type {
 	unset DO_UBOOT
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
+	unset USE_ZIMAGE
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1071,6 +1102,15 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_XM"
 		SERIAL="ttyO2"
 		is_omap
+		;;
+	beagle_xm_zimage)
+		SYSTEM="beagle_xm_zimage"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBOARD_XM"
+		SERIAL="ttyO2"
+		is_omap
+		USE_BETA_BOOTLOADER=1
+		USE_ZIMAGE=1
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1122,6 +1162,17 @@ function check_uboot_type {
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
+	panda_es_zimage)
+		SYSTEM="panda_es_zimage"
+		DO_UBOOT=1
+		BOOTLOADER="PANDABOARD_ES"
+		SERIAL="ttyO2"
+		is_omap
+		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
+		USE_BETA_BOOTLOADER=1
+		USE_ZIMAGE=1
+		;;
 	panda_kms)
 		SYSTEM="panda_es"
 		DO_UBOOT=1
@@ -1152,8 +1203,8 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		ZRELADD="0x90008000"
-		UIMAGE_ADDR="0x90800000"
-		UINITRD_ADDR="0x92100000"
+		IMAGE_ADDR="0x90800000"
+		INITRD_ADDR="0x92100000"
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
@@ -1163,8 +1214,8 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		ZRELADD="0x70008000"
-		UIMAGE_ADDR="0x70800000"
-		UINITRD_ADDR="0x72100000"
+		IMAGE_ADDR="0x70800000"
+		INITRD_ADDR="0x72100000"
 		;;
 	*)
 		IN_VALID_UBOOT=1
