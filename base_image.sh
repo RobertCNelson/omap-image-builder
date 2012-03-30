@@ -120,14 +120,16 @@ function minimal_armel {
  echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
  --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
  --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
- --dist ${DIST} --apt-upgrade --arch=${ARCH} "
+ --dist ${DIST} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ --apt-upgrade --arch=${ARCH} "
  echo "-------------------------"
  echo ""
 
  sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
  --login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
  --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
- --dist ${DIST} --apt-upgrade --arch=${ARCH}
+ --dist ${DIST} --script ${DIR}/tools/${FIXUPSCRIPT} \
+ --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -196,6 +198,7 @@ reset_vars
 DIST=squeeze
 EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
+FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
@@ -211,6 +214,7 @@ reset_vars
 DIST=wheezy
 EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
+FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
@@ -226,6 +230,7 @@ reset_vars
 DIST=sid
 EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 USER_LOGIN="debian"
+FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
 BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
@@ -266,8 +271,9 @@ fi
 dl_rootstock
 
 ARCH=armel
-
 if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
 fi
 
+ARCH=armhf
+wheezy_release
