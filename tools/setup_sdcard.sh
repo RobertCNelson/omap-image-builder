@@ -319,7 +319,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	igepv2|crane|panda|panda_es|mx53loco)
+	igepv2|crane|panda|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -335,7 +335,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	mx51evk)
+	mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -1222,6 +1222,7 @@ function check_uboot_type {
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
 		is_imx
+		USE_ZIMAGE=1
 		ZRELADD="0x70008000"
 		IMAGE_ADDR="0x70800000"
 		INITRD_ADDR="0x72100000"
