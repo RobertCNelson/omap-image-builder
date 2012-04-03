@@ -335,6 +335,14 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
+	mx51evk)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			deviceargs=setenv device_args
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}:\${filesize}
+
+		__EOF__
+		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			deviceargs=setenv device_args ip=\${ip_method}
@@ -1202,6 +1210,7 @@ function check_uboot_type {
 		BOOTLOADER="MX51EVK"
 		SERIAL="ttymxc0"
 		is_imx
+		USE_ZIMAGE=1
 		ZRELADD="0x90008000"
 		IMAGE_ADDR="0x90800000"
 		INITRD_ADDR="0x92100000"
