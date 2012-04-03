@@ -319,7 +319,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	igepv2|crane|panda|panda_es)
+	igepv2|crane|panda)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -327,15 +327,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	panda_es_zimage)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}:\${filesize}
-
-		__EOF__
-		;;
-	mx51evk|mx53loco)
+	mx51evk|mx53loco|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -1167,19 +1159,9 @@ function check_uboot_type {
 		BOOTLOADER="PANDABOARD_ES"
 		SERIAL="ttyO2"
 		is_omap
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		;;
-	panda_es_zimage)
-		SYSTEM="panda_es_zimage"
-		DO_UBOOT=1
-		BOOTLOADER="PANDABOARD_ES"
-		SERIAL="ttyO2"
-		is_omap
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		USE_BETA_BOOTLOADER=1
 		USE_ZIMAGE=1
+		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
 		;;
 	panda_kms)
 		SYSTEM="panda_es"
@@ -1188,6 +1170,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		USE_KMS=1
 		is_omap
+		USE_ZIMAGE=1
 
 		unset VIDEO_DRV
 		unset VIDEO_OMAP_RAM
