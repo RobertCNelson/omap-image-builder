@@ -319,7 +319,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	igepv2|crane|panda)
+	igepv2|crane)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -327,7 +327,7 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
-	mx51evk|mx53loco|panda_es)
+	mx51evk|mx53loco|panda|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
@@ -1150,6 +1150,7 @@ function check_uboot_type {
 		BOOTLOADER="PANDABOARD"
 		SERIAL="ttyO2"
 		is_omap
+		USE_ZIMAGE=1
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
