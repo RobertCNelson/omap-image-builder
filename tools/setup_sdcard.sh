@@ -318,6 +318,15 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
+	bone_zimage)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			deviceargs=setenv device_args ip=\${ip_method}
+			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${address_image} \${address_initrd}:\${filesize}
+
+		__EOF__
+		;;
+
 	esac
 }
 
@@ -1108,6 +1117,21 @@ function check_uboot_type {
 		unset VIDEO_TIMING
 		unset KMS_VIDEOA
 		;;
+	bone_zimage)
+		SYSTEM="bone_zimage"
+		DO_UBOOT=1
+		BOOTLOADER="BEAGLEBONE_A"
+		SERIAL="ttyO0"
+		is_omap
+		USE_ZIMAGE=1
+		USE_BETA_BOOTLOADER=1
+
+		primary_id="psp"
+		unset VIDEO_OMAPFB_MODE
+		unset VIDEO_TIMING
+		unset KMS_VIDEOA
+		;;
+
 	igepv2)
 		SYSTEM="igepv2"
 		DO_UBOOT=1
