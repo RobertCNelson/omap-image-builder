@@ -618,6 +618,7 @@ function populate_boot {
   if [ "${SPL_BOOT}" ] ; then
    if [ -f ${TEMPDIR}/dl/${MLO} ]; then
     cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/MLO
+    echo "-----------------------------"
    fi
   fi
 
@@ -626,19 +627,24 @@ function populate_boot {
     if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
      if echo ${UBOOT} | grep img > /dev/null 2>&1;then
       cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.img
+      echo "-----------------------------"
      else
       cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+      echo "-----------------------------"
      fi
     fi
    else
     if echo ${UBOOT} | grep u-boot > /dev/null 2>&1;then
      if echo ${UBOOT} | grep img > /dev/null 2>&1;then
       cp -v ${UBOOT} ${TEMPDIR}/disk/u-boot.img
+      echo "-----------------------------"
      else
       cp -v ${UBOOT} ${TEMPDIR}/disk/u-boot.bin
+      echo "-----------------------------"
      fi
     else
      cp -v ${UBOOT} ${TEMPDIR}/disk/barebox.bin
+     echo "-----------------------------"
     fi
    fi
   fi
@@ -649,22 +655,27 @@ function populate_boot {
 		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
 		if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
 			LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
-			echo "Debug: using mkimage to create uImage out of: ${VMLINUZ_FILE}"
-			echo "-----------------------------"
-			mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
-			echo "Debug: zImage for future u-boot bootz support"
+			if [ ! "${USE_ZIMAGE}" ] ; then
+				echo "Using mkimage to create uImage"
+				mkimage -A arm -O linux -T kernel -C none -a ${ZRELADD} -e ${ZRELADD} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
+				echo "-----------------------------"
+			fi
+			echo "Copying Kernel image:"
 			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+			echo "-----------------------------"
 		fi
 
 		UINITRD="uInitrd"
 		INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
 		if [ "-${INITRD_FILE}-" != "--" ] ; then
-			echo "Debug: using mkimage to create uInitrd out of: ${INITRD_FILE}"
-			echo "-----------------------------"
-			#check_initrd
-			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
-			echo "Debug: initrd.img for future u-boot bootz support"
+			if [ ! "${USE_ZIMAGE}" ] ; then
+				echo "Using mkimage to create uInitrd"
+				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
+				echo "-----------------------------"
+			fi
+			echo "Copying Kernel initrd:"
 			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+			echo "-----------------------------"
 		fi
 
 		if [ "${DO_UBOOT}" ];then
