@@ -709,36 +709,45 @@ omapdrm kms video driver, at some point this will be packaged by default for new
 
 script_readme
 
-cat > ${TEMPDIR}/update_boot_files.sh <<update_boot_files
-#!/bin/sh
+	cat > ${TEMPDIR}/update_boot_files.sh <<-__EOF__
+		#!/bin/sh
 
-cd /boot/uboot
-sudo mount -o remount,rw /boot/uboot
+		if ! id | grep -q root; then
+		        echo "must be run as root"
+		        exit
+		fi
 
-if [ ! -f /boot/initrd.img-\$(uname -r) ] ; then
-sudo update-initramfs -c -k \$(uname -r)
-else
-sudo update-initramfs -u -k \$(uname -r)
-fi
+		cd /boot/uboot
+		mount -o remount,rw /boot/uboot
 
-if [ -f /boot/initrd.img-\$(uname -r) ] ; then
-sudo mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
-fi
+		if [ ! -f /boot/initrd.img-\$(uname -r) ] ; then
+		        update-initramfs -c -k \$(uname -r)
+		else
+		        update-initramfs -u -k \$(uname -r)
+		fi
 
-if [ -f /boot/uboot/boot.cmd ] ; then
-sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
-sudo cp /boot/uboot/boot.scr /boot/uboot/boot.ini
-fi
+		if [ -f /boot/initrd.img-\$(uname -r) ] ; then
+		        cp -v /boot/initrd.img-\$(uname -r) /boot/uboot/initrd.img
+		fi
 
-if [ -f /boot/uboot/serial.cmd ] ; then
-sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/serial.cmd /boot/uboot/boot.scr
-fi
+		#legacy uImage support:
+		if [ -f /boot/uboot/uImage ] ; then
+		        if [ -f /boot/initrd.img-\$(uname -r) ] ; then
+		                mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
+		        fi
+		        if [ -f /boot/uboot/boot.cmd ] ; then
+		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
+		                cp -v /boot/uboot/boot.scr /boot/uboot/boot.ini
+		        fi
+		        if [ -f /boot/uboot/serial.cmd ] ; then
+		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/serial.cmd /boot/uboot/boot.scr
+		        fi
+		        if [ -f /boot/uboot/user.cmd ] ; then
+		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
+		        fi
+		fi
 
-if [ -f /boot/uboot/user.cmd ] ; then
-sudo mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
-fi
-
-update_boot_files
+	__EOF__
 
 cat > ${TEMPDIR}/minimal_xfce.sh <<basic_xfce
 #!/bin/sh
@@ -854,8 +863,8 @@ basic_xfce
 	mkdir -p ${TEMPDIR}/disk/tools
 	cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
 
- cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
- chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
+	cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
+	chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
 
  cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
  chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
