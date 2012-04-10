@@ -429,43 +429,18 @@ function tweak_boot_scripts {
 		fi
 	fi
 
- if [ "${IS_OMAP}" ] ; then
-  FILE="*.cmd"
-  if [ "$SERIAL_MODE" ];then
-   #Set the Serial Console: console=CONSOLE
-   sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
+	if [ "${SERIAL_MODE}" ] ; then
+		#In pure serial mode, remove all traces of VIDEO
+		if [ ! "${USE_KMS}" ] ; then
+			sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/${ALL}
+			sed -i -e 's:UENV_FB::g' ${TEMPDIR}/bootscripts/${ALL}
+			sed -i -e 's:UENV_TIMING::g' ${TEMPDIR}/bootscripts/${ALL}
+		fi
+		sed -i -e 's:VIDEO_DISPLAY ::g' ${TEMPDIR}/bootscripts/${ALL}
 
-   #omap3/4: In serial mode, NetInstall needs all traces of VIDEO removed..
-   #drop: vram=\${vram}
-   sed -i -e 's:'vram=\${vram}' ::g' ${TEMPDIR}/bootscripts/${FILE}
-
-   #omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
-   sed -i -e 's:'\${defaultdisplay}'::g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/${FILE}
-   #omapfb.mode=: omapdss.def_disp=
-   sed -i -e "s/omapfb.mode=: //g" ${TEMPDIR}/bootscripts/${FILE}
-   #uenv seems to have an extra space (beagle_xm)
-   sed -i -e 's:omapdss.def_disp= ::g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:omapdss.def_disp=::g' ${TEMPDIR}/bootscripts/${FILE}
-  fi
- fi
-
- if [ "${IS_IMX}" ] ; then
-  FILE="*.cmd"
-  if [ "$SERIAL_MODE" ];then
-   #Set the Serial Console: console=CONSOLE
-   sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
-
-   #mx53: In serial mode, NetInstall needs all traces of VIDEO removed..
-
-   #video=\${framebuffer}:\${dvimode}
-   sed -i -e 's:'\${framebuffer}'::g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:'\${dvimode}'::g' ${TEMPDIR}/bootscripts/${FILE}
-   #video=:
-   sed -i -e "s/video=: //g" ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e "s/video=://g" ${TEMPDIR}/bootscripts/${FILE}
-  fi
- fi
+		#optargs=VIDEO_CONSOLE -> optargs=
+		sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/bootscripts/${ALL}
+	fi
 }
 
 function setup_bootscripts {
