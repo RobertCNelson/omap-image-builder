@@ -458,10 +458,6 @@ function tweak_boot_scripts {
    sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${FILE}
   fi
  fi
-
- if [ "$PRINTK" ];then
-  sed -i 's/bootargs/bootargs earlyprintk/g' ${TEMPDIR}/bootscripts/*.cmd
- fi
 }
 
 function setup_bootscripts {
@@ -1381,9 +1377,6 @@ while [ ! -z "$1" ]; do
             checkparm $2
             LOCAL_BOOTLOADER="$2"
             USE_LOCAL_BOOT=1
-            ;;
-        --earlyprintk)
-            PRINTK=1
             ;;
         --use-beta-bootloader)
             USE_BETA_BOOTLOADER=1
