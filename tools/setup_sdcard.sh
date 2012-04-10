@@ -376,13 +376,20 @@ function tweak_boot_scripts {
 	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 	if [ "${HAS_OMAPFB_DSS2}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#Setting up:
-		#defaultdisplay=VIDEO_OMAPFB_MODE
-		#dvimode=VIDEO_TIMING
-		#vram=VIDEO_OMAP_RAM
+		#UENV_VRAM -> vram=12MB
 		sed -i -e 's:UENV_VRAM:vram=VIDEO_OMAP_RAM:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:VIDEO_OMAP_RAM:'$VIDEO_OMAP_RAM':g' ${TEMPDIR}/bootscripts/${ALL}
+
+		#UENV_FB -> defaultdisplay=dvi
 		sed -i -e 's:UENV_FB:defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
+
+		#UENV_TIMING -> dvimode=1280x720MR-16@60
 		sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
+
+		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
+		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#Setting up:
 		#vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
@@ -397,15 +404,24 @@ function tweak_boot_scripts {
 		sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#framebuffer=VIDEO_FB
-		#dvimode=VIDEO_TIMING
 		sed -i -e 's:UENV_FB:framebuffer=VIDEO_FB:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:VIDEO_FB:'$VIDEO_FB':g' ${TEMPDIR}/bootscripts/${ALL}
+
+		#dvimode=VIDEO_TIMING
 		sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
+
+		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
+		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#video=\${framebuffer}:${dvimode}
 		sed -i -e 's/VIDEO_DISPLAY/'video=\${framebuffer}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
 
 	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
+		#optargs=VIDEO_CONSOLE
+		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
+
 		if [ "${KMS_OVERRIDE}" ] ; then
 			sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/${ALL}
 		else
@@ -431,13 +447,6 @@ function tweak_boot_scripts {
    #uenv seems to have an extra space (beagle_xm)
    sed -i -e 's:omapdss.def_disp= ::g' ${TEMPDIR}/bootscripts/${FILE}
    sed -i -e 's:omapdss.def_disp=::g' ${TEMPDIR}/bootscripts/${FILE}
-  else
-   #Set the Video Console
-   sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
-
-   sed -i -e 's:VIDEO_OMAP_RAM:'$VIDEO_OMAP_RAM':g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${FILE}
   fi
  fi
 
@@ -455,13 +464,6 @@ function tweak_boot_scripts {
    #video=:
    sed -i -e "s/video=: //g" ${TEMPDIR}/bootscripts/${FILE}
    sed -i -e "s/video=://g" ${TEMPDIR}/bootscripts/${FILE}
-  else
-   #Set the Video Console
-   #Set the Video Console
-   sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/*.cmd
-
-   sed -i -e 's:VIDEO_FB:'$VIDEO_FB':g' ${TEMPDIR}/bootscripts/${FILE}
-   sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${FILE}
   fi
  fi
 }
