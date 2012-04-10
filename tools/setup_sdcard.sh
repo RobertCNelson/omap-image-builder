@@ -350,27 +350,30 @@ function tweak_boot_scripts {
 		KMS_VIDEO_RESOLUTION="800x480"
 	fi
 
- if [ "$SVIDEO_NTSC" ];then
-  VIDEO_TIMING="ntsc"
-  VIDEO_OMAPFB_MODE=tv
- fi
+	if [ "${SVIDEO_NTSC}" ] ; then
+		VIDEO_TIMING="ntsc"
+		VIDEO_OMAPFB_MODE="tv"
+		##FIXME need to figure out KMS Options
+	fi
 
- if [ "$SVIDEO_PAL" ];then
-  VIDEO_TIMING="pal"
-  VIDEO_OMAPFB_MODE=tv
- fi
+	if [ "${SVIDEO_PAL}" ] ; then
+		VIDEO_TIMING="pal"
+		VIDEO_OMAPFB_MODE="tv"
+		##FIXME need to figure out KMS Options
+	fi
 
- #Set kernel boot address
- sed -i -e 's:IMAGE_ADDR:'$IMAGE_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
+	ALL="*.cmd"
+	#Set kernel boot address
+	sed -i -e 's:IMAGE_ADDR:'$IMAGE_ADDR':g' ${TEMPDIR}/bootscripts/${ALL}
 
- #Set initrd boot address
- sed -i -e 's:INITRD_ADDR:'$INITRD_ADDR':g' ${TEMPDIR}/bootscripts/*.cmd
+	#Set initrd boot address
+	sed -i -e 's:INITRD_ADDR:'$INITRD_ADDR':g' ${TEMPDIR}/bootscripts/${ALL}
 
- #Set the Serial Console
- sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/*.cmd
+	#Set the Serial Console
+	sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/${ALL}
 
- #Set filesystem type
- sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/*.cmd
+	#Set filesystem type
+	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
  if [ "${IS_OMAP}" ] ; then
   sed -i -e 's/ETH_ADDR //g' ${TEMPDIR}/bootscripts/*.cmd
@@ -1112,10 +1115,10 @@ function check_uboot_type {
 		DO_UBOOT=1
 		BOOTLOADER="BEAGLEBOARD_XM"
 		SERIAL="ttyO2"
-		USE_KMS=1
 		is_omap
 		USE_ZIMAGE=1
 
+		USE_KMS=1
 		unset VIDEO_DRV
 		unset VIDEO_OMAP_RAM
 		unset VIDEO_OMAPFB_MODE
@@ -1181,10 +1184,10 @@ function check_uboot_type {
 		DO_UBOOT=1
 		BOOTLOADER="PANDABOARD_ES"
 		SERIAL="ttyO2"
-		USE_KMS=1
 		is_omap
 		USE_ZIMAGE=1
 
+		USE_KMS=1
 		unset VIDEO_DRV
 		unset VIDEO_OMAP_RAM
 		unset VIDEO_OMAPFB_MODE
