@@ -392,15 +392,15 @@ function tweak_boot_scripts {
 		sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
 
- if [ "${IS_OMAP}" ] ; then
-		if [ "${USE_KMS}" ] ; then
-			if [ "${KMS_OVERRIDE}" ] ; then
-				sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/*.cmd
-			else
-				sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/*.cmd
-			fi
+	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
+		if [ "${KMS_OVERRIDE}" ] ; then
+			sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/${ALL}
+		else
+			sed -i -e 's:VIDEO_DISPLAY ::g' ${TEMPDIR}/bootscripts/${ALL}
 		fi
+	fi
 
+ if [ "${IS_OMAP}" ] ; then
   FILE="*.cmd"
   if [ "$SERIAL_MODE" ];then
    #Set the Serial Console: console=CONSOLE
