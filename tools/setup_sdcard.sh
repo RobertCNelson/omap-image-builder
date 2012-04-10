@@ -1050,6 +1050,7 @@ function is_omap {
 	VIDEO_CONSOLE="console=tty0"
 
 	#Older DSS2 omapfb framebuffer driver:
+	HAS_OMAPFB_DSS2=1
 	VIDEO_DRV="omapfb.mode=dvi"
 	VIDEO_OMAP_RAM="12MB"
 	VIDEO_OMAPFB_MODE="dvi"
@@ -1070,7 +1071,9 @@ function is_imx {
 	IS_IMX=1
 	SERIAL_CONSOLE="${SERIAL},115200"
 	SUBARCH="imx"
+
 	VIDEO_CONSOLE="console=tty0"
+	HAS_IMX_BLOB=1v
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
 	primary_id="imx"
@@ -1119,6 +1122,7 @@ function check_uboot_type {
 		USE_ZIMAGE=1
 
 		USE_KMS=1
+		unset HAS_OMAPFB_DSS2
 		unset VIDEO_DRV
 		unset VIDEO_OMAP_RAM
 		unset VIDEO_OMAPFB_MODE
@@ -1132,6 +1136,8 @@ function check_uboot_type {
 		is_omap
 
 		primary_id="psp"
+
+		unset HAS_OMAPFB_DSS2
 		unset VIDEO_OMAPFB_MODE
 		unset VIDEO_TIMING
 		unset KMS_VIDEOA
@@ -1143,14 +1149,16 @@ function check_uboot_type {
 		SERIAL="ttyO0"
 		is_omap
 		USE_ZIMAGE=1
+
 		USE_BETA_BOOTLOADER=1
 
 		primary_id="psp"
+
+		unset HAS_OMAPFB_DSS2
 		unset VIDEO_OMAPFB_MODE
 		unset VIDEO_TIMING
 		unset KMS_VIDEOA
 		;;
-
 	igepv2)
 		SYSTEM="igepv2"
 		DO_UBOOT=1
@@ -1188,11 +1196,11 @@ function check_uboot_type {
 		USE_ZIMAGE=1
 
 		USE_KMS=1
+		unset HAS_OMAPFB_DSS2
 		unset VIDEO_DRV
 		unset VIDEO_OMAP_RAM
 		unset VIDEO_OMAPFB_MODE
 		unset VIDEO_TIMING
-
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
 	crane)
