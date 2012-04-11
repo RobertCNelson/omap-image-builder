@@ -24,18 +24,24 @@ echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
 
 if which git >/dev/null 2>&1; then
-  cd /tmp/
-  git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-  cd -
+	cd /tmp/
+	git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 
-  mkdir -p /lib/firmware/ti-connectivity
-  cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/ti-connectivity
-  cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
-  rm -rf /tmp/linux-firmware/
+	#beaglebone firmware:
+	git clone git://arago-project.org/git/projects/am33x-cm3.git
+	cd -
 
-  #v3.1+ needs 1.9.4 version of the firmware
-  rm -f /lib/firmware/carl9170-1.fw || true
-  wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
+	mkdir -p /lib/firmware/ti-connectivity
+	cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/ti-connectivity
+	cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
+	rm -rf /tmp/linux-firmware/
+
+	cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
+	rm -rf /tmp/am33x-cm3/
+
+	#v3.1+ needs 1.9.4 version of the firmware
+	rm -f /lib/firmware/carl9170-1.fw || true
+	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
 fi
 
 #rootstock seems to leave an almost blank /etc/sudoers hanging, remove and just install sudo
