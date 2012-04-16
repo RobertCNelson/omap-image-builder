@@ -555,29 +555,6 @@ fi
  format_rootfs_partition
 }
 
-function fix_armhf_initrd {
- echo "Broken armhf initrd found... fixing..."
- echo "-----------------------------"
- mkdir -p ${TEMPDIR}/fix-initrd/
- cd ${TEMPDIR}/fix-initrd/
- zcat "${DIR}/${INITRD}" | cpio -i -d
- cp -v ${TEMPDIR}/fix-initrd/lib/ld-linux.so.* ${TEMPDIR}/fix-initrd/lib/arm-linux-gnueabihf/
- find . | cpio -o -H newc | gzip -9 > "${DIR}/${INITRD}"
- echo "-----------------------------"
- cd "${DIR}/"
-}
-
-function check_armhf_initrd {
- zcat "${DIR}/${INITRD}" | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf/ld-linux || fix_armhf_initrd
- echo "-----------------------------"
-}
-
-function check_initrd {
- echo "Checking initrd..."
- echo "-----------------------------"
- zcat "${DIR}/${INITRD}" | cpio --list --quiet | grep --max-count=1 lib/arm-linux-gnueabihf && check_armhf_initrd
-}
-
 function populate_boot {
  echo "Populating Boot Partition"
  echo "-----------------------------"
