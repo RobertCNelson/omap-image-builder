@@ -74,7 +74,7 @@ IMAGESIZE="2G"
 
 function set_mirror {
 
-if [ $SYST == "work-p4" ] || [ $SYST == "work-celeron" ] || [ $SYST == "work-e6400" ]; then
+if [ $SYST == "hades" ] || [ $SYST == "work-e6400" ]; then
 	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.0.10/dl/mirrors/deb"
