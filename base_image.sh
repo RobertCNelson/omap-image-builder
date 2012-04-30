@@ -31,6 +31,7 @@ unset USE_OEM
 
 ONEIRIC_CURRENT="ubuntu-11.10"
 PRECISE_CURRENT="ubuntu-12.04"
+QUANTAL_RELEASE="ubuntu-12.10"
 SQUEEZE_CURRENT="debian-6.0.4"
 WHEEZY_CURRENT="debian-wheezy"
 

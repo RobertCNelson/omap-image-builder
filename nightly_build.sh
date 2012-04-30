@@ -61,6 +61,23 @@ PRECISE_RELEASE="ubuntu-12.04-r1"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
+#Quantal Schedule:
+#https://wiki.ubuntu.com/QuantalQuetzal/ReleaseSchedule
+#alpha-1 : June 7th
+QUANTAL_ALPHA="ubuntu-quantal-alpha1"
+#alpha-2 : June 28th
+QUANTAL_ALPHA2="ubuntu-quantal-alpha2"
+#alpha-3 : August 2nd
+QUANTAL_ALPHA2="ubuntu-quantal-alpha3"
+#beta-1 : September 6th
+QUANTAL_BETA1="ubuntu-quantal-beta1"
+#beta-2 : September 27th
+QUANTAL_BETA2="ubuntu-quantal-beta2"
+#12.04 : October 18th
+QUANTAL_RELEASE="ubuntu-12.10-r1"
+
+QUANTAL_CURRENT=${QUANTAL_RELEASE}
+
 SQUEEZE_CURRENT="debian-6.0.4"
 WHEEZY_CURRENT="debian-wheezy"
 
