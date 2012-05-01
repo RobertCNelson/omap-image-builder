@@ -210,7 +210,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.13-x7"
+OVERRIDE="v3.2.16-x11"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -241,7 +241,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.0-psp6"
+OVERRIDE="v3.2.0-psp7"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
