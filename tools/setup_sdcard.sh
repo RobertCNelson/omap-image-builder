@@ -732,7 +732,7 @@ script_readme
 		sudo apt-get update ; sudo apt-get -y install debhelper dh-autoreconf libdrm-dev libudev-dev libxext-dev pkg-config x11proto-core-dev x11proto-fonts-dev x11proto-gl-dev x11proto-xf86dri-dev xutils-dev xserver-xorg-dev
 
 		if [ ! -f /home/\${USER}/git/xf86-video-omap/.git/config ] ; then
-		        git clone git://github.com/robclark/xf86-video-omap.git /home/\${USER}/git/xf86-video-omap/
+		        git clone git://anongit.freedesktop.org/xorg/driver/xf86-video-omap /home/\${USER}/git/xf86-video-omap/
 		fi
 
 		if [ ! -f /home/\${USER}/git/libdrm/.git/config ] ; then
