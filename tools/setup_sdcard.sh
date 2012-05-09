@@ -95,10 +95,10 @@ function is_valid_addon {
 }
 
 function check_root {
-if [[ $UID -ne 0 ]]; then
- echo "$0 must be run as sudo user or root"
- exit
-fi
+	if [[ $UID -ne 0 ]]; then
+		echo "$0 must be run as sudo user or root"
+		exit
+	fi
 }
 
 function find_issue {
@@ -128,17 +128,6 @@ if [ "$FDISK_DEBUG" ];then
  fdisk -v
 fi
 
-#Check for gnu-fdisk
-#FIXME: GNU Fdisk seems to halt at "Using /dev/xx" when trying to script it..
-if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
- echo "Sorry, this script currently doesn't work with GNU Fdisk"
- exit
-fi
-
-unset PARTED_ALIGN
-if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
- PARTED_ALIGN="--align cylinder"
-fi
 }
 
 function check_for_command {
@@ -171,6 +160,19 @@ function detect_software {
 		echo "Gentoo: emerge u-boot-tools wget pv dosfstools btrfs-progs parted"
 		echo ""
 		exit
+	fi
+
+	#Check for gnu-fdisk
+	#FIXME: GNU Fdisk seems to halt at "Using /dev/xx" when trying to script it..
+	if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
+		echo "Sorry, this script currently doesn't work with GNU Fdisk."
+		echo "Install the version of fdisk from your distribution's util-linux package."
+		exit
+	fi
+
+	unset PARTED_ALIGN
+	if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
+		PARTED_ALIGN="--align cylinder"
 	fi
 }
 
