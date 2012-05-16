@@ -42,7 +42,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r9"
+ONEIRIC_RELEASE="ubuntu-11.10-r10"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -57,7 +57,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r2"
+PRECISE_RELEASE="ubuntu-12.04-r3"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
@@ -215,7 +215,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.17-x11"
+#OVERRIDE="v3.2.17-x11"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -246,7 +246,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.17-psp10"
+#OVERRIDE="v3.2.17-psp10"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
