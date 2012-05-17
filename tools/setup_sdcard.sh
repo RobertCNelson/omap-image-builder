@@ -145,7 +145,6 @@ function detect_software {
 	unset NEEDS_COMMAND
 
 	check_for_command mkfs.vfat dosfstools
-	check_for_command mkfs.btrfs btrfs-tools
 	check_for_command wget wget
 	check_for_command pv pv
 	check_for_command parted parted
@@ -154,9 +153,9 @@ function detect_software {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools btrfs-tools parted"
-		echo "Fedora: as root: yum install wget pv dosfstools btrfs-progs parted"
-		echo "Gentoo: emerge wget pv dosfstools btrfs-progs parted"
+		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted"
+		echo "Fedora: as root: yum install wget pv dosfstools parted"
+		echo "Gentoo: emerge wget pv dosfstools parted"
 		echo ""
 		exit
 	fi
@@ -1372,6 +1371,19 @@ fi
 
 unset BTRFS_FSTAB
 if [ "x${ROOTFS_TYPE}" == "xbtrfs" ] ; then
+	unset NEEDS_COMMAND
+	check_for_command mkfs.btrfs btrfs-tools
+
+	if [ "${NEEDS_COMMAND}" ] ; then
+		echo ""
+		echo "Your system is missing the btrfs dependency needed for this particular target."
+		echo "Ubuntu/Debian: sudo apt-get install btrfs-tools"
+		echo "Fedora: as root: yum install btrfs-progs"
+		echo "Gentoo: emerge btrfs-progs"
+		echo ""
+		exit
+	fi
+
 	BTRFS_FSTAB=1
 fi
 
