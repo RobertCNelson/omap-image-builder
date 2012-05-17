@@ -144,7 +144,6 @@ function check_for_command {
 function detect_software {
 	unset NEEDS_COMMAND
 
-	check_for_command mkimage uboot-mkimage
 	check_for_command mkfs.vfat dosfstools
 	check_for_command mkfs.btrfs btrfs-tools
 	check_for_command wget wget
@@ -155,9 +154,9 @@ function detect_software {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Ubuntu/Debian: sudo apt-get install uboot-mkimage wget pv dosfstools btrfs-tools parted"
-		echo "Fedora: as root: yum install uboot-tools wget pv dosfstools btrfs-progs parted"
-		echo "Gentoo: emerge u-boot-tools wget pv dosfstools btrfs-progs parted"
+		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools btrfs-tools parted"
+		echo "Fedora: as root: yum install wget pv dosfstools btrfs-progs parted"
+		echo "Gentoo: emerge wget pv dosfstools btrfs-progs parted"
 		echo ""
 		exit
 	fi
@@ -1196,6 +1195,21 @@ function check_uboot_type {
 		exit
 		;;
 	esac
+
+	if [ ! "${USE_ZIMAGE}" ] ; then
+		unset NEEDS_COMMAND
+		check_for_command mkimage uboot-mkimage
+
+		if [ "${NEEDS_COMMAND}" ] ; then
+			echo ""
+			echo "Your system is missing the mkimage dependency needed for this particular target."
+			echo "Ubuntu/Debian: sudo apt-get install uboot-mkimage"
+			echo "Fedora: as root: yum install uboot-tools"
+			echo "Gentoo: emerge u-boot-tools"
+			echo ""
+			exit
+		fi
+	fi
 }
 
 function usage {
