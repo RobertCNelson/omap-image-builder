@@ -212,7 +212,13 @@ function dl_bootloader {
 		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
 	fi
 
-	if [ "$RCNEEDOWN" ];then
+	if [ ! -f ${TEMPDIR}/dl/bootloader ] ; then
+		echo "ERROR: Network Failure, are you connected to the internet?"
+		echo "Unable to download bootloader from main and backup server."
+		exit
+	fi
+
+	if [ "${RCNEEDOWN}" ] ; then
 		sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/bootloader
 		sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/bootloader
 	fi
