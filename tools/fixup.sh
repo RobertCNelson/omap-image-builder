@@ -72,6 +72,10 @@ if which git >/dev/null 2>&1; then
 	cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
 	rm -rf /tmp/linux-firmware/
 
+	if [ ! -f /lib/firmware/ti-connectivity/TIInit_7.6.15.bts ] ; then
+		wget --directory-prefix=/lib/firmware/ti-connectivity http://rcn-ee.net/firmware/ti/TIInit_7.6.15.bts
+	fi
+
 	cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
 	rm -rf /tmp/am33x-cm3/
 
