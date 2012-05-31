@@ -555,13 +555,16 @@ fi
 }
 
 function populate_boot {
- echo "Populating Boot Partition"
- echo "-----------------------------"
+	echo "Populating Boot Partition"
+	echo "-----------------------------"
 
- partprobe ${MMC}
- mkdir -p ${TEMPDIR}/disk
+	partprobe ${MMC}
 
- if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
+	if [ ! -d ${TEMPDIR}/disk ] ; then
+		mkdir -p ${TEMPDIR}/disk
+	fi
+
+	if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 
   if [ "${SPL_BOOT}" ] ; then
    if [ -f ${TEMPDIR}/dl/${MLO} ]; then
@@ -850,14 +853,17 @@ fi
 }
 
 function populate_rootfs {
+	echo "Populating rootfs Partition"
+	echo "Please be patient, this may take a few minutes, as its transfering a lot of files.."
+	echo "-----------------------------"
 
- echo "Populating rootfs Partition"
- echo "Please be patient, this may take a few minutes, as its transfering a lot of files.."
- echo "-----------------------------"
+	partprobe ${MMC}
 
- partprobe ${MMC}
+	if [ ! -d ${TEMPDIR}/disk ] ; then
+		mkdir -p ${TEMPDIR}/disk
+	fi
 
- if mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
+	if mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 
 		if [ -f "${DIR}/${ROOTFS}" ] ; then
 
