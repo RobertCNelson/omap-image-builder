@@ -42,7 +42,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r9"
+ONEIRIC_RELEASE="ubuntu-11.10-r10"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -57,7 +57,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r2"
+PRECISE_RELEASE="ubuntu-12.04-r3"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
@@ -76,7 +76,7 @@ QUANTAL_BETA2="ubuntu-quantal-beta2"
 #12.04 : October 18th
 QUANTAL_RELEASE="ubuntu-12.10-r1"
 
-QUANTAL_CURRENT=${QUANTAL_RELEASE}
+QUANTAL_CURRENT=${QUANTAL_ALPHA}
 
 SQUEEZE_CURRENT="debian-6.0.5"
 WHEEZY_CURRENT="debian-wheezy"
@@ -126,7 +126,7 @@ if [ $SYST == "hades" ] || [ $SYST == "work-e6400" ]; then
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 fi
 
-if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
+if [ $SYST == "hera" ] || [ $SYST == "e350" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
@@ -210,7 +210,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.16-x11"
+#OVERRIDE="v3.2.17-x11"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -241,7 +241,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.0-psp7"
+#OVERRIDE="v3.2.17-psp10"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
@@ -306,6 +306,23 @@ BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
 minimal_armel
 compression
 
+}
+
+#12.10
+function quantal_release {
+	reset_vars
+
+	DIST="quantal"
+	SUBARCH="omap"
+	kernel_select
+	SUBARCH="omap-psp"
+	secondary_kernel_select
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH
+	minimal_armel
+	compression
 }
 
 function squeeze_release {
@@ -410,12 +427,10 @@ SECONDARY_KERNEL_SEL="STABLE"
 
 ARCH=armel
 oneiric_release
-if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
-squeeze_release
-fi
 
 ARCH=armhf
 precise_release
+quantal_release
 wheezy_release
 
 

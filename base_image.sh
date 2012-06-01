@@ -81,7 +81,7 @@ if [ $SYST == "hades" ] || [ $SYST == "work-e6400" ]; then
 	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
 fi
 
-if [ $SYST == "hera" ] || [ $SYST == "lvrm" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
+if [ $SYST == "hera" ] || [ $SYST == "e350" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
 	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
 	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
@@ -185,6 +185,19 @@ BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
 minimal_armel
 compression
 
+}
+
+#12.10
+function quantal_release {
+	reset_vars
+
+	DIST="quantal"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 function squeeze_release {
