@@ -246,7 +246,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.17-psp14"
+OVERRIDE="v3.2.18-psp14"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
