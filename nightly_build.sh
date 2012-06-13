@@ -67,8 +67,8 @@ PRECISE_CURRENT=${PRECISE_RELEASE}
 QUANTAL_ALPHA="ubuntu-quantal-alpha1"
 #alpha-2 : June 28th
 QUANTAL_ALPHA2="ubuntu-quantal-alpha2"
-#alpha-3 : August 2nd
-QUANTAL_ALPHA2="ubuntu-quantal-alpha3"
+#alpha-3 : July 26nd
+QUANTAL_ALPHA3="ubuntu-quantal-alpha3"
 #beta-1 : September 6th
 QUANTAL_BETA1="ubuntu-quantal-beta1"
 #beta-2 : September 27th
@@ -210,7 +210,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.17-x11"
+#OVERRIDE="v3.2.19-x13"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -241,7 +241,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-#OVERRIDE="v3.2.17-psp10"
+#OVERRIDE="v3.2.18-psp14"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
@@ -334,7 +334,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
@@ -353,7 +353,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"
@@ -372,7 +372,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 COMPONENTS="${DEB_COMPONENTS}"

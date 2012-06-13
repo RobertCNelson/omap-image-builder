@@ -205,7 +205,7 @@ function squeeze_release {
 reset_vars
 
 DIST=squeeze
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB
@@ -221,7 +221,7 @@ function wheezy_release {
 reset_vars
 
 DIST=wheezy
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB
@@ -237,7 +237,7 @@ function sid_release {
 reset_vars
 
 DIST=sid
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian-base.sh"
 MIRROR=$MIRROR_DEB

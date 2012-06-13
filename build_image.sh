@@ -215,7 +215,7 @@ fi
 function kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.19-x13"
+#OVERRIDE="v3.2.19-x13"
 
 if [ ! "${OVERRIDE}" ] ; then
 
@@ -246,7 +246,7 @@ echo "Using: ${PRIMARY_KERNEL}"
 function secondary_kernel_select {
 
 unset OVERRIDE
-OVERRIDE="v3.2.18-psp14"
+#OVERRIDE="v3.2.18-psp14"
 
 if [ ! "${OVERRIDE}" ] ; then
 if [ -f /tmp/LATEST-${SUBARCH} ] ; then
@@ -342,7 +342,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
@@ -362,7 +362,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 FIXUPSCRIPT="fixup-debian.sh"
 MIRROR=$MIRROR_DEB
@@ -382,7 +382,7 @@ SUBARCH="omap"
 kernel_select
 SUBARCH="omap-psp"
 secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 USER_LOGIN="debian"
 MIRROR=$MIRROR_DEB
 FIXUPSCRIPT="fixup-debian.sh"
