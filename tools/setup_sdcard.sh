@@ -1050,7 +1050,7 @@ function is_imx {
 	SUBARCH="imx"
 
 	VIDEO_CONSOLE="console=tty0"
-	HAS_IMX_BLOB=1v
+	HAS_IMX_BLOB=1
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
 	primary_id="imx"
