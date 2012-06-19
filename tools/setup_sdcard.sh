@@ -271,7 +271,7 @@ function boot_uenv_txt_template {
 	fi
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		address_image=IMAGE_ADDR
+		address_image=kernel_addr
 		address_initrd=INITRD_ADDR
 
 		console=SERIAL_CONSOLE
@@ -363,7 +363,7 @@ function tweak_boot_scripts {
 
 	ALL="*.cmd"
 	#Set kernel boot address
-	sed -i -e 's:IMAGE_ADDR:'$IMAGE_ADDR':g' ${TEMPDIR}/bootscripts/${ALL}
+	sed -i -e 's:kernel_addr:'$kernel_addr':g' ${TEMPDIR}/bootscripts/${ALL}
 
 	#Set initrd boot address
 	sed -i -e 's:INITRD_ADDR:'$INITRD_ADDR':g' ${TEMPDIR}/bootscripts/${ALL}
@@ -636,6 +636,19 @@ function populate_boot {
 			cat  ${TEMPDIR}/bootscripts/normal.cmd
 			echo "-----------------------------"
 		fi
+
+		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
+			#!/bin/sh
+			[socpack]
+			format=1.0
+			board=${BOOTLOADER}
+			kernel_addr=${kernel_addr}
+
+		__EOF__
+
+		echo "Debug:"
+		cat ${TEMPDIR}/disk/SOC.sh
+
 
 cat > ${TEMPDIR}/readme.txt <<script_readme
 
@@ -995,7 +1008,7 @@ function is_omap {
 	SPL_BOOT=1
 	SUBARCH="omap"
 
-	IMAGE_ADDR="0x80300000"
+	kernel_addr="0x80300000"
 	INITRD_ADDR="0x81600000"
 
 	ZRELADD="0x80008000"
@@ -1164,7 +1177,7 @@ function check_uboot_type {
 		is_imx
 		USE_ZIMAGE=1
 		ZRELADD="0x90008000"
-		IMAGE_ADDR="0x90800000"
+		kernel_addr="0x90800000"
 		INITRD_ADDR="0x92100000"
 		;;
 	mx53loco)
@@ -1176,7 +1189,7 @@ function check_uboot_type {
 		is_imx
 		USE_ZIMAGE=1
 		ZRELADD="0x70008000"
-		IMAGE_ADDR="0x70800000"
+		kernel_addr="0x70800000"
 		INITRD_ADDR="0x72100000"
 		;;
 	*)
