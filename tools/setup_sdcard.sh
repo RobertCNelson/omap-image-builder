@@ -645,7 +645,7 @@ function populate_boot {
 
 		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 			#!/bin/sh
-			[socpack]
+			#[socpack]
 			format=1.0
 			board=${BOOTLOADER}
 			kernel_addr=${kernel_addr}
@@ -1209,7 +1209,7 @@ function check_uboot_type {
 		initrd_addr="0x72100000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
-		#dtb_file="mx53-loco.dtb"
+		#dtb_file="imx53-qsb.dtb"
 		;;
 	mx53loco_dtb)
 		SYSTEM="mx53loco_dtb"
@@ -1223,7 +1223,7 @@ function check_uboot_type {
 		initrd_addr="0x72100000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
-		dtb_file="mx53-loco.dtb"
+		dtb_file="imx53-qsb.dtb"
 		;;
 	*)
 		IN_VALID_UBOOT=1
