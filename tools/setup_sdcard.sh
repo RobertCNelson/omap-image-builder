@@ -1208,6 +1208,7 @@ function check_uboot_type {
 		kernel_addr="0x70800000"
 		initrd_addr="0x72100000"
 		load_addr="0x70008000"
+		dtb_addr="0x71ff0000"
 		#dtb_file="mx53-loco.dtb"
 		;;
 	mx53loco_dtb)
@@ -1221,6 +1222,7 @@ function check_uboot_type {
 		kernel_addr="0x70800000"
 		initrd_addr="0x72100000"
 		load_addr="0x70008000"
+		dtb_addr="0x71ff0000"
 		dtb_file="mx53-loco.dtb"
 		;;
 	*)
