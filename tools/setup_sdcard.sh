@@ -273,6 +273,8 @@ function boot_uenv_txt_template {
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		kernel_addr=${kernel_addr}
 		initrd_addr=${initrd_addr}
+		dtb_addr=${dtb_addr}
+		dtb_file=${dtb_file}
 
 		console=SERIAL_CONSOLE
 
@@ -281,6 +283,7 @@ function boot_uenv_txt_template {
 
 		xyz_load_image=fatload mmc 0:1 \${kernel_addr} \${kernel_file}
 		xyz_load_initrd=fatload mmc 0:1 \${initrd_addr} \${initrd_file}
+		xyz_load_dtb=fatload mmc 0:1 \${dtb_addr} \${dtb_file}
 
 		xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
@@ -310,6 +313,15 @@ function boot_uenv_txt_template {
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
 			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize}
+
+		__EOF__
+		;;
+	mx53loco_dtb)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
+			deviceargs=setenv device_args
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize} \${dtb_addr}
 
 		__EOF__
 		;;
@@ -639,6 +651,8 @@ function populate_boot {
 			kernel_addr=${kernel_addr}
 			initrd_addr=${initrd_addr}
 			load_addr=${load_addr}
+			dtb_addr=${dtb_addr}
+			dtb_file=${dtb_file}
 
 		__EOF__
 
@@ -1006,6 +1020,7 @@ function is_omap {
 	kernel_addr="0x80300000"
 	initrd_addr="0x81600000"
 	load_addr="0x80008000"
+	dtb_addr="0x815f0000"
 
 	SERIAL_CONSOLE="${SERIAL},115200n8"
 
@@ -1048,6 +1063,7 @@ function check_uboot_type {
 	unset DISABLE_ETH
 	unset USE_ZIMAGE
 	unset USE_KMS
+	unset dtb_file
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1058,6 +1074,7 @@ function check_uboot_type {
 		DISABLE_ETH=1
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_cx)
 		SYSTEM="beagle_cx"
@@ -1067,6 +1084,7 @@ function check_uboot_type {
 		DISABLE_ETH=1
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_xm)
 		SYSTEM="beagle_xm"
@@ -1075,6 +1093,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1083,6 +1102,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap3-beagle.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
@@ -1129,6 +1149,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
@@ -1139,6 +1160,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		;;
@@ -1149,6 +1171,7 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		is_omap
 		USE_ZIMAGE=1
+		#dtb_file="omap4-panda.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
@@ -1185,6 +1208,20 @@ function check_uboot_type {
 		kernel_addr="0x70800000"
 		initrd_addr="0x72100000"
 		load_addr="0x70008000"
+		#dtb_file="mx53-loco.dtb"
+		;;
+	mx53loco_dtb)
+		SYSTEM="mx53loco_dtb"
+		DO_UBOOT=1
+		DD_UBOOT=1
+		BOOTLOADER="MX53LOCO"
+		SERIAL="ttymxc0"
+		is_imx
+		USE_ZIMAGE=1
+		kernel_addr="0x70800000"
+		initrd_addr="0x72100000"
+		load_addr="0x70008000"
+		dtb_file="mx53-loco.dtb"
 		;;
 	*)
 		IN_VALID_UBOOT=1
