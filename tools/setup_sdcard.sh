@@ -319,7 +319,7 @@ function boot_uenv_txt_template {
 	mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
+			xyz_mmcboot=run xyz_load_dtb; run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 			deviceargs=setenv device_args
 			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize} \${dtb_addr}
 
