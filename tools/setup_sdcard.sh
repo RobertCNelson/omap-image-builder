@@ -259,14 +259,12 @@ function boot_uenv_txt_template {
 			kernel_file=uImage
 			initrd_file=uInitrd
 			boot=bootm
-
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			kernel_file=zImage
 			initrd_file=initrd.img
 			boot=bootz
-
 		__EOF__
 	fi
 
@@ -282,51 +280,57 @@ function boot_uenv_txt_template {
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
 		xyz_load_image=fatload mmc 0:1 \${kernel_addr} \${kernel_file}
-		xyz_load_initrd=fatload mmc 0:1 \${initrd_addr} \${initrd_file}
+		xyz_load_initrd=fatload mmc 0:1 \${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=fatload mmc 0:1 \${dtb_addr} \${dtb_file}
 
-		xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
-
 	__EOF__
 
 	case "${SYSTEM}" in
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
 	crane|igepv2|mx51evk|mx53loco|panda|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
-	mx53loco_dtb)
+	mx51evk_dtb|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
+
 			optargs=VIDEO_CONSOLE
-			xyz_mmcboot=run xyz_load_dtb; run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize} \${dtb_addr}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${initrd_size} \${dtb_addr}
 
 		__EOF__
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
 			deviceargs=setenv device_args ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}
 
@@ -334,9 +338,11 @@ function boot_uenv_txt_template {
 		;;
 	bone_zimage)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
 			deviceargs=setenv device_args ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${filesize}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} \${kernel_addr} \${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
@@ -1193,9 +1199,27 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		kernel_addr="0x90800000"
-		initrd_addr="0x92100000"
+		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
+		kernel_addr="0x90010000"
+		initrd_addr="0x92000000"
 		load_addr="0x90008000"
+		dtb_addr="0x91ff0000"
+		dtb_file="imx51-babbage.dtb"
+		;;
+	mx51evk_dtb)
+		SYSTEM="mx51evk_dtb"
+		DO_UBOOT=1
+		DD_UBOOT=1
+		BOOTLOADER="MX51EVK"
+		SERIAL="ttymxc0"
+		is_imx
+		USE_ZIMAGE=1
+		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
+		kernel_addr="0x90010000"
+		initrd_addr="0x92000000"
+		load_addr="0x90008000"
+		dtb_addr="0x91ff0000"
+		dtb_file="imx51-babbage.dtb"
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
@@ -1205,11 +1229,12 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		kernel_addr="0x70800000"
-		initrd_addr="0x72100000"
+		#rcn-ee: For some reason 0x70000000 hard locks on boot, with u-boot 2012.04.01
+		kernel_addr="0x70010000"
+		initrd_addr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
-		#dtb_file="imx53-qsb.dtb"
+		dtb_file="imx53-qsb.dtb"
 		;;
 	mx53loco_dtb)
 		SYSTEM="mx53loco_dtb"
@@ -1219,8 +1244,9 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		kernel_addr="0x70800000"
-		initrd_addr="0x72100000"
+		#rcn-ee: For some reason 0x70000000 hard locks on boot, with u-boot 2012.04.01
+		kernel_addr="0x70010000"
+		initrd_addr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
