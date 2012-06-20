@@ -319,6 +319,9 @@ function boot_uenv_txt_template {
 		;;
 	mx51evk_dtb|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			initrd_high=0xffffffff
+			fdt_high=0xffffffff
+
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
