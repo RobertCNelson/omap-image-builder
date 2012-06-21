@@ -511,16 +511,20 @@ function uboot_in_boot_partition {
 }
 
 function dd_uboot_before_boot_partition {
- echo ""
- echo "Using dd to place bootloader before BOOT Partition"
- echo "-----------------------------"
- dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=1 bs=1024
+	echo ""
+	echo "Using dd to place bootloader before BOOT Partition"
+	echo "-----------------------------"
+	if [ ! "${LOCAL_BOOTLOADER}" ] ; then
+		dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=1 bs=1024
+	else
+		dd if=${UBOOT} of=${MMC} seek=1 bs=1024
+	fi
 
- #For now, lets default to fat16, but this could be ext2/3/4
- echo "Using parted to create BOOT Partition"
- echo "-----------------------------"
- parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 10 100
- #parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext3 10 100
+	#For now, lets default to fat16, but this could be ext2/3/4
+	echo "Using parted to create BOOT Partition"
+	echo "-----------------------------"
+	parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 10 100
+	#parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext3 10 100
 }
 
 function calculate_rootfs_partition {
