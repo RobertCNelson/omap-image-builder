@@ -136,15 +136,15 @@ function minimal_armel {
 }
 
 function compression {
-	rm -rf ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD || true
-	mkdir -p ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+	rm -rf ${DIR}/deploy/${TIME}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/${TIME}-${KERNEL_SEL}/
+	cd ${DIR}/deploy/${TIME}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -166,39 +166,35 @@ fi
 
 #11.10
 function oneiric_release {
+	reset_vars
+	DIST=oneiric
 
-reset_vars
-
-DIST=oneiric
-EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 #12.04
 function precise_release {
+	reset_vars
+	DIST=precise
 
-reset_vars
-
-DIST=precise
-EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 #12.10
 function quantal_release {
 	reset_vars
-
 	DIST="quantal"
+
 	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -208,51 +204,45 @@ function quantal_release {
 }
 
 function squeeze_release {
+	reset_vars
+	DIST=squeeze
 
-reset_vars
-
-DIST=squeeze
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian-base.sh"
-MIRROR=$MIRROR_DEB
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian-base.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 function wheezy_release {
+	reset_vars
+	DIST=wheezy
 
-reset_vars
-
-DIST=wheezy
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian-base.sh"
-MIRROR=$MIRROR_DEB
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian-base.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 function sid_release {
+	reset_vars
+	DIST=sid
 
-reset_vars
-
-DIST=sid
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian-base.sh"
-MIRROR=$MIRROR_DEB
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian-base.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 mkdir -p ${DIR}/deploy/

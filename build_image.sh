@@ -117,6 +117,12 @@ USER_NAME="Demo User"
 SERIAL="ttyO2"
 
 IMAGESIZE="2G"
+
+unset PRIMARY_KERNEL_OVERRIDE
+unset SECONDARY_KERNEL_OVERRIDE
+
+#PRIMARY_KERNEL_OVERRIDE="v3.2.19-x13"
+#SECONDARY_KERNEL_OVERRIDE="v3.2.18-psp14"
 }
 
 function set_mirror {
@@ -181,11 +187,11 @@ function minimal_armel {
 }
 
 function compression {
-	rm -rf ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD || true
-	mkdir -p ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+	rm -rf ${DIR}/deploy/${TIME}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
@@ -199,7 +205,7 @@ function compression {
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/
+	cd ${DIR}/deploy/${TIME}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -219,185 +225,133 @@ fi
 	cd ${DIR}/deploy/
 }
 
-function kernel_select {
+function kernel_chooser {
+	if [ ! "${OVERRIDE}" ] ; then
+		if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+			rm -f /tmp/LATEST-${SUBARCH}
+		fi
 
-unset OVERRIDE
-#OVERRIDE="v3.2.19-x13"
+		wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
+		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+	else
+		FTP_DIR=${OVERRIDE}
+	fi
 
-if [ ! "${OVERRIDE}" ] ; then
+	if [ -f /tmp/index.html ] ; then
+		rm -f /tmp/index.html || true
+	fi
 
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-else
-FTP_DIR=${OVERRIDE}
-fi
-
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
-
-echo "Using: ${PRIMARY_KERNEL}"
-
+	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+	ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
 }
 
-function secondary_kernel_select {
+function select_rcn-ee-net_kernel {
+	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
+		OVERRIDE="${PRIMARY_KERNEL_OVERRIDE}"
+	else
+		unset OVERRIDE
+	fi
 
-unset OVERRIDE
-#OVERRIDE="v3.2.18-psp14"
+	SUBARCH="omap"
+	kernel_chooser
+	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+	echo "Using: ${PRIMARY_KERNEL}"
 
-if [ ! "${OVERRIDE}" ] ; then
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
+	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
+		OVERRIDE="${SECONDARY_KERNEL_OVERRIDE}"
+	else
+		unset OVERRIDE
+	fi
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-else
-FTP_DIR=${OVERRIDE}
-fi
-
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
-
-echo "Using: ${SECONDARY_KERNEL}"
-
+	SUBARCH="omap-psp"
+	kernel_chooser
+	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+	echo "Using: ${SECONDARY_KERNEL}"
 }
-
-${SECONDARY_KERNEL}
 
 #11.10
 function oneiric_release {
-
-reset_vars
-
-DIST=oneiric
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH
-FIXUPSCRIPT="fixup.sh"
-minimal_armel
-compression
-
+	reset_vars
+	DIST=oneiric
+	select_rcn-ee-net_kernel
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
+	FIXUPSCRIPT="fixup.sh"
+	minimal_armel
+	compression
 }
 
 #12.04
 function precise_release {
-
-reset_vars
-
-DIST=precise
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-MIRROR=$MIRROR_UBU
-COMPONENTS="${UBU_COMPONENTS}"
-BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH
-FIXUPSCRIPT="fixup.sh"
-minimal_armel
-compression
-
+	reset_vars
+	DIST=precise
+	select_rcn-ee-net_kernel
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	MIRROR=$MIRROR_UBU
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
+	FIXUPSCRIPT="fixup.sh"
+	minimal_armel
+	compression
 }
 
 #12.10
 function quantal_release {
 	reset_vars
-
 	DIST="quantal"
-	SUBARCH="omap"
-	kernel_select
-	SUBARCH="omap-psp"
-	secondary_kernel_select
+	select_rcn-ee-net_kernel
 	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH
+	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH-${TIME}
 	FIXUPSCRIPT="fixup.sh"
 	minimal_armel
 	compression
 }
 
 function squeeze_release {
-
-reset_vars
-
-DIST=squeeze
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian.sh"
-MIRROR=$MIRROR_DEB
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	reset_vars
+	DIST=squeeze
+	select_rcn-ee-net_kernel
+	EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 function wheezy_release {
-
-reset_vars
-
-DIST=wheezy
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-FIXUPSCRIPT="fixup-debian.sh"
-MIRROR=$MIRROR_DEB
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	reset_vars
+	DIST=wheezy
+	select_rcn-ee-net_kernel
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 function sid_release {
-
-reset_vars
-
-DIST=sid
-SUBARCH="omap"
-kernel_select
-SUBARCH="omap-psp"
-secondary_kernel_select
-EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
-USER_LOGIN="debian"
-MIRROR=$MIRROR_DEB
-FIXUPSCRIPT="fixup-debian.sh"
-COMPONENTS="${DEB_COMPONENTS}"
-BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
-minimal_armel
-compression
-
+	reset_vars
+	DIST=sid
+	select_rcn-ee-net_kernel
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	USER_LOGIN="debian"
+	FIXUPSCRIPT="fixup-debian.sh"
+	MIRROR=$MIRROR_DEB
+	COMPONENTS="${DEB_COMPONENTS}"
+	BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+	minimal_armel
+	compression
 }
 
 mkdir -p ${DIR}/deploy/
