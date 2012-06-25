@@ -25,7 +25,7 @@ HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 RELEASE_HOST="panda-es-b1-1gb"
-DEBOOT_VER="1.0.40"
+DEBOOT_VER="1.0.41"
 
 unset USE_OEM
 
@@ -42,7 +42,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r10"
+ONEIRIC_RELEASE="ubuntu-11.10-r11"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -57,7 +57,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r3"
+PRECISE_RELEASE="ubuntu-12.04-r4"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
@@ -67,8 +67,8 @@ PRECISE_CURRENT=${PRECISE_RELEASE}
 QUANTAL_ALPHA="ubuntu-quantal-alpha1"
 #alpha-2 : June 28th
 QUANTAL_ALPHA2="ubuntu-quantal-alpha2"
-#alpha-3 : August 2nd
-QUANTAL_ALPHA2="ubuntu-quantal-alpha3"
+#alpha-3 : July 26nd
+QUANTAL_ALPHA3="ubuntu-quantal-alpha3"
 #beta-1 : September 6th
 QUANTAL_BETA1="ubuntu-quantal-beta1"
 #beta-2 : September 27th
@@ -76,7 +76,7 @@ QUANTAL_BETA2="ubuntu-quantal-beta2"
 #12.04 : October 18th
 QUANTAL_RELEASE="ubuntu-12.10-r1"
 
-QUANTAL_CURRENT=${QUANTAL_ALPHA}
+QUANTAL_CURRENT=${QUANTAL_ALPHA2}
 
 SQUEEZE_CURRENT="debian-6.0.5"
 WHEEZY_CURRENT="debian-wheezy"
@@ -117,6 +117,12 @@ USER_NAME="Demo User"
 SERIAL="ttymxc0"
 
 IMAGESIZE="2G"
+
+unset PRIMARY_KERNEL_OVERRIDE
+unset SECONDARY_KERNEL_OVERRIDE
+
+#PRIMARY_KERNEL_OVERRIDE="v3.2.19-x13"
+#SECONDARY_KERNEL_OVERRIDE="v3.2.18-psp14"
 }
 
 function set_mirror {
@@ -135,17 +141,24 @@ fi
 }
 
 function dl_rootstock {
- if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
-  mkdir -p ${DIR}/git/
-  cd ${DIR}/git/
-  git clone git://github.com/RobertCNelson/project-rootstock.git
-  cd ${DIR}/
- fi
+	if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
+		mkdir -p ${DIR}/git/
+		cd ${DIR}/git/
+		git clone git://github.com/RobertCNelson/project-rootstock.git
+		cd ${DIR}/
+	fi
 
- cd ${DIR}/git/project-rootstock
- git pull
+	cd ${DIR}/git/project-rootstock
 
- cd ${DIR}/deploy/
+	git checkout origin/master -b tmp-master
+	git branch -D master
+
+	git checkout origin/master -b master
+	git branch -D tmp-master
+
+	git pull
+
+	cd ${DIR}/deploy/
 }
 
 function minimal_armel {
@@ -174,11 +187,11 @@ function minimal_armel {
 }
 
 function compression {
-	rm -rf ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD || true
-	mkdir -p ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+	rm -rf ${DIR}/deploy/${TIME}/$BUILD || true
+	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
 	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
@@ -192,7 +205,7 @@ function compression {
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
 
 	echo "Starting Compression"
-	cd ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/
+	cd ${DIR}/deploy/${TIME}/
 	#tar cvfz $BUILD.tar.gz ./$BUILD
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
@@ -212,76 +225,62 @@ fi
 	cd ${DIR}/deploy/
 }
 
-function kernel_select {
+function kernel_chooser {
+	if [ ! "${OVERRIDE}" ] ; then
+		if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+			rm -f /tmp/LATEST-${SUBARCH}
+		fi
 
-unset OVERRIDE
-#OVERRIDE="v3.2.17-x11"
+		wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
+		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+	else
+		FTP_DIR=${OVERRIDE}
+	fi
 
-if [ ! "${OVERRIDE}" ] ; then
+	if [ -f /tmp/index.html ] ; then
+		rm -f /tmp/index.html || true
+	fi
 
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-else
-FTP_DIR=${OVERRIDE}
-fi
-
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
-
-echo "Using: ${PRIMARY_KERNEL}"
-
+	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+	ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
 }
 
-function secondary_kernel_select {
+function select_rcn-ee-net_kernel {
+	KERNEL_ABI="STABLE"
+	#KERNEL_ABI="TESTING"
+	#KERNEL_ABI="EXPERIMENTAL"
 
-unset OVERRIDE
-#OVERRIDE="v3.2.17-psp10"
+	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
+		OVERRIDE="${PRIMARY_KERNEL_OVERRIDE}"
+	else
+		unset OVERRIDE
+	fi
 
-if [ ! "${OVERRIDE}" ] ; then
-if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-	rm -f /tmp/LATEST-${SUBARCH}
-fi
+	SUBARCH="omap"
+	kernel_chooser
+	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+	echo "Using: ${PRIMARY_KERNEL}"
 
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${SECONDARY_KERNEL_SEL}" | awk '{print $3}')
-FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-else
-FTP_DIR=${OVERRIDE}
-fi
+	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
+		OVERRIDE="${SECONDARY_KERNEL_OVERRIDE}"
+	else
+		unset OVERRIDE
+	fi
 
-if [ -f /tmp/index.html ] ; then
-	rm -f /tmp/index.html
-fi
-
-wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-SECONDARY_ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${SECONDARY_ACTUAL_DEB_FILE}"
-
-echo "Using: ${SECONDARY_KERNEL}"
-
+	SUBARCH="omap-psp"
+	kernel_chooser
+	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+	echo "Using: ${SECONDARY_KERNEL}"
 }
 
-${SECONDARY_KERNEL}
+}
 
 function wheezy_release {
 	reset_vars
-
 	DIST=wheezy
-	SUBARCH="imx"
-	kernel_select
-	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+	select_rcn-ee-net_kernel
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
@@ -334,14 +333,6 @@ else
 fi
 
 dl_rootstock
-
-#PRIMARY_KERNEL_SEL="STABLE"
-PRIMARY_KERNEL_SEL="TESTING"
-#PRIMARY_KERNEL_SEL="EXPERIMENTAL"
-
-#SECONDARY_KERNEL_SEL="STABLE"
-#SECONDARY_KERNEL_SEL="TESTING"
-#SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
 ARCH=armhf
 wheezy_release

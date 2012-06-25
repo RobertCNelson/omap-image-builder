@@ -227,7 +227,7 @@ function kernel_chooser {
 		fi
 
 		wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${PRIMARY_KERNEL_SEL}" | awk '{print $3}')
+		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 	else
 		FTP_DIR=${OVERRIDE}
@@ -242,6 +242,10 @@ function kernel_chooser {
 }
 
 function select_rcn-ee-net_kernel {
+	KERNEL_ABI="STABLE"
+	#KERNEL_ABI="TESTING"
+	#KERNEL_ABI="EXPERIMENTAL"
+
 	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
 		OVERRIDE="${PRIMARY_KERNEL_OVERRIDE}"
 	else
@@ -383,14 +387,6 @@ fi
 set_mirror
 
 dl_rootstock
-
-PRIMARY_KERNEL_SEL="STABLE"
-#PRIMARY_KERNEL_SEL="TESTING"
-#PRIMARY_KERNEL_SEL="EXPERIMENTAL"
-
-SECONDARY_KERNEL_SEL="STABLE"
-#SECONDARY_KERNEL_SEL="TESTING"
-#SECONDARY_KERNEL_SEL="EXPERIMENTAL"
 
 ARCH=armel
 oneiric_release

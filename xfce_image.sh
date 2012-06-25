@@ -116,7 +116,7 @@ USER_NAME="Demo User"
 
 SERIAL="ttyO2"
 
-IMAGESIZE="2G"
+IMAGESIZE="3G"
 
 unset PRIMARY_KERNEL_OVERRIDE
 unset SECONDARY_KERNEL_OVERRIDE
@@ -293,7 +293,7 @@ function precise_release {
 	reset_vars
 	DIST=precise
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,xubuntu-desktop"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
@@ -402,12 +402,7 @@ fi
 
 dl_rootstock
 
-ARCH=armel
-oneiric_release
-
 ARCH=armhf
 precise_release
-quantal_release
-wheezy_release
 
 
