@@ -279,7 +279,7 @@ function oneiric_release {
 	reset_vars
 	DIST=oneiric
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,xubuntu-desktop"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
@@ -401,6 +401,9 @@ else
 fi
 
 dl_rootstock
+
+ARCH=armel
+oneiric_release
 
 ARCH=armhf
 precise_release
