@@ -26,7 +26,7 @@ TIME=$(date +%Y-%m-%d)
 
 #RELEASE_HOST="panda-es-b1-1gb"
 RELEASE_HOST="panda-a1-1gb"
-DEBOOT_VER="1.0.40"
+DEBOOT_VER="1.0.41"
 
 unset USE_OEM
 
