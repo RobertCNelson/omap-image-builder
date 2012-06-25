@@ -90,17 +90,24 @@ fi
 }
 
 function dl_rootstock {
- if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
-  mkdir -p ${DIR}/git/
-  cd ${DIR}/git/
-  git clone git://github.com/RobertCNelson/project-rootstock.git
-  cd ${DIR}/
- fi
+	if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
+		mkdir -p ${DIR}/git/
+		cd ${DIR}/git/
+		git clone git://github.com/RobertCNelson/project-rootstock.git
+		cd ${DIR}/
+	fi
 
- cd ${DIR}/git/project-rootstock
- git pull
+	cd ${DIR}/git/project-rootstock
 
- cd ${DIR}/deploy/
+	git checkout origin/master -b tmp-master
+	git branch -D master
+
+	git checkout origin/master -b master
+	git branch -D tmp-master
+
+	git pull
+
+	cd ${DIR}/deploy/
 }
 
 function minimal_armel {
