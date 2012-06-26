@@ -195,14 +195,14 @@ function compression {
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/vmlinuz-* ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/initrd.img-* >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
-	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}-${PRIMARY_KERNEL_SEL}/$BUILD
+	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/${TIME}/
@@ -257,21 +257,12 @@ function select_rcn-ee-net_kernel {
 		unset OVERRIDE
 	fi
 
-	SUBARCH="omap"
+	SUBARCH="imx"
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
 
-	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
-		OVERRIDE="${SECONDARY_KERNEL_OVERRIDE}"
-	else
-		unset OVERRIDE
-	fi
-
-	SUBARCH="omap-psp"
-	kernel_chooser
-	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
-	echo "Using: ${SECONDARY_KERNEL}"
+	unset SECONDARY_KERNEL
 }
 
 }
