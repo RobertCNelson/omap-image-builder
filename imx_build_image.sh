@@ -25,7 +25,7 @@ HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 RELEASE_HOST="panda-es-b1-1gb"
-DEBOOT_VER="1.0.41"
+DEBOOT_VER="1.0.41ubuntu1"
 
 unset USE_OEM
 
