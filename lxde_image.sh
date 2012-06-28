@@ -294,7 +294,7 @@ function precise_release {
 	reset_vars
 	DIST=precise
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,lxde,lxde-core,lxde-icon-theme"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,lxde,lxde-core,lxde-icon-theme,build-essential"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
