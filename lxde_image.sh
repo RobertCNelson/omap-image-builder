@@ -280,7 +280,7 @@ function oneiric_release {
 	reset_vars
 	DIST=oneiric
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,xubuntu-desktop"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
