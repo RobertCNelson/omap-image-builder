@@ -463,20 +463,31 @@ function setup_bootscripts {
 	tweak_boot_scripts
 }
 
+function drive_error_ro {
+	echo "-----------------------------"
+	echo "Error: for some reason your SD card is not writable..."
+	echo "Check: is the write protect lever set the locked position?"
+	echo "Check: do you have another SD card reader?"
+	echo "-----------------------------"
+	echo "Script gave up..."
+
+	exit
+}
+
 function unmount_all_drive_partitions {
- echo ""
- echo "Unmounting Partitions"
- echo "-----------------------------"
+	echo ""
+	echo "Unmounting Partitions"
+	echo "-----------------------------"
 
- NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
+	NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
 
- for (( c=1; c<=$NUM_MOUNTS; c++ ))
- do
-  DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
-  umount ${DRIVE} &> /dev/null || true
- done
+	for (( c=1; c<=$NUM_MOUNTS; c++ ))
+	do
+		DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
+		umount ${DRIVE} &> /dev/null || true
+	done
 
- parted --script ${MMC} mklabel msdos
+	LC_ALL=C parted --script ${MMC} mklabel msdos | grep "Error:" && drive_error_ro
 }
 
 function uboot_in_boot_partition {
