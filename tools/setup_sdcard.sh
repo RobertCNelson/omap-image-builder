@@ -196,12 +196,12 @@ function local_bootloader {
 }
 
 function dl_bootloader {
- echo ""
- echo "Downloading Device's Bootloader"
- echo "-----------------------------"
+	echo ""
+	echo "Downloading Device's Bootloader"
+	echo "-----------------------------"
 
- mkdir -p ${TEMPDIR}/dl/${DIST}
- mkdir -p "${DIR}/dl/${DIST}"
+	mkdir -p ${TEMPDIR}/dl/${DIST}
+	mkdir -p "${DIR}/dl/${DIST}"
 
 	unset RCNEEDOWN
 	echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
@@ -223,11 +223,11 @@ function dl_bootloader {
 		sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/bootloader
 	fi
 
- if [ "$USE_BETA_BOOTLOADER" ];then
-  ABI="ABX2"
- else
-  ABI="ABI2"
- fi
+	if [ "${USE_BETA_BOOTLOADER}" ] ; then
+		ABI="ABX2"
+	else
+		ABI="ABI2"
+	fi
 
  if [ "${SPL_BOOT}" ] ; then
   MLO=$(cat ${TEMPDIR}/dl/bootloader | grep "${ABI}:${BOOTLOADER}:SPL" | awk '{print $2}')
@@ -490,9 +490,9 @@ function unmount_all_drive_partitions {
 	LC_ALL=C parted --script ${MMC} mklabel msdos | grep "Error:" && drive_error_ro
 }
 
-function uboot_in_boot_partition {
+function omap_fatfs_boot_part {
 	echo ""
-	echo "Using fdisk to create BOOT Partition"
+	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
 	echo "-----------------------------"
 
 	fdisk ${MMC} <<-__EOF__
@@ -521,9 +521,9 @@ function uboot_in_boot_partition {
 	fi
 }
 
-function dd_uboot_before_boot_partition {
+function dd_to_drive {
 	echo ""
-	echo "Using dd to place bootloader before BOOT Partition"
+	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
 	if [ ! "${LOCAL_BOOTLOADER}" ] ; then
 		dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=1 bs=1024
@@ -560,9 +560,9 @@ function calculate_rootfs_partition {
 }
 
 function format_boot_partition {
- echo "Formating Boot Partition"
- echo "-----------------------------"
- mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
+	echo "Formating Boot Partition"
+	echo "-----------------------------"
+	mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
 }
 
 function format_rootfs_partition {
@@ -572,12 +572,11 @@ function format_rootfs_partition {
 }
 
 function create_partitions {
-
-if [ "${DD_UBOOT}" ] ; then
- dd_uboot_before_boot_partition
-else
- uboot_in_boot_partition
-fi
+	if [ "${DD_UBOOT}" ] ; then
+		dd_to_drive
+	else
+		omap_fatfs_boot_part
+	fi
 
  calculate_rootfs_partition
  format_boot_partition
@@ -669,7 +668,6 @@ function populate_boot {
 
 		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 			#!/bin/sh
-			#[socpack]
 			format=1.0
 			board=${BOOTLOADER}
 			kernel_addr=${kernel_addr}
