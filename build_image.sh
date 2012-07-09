@@ -114,21 +114,6 @@ unset SECONDARY_KERNEL_OVERRIDE
 #SECONDARY_KERNEL_OVERRIDE="v3.2.18-psp14"
 }
 
-function set_mirror {
-
-if [ $SYST == "hades" ] || [ $SYST == "work-e6400" ]; then
-	MIRROR_UBU="--mirror http://192.168.0.10:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.0.10:3142/ftp.us.debian.org/debian/"
-fi
-
-if [ $SYST == "hera" ] || [ $SYST == "e350" ] || [ $SYST == "x4-955" ] || [ "$SYST" == "${RELEASE_HOST}" ]; then
-	MIRROR_UBU="--mirror http://192.168.1.95:3142/ports.ubuntu.com/ubuntu-ports"
-	MIRROR_DEB="--mirror http://192.168.1.95:3142/ftp.us.debian.org/debian/"
-	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
-fi
-
-}
-
 function dl_rootstock {
 	if [ ! -f ${DIR}/git/project-rootstock/.git/config ] ; then
 		mkdir -p ${DIR}/git/
@@ -349,6 +334,10 @@ function sid_release {
 
 source ${DIR}/defaults.sh
 
+if [ -f ${DIR}/rcn-ee.host ] ; then
+	source ${DIR}/host/rcn-ee-host.sh
+fi
+
 mkdir -p ${DIR}/deploy/
 
 DEBOOT_TEST=$(sudo debootstrap --version | awk '{print $2}')
@@ -381,14 +370,13 @@ if [ -f /etc/default/rcS ] ; then
 fi
 
 if [ -f ${DIR}/release ] ; then
- echo "Building Release Package, no mirrors"
- if [ "$SYST" == "${RELEASE_HOST}" ]; then
-  #use local kernel *.deb files from synced mirror
-  DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
- fi
-else
- echo "Building with mirror files"
- set_mirror
+	echo "Building Release Package, with no mirrors"
+	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
+		#use local kernel *.deb files from synced mirror
+		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
+		unset MIRROR_UBU
+		unset MIRROR_DEB
+	fi
 fi
 
 dl_rootstock

@@ -1,2 +1,4 @@
 deploy/
 git/
+*.host
+release
