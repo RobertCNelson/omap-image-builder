@@ -254,8 +254,6 @@ function select_rcn-ee-net_kernel {
 	unset SECONDARY_KERNEL
 }
 
-}
-
 function wheezy_release {
 	reset_vars
 	DIST=wheezy
