@@ -798,7 +798,7 @@ script_readme
 		git checkout master -f
 		git pull
 		git branch libdrm-build -D || true
-		git checkout 2.4.36 -b libdrm-build
+		git checkout 2.4.37 -b libdrm-build
 
 		./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-\${gnu} --disable-libkms --disable-intel --disable-radeon --disable-nouveau --enable-omap-experimental-api
 
