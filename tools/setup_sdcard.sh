@@ -687,9 +687,9 @@ Updated with a custom uImage and modules or modified the boot.cmd/user.com files
 
 Applications:
 
- "./tools/minimal_xfce.sh"
+ "./tools/minimal_lxde.sh"
 
-Install minimal xfce shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
+Install minimal lxde shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
 
 Drivers:
  "./build_omapdrm_drivers.sh"
@@ -738,20 +738,11 @@ script_readme
 
 	__EOF__
 
-	cat > ${TEMPDIR}/minimal_xfce.sh <<-__EOF__
+	cat > ${TEMPDIR}/minimal_lxde.sh <<-__EOF__
 		#!/bin/sh
 
 		sudo apt-get update
-		if lsb_release -c | grep -E 'oneiric|precise|quantal' ; then
-		       sudo apt-get -y install xubuntu-desktop
-		else
-		       sudo apt-get -y install xfce4 gdm xubuntu-gdm-theme xubuntu-artwork xserver-xorg-video-omap3 network-manager
-		fi
-
-		echo "Disabling eth0 in /etc/network/interfaces so xfce's network-manager works"
-		sudo sed -i 's/auto eth0/#auto eth0/g' /etc/network/interfaces
-		sudo sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' /etc/network/interfaces
-		sudo sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' /etc/network/interfaces
+		sudo apt-get -y install lxde lxde-core lxde-icon-theme
 
 	__EOF__
 
@@ -855,8 +846,8 @@ script_readme
 	cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
 	chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
 
-	cp -v ${TEMPDIR}/minimal_xfce.sh ${TEMPDIR}/disk/tools/minimal_xfce.sh
-	chmod +x ${TEMPDIR}/disk/tools/minimal_xfce.sh
+	cp -v ${TEMPDIR}/minimal_lxde.sh ${TEMPDIR}/disk/tools/minimal_lxde.sh
+	chmod +x ${TEMPDIR}/disk/tools/minimal_lxde.sh
 
 	cp -v ${TEMPDIR}/xorg.conf ${TEMPDIR}/disk/tools/xorg.conf
 	cp -v ${TEMPDIR}/build_omapdrm_drivers.sh ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
