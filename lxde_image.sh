@@ -78,7 +78,7 @@ QUANTAL_CURRENT=${QUANTAL_ALPHA2}
 SQUEEZE_CURRENT="debian-6.0.5"
 WHEEZY_CURRENT="debian-wheezy"
 
-MINIMAL="-minimal"
+MINIMAL="-lxde"
 
 DIR=$PWD
 
