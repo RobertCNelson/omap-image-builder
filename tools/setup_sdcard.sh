@@ -652,13 +652,11 @@ function populate_boot {
 			echo "-----------------------------"
 		fi
 
-		if [ "${DO_UBOOT}" ];then
-			echo "Copying uEnv.txt based boot scripts to Boot Partition"
-			echo "-----------------------------"
-			cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
-			cat  ${TEMPDIR}/bootscripts/normal.cmd
-			echo "-----------------------------"
-		fi
+		echo "Copying uEnv.txt based boot scripts to Boot Partition"
+		echo "-----------------------------"
+		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+		cat  ${TEMPDIR}/bootscripts/normal.cmd
+		echo "-----------------------------"
 
 		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 			#!/bin/sh
