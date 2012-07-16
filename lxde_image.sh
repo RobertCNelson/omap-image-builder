@@ -335,6 +335,10 @@ function sid_release {
 
 source ${DIR}/defaults.sh
 
+if [ -f ${DIR}/rcn-ee.host ] ; then
+	source ${DIR}/host/rcn-ee-host.sh
+fi
+
 mkdir -p ${DIR}/deploy/
 
 DEBOOT_TEST=$(sudo debootstrap --version | awk '{print $2}')
@@ -371,8 +375,8 @@ if [ -f ${DIR}/release ] ; then
 	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 		#use local kernel *.deb files from synced mirror
 		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
-		unset MIRROR_UBU
-		unset MIRROR_DEB
+		MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
+		MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 	fi
 fi
 

@@ -369,8 +369,8 @@ if [ -f ${DIR}/release ] ; then
 	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 		#use local kernel *.deb files from synced mirror
 		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
-		unset MIRROR_UBU
-		unset MIRROR_DEB
+		MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
+		MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 	fi
 fi
 
