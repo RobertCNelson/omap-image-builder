@@ -294,7 +294,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
 			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -304,7 +304,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args mpurate=\${mpurate} buddy=\${buddy} buddy2=\${buddy2}
+			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2}
 			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
