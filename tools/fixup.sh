@@ -23,7 +23,7 @@ echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 #smsc95xx kevent workaround/hack
 echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
 
-cat > /etc/flash-kernel.conf <<FK
+cat > /etc/flash-kernel.conf <<__EOF__
 #!/bin/sh
 UBOOT_PART=/dev/mmcblk0p1
 
@@ -32,7 +32,7 @@ echo "You are currently running an image built by rcn-ee.net running an rcn-ee"
 echo "kernel, to use Ubuntu's Kernel remove the next line"
 USE_RCN_EE_KERNEL=1
 
-if [ "\$USE_RCN_EE_KERNEL" ] ; then
+if [ "\${USE_RCN_EE_KERNEL}" ] ; then
 
 DIST=\$(lsb_release -cs)
 
@@ -40,16 +40,7 @@ case "\$DIST" in
     lucid)
             exit 0
         ;;
-    maverick)
-            FLASH_KERNEL_SKIP=yes
-        ;;
-    natty)
-            FLASH_KERNEL_SKIP=yes
-        ;;
-    oneiric)
-            FLASH_KERNEL_SKIP=yes
-        ;;
-    precise)
+    maverick|natty|oneiric|precise|quantal)
             FLASH_KERNEL_SKIP=yes
         ;;
 
@@ -57,7 +48,7 @@ esac
 
 fi
 
-FK
+__EOF__
 
 if which git >/dev/null 2>&1; then
 	cd /tmp/

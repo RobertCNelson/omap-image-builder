@@ -156,6 +156,7 @@ function precise_release {
 	DIST=precise
 
 	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
@@ -274,3 +275,5 @@ fi
 
 ARCH=armhf
 wheezy_release
+precise_release
+
