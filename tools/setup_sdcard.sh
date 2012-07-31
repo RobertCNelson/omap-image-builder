@@ -35,16 +35,14 @@ PARTITION_PREFIX=""
 
 unset MMC
 unset USE_BETA_BOOTLOADER
+unset USE_LOCAL_BOOT
+unset LOCAL_BOOTLOADER
 unset ADDON
 
 unset FDISK_DEBUG
 
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
-
-unset LOCAL_SPL
-unset LOCAL_BOOTLOADER
-unset USE_LOCAL_BOOT
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -181,17 +179,22 @@ function rcn-ee_down_use_mirror {
 }
 
 function local_bootloader {
- echo ""
- echo "Using Locally Stored Device Bootloader"
- echo "-----------------------------"
+	echo ""
+	echo "Using Locally Stored Device Bootloader"
+	echo "-----------------------------"
+	mkdir -p ${TEMPDIR}/dl/
 
- if [ "${SPL_BOOT}" ] ; then
-  MLO=${LOCAL_SPL}
-  echo "SPL Bootloader: ${MLO}"
- fi
+	if [ "${spl_name}" ] ; then
+		cp ${LOCAL_SPL} ${TEMPDIR}/dl/
+		MLO=${LOCAL_SPL##*/}
+		echo "SPL Bootloader: ${MLO}"
+	fi
 
- UBOOT=${LOCAL_BOOTLOADER}
- echo "Bootloader: ${UBOOT}"
+	if [ "${boot_name}" ] ; then
+		cp ${LOCAL_BOOTLOADER} ${TEMPDIR}/dl/
+		UBOOT=${LOCAL_BOOTLOADER##*/}
+		echo "UBOOT Bootloader: ${UBOOT}"
+	fi
 }
 
 function dl_bootloader {
@@ -649,9 +652,10 @@ function populate_boot {
 			echo "-----------------------------"
 		fi
 
-		echo "Copying uEnv.txt based boot scripts to Boot Partition"
+		echo "Copying ${startup_script} based boot scripts to Boot Partition"
 		echo "-----------------------------"
-		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/${startup_script}
+		echo "-----------------------------"
 		cat  ${TEMPDIR}/bootscripts/normal.cmd
 		echo "-----------------------------"
 
@@ -664,6 +668,7 @@ function populate_boot {
 			load_addr=${load_addr}
 			dtb_addr=${dtb_addr}
 			dtb_file=${dtb_file}
+			startup_script=${startup_script}
 
 		__EOF__
 
@@ -1027,6 +1032,7 @@ function is_omap {
 	initrd_addr="0x81600000"
 	load_addr="0x80008000"
 	dtb_addr="0x815f0000"
+	startup_script="uEnv.txt"
 
 	SERIAL_CONSOLE="${SERIAL},115200n8"
 
@@ -1059,6 +1065,8 @@ function is_imx {
 
 	SERIAL_CONSOLE="${SERIAL},115200"
 	SUBARCH="imx"
+
+	startup_script="uEnv.txt"
 
 	VIDEO_CONSOLE="console=tty0"
 	HAS_IMX_BLOB=1
@@ -1400,7 +1408,6 @@ while [ ! -z "$1" ]; do
         --spl)
             checkparm $2
             LOCAL_SPL="$2"
-            SPL_BOOT=1
             USE_LOCAL_BOOT=1
             ;;
         --bootloader)
@@ -1465,10 +1472,11 @@ fi
 
  find_issue
  detect_software
-if [ "$USE_LOCAL_BOOT" ] ; then
- local_bootloader
+
+if [ "${USE_LOCAL_BOOT}" ] ; then
+	local_bootloader
 else
- dl_bootloader
+	dl_bootloader
 fi
 
  setup_bootscripts
