@@ -143,6 +143,7 @@ function oneiric_release {
 	DIST=oneiric
 
 	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
@@ -170,6 +171,7 @@ function quantal_release {
 	DIST="quantal"
 
 	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH-${TIME}
@@ -261,8 +263,8 @@ if [ -f ${DIR}/release ] ; then
 	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 		#use local kernel *.deb files from synced mirror
 		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
-		unset MIRROR_UBU
-		unset MIRROR_DEB
+		MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
+		MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 	fi
 fi
 

@@ -39,7 +39,7 @@ ONEIRIC_BETA1="ubuntu-oneiric-beta1"
 #beta2 : September 22nd
 ONEIRIC_BETA2="ubuntu-oneiric-beta2"
 #10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r12"
+ONEIRIC_RELEASE="ubuntu-11.10-r13"
 
 ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
 
@@ -54,7 +54,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r5"
+PRECISE_RELEASE="ubuntu-12.04-r6"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
@@ -73,7 +73,7 @@ QUANTAL_BETA2="ubuntu-quantal-beta2"
 #12.04 : October 18th
 QUANTAL_RELEASE="ubuntu-12.10-r1"
 
-QUANTAL_CURRENT=${QUANTAL_ALPHA3}
+QUANTAL_CURRENT=${QUANTAL_BETA1}
 
 SQUEEZE_CURRENT="debian-6.0.5"
 WHEEZY_CURRENT="debian-wheezy"
@@ -110,8 +110,8 @@ IMAGESIZE="2G"
 unset PRIMARY_KERNEL_OVERRIDE
 unset SECONDARY_KERNEL_OVERRIDE
 
-#PRIMARY_KERNEL_OVERRIDE="v3.2.23-x14"
-#SECONDARY_KERNEL_OVERRIDE="v3.2.21-psp16"
+#PRIMARY_KERNEL_OVERRIDE="v3.2.24-x14"
+#SECONDARY_KERNEL_OVERRIDE="v3.2.23-psp18"
 }
 
 function dl_rootstock {
