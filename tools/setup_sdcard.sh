@@ -262,20 +262,6 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
-	if [ ! "${USE_ZIMAGE}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=uImage
-			initrd_file=uInitrd
-			boot=bootm
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=zImage
-			initrd_file=initrd.img
-			boot=bootz
-		__EOF__
-	fi
-
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		#dtb_file=${dtb_file}
 
@@ -284,8 +270,8 @@ function boot_uenv_txt_template {
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		xyz_load_image=fatload mmc 0:1 ${kernel_addr} \${kernel_file}
-		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
+		xyz_load_image=fatload mmc 0:1 ${kernel_addr} ${kernel_file}
+		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} ${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
 		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
@@ -298,7 +284,7 @@ function boot_uenv_txt_template {
 
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
@@ -308,7 +294,7 @@ function boot_uenv_txt_template {
 
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2}
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
@@ -318,7 +304,7 @@ function boot_uenv_txt_template {
 
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
@@ -331,7 +317,7 @@ function boot_uenv_txt_template {
 
 			optargs=VIDEO_CONSOLE
 			deviceargs=setenv device_args
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
 		;;
@@ -340,7 +326,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			deviceargs=setenv device_args ip=\${ip_method}
-			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}
+			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}
 
 		__EOF__
 		;;
@@ -349,8 +335,8 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			deviceargs=setenv device_args ip=\${ip_method}
-			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}
-			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; \${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}
+			loaduimage=run xyz_mmcboot; run deviceargs; run mmcargs; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
@@ -1085,6 +1071,9 @@ function check_uboot_type {
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
+	kernel_file=zImage
+	initrd_file=initrd.img
+	boot="bootz"
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1125,6 +1114,9 @@ function check_uboot_type {
 		unset HAS_OMAPFB_DSS2
 		;;
 	bone)
+		kernel_file=uImage
+		initrd_file=uInitrd
+		boot="bootm"
 		SYSTEM="bone"
 		BOOTLOADER="BEAGLEBONE_A"
 		SERIAL="ttyO0"
