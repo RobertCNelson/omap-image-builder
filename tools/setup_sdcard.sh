@@ -277,7 +277,7 @@ function boot_uenv_txt_template {
 	fi
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		dtb_file=${dtb_file}
+		#dtb_file=${dtb_file}
 
 		console=SERIAL_CONSOLE
 
@@ -286,7 +286,7 @@ function boot_uenv_txt_template {
 
 		xyz_load_image=fatload mmc 0:1 ${kernel_addr} \${kernel_file}
 		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
-		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} \${dtb_file}
+		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
 		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
 	__EOF__
@@ -1240,8 +1240,7 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		#rcn-ee: For some reason 0x70000000 hard locks on boot, with u-boot 2012.04.01
-		kernel_addr="0x70010000"
+		kernel_addr="0x70000000"
 		initrd_addr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
