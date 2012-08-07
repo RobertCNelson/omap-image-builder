@@ -1227,7 +1227,7 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		#rcn-ee: For some reason 0x70000000 hard locks on boot, with u-boot 2012.04.01
+		#rcn-ee kernel_addr="0x70000000" causes wdt reset
 		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
 		load_addr="0x70008000"
@@ -1240,7 +1240,8 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		USE_ZIMAGE=1
-		kernel_addr="0x70000000"
+		#rcn-ee kernel_addr="0x70000000" doesnt boot...
+		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
