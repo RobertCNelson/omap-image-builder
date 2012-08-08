@@ -274,8 +274,10 @@ function boot_uenv_txt_template {
 		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} ${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
-		device_args=run expansion_args; run mmcargs
-		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
+		video_args=setenv video VIDEO_DISPLAY
+
+		device_args=run video_args; run expansion_args; run mmcargs
+		mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
 	__EOF__
 
 	case "${SYSTEM}" in
