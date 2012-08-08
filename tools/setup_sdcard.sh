@@ -274,7 +274,7 @@ function boot_uenv_txt_template {
 		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} ${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
-		device_args=run deviceargs; run mmcargs
+		device_args=run expansion_args; run mmcargs
 		mmcargs=setenv bootargs console=\${console} \${optargs} VIDEO_DISPLAY root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args}
 	__EOF__
 
@@ -284,7 +284,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -294,7 +294,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2}
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -304,7 +304,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args
+			expansion_args=setenv expansion
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -314,7 +314,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args buddy=\${buddy} buddy2=\${buddy2}
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -327,7 +327,7 @@ function boot_uenv_txt_template {
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
 
 			optargs=VIDEO_CONSOLE
-			deviceargs=setenv device_args
+			expansion_args=setenv expansion
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
@@ -336,7 +336,7 @@ function boot_uenv_txt_template {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
-			deviceargs=setenv device_args ip=\${ip_method}
+			expansion_args=setenv expansion ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
 
 		__EOF__
@@ -345,7 +345,7 @@ function boot_uenv_txt_template {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
 
-			deviceargs=setenv device_args ip=\${ip_method}
+			expansion_args=setenv expansion ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
