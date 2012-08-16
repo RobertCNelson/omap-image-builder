@@ -1111,6 +1111,26 @@ function check_uboot_type {
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
+		need_dtbs=1
+		;;
+	mx6q_sabrelite)
+		SYSTEM="mx6q_sabrelite"
+		BOOTLOADER="MX6Q_SABRELITE_D"
+		is_imx
+		SERIAL="ttymxc1"
+		SERIAL_CONSOLE="${SERIAL},115200"
+		boot="bootm"
+		USE_UIMAGE=1
+		unset bootloader_location
+		unset spl_name
+		unset boot_name
+		kernel_addr="0x10000000"
+		initrd_addr="0x12000000"
+		load_addr="0x10008000"
+		dtb_addr="0x11ff0000"
+		dtb_file="imx6q-sabrelite.dtb"
+		need_dtbs=1
+		boot_scr_wrapper=1
 		;;
 	*)
 		IN_VALID_UBOOT=1
@@ -1132,6 +1152,7 @@ function check_uboot_type {
 			                mx53loco - <i.MX53 Quick Start Development Board>
 			                mx51evk_dtb - <i.MX51 "Babbage" Development Board>
 			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
+			                mx6q_sabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 			-----------------------------
 		__EOF__
 		exit
@@ -1178,6 +1199,7 @@ function usage {
 			                mx53loco - <i.MX53 Quick Start Development Board>
 			                mx51evk_dtb - <i.MX51 "Babbage" Development Board>
 			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
+			                mx6q_sabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 
 			--addon <additional peripheral device>
 			        pico
