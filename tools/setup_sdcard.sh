@@ -99,32 +99,28 @@ function check_root {
 }
 
 function find_issue {
+	check_root
 
-check_root
-
-ROOTFS=$(ls "${DIR}/" | grep rootfs)
-if [ "-${ROOTFS}-" != "--" ] ; then
- echo "Debug: ARM rootfs: ${ROOTFS}"
-else
- echo "Error: no armel-rootfs-* file"
- echo "Make sure your in the right dir..."
- exit
-fi
+	ROOTFS=$(ls "${DIR}/" | grep rootfs)
+	if [ "x${ROOTFS}" != "x" ] ; then
+		echo "Debug: ARM rootfs: ${ROOTFS}"
+	else
+		echo "Error: no armel-rootfs-* file"
+		echo "Make sure your in the right dir..."
+		exit
+	fi
 
 	unset HAS_INITRD
 	INITRD=$(ls "${DIR}/" | grep initrd.img | head -n 1)
-	if [ "-${INITRD}-" != "--" ] ; then
+	if [ "x${INITRD}" != "x" ] ; then
 		echo "Debug: image has initrd.img: HAS_INITRD=1"
 		HAS_INITRD=1
 	fi
 
-#Software Qwerks
-
-if [ "$FDISK_DEBUG" ];then
- echo "Debug: fdisk version:"
- fdisk -v
-fi
-
+	if [ "${FDISK_DEBUG}" ] ; then
+		echo "Debug: fdisk version:"
+		LC_ALL=C fdisk -v
+	fi
 }
 
 function check_for_command {
@@ -580,24 +576,24 @@ function format_boot_partition {
 }
 
 function calculate_rootfs_partition {
- echo "Creating rootfs ${ROOTFS_TYPE} Partition"
- echo "-----------------------------"
+	echo "Creating rootfs ${ROOTFS_TYPE} Partition"
+	echo "-----------------------------"
 
- unset END_BOOT
- END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
+	unset END_BOOT
+	END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
- unset END_DEVICE
- END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
+	unset END_DEVICE
+	END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
 
- parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
- sync
+	parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
+	sync
 
- if [ "$FDISK_DEBUG" ];then
-  echo "Debug: ${ROOTFS_TYPE} Partition"
-  echo "-----------------------------"
-  echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}"
-  fdisk -l ${MMC}
- fi
+	if [ "${FDISK_DEBUG}" ] ; then
+		echo "Debug: ${ROOTFS_TYPE} Partition"
+		echo "-----------------------------"
+		echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}"
+		LC_ALL=C fdisk -l ${MMC}
+	fi
 }
 
 function format_rootfs_partition {
@@ -783,88 +779,85 @@ function populate_rootfs {
 			echo "-----------------------------"
 		fi
 
- if [ "$BTRFS_FSTAB" ] ; then
-  echo "btrfs selected as rootfs type, modifing /etc/fstab..."
-  sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
-  echo "-----------------------------"
- fi
+		if [ "${BTRFS_FSTAB}" ] ; then
+			echo "btrfs selected as rootfs type, modifing /etc/fstab..."
+			sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
+			echo "-----------------------------"
+		fi
 
- if [ "$DISABLE_ETH" ] ; then
-  echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
-  sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-  sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-  sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
-  echo "-----------------------------"
- else
-  if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
-   echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-   echo "-----------------------------"
-   echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
-   echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
-   echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
-   echo "-----------------------------"
-   sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-   sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-   sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-  fi
- fi
+		if [ "${DISABLE_ETH}" ] ; then
+			echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
+			sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+			echo "-----------------------------"
+		else
+			if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
+				echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
+				echo "-----------------------------"
+				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
+				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
+				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
+				echo "-----------------------------"
+				sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+				sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+				sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+			fi
+		fi
 
-#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
-if test "-$SERIAL-" != "-ttyO2-"
-then
- if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ]; then
-  echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
-  echo "-----------------------------"
-  mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
-  sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
- elif [ -f ${TEMPDIR}/disk/etc/inittab ]; then
-  echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
-  echo "-----------------------------"
-  sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
- fi
-fi
+		#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
+		if [ "x${SERIAL}" != "xttyO2" ] ; then
+			if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ] ; then
+				echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
+				echo "-----------------------------"
+				mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
+				sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
+			elif [ -f ${TEMPDIR}/disk/etc/inittab ] ; then
+				echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
+				echo "-----------------------------"
+				sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
+			fi
+		fi
 
- if [ "$CREATE_SWAP" ] ; then
+		if [ "${CREATE_SWAP}" ] ; then
+			echo "-----------------------------"
+			echo "Extra: Creating SWAP File"
+			echo "-----------------------------"
+			echo "SWAP BUG creation note:"
+			echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
+			echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
+			echo "Background: usually occured in days before Ubuntu Lucid.."
+			echo "-----------------------------"
 
-  echo "-----------------------------"
-  echo "Extra: Creating SWAP File"
-  echo "-----------------------------"
-  echo "SWAP BUG creation note:"
-  echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
-  echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
-  echo "Background: usually occured in days before Ubuntu Lucid.."
-  echo "-----------------------------"
+			SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
+			let SIZE=${SWAP_SIZE}*1024
 
-  SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
+			if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
+				dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=${SWAP_SIZE}
+				mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
+				echo "/mnt/SWAP.swap  none  swap  sw  0 0" >> ${TEMPDIR}/disk/etc/fstab
+			else
+				echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
+			fi
+		fi
 
-  let SIZE=$SWAP_SIZE*1024
+		cd ${TEMPDIR}/disk/
+		sync
+		sync
+		cd "${DIR}/"
 
-  if [ $SPACE_LEFT -ge $SIZE ] ; then
-   dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=$SWAP_SIZE
-   mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
-   echo "/mnt/SWAP.swap  none  swap  sw  0 0" >> ${TEMPDIR}/disk/etc/fstab
-   else
-   echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
-  fi
- fi
+		umount ${TEMPDIR}/disk || true
 
- cd ${TEMPDIR}/disk/
- sync
- sync
- cd "${DIR}/"
-
- umount ${TEMPDIR}/disk || true
-
- echo "Finished populating rootfs Partition"
- echo "-----------------------------"
-else
- echo "-----------------------------"
- echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
- echo "Please retry running the script, sometimes rebooting your system helps."
- echo "-----------------------------"
- exit
-fi
- echo "setup_sdcard.sh script complete"
+		echo "Finished populating rootfs Partition"
+		echo "-----------------------------"
+		else
+		echo "-----------------------------"
+		echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "-----------------------------"
+		exit
+	fi
+	echo "setup_sdcard.sh script complete"
 }
 
 function check_mmc {
