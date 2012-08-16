@@ -607,6 +607,7 @@ function populate_boot {
 
 	if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 		mkdir -p ${TEMPDIR}/disk/backup
+		mkdir -p ${TEMPDIR}/disk/dtbs
 
 		if [ ! "${bootloader_installed}" ] ; then
 			if [ "${spl_name}" ] ; then
@@ -617,9 +618,14 @@ function populate_boot {
 				fi
 			fi
 
-			if [ "${boot_name}" ] ; then
+			if [ "${boot_name}" ] && [ ! "${IS_IMX}" ] ; then
 				if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
 					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
+				fi
+			fi
+
+			if [ "${boot_name}" ] ; then
+				if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
 					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
 					echo "-----------------------------"
 				fi
@@ -667,9 +673,9 @@ function populate_boot {
 			cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
 		fi
 
-		echo "Copying ${startup_script} based boot scripts to Boot Partition"
+		echo "Copying uEnv.txt based boot scripts to Boot Partition"
 		echo "-----------------------------"
-		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/${startup_script}
+		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
 		echo "-----------------------------"
 		cat  ${TEMPDIR}/bootscripts/normal.cmd
 		echo "-----------------------------"
@@ -686,7 +692,6 @@ function populate_boot {
 			load_addr=${load_addr}
 			dtb_addr=${dtb_addr}
 			dtb_file=${dtb_file}
-			startup_script=${startup_script}
 
 		__EOF__
 
