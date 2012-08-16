@@ -250,56 +250,74 @@ function dl_bootloader {
 }
 
 function boot_uenv_txt_template {
-	#(rcn-ee)in a way these are better then boot.scr
-	#but each target is going to have a slightly different entry point..
-
-	if [ ! "${USE_KMS}" ] ; then
+	if [ "${USE_UIMAGE}" ] ; then
 		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#These video values are now set by default in the bootloader
-			#uncomment/change if you need something else
+			kernel_file=uImage
+			initrd_file=uInitrd
 
-			UENV_VRAM
-			UENV_FB
-			UENV_TIMING
+		__EOF__
+	else
+		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			kernel_file=zImage
+			initrd_file=initrd.img
 
 		__EOF__
 	fi
 
-	if [ "${USE_UIMAGE}" ] ; then
+	if [ "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=uImage
-			initrd_file=uInitrd
+			initrd_high=0xffffffff
+			fdt_high=0xffffffff
+			dtb_file=${dtb_file}
+
 		__EOF__
-	else
+	fi
+
+	if [ ! "${USE_KMS}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=zImage
-			initrd_file=initrd.img
+			#Video: Uncomment to override U-Boots value:
+			UENV_FB
+			UENV_TIMING
+			UENV_VRAM
+
 		__EOF__
 	fi
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		boot_fstype=${boot_fstype}
-
 		console=SERIAL_CONSOLE
 
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
+		boot_fstype=${boot_fstype}
 		xyz_load_image=\${boot_fstype}load mmc 0:1 ${kernel_addr} \${kernel_file}
 		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
-		video_args=setenv video VIDEO_DISPLAY
+	__EOF__
 
+	if [ ! "${need_dtbs}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
+
+		__EOF__
+	fi
+
+	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		video_args=setenv video VIDEO_DISPLAY
 		device_args=run video_args; run expansion_args; run mmcargs
-		mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+		mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${device_args} \${expansion}
+
 	__EOF__
 
 	case "${SYSTEM}" in
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
@@ -308,8 +326,6 @@ function boot_uenv_txt_template {
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
@@ -318,8 +334,6 @@ function boot_uenv_txt_template {
 		;;
 	crane|igepv2|mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
@@ -328,8 +342,6 @@ function boot_uenv_txt_template {
 		;;
 	panda|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
@@ -338,11 +350,6 @@ function boot_uenv_txt_template {
 		;;
 	mx51evk_dtb|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			initrd_high=0xffffffff
-			fdt_high=0xffffffff
-
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
@@ -351,8 +358,6 @@ function boot_uenv_txt_template {
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			expansion_args=setenv expansion ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
 
@@ -360,15 +365,20 @@ function boot_uenv_txt_template {
 		;;
 	bone_zimage)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
-
 			expansion_args=setenv expansion ip=\${ip_method}
 			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
 		;;
+	mx6q_sabrelite)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			expansion_args=setenv expansion
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
 
+		__EOF__
+		;;
 	esac
 }
 
