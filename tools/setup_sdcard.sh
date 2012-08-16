@@ -533,18 +533,38 @@ function dd_to_drive {
 	echo ""
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
-	if [ ! "${LOCAL_BOOTLOADER}" ] ; then
-		dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=1 bs=1024
-	else
-		dd if=${UBOOT} of=${MMC} seek=1 bs=1024
-	fi
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=1 bs=1024
 	bootloader_installed=1
 
-	#For now, lets default to fat16, but this could be ext2/3/4
 	echo "Using parted to create BOOT Partition"
 	echo "-----------------------------"
-	parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 10 100
-	#parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext3 10 100
+	if [ "x${boot_fstype}" == "xfat" ] ; then
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 10 100
+	else
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 10 100
+	fi
+}
+
+function no_boot_on_drive {
+	echo "Using parted to create BOOT Partition"
+	echo "-----------------------------"
+	if [ "x${boot_fstype}" == "xfat" ] ; then
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 1 100
+	else
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 1 100
+	fi
+}
+
+function format_boot_partition {
+	echo "Formating Boot Partition"
+	echo "-----------------------------"
+	if [ "x${boot_fstype}" == "xfat" ] ; then
+		boot_part_format="vfat"
+		mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
+	else
+		boot_part_format="ext2"
+		mkfs.ext2 ${MMC}${PARTITION_PREFIX}1 -L ${BOOT_LABEL}
+	fi
 }
 
 function calculate_rootfs_partition {
@@ -568,16 +588,10 @@ function calculate_rootfs_partition {
  fi
 }
 
-function format_boot_partition {
-	echo "Formating Boot Partition"
-	echo "-----------------------------"
-	mkfs.vfat -F 16 ${MMC}${PARTITION_PREFIX}1 -n ${BOOT_LABEL}
-}
-
 function format_rootfs_partition {
- echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
- echo "-----------------------------"
- mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL}
+	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
+	echo "-----------------------------"
+	mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL}
 }
 
 function create_partitions {
@@ -588,6 +602,9 @@ function create_partitions {
 		;;
 	dd_to_drive)
 		dd_to_drive
+		;;
+	*)
+		no_boot_on_drive
 		;;
 	esac
 	calculate_rootfs_partition
@@ -605,7 +622,7 @@ function populate_boot {
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	if mount -t vfat ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
+	if mount -t ${boot_part_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 		mkdir -p ${TEMPDIR}/disk/backup
 		mkdir -p ${TEMPDIR}/disk/dtbs
 
