@@ -1116,6 +1116,11 @@ function check_uboot_type {
 			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
+			        Freescale:
+			                mx51evk - <i.MX51 "Babbage" Development Board>
+			                mx53loco - <i.MX53 Quick Start Development Board>
+			                mx51evk_dtb - <i.MX51 "Babbage" Development Board>
+			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
 			-----------------------------
 		__EOF__
 		exit
@@ -1139,7 +1144,7 @@ function check_uboot_type {
 }
 
 function usage {
-    echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
+	echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
 	#tabed to match 
 		cat <<-__EOF__
 			-----------------------------
@@ -1157,6 +1162,11 @@ function usage {
 			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
+			        Freescale:
+			                mx51evk - <i.MX51 "Babbage" Development Board>
+			                mx53loco - <i.MX53 Quick Start Development Board>
+			                mx51evk_dtb - <i.MX51 "Babbage" Development Board>
+			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
 
 			--addon <additional peripheral device>
 			        pico
