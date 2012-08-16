@@ -269,17 +269,29 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
+	if [ "${USE_UIMAGE}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			kernel_file=uImage
+			initrd_file=uInitrd
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			kernel_file=zImage
+			initrd_file=initrd.img
+		__EOF__
+	fi
+
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		#dtb_file=${dtb_file}
+		boot_fstype=${boot_fstype}
 
 		console=SERIAL_CONSOLE
 
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		xyz_load_image=fatload mmc 0:1 ${kernel_addr} ${kernel_file}
-		xyz_load_initrd=fatload mmc 0:1 ${initrd_addr} ${initrd_file}; setenv initrd_size \${filesize}
-		xyz_load_dtb=fatload mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
+		xyz_load_image=\${boot_fstype}load mmc 0:1 ${kernel_addr} \${kernel_file}
+		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
+		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
 		video_args=setenv video VIDEO_DISPLAY
 
@@ -956,10 +968,8 @@ function check_uboot_type {
 	unset spl_name
 	unset boot_name
 	unset need_dtbs
-	unset boot_scr_wrapper
-	kernel_file=zImage
-	initrd_file=initrd.img
 	boot="bootz"
+	unset boot_scr_wrapper
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -992,8 +1002,6 @@ function check_uboot_type {
 		unset HAS_OMAPFB_DSS2
 		;;
 	bone)
-		kernel_file=uImage
-		initrd_file=uInitrd
 		boot="bootm"
 		SYSTEM="bone"
 		BOOTLOADER="BEAGLEBONE_A"
