@@ -687,6 +687,9 @@ function populate_boot {
 			format=1.0
 			board=${BOOTLOADER}
 			boot_image=${boot}
+			boot_script=${boot_script}
+			boot_fstype=${boot_fstype}
+			serial_tty=${SERIAL}
 			kernel_addr=${kernel_addr}
 			initrd_addr=${initrd_addr}
 			load_addr=${load_addr}
@@ -877,8 +880,11 @@ function is_omap {
 	initrd_addr="0x81600000"
 	load_addr="0x80008000"
 	dtb_addr="0x815f0000"
-	startup_script="uEnv.txt"
+	boot_script="uEnv.txt"
 
+	boot_fstype="fat"
+
+	SERIAL="ttyO2"
 	SERIAL_CONSOLE="${SERIAL},115200n8"
 
 	VIDEO_CONSOLE="console=tty0"
@@ -906,12 +912,16 @@ function is_imx {
 
 	bootloader_location="dd_to_drive"
 	unset spl_name
-	boot_name=1
+	boot_name="u-boot.imx"
 
-	SERIAL_CONSOLE="${SERIAL},115200"
 	SUBARCH="imx"
 
-	startup_script="uEnv.txt"
+	SERIAL="ttymxc0"
+	SERIAL_CONSOLE="${SERIAL},115200"
+
+	boot_script="uEnv.txt"
+
+	boot_fstype="fat"
 
 	VIDEO_CONSOLE="console=tty0"
 	HAS_IMX_BLOB=1
@@ -930,6 +940,7 @@ function check_uboot_type {
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
+	unset need_dtbs
 	unset boot_scr_wrapper
 	kernel_file=zImage
 	initrd_file=initrd.img
@@ -939,7 +950,6 @@ function check_uboot_type {
 	beagle_bx)
 		SYSTEM="beagle_bx"
 		BOOTLOADER="BEAGLEBOARD_BX"
-		SERIAL="ttyO2"
 		DISABLE_ETH=1
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
@@ -947,7 +957,6 @@ function check_uboot_type {
 	beagle_cx)
 		SYSTEM="beagle_cx"
 		BOOTLOADER="BEAGLEBOARD_CX"
-		SERIAL="ttyO2"
 		DISABLE_ETH=1
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
@@ -955,14 +964,12 @@ function check_uboot_type {
 	beagle_xm)
 		SYSTEM="beagle_xm"
 		BOOTLOADER="BEAGLEBOARD_XM"
-		SERIAL="ttyO2"
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
 		BOOTLOADER="BEAGLEBOARD_XM"
-		SERIAL="ttyO2"
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
 
@@ -975,8 +982,10 @@ function check_uboot_type {
 		boot="bootm"
 		SYSTEM="bone"
 		BOOTLOADER="BEAGLEBONE_A"
-		SERIAL="ttyO0"
 		is_omap
+		SERIAL="ttyO0"
+		SERIAL_CONSOLE="${SERIAL},115200n8"
+
 		USE_UIMAGE=1
 
 		primary_id="psp"
@@ -987,8 +996,9 @@ function check_uboot_type {
 	bone_zimage)
 		SYSTEM="bone_zimage"
 		BOOTLOADER="BEAGLEBONE_A"
-		SERIAL="ttyO0"
 		is_omap
+		SERIAL="ttyO0"
+		SERIAL_CONSOLE="${SERIAL},115200n8"
 
 		USE_BETA_BOOTLOADER=1
 
@@ -1000,13 +1010,11 @@ function check_uboot_type {
 	igepv2)
 		SYSTEM="igepv2"
 		BOOTLOADER="IGEP00X0"
-		SERIAL="ttyO2"
 		is_omap
 		;;
 	panda)
 		SYSTEM="panda"
 		BOOTLOADER="PANDABOARD"
-		SERIAL="ttyO2"
 		is_omap
 		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1015,7 +1023,6 @@ function check_uboot_type {
 	panda_es)
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
-		SERIAL="ttyO2"
 		is_omap
 		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1024,7 +1031,6 @@ function check_uboot_type {
 	panda_kms)
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
-		SERIAL="ttyO2"
 		is_omap
 		#dtb_file="omap4-panda.dtb"
 
@@ -1035,15 +1041,12 @@ function check_uboot_type {
 	crane)
 		SYSTEM="crane"
 		BOOTLOADER="CRANEBOARD"
-		SERIAL="ttyO2"
 		is_omap
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
 		BOOTLOADER="MX51EVK"
-		SERIAL="ttymxc0"
 		is_imx
-		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
 		kernel_addr="0x90010000"
 		initrd_addr="0x92000000"
 		load_addr="0x90008000"
@@ -1053,9 +1056,7 @@ function check_uboot_type {
 	mx51evk_dtb)
 		SYSTEM="mx51evk_dtb"
 		BOOTLOADER="MX51EVK"
-		SERIAL="ttymxc0"
 		is_imx
-		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
 		kernel_addr="0x90010000"
 		initrd_addr="0x92000000"
 		load_addr="0x90008000"
@@ -1065,9 +1066,7 @@ function check_uboot_type {
 	mx53loco)
 		SYSTEM="mx53loco"
 		BOOTLOADER="MX53LOCO"
-		SERIAL="ttymxc0"
 		is_imx
-		#rcn-ee kernel_addr="0x70000000" causes wdt reset
 		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
 		load_addr="0x70008000"
@@ -1079,7 +1078,6 @@ function check_uboot_type {
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
 		is_imx
-		#rcn-ee kernel_addr="0x70000000" doesnt boot...
 		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
 		load_addr="0x70008000"
