@@ -658,10 +658,13 @@ function populate_boot {
 		cat  ${TEMPDIR}/bootscripts/normal.cmd
 		echo "-----------------------------"
 
+		#This should be compatible with hwpacks variable names..
+		#https://code.launchpad.net/~linaro-maintainers/linaro-images/
 		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 			#!/bin/sh
 			format=1.0
 			board=${BOOTLOADER}
+			boot_image=${boot}
 			kernel_addr=${kernel_addr}
 			initrd_addr=${initrd_addr}
 			load_addr=${load_addr}
@@ -1081,14 +1084,14 @@ function check_uboot_type {
 			ERROR: This script does not currently recognize the selected: [--uboot ${UBOOT_TYPE}] option..
 			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
 			-----------------------------
-			-Supported TI Devices:-------
-			beagle_bx - <BeagleBoard Ax/Bx>
-			beagle_cx - <BeagleBoard Cx>
-			beagle_xm - <BeagleBoard xMA/B/C>
-			bone - <BeagleBone Ax>
-			igepv2 - <serial mode only>
-			panda - <PandaBoard Ax>
-			panda_es - <PandaBoard ES>
+			        TI:
+			                beagle_bx - <BeagleBoard Ax/Bx>
+			                beagle_cx - <BeagleBoard Cx>
+			                beagle_xm - <BeagleBoard xMA/B/C>
+			                bone - <BeagleBone Ax>
+			                igepv2 - <serial mode only>
+			                panda - <PandaBoard Ax>
+			                panda_es - <PandaBoard ES>
 			-----------------------------
 		__EOF__
 		exit
@@ -1113,60 +1116,55 @@ function check_uboot_type {
 
 function usage {
     echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
-cat <<EOF
+	#tabed to match 
+		cat <<-__EOF__
+			-----------------------------
+			Bugs email: "bugs at rcn-ee.com"
 
-Bugs email: "bugs at rcn-ee.com"
+			Required Options:
+			--mmc </dev/sdX>
 
-Required Options:
---mmc </dev/sdX>
+			--uboot <dev board>
+			        TI:
+			                beagle_bx - <BeagleBoard Ax/Bx>
+			                beagle_cx - <BeagleBoard Cx>
+			                beagle_xm - <BeagleBoard xMA/B/C>
+			                bone - <BeagleBone Ax>
+			                igepv2 - <serial mode only>
+			                panda - <PandaBoard Ax>
+			                panda_es - <PandaBoard ES>
 
---uboot <dev board>
-    beagle_bx - <BeagleBoard Ax/Bx>
-    beagle_cx - <BeagleBoard Cx>
-    beagle_xm - <BeagleBoard xMA/B/C>
-    bone - <BeagleBone Ax>
-    igepv2 - <serial mode only>
-    panda - <PandaBoard Ax>
-    panda_es - <PandaBoard ES>
+			--addon <additional peripheral device>
+			        pico
+			        ulcd <beagle xm>
 
---addon <additional peripheral device>
-    pico
-    ulcd <beagle xm>
+			--rootfs <fs_type>
+			        ext2
+			        ext3
+			        ext4 - <set as default>
+			        btrfs
 
---rootfs <fs_type>
-    ext2
-    ext3
-    ext4 - <set as default>
-    btrfs
+			--boot_label <boot_label>
 
---boot_label <boot_label>
-    boot partition label
+			--rootfs_label <rootfs_label>
 
---rootfs_label <rootfs_label>
-    rootfs partition label
+			--swap_file <xxx>
+					<create a swap file of (xxx)MB's>
 
---swap_file <xxx>
-    Creats a Swap file of (xxx)MB's
+			--svideo-ntsc
+			        <force ntsc mode for S-Video>
 
---svideo-ntsc
-    force ntsc mode for svideo
+			--svideo-pal
+			        <force pal mode for S-Video>
 
---svideo-pal
-    force pal mode for svideo
+			Additional Options:
+			        -h --help
 
-Additional Options:
--h --help
-    this help
+			--probe-mmc
+			        <list all partitions: sudo ./setup_sdcard.sh --probe-mmc>
 
---probe-mmc
-    List all partitions: sudo ./setup_sdcard.sh --probe-mmc
-
-Debug:
---fdisk-debug
-    debug fdisk/parted/etc..
-
-EOF
-exit
+			__EOF__
+	exit
 }
 
 function checkparm {
