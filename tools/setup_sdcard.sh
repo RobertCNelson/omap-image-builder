@@ -92,7 +92,7 @@ function is_valid_addon {
 }
 
 function check_root {
-	if [[ $UID -ne 0 ]]; then
+	if [[ ${UID} -ne 0 ]] ; then
 		echo "$0 must be run as sudo user or root"
 		exit
 	fi
@@ -145,7 +145,6 @@ function detect_software {
 	check_for_command wget wget
 	check_for_command pv pv
 	check_for_command parted parted
-	check_for_command partprobe parted
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
@@ -521,7 +520,7 @@ function omap_fatfs_boot_part {
 	echo "-----------------------------"
 	parted --script ${MMC} set 1 boot on
 
-	if [ "$FDISK_DEBUG" ];then
+	if [ "${FDISK_DEBUG}" ] ; then
 		echo "Debug: Partition 1 layout:"
 		echo "-----------------------------"
 		fdisk -l ${MMC}
@@ -616,8 +615,6 @@ function populate_boot {
 	echo "Populating Boot Partition"
 	echo "-----------------------------"
 
-	partprobe ${MMC}
-
 	if [ ! -d ${TEMPDIR}/disk ] ; then
 		mkdir -p ${TEMPDIR}/disk
 	fi
@@ -628,7 +625,7 @@ function populate_boot {
 
 		if [ ! "${bootloader_installed}" ] ; then
 			if [ "${spl_name}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${MLO} ]; then
+				if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
 					cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
 					cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/backup/${spl_name}
 					echo "-----------------------------"
@@ -636,13 +633,13 @@ function populate_boot {
 			fi
 
 			if [ "${boot_name}" ] && [ ! "${IS_IMX}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
+				if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
 					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
 				fi
 			fi
 
 			if [ "${boot_name}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${UBOOT} ]; then
+				if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
 					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
 					echo "-----------------------------"
 				fi
@@ -1202,86 +1199,85 @@ function usage {
 }
 
 function checkparm {
-    if [ "$(echo $1|grep ^'\-')" ];then
-        echo "E: Need an argument"
-        usage
-    fi
+	if [ "$(echo $1|grep ^'\-')" ] ; then
+		echo "E: Need an argument"
+		usage
+	fi
 }
 
 IN_VALID_UBOOT=1
 
 # parse commandline options
-while [ ! -z "$1" ]; do
-    case $1 in
-        -h|--help)
-            usage
-            MMC=1
-            ;;
-        --probe-mmc)
-            MMC="/dev/idontknow"
-            check_root
-            check_mmc
-            ;;
-        --mmc)
-            checkparm $2
-            MMC="$2"
-	    if [[ "${MMC}" =~ "mmcblk" ]]
-            then
-	        PARTITION_PREFIX="p"
-            fi
-            check_root
-            check_mmc
-            ;;
-        --uboot)
-            checkparm $2
-            UBOOT_TYPE="$2"
-            check_uboot_type
-            ;;
-        --addon)
-            checkparm $2
-            ADDON=$2
-            ;;
-        --rootfs)
-            checkparm $2
-            ROOTFS_TYPE="$2"
-            ;;
-        --svideo-ntsc)
-            SVIDEO_NTSC=1
-            ;;
-        --svideo-pal)
-            SVIDEO_PAL=1
-            ;;
-        --boot_label)
-            checkparm $2
-            BOOT_LABEL="$2"
-            ;;
-        --rootfs_label)
-            checkparm $2
-            ROOTFS_LABEL="$2"
-            ;;
-        --swap_file)
-            checkparm $2
-            SWAP_SIZE="$2"
-            CREATE_SWAP=1
-            ;;
-        --spl)
-            checkparm $2
-            LOCAL_SPL="$2"
-            USE_LOCAL_BOOT=1
-            ;;
-        --bootloader)
-            checkparm $2
-            LOCAL_BOOTLOADER="$2"
-            USE_LOCAL_BOOT=1
-            ;;
-        --use-beta-bootloader)
-            USE_BETA_BOOTLOADER=1
-            ;;
-        --fdisk-debug)
-            FDISK_DEBUG=1
-            ;;
-    esac
-    shift
+while [ ! -z "$1" ] ; do
+	case $1 in
+	-h|--help)
+		usage
+		MMC=1
+		;;
+	--probe-mmc)
+		MMC="/dev/idontknow"
+		check_root
+		check_mmc
+		;;
+	--mmc)
+		checkparm $2
+		MMC="$2"
+		if [[ "${MMC}" =~ "mmcblk" ]] ; then
+			PARTITION_PREFIX="p"
+		fi
+		check_root
+		check_mmc
+		;;
+	--uboot)
+		checkparm $2
+		UBOOT_TYPE="$2"
+		check_uboot_type
+		;;
+	--addon)
+		checkparm $2
+		ADDON=$2
+		;;
+	--rootfs)
+		checkparm $2
+		ROOTFS_TYPE="$2"
+		;;
+	--svideo-ntsc)
+		SVIDEO_NTSC=1
+		;;
+	--svideo-pal)
+		SVIDEO_PAL=1
+		;;
+	--boot_label)
+		checkparm $2
+		BOOT_LABEL="$2"
+		;;
+	--rootfs_label)
+		checkparm $2
+		ROOTFS_LABEL="$2"
+		;;
+	--swap_file)
+		checkparm $2
+		SWAP_SIZE="$2"
+		CREATE_SWAP=1
+		;;
+	--spl)
+		checkparm $2
+		LOCAL_SPL="$2"
+		USE_LOCAL_BOOT=1
+		;;
+	--bootloader)
+		checkparm $2
+		LOCAL_BOOTLOADER="$2"
+		USE_LOCAL_BOOT=1
+		;;
+	--use-beta-bootloader)
+		USE_BETA_BOOTLOADER=1
+		;;
+	--fdisk-debug)
+		FDISK_DEBUG=1
+		;;
+	esac
+	shift
 done
 
 if [ ! "${MMC}" ] ; then
@@ -1329,10 +1325,10 @@ if [ -n "${ADDON}" ] ; then
 	fi
 fi
 
- find_issue
- detect_software
+find_issue
+detect_software
 
-if [ "${spl_name}" ] || [ "${boot_name}" ]; then
+if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 	if [ "${USE_LOCAL_BOOT}" ] ; then
 		local_bootloader
 	else
@@ -1340,10 +1336,8 @@ if [ "${spl_name}" ] || [ "${boot_name}" ]; then
 	fi
 fi
 
- setup_bootscripts
- unmount_all_drive_partitions
- create_partitions
- populate_boot
- populate_rootfs
-
-
+setup_bootscripts
+unmount_all_drive_partitions
+create_partitions
+populate_boot
+populate_rootfs
