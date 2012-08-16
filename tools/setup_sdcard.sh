@@ -1332,10 +1332,12 @@ fi
  find_issue
  detect_software
 
-if [ "${USE_LOCAL_BOOT}" ] ; then
-	local_bootloader
-else
-	dl_bootloader
+if [ "${spl_name}" ] || [ "${boot_name}" ]; then
+	if [ "${USE_LOCAL_BOOT}" ] ; then
+		local_bootloader
+	else
+		dl_bootloader
+	fi
 fi
 
  setup_bootscripts
