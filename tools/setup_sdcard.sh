@@ -655,6 +655,18 @@ function populate_boot {
 			echo "-----------------------------"
 		fi
 
+		if [ "${boot_scr_wrapper}" ] ; then
+			cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
+				echo "boot.scr -> uEnv.txt wrapper..."
+				setenv boot_fstype ${boot_fstype}
+				\${boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
+				env import -t \${loadaddr} \${filesize}
+				run loaduimage
+			__EOF__
+			mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
+			cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
+		fi
+
 		echo "Copying ${startup_script} based boot scripts to Boot Partition"
 		echo "-----------------------------"
 		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/${startup_script}
@@ -913,6 +925,7 @@ function check_uboot_type {
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
+	unset boot_scr_wrapper
 	kernel_file=zImage
 	initrd_file=initrd.img
 	boot="bootz"
