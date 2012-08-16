@@ -201,23 +201,27 @@ function dl_bootloader {
 	echo ""
 	echo "Downloading Device's Bootloader"
 	echo "-----------------------------"
+	unset disable_mirror
 
 	mkdir -p ${TEMPDIR}/dl/${DIST}
 	mkdir -p "${DIR}/dl/${DIST}"
 
 	unset RCNEEDOWN
-	echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
-	wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
-
-	if [ ! -f ${TEMPDIR}/dl/bootloader ] ; then
-		rcn-ee_down_use_mirror
+	if [ "${disable_mirror}" ] ; then
 		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
+	else
+		echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
+		wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
 	fi
 
 	if [ ! -f ${TEMPDIR}/dl/bootloader ] ; then
-		echo "ERROR: Network Failure, are you connected to the internet?"
-		echo "Unable to download bootloader from main and backup server."
-		exit
+		if [ "${disable_mirror}" ] ; then
+			echo "error: can't connect to rcn-ee.net, retry in a few minutes (backup mirror down)"
+			exit
+		else
+			rcn-ee_down_use_mirror
+			wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/bootloader
+		fi
 	fi
 
 	if [ "${RCNEEDOWN}" ] ; then
