@@ -628,7 +628,7 @@ function populate_boot {
 		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
 		if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
 			LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
-			if [ ! "${USE_ZIMAGE}" ] ; then
+			if [ "${USE_UIMAGE}" ] ; then
 				echo "Using mkimage to create uImage"
 				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
 				echo "-----------------------------"
@@ -641,7 +641,7 @@ function populate_boot {
 		UINITRD="uInitrd"
 		INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
 		if [ "-${INITRD_FILE}-" != "--" ] ; then
-			if [ ! "${USE_ZIMAGE}" ] ; then
+			if [ "${USE_UIMAGE}" ] ; then
 				echo "Using mkimage to create uInitrd"
 				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
 				echo "-----------------------------"
@@ -902,7 +902,7 @@ function is_imx {
 function check_uboot_type {
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
-	unset USE_ZIMAGE
+	unset USE_UIMAGE
 	unset USE_KMS
 	unset dtb_file
 
@@ -920,7 +920,6 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		DISABLE_ETH=1
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_cx)
@@ -929,7 +928,6 @@ function check_uboot_type {
 		SERIAL="ttyO2"
 		DISABLE_ETH=1
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_xm)
@@ -937,7 +935,6 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_XM"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap3-beagle.dtb"
 		;;
 	beagle_xm_kms)
@@ -945,7 +942,6 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_XM"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap3-beagle.dtb"
 
 		USE_KMS=1
@@ -959,6 +955,7 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBONE_A"
 		SERIAL="ttyO0"
 		is_omap
+		USE_UIMAGE=1
 
 		primary_id="psp"
 
@@ -970,7 +967,6 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBONE_A"
 		SERIAL="ttyO0"
 		is_omap
-		USE_ZIMAGE=1
 
 		USE_BETA_BOOTLOADER=1
 
@@ -984,14 +980,12 @@ function check_uboot_type {
 		BOOTLOADER="IGEP00X0"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		;;
 	panda)
 		SYSTEM="panda"
 		BOOTLOADER="PANDABOARD"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
@@ -1001,7 +995,6 @@ function check_uboot_type {
 		BOOTLOADER="PANDABOARD_ES"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
@@ -1011,7 +1004,6 @@ function check_uboot_type {
 		BOOTLOADER="PANDABOARD_ES"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		#dtb_file="omap4-panda.dtb"
 
 		USE_KMS=1
@@ -1023,14 +1015,12 @@ function check_uboot_type {
 		BOOTLOADER="CRANEBOARD"
 		SERIAL="ttyO2"
 		is_omap
-		USE_ZIMAGE=1
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
 		BOOTLOADER="MX51EVK"
 		SERIAL="ttymxc0"
 		is_imx
-		USE_ZIMAGE=1
 		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
 		kernel_addr="0x90010000"
 		initrd_addr="0x92000000"
@@ -1043,7 +1033,6 @@ function check_uboot_type {
 		BOOTLOADER="MX51EVK"
 		SERIAL="ttymxc0"
 		is_imx
-		USE_ZIMAGE=1
 		#rcn-ee: For some reason 0x90000000 hard locks on boot, with u-boot 2012.04.01
 		kernel_addr="0x90010000"
 		initrd_addr="0x92000000"
@@ -1056,7 +1045,6 @@ function check_uboot_type {
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
 		is_imx
-		USE_ZIMAGE=1
 		#rcn-ee kernel_addr="0x70000000" causes wdt reset
 		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
@@ -1069,7 +1057,6 @@ function check_uboot_type {
 		BOOTLOADER="MX53LOCO"
 		SERIAL="ttymxc0"
 		is_imx
-		USE_ZIMAGE=1
 		#rcn-ee kernel_addr="0x70000000" doesnt boot...
 		kernel_addr="0x70010000"
 		initrd_addr="0x72000000"
@@ -1098,7 +1085,7 @@ function check_uboot_type {
 		;;
 	esac
 
-	if [ ! "${USE_ZIMAGE}" ] ; then
+	if [ "${USE_UIMAGE}" ] ; then
 		unset NEEDS_COMMAND
 		check_for_command mkimage uboot-mkimage
 
