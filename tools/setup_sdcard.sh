@@ -669,10 +669,11 @@ function populate_boot {
 				echo "Using mkimage to create uImage"
 				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
 				echo "-----------------------------"
+			else
+				echo "Copying Kernel image:"
+				cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+				echo "-----------------------------"
 			fi
-			echo "Copying Kernel image:"
-			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
-			echo "-----------------------------"
 		fi
 
 		UINITRD="uInitrd"
@@ -682,10 +683,11 @@ function populate_boot {
 				echo "Using mkimage to create uInitrd"
 				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
 				echo "-----------------------------"
+			else
+				echo "Copying Kernel initrd:"
+				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+				echo "-----------------------------"
 			fi
-			echo "Copying Kernel initrd:"
-			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-			echo "-----------------------------"
 		fi
 
 		if [ "${boot_scr_wrapper}" ] ; then
