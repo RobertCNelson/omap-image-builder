@@ -81,7 +81,7 @@ function is_valid_rootfs_type {
 #
 #########################################################################
 
-VALID_ADDONS="pico ulcd"
+VALID_ADDONS="pico"
 
 function is_valid_addon {
 	if is_element_of $1 "${VALID_ADDONS}" ] ; then
@@ -259,9 +259,13 @@ function boot_uenv_txt_template {
 
 	if [ ! "${USE_KMS}" ] ; then
 		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#These video values are now set by default in the bootloader
+			#uncomment/change if you need something else
+
 			UENV_VRAM
 			UENV_FB
 			UENV_TIMING
+
 		__EOF__
 	fi
 
@@ -370,13 +374,6 @@ function tweak_boot_scripts {
 		KMS_VIDEO_RESOLUTION="640x480"
 	fi
 
-	if [ "x${ADDON}" == "xulcd" ] ; then
-		VIDEO_TIMING="800x480MR-16@60"
-		KMS_OVERRIDE=1
-		KMS_VIDEOA="video=DVI-D-1"
-		KMS_VIDEO_RESOLUTION="800x480"
-	fi
-
 	if [ "${SVIDEO_NTSC}" ] ; then
 		VIDEO_TIMING="ntsc"
 		VIDEO_OMAPFB_MODE="tv"
@@ -398,15 +395,19 @@ function tweak_boot_scripts {
 
 	if [ "${HAS_OMAPFB_DSS2}" ] && [ ! "${SERIAL_MODE}" ] ; then
 		#UENV_VRAM -> vram=12MB
-		sed -i -e 's:UENV_VRAM:vram=VIDEO_OMAP_RAM:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:UENV_VRAM:#vram=VIDEO_OMAP_RAM:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:VIDEO_OMAP_RAM:'$VIDEO_OMAP_RAM':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#UENV_FB -> defaultdisplay=dvi
-		sed -i -e 's:UENV_FB:defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/${ALL}
+		sed -i -e 's:UENV_FB:#defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#UENV_TIMING -> dvimode=1280x720MR-16@60
-		sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
+		if [ "x${ADDON}" == "xpico" ] ; then
+			sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
+		else
+			sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
+		fi
 		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
@@ -1167,7 +1168,6 @@ function usage {
 
 			--addon <additional peripheral device>
 			        pico
-			        ulcd <beagle xm>
 
 			--rootfs <fs_type>
 			        ext2
@@ -1320,7 +1320,6 @@ if [ -n "${ADDON}" ] ; then
 		echo "-----------------------------"
 		echo "Supported --addon options:"
 		echo "    pico"
-		echo "    ulcd <for the beagleboard xm>"
 		exit
 	fi
 fi
