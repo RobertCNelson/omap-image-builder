@@ -674,210 +674,32 @@ function populate_boot {
 		echo "Debug:"
 		cat ${TEMPDIR}/disk/SOC.sh
 
-cat > ${TEMPDIR}/readme.txt <<script_readme
+		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
+		echo "-----------------------------"
+		mkdir -p ${TEMPDIR}/disk/tools
+		git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools
+		echo "-----------------------------"
 
-These can be run from anywhere, but just in case change to "cd /boot/uboot"
+		cd ${TEMPDIR}/disk
+		sync
+		cd "${DIR}"/
 
-Tools:
+		echo "Debug: Contents of Boot Partition"
+		echo "-----------------------------"
+		ls -lh ${TEMPDIR}/disk/
+		echo "-----------------------------"
 
- "./tools/update_boot_files.sh"
+		umount ${TEMPDIR}/disk || true
 
-Updated with a custom uImage and modules or modified the boot.cmd/user.com files with new boot args? Run "./tools/update_boot_files.sh" to regenerate all boot files...
-
-Applications:
-
- "./tools/minimal_lxde.sh"
-
-Install minimal lxde shell, make sure to have network setup: "sudo ifconfig -a" then "sudo dhclient usb1" or "eth0/etc"
-
-Drivers:
- "./build_omapdrm_drivers.sh"
-
-omapdrm kms video driver, at some point this will be packaged by default for newer distro's at that time this script wont be needed...
-
-script_readme
-
-	cat > ${TEMPDIR}/update_boot_files.sh <<-__EOF__
-		#!/bin/sh
-
-		if ! id | grep -q root; then
-		        echo "must be run as root"
-		        exit
-		fi
-
-		cd /boot/uboot
-		mount -o remount,rw /boot/uboot
-
-		if [ ! -f /boot/initrd.img-\$(uname -r) ] ; then
-		        update-initramfs -c -k \$(uname -r)
-		else
-		        update-initramfs -u -k \$(uname -r)
-		fi
-
-		if [ -f /boot/initrd.img-\$(uname -r) ] ; then
-		        cp -v /boot/initrd.img-\$(uname -r) /boot/uboot/initrd.img
-		fi
-
-		#legacy uImage support:
-		if [ -f /boot/uboot/uImage ] ; then
-		        if [ -f /boot/initrd.img-\$(uname -r) ] ; then
-		                mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\$(uname -r) /boot/uboot/uInitrd
-		        fi
-		        if [ -f /boot/uboot/boot.cmd ] ; then
-		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/boot.cmd /boot/uboot/boot.scr
-		                cp -v /boot/uboot/boot.scr /boot/uboot/boot.ini
-		        fi
-		        if [ -f /boot/uboot/serial.cmd ] ; then
-		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d /boot/uboot/serial.cmd /boot/uboot/boot.scr
-		        fi
-		        if [ -f /boot/uboot/user.cmd ] ; then
-		                mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Reset Nand" -d /boot/uboot/user.cmd /boot/uboot/user.scr
-		        fi
-		fi
-
-	__EOF__
-
-	cat > ${TEMPDIR}/minimal_lxde.sh <<-__EOF__
-		#!/bin/sh
-
-		sudo apt-get update
-		sudo apt-get -y install lxde lxde-core lxde-icon-theme
-
-	__EOF__
-
-	cat > ${TEMPDIR}/xorg.conf <<-__EOF__
-		Section "Device"
-		        Identifier      "omap"
-		        Driver          "omap"
-		EndSection
-
-	__EOF__
-
-	cat > ${TEMPDIR}/build_omapdrm_drivers.sh <<-__EOF__
-		#!/bin/bash
-
-		#package list from:
-		#http://anonscm.debian.org/gitweb/?p=collab-maint/xf86-video-omap.git;a=blob;f=debian/control;hb=HEAD
-
-		sudo apt-get update ; sudo apt-get -y install debhelper dh-autoreconf libdrm-dev libudev-dev libxext-dev pkg-config x11proto-core-dev x11proto-fonts-dev x11proto-gl-dev x11proto-xf86dri-dev xutils-dev xserver-xorg-dev
-
-		if [ ! -f /home/\${USER}/git/xf86-video-omap/.git/config ] ; then
-		        git clone git://anongit.freedesktop.org/xorg/driver/xf86-video-omap /home/\${USER}/git/xf86-video-omap/
-		fi
-
-		if [ ! -f /home/\${USER}/git/libdrm/.git/config ] ; then
-		        git clone git://anongit.freedesktop.org/mesa/drm /home/\${USER}/git/libdrm/
-		fi
-
-		DPKG_ARCH=\$(dpkg --print-architecture | grep arm)
-		case "\${DPKG_ARCH}" in
-		armel)
-		        gnu="gnueabi"
-		        ;;
-		armhf)
-		        gnu="gnueabihf"
-		        ;;
-		esac
-
-		echo ""
-		echo "Building omap libdrm"
-		echo ""
-
-		cd /home/\${USER}/git/libdrm/
-		make distclean &> /dev/null
-		git checkout master -f
-		git pull
-		git branch libdrm-build -D || true
-		git checkout 2.4.38 -b libdrm-build
-
-		./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-\${gnu} --disable-libkms --disable-intel --disable-radeon --disable-nouveau --enable-omap-experimental-api
-
-		make
-		sudo make install
-
-		echo ""
-		echo "Building omap DDX"
-		echo ""
-
-		cd /home/\${USER}/git/xf86-video-omap/
-		make distclean &> /dev/null
-		git checkout master -f
-		git pull
-		git branch omap-build -D || true
-		git checkout origin/HEAD -b omap-build
-
-		./autogen.sh --prefix=/usr
-		make
-		sudo make install
-
-		sudo cp /boot/uboot/tools/xorg.conf /etc/X11/xorg.conf
-
-	__EOF__
-
-	cat > ${TEMPDIR}/suspend_mount_debug.sh <<-__EOF__
-		#!/bin/bash
-
-		if ! id | grep -q root; then
-		        echo "must be run as root"
-		        exit
-		fi
-
-		mkdir -p /debug
-		mount -t debugfs debugfs /debug
-
-	__EOF__
-
-	cat > ${TEMPDIR}/suspend.sh <<-__EOF__
-		#!/bin/bash
-
-		if ! id | grep -q root; then
-		        echo "must be run as root"
-		        exit
-		fi
-
-		echo mem > /sys/power/state
-
-	__EOF__
-
-	mkdir -p ${TEMPDIR}/disk/tools
-	cp -v ${TEMPDIR}/readme.txt ${TEMPDIR}/disk/tools/readme.txt
-
-	cp -v ${TEMPDIR}/update_boot_files.sh ${TEMPDIR}/disk/tools/update_boot_files.sh
-	chmod +x ${TEMPDIR}/disk/tools/update_boot_files.sh
-
-	cp -v ${TEMPDIR}/minimal_lxde.sh ${TEMPDIR}/disk/tools/minimal_lxde.sh
-	chmod +x ${TEMPDIR}/disk/tools/minimal_lxde.sh
-
-	cp -v ${TEMPDIR}/xorg.conf ${TEMPDIR}/disk/tools/xorg.conf
-	cp -v ${TEMPDIR}/build_omapdrm_drivers.sh ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
-	chmod +x ${TEMPDIR}/disk/tools/build_omapdrm_drivers.sh
-
-	cp -v ${TEMPDIR}/suspend_mount_debug.sh ${TEMPDIR}/disk/tools/
-	chmod +x ${TEMPDIR}/disk/tools/suspend_mount_debug.sh
-
-	cp -v ${TEMPDIR}/suspend.sh ${TEMPDIR}/disk/tools/
-	chmod +x ${TEMPDIR}/disk/tools/suspend.sh
-
-cd ${TEMPDIR}/disk
-sync
-cd "${DIR}/"
-
- echo "Debug: Contents of Boot Partition"
- echo "-----------------------------"
- ls -lh ${TEMPDIR}/disk/
- echo "-----------------------------"
-
-umount ${TEMPDIR}/disk || true
-
- echo "Finished populating Boot Partition"
- echo "-----------------------------"
-else
- echo "-----------------------------"
- echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
- echo "Please retry running the script, sometimes rebooting your system helps."
- echo "-----------------------------"
- exit
-fi
+		echo "Finished populating Boot Partition"
+		echo "-----------------------------"
+	else
+		echo "-----------------------------"
+		echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "-----------------------------"
+		exit
+	fi
 }
 
 function populate_rootfs {
