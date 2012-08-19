@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RELEASE_HOST="panda-es-b1-1gb"
+RELEASE_HOST="panda-es-1gb-b0"
 
 #DEBOOT_VER="1.0.41ubuntu1"
 #DEBOOT_HTTP="http://ports.ubuntu.com/pool/main/d/debootstrap"
