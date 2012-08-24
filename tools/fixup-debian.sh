@@ -20,9 +20,6 @@ echo "#iface wlan0 inet dhcp" >> /etc/network/interfaces
 echo "#    wpa-ssid \"essid\"" >> /etc/network/interfaces
 echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 
-#smsc95xx kevent workaround/hack
-echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
-
 if which git >/dev/null 2>&1; then
 	cd /tmp/
 	git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git

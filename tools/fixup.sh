@@ -20,9 +20,6 @@ echo "#iface wlan0 inet dhcp" >> /etc/network/interfaces
 echo "#    wpa-ssid \"essid\"" >> /etc/network/interfaces
 echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 
-#smsc95xx kevent workaround/hack
-echo "vm.min_free_kbytes = 8192" >> /etc/sysctl.conf
-
 cat > /etc/flash-kernel.conf <<__EOF__
 #!/bin/sh
 UBOOT_PART=/dev/mmcblk0p1
