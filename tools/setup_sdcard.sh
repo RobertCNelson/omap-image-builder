@@ -975,6 +975,7 @@ function check_uboot_type {
 	unset smsc95xx_mem
 	unset dd_seek
 	unset dd_bs
+	boot_partition_size="50"
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
