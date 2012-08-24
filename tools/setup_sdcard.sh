@@ -137,13 +137,14 @@ function detect_software {
 	check_for_command wget wget
 	check_for_command pv pv
 	check_for_command parted parted
+	check_for_command git git
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted"
-		echo "Fedora: as root: yum install wget pv dosfstools parted"
-		echo "Gentoo: emerge wget pv dosfstools parted"
+		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted git-core"
+		echo "Fedora: as root: yum install wget pv dosfstools parted git-core"
+		echo "Gentoo: emerge wget pv dosfstools parted git"
 		echo ""
 		exit
 	fi
