@@ -556,9 +556,9 @@ function dd_to_drive {
 	echo "Using parted to create BOOT Partition"
 	echo "-----------------------------"
 	if [ "x${boot_fstype}" == "xfat" ] ; then
-		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 ${boot_startmb} 100
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 ${boot_startmb} ${boot_endmb}
 	else
-		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 ${boot_startmb} 100
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 ${boot_startmb} ${boot_endmb}
 	fi
 }
 
@@ -566,9 +566,9 @@ function no_boot_on_drive {
 	echo "Using parted to create BOOT Partition"
 	echo "-----------------------------"
 	if [ "x${boot_fstype}" == "xfat" ] ; then
-		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 ${boot_startmb} 100
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary fat16 ${boot_startmb} ${boot_endmb}
 	else
-		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 ${boot_startmb} 100
+		parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ext2 ${boot_startmb} ${boot_endmb}
 	fi
 }
 
@@ -618,9 +618,11 @@ function create_partitions {
 		omap_fatfs_boot_part
 		;;
 	dd_to_drive)
+		let boot_endmb=${boot_startmb}+${boot_partition_size}
 		dd_to_drive
 		;;
 	*)
+		let boot_endmb=${boot_startmb}+${boot_partition_size}
 		no_boot_on_drive
 		;;
 	esac
@@ -957,7 +959,7 @@ function is_imx {
 	boot_name="u-boot.imx"
 	dd_seek="1"
 	dd_bs="1024"
-	boot_startmb="10"
+	boot_startmb="2"
 
 	SUBARCH="imx"
 
@@ -966,7 +968,7 @@ function is_imx {
 
 	boot_script="uEnv.txt"
 
-	boot_fstype="fat"
+	boot_fstype="ext2"
 
 	VIDEO_CONSOLE="console=tty0"
 	HAS_IMX_BLOB=1
@@ -1144,7 +1146,6 @@ function check_uboot_type {
 		USE_UIMAGE=1
 		dd_seek="2"
 		dd_bs="512"
-		boot_startmb="2"
 		kernel_addr="0x10000000"
 		initrd_addr="0x12000000"
 		load_addr="0x10008000"
@@ -1341,7 +1342,7 @@ if [ ! "${MMC}" ] ; then
 	usage
 fi
 
-if [ "$IN_VALID_UBOOT" ] ; then
+if [ "${IN_VALID_UBOOT}" ] ; then
 	echo "ERROR: --uboot undefined"
 	usage
 fi
