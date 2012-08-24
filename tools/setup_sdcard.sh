@@ -39,8 +39,6 @@ unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
 unset ADDON
 
-unset FDISK_DEBUG
-
 unset SVIDEO_NTSC
 unset SVIDEO_PAL
 
@@ -117,10 +115,8 @@ function find_issue {
 		HAS_INITRD=1
 	fi
 
-	if [ "${FDISK_DEBUG}" ] ; then
-		echo "Debug: fdisk version:"
-		LC_ALL=C fdisk -v
-	fi
+	echo "Debug: fdisk version:"
+	LC_ALL=C fdisk -v
 }
 
 function check_for_command {
@@ -537,13 +533,6 @@ function omap_fatfs_boot_part {
 	echo "Setting Boot Partition's Boot Flag"
 	echo "-----------------------------"
 	parted --script ${MMC} set 1 boot on
-
-	if [ "${FDISK_DEBUG}" ] ; then
-		echo "Debug: Partition 1 layout:"
-		echo "-----------------------------"
-		fdisk -l ${MMC}
-		echo "-----------------------------"
-	fi
 }
 
 function dd_to_drive {
@@ -596,13 +585,6 @@ function calculate_rootfs_partition {
 
 	parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
 	sync
-
-	if [ "${FDISK_DEBUG}" ] ; then
-		echo "Debug: ${ROOTFS_TYPE} Partition"
-		echo "-----------------------------"
-		echo "parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}"
-		LC_ALL=C fdisk -l ${MMC}
-	fi
 }
 
 function format_rootfs_partition {
@@ -1329,9 +1311,6 @@ while [ ! -z "$1" ] ; do
 		;;
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
-		;;
-	--fdisk-debug)
-		FDISK_DEBUG=1
 		;;
 	esac
 	shift
