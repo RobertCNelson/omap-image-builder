@@ -567,6 +567,7 @@ function format_boot_partition_error {
 function format_boot_partition {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
+	partprobe
 	LC_ALL=C ${mkfs} ${MMC}${PARTITION_PREFIX}1 ${mkfs_label} || format_boot_partition_error
 }
 
@@ -587,6 +588,7 @@ function calculate_rootfs_partition {
 function format_rootfs_partition {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
+	partprobe
 	mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL}
 }
 
