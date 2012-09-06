@@ -363,15 +363,8 @@ function boot_uenv_txt_template {
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=
 			expansion_args=setenv expansion ip=\${ip_method}
-			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
-
-		__EOF__
-		;;
-	bone_zimage)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			expansion_args=setenv expansion ip=\${ip_method}
-			mmc_load_uimage=run xyz_mmcboot; run bootargs_defaults; run device_args; ${boot} ${kernel_addr} ${initrd_addr}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -470,7 +463,7 @@ function tweak_boot_scripts {
 		if [ "${KMS_OVERRIDE}" ] ; then
 			sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/${ALL}
 		else
-			sed -i -e 's:VIDEO_DISPLAY ::g' ${TEMPDIR}/bootscripts/${ALL}
+			sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/${ALL}
 		fi
 	fi
 
@@ -1027,33 +1020,19 @@ function check_uboot_type {
 		unset HAS_OMAPFB_DSS2
 		;;
 	bone)
-		boot="bootm"
 		SYSTEM="bone"
 		BOOTLOADER="BEAGLEBONE_A"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
-		USE_UIMAGE=1
-
 		primary_id="psp"
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
-		;;
-	bone_zimage)
-		SYSTEM="bone_zimage"
-		BOOTLOADER="BEAGLEBONE_A"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
 
-		USE_BETA_BOOTLOADER=1
-
-		primary_id="psp"
-
-		unset HAS_OMAPFB_DSS2
-		unset KMS_VIDEOA
+		#just to disable the omapfb stuff..
+		USE_KMS=1
 		;;
 	igepv2)
 		SYSTEM="igepv2"
