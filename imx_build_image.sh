@@ -37,35 +37,34 @@ MINIMAL="-minimal"
 DIR=$PWD
 
 function reset_vars {
+	unset DIST
+	unset PRIMARY_KERNEL
+	unset SECONDARY_KERNEL
+	unset EXTRA
+	unset USER_PASS
 
-unset DIST
-unset PRIMARY_KERNEL
-unset SECONDARY_KERNEL
-unset EXTRA
-unset USER_PASS
+	MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
+	MINIMAL_APT="${MINIMAL_APT},i2c-tools"
+	MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
+	MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
+	MINIMAL_APT="${MINIMAL_APT},cpufrequtils,fbset,ntpdate,ppp"
 
-MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
-MINIMAL_APT="${MINIMAL_APT},i2c-tools"
-MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},cpufrequtils,fbset,ntpdate,ppp"
+	#Hostname:
+	FQDN="imx"
 
-#Hostname:
-FQDN="imx"
+	USER_LOGIN="ubuntu"
+	USER_PASS="temppwd"
+	USER_NAME="Demo User"
 
-USER_LOGIN="ubuntu"
-USER_PASS="temppwd"
-USER_NAME="Demo User"
+	SERIAL="ttymxc0"
 
-SERIAL="ttymxc0"
+	IMAGESIZE="2G"
 
-IMAGESIZE="2G"
+	unset PRIMARY_KERNEL_OVERRIDE
+	unset SECONDARY_KERNEL_OVERRIDE
 
-unset PRIMARY_KERNEL_OVERRIDE
-unset SECONDARY_KERNEL_OVERRIDE
-
-#PRIMARY_KERNEL_OVERRIDE="v3.2.24-x14"
-#SECONDARY_KERNEL_OVERRIDE="v3.2.23-psp18"
+	#PRIMARY_KERNEL_OVERRIDE="v3.2.24-x14"
+	#SECONDARY_KERNEL_OVERRIDE="v3.2.23-psp18"
 }
 
 function dl_rootstock {
@@ -90,28 +89,27 @@ function dl_rootstock {
 }
 
 function minimal_armel {
+rm -f ${DIR}/deploy/armel-rootfs-*.tar || true
+rm -f ${DIR}/deploy/vmlinuz-* || true
+rm -f ${DIR}/deploy/initrd.img-* || true
+rm -f ${DIR}/deploy/rootstock-*.log || true
 
- rm -f ${DIR}/deploy/armel-rootfs-*.tar || true
- rm -f ${DIR}/deploy/vmlinuz-* || true
- rm -f ${DIR}/deploy/initrd.img-* || true
- rm -f ${DIR}/deploy/rootstock-*.log || true
+echo ""
+echo "Running as:"
+echo "-------------------------"
+echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
+--login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
+--seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
+--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
+echo "-------------------------"
+echo ""
 
- echo ""
- echo "Running as:"
- echo "-------------------------"
- echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
- --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
- --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
- ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
- echo "-------------------------"
- echo ""
-
- sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
- --login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
- --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
- --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
- ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
+sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${FQDN} \
+--login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
+--seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
+--dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
+${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -138,17 +136,17 @@ function compression {
 	#tar cvfj $BUILD.tar.bz2 ./$BUILD
 	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
-if [ -f ${DIR}/release ] ; then
-	tar cvf $BUILD.tar ./$BUILD
-	xz -z -7 -v $BUILD.tar
-    if [ $SYST == "${RELEASE_HOST}" ]; then
-     if [ -d /mnt/farm/testing/pending/ ] ; then
-      cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
-     fi
-    fi
-else
-	tar cvf $BUILD.tar ./$BUILD
-fi
+	if [ -f ${DIR}/release ] ; then
+		tar cvf $BUILD.tar ./$BUILD
+		xz -z -7 -v $BUILD.tar
+		if [ $SYST == "${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
+			fi
+		fi
+	else
+		tar cvf $BUILD.tar ./$BUILD
+	fi
 
 	cd ${DIR}/deploy/
 }
