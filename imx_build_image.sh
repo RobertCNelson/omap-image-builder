@@ -43,11 +43,12 @@ function reset_vars {
 	unset EXTRA
 	unset USER_PASS
 
-	MINIMAL_APT="git-core,nano,pastebinit,usbutils,wget"
-	MINIMAL_APT="${MINIMAL_APT},i2c-tools"
-	MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2"
-	MINIMAL_APT="${MINIMAL_APT},btrfs-tools,usb-modeswitch,wireless-tools,wpasupplicant"
-	MINIMAL_APT="${MINIMAL_APT},cpufrequtils,fbset,ntpdate,ppp"
+	MINIMAL_APT="git-core,nano,pastebinit,wget"
+	MINIMAL_APT="${MINIMAL_APT},i2c-tools,bsdmainutils"
+	MINIMAL_APT="${MINIMAL_APT},usb-modeswitch,usbutils"
+	MINIMAL_APT="${MINIMAL_APT},wireless-tools,wpasupplicant"
+	MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2,ntpdate,ppp"
+	MINIMAL_APT="${MINIMAL_APT},btrfs-tools,cpufrequtils,fbset"
 
 	#Hostname:
 	FQDN="imx"
