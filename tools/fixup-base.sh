@@ -47,5 +47,22 @@ fi
 
 __EOF__
 
+cat > /etc/init/board_tweaks.conf <<-__EOF__
+	start on runlevel 2
+
+	script
+	if [ -f /boot/uboot/SOC.sh ] ; then
+	        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
+	        case "\${board}" in
+	        BEAGLEBONE_A)
+	                if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
+	                        /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
+	                fi;;
+	        esac
+	fi
+	end script
+
+__EOF__
+
 rm -f /rootstock-user-script || true
 

@@ -55,6 +55,24 @@ fi
 #serial access as a normal user:
 usermod -aG  dialout debian
 
+cat > /etc/init.d/board_tweaks.sh <<-__EOF__
+	#!/bin/sh
+
+	if [ -f /boot/uboot/SOC.sh ] ; then
+	        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
+	        case "\${board}" in
+	        BEAGLEBONE_A)
+	                if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
+	                        /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
+	                fi;;
+	        esac
+	fi
+
+__EOF__
+
+chmod u+x /etc/init.d/board_tweaks.sh
+insserv board_tweaks.sh || true
+
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
 rm -f /rootstock-user-script || true
