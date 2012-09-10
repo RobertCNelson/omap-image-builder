@@ -789,6 +789,16 @@ function populate_rootfs {
 			echo "-----------------------------"
 		fi
 
+		case "${SYSTEM}" in
+		bone)
+			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
+			fbcon
+			ti_tscadc
+
+			__EOF__
+			;;
+		esac
+
 		if [ "${smsc95xx_mem}" ] ; then
 			echo "vm.min_free_kbytes = ${smsc95xx_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 		fi
