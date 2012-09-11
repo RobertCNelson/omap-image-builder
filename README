@@ -1,1 +1,7 @@
 ./build_image.sh
+
+#rcn-ee notes:
+
+I always need to reloook this up...
+git tag -a v2012.9-1 -m 'v2012.9-1' 
+git push origin --tags
