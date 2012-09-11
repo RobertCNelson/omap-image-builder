@@ -51,7 +51,7 @@ function reset_vars {
 	MINIMAL_APT="${MINIMAL_APT},btrfs-tools,cpufrequtils,fbset"
 
 	#Hostname:
-	FQDN="imx"
+	FQDN="arm"
 
 	USER_LOGIN="ubuntu"
 	USER_PASS="temppwd"
@@ -64,8 +64,8 @@ function reset_vars {
 	unset PRIMARY_KERNEL_OVERRIDE
 	unset SECONDARY_KERNEL_OVERRIDE
 
-	#PRIMARY_KERNEL_OVERRIDE="v3.2.24-x14"
-	#SECONDARY_KERNEL_OVERRIDE="v3.2.23-psp18"
+#	PRIMARY_KERNEL_OVERRIDE="v3.2.28-x14"
+#	SECONDARY_KERNEL_OVERRIDE="v3.2.28-psp21"
 }
 
 function dl_rootstock {

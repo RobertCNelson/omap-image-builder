@@ -45,7 +45,6 @@ function reset_vars {
 
 	MINIMAL_APT="git-core,nano,pastebinit,wget"
 	MINIMAL_APT="${MINIMAL_APT},i2c-tools,bsdmainutils"
-	MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
 	MINIMAL_APT="${MINIMAL_APT},usb-modeswitch,usbutils"
 	MINIMAL_APT="${MINIMAL_APT},wireless-tools,wpasupplicant"
 	MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2,ntpdate,ppp"
@@ -65,8 +64,8 @@ function reset_vars {
 	unset PRIMARY_KERNEL_OVERRIDE
 	unset SECONDARY_KERNEL_OVERRIDE
 
-	PRIMARY_KERNEL_OVERRIDE="v3.2.28-x14"
-	SECONDARY_KERNEL_OVERRIDE="v3.2.28-psp21"
+#	PRIMARY_KERNEL_OVERRIDE="v3.2.28-x14"
+#	SECONDARY_KERNEL_OVERRIDE="v3.2.28-psp21"
 }
 
 function dl_rootstock {
@@ -208,7 +207,7 @@ function oneiric_release {
 	reset_vars
 	DIST=oneiric
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,python-software-properties"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -222,7 +221,7 @@ function precise_release {
 	reset_vars
 	DIST=precise
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,lxde,lxde-core,lxde-icon-theme,build-essential"
+	EXTRA=",linux-firmware,devmem2,python-software-properties,lxde,lxde-core,lxde-icon-theme,build-essential"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -236,7 +235,7 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,python-software-properties"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
