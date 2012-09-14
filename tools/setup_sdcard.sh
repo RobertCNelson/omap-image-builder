@@ -360,6 +360,14 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
+	panda_dtb|panda_es_dtb)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=VIDEO_CONSOLE
+			expansion_args=setenv expansion
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
+
+		__EOF__
+		;;
 	mx51evk_dtb|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
@@ -1073,25 +1081,45 @@ function check_uboot_type {
 		SYSTEM="panda"
 		BOOTLOADER="PANDABOARD"
 		is_omap
-		#dtb_file="omap4-panda.dtb"
+		dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		smsc95xx_mem="16384"
+		;;
+	panda_dtb)
+		SYSTEM="panda_dtb"
+		BOOTLOADER="PANDABOARD"
+		is_omap
+		dtb_file="omap4-panda.dtb"
+		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
+		smsc95xx_mem="16384"
+		need_dtbs=1
 		;;
 	panda_es)
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
-		#dtb_file="omap4-panda.dtb"
+		dtb_file="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		smsc95xx_mem="32768"
+		;;
+	panda_es_dtb)
+		SYSTEM="panda_es_dtb"
+		BOOTLOADER="PANDABOARD_ES"
+		is_omap
+		dtb_file="omap4-pandaES.dtb"
+		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
+		smsc95xx_mem="32768"
+		need_dtbs=1
 		;;
 	panda_kms)
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
-		#dtb_file="omap4-panda.dtb"
+		dtb_file="omap4-pandaES.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
