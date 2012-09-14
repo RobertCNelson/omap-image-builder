@@ -129,6 +129,14 @@ function compression {
 		mv -v ${DIR}/deploy/initrd.img-* ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
+	if [ "${PRIMARY_DTB_FILE}" ] ; then
+		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${PRIMARY_DTB_FILE}
+	fi
+
+	if [ "${SECONDARY_DTB_FILE}" ] ; then
+		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${SECONDARY_DTB_FILE}
+	fi
+
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
 
 	echo "Starting Compression"
@@ -171,6 +179,10 @@ function kernel_chooser {
 
 	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
 	ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+
+	ACTUAL_DTB_FILE=$(cat /tmp/index.html | grep dtbs.tar.gz)
+	#<a href="3.5.0-imx2-dtbs.tar.gz">3.5.0-imx2-dtbs.tar.gz</a> 08-Aug-2012 21:34 8.7K
+	ACTUAL_DTB_FILE=$(echo ${ACTUAL_DTB_FILE} | awk -F "\"" '{print $2}')
 }
 
 function select_rcn-ee-net_kernel {
@@ -188,6 +200,11 @@ function select_rcn-ee-net_kernel {
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
+	unset PRIMARY_DTB_FILE
+	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
+		PRIMARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
+		echo "Using dtbs: ${PRIMARY_DTB_FILE}"
+	fi
 
 	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
 		OVERRIDE="${SECONDARY_KERNEL_OVERRIDE}"
@@ -199,6 +216,11 @@ function select_rcn-ee-net_kernel {
 	kernel_chooser
 	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${SECONDARY_KERNEL}"
+	unset SECONDARY_DTB_FILE
+	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
+		SECONDARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
+		echo "Using dtbs: ${SECONDARY_DTB_FILE}"
+	fi
 }
 
 #11.10
