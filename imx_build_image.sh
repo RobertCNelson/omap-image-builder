@@ -57,7 +57,7 @@ function reset_vars {
 	USER_PASS="temppwd"
 	USER_NAME="Demo User"
 
-	SERIAL="ttymxc0"
+	SERIAL="ttyO2"
 
 	IMAGESIZE="2G"
 
