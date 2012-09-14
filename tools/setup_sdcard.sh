@@ -115,6 +115,13 @@ function find_issue {
 		HAS_INITRD=1
 	fi
 
+	unset HAS_DTBS
+	DTBS=$(ls "${DIR}/" | grep dtbs | head -n 1)
+	if [ "x${DTBS}" != "x" ] ; then
+		echo "Debug: image has device tree: HAS_DTBS=1"
+		HAS_DTBS=1
+	fi
+
 	echo "Debug: fdisk version:"
 	LC_ALL=C fdisk -v
 }
@@ -660,13 +667,12 @@ function populate_boot {
 
 		VER=${primary_id}
 
-		UIMAGE="uImage"
 		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
-		if [ "-${VMLINUZ_FILE}-" != "--" ] ; then
+		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
 			LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
 			if [ "${USE_UIMAGE}" ] ; then
 				echo "Using mkimage to create uImage"
-				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/${UIMAGE}
+				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
 				echo "-----------------------------"
 			else
 				echo "Copying Kernel image:"
@@ -675,16 +681,30 @@ function populate_boot {
 			fi
 		fi
 
-		UINITRD="uInitrd"
-		INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
-		if [ "-${INITRD_FILE}-" != "--" ] ; then
-			if [ "${USE_UIMAGE}" ] ; then
-				echo "Using mkimage to create uInitrd"
-				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/${UINITRD}
-				echo "-----------------------------"
-			else
-				echo "Copying Kernel initrd:"
-				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+		if [ "${HAS_INITRD}" ] ; then
+			INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
+			if [ "x${INITRD_FILE}" != "x" ] ; then
+				if [ "${USE_UIMAGE}" ] ; then
+					echo "Using mkimage to create uInitrd"
+					mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+					echo "-----------------------------"
+				else
+					echo "Copying Kernel initrd:"
+					cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+					echo "-----------------------------"
+				fi
+			fi
+		fi
+
+		if [ "${HAS_DTBS}" ] ; then
+			DTBS_FILE=$(ls "${DIR}/" | grep dtbs | grep ${VER})
+			if [ "x${DTBS_FILE}" != "x" ] ; then
+				echo "Copying Device Tree Files:"
+				if [ "x${boot_fstype}" == "xfat" ] ; then
+					tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+				else
+					tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+				fi
 				echo "-----------------------------"
 			fi
 		fi
