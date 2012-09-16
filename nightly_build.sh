@@ -180,9 +180,13 @@ function kernel_chooser {
 	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
 	ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
 
-	ACTUAL_DTB_FILE=$(cat /tmp/index.html | grep dtbs.tar.gz)
-	#<a href="3.5.0-imx2-dtbs.tar.gz">3.5.0-imx2-dtbs.tar.gz</a> 08-Aug-2012 21:34 8.7K
-	ACTUAL_DTB_FILE=$(echo ${ACTUAL_DTB_FILE} | awk -F "\"" '{print $2}')
+	ACTUAL_DTB_FILE=$(cat /tmp/index.html | grep dtbs.tar.gz) || true
+	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
+		#<a href="3.5.0-imx2-dtbs.tar.gz">3.5.0-imx2-dtbs.tar.gz</a> 08-Aug-2012 21:34 8.7K
+		ACTUAL_DTB_FILE=$(echo ${ACTUAL_DTB_FILE} | awk -F "\"" '{print $2}')
+	else
+		unset ACTUAL_DTB_FILE
+	fi
 }
 
 function select_rcn-ee-net_kernel {
