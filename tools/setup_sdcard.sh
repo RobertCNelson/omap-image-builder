@@ -386,6 +386,7 @@ function boot_uenv_txt_template {
 		;;
 	bone_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			dtb_file=${dtb_file}
 			optargs=
 			expansion_args=setenv expansion ip=\${ip_method}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
