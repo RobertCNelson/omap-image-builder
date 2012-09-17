@@ -1088,6 +1088,7 @@ function check_uboot_type {
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 		dtb_file="am335x-bone.dtb"
+		need_dtbs=1
 
 		primary_id="bone"
 
