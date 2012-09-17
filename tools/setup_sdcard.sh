@@ -384,6 +384,14 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
+	bone_dtb)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			optargs=
+			expansion_args=setenv expansion ip=\${ip_method}
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
+
+		__EOF__
+		;;
 	mx6qsabrelite)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
@@ -818,7 +826,7 @@ function populate_rootfs {
 		fi
 
 		case "${SYSTEM}" in
-		bone)
+		bone|bone_dtb)
 			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
 			fbcon
 			ti_tscadc
@@ -1065,6 +1073,22 @@ function check_uboot_type {
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
 		primary_id="psp"
+
+		unset HAS_OMAPFB_DSS2
+		unset KMS_VIDEOA
+
+		#just to disable the omapfb stuff..
+		USE_KMS=1
+		;;
+	bone_dtb)
+		SYSTEM="bone_dtb"
+		BOOTLOADER="BEAGLEBONE_A"
+		is_omap
+		SERIAL="ttyO0"
+		SERIAL_CONSOLE="${SERIAL},115200n8"
+		dtb_file="am335x-bone.dtb"
+
+		primary_id="bone"
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
