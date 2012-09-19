@@ -221,7 +221,7 @@ function sid_release {
 	compression
 }
 
-source ${DIR}/defaults.sh
+source ${DIR}/var/defaults.sh
 
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	source ${DIR}/host/rcn-ee-host.sh
