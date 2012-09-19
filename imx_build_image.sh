@@ -212,7 +212,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB

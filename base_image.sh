@@ -151,7 +151,7 @@ function precise_release {
 	reset_vars
 	DIST=precise
 
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,wvdial"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -165,7 +165,7 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,wvdial"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -178,7 +178,7 @@ function squeeze_release {
 	reset_vars
 	DIST=squeeze
 
-	EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	EXTRA=",isc-dhcp-client,initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -192,7 +192,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 
-	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -206,7 +206,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 
-	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release"
+	EXTRA=",initramfs-tools,atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware,lsb-release,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
