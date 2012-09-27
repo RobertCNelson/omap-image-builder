@@ -113,18 +113,17 @@ function compression {
 
 	echo "Starting Compression"
 	cd ${DIR}/deploy/${TIME}/
-	#tar cvfz $BUILD.tar.gz ./$BUILD
-	#tar cvfj $BUILD.tar.bz2 ./$BUILD
-	#tar cvfJ $BUILD.tar.xz ./$BUILD
 
 	if [ -f ${DIR}/release ] ; then
 		tar cvf $BUILD.tar ./$BUILD
 		xz -z -7 -v $BUILD.tar
-		if [ $SYST == "${RELEASE_HOST}" ] ; then
+
+		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v $BUILD.tar.xz /mnt/farm/testing/pending/$BUILD.tar.xz
 			fi
 		fi
+
 	else
 		tar cvf $BUILD.tar ./$BUILD
 	fi
@@ -255,6 +254,7 @@ fi
 
 if [ -f ${DIR}/release ] ; then
 	echo "Building Release Package, with no mirrors"
+
 	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 		#use local kernel *.deb files from synced mirror
 		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
