@@ -45,6 +45,15 @@ function reset_vars {
 
 	source ${DIR}/var/pkg_list.sh
 
+	unset PRIMARY_KERNEL_OVERRIDE
+	unset SECONDARY_KERNEL_OVERRIDE
+
+	if [ -f ${DIR}/release ] ; then
+		if [ -f ${DIR}/rcn-ee.host ] ; then
+			source ${DIR}/host/rcn-ee-demo-image.sh
+		fi
+	fi
+
 	#Hostname:
 	FQDN="arm"
 
@@ -55,12 +64,6 @@ function reset_vars {
 	SERIAL="ttyO2"
 
 	IMAGESIZE="3G"
-
-	unset PRIMARY_KERNEL_OVERRIDE
-	unset SECONDARY_KERNEL_OVERRIDE
-
-#	PRIMARY_KERNEL_OVERRIDE="v3.2.28-x14"
-#	SECONDARY_KERNEL_OVERRIDE="v3.2.28-psp21"
 }
 
 function dl_rootstock {
