@@ -42,7 +42,7 @@ if which git >/dev/null 2>&1; then
 
 	#v3.1+ needs 1.9.4 version of the firmware
 	rm -f /lib/firmware/carl9170-1.fw || true
-	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.4/carl9170-1.fw
+	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.6/carl9170-1.fw
 fi
 
 #rootstock seems to leave an almost blank /etc/sudoers hanging, remove and just install sudo
