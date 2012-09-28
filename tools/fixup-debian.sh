@@ -56,17 +56,39 @@ fi
 usermod -aG  dialout debian
 
 cat > /etc/init.d/board_tweaks.sh <<-__EOF__
-	#!/bin/sh
+	#!/bin/sh -e
+	### BEGIN INIT INFO
+	# Provides:          board_tweaks.sh
+	# Required-Start:    \$local_fs
+	# Required-Stop:     \$local_fs
+	# Default-Start:     2 3 4 5
+	# Default-Stop:      0 1 6
+	# Short-Description: Start daemon at boot time
+	# Description:       Enable service provided by daemon.
+	### END INIT INFO
 
-	if [ -f /boot/uboot/SOC.sh ] ; then
-	        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-	        case "\${board}" in
-	        BEAGLEBONE_A)
-	                if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
-	                        /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
-	                fi;;
-	        esac
-	fi
+	case "\$1" in
+	start|reload|force-reload|restart)
+	        if [ -f /boot/uboot/SOC.sh ] ; then
+	                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
+	                case "\${board}" in
+	                BEAGLEBONE_A)
+	                        if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
+	                                /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
+	                        fi;;
+	                esac
+	        fi
+	        ;;
+	stop)
+	        exit 0
+	        ;;
+	*)
+	        echo "Usage: /etc/init.d/board_tweaks.sh {start|stop|reload|restart|force-reload}"
+	        exit 1
+	        ;;
+	esac
+
+	exit 0
 
 __EOF__
 
