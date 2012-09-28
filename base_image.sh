@@ -26,7 +26,6 @@ TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
 
-ONEIRIC_CURRENT="ubuntu-11.10"
 PRECISE_CURRENT="ubuntu-12.04"
 QUANTAL_RELEASE="ubuntu-12.10"
 SQUEEZE_CURRENT="debian-6.0.5"
@@ -131,26 +130,12 @@ function compression {
 	cd ${DIR}/deploy/
 }
 
-#11.10
-function oneiric_release {
-	reset_vars
-	DIST=oneiric
-
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-	FIXUPSCRIPT="fixup-base.sh"
-	MIRROR=$MIRROR_UBU
-	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
-	minimal_armel
-	compression
-}
-
 #12.04
 function precise_release {
 	reset_vars
 	DIST=precise
 
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,wvdial"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -164,7 +149,7 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties,wvdial"
+	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -177,7 +162,7 @@ function squeeze_release {
 	reset_vars
 	DIST=squeeze
 
-	EXTRA=",isc-dhcp-client,${DEBIAN_FW},wvdial"
+	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -191,7 +176,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 
-	EXTRA=",${DEBIAN_FW},wvdial"
+	EXTRA=",u-boot-tools,${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -205,7 +190,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 
-	EXTRA=",${DEBIAN_FW},wvdial"
+	EXTRA=",u-boot-tools,${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB

@@ -1,22 +1,5 @@
 #!/bin/bash
 
-#Oneiric Schedule:
-#https://wiki.ubuntu.com/OneiricReleaseSchedule
-#alpha-1 : June 2nd
-ONEIRIC_ALPHA="ubuntu-oneiric-alpha1"
-#alpha-2 : July  7th
-ONEIRIC_ALPHA2="ubuntu-oneiric-alpha2"
-#alpha-3 : August 4th
-ONEIRIC_ALPHA3="ubuntu-oneiric-alpha3"
-#beta1 : September 1st
-ONEIRIC_BETA1="ubuntu-oneiric-beta1"
-#beta2 : September 22nd
-ONEIRIC_BETA2="ubuntu-oneiric-beta2"
-#10.10 : October 13th
-ONEIRIC_RELEASE="ubuntu-11.10-r15"
-
-ONEIRIC_CURRENT=${ONEIRIC_RELEASE}
-
 #Precise Schedule:
 #https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule
 #alpha-1 : Dec 1st

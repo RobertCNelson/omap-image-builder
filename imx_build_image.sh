@@ -26,7 +26,6 @@ TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
 
-ONEIRIC_CURRENT="ubuntu-11.10"
 PRECISE_CURRENT="ubuntu-12.04"
 QUANTAL_RELEASE="ubuntu-12.10"
 SQUEEZE_CURRENT="debian-6.0.5"
@@ -212,7 +211,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW},wvdial"
+	EXTRA=",${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB

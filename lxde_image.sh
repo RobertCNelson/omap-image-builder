@@ -26,7 +26,6 @@ TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
 
-ONEIRIC_CURRENT="ubuntu-11.10"
 PRECISE_CURRENT="ubuntu-12.04"
 QUANTAL_RELEASE="ubuntu-12.10"
 SQUEEZE_CURRENT="debian-6.0.5"
@@ -223,26 +222,12 @@ function select_rcn-ee-net_kernel {
 	fi
 }
 
-#11.10
-function oneiric_release {
-	reset_vars
-	DIST=oneiric
-	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,python-software-properties"
-	FIXUPSCRIPT="fixup.sh"
-	MIRROR=$MIRROR_UBU
-	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$ONEIRIC_CURRENT$MINIMAL-$ARCH-${TIME}
-	minimal_armel
-	compression
-}
-
 #12.04
 function precise_release {
 	reset_vars
 	DIST=precise
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,python-software-properties,lxde,lxde-core,lxde-icon-theme,build-essential,wvdial"
+	EXTRA=",linux-firmware,devmem2,python-software-properties,lxde,lxde-core,lxde-icon-theme,build-essential"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -256,7 +241,7 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 	select_rcn-ee-net_kernel
-	EXTRA=",linux-firmware,devmem2,python-software-properties,wvdial"
+	EXTRA=",linux-firmware,devmem2,python-software-properties"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -269,7 +254,7 @@ function squeeze_release {
 	reset_vars
 	DIST=squeeze
 	select_rcn-ee-net_kernel
-	EXTRA=",isc-dhcp-client,${DEBIAN_FW},wvdial"
+	EXTRA=",isc-dhcp-client,${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
@@ -283,7 +268,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW},wvdial"
+	EXTRA=",${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
@@ -297,7 +282,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW},wvdial"
+	EXTRA=",${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
@@ -357,9 +342,6 @@ if [ -f ${DIR}/release ] ; then
 fi
 
 dl_rootstock
-
-#ARCH=armel
-#oneiric_release
 
 ARCH=armhf
 precise_release
