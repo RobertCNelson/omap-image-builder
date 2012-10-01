@@ -982,13 +982,13 @@ function kernel_detection {
 		HAS_OMAP_KERNEL=1
 	fi
 
-	unset HAS_PANDS_3_2_KERNEL
+	unset HAS_PANDA_3_2_KERNEL
 	unset check
 	check=$(ls "${DIR}/" | grep x | grep vmlinuz-3.2 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		panda_3_2_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has panda 3.2 kernel support: v${panda_3_2_kernel}"
-		HAS_PANDS_3_2_KERNEL=1
+		HAS_PANDA_3_2_KERNEL=1
 
 		if [ ! ${HAS_OMAP_KERNEL} ] ; then
 			omap_kernel="${panda_3_2_kernel}"
@@ -1164,7 +1164,7 @@ function check_uboot_type {
 		KMS_VIDEOB="video=HDMI-A-1"
 		smsc95xx_mem="16384"
 
-		if [ "${HAS_PANDS_3_2_KERNEL}" ] ; then
+		if [ "${HAS_PANDA_3_2_KERNEL}" ] ; then
 			select_kernel="${panda_3_2_kernel}"
 		fi
 
@@ -1179,7 +1179,7 @@ function check_uboot_type {
 		smsc95xx_mem="16384"
 		need_dtbs=1
 
-		if [ "${HAS_PANDS_3_2_KERNEL}" ] ; then
+		if [ "${HAS_PANDA_3_2_KERNEL}" ] ; then
 			select_kernel="${panda_3_2_kernel}"
 		fi
 
