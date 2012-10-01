@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # Copyright (c) 2009-2012 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
@@ -109,16 +109,18 @@ function find_issue {
 	fi
 
 	unset HAS_INITRD
-	INITRD=$(ls "${DIR}/" | grep initrd.img | head -n 1)
-	if [ "x${INITRD}" != "x" ] ; then
-		echo "Debug: image has initrd.img: HAS_INITRD=1"
+	unset check
+	check=$(ls "${DIR}/" | grep initrd.img | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		echo "Debug: image has initrd.img:"
 		HAS_INITRD=1
 	fi
 
 	unset HAS_DTBS
-	DTBS=$(ls "${DIR}/" | grep dtbs | head -n 1)
-	if [ "x${DTBS}" != "x" ] ; then
-		echo "Debug: image has device tree: HAS_DTBS=1"
+	unset check
+	check=$(ls "${DIR}/" | grep dtbs | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		echo "Debug: image has device tree:"
 		HAS_DTBS=1
 	fi
 
@@ -682,14 +684,11 @@ function populate_boot {
 			fi
 		fi
 
-		VER=${primary_id}
-
-		VMLINUZ_FILE=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER})
+		VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
 		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
-			LINUX_VER=$(ls "${DIR}/" | grep vmlinuz- | grep ${VER} | awk -F'vmlinuz-' '{print $2}')
 			if [ "${USE_UIMAGE}" ] ; then
 				echo "Using mkimage to create uImage"
-				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${LINUX_VER} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
+				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
 				echo "-----------------------------"
 			else
 				echo "Copying Kernel image:"
@@ -698,32 +697,28 @@ function populate_boot {
 			fi
 		fi
 
-		if [ "${HAS_INITRD}" ] ; then
-			INITRD_FILE=$(ls "${DIR}/" | grep initrd.img- | grep ${VER})
-			if [ "x${INITRD_FILE}" != "x" ] ; then
-				if [ "${USE_UIMAGE}" ] ; then
-					echo "Using mkimage to create uInitrd"
-					mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
-					echo "-----------------------------"
-				else
-					echo "Copying Kernel initrd:"
-					cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-					echo "-----------------------------"
-				fi
+		INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
+		if [ "x${INITRD_FILE}" != "x" ] ; then
+			if [ "${USE_UIMAGE}" ] ; then
+				echo "Using mkimage to create uInitrd"
+				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+				echo "-----------------------------"
+			else
+				echo "Copying Kernel initrd:"
+				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+				echo "-----------------------------"
 			fi
 		fi
 
-		if [ "${HAS_DTBS}" ] ; then
-			DTBS_FILE=$(ls "${DIR}/" | grep dtbs | grep ${VER})
-			if [ "x${DTBS_FILE}" != "x" ] ; then
-				echo "Copying Device Tree Files:"
-				if [ "x${boot_fstype}" == "xfat" ] ; then
-					tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-				else
-					tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-				fi
-				echo "-----------------------------"
+		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
+		if [ "x${DTBS_FILE}" != "x" ] ; then
+			echo "Copying Device Tree Files:"
+			if [ "x${boot_fstype}" == "xfat" ] ; then
+				tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+			else
+				tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 			fi
+			echo "-----------------------------"
 		fi
 
 		if [ "${boot_scr_wrapper}" ] ; then
@@ -950,6 +945,57 @@ function check_mmc {
 	fi
 }
 
+function kernel_detection {
+	unset HAS_IMX_KERNEL
+	unset check
+	check=$(ls "${DIR}/" | grep imx | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		imx_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep imx | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has imx kernel support: v${imx_kernel}"
+		HAS_IMX_KERNEL=1
+	fi
+
+	unset HAS_BONE_DT_KERNEL
+	unset check
+	check=$(ls "${DIR}/" | grep bone | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
+		HAS_BONE_DT_KERNEL=1
+	fi
+
+	unset HAS_BONE_KERNEL
+	unset check
+	check=$(ls "${DIR}/" | grep psp | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		bone_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep psp | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has bone kernel support: v${bone_kernel}"
+		HAS_BONE_KERNEL=1
+	fi
+
+	unset HAS_OMAP_KERNEL
+	unset check
+	check=$(ls "${DIR}/" | grep x | grep -v vmlinuz-3.2 | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has omap kernel support: v${omap_kernel}"
+		HAS_OMAP_KERNEL=1
+	fi
+
+	unset HAS_PANDS_3_2_KERNEL
+	unset check
+	check=$(ls "${DIR}/" | grep x | grep vmlinuz-3.2 | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		panda_3_2_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has panda 3.2 kernel support: v${panda_3_2_kernel}"
+		HAS_PANDS_3_2_KERNEL=1
+
+		if [ ! ${HAS_OMAP_KERNEL} ] ; then
+			omap_kernel="${panda_3_2_kernel}"
+		fi
+	fi
+}
+
 function is_omap {
 	IS_OMAP=1
 
@@ -987,7 +1033,7 @@ function is_omap {
 	unset KMS_VIDEOB
 
 	#Kernel Options
-	primary_id="x"
+	select_kernel="${omap_kernel}"
 }
 
 function is_imx {
@@ -1013,10 +1059,11 @@ function is_imx {
 	HAS_IMX_BLOB=1
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
-	primary_id="imx"
+	select_kernel="${imx_kernel}"
 }
 
 function check_uboot_type {
+	kernel_detection
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
 	unset USE_UIMAGE
@@ -1073,7 +1120,7 @@ function check_uboot_type {
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
-		primary_id="psp"
+		select_kernel="${bone_kernel}"
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
@@ -1090,7 +1137,12 @@ function check_uboot_type {
 		dtb_file="am335x-bone.dtb"
 		need_dtbs=1
 
-		primary_id="bone"
+		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
+			select_kernel="${bone_dt_kernel}"
+		else
+			select_kernel="${bone_kernel}"
+		fi
+		unset kernel_id
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
@@ -1111,6 +1163,11 @@ function check_uboot_type {
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		smsc95xx_mem="16384"
+
+		if [ "${HAS_PANDS_3_2_KERNEL}" ] ; then
+			select_kernel="${panda_3_2_kernel}"
+		fi
+
 		;;
 	panda_dtb)
 		SYSTEM="panda_dtb"
@@ -1121,6 +1178,11 @@ function check_uboot_type {
 		KMS_VIDEOB="video=HDMI-A-1"
 		smsc95xx_mem="16384"
 		need_dtbs=1
+
+		if [ "${HAS_PANDS_3_2_KERNEL}" ] ; then
+			select_kernel="${panda_3_2_kernel}"
+		fi
+
 		;;
 	panda_es)
 		SYSTEM="panda_es"
@@ -1141,7 +1203,7 @@ function check_uboot_type {
 		smsc95xx_mem="32768"
 		need_dtbs=1
 		;;
-	panda_kms)
+	panda_es_kms)
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
