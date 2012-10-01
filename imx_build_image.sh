@@ -72,12 +72,12 @@ function dl_rootstock {
 	fi
 
 	cd ${DIR}/git/project-rootstock
-
-	git checkout origin/master -b tmp-master
-	git branch -D master
+	git checkout origin/master -b tmp
+	git branch -D run-script || true
+	git branch -D master || true
 
 	git checkout origin/master -b master
-	git branch -D tmp-master
+	git branch -D tmp
 
 	git pull
 

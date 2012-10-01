@@ -72,14 +72,16 @@ function dl_rootstock {
 	fi
 
 	cd ${DIR}/git/project-rootstock
-
-	git checkout origin/master -b tmp-master
-	git branch -D master
+	git checkout origin/master -b tmp
+	git branch -D run-script || true
+	git branch -D master || true
 
 	git checkout origin/master -b master
-	git branch -D tmp-master
+	git branch -D tmp
 
 	git pull
+
+	git checkout origin/third-kernel -b run-script
 
 	cd ${DIR}/deploy/
 }
@@ -97,7 +99,7 @@ echo "sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fq
 --login ${USER_LOGIN} --password ${USER_PASS} --fullname \"${USER_NAME}\" \
 --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components \"${COMPONENTS}\" \
 --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
-${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH} "
+${PRIMARY_KERNEL} ${SECONDARY_KERNEL} ${THIRD_KERNEL} --apt-upgrade --arch=${ARCH} "
 echo "-------------------------"
 echo ""
 
@@ -105,7 +107,7 @@ sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${F
 --login ${USER_LOGIN} --password ${USER_PASS} --fullname "${USER_NAME}" \
 --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 --dist ${DIST} --serial ${SERIAL} --script ${DIR}/tools/${FIXUPSCRIPT} \
-${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
+${PRIMARY_KERNEL} ${SECONDARY_KERNEL} ${THIRD_KERNEL} --apt-upgrade --arch=${ARCH}
 }
 
 function compression {
@@ -130,6 +132,10 @@ function compression {
 
 	if [ "${SECONDARY_DTB_FILE}" ] ; then
 		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${SECONDARY_DTB_FILE}
+	fi
+
+	if [ "${THIRD_DTB_FILE}" ] ; then
+		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${THIRD_DTB_FILE}
 	fi
 
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
@@ -184,7 +190,7 @@ function kernel_chooser {
 }
 
 function select_rcn-ee-net_kernel {
-	KERNEL_ABI="STABLE"
+	#KERNEL_ABI="STABLE"
 	#KERNEL_ABI="TESTING"
 	#KERNEL_ABI="EXPERIMENTAL"
 
@@ -195,6 +201,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap"
+	KERNEL_ABI="TESTING"
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
@@ -211,6 +218,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap-psp"
+	KERNEL_ABI="STABLE"
 	kernel_chooser
 	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${SECONDARY_KERNEL}"
@@ -218,6 +226,23 @@ function select_rcn-ee-net_kernel {
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		SECONDARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
 		echo "Using dtbs: ${SECONDARY_DTB_FILE}"
+	fi
+
+	if [ "${THIRD_KERNEL_OVERRIDE}" ] ; then
+		OVERRIDE="${THIRD_KERNEL_OVERRIDE}"
+	else
+		unset OVERRIDE
+	fi
+
+	SUBARCH="omap"
+	KERNEL_ABI="STABLE"
+	kernel_chooser
+	THIRD_KERNEL="--third-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
+	echo "Using: ${THIRD_KERNEL}"
+	unset THIRD_DTB_FILE
+	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
+		THIRD_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
+		echo "Using dtbs: ${THIRD_DTB_FILE}"
 	fi
 }
 
