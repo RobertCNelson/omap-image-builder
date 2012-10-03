@@ -340,8 +340,10 @@ function boot_uenv_txt_template {
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#camera=lbcm5m1
+
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
