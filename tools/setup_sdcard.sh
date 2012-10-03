@@ -948,7 +948,7 @@ function check_mmc {
 function kernel_detection {
 	unset HAS_IMX_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep imx | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep imx | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		imx_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep imx | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has imx kernel support: v${imx_kernel}"
@@ -957,7 +957,7 @@ function kernel_detection {
 
 	unset HAS_BONE_DT_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep bone | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
@@ -966,7 +966,7 @@ function kernel_detection {
 
 	unset HAS_BONE_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep psp | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep psp | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		bone_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep psp | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has bone kernel support: v${bone_kernel}"
@@ -975,7 +975,7 @@ function kernel_detection {
 
 	unset HAS_OMAP_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep x | grep -v vmlinuz-3.2 | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has omap kernel support: v${omap_kernel}"
@@ -984,7 +984,7 @@ function kernel_detection {
 
 	unset HAS_PANDA_3_2_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep x | grep vmlinuz-3.2 | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep vmlinuz-3.2 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		panda_3_2_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has panda 3.2 kernel support: v${panda_3_2_kernel}"
