@@ -301,6 +301,11 @@ fi
 
 mkdir -p ${DIR}/deploy/
 
+if [ ! $(which fakeroot) ] ; then
+	echo "Missing fakeroot"
+	sudo apt-get -y install fakeroot
+fi
+
 DEBOOT_TEST=$(sudo debootstrap --version | awk '{print $2}')
 
 if [ "${DEBOOT_TEST}" != "${DEBOOT_VER}" ] ; then
