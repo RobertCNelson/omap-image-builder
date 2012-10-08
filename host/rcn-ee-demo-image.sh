@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#X-Server:
+#quantal:1.13.0
+#precise:1.11.4
+#oneiric:1.10.4
+#natty:1.10.1 -> http://processors.wiki.ti.com/index.php/RN_4_08_00_01
+#maverick:1.9.0
+#lucid:1.7.6
+
 #Precise Schedule:
 #https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule
 #alpha-1 : Dec 1st
