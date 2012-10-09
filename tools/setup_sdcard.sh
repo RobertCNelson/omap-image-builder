@@ -297,6 +297,15 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
+	if [ "${has_camera_isp}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Camera: Uncomment to enable:
+			#http://shop.leopardimaging.com/product.sc?productId=17
+			#camera=li5m03
+
+		__EOF__
+	fi
+
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		console=SERIAL_CONSOLE
 
@@ -340,8 +349,6 @@ function boot_uenv_txt_template {
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#camera=lbcm5m1
-
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
@@ -1082,6 +1089,7 @@ function check_uboot_type {
 	unset dd_seek
 	unset dd_bs
 	boot_partition_size="50"
+	unset has_camera_isp
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1104,6 +1112,7 @@ function check_uboot_type {
 		is_omap
 		smsc95xx_mem="16384"
 		#dtb_file="omap3-beagle.dtb"
+		has_camera_isp=1
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1114,6 +1123,7 @@ function check_uboot_type {
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
+		has_camera_isp=1
 		;;
 	bone)
 		SYSTEM="bone"
