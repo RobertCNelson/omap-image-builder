@@ -77,9 +77,10 @@ if which git >/dev/null 2>&1; then
 	cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
 	rm -rf /tmp/linux-firmware/
 
-	if [ ! -f /lib/firmware/ti-connectivity/TIInit_7.6.15.bts ] ; then
-		wget --directory-prefix=/lib/firmware/ti-connectivity http://rcn-ee.net/firmware/ti/TIInit_7.6.15.bts
+	if [ -f /lib/firmware/ti-connectivity/TIInit_7.6.15.bts ] ; then
+		rm -rf /lib/firmware/ti-connectivity/TIInit_7.6.15.bts || true
 	fi
+	wget --directory-prefix=/lib/firmware/ti-connectivity http://rcn-ee.net/firmware/ti/7.6.15_ble/WL1271L_BLE_Enabled_BTS_File/115K/TIInit_7.6.15.bts
 
 	cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
 	rm -rf /tmp/am33x-cm3/
@@ -88,17 +89,6 @@ if which git >/dev/null 2>&1; then
 	rm -f /lib/firmware/carl9170-1.fw || true
 	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.6/carl9170-1.fw
 fi
-
-#just for a bluetooth binary...
-cp /etc/apt/sources.list /etc/apt/sources.bak
-echo "deb http://ppa.launchpad.net/linaro-maintainers/overlay/ubuntu precise main" >> /etc/apt/sources.list
-apt-get update
-apt-get -y --force-yes install ti-uim
-apt-get clean
-rm -f /etc/apt/sources.list || true
-mv /etc/apt/sources.bak /etc/apt/sources.list
-apt-get update
-apt-get clean
 
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
