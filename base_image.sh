@@ -110,6 +110,10 @@ function compression {
 		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
+	cat > ${DIR}/deploy/${TIME}/$BUILD/user_password.list <<-__EOF__
+		${USER_LOGIN}:${USER_PASS}
+	__EOF__
+
 	echo "Starting Compression"
 	cd ${DIR}/deploy/${TIME}/
 

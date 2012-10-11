@@ -923,6 +923,12 @@ function populate_rootfs {
 		exit
 	fi
 	echo "setup_sdcard.sh script complete"
+	if [ -f "${DIR}/user_password.list" ] ; then
+		echo "-----------------------------"
+		echo "The default user:password for this image:"
+		cat "${DIR}/user_password.list"
+		echo "-----------------------------"
+	fi
 }
 
 function check_mmc {
