@@ -1245,6 +1245,7 @@ function check_uboot_type {
 		load_addr="0x90008000"
 		dtb_addr="0x91ff0000"
 		dtb_file="imx51-babbage.dtb"
+		need_dtbs=1
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
