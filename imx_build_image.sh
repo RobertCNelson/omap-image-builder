@@ -188,8 +188,8 @@ function kernel_chooser {
 }
 
 function select_rcn-ee-net_kernel {
-	KERNEL_ABI="STABLE"
-	#KERNEL_ABI="TESTING"
+	#KERNEL_ABI="STABLE"
+	KERNEL_ABI="TESTING"
 	#KERNEL_ABI="EXPERIMENTAL"
 
 	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
