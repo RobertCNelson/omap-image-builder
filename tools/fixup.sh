@@ -20,30 +20,22 @@ echo "#iface wlan0 inet dhcp" >> /etc/network/interfaces
 echo "#    wpa-ssid \"essid\"" >> /etc/network/interfaces
 echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
 
-cat > /etc/flash-kernel.conf <<__EOF__
-#!/bin/sh
-UBOOT_PART=/dev/mmcblk0p1
+cat > /etc/flash-kernel.conf <<-__EOF__
+	#!/bin/sh -e
+	UBOOT_PART=/dev/mmcblk0p1
 
-echo "flash-kernel stopped by: /etc/flash-kernel.conf"
-echo "You are currently running an image built by rcn-ee.net running an rcn-ee"
-echo "kernel, to use Ubuntu's Kernel remove the next line"
-USE_RCN_EE_KERNEL=1
+	echo "flash-kernel stopped by: /etc/flash-kernel.conf"
+	USE_CUSTOM_KERNEL=1
 
-if [ "\${USE_RCN_EE_KERNEL}" ] ; then
+	if [ "\${USE_CUSTOM_KERNEL}" ] ; then
+	        DIST=\$(lsb_release -cs)
 
-DIST=\$(lsb_release -cs)
-
-case "\$DIST" in
-    lucid)
-            exit 0
-        ;;
-    maverick|natty|oneiric|precise|quantal)
-            FLASH_KERNEL_SKIP=yes
-        ;;
-
-esac
-
-fi
+	        case "\${DIST}" in
+	        maverick|natty|oneiric|precise|quantal|raring)
+	                FLASH_KERNEL_SKIP=yes
+	                ;;
+	        esac
+	fi
 
 __EOF__
 
