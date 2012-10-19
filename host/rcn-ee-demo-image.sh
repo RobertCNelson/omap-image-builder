@@ -53,9 +53,10 @@ RARING_BETA2="ubuntu-raring-beta2"
 #12.04 : April 25th
 RARING_RELEASE="ubuntu-13.04-r1"
 
-RARING_CURRENT=${RARING_RELEASE}
+RARING_CURRENT=${RARING_ALPHA}
 
-#Kernel version when doing releases...
-#PRIMARY_KERNEL_OVERRIDE="v3.2.30-x14"
-#SECONDARY_KERNEL_OVERRIDE="v3.2.30-psp23"
-
+#rcn-ee: kernel version when doing releases...
+PRIMARY_KERNEL_OVERRIDE="v3.6.2-x3"
+SECONDARY_KERNEL_OVERRIDE="v3.2.32-psp25"
+THIRD_KERNEL_OVERRIDE="v3.2.32-x15"
+#

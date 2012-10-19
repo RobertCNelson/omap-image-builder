@@ -41,6 +41,7 @@ function reset_vars {
 
 	unset PRIMARY_KERNEL_OVERRIDE
 	unset SECONDARY_KERNEL_OVERRIDE
+	unset THIRD_KERNEL_OVERRIDE
 
 	if [ -f ${DIR}/release ] ; then
 		source ${DIR}/host/rcn-ee-demo-image.sh
