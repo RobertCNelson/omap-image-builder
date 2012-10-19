@@ -129,20 +129,6 @@ function compression {
 	cd ${DIR}/deploy/
 }
 
-#12.04
-function precise_release {
-	reset_vars
-	DIST=precise
-
-	EXTRA=",linux-firmware,devmem2,u-boot-tools,python-software-properties"
-	FIXUPSCRIPT="fixup-base.sh"
-	MIRROR=$MIRROR_UBU
-	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
-	minimal_armel
-	compression
-}
-
 #12.10
 function quantal_release {
 	reset_vars
@@ -228,5 +214,5 @@ fi
 
 ARCH=armhf
 wheezy_release
-precise_release
+quantal_release
 
