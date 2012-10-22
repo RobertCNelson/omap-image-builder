@@ -19,7 +19,7 @@ PRECISE_BETA1="ubuntu-precise-beta1"
 #beta-2 : March 29th
 PRECISE_BETA2="ubuntu-precise-beta2"
 #12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r8"
+PRECISE_RELEASE="ubuntu-12.04-r9"
 
 PRECISE_CURRENT=${PRECISE_RELEASE}
 
@@ -36,7 +36,7 @@ QUANTAL_BETA1="ubuntu-quantal-beta1"
 #beta-2 : September 27th
 QUANTAL_BETA2="ubuntu-quantal-beta2"
 #12.04 : October 18th
-QUANTAL_RELEASE="ubuntu-12.10-r1"
+QUANTAL_RELEASE="ubuntu-12.10-r2"
 
 QUANTAL_CURRENT=${QUANTAL_RELEASE}
 
@@ -56,7 +56,7 @@ RARING_RELEASE="ubuntu-13.04-r1"
 RARING_CURRENT=${RARING_ALPHA}
 
 #rcn-ee: kernel version when doing releases...
-PRIMARY_KERNEL_OVERRIDE="v3.6.2-x3"
-SECONDARY_KERNEL_OVERRIDE="v3.2.32-psp25"
-THIRD_KERNEL_OVERRIDE="v3.2.32-x15"
+#PRIMARY_KERNEL_OVERRIDE="v3.6.2-x3"
+#SECONDARY_KERNEL_OVERRIDE="v3.2.32-psp25"
+#THIRD_KERNEL_OVERRIDE="v3.2.32-x15"
 #
