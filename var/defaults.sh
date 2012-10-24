@@ -2,8 +2,9 @@
 
 RELEASE_HOST="panda-es-1gb-a3"
 
-#DEBOOT_VER="1.0.41ubuntu1"
-DEBOOT_VER="1.0.42"
+#1.0.42ubuntu1 addes raring 13.04 support
+DEBOOT_VER="1.0.42ubuntu1"
+#DEBOOT_VER="1.0.42"
 DEBOOT_HTTP="http://ports.ubuntu.com/pool/main/d/debootstrap"
 
 #DEBOOT_VER="1.0.42"

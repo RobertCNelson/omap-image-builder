@@ -143,6 +143,20 @@ function quantal_release {
 	compression
 }
 
+#13.04
+function raring_release {
+	reset_vars
+	DIST="raring"
+
+	EXTRA="${precise_wheezy_plus},linux-firmware,devmem2,python-software-properties"
+	FIXUPSCRIPT="fixup-base.sh"
+	MIRROR="${MIRROR_UBU}"
+	COMPONENTS="${UBU_COMPONENTS}"
+	BUILD="${RARING_CURRENT}${MINIMAL-$ARCH}-${TIME}"
+	minimal_armel
+	compression
+}
+
 function squeeze_release {
 	reset_vars
 	DIST=squeeze
@@ -216,4 +230,6 @@ quantal_release
 ARCH=armhf
 wheezy_release
 quantal_release
+raring_release
 
+echo "done"
