@@ -82,7 +82,7 @@ if which git >/dev/null 2>&1; then
 	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.6/carl9170-1.fw
 fi
 
+apt-get clean
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
 rm -f /rootstock-user-script || true
-

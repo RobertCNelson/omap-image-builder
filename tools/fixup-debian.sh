@@ -96,7 +96,7 @@ __EOF__
 chmod u+x /etc/init.d/board_tweaks.sh
 insserv board_tweaks.sh || true
 
+apt-get clean
 rm -f /tmp/*.deb || true
 rm -rf /usr/src/linux-headers* || true
 rm -f /rootstock-user-script || true
-

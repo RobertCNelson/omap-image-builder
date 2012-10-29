@@ -56,5 +56,5 @@ cat > /etc/init/board_tweaks.conf <<-__EOF__
 
 __EOF__
 
+apt-get clean
 rm -f /rootstock-user-script || true
-
