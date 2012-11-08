@@ -5,7 +5,7 @@ if [ ! $(which fakeroot) ] ; then
 	sudo apt-get -y install fakeroot
 fi
 
-DEBOOT_TEST=$(sudo debootstrap --version | awk '{print $2}')
+DEBOOT_TEST=$(/usr/sbin/debootstrap --version | awk '{print $2}')
 
 if [ "${DEBOOT_TEST}" != "${DEBOOT_VER}" ] ; then
 	echo "Installing minimal debootstrap version..."
