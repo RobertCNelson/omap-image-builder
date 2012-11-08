@@ -306,7 +306,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA="${precise_wheezy_plus},${DEBIAN_FW}"
+	EXTRA=",${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
@@ -320,7 +320,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 	select_rcn-ee-net_kernel
-	EXTRA="${precise_wheezy_plus},${DEBIAN_FW}"
+	EXTRA=",${DEBIAN_FW}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB

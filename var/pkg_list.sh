@@ -8,8 +8,8 @@ MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2,ntpdate,ppp"
 MINIMAL_APT="${MINIMAL_APT},btrfs-tools,cpufrequtils,fbset"
 MINIMAL_APT="${MINIMAL_APT},initramfs-tools,lsb-release"
 
-#not in squeeze/oneiric
-precise_wheezy_plus=",wvdial"
+#not in squeeze/wheezy/oneiric
+precise_plus=",wvdial"
 
 DEBIAN_FW="atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
 
