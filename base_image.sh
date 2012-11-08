@@ -29,6 +29,7 @@ unset USE_OEM
 MINIMAL="-minimal"
 
 DIR=$PWD
+tempdir=$(mktemp -d)
 
 function reset_vars {
 	unset DIST

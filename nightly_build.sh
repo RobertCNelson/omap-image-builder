@@ -29,6 +29,7 @@ unset USE_OEM
 MINIMAL="-minimal"
 
 DIR=$PWD
+tempdir=$(mktemp -d)
 
 function reset_vars {
 	unset DIST
@@ -161,25 +162,25 @@ function compression {
 
 function kernel_chooser {
 	if [ ! "${OVERRIDE}" ] ; then
-		if [ -f /tmp/LATEST-${SUBARCH} ] ; then
-			rm -f /tmp/LATEST-${SUBARCH}
+		if [ -f ${tempdir}/LATEST-${SUBARCH} ] ; then
+			rm -f ${tempdir}/LATEST-${SUBARCH}
 		fi
 
-		wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
-		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
+		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 	else
 		FTP_DIR=${OVERRIDE}
 	fi
 
-	if [ -f /tmp/index.html ] ; then
-		rm -f /tmp/index.html || true
+	if [ -f ${tempdir}/index.html ] ; then
+		rm -f ${tempdir}/index.html || true
 	fi
 
-	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-	ACTUAL_DEB_FILE=$(cat /tmp/index.html | grep linux-image | awk -F "\"" '{print $2}')
+	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+	ACTUAL_DEB_FILE=$(cat ${tempdir}/index.html | grep linux-image | awk -F "\"" '{print $2}')
 
-	ACTUAL_DTB_FILE=$(cat /tmp/index.html | grep dtbs.tar.gz) || true
+	ACTUAL_DTB_FILE=$(cat ${tempdir}/index.html | grep dtbs.tar.gz) || true
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		#<a href="3.5.0-imx2-dtbs.tar.gz">3.5.0-imx2-dtbs.tar.gz</a> 08-Aug-2012 21:34 8.7K
 		ACTUAL_DTB_FILE=$(echo ${ACTUAL_DTB_FILE} | awk -F "\"" '{print $2}')
