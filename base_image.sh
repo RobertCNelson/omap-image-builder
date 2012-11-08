@@ -225,7 +225,7 @@ ARCH=armel
 if [ "-${HOST_ARCH}-" == "-armv7l-" ] ; then
 squeeze_release
 fi
-quantal_release
+wheezy_release
 
 ARCH=armhf
 wheezy_release
