@@ -769,7 +769,7 @@ function populate_boot {
 			dtb_addr=${dtb_addr}
 			dtb_file=${dtb_file}
 
-			smsc95xx_mem=${smsc95xx_mem}
+			usbnet_mem=${usbnet_mem}
 
 		__EOF__
 
@@ -839,8 +839,8 @@ function populate_rootfs {
 			;;
 		esac
 
-		if [ "${smsc95xx_mem}" ] ; then
-			echo "vm.min_free_kbytes = ${smsc95xx_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
+		if [ "${usbnet_mem}" ] ; then
+			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 		fi
 
 		if [ "${BTRFS_FSTAB}" ] ; then
@@ -1090,7 +1090,7 @@ function check_uboot_type {
 	unset need_dtbs
 	boot="bootz"
 	unset boot_scr_wrapper
-	unset smsc95xx_mem
+	unset usbnet_mem
 	unset dd_seek
 	unset dd_bs
 	boot_partition_size="50"
@@ -1103,6 +1103,7 @@ function check_uboot_type {
 		DISABLE_ETH=1
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
+		usbnet_mem="8192"
 		;;
 	beagle_cx)
 		SYSTEM="beagle_cx"
@@ -1110,12 +1111,13 @@ function check_uboot_type {
 		DISABLE_ETH=1
 		is_omap
 		#dtb_file="omap3-beagle.dtb"
+		usbnet_mem="8192"
 		;;
 	beagle_xm)
 		SYSTEM="beagle_xm"
 		BOOTLOADER="BEAGLEBOARD_XM"
 		is_omap
-		smsc95xx_mem="16384"
+		usbnet_mem="16384"
 		#dtb_file="omap3-beagle.dtb"
 		has_camera_isp=1
 		;;
@@ -1123,7 +1125,7 @@ function check_uboot_type {
 		SYSTEM="beagle_xm"
 		BOOTLOADER="BEAGLEBOARD_XM"
 		is_omap
-		smsc95xx_mem="16384"
+		usbnet_mem="16384"
 		#dtb_file="omap3-beagle.dtb"
 
 		USE_KMS=1
@@ -1179,7 +1181,7 @@ function check_uboot_type {
 		dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
-		smsc95xx_mem="16384"
+		usbnet_mem="16384"
 
 		if [ "${HAS_PANDA_3_2_KERNEL}" ] ; then
 			select_kernel="${panda_3_2_kernel}"
@@ -1193,7 +1195,7 @@ function check_uboot_type {
 		dtb_file="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
-		smsc95xx_mem="16384"
+		usbnet_mem="16384"
 		need_dtbs=1
 
 		if [ "${HAS_PANDA_3_2_KERNEL}" ] ; then
@@ -1208,7 +1210,7 @@ function check_uboot_type {
 		dtb_file="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
-		smsc95xx_mem="32768"
+		usbnet_mem="32768"
 		;;
 	panda_es_dtb)
 		SYSTEM="panda_es_dtb"
@@ -1217,7 +1219,7 @@ function check_uboot_type {
 		dtb_file="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
-		smsc95xx_mem="32768"
+		usbnet_mem="16384"
 		need_dtbs=1
 		;;
 	panda_es_kms)
@@ -1229,7 +1231,7 @@ function check_uboot_type {
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
 		KMS_VIDEOB="video=HDMI-A-1"
-		smsc95xx_mem="32768"
+		usbnet_mem="32768"
 		;;
 	crane)
 		SYSTEM="crane"
