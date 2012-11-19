@@ -83,7 +83,7 @@ function dl_rootstock {
 }
 
 function minimal_armel {
-rm -f ${DIR}/deploy/armel-rootfs-*.tar || true
+rm -f ${DIR}/deploy/arm*-rootfs-*.tar || true
 rm -f ${DIR}/deploy/vmlinuz-* || true
 rm -f ${DIR}/deploy/initrd.img-* || true
 rm -f ${DIR}/deploy/rootstock-*.log || true
