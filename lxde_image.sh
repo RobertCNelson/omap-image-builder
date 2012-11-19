@@ -108,8 +108,8 @@ function compression {
 	rm -rf ${DIR}/deploy/${TIME}/$BUILD || true
 	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
-	if ls ${DIR}/deploy/armel-rootfs-*.tar >/dev/null 2>&1;then
-		mv -v ${DIR}/deploy/armel-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
+	if ls ${DIR}/deploy/arm*-rootfs-*.tar >/dev/null 2>&1;then
+		mv -v ${DIR}/deploy/arm*-rootfs-*.tar ${DIR}/deploy/${TIME}/$BUILD
 	fi
 
 	if ls ${DIR}/deploy/vmlinuz-* >/dev/null 2>&1;then
