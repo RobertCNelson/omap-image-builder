@@ -42,6 +42,7 @@ function reset_vars {
 
 	unset PRIMARY_KERNEL_OVERRIDE
 	unset SECONDARY_KERNEL_OVERRIDE
+	unset THIRD_KERNEL_OVERRIDE
 
 	if [ -f ${DIR}/release ] ; then
 		source ${DIR}/host/rcn-ee-demo-image.sh
@@ -360,6 +361,7 @@ ARCH=armhf
 precise_release
 quantal_release
 raring_release
+
 wheezy_release
 
 echo "done"
