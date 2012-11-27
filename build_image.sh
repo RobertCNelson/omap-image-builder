@@ -279,7 +279,7 @@ function quantal_release {
 function raring_release {
 	reset_vars
 	DIST="raring"
-
+	select_rcn-ee-net_kernel
 	EXTRA="${precise_wheezy_plus},linux-firmware,devmem2,python-software-properties"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR="${MIRROR_UBU}"
@@ -357,7 +357,8 @@ dl_rootstock
 ARCH=armhf
 precise_release
 quantal_release
-wheezy_release
 raring_release
+
+wheezy_release
 
 echo "done"
