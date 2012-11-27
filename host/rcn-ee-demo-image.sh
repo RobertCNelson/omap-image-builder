@@ -42,18 +42,11 @@ QUANTAL_CURRENT=${QUANTAL_RELEASE}
 
 #Raring Schedule
 #https://wiki.ubuntu.com/RaringRingtail/ReleaseSchedule
-#alpha-1 : Dec 6th
-RARING_ALPHA="ubuntu-raring-alpha1"
-#alpha-2 : Feb 7th
-RARING_ALPHA2="ubuntu-raring-alpha2"
-#beta-1 : March 7th
-RARING_BETA1="ubuntu-raring-beta1"
-#beta-2 : March 28th
-RARING_BETA2="ubuntu-raring-beta2"
+RARING_SNAPSHOT="ubuntu-raring-snapshot"
 #12.04 : April 25th
 RARING_RELEASE="ubuntu-13.04-r1"
 
-RARING_CURRENT=${RARING_ALPHA}
+RARING_CURRENT=${RARING_SNAPSHOT}
 
 #rcn-ee: kernel version when doing releases...
 #PRIMARY_KERNEL_OVERRIDE="v3.6.2-x3"
