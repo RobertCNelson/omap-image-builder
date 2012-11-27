@@ -2,13 +2,17 @@
 
 RELEASE_HOST="panda-es-1gb-a3"
 
-#1.0.42ubuntu1 addes raring 13.04 support
-#DEBOOT_VER="1.0.42ubuntu1"
-DEBOOT_VER="1.0.43"
-DEBOOT_HTTP="http://ports.ubuntu.com/pool/main/d/debootstrap"
+#Debootstrap, there was no sense tagging releases, when the external debootstrap
+#could disappear, so lets use my mirror..
 
-#DEBOOT_VER="1.0.42"
+DEBOOT_VER="1.0.44"
+DEBOOT_HTTP="http://rcn-ee.net/mirror/debootstrap/"
+
+#Latest versions:
+#DEBOOT_HTTP="http://ports.ubuntu.com/pool/main/d/debootstrap"
 #DEBOOT_HTTP="http://ftp.us.debian.org/debian/pool/main/d/debootstrap"
+
+#1.0.42ubuntu1 addes raring 13.04 support
 
 DEB_MIRROR="http://rcn-ee.net/deb"
 
