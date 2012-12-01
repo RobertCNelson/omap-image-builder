@@ -247,20 +247,6 @@ function select_rcn-ee-net_kernel {
 	fi
 }
 
-#12.04
-function precise_release {
-	reset_vars
-	DIST=precise
-	select_rcn-ee-net_kernel
-	EXTRA="${precise_wheezy_plus},linux-firmware,devmem2,python-software-properties"
-
-	MIRROR=$MIRROR_UBU
-	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$PRECISE_CURRENT$MINIMAL-$ARCH-${TIME}
-	minimal_armel
-	compression
-}
-
 #12.10
 function quantal_release {
 	reset_vars
@@ -358,7 +344,6 @@ ARCH=armel
 wheezy_release
 
 ARCH=armhf
-precise_release
 quantal_release
 raring_release
 

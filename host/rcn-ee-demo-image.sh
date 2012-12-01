@@ -8,21 +8,6 @@
 #maverick:1.9.0
 #lucid:1.7.6
 
-#Precise Schedule:
-#https://wiki.ubuntu.com/PrecisePangolin/ReleaseSchedule
-#alpha-1 : Dec 1st
-PRECISE_ALPHA="ubuntu-precise-alpha1"
-#alpha-2 : Feb 2nd
-PRECISE_ALPHA2="ubuntu-precise-alpha2-1"
-#beta-1 : March 1st
-PRECISE_BETA1="ubuntu-precise-beta1"
-#beta-2 : March 29th
-PRECISE_BETA2="ubuntu-precise-beta2"
-#12.04 : April 26th
-PRECISE_RELEASE="ubuntu-12.04-r10"
-
-PRECISE_CURRENT=${PRECISE_RELEASE}
-
 #Quantal Schedule:
 #https://wiki.ubuntu.com/QuantalQuetzal/ReleaseSchedule
 #alpha-1 : June 7th
