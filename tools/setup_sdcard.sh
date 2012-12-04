@@ -550,12 +550,13 @@ function unmount_all_drive_partitions {
 	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
 }
 
-function omap_fatfs_boot_part_error {
+function fatfs_boot_error {
 	echo "Failure: [parted --script ${MMC} set 1 boot on]"
 	exit
 }
 
-function omap_fatfs_boot_part {
+function fatfs_boot {
+	#For: TI: Omap/Sitara Devices
 	echo ""
 	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
 	echo "-----------------------------"
@@ -576,14 +577,25 @@ function omap_fatfs_boot_part {
 
 	echo "Setting Boot Partition's Boot Flag"
 	echo "-----------------------------"
-	LC_ALL=C parted --script ${MMC} set 1 boot on || omap_fatfs_boot_part_error
+	LC_ALL=C parted --script ${MMC} set 1 boot on || fatfs_boot_error
 }
 
-function dd_to_drive {
+function dd_uboot_boot {
+	#For: Freescale: i.mx5/6 Devices
 	echo ""
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_seek} bs=${dd_bs}
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
+	bootloader_installed=1
+}
+
+function dd_spl_uboot_boot {
+	#For: Samsung: Exynos 4 Devices
+	echo ""
+	echo "Using dd to place bootloader on drive"
+	echo "-----------------------------"
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_spl_uboot_seek} bs=${dd_spl_uboot_bs}
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
 	bootloader_installed=1
 }
 
@@ -640,11 +652,15 @@ function create_partitions {
 	fi
 
 	case "${bootloader_location}" in
-	omap_fatfs_boot_part)
-		omap_fatfs_boot_part
+	fatfs_boot)
+		fatfs_boot
 		;;
-	dd_to_drive)
-		dd_to_drive
+	dd_uboot_boot)
+		dd_uboot_boot
+		LC_ALL=C parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		;;
+	dd_spl_uboot_boot)
+		dd_spl_uboot_boot
 		LC_ALL=C parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
 		;;
 	*)
@@ -754,9 +770,12 @@ function populate_boot {
 			#!/bin/sh
 			format=1.0
 			board=${BOOTLOADER}
+
 			bootloader_location=${bootloader_location}
-			dd_seek=${dd_seek}
-			dd_bs=${dd_bs}
+			dd_spl_uboot_seek=${dd_spl_uboot_seek}
+			dd_spl_uboot_bs=${dd_spl_uboot_bs}
+			dd_uboot_seek=${dd_uboot_seek}
+			dd_uboot_bs=${dd_uboot_bs}
 
 			boot_image=${boot}
 			boot_script=${boot_script}
@@ -1013,7 +1032,7 @@ function kernel_detection {
 function is_omap {
 	IS_OMAP=1
 
-	bootloader_location="omap_fatfs_boot_part"
+	bootloader_location="fatfs_boot"
 	spl_name="MLO"
 	boot_name="u-boot.img"
 
@@ -1053,11 +1072,11 @@ function is_omap {
 function is_imx {
 	IS_IMX=1
 
-	bootloader_location="dd_to_drive"
+	bootloader_location="dd_uboot_boot"
 	unset spl_name
 	boot_name="u-boot.imx"
-	dd_seek="1"
-	dd_bs="1024"
+	dd_uboot_seek="1"
+	dd_uboot_bs="1024"
 	boot_startmb="2"
 
 	SUBARCH="imx"
@@ -1083,16 +1102,20 @@ function check_uboot_type {
 	unset USE_UIMAGE
 	unset USE_KMS
 	unset dtb_file
+	unset need_dtbs
 
+	boot="bootz"
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
-	unset need_dtbs
-	boot="bootz"
+	unset bootloader_location
+	unset dd_spl_uboot_seek
+	unset dd_spl_uboot_bs
+	unset dd_uboot_seek
+	unset dd_uboot_bs
+
 	unset boot_scr_wrapper
 	unset usbnet_mem
-	unset dd_seek
-	unset dd_bs
 	boot_partition_size="50"
 	unset has_camera_isp
 
@@ -1279,8 +1302,8 @@ function check_uboot_type {
 		SERIAL_CONSOLE="${SERIAL},115200"
 		boot="bootm"
 		USE_UIMAGE=1
-		dd_seek="2"
-		dd_bs="512"
+		dd_uboot_seek="2"
+		dd_uboot_bs="512"
 		kernel_addr="0x10000000"
 		initrd_addr="0x12000000"
 		load_addr="0x10008000"
