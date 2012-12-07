@@ -297,14 +297,26 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
-	if [ "${has_camera_isp}" ] ; then
+	case "${SYSTEM}" in
+	beagle_bx|beagle_cx)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#SPI: enable for userspace spi access on expansion header
+			#buddy=spidev
+
+		__EOF__
+		;;
+	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Camera: Uncomment to enable:
 			#http://shop.leopardimaging.com/product.sc?productId=17
 			#camera=li5m03
 
+			#SPI: enable for userspace spi access on expansion header
+			#buddy=spidev
+
 		__EOF__
-	fi
+		;;
+	esac
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		console=SERIAL_CONSOLE
@@ -1117,7 +1129,6 @@ function check_uboot_type {
 	unset boot_scr_wrapper
 	unset usbnet_mem
 	boot_partition_size="50"
-	unset has_camera_isp
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1142,7 +1153,6 @@ function check_uboot_type {
 		is_omap
 		usbnet_mem="16384"
 		#dtb_file="omap3-beagle.dtb"
-		has_camera_isp=1
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1153,7 +1163,6 @@ function check_uboot_type {
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
-		has_camera_isp=1
 		;;
 	bone)
 		SYSTEM="bone"
