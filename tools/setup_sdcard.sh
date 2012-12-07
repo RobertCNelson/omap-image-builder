@@ -314,10 +314,6 @@ function boot_uenv_txt_template {
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
 
-			#unset the ulcd uenvcmd u-boot variable, as fixed by:
-			#CONFIG_BACKLIGHT_TLC59108=y
-			uenvcmd=
-
 		__EOF__
 		;;
 	esac
