@@ -303,6 +303,11 @@ function boot_uenv_txt_template {
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
 
+			#LSR COM6L Adapter Board
+			#http://eewiki.net/display/linuxonarm/LSR+COM6L+Adapter+Board
+			#First production run has unprogramed eeprom:
+			#buddy=lsr-com6l-adpt
+
 		__EOF__
 		;;
 	beagle_xm)
@@ -313,6 +318,11 @@ function boot_uenv_txt_template {
 
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
+
+			#LSR COM6L Adapter Board
+			#http://eewiki.net/display/linuxonarm/LSR+COM6L+Adapter+Board
+			#First production run has unprogramed eeprom:
+			#buddy=lsr-com6l-adpt
 
 		__EOF__
 		;;
