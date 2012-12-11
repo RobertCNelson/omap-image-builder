@@ -308,6 +308,9 @@ function boot_uenv_txt_template {
 			#First production run has unprogramed eeprom:
 			#buddy=lsr-com6l-adpt
 
+			#LSR COM6L Adapter Board + TiWi5
+			#wl12xx_clk=wl12xx_26mhz
+
 		__EOF__
 		;;
 	beagle_xm)
@@ -323,6 +326,9 @@ function boot_uenv_txt_template {
 			#http://eewiki.net/display/linuxonarm/LSR+COM6L+Adapter+Board
 			#First production run has unprogramed eeprom:
 			#buddy=lsr-com6l-adpt
+
+			#LSR COM6L Adapter Board + TiWi5
+			#wl12xx_clk=wl12xx_26mhz
 
 		__EOF__
 		;;
@@ -364,7 +370,7 @@ function boot_uenv_txt_template {
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5 wl12xx_clk=\${wl12xx_clk}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
@@ -372,7 +378,7 @@ function boot_uenv_txt_template {
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera}
+			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
 
 		__EOF__
