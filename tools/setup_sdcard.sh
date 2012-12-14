@@ -417,14 +417,6 @@ function boot_uenv_txt_template {
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=
-			expansion_args=setenv expansion ip=\${ip_method}
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
-
-		__EOF__
-		;;
-	bone_dtb)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			dtb_file=${dtb_file}
 			optargs=
 			expansion_args=setenv expansion ip=\${ip_method}
@@ -877,7 +869,7 @@ function populate_rootfs {
 		fi
 
 		case "${SYSTEM}" in
-		bone|bone_dtb)
+		bone)
 			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
 			fbcon
 			ti_tscadc
@@ -1023,15 +1015,6 @@ function kernel_detection {
 		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
 		HAS_BONE_DT_KERNEL=1
-	fi
-
-	unset HAS_BONE_KERNEL
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep psp | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		bone_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep psp | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has bone kernel support: v${bone_kernel}"
-		HAS_BONE_KERNEL=1
 	fi
 
 	unset HAS_OMAP_KERNEL
@@ -1186,30 +1169,10 @@ function check_uboot_type {
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-		select_kernel="${bone_kernel}"
-
-		unset HAS_OMAPFB_DSS2
-		unset KMS_VIDEOA
-
-		#just to disable the omapfb stuff..
-		USE_KMS=1
-		;;
-	bone_dtb)
-		SYSTEM="bone_dtb"
-		BOOTLOADER="BEAGLEBONE_A"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
 		dtb_file="am335x-bone.dtb"
 		need_dtbs=1
 
-		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
-			select_kernel="${bone_dt_kernel}"
-		else
-			select_kernel="${bone_kernel}"
-		fi
-		unset kernel_id
+		select_kernel="${bone_dt_kernel}"
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
