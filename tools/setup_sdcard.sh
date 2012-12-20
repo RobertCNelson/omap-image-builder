@@ -49,6 +49,13 @@ ROOTFS_LABEL=rootfs
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
 
+# non-GNU fdisk is included with Debian Wheezy (and possibly other versions of debian)
+# but it has a slightly different name "fdisk.distrib" calling fdisk with a variable
+# allows us to specify this alternate name easily.
+# to specify an alternate path to fdisk use:
+# --fdisk /path/to/alt/fdisk
+FDISK_EXEC=`which fdisk`
+
 function is_element_of {
 	testelt=$1
 	for validelt in $2 ; do
@@ -124,8 +131,8 @@ function find_issue {
 		HAS_DTBS=1
 	fi
 
-	echo "Debug: fdisk version:"
-	LC_ALL=C fdisk -v
+	echo "Debug: $FDISK_EXEC version:"
+	LC_ALL=C $FDISK_EXEC -v
 }
 
 function check_for_command {
@@ -160,9 +167,10 @@ function detect_software {
 
 	#Check for gnu-fdisk
 	#FIXME: GNU Fdisk seems to halt at "Using /dev/xx" when trying to script it..
-	if fdisk -v | grep "GNU Fdisk" >/dev/null ; then
+	if $FDISK_EXEC -v | grep "GNU Fdisk" >/dev/null ; then
 		echo "Sorry, this script currently doesn't work with GNU Fdisk."
 		echo "Install the version of fdisk from your distribution's util-linux package."
+      echo "Or specify a non-GNU Fdisk using the --fdisk option."
 		exit
 	fi
 
@@ -581,7 +589,7 @@ function fatfs_boot {
 	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
 	echo "-----------------------------"
 
-	fdisk ${MMC} <<-__EOF__
+	$FDISK_EXEC ${MMC} <<-__EOF__
 		n
 		p
 		1
@@ -970,13 +978,13 @@ function populate_rootfs {
 }
 
 function check_mmc {
-	FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${MMC}" | awk '{print $2}')
+	FDISK=$(LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk ${MMC}" | awk '{print $2}')
 
 	if [ "x${FDISK}" = "x${MMC}:" ] ; then
 		echo ""
 		echo "I see..."
-		echo "fdisk -l:"
-		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
+		echo "$FDISK_EXEC -l:"
+		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
 		echo "mount:"
 		mount | grep -v none | grep "/dev/" --color=never
@@ -988,8 +996,8 @@ function check_mmc {
 		echo ""
 		echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
 		echo ""
-		echo "fdisk -l:"
-		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
+		echo "$FDISK_EXEC -l:"
+		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
 		echo "mount:"
 		mount | grep -v none | grep "/dev/" --color=never
@@ -1474,6 +1482,10 @@ while [ ! -z "$1" ] ; do
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
 		;;
+   --fdisk)
+      checkparm $2
+      FDISK_EXEC="$2"
+      ;;
 	esac
 	shift
 done
