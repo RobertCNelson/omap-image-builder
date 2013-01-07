@@ -5,7 +5,7 @@ RELEASE_HOST="panda-es-1gb-a3"
 #Debootstrap, there was no sense tagging releases, when the external debootstrap
 #could disappear, so lets use my mirror..
 
-DEBOOT_VER="1.0.44"
+DEBOOT_VER="1.0.46"
 DEBOOT_HTTP="http://rcn-ee.net/mirror/debootstrap/"
 
 #Latest versions:

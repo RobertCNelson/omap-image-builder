@@ -185,7 +185,7 @@ function kernel_chooser {
 
 function select_rcn-ee-net_kernel {
 	#KERNEL_ABI="STABLE"
-	KERNEL_ABI="TESTING"
+	#KERNEL_ABI="TESTING"
 	#KERNEL_ABI="EXPERIMENTAL"
 
 	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
@@ -195,6 +195,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap"
+	KERNEL_ABI="STABLE"
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
@@ -204,7 +205,6 @@ function select_rcn-ee-net_kernel {
 		echo "Using dtbs: ${PRIMARY_DTB_FILE}"
 	fi
 
-	KERNEL_ABI="STABLE"
 	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
 		OVERRIDE="${SECONDARY_KERNEL_OVERRIDE}"
 	else
@@ -212,6 +212,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap-psp"
+	KERNEL_ABI="STABLE"
 	kernel_chooser
 	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${SECONDARY_KERNEL}"

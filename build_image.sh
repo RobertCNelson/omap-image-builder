@@ -202,7 +202,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap"
-	KERNEL_ABI="TESTING"
+	KERNEL_ABI="STABLE"
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
@@ -235,8 +235,8 @@ function select_rcn-ee-net_kernel {
 		unset OVERRIDE
 	fi
 
-	SUBARCH="omap"
-	KERNEL_ABI="STABLE"
+	SUBARCH="omap-psp"
+	KERNEL_ABI="TESTING"
 	kernel_chooser
 	THIRD_KERNEL="--third-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${THIRD_KERNEL}"
