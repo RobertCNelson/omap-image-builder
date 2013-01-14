@@ -232,7 +232,7 @@ function quantal_release {
 
 	MIRROR=$MIRROR_UBU
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH-${TIME}
+	BUILD="${QUANTAL_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
@@ -246,7 +246,7 @@ function raring_release {
 
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD="${RARING_CURRENT}${MINIMAL-$ARCH}-${TIME}"
+	BUILD="${RARING_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
@@ -260,7 +260,7 @@ function squeeze_release {
 
 	MIRROR=$MIRROR_DEB
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD=${SQUEEZE_CURRENT}$MINIMAL-$ARCH-${TIME}
+	BUILD="${SQUEEZE_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
@@ -274,7 +274,7 @@ function wheezy_release {
 
 	MIRROR=$MIRROR_DEB
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
+	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
@@ -288,7 +288,7 @@ function sid_release {
 
 	MIRROR=$MIRROR_DEB
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD=${DIST}$MINIMAL-$ARCH-${TIME}
+	BUILD="${DIST}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }

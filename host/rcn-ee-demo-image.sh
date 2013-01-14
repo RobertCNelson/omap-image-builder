@@ -21,7 +21,7 @@ QUANTAL_BETA1="ubuntu-quantal-beta1"
 #beta-2 : September 27th
 QUANTAL_BETA2="ubuntu-quantal-beta2"
 #12.04 : October 18th
-QUANTAL_RELEASE="ubuntu-12.10-r3"
+QUANTAL_RELEASE="ubuntu-12.10-r4"
 
 QUANTAL_CURRENT=${QUANTAL_RELEASE}
 
@@ -34,6 +34,6 @@ RARING_RELEASE="ubuntu-13.04-r1"
 RARING_CURRENT=${RARING_SNAPSHOT}
 
 #rcn-ee: kernel version when doing releases...
-PRIMARY_KERNEL_OVERRIDE="v3.7.2-x6"
-SECONDARY_KERNEL_OVERRIDE="v3.2.33-psp26"
+#PRIMARY_KERNEL_OVERRIDE="v3.7.2-x6"
+#SECONDARY_KERNEL_OVERRIDE="v3.2.33-psp26"
 #

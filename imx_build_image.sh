@@ -216,7 +216,7 @@ function wheezy_release {
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR=$MIRROR_DEB
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD=${WHEEZY_CURRENT}$MINIMAL-$ARCH-${TIME}
+	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
