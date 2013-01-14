@@ -212,7 +212,7 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="omap-psp"
-	KERNEL_ABI="STABLE"
+	KERNEL_ABI="TESTING"
 	kernel_chooser
 	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${SECONDARY_KERNEL}"
