@@ -5,7 +5,7 @@ setup_fstab () {
 
 	echo "/dev/mmcblk0p2  /                  auto     errors=remount-ro   0   1" >> /etc/fstab
 	echo "/dev/mmcblk0p1  /boot/uboot        auto     defaults            0   0" >> /etc/fstab
-	echo "debugfs         /sys/kernel/debug  debugfs  rw                  0   0" >> /etc/fstab
+	#echo "debugfs         /sys/kernel/debug  debugfs  rw                  0   0" >> /etc/fstab
 }
 
 setup_network () {
