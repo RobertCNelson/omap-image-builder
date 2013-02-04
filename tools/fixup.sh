@@ -84,6 +84,4 @@ if which git >/dev/null 2>&1; then
 fi
 
 apt-get clean
-rm -f /tmp/*.deb || true
-rm -rf /usr/src/linux-headers* || true
 rm -f /rootstock-user-script || true
