@@ -417,13 +417,6 @@ function boot_uenv_txt_template {
 			expansion_args=setenv expansion ip=\${ip_method}
 		__EOF__
 		;;
-	bone_dtb)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			dtb_file=${dtb_file}
-			optargs=
-			expansion_args=setenv expansion ip=\${ip_method}
-		__EOF__
-		;;
 	mx6qsabrelite)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
@@ -1176,29 +1169,12 @@ function check_uboot_type {
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
-		select_kernel="${bone_kernel}"
-
-		unset HAS_OMAPFB_DSS2
-		unset KMS_VIDEOA
-
-		#just to disable the omapfb stuff..
-		USE_KMS=1
-		;;
-	bone_dtb)
-		SYSTEM="bone_dtb"
-		BOOTLOADER="BEAGLEBONE_A"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
-		dtb_file="am335x-bone.dtb"
-		need_dtbs=1
-
 		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
 			select_kernel="${bone_dt_kernel}"
+			need_dtbs=1
 		else
 			select_kernel="${bone_kernel}"
 		fi
-		unset kernel_id
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
