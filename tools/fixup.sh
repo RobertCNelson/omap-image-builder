@@ -91,6 +91,55 @@ setup_distro () {
 	__EOF__
 }
 
+kernel_chooser () {
+	DIST=$(lsb_release -cs)
+	ARCH=$(dpkg --print-architecture)
+	if [ ! "${OVERRIDE}" ] ; then
+		if [ -f /tmp/LATEST-${SUBARCH} ] ; then
+			rm -f /tmp/LATEST-${SUBARCH} || true
+		fi
+
+		wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		FTP_DIR=$(cat /tmp/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
+		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
+		rm -f /tmp/LATEST-${SUBARCH} || true
+	else
+		FTP_DIR=${OVERRIDE}
+	fi
+
+	if [ -f /tmp/index.html ] ; then
+		rm -f /tmp/index.html || true
+	fi
+
+	wget --no-verbose --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
+
+	firmware_file=$(cat /tmp/index.html | grep firmware.tar.gz | head -n 1)
+	firmware_file=$(echo ${firmware_file} | awk -F "\"" '{print $2}')
+
+	if [ "x${firmware_file}" != "x" ] ; then
+		wget --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/${firmware_file}
+		mkdir -p /tmp/cape-firmware/
+		tar xf /tmp/${firmware_file} -C /tmp/cape-firmware/
+		cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/
+		rm -f /tmp/${firmware_file} || true
+		rm -rf /tmp/cape-firmware/ || true
+	fi
+
+	rm -f /tmp/index.html || true
+}
+
+setup_kernel () {
+#	OVERRIDE=""
+	SUBARCH="omap"
+	KERNEL_ABI="STABLE"
+	kernel_chooser
+
+#	OVERRIDE=""
+	SUBARCH="omap-psp"
+	KERNEL_ABI="TESTING"
+	kernel_chooser
+}
+
 cleanup () {
 	apt-get clean
 	rm -f /rootstock-user-script || true
@@ -101,5 +150,6 @@ setup_network
 setup_firmware
 setup_board_startup
 setup_distro
+setup_kernel
 cleanup
 #
