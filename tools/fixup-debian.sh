@@ -32,6 +32,9 @@ if which git >/dev/null 2>&1; then
 	mkdir -p /lib/firmware/ti-connectivity
 	cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/ti-connectivity
 	cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
+
+	cp -v /tmp/linux-firmware/carl9170-1.fw /lib/firmware/
+
 	rm -rf /tmp/linux-firmware/
 
 	if [ -f /lib/firmware/ti-connectivity/TIInit_7.6.15.bts ] ; then
@@ -41,10 +44,6 @@ if which git >/dev/null 2>&1; then
 
 	cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
 	rm -rf /tmp/am33x-cm3/
-
-	#v3.1+ needs 1.9.4 version of the firmware
-	rm -f /lib/firmware/carl9170-1.fw || true
-	wget --directory-prefix=/lib/firmware/ http://rcn-ee.net/firmware/carl9170/1.9.6/carl9170-1.fw
 fi
 
 #rootstock seems to leave an almost blank /etc/sudoers hanging, remove and just install sudo
