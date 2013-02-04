@@ -128,6 +128,14 @@ function compression {
 		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${SECONDARY_DTB_FILE}
 	fi
 
+	if [ "${PRIMARY_firmware_FILE}" ] ; then
+		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${PRIMARY_firmware_FILE}
+	fi
+
+	if [ "${SECONDARY_firmware_FILE}" ] ; then
+		wget --no-verbose --directory-prefix=${DIR}/deploy/${TIME}/$BUILD ${SECONDARY_firmware_FILE}
+	fi
+
 	cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${TIME}/$BUILD
 
 	cat > ${DIR}/deploy/${TIME}/$BUILD/user_password.list <<-__EOF__
@@ -181,6 +189,14 @@ function kernel_chooser {
 	else
 		unset ACTUAL_DTB_FILE
 	fi
+
+	ACTUAL_firmware_FILE=$(cat ${tempdir}/index.html | grep firmware.tar.gz) || true
+	if [ "x${ACTUAL_firmware_FILE}" != "x" ] ; then
+		#http://rcn-ee.net/deb/wheezy-armhf/v3.8.0-rc6-bone2/3.8.0-rc6-bone2-firmware.tar.gz
+		ACTUAL_firmware_FILE=$(echo ${ACTUAL_firmware_FILE} | awk -F "\"" '{print $2}')
+	else
+		unset ACTUAL_firmware_FILE
+	fi
 }
 
 function select_rcn-ee-net_kernel {
@@ -199,10 +215,17 @@ function select_rcn-ee-net_kernel {
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
+
 	unset PRIMARY_DTB_FILE
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		PRIMARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
 		echo "Using dtbs: ${PRIMARY_DTB_FILE}"
+	fi
+
+	unset PRIMARY_firmware_FILE
+	if [ "x${ACTUAL_firmware_FILE}" != "x" ] ; then
+		PRIMARY_firmware_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_firmware_FILE}"
+		echo "Using firmware: ${PRIMARY_firmware_FILE}"
 	fi
 
 	if [ "${SECONDARY_KERNEL_OVERRIDE}" ] ; then
@@ -216,10 +239,16 @@ function select_rcn-ee-net_kernel {
 	kernel_chooser
 	SECONDARY_KERNEL="--secondary-kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${SECONDARY_KERNEL}"
+
 	unset SECONDARY_DTB_FILE
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		SECONDARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
 		echo "Using dtbs: ${SECONDARY_DTB_FILE}"
+	fi
+	unset SECONDARY_firmware_FILE
+	if [ "x${ACTUAL_firmware_FILE}" != "x" ] ; then
+		SECONDARY_firmware_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_firmware_FILE}"
+		echo "Using firmware: ${SECONDARY_firmware_FILE}"
 	fi
 }
 
