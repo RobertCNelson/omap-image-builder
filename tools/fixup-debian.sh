@@ -134,7 +134,12 @@ kernel_chooser () {
 		wget --directory-prefix=/tmp/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/${firmware_file}
 		mkdir -p /tmp/cape-firmware/
 		tar xf /tmp/${firmware_file} -C /tmp/cape-firmware/
-		cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/
+
+		actual_dtbo_files=$(ls /tmp/cape-firmware/ | grep dtbo | head -n 1)
+		if [ "x${actual_dtbo_files}" != "x" ] ; then
+			cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/
+		fi
+
 		rm -f /tmp/${firmware_file} || true
 		rm -rf /tmp/cape-firmware/ || true
 	fi
