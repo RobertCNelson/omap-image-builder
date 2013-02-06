@@ -230,9 +230,9 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 	select_rcn-ee-net_kernel
-	EXTRA="${precise_wheezy_plus},linux-firmware,devmem2,python-software-properties"
+	EXTRA=",${UBUNTU_ONLY}"
 	FIXUPSCRIPT="fixup.sh"
-	MIRROR=$MIRROR_UBU
+	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD="${QUANTAL_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
@@ -244,7 +244,7 @@ function raring_release {
 	reset_vars
 	DIST="raring"
 	select_rcn-ee-net_kernel
-	EXTRA="${precise_wheezy_plus},linux-firmware,devmem2,python-software-properties"
+	EXTRA=",${UBUNTU_ONLY}"
 	FIXUPSCRIPT="fixup.sh"
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -257,10 +257,10 @@ function squeeze_release {
 	reset_vars
 	DIST=squeeze
 	select_rcn-ee-net_kernel
-	EXTRA=",isc-dhcp-client,${DEBIAN_FW}"
+	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
-	MIRROR=$MIRROR_DEB
+	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${SQUEEZE_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
@@ -271,10 +271,10 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW}"
+	EXTRA=",${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
-	MIRROR=$MIRROR_DEB
+	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
@@ -285,10 +285,10 @@ function sid_release {
 	reset_vars
 	DIST=sid
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW}"
+	EXTRA=",${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
-	MIRROR=$MIRROR_DEB
+	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${DIST}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel

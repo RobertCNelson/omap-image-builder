@@ -185,7 +185,7 @@ function kernel_chooser {
 
 function select_rcn-ee-net_kernel {
 	#KERNEL_ABI="STABLE"
-	KERNEL_ABI="TESTING"
+	#KERNEL_ABI="TESTING"
 	#KERNEL_ABI="EXPERIMENTAL"
 
 	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
@@ -195,9 +195,11 @@ function select_rcn-ee-net_kernel {
 	fi
 
 	SUBARCH="imx"
+	KERNEL_ABI="STABLE"
 	kernel_chooser
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
+
 	unset PRIMARY_DTB_FILE
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		PRIMARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
@@ -211,10 +213,10 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_FW}"
+	EXTRA=",${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
-	MIRROR=$MIRROR_DEB
+	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel

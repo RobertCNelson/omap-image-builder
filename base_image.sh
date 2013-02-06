@@ -135,11 +135,11 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 
-	EXTRA="${precise_plus},linux-firmware,devmem2,python-software-properties"
+	EXTRA=",${UBUNTU_ONLY}"
 	FIXUPSCRIPT="fixup-base.sh"
-	MIRROR=$MIRROR_UBU
+	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD=$QUANTAL_CURRENT$MINIMAL-$ARCH-${TIME}
+	BUILD="${QUANTAL_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
 	minimal_armel
 	compression
 }
@@ -149,7 +149,7 @@ function raring_release {
 	reset_vars
 	DIST="raring"
 
-	EXTRA="${precise_plus},linux-firmware,devmem2,python-software-properties"
+	EXTRA=",${UBUNTU_ONLY}"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -162,7 +162,7 @@ function squeeze_release {
 	reset_vars
 	DIST=squeeze
 
-	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_FW}"
+	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -176,7 +176,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 
-	EXTRA=",u-boot-tools,${DEBIAN_FW}"
+	EXTRA=",u-boot-tools,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
@@ -190,7 +190,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 
-	EXTRA=",u-boot-tools,${DEBIAN_FW}"
+	EXTRA=",u-boot-tools,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR=$MIRROR_DEB
