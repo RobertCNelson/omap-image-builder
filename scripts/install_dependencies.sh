@@ -20,58 +20,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-DIR=$PWD
+#1.0.${minimal_debootstrap}
+minimal_debootstrap="46"
+host_arch="$(uname -m)"
 
-source ${DIR}/.project
+debootstrap_is_installed () {
+	unset deb_pkgs
+	dpkg -l | grep debootstrap >/dev/null || deb_pkgs+="debootstrap "
 
-check_defines () {
-	if [ ! "${tempdir}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: tempdir undefined"
-		exit 1
+	if [ "x${host_arch}" != "xarmv7l" ] ; then
+		dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs+="qemu-user-static "
+		dpkg -l | grep `dpkg --print-architecture` | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs+="qemu "
 	fi
 
-	if [ ! "${distro}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: distro undefined"
-		exit 1
-	fi
-
-	if [ ! "${release}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: release undefined"
-		exit 1
-	fi
-
-	if [ ! "${dpkg_arch}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: dpkg_arch undefined"
-		exit 1
-	fi
-
-	if [ ! "${apt_proxy}" ] ; then
-		apt_proxy=""
+	if [ "${deb_pkgs}" ] ; then
+		echo "Installing: ${deb_pkgs}"
+		sudo apt-get update
+		sudo apt-get -y install ${deb_pkgs}
 	fi
 }
 
-report_size () {
-	echo "Log: Size of: [${tempdir}]: `du -sh ${tempdir} 2>/dev/null | awk '{print $1}'`"
+debootstrap_what_version () {
+	test_debootstrap=$(/usr/sbin/debootstrap --version | awk '{print $2}' | awk -F"." '{print $3}')
+	echo "Log: debootstrap version: 1.0."$test_debootstrap""
 }
 
-check_defines
+debootstrap_is_installed
+debootstrap_what_version
 
-case "${distro}" in
-debian)
-	deb_mirror="ftp.us.debian.org/debian/"
-	;;
-ubuntu)
-	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-	;;
-esac
-
-echo "Log: Creating: [${distro}] [${release}] image for: [${dpkg_arch}]"
-
-if [ "${apt_proxy}" ] ; then
-	echo "Log: using apt proxy"
+if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
+	echo "Log: Installing minimal debootstrap version: 1.0."${minimal_debootstrap}"..."
+	wget http://rcn-ee.net/mirror/debootstrap/debootstrap_1.0.${minimal_debootstrap}_all.deb
+	sudo dpkg -i debootstrap_1.0.${minimal_debootstrap}_all.deb
+	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
-
-echo "Log: Running: debootstrap in [${tempdir}]"
-sudo debootstrap --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}
-report_size
-#
