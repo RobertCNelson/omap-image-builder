@@ -46,6 +46,26 @@ base_pkg_list="${base_pkg_list} apache2 openssh-server"
 #Wireless
 base_pkg_list="${base_pkg_list} wireless-tools wpasupplicant"
 
+generic_git () {
+	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
+		git clone ${git_clone_address} ${DIR}/git/${git_project_name}
+	fi
+}
+
+setup_git_trees () {
+	if [ ! -d ${DIR}/git/ ] ; then
+		mkdir -p ${DIR}/git/
+	fi
+
+	git_project_name="linux-firmware"
+	git_clone_address="git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+	generic_git
+
+	git_project_name="am33x-cm3"
+	git_clone_address="git://arago-project.org/git/projects/am33x-cm3.git"
+	generic_git
+}
+
 run_project () {
 	#Mininum:
 	#linux-image*.deb
@@ -91,7 +111,16 @@ a53t|zeus|hestia|poseidon)
 	;;
 esac
 
-chroot_ENABLE_FIRMWARE="enable"
+setup_git_trees
+
+cd ${DIR}/git/linux-firmware
+git pull
+
+cd ${DIR}/git/am33x-cm3
+git pull
+
+cd ${DIR}/
+
 chroot_ENABLE_DEB_SRC="enable"
 
 distro="debian"

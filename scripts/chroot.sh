@@ -176,31 +176,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get -y --force-yes install ${base_pkg_list}
 	}
 
-	git_firmware () {
-		unset deb_pkgs
-		dpkg -l | grep git-core >/dev/null || deb_pkgs="git-core "
-
-		if [ "\${deb_pkgs}" ] ; then
-			apt-get -y --force-yes install \${deb_pkgs}
-		fi
-
-		git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git /tmp/linux-firmware
-
-		mkdir -p /lib/firmware/ti-connectivity
-		cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/
-		cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
-
-		cp -v /tmp/linux-firmware/carl9170-1.fw /lib/firmware/
-
-		rm -rf /tmp/linux-firmware || true
-
-		git clone git://arago-project.org/git/projects/am33x-cm3.git /tmp/am33x-cm3
-
-		cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
-
-		rm -rf /tmp/am33x-cm3 || true
-	}
-
 	dl_pkg_src () {
 		mkdir -p /tmp/pkg_src/
 		cd /tmp/pkg_src/
@@ -226,6 +201,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		depmod \${kernel_version}
 		update-initramfs -c -k \${kernel_version}
+		rm -f /tmp/index.html || true
 	}
 
 	cleanup () {
@@ -254,10 +230,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
-
-	if [ "x${chroot_ENABLE_FIRMWARE}" = "xenable" ] ; then
-		git_firmware
-	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
@@ -289,15 +261,29 @@ __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
+if [ -d ${DIR}/git/linux-firmware/ti-connectivity/ ] ; then
+	sudo mkdir -p ${tempdir}/lib/firmware/ti-connectivity
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.ti-connectivity ${tempdir}/lib/firmware/
+	sudo cp -v ${DIR}/git/linux-firmware/ti-connectivity/* ${tempdir}/lib/firmware/ti-connectivity
+fi
+
+if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
+	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
+fi
+
+if [ -f ${DIR}/git/am33x-cm3/bin/am335x-pm-firmware.bin ] ; then
+	sudo cp -v ${DIR}/git/am33x-cm3/bin/am335x-pm-firmware.bin ${tempdir}/lib/firmware/am335x-pm-firmware.bin
+fi
+
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-	sudo cp -v ${tempdir}/boot/vmlinuz-* ${DIR}/
+	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/
 fi
 
 if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1;then
-	sudo cp -v ${tempdir}/boot/initrd.img-* ${DIR}/
+	sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/
 fi
 
 report_size
