@@ -20,12 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-SYST=$(uname -n)
+system=$(uname -n)
 HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 DIR="$PWD"
-
 
 #Base
 base_pkg_list="git-core nano pastebinit wget"
@@ -57,8 +56,7 @@ run_project () {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
-		#apt_proxy="192.168.0.10:3142/"
-		apt_proxy="rcn-ee.homeip.net:3142/"
+		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
 	__EOF__
@@ -67,6 +65,19 @@ run_project () {
 	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
 	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
 }
+
+#FIXME: just temp...
+case "${system}" in
+hades)
+	apt_proxy="192.168.0.10:3142/"
+	;;
+a53t|zeus|hestia)
+	apt_proxy="rcn-ee.homeip.net:3142/"
+	;;
+*)
+	apt_proxy=""
+	;;
+esac
 
 distro="debian"
 dpkg_arch="armel"
