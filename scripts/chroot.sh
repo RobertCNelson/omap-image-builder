@@ -246,13 +246,15 @@ chroot_umount
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/${distro}-${release}-${dpkg_arch}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-src.tar .
 	cd ${tempdir}
+	ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
 
 cd ${tempdir}
-sudo LANG=C tar --numeric-owner -cf ${DIR}/${distro}-${release}-${dpkg_arch}-rootfs.tar .
+sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-rootfs.tar .
 cd ${DIR}/
+ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-rootfs.tar
 #
