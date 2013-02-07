@@ -178,7 +178,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	git_firmware () {
 		unset deb_pkgs
-		dpkg -l | grep git-core >/dev/null || deb_pkgs+="git-core "
+		dpkg -l | grep git-core >/dev/null || deb_pkgs="git-core "
 
 		if [ "\${deb_pkgs}" ] ; then
 			apt-get -y --force-yes install \${deb_pkgs}
