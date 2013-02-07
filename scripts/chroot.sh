@@ -67,6 +67,10 @@ report_size () {
 }
 
 chroot_mount () {
+	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" != "${tempdir}/sys" ] ; then
+		sudo mount -t sysfs sysfs ${tempdir}/sys
+	fi
+
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" != "${tempdir}/proc" ] ; then
 		sudo mount -t proc proc ${tempdir}/proc
 	fi
