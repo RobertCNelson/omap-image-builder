@@ -71,7 +71,7 @@ case "${system}" in
 hades)
 	apt_proxy="192.168.0.10:3142/"
 	;;
-a53t|zeus|hestia)
+a53t|zeus|hestia|poseidon)
 	apt_proxy="rcn-ee.homeip.net:3142/"
 	;;
 *)
