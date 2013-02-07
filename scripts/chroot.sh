@@ -146,8 +146,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	export DEBIAN_FRONTEND=noninteractive
 
 	stop_init () {
-		dpkg-divert --add --local --divert /usr/sbin/invoke-rc.d.stop --rename /usr/sbin/invoke-rc.d
-		cp /bin/true /usr/sbin/invoke-rc.d
+		cat > /usr/sbin/policy-rc.d <<EOF
+		#!/bin/sh
+		exit 101
+		EOF
+		chmod +x /usr/sbin/policy-rc.d
 	}
 
 	install_pkg_updates () {
@@ -157,6 +160,29 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		apt-get -y --force-yes install ${base_pkg_list}
+	}
+
+	git_firmware () {
+		dpkg -l | grep git-core >/dev/null || deb_pkgs+="git-core "
+		if [ "${deb_pkgs}" ] ; then
+			sudo apt-get -y --force-yes install ${deb_pkgs}
+		fi
+
+		git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git /tmp/linux-firmware
+
+		mkdir -p /lib/firmware/ti-connectivity
+		cp -v /tmp/linux-firmware/LICENCE.ti-connectivity /lib/firmware/
+		cp -v /tmp/linux-firmware/ti-connectivity/* /lib/firmware/ti-connectivity
+
+		cp -v /tmp/linux-firmware/carl9170-1.fw /lib/firmware/
+
+		rm -rf /tmp/linux-firmware || true
+
+		git clone git://arago-project.org/git/projects/am33x-cm3.git /tmp/am33x-cm3
+
+		cp -v /tmp/am33x-cm3/bin/am335x-pm-firmware.bin /lib/firmware/am335x-pm-firmware.bin
+
+		rm -rf /tmp/am33x-cm3 || true
 	}
 
 	dl_pkg_src () {
@@ -174,14 +200,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get update
 		apt-get clean
 
-		rm -f /usr/sbin/invoke-rc.d
-		dpkg-divert --remove --rename /usr/sbin/invoke-rc.d
+		rm -f /usr/sbin/policy-rc.d
 	}
 
 	#cat /chroot_script.sh
 
 	install_pkg_updates
 	install_pkgs
+	git_firmware
 
 	#dl_pkg_src
 	cleanup
@@ -196,6 +222,6 @@ report_size
 chroot_umount
 
 cd ${tempdir}
-sudo LANG=C tar --numeric-owner -cvf ${DIR}/${distro}-${release}-${dpkg_arch}-rootfs.tar .
+sudo LANG=C tar --numeric-owner -cf ${DIR}/${distro}-${release}-${dpkg_arch}-rootfs.tar .
 cd ${DIR}/
 #
