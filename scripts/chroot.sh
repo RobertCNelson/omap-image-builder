@@ -207,9 +207,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
-	git_firmware
 
-	#dl_pkg_src
+	if [ "x${chroot_ENABLE_FIRMWARE}" == "xenable" ] ; then
+		git_firmware
+	fi
+
+	if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
+		dl_pkg_src
+	fi
+
 	cleanup
 	rm -f /chroot_script.sh || true
 __EOF__
@@ -220,6 +226,14 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 report_size
 chroot_umount
+
+if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
+	cd ${tempdir}/tmp/pkg_src/
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/${distro}-${release}-${dpkg_arch}-src.tar .
+	cd ${tempdir}
+	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
+	report_size
+fi
 
 cd ${tempdir}
 sudo LANG=C tar --numeric-owner -cf ${DIR}/${distro}-${release}-${dpkg_arch}-rootfs.tar .

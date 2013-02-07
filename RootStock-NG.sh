@@ -59,6 +59,9 @@ run_project () {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
+		chroot_ENABLE_FIRMWARE="${chroot_ENABLE_FIRMWARE}"
+		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
+
 	__EOF__
 
 	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
@@ -78,6 +81,9 @@ a53t|zeus|hestia|poseidon)
 	apt_proxy=""
 	;;
 esac
+
+chroot_ENABLE_FIRMWARE="enable"
+chroot_ENABLE_DEB_SRC="enable"
 
 distro="debian"
 dpkg_arch="armel"
