@@ -26,42 +26,66 @@ TIME=$(date +%Y-%m-%d)
 
 DIR="$PWD"
 
+
+#Base
+base_pkg_list="git-core nano pastebinit wget"
+
+#Tools
+base_pkg_list="${base_pkg_list} bsdmainutils i2c-tools fbset"
+
+#OS
+base_pkg_list="${base_pkg_list} btrfs-tools cpufrequtils initramfs-tools"
+base_pkg_list="${base_pkg_list} lsb-release ntpdate"
+
+#USB Dongles
+base_pkg_list="${base_pkg_list} ppp usb-modeswitch usbutils"
+# wvdial"
+
+#Server
+base_pkg_list="${base_pkg_list} apache2 openssh-server"
+
+#Wireless
+base_pkg_list="${base_pkg_list} wireless-tools wpasupplicant"
+
 run_project () {
+	tempdir=$(mktemp -d)
+
+	cat > ${DIR}/.project <<-__EOF__
+		tempdir="${tempdir}"
+		distro="${distro}"
+
+		release="${release}"
+		dpkg_arch="${dpkg_arch}"
+
+		#apt_proxy="192.168.0.10:3142/"
+		apt_proxy="rcn-ee.homeip.net:3142/"
+		base_pkg_list="${base_pkg_list}"
+
+	__EOF__
+
 	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
 	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
 	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
 }
 
-tempdir=$(mktemp -d)
+distro="debian"
+dpkg_arch="armel"
 
-cat > ${DIR}/.project <<-__EOF__
-	tempdir="${tempdir}"
-	distro="debian"
-
-	release="squeeze"
-	dpkg_arch="armel"
-
-	#apt_proxy="192.168.0.10:3142/"
-	apt_proxy="rcn-ee.homeip.net:3142/"
-
-__EOF__
-
+release="squeeze"
 run_project
 
-#tempdir=$(mktemp -d)
+release="wheezy"
+run_project
 
-#cat > ${DIR}/.project <<-__EOF__
-#	tempdir="${tempdir}"
-#	distro="debian"
-#
-#	release="wheezy"
-#	dpkg_arch="armhf"
-#
-#	#apt_proxy="192.168.0.10:3142/"
-#	apt_proxy="rcn-ee.homeip.net:3142/"
-#
-#__EOF__
-#
-#run_project
+dpkg_arch="armhf"
+run_project
+
+distro="ubuntu"
+dpkg_arch="armhf"
+release="quantal"
+run_project
+
+release="raring"
+run_project
 
 #

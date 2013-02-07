@@ -139,10 +139,20 @@ fi
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
+	export DEBIAN_FRONTEND=noninteractive
+
+	stop_init () {
+		dpkg-divert --add --local --divert /usr/sbin/invoke-rc.d.stop --rename /usr/sbin/invoke-rc.d
+		cp /bin/true /usr/sbin/invoke-rc.d
+	}
 
 	install_pkg_updates () {
 		apt-get update
 		apt-get upgrade -y --force-yes
+	}
+
+	install_pkgs () {
+		apt-get -y --force-yes install ${base_pkg_list}
 	}
 
 	dl_pkg_src () {
@@ -159,11 +169,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 		apt-get update
 		apt-get clean
+
+		rm -f /usr/sbin/invoke-rc.d
+		dpkg-divert --remove --rename /usr/sbin/invoke-rc.d
 	}
 
-	cat /chroot_script.sh
+	#cat /chroot_script.sh
 
 	install_pkg_updates
+	install_pkgs
 
 	#dl_pkg_src
 	cleanup
@@ -177,6 +191,7 @@ sudo rm -rf ${tempdir}/chroot_script.sh || true
 report_size
 chroot_umount
 
-#cd ${TEMPDIR}
-#sudo LANG=C tar --numeric-owner -cvf ${DIR}/${debarch}-rootfs.tar .
-#cd ${DIR}
+cd ${tempdir}
+sudo LANG=C tar --numeric-owner -cvf ${DIR}/${distro}-${release}-${dpkg_arch}-rootfs.tar .
+cd ${DIR}/
+#
