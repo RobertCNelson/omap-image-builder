@@ -222,6 +222,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
+
+		if [ "x\${distro}" = "xDebian" ] ; then
+			passwd <<-EOF
+			root
+			root
+			EOF
+		fi
 	}
 
 	#cat /chroot_script.sh
