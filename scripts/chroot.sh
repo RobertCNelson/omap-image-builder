@@ -299,7 +299,7 @@ if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 fi
 
 cd ${tempdir}
-sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-rootfs.tar .
+sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
 cd ${DIR}/
-ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-rootfs.tar
+ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}.tar
 #
