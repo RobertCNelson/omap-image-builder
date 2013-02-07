@@ -34,7 +34,7 @@ base_pkg_list="${base_pkg_list} bsdmainutils i2c-tools fbset"
 
 #OS
 base_pkg_list="${base_pkg_list} btrfs-tools cpufrequtils initramfs-tools"
-base_pkg_list="${base_pkg_list} lsb-release ntpdate"
+base_pkg_list="${base_pkg_list} ntpdate"
 
 #USB Dongles
 base_pkg_list="${base_pkg_list} ppp usb-modeswitch usbutils"
