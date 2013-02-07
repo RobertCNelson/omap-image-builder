@@ -159,7 +159,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 		distro="$(lsb_release -si)"
 
-		if [ "x${distro}" == "xUbuntu" ] ; then
+		if [ "x${distro}" = "xUbuntu" ] ; then
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
 		fi
@@ -214,7 +214,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		rm -f /usr/sbin/policy-rc.d
 
-		if [ "x${distro}" == "xUbuntu" ] ; then
+		if [ "x${distro}" = "xUbuntu" ] ; then
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
@@ -225,11 +225,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 
-	if [ "x${chroot_ENABLE_FIRMWARE}" == "xenable" ] ; then
+	if [ "x${chroot_ENABLE_FIRMWARE}" = "xenable" ] ; then
 		git_firmware
 	fi
 
-	if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
+	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
 	fi
 
