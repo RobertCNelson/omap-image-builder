@@ -72,6 +72,7 @@ if [ "${apt_proxy}" ] ; then
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
+echo "Log: [sudo debootstrap --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}]"
 sudo debootstrap --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}
 report_size
 #

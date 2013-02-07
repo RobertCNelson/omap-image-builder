@@ -41,25 +41,27 @@ cat > ${DIR}/.project <<-__EOF__
 	release="squeeze"
 	dpkg_arch="armel"
 
-	apt_proxy="192.168.0.10:3142/"
+	#apt_proxy="192.168.0.10:3142/"
+	apt_proxy="rcn-ee.homeip.net:3142/"
 
 __EOF__
 
 run_project
 
-tempdir=$(mktemp -d)
+#tempdir=$(mktemp -d)
 
-cat > ${DIR}/.project <<-__EOF__
-	tempdir="${tempdir}"
-	distro="debian"
-
-	release="wheezy"
-	dpkg_arch="armhf"
-
-	apt_proxy="192.168.0.10:3142/"
-
-__EOF__
-
-run_project
+#cat > ${DIR}/.project <<-__EOF__
+#	tempdir="${tempdir}"
+#	distro="debian"
+#
+#	release="wheezy"
+#	dpkg_arch="armhf"
+#
+#	#apt_proxy="192.168.0.10:3142/"
+#	apt_proxy="rcn-ee.homeip.net:3142/"
+#
+#__EOF__
+#
+#run_project
 
 #

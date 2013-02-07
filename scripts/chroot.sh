@@ -140,13 +140,33 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
 
-	apt-get update
-	apt-get upgrade -y --force-yes
+	install_pkg_updates () {
+		apt-get update
+		apt-get upgrade -y --force-yes
+	}
 
-	if [ -f /etc/apt/apt.conf ] ; then
-		rm -rf /etc/apt/apt.conf || true
-	fi
-	apt-get clean
+	dl_pkg_src () {
+		mkdir -p /tmp/pkg_src/
+		cd /tmp/pkg_src/
+		dpkg -l | tail -n+6 | awk '{print \$2}' | sed "s/:armel//g" | sed "s/:armhf//g" > /tmp/pkg_src/pkg_list
+		apt-get source --download-only \`cat /tmp/pkg_src/pkg_list\`
+		cd -
+	}
+
+	cleanup () {
+		if [ -f /etc/apt/apt.conf ] ; then
+			rm -rf /etc/apt/apt.conf || true
+		fi
+		apt-get update
+		apt-get clean
+	}
+
+	cat /chroot_script.sh
+
+	install_pkg_updates
+
+	#dl_pkg_src
+	cleanup
 __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
