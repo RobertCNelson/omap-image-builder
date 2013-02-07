@@ -236,11 +236,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 
-	if [ "x\${chroot_ENABLE_FIRMWARE}" = "xenable" ] ; then
+	if [ "x${chroot_ENABLE_FIRMWARE}" = "xenable" ] ; then
 		git_firmware
 	fi
 
-	if [ "x\${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
+	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
 	fi
 
