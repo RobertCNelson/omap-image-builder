@@ -211,13 +211,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	#dl_pkg_src
 	cleanup
+	rm -f /chroot_script.sh || true
 __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
-sudo rm -rf ${tempdir}/chroot_script.sh || true
 report_size
 chroot_umount
 
