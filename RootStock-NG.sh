@@ -47,6 +47,13 @@ base_pkg_list="${base_pkg_list} apache2 openssh-server"
 base_pkg_list="${base_pkg_list} wireless-tools wpasupplicant"
 
 run_project () {
+	#Mininum:
+	#linux-image*.deb
+	#Optional:
+	#3.7.6-x8-dtbs.tar.gz
+	#3.7.6-x8-firmware.tar.gz
+	chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.6-x8/"
+
 	tempdir=$(mktemp -d)
 
 	cat > ${DIR}/.project <<-__EOF__
@@ -61,6 +68,8 @@ run_project () {
 
 		chroot_ENABLE_FIRMWARE="${chroot_ENABLE_FIRMWARE}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
+
+		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
 	__EOF__
 

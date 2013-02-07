@@ -209,6 +209,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		cd -
 	}
 
+	dl_kernel () {
+		wget --directory-prefix=/tmp/ \${kernel_url}
+
+		actual_deb_file=\$(cat /tmp/index.html | grep linux-image)
+		actual_deb_file=\$(echo \${actual_deb_file} | awk -F ".deb" '{print \$1}')
+		actual_deb_file=\${actual_deb_file##*linux-image-}
+
+		kernel_version=\$(echo \${actual_deb_file} | awk -F "_" '{print \$1}')
+		echo "Log: Using: \${kernel_version}"
+
+		actual_deb_file="linux-image-\${actual_deb_file}.deb"
+		wget --directory-prefix=/tmp/ \${kernel_url}\${actual_deb_file}
+
+		dpkg -x /tmp/\${actual_deb_file} /
+
+		depmod \${kernel_version}
+		update-initramfs -c -k \${kernel_version}
+	}
+
 	cleanup () {
 		if [ -f /etc/apt/apt.conf ] ; then
 			rm -rf /etc/apt/apt.conf || true
@@ -244,6 +263,26 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dl_pkg_src
 	fi
 
+	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
+		unset deb_pkgs
+		dpkg -l | grep wget >/dev/null || deb_pkgs="wget "
+
+		if [ "\${deb_pkgs}" ] ; then
+			apt-get -y --force-yes install \${deb_pkgs}
+		fi
+
+		unset deb_pkgs
+		dpkg -l | grep initramfs-tools >/dev/null || deb_pkgs="initramfs-tools "
+
+		if [ "\${deb_pkgs}" ] ; then
+			apt-get -y --force-yes install \${deb_pkgs}
+		fi
+
+		kernel_url="${chroot_KERNEL_HTTP_DIR}"
+
+		dl_kernel
+	fi
+
 	cleanup
 	rm -f /chroot_script.sh || true
 __EOF__
@@ -252,6 +291,15 @@ sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
+
+if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
+	sudo cp -v ${tempdir}/boot/vmlinuz-* ${DIR}/
+fi
+
+if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1;then
+	sudo cp -v ${tempdir}/boot/initrd.img-* ${DIR}/
+fi
+
 report_size
 chroot_umount
 
