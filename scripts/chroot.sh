@@ -151,6 +151,18 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		exit 101
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
+
+		dpkg -l | grep lsb-release >/dev/null || deb_pkgs+="lsb-release "
+
+		if [ "${deb_pkgs}" ] ; then
+			apt-get -y --force-yes install ${deb_pkgs}
+		fi
+		distro="$(lsb_release -si)"
+
+		if [ "x${distro}" == "xUbuntu" ] ; then
+			dpkg-divert --local --rename --add /sbin/initctl
+			ln -s /bin/true /sbin/initctl
+		fi
 	}
 
 	install_pkg_updates () {
@@ -165,7 +177,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	git_firmware () {
 		dpkg -l | grep git-core >/dev/null || deb_pkgs+="git-core "
 		if [ "${deb_pkgs}" ] ; then
-			sudo apt-get -y --force-yes install ${deb_pkgs}
+			apt-get -y --force-yes install ${deb_pkgs}
 		fi
 
 		git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git /tmp/linux-firmware
@@ -201,6 +213,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get clean
 
 		rm -f /usr/sbin/policy-rc.d
+
+		if [ "x${distro}" == "xUbuntu" ] ; then
+			rm -f /sbin/initctl || true
+			dpkg-divert --local --rename --remove /sbin/initctl
+		fi
 	}
 
 	#cat /chroot_script.sh
