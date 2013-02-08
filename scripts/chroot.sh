@@ -340,6 +340,8 @@ fi
 report_size
 chroot_umount
 
+sudo cp -v ${DIR}/tools/setup_sdcard.sh ${final_dir}/
+
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
 	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-src.tar .
