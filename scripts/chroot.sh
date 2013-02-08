@@ -283,6 +283,10 @@ fi
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 
+if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
+	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
+fi
+
 #Actual Releases will use version numbers..
 case "${release}" in
 squeeze)
