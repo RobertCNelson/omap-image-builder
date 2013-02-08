@@ -203,7 +203,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		#This should create a list of files on the server
 		#<a href="file"></a>
 		cat /tmp/index.html | grep "<a href=" > /tmp/temp.html
+
+		#Note: cat drops one \...
+		#sed -i -e "s/<a href/\\n<a href/g" /tmp/temp.html
 		sed -i -e "s/<a href/\\\n<a href/g" /tmp/temp.html
+
 		sed -i -e 's/\"/\"><\/a>\n/2' /tmp/temp.html
 		cat /tmp/temp.html | grep href > /tmp/index.html
 
@@ -277,7 +281,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
-	cat /chroot_script.sh
+	#cat /chroot_script.sh
 
 	install_pkg_updates
 	install_pkgs
