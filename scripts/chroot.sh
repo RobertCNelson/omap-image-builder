@@ -22,6 +22,7 @@
 
 DIR=$PWD
 host_arch="$(uname -m)"
+time=$(date +%Y-%m-%d)
 
 source ${DIR}/.project
 
@@ -268,12 +269,15 @@ fi
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 
+final_dir="${DIR}/deploy/${distro}-${release}-console-${dpkg_arch}-${time}"
+mkdir -p ${final_dir} || true
+
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/
+	sudo mv -v ${tempdir}/boot/vmlinuz-* ${final_dir}/
 fi
 
 if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1;then
-	sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/
+	sudo mv -v ${tempdir}/boot/initrd.img-* ${final_dir}/
 fi
 
 report_size
@@ -281,15 +285,17 @@ chroot_umount
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-src.tar .
 	cd ${tempdir}
-	ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}-src.tar
+	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
 
 cd ${tempdir}
-sudo LANG=C tar --numeric-owner -cf ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
+sudo LANG=C tar --numeric-owner -cf ${final_dir}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
 cd ${DIR}/
-ls -lh ${DIR}/${dpkg_arch}-rootfs-${distro}-${release}.tar
+ls -lh ${final_dir}/${dpkg_arch}-rootfs-${distro}-${release}.tar
+
+sudo chown -R ${USER}:${USER} ${final_dir}/
 #
