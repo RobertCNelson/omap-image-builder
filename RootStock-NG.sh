@@ -46,6 +46,8 @@ base_pkg_list="${base_pkg_list} apache2 openssh-server"
 #Wireless
 base_pkg_list="${base_pkg_list} wireless-tools wpasupplicant"
 
+image_hostname="arm"
+
 generic_git () {
 	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		git clone ${git_clone_address} ${DIR}/git/${git_project_name}
@@ -86,6 +88,8 @@ run_project () {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
+		image_hostname="${image_hostname}"
+
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -123,7 +127,9 @@ git pull
 
 cd ${DIR}/
 
-chroot_ENABLE_DEB_SRC="enable"
+if [ -f ${DIR}/release ] ; then
+	chroot_ENABLE_DEB_SRC="enable"
+fi
 
 distro="debian"
 dpkg_arch="armel"

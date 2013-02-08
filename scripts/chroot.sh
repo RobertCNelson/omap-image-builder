@@ -141,10 +141,10 @@ if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" | sudo tee ${tempdir}/etc/apt/apt.conf >/dev/null
 fi
 
-echo "127.0.0.1 localhost" | sudo tee ${tempdir}/etc/hosts >/dev/null
-echo "127.0.1.1 arm" | sudo tee -a ${tempdir}/etc/hosts >/dev/null
+echo "127.0.0.1       localhost" | sudo tee ${tempdir}/etc/hosts >/dev/null
+echo "127.0.1.1       ${image_hostname}" | sudo tee -a ${tempdir}/etc/hosts >/dev/null
 
-echo "arm" | sudo tee ${tempdir}/etc/hostname >/dev/null
+echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
 
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
@@ -215,8 +215,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		update-initramfs -c -k \${kernel_version}
 		rm -f /tmp/index.html || true
 		rm -f /tmp/\${actual_deb_file} || true
-		rm -f /boot/System.map-\${kernel_version}
-		rm -f /boot/config-\${kernel_version}
+		rm -f /boot/System.map-\${kernel_version} || true
+		rm -f /boot/config-\${kernel_version} || true
 	}
 
 	cleanup () {
