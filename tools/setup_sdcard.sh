@@ -914,10 +914,6 @@ function populate_rootfs {
 			;;
 		esac
 
-		if [ "${usbnet_mem}" ] ; then
-			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
-		fi
-
 		if [ "${BTRFS_FSTAB}" ] ; then
 			echo "btrfs selected as rootfs type, modifing /etc/fstab..."
 			sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
@@ -945,6 +941,10 @@ function populate_rootfs {
 		fi
 
 		fi #RootStock-NG
+
+		if [ "${usbnet_mem}" ] ; then
+			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
+		fi
 
 		#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
 		if [ "x${SERIAL}" != "xttyO2" ] ; then
