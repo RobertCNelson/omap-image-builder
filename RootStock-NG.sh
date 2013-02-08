@@ -95,6 +95,7 @@ run_project () {
 	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
 	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
 	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
+	sudo rm -rf ${tempdir}/ || true
 }
 
 mirror="http://rcn-ee.net/deb"
