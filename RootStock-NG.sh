@@ -105,7 +105,7 @@ run_project () {
 mirror="http://rcn-ee.net/deb"
 #FIXME: just temp...
 case "${system}" in
-hades)
+hades|work-e6400)
 	apt_proxy="192.168.0.10:3142/"
 	;;
 a53t|zeus|hestia|poseidon|panda-es-1gb-a3)
