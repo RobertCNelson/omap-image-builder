@@ -72,7 +72,7 @@ run_project () {
 	#Optional:
 	#3.7.6-x8-dtbs.tar.gz
 	#3.7.6-x8-firmware.tar.gz
-	chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.6-x8/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.33-psp26/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.0-rc6-bone3/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/v3.7.6-x8/ ${mirror}/${release}-${dpkg_arch}/v3.2.33-psp26/ ${mirror}/${release}-${dpkg_arch}/v3.8.0-rc6-bone3/"
 
 	tempdir=$(mktemp -d)
 
@@ -97,13 +97,15 @@ run_project () {
 	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
 }
 
+mirror="http://rcn-ee.net/deb"
 #FIXME: just temp...
 case "${system}" in
 hades)
 	apt_proxy="192.168.0.10:3142/"
 	;;
-a53t|zeus|hestia|poseidon)
+a53t|zeus|hestia|poseidon|panda-es-1gb-a3)
 	apt_proxy="rcn-ee.homeip.net:3142/"
+	mirror="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
 	;;
 *)
 	apt_proxy=""
