@@ -72,7 +72,7 @@ run_project () {
 	#Optional:
 	#3.7.6-x8-dtbs.tar.gz
 	#3.7.6-x8-firmware.tar.gz
-	chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.6-x8/"
+	chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.6-x8/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.33-psp26/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.0-rc6-bone3/"
 
 	tempdir=$(mktemp -d)
 

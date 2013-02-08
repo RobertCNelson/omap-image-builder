@@ -242,9 +242,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	fi
 
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		kernel_url="${chroot_KERNEL_HTTP_DIR}"
-
-		dl_kernel
+		for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
 	fi
 
 	cleanup
