@@ -200,6 +200,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	dl_kernel () {
 		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
 
+		#This should create a list of files on the server
+		#<a href="file"></a>
+		cat /tmp/index.html | grep "<a href=" > /tmp/temp.html
+		sed -i -e "s/<a href/\\n<a href/g" /tmp/temp.html
+		sed -i -e 's/\"/\"><\/a>\n/2' /tmp/temp.html
+		cat /tmp/temp.html | grep href > /tmp/index.html
+
 		deb_file=\$(cat /tmp/index.html | grep linux-image)
 		deb_file=\$(echo \${deb_file} | awk -F ".deb" '{print \$1}')
 		deb_file=\${deb_file##*linux-image-}
@@ -237,6 +244,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		depmod \${kernel_version}
 		update-initramfs -c -k \${kernel_version}
 		rm -f /tmp/index.html || true
+		rm -f /tmp/temp.html || true
 		rm -f /tmp/\${deb_file} || true
 		rm -f /boot/System.map-\${kernel_version} || true
 		rm -f /boot/config-\${kernel_version} || true
@@ -269,7 +277,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
-	#cat /chroot_script.sh
+	cat /chroot_script.sh
 
 	install_pkg_updates
 	install_pkgs
