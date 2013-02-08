@@ -904,16 +904,6 @@ function populate_rootfs {
 
 		else
 
-		case "${SYSTEM}" in
-		bone|bone_dtb)
-			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
-			fbcon
-			ti_tscadc
-
-			__EOF__
-			;;
-		esac
-
 		if [ "${BTRFS_FSTAB}" ] ; then
 			echo "btrfs selected as rootfs type, modifing /etc/fstab..."
 			sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
@@ -926,24 +916,6 @@ function populate_rootfs {
 			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
 			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
 			echo "-----------------------------"
-		else
-			if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
-				echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-				echo "-----------------------------"
-				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
-				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
-				echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
-				echo "-----------------------------"
-				sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-				sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-				sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-			fi
-		fi
-
-		fi #RootStock-NG
-
-		if [ "${usbnet_mem}" ] ; then
-			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 		fi
 
 		#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
@@ -958,6 +930,34 @@ function populate_rootfs {
 				echo "-----------------------------"
 				sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
 			fi
+		fi
+
+		fi #RootStock-NG
+
+		case "${SYSTEM}" in
+		bone|bone_dtb)
+			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
+			fbcon
+			ti_tscadc
+
+			__EOF__
+			;;
+		esac
+
+		if [ "${usbnet_mem}" ] ; then
+			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
+		fi
+
+		if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
+			echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
+			echo "-----------------------------"
+			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
+			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
+			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
+			echo "-----------------------------"
+			sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+			sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+			sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
 		fi
 
 		if [ "${CREATE_SWAP}" ] ; then
