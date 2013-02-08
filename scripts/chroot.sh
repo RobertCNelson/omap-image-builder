@@ -198,24 +198,46 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	dl_kernel () {
-		wget --directory-prefix=/tmp/ \${kernel_url}
+		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
 
-		actual_deb_file=\$(cat /tmp/index.html | grep linux-image)
-		actual_deb_file=\$(echo \${actual_deb_file} | awk -F ".deb" '{print \$1}')
-		actual_deb_file=\${actual_deb_file##*linux-image-}
+		deb_file=\$(cat /tmp/index.html | grep linux-image)
+		deb_file=\$(echo \${deb_file} | awk -F ".deb" '{print \$1}')
+		deb_file=\${deb_file##*linux-image-}
 
-		kernel_version=\$(echo \${actual_deb_file} | awk -F "_" '{print \$1}')
+		kernel_version=\$(echo \${deb_file} | awk -F "_" '{print \$1}')
 		echo "Log: Using: \${kernel_version}"
 
-		actual_deb_file="linux-image-\${actual_deb_file}.deb"
-		wget --directory-prefix=/tmp/ \${kernel_url}\${actual_deb_file}
+		deb_file="linux-image-\${deb_file}.deb"
+		wget --directory-prefix=/tmp/ \${kernel_url}\${deb_file}
 
-		dpkg -x /tmp/\${actual_deb_file} /
+		unset dtb_file
+		dtb_file=\$(cat /tmp/index.html | grep dtbs.tar.gz | head -n 1)
+		dtb_file=\$(echo \${dtb_file} | awk -F "\"" '{print \$2}')
+
+		if [ "\${dtb_file}" ] ; then
+				wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
+		fi
+
+		unset firmware_file
+		firmware_file=\$(cat /tmp/index.html | grep firmware.tar.gz | head -n 1)
+		firmware_file=\$(echo \${firmware_file} | awk -F "\"" '{print \$2}')
+
+		if [ "\${firmware_file}" ] ; then
+			wget --directory-prefix=/tmp/ \${kernel_url}\${firmware_file}
+
+			mkdir -p /tmp/cape-firmware/
+			tar xf /tmp/\${firmware_file} -C /tmp/cape-firmware/
+			cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/ 2>/dev/null
+			rm -rf /tmp/cape-firmware/ || true
+			rm -f /tmp/\${firmware_file} || true
+		fi
+
+		dpkg -x /tmp/\${deb_file} /
 
 		depmod \${kernel_version}
 		update-initramfs -c -k \${kernel_version}
 		rm -f /tmp/index.html || true
-		rm -f /tmp/\${actual_deb_file} || true
+		rm -f /tmp/\${deb_file} || true
 		rm -f /boot/System.map-\${kernel_version} || true
 		rm -f /boot/config-\${kernel_version} || true
 	}
@@ -307,8 +329,12 @@ if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/vmlinuz-* ${final_dir}/
 fi
 
-if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1;then
+if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/initrd.img-* ${final_dir}/
+fi
+
+if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
+	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${final_dir}/
 fi
 
 report_size
