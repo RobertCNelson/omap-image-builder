@@ -887,6 +887,21 @@ function populate_rootfs {
 			fi
 			echo "/dev/mmcblk0p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
 
+			if [ "x${distro}" = "xDebian" ] ; then
+				serial_num=$(echo -n "${SERIAL}"| tail -c -1)
+				echo "" >> ${TEMPDIR}/disk/etc/inittab
+				echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${TEMPDIR}/disk/etc/inittab
+				echo "" >> ${TEMPDIR}/disk/etc/inittab
+			fi
+
+			if [ "x${distro}" = "xUbuntu" ] ; then
+				echo "start on stopped rc RUNLEVEL=[2345]" > ${TEMPDIR}/disk/etc/init/serial.conf
+				echo "stop on runlevel [!2345]" >> ${TEMPDIR}/disk/etc/init/serial.conf
+				echo "" >> ${TEMPDIR}/disk/etc/init/serial.conf
+				echo "respawn" >> ${TEMPDIR}/disk/etc/init/serial.conf
+				echo "exec /sbin/getty 115200 ${SERIAL}" >> ${TEMPDIR}/disk/etc/init/serial.conf
+			fi
+
 		else
 
 		case "${SYSTEM}" in
