@@ -215,6 +215,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		update-initramfs -c -k \${kernel_version}
 		rm -f /tmp/index.html || true
 		rm -f /tmp/\${actual_deb_file} || true
+		rm -f /boot/System.map-\${kernel_version}
+		rm -f /boot/config-\${kernel_version}
 	}
 
 	cleanup () {
