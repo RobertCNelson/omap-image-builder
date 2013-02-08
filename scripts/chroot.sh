@@ -141,6 +141,11 @@ if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" | sudo tee ${tempdir}/etc/apt/apt.conf >/dev/null
 fi
 
+echo "127.0.0.1 localhost" | sudo tee ${tempdir}/etc/hosts >/dev/null
+echo "127.0.1.1 arm" | sudo tee -a ${tempdir}/etc/hosts >/dev/null
+
+echo "arm" | sudo tee ${tempdir}/etc/hostname >/dev/null
+
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
