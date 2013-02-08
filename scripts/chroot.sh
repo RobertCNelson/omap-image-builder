@@ -167,8 +167,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
 
-		distro="\$(lsb_release -si)"
-
 		if [ "x\${distro}" = "xUbuntu" ] ; then
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
@@ -180,6 +178,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		packages="lsb-release initramfs-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
+
+		distro="\$(lsb_release -si)"
+		echo "distro=\${distro}" > /etc/rcn-ee.conf
 
 		apt-get upgrade -y --force-yes
 	}
@@ -238,6 +239,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			root
 			root
 			EOF
+		fi
+
+		#left over from init/upstart scripts running in chroot...
+		if [ -d /var/run/ ] ; then
+			rm -rf /var/run/* || true
 		fi
 	}
 
