@@ -277,7 +277,20 @@ fi
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 
-final_dir="${DIR}/deploy/${distro}-${release}-console-${dpkg_arch}-${time}"
+#Actual Releases will use version numbers..
+case "${release}" in
+squeeze)
+	#http://www.debian.org/releases/squeeze/
+	final_dir="${DIR}/deploy/${distro}-6.0.6-console-${dpkg_arch}-${time}"
+	;;
+quantal)
+	final_dir="${DIR}/deploy/${distro}-12.10-console-${dpkg_arch}-${time}"
+	;;
+*)
+	final_dir="${DIR}/deploy/${distro}-${release}-console-${dpkg_arch}-${time}"
+	;;
+esac
+
 mkdir -p ${final_dir} || true
 
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
