@@ -86,7 +86,6 @@ run_project () {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
-		chroot_ENABLE_FIRMWARE="${chroot_ENABLE_FIRMWARE}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"

@@ -145,19 +145,21 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	export LC_ALL=C
 	export DEBIAN_FRONTEND=noninteractive
 
+	check_n_install () {
+		unset deb_pkgs
+		dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
+
+		if [ "\${deb_pkgs}" ] ; then
+			apt-get -y --force-yes install \${deb_pkgs}
+		fi
+	}
+
 	stop_init () {
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
 		exit 101
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
-
-		unset deb_pkgs
-		dpkg -l | grep lsb-release >/dev/null || deb_pkgs+="lsb-release "
-
-		if [ "\${deb_pkgs}" ] ; then
-			apt-get -y --force-yes install \${deb_pkgs}
-		fi
 
 		distro="\$(lsb_release -si)"
 
@@ -169,6 +171,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates () {
 		apt-get update
+
+		packages="lsb-release initramfs-tools wget"
+		for pkg in \${packages} ; do check_n_install ; done
+
 		apt-get upgrade -y --force-yes
 	}
 
@@ -236,20 +242,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	fi
 
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		unset deb_pkgs
-		dpkg -l | grep wget >/dev/null || deb_pkgs="wget "
-
-		if [ "\${deb_pkgs}" ] ; then
-			apt-get -y --force-yes install \${deb_pkgs}
-		fi
-
-		unset deb_pkgs
-		dpkg -l | grep initramfs-tools >/dev/null || deb_pkgs="initramfs-tools "
-
-		if [ "\${deb_pkgs}" ] ; then
-			apt-get -y --force-yes install \${deb_pkgs}
-		fi
-
 		kernel_url="${chroot_KERNEL_HTTP_DIR}"
 
 		dl_kernel
