@@ -61,6 +61,21 @@ check_defines () {
 			;;
 		esac
 	fi
+
+	if [ ! "${user_name}" ] ; then
+		user_name="${distro}"
+		echo "user_name: undefined using: [${user_name}]"
+	fi
+
+	if [ ! "${password}" ] ; then
+		password="temppwd"
+		echo "password: undefined using: [${password}]"
+	fi
+
+	if [ ! "${full_name}" ] ; then
+		full_name="Demo User"
+		echo "full_name: undefined using: [${full_name}]"
+	fi
 }
 
 report_size () {
@@ -176,7 +191,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates () {
 		apt-get update
 
-		packages="lsb-release initramfs-tools wget"
+		packages="initramfs-tools lsb-release sudo wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		distro="\$(lsb_release -si)"
@@ -252,6 +267,32 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		rm -f /tmp/\${deb_file} || true
 		rm -f /boot/System.map-\${kernel_version} || true
 		rm -f /boot/config-\${kernel_version} || true
+		rm -rf /usr/src/linux-headers* || true
+	}
+
+	add_user () {
+		groupadd admin || true
+		echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
+
+		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
+
+		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${full_name}" ${user_name}
+
+		case "\${distro}" in
+		Debian)
+			usermod -aG sudo debian || true
+			usermod -aG dialout debian || true
+
+			passwd <<-EOF
+			root
+			root
+			EOF
+			;;
+		Ubuntu)
+			passwd -l root || true
+			;;
+		esac
 	}
 
 	cleanup () {
@@ -266,13 +307,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${distro}" = "xUbuntu" ] ; then
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
-		fi
-
-		if [ "x\${distro}" = "xDebian" ] ; then
-			passwd <<-EOF
-			root
-			root
-			EOF
 		fi
 
 		#left over from init/upstart scripts running in chroot...
@@ -294,6 +328,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
 	fi
 
+	add_user
 	cleanup
 	rm -f /chroot_script.sh || true
 __EOF__

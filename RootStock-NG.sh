@@ -90,6 +90,10 @@ run_project () {
 
 		image_hostname="${image_hostname}"
 
+		user_name="${user_name}"
+		full_name="${full_name}"
+		password="${password}"
+
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -131,7 +135,12 @@ if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
+full_name="Demo User"
+password="temppwd"
+
 distro="debian"
+user_name="${distro}"
+
 dpkg_arch="armel"
 
 release="squeeze"
@@ -144,6 +153,8 @@ dpkg_arch="armhf"
 run_project
 
 distro="ubuntu"
+user_name="${distro}"
+
 dpkg_arch="armhf"
 release="quantal"
 run_project
