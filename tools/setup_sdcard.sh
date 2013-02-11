@@ -902,6 +902,30 @@ function populate_rootfs {
 				echo "exec /sbin/getty 115200 ${SERIAL}" >> ${TEMPDIR}/disk/etc/init/serial.conf
 			fi
 
+			echo "# This file describes the network interfaces available on your system" > /etc/network/interfaces
+			echo "# and how to activate them. For more information, see interfaces(5)." >> /etc/network/interfaces
+			echo "" >> /etc/network/interfaces
+			echo "# The loopback network interface" >> /etc/network/interfaces
+			echo "auto lo" >> /etc/network/interfaces
+			echo "iface lo inet loopback" >> /etc/network/interfaces
+			echo "" >> /etc/network/interfaces
+			echo "# The primary network interface" >> /etc/network/interfaces
+			if [ "${DISABLE_ETH}" ] ; then
+				echo "#auto eth0" >> /etc/network/interfaces
+				echo "#iface eth0 inet dhcp" >> /etc/network/interfaces
+			else
+				echo "auto eth0"  >> /etc/network/interfaces
+				echo "iface eth0 inet dhcp" >> /etc/network/interfaces
+			fi
+			echo "# Example to keep MAC address between reboots" >> /etc/network/interfaces
+			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> /etc/network/interfaces
+			echo "" >> /etc/network/interfaces
+			echo "# WiFi Example" >> /etc/network/interfaces
+			echo "#auto wlan0" >> /etc/network/interfaces
+			echo "#iface wlan0 inet dhcp" >> /etc/network/interfaces
+			echo "#    wpa-ssid \"essid\"" >> /etc/network/interfaces
+			echo "#    wpa-psk  \"password\"" >> /etc/network/interfaces
+
 		else
 
 		if [ "${BTRFS_FSTAB}" ] ; then
