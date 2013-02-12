@@ -13,4 +13,19 @@ if [ "x${SYST}" == "xposeidon" ] || [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 	DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
 fi
 
+system=$(uname -n)
+mirror="http://rcn-ee.net/deb"
+#FIXME: just temp...
+case "${system}" in
+hades|work-e6400)
+	apt_proxy="192.168.0.10:3142/"
+	;;
+a53t|zeus|hestia|poseidon|panda-es-1gb-a3)
+	apt_proxy="rcn-ee.homeip.net:3142/"
+	mirror="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
+	;;
+*)
+	apt_proxy=""
+	;;
+esac
 

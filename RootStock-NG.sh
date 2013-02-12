@@ -26,6 +26,10 @@ TIME=$(date +%Y-%m-%d)
 
 DIR="$PWD"
 
+if [ -f ${DIR}/.project ] ; then
+	source ${DIR}/.project
+fi
+
 #Base
 base_pkg_list="git-core nano pastebinit wget"
 
@@ -106,6 +110,23 @@ run_project () {
 	sudo rm -rf ${tempdir}/ || true
 }
 
+run_roostock_ng () {
+	if [ ! -f ${DIR}/.project ] ; then
+		echo "error: [.project] file not defined"
+		exit 1
+	fi
+
+	if [ ! "${tempdir}" ] ; then
+		tempdir=$(mktemp -d)
+		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
+	fi
+
+	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
+	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
+	sudo rm -rf ${tempdir}/ || true
+}
+
 mirror="http://rcn-ee.net/deb"
 #FIXME: just temp...
 case "${system}" in
@@ -135,31 +156,33 @@ if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
-full_name="Demo User"
-password="temppwd"
+run_roostock_ng
 
-distro="debian"
-user_name="${distro}"
+#full_name="Demo User"
+#password="temppwd"
 
-dpkg_arch="armel"
+#distro="debian"
+#user_name="${distro}"
 
-release="squeeze"
-run_project
+#dpkg_arch="armel"
 
-release="wheezy"
-run_project
+#release="squeeze"
+#run_project
 
-dpkg_arch="armhf"
-run_project
+#release="wheezy"
+#run_project
 
-distro="ubuntu"
-user_name="${distro}"
+#dpkg_arch="armhf"
+#run_project
 
-dpkg_arch="armhf"
-release="quantal"
-run_project
+#distro="ubuntu"
+#user_name="${distro}"
 
-release="raring"
-run_project
+#dpkg_arch="armhf"
+#release="quantal"
+#run_project
+
+#release="raring"
+#run_project
 
 #

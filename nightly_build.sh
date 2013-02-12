@@ -25,6 +25,7 @@ HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 unset USE_OEM
+unset ROOTSTOCKNG
 
 MINIMAL="-minimal"
 
@@ -81,6 +82,41 @@ function dl_rootstock {
 }
 
 function minimal_armel {
+	if [ "${ROOTSTOCKNG}" ] ; then
+		rm -f "${DIR}/.project" || true
+
+		pkgs="${MINIMAL_APT}${EXTRA}"
+
+		base_pkg_list=$(echo ${pkgs} | sed -e 's/,/ /g')
+
+		tempdir=$(mktemp -d)
+
+		cat > ${DIR}/.project <<-__EOF__
+			tempdir="${tempdir}"
+			distro="${distro}"
+
+			release="${DIST}"
+			dpkg_arch="${ARCH}"
+
+			apt_proxy="${apt_proxy}"
+			base_pkg_list="${base_pkg_list}"
+
+			image_hostname="${FQDN}"
+
+			user_name="${USER_LOGIN}"
+			full_name="${USER_NAME}"
+			password="${USER_PASS}"
+
+			chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
+
+			chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
+
+		__EOF__
+
+		cat ${DIR}/.project
+
+		/bin/bash -e "${DIR}/RootStock-NG.sh" || { exit 1 ; }
+	else
 rm -f ${DIR}/deploy/arm*-rootfs-*.tar || true
 rm -f ${DIR}/deploy/vmlinuz-* || true
 rm -f ${DIR}/deploy/initrd.img-* || true
@@ -102,9 +138,11 @@ sudo ${DIR}/git/project-rootstock/rootstock  --imagesize ${IMAGESIZE} --fqdn ${F
 --seed ${MINIMAL_APT}${EXTRA} ${MIRROR} --components "${COMPONENTS}" \
 --dist ${DIST} --serial ${SERIAL} \
 ${PRIMARY_KERNEL} ${SECONDARY_KERNEL} --apt-upgrade --arch=${ARCH}
+fi
 }
 
 function compression {
+if [ ! "${ROOTSTOCKNG}" ] ; then
 	rm -rf ${DIR}/deploy/${TIME}/$BUILD || true
 	mkdir -p ${DIR}/deploy/${TIME}/$BUILD
 
@@ -152,6 +190,9 @@ function compression {
 	fi
 
 	cd ${DIR}/deploy/
+else
+	echo "later"
+fi
 }
 
 function kernel_chooser {
@@ -200,6 +241,8 @@ function select_rcn-ee-net_kernel {
 	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
 	echo "Using: ${PRIMARY_KERNEL}"
 
+	chroot_KERNEL_HTTP_DIR="${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
+
 	unset PRIMARY_DTB_FILE
 	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
 		PRIMARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
@@ -223,10 +266,20 @@ function select_rcn-ee-net_kernel {
 		SECONDARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
 		echo "Using dtbs: ${SECONDARY_DTB_FILE}"
 	fi
+
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
+
+	if [ "${ROOTSTOCKNG}" ] ; then
+		SUBARCH="omap-psp"
+		KERNEL_ABI="STABLE"
+		kernel_chooser
+		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
+	fi
 }
 
 #12.10
 function quantal_release {
+	distro="ubuntu"
 	reset_vars
 	DIST="quantal"
 	select_rcn-ee-net_kernel
@@ -241,6 +294,7 @@ function quantal_release {
 
 #13.04
 function raring_release {
+	distro="ubuntu"
 	reset_vars
 	DIST="raring"
 	select_rcn-ee-net_kernel
@@ -254,6 +308,7 @@ function raring_release {
 }
 
 function squeeze_release {
+	distro="debian"
 	reset_vars
 	DIST=squeeze
 	select_rcn-ee-net_kernel
@@ -268,6 +323,7 @@ function squeeze_release {
 }
 
 function wheezy_release {
+	distro="debian"
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
@@ -282,6 +338,7 @@ function wheezy_release {
 }
 
 function sid_release {
+	distro="debian"
 	reset_vars
 	DIST=sid
 	select_rcn-ee-net_kernel
@@ -314,9 +371,15 @@ if [ -f ${DIR}/release ] ; then
 		MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
 		MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
 	fi
+
+	chroot_ENABLE_DEB_SRC="enable"
 fi
 
-dl_rootstock
+ROOTSTOCKNG=1
+
+if [ ! "${ROOTSTOCKNG}" ] ; then
+	dl_rootstock
+fi
 
 ARCH=armel
 wheezy_release
