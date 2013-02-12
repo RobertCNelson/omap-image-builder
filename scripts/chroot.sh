@@ -487,6 +487,8 @@ if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${final_dir}/
 fi
 
+echo "${user_name}:${password}" | sudo tee ${final_dir}/user_password.list
+
 report_size
 chroot_umount
 
