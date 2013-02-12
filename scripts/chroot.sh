@@ -32,6 +32,11 @@ check_defines () {
 		exit 1
 	fi
 
+	if [ ! "${export_filename}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: export_filename undefined"
+		exit 1
+	fi
+
 	if [ ! "${distro}" ] ; then
 		echo "scripts/deboostrap_first_stage.sh: Error: distro undefined"
 		exit 1
@@ -459,40 +464,26 @@ if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
 fi
 
-#Actual Releases will use version numbers..
-case "${release}" in
-squeeze)
-	#http://www.debian.org/releases/squeeze/
-	final_dir="${DIR}/deploy/${distro}-6.0.6-console-${dpkg_arch}-${time}"
-	;;
-quantal)
-	final_dir="${DIR}/deploy/${distro}-12.10-console-${dpkg_arch}-${time}"
-	;;
-*)
-	final_dir="${DIR}/deploy/${distro}-${release}-console-${dpkg_arch}-${time}"
-	;;
-esac
-
-mkdir -p ${final_dir} || true
+mkdir -p ${DIR}/deploy/${export_filename}/ || true
 
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/vmlinuz-* ${final_dir}/
+	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
 fi
 
 if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/initrd.img-* ${final_dir}/
+	sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
 fi
 
 if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${final_dir}/
+	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
 fi
 
-echo "${user_name}:${password}" | sudo tee ${final_dir}/user_password.list
+echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user_password.list
 
 report_size
 chroot_umount
 
-sudo cp -v ${DIR}/tools/setup_sdcard.sh ${final_dir}/
+sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
@@ -504,9 +495,9 @@ if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 fi
 
 cd ${tempdir}
-sudo LANG=C tar --numeric-owner -cf ${final_dir}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
+sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
 cd ${DIR}/
-ls -lh ${final_dir}/${dpkg_arch}-rootfs-${distro}-${release}.tar
+ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar
 
-sudo chown -R ${USER}:${USER} ${final_dir}/
+sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 #

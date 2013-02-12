@@ -84,6 +84,8 @@ run_project () {
 
 	cat > ${DIR}/.project <<-__EOF__
 		tempdir="${tempdir}"
+		export_filename="${export_filename}"
+
 		distro="${distro}"
 
 		release="${release}"

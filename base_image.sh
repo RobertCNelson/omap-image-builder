@@ -23,6 +23,7 @@
 SYST=$(uname -n)
 HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
+time=$(date +%Y-%m-%d)
 
 unset USE_OEM
 unset ROOTSTOCKNG
@@ -83,10 +84,26 @@ function minimal_armel {
 
 		base_pkg_list=$(echo ${pkgs} | sed -e 's/,/ /g')
 
+		#Actual Releases will use version numbers..
+		case "${DIST}" in
+		squeeze)
+			#http://www.debian.org/releases/squeeze/
+			export_filename="${distro}-6.0.6-minimal-${ARCH}-${time}"
+			;;
+		quantal)
+			export_filename="${distro}-12.10-minimal-${ARCH}-${time}"
+			;;
+		*)
+			export_filename="${distro}-${DIST}-minimal-${ARCH}-${time}"
+			;;
+		esac
+
 		tempdir=$(mktemp -d)
 
 		cat > ${DIR}/.project <<-__EOF__
 			tempdir="${tempdir}"
+			export_filename="${export_filename}"
+
 			distro="${distro}"
 
 			release="${DIST}"
@@ -167,7 +184,23 @@ if [ ! "${ROOTSTOCKNG}" ] ; then
 
 	cd ${DIR}/deploy/
 else
-	echo "later"
+	echo "Starting Compression"
+	cd ${DIR}/deploy/
+
+	if [ -f ${DIR}/release ] ; then
+		tar cvf ${export_filename}.tar ./${export_filename}
+		xz -z -7 -v ${export_filename}.tar
+
+		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v ${export_filename}.tar.xz /mnt/farm/testing/pending/${export_filename}.tar.xz
+			fi
+		fi
+
+	else
+		tar cvf ${export_filename}.tar ./${export_filename}
+	fi
+	cd ${DIR}/
 fi
 }
 
@@ -249,6 +282,7 @@ function sid_release {
 source ${DIR}/var/defaults.sh
 source ${DIR}/var/check_host.sh
 
+mirror="http://rcn-ee.net/deb"
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	source ${DIR}/host/rcn-ee-host.sh
 fi
