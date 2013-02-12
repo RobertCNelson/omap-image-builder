@@ -404,10 +404,22 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	ubuntu_startup_script () {
+		if [ -f /etc/init/board_tweaks.conf ] ; then
+			chown root:root /etc/init.d/board_tweaks.sh
+		fi
+		if [ -f /etc/flash-kernel.conf ] ; then
+			chown root:root /etc/flash-kernel.conf
+		fi
+	}
+
 	startup_script () {
 		case "\${distro}" in
 		Debian)
 			debian_startup_script
+			;;
+		Ubuntu)
+			ubuntu_startup_script
 			;;
 		esac
 	}
