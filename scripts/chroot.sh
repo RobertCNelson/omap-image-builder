@@ -266,6 +266,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	install_chroot_pkgs () {
+		apt-get update
+
+		packages="lsb-release"
+		for pkg in \${packages} ; do check_n_install ; done
+
+		distro="\$(lsb_release -si)"
+		echo "distro=\${distro}" > /etc/rcn-ee.conf
+	}
+
 	stop_init () {
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
@@ -282,7 +292,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates () {
 		apt-get update
 
-		packages="initramfs-tools lsb-release sudo wget"
+		packages="initramfs-tools sudo wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		distro="\$(lsb_release -si)"
@@ -423,6 +433,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	#cat /chroot_script.sh
+
+	install_chroot_pkgs
+	stop_init
 
 	install_pkg_updates
 	install_pkgs
