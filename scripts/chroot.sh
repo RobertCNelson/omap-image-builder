@@ -406,7 +406,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	ubuntu_startup_script () {
 		if [ -f /etc/init/board_tweaks.conf ] ; then
-			chown root:root /etc/init.d/board_tweaks.sh
+			chown root:root /etc/init/board_tweaks.conf
 		fi
 		if [ -f /etc/flash-kernel.conf ] ; then
 			chown root:root /etc/flash-kernel.conf
