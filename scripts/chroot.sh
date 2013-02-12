@@ -258,171 +258,168 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	export DEBIAN_FRONTEND=noninteractive
 
 	check_n_install () {
-	        unset deb_pkgs
-	        dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
+		unset deb_pkgs
+		dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
 
-	        if [ "\${deb_pkgs}" ] ; then
-	                apt-get -y --force-yes install \${deb_pkgs}
-	        fi
+		if [ "\${deb_pkgs}" ] ; then
+			apt-get -y --force-yes install \${deb_pkgs}
+		fi
 	}
 
 	stop_init () {
-	        cat > /usr/sbin/policy-rc.d <<EOF
-	        #!/bin/sh
-	        exit 101
-	        EOF
-	        chmod +x /usr/sbin/policy-rc.d
+		cat > /usr/sbin/policy-rc.d <<EOF
+		#!/bin/sh
+		exit 101
+		EOF
+		chmod +x /usr/sbin/policy-rc.d
 
-	        if [ "x\${distro}" = "xUbuntu" ] ; then
-	                dpkg-divert --local --rename --add /sbin/initctl
-	                ln -s /bin/true /sbin/initctl
-	        fi
+		if [ "x\${distro}" = "xUbuntu" ] ; then
+			dpkg-divert --local --rename --add /sbin/initctl
+			ln -s /bin/true /sbin/initctl
+		fi
 	}
 
 	install_pkg_updates () {
-	        apt-get update
+		apt-get update
 
-	        packages="initramfs-tools lsb-release sudo wget"
-	        for pkg in \${packages} ; do check_n_install ; done
+		packages="initramfs-tools lsb-release sudo wget"
+		for pkg in \${packages} ; do check_n_install ; done
 
-	        distro="\$(lsb_release -si)"
-	        echo "distro=\${distro}" > /etc/rcn-ee.conf
+		distro="\$(lsb_release -si)"
+		echo "distro=\${distro}" > /etc/rcn-ee.conf
 
-	        apt-get upgrade -y --force-yes
+		apt-get upgrade -y --force-yes
 	}
 
 	install_pkgs () {
-	        apt-get -y --force-yes install ${base_pkg_list}
+		apt-get -y --force-yes install ${base_pkg_list}
 	}
 
 	dl_pkg_src () {
-	        mkdir -p /tmp/pkg_src/
-	        cd /tmp/pkg_src/
-	        dpkg -l | tail -n+6 | awk '{print \$2}' | sed "s/:armel//g" | sed "s/:armhf//g" > /tmp/pkg_src/pkg_list
-	        apt-get source --download-only \`cat /tmp/pkg_src/pkg_list\`
-	        cd -
+		mkdir -p /tmp/pkg_src/
+		cd /tmp/pkg_src/
+		dpkg -l | tail -n+6 | awk '{print \$2}' | sed "s/:armel//g" | sed "s/:armhf//g" > /tmp/pkg_src/pkg_list
+		apt-get source --download-only \`cat /tmp/pkg_src/pkg_list\`
+		cd -
 	}
 
 	dl_kernel () {
-	        wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
+		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
 
-	        #This should create a list of files on the server
-	        #<a href="file"></a>
-	        cat /tmp/index.html | grep "<a href=" > /tmp/temp.html
+		#This should create a list of files on the server
+		#<a href="file"></a>
+		cat /tmp/index.html | grep "<a href=" > /tmp/temp.html
 
-	        #Note: cat drops one \...
-	        #sed -i -e "s/<a href/\\n<a href/g" /tmp/temp.html
-	        sed -i -e "s/<a href/\\\n<a href/g" /tmp/temp.html
+		#Note: cat drops one \...
+		#sed -i -e "s/<a href/\\n<a href/g" /tmp/temp.html
+		sed -i -e "s/<a href/\\\n<a href/g" /tmp/temp.html
 
-	        sed -i -e 's/\"/\"><\/a>\n/2' /tmp/temp.html
-	        cat /tmp/temp.html | grep href > /tmp/index.html
+		sed -i -e 's/\"/\"><\/a>\n/2' /tmp/temp.html
+		cat /tmp/temp.html | grep href > /tmp/index.html
 
-	        unset deb_file
-	        deb_file=\$(cat /tmp/index.html | grep linux-image)
-	        deb_file=\$(echo \${deb_file} | awk -F ".deb" '{print \$1}')
-	        deb_file=\${deb_file##*linux-image-}
-	        if [ "\${deb_file}" ] ; then
-	                kernel_version=\$(echo \${deb_file} | awk -F "_" '{print \$1}')
-	                echo "Log: Using: \${kernel_version}"
+		deb_file=\$(cat /tmp/index.html | grep linux-image)
+		deb_file=\$(echo \${deb_file} | awk -F ".deb" '{print \$1}')
+		deb_file=\${deb_file##*linux-image-}
 
-	                deb_file="linux-image-\${deb_file}.deb"
-	                wget --directory-prefix=/tmp/ \${kernel_url}\${deb_file}
+		kernel_version=\$(echo \${deb_file} | awk -F "_" '{print \$1}')
+		echo "Log: Using: \${kernel_version}"
 
-	                unset dtb_file
-	                dtb_file=\$(cat /tmp/index.html | grep dtbs.tar.gz | head -n 1)
-	                dtb_file=\$(echo \${dtb_file} | awk -F "\"" '{print \$2}')
+		deb_file="linux-image-\${deb_file}.deb"
+		wget --directory-prefix=/tmp/ \${kernel_url}\${deb_file}
 
-	                if [ "\${dtb_file}" ] ; then
-	                        wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
-	                fi
+		unset dtb_file
+		dtb_file=\$(cat /tmp/index.html | grep dtbs.tar.gz | head -n 1)
+		dtb_file=\$(echo \${dtb_file} | awk -F "\"" '{print \$2}')
 
-	                unset firmware_file
-	                firmware_file=\$(cat /tmp/index.html | grep firmware.tar.gz | head -n 1)
-	                firmware_file=\$(echo \${firmware_file} | awk -F "\"" '{print \$2}')
+		if [ "\${dtb_file}" ] ; then
+				wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
+		fi
 
-	                if [ "\${firmware_file}" ] ; then
-	                        wget --directory-prefix=/tmp/ \${kernel_url}\${firmware_file}
+		unset firmware_file
+		firmware_file=\$(cat /tmp/index.html | grep firmware.tar.gz | head -n 1)
+		firmware_file=\$(echo \${firmware_file} | awk -F "\"" '{print \$2}')
 
-	                        mkdir -p /tmp/cape-firmware/
-	                        tar xf /tmp/\${firmware_file} -C /tmp/cape-firmware/
-	                        cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/ 2>/dev/null
-	                        rm -rf /tmp/cape-firmware/ || true
-	                        rm -f /tmp/\${firmware_file} || true
-	                fi
+		if [ "\${firmware_file}" ] ; then
+			wget --directory-prefix=/tmp/ \${kernel_url}\${firmware_file}
 
-	                dpkg -x /tmp/\${deb_file} /
+			mkdir -p /tmp/cape-firmware/
+			tar xf /tmp/\${firmware_file} -C /tmp/cape-firmware/
+			cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/ 2>/dev/null
+			rm -rf /tmp/cape-firmware/ || true
+			rm -f /tmp/\${firmware_file} || true
+		fi
 
-	                depmod \${kernel_version}
-	                update-initramfs -c -k \${kernel_version}
+		dpkg -x /tmp/\${deb_file} /
 
-	                rm -f /tmp/\${deb_file} || true
-	                rm -f /boot/System.map-\${kernel_version} || true
-	                rm -f /boot/config-\${kernel_version} || true
-	                rm -rf /usr/src/linux-headers* || true
-	        fi
-	        rm -f /tmp/temp.html || true
-	        rm -f /tmp/index.html || true
+		depmod \${kernel_version}
+		update-initramfs -c -k \${kernel_version}
+		rm -f /tmp/index.html || true
+		rm -f /tmp/temp.html || true
+		rm -f /tmp/\${deb_file} || true
+		rm -f /boot/System.map-\${kernel_version} || true
+		rm -f /boot/config-\${kernel_version} || true
+		rm -rf /usr/src/linux-headers* || true
 	}
 
 	add_user () {
-	        groupadd admin || true
-	        echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
-	        default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
+		groupadd admin || true
+		echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
 
-	        pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
+		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
 
-	        useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${full_name}" ${user_name}
+		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${full_name}" ${user_name}
 
-	        case "\${distro}" in
-	        Debian)
-	                usermod -aG sudo debian || true
-	                usermod -aG dialout debian || true
+		case "\${distro}" in
+		Debian)
+			usermod -aG sudo debian || true
+			usermod -aG dialout debian || true
 
-	                passwd <<-EOF
-	                root
-	                root
-	                EOF
-	                ;;
-	        Ubuntu)
-	                passwd -l root || true
-	                ;;
-	        esac
+			passwd <<-EOF
+			root
+			root
+			EOF
+			;;
+		Ubuntu)
+			passwd -l root || true
+			;;
+		esac
 	}
 
 	debian_startup_script () {
-	        if [ -f /etc/init.d/board_tweaks.sh ] ; then
-	                chown root:root /etc/init.d/board_tweaks.sh
-	                chmod +x /etc/init.d/board_tweaks.sh
-	                insserv board_tweaks.sh || true
-	        fi
+		if [ -f /etc/init.d/board_tweaks.sh ] ; then
+			chown root:root /etc/init.d/board_tweaks.sh
+			chmod +x /etc/init.d/board_tweaks.sh
+			insserv board_tweaks.sh || true
+		fi
 	}
 
 	startup_script () {
-	        case "\${distro}" in
-	        Debian)
-	                debian_startup_script
-	                ;;
-	        esac
+		case "\${distro}" in
+		Debian)
+			debian_startup_script
+			;;
+		esac
 	}
 
 	cleanup () {
-	        if [ -f /etc/apt/apt.conf ] ; then
-	                rm -rf /etc/apt/apt.conf || true
-	        fi
-	        apt-get update
-	        apt-get clean
+		if [ -f /etc/apt/apt.conf ] ; then
+			rm -rf /etc/apt/apt.conf || true
+		fi
+		apt-get update
+		apt-get clean
 
-	        rm -f /usr/sbin/policy-rc.d
+		rm -f /usr/sbin/policy-rc.d
 
-	        if [ "x\${distro}" = "xUbuntu" ] ; then
-	                rm -f /sbin/initctl || true
-	                dpkg-divert --local --rename --remove /sbin/initctl
-	        fi
+		if [ "x\${distro}" = "xUbuntu" ] ; then
+			rm -f /sbin/initctl || true
+			dpkg-divert --local --rename --remove /sbin/initctl
+		fi
 
-	        #left over from init/upstart scripts running in chroot...
-	        if [ -d /var/run/ ] ; then
-	                rm -rf /var/run/* || true
-	        fi
+		#left over from init/upstart scripts running in chroot...
+		if [ -d /var/run/ ] ; then
+			rm -rf /var/run/* || true
+		fi
 	}
 
 	#cat /chroot_script.sh
@@ -431,11 +428,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkgs
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-	        dl_pkg_src
+		dl_pkg_src
 	fi
 
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-	        for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
+		for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
 	fi
 
 	add_user
