@@ -503,7 +503,7 @@ if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
 fi
 
-echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user_password.list
+echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user_password.list >/dev/null
 
 report_size
 chroot_umount
