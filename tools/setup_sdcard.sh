@@ -1228,11 +1228,32 @@ function check_uboot_type {
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
+#		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
+#			select_kernel="${bone_dt_kernel}"
+#			need_dtbs=1
+#		else
+			select_kernel="${bone_kernel}"
+#		fi
+
+		unset HAS_OMAPFB_DSS2
+		unset KMS_VIDEOA
+
+		#just to disable the omapfb stuff..
+		USE_KMS=1
+		;;
+	bone_dtb)
+		SYSTEM="bone"
+		BOOTLOADER="BEAGLEBONE_A"
+		is_omap
+		SERIAL="ttyO0"
+		SERIAL_CONSOLE="${SERIAL},115200n8"
+
 		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
 			select_kernel="${bone_dt_kernel}"
 			need_dtbs=1
 		else
 			select_kernel="${bone_kernel}"
+			unset need_dtbs
 		fi
 
 		unset HAS_OMAPFB_DSS2
@@ -1409,6 +1430,7 @@ function usage {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
+			                bone_dtb - <BeagleBone Ax: experimental v3.8-rc>
 			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
