@@ -104,6 +104,10 @@ function minimal_armel {
 			;;
 		esac
 
+		if [ -f ${DIR}/release ] ; then
+			chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.7.8-x8/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.8.0-rc7-bone4/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.2.33-psp26/"
+		fi
+
 		tempdir=$(mktemp -d)
 
 		cat > ${DIR}/.project <<-__EOF__
@@ -211,18 +215,16 @@ else
 	echo "Starting Compression"
 	cd ${DIR}/deploy/
 
+	tar cvf ${export_filename}.tar ./${export_filename}
+
 	if [ -f ${DIR}/release ] ; then
-		tar cvf ${export_filename}.tar ./${export_filename}
-		xz -z -7 -v ${export_filename}.tar
+		echo "xz -z -7 -v ${export_filename}.tar>" >> /mnt/farm/testing/pending/compress.txt
 
 		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
-				cp -v ${export_filename}.tar.xz /mnt/farm/testing/pending/${export_filename}.tar.xz
+				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
 			fi
 		fi
-
-	else
-		tar cvf ${export_filename}.tar ./${export_filename}
 	fi
 	cd ${DIR}/
 fi
@@ -360,7 +362,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_ONLY}"
+	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR="${MIRROR_DEB}"
@@ -375,7 +377,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_ONLY}"
+	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian.sh"
 	MIRROR="${MIRROR_DEB}"
