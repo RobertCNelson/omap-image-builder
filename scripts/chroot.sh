@@ -512,9 +512,9 @@ sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar .
 	cd ${tempdir}
-	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-src.tar
+	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
