@@ -425,6 +425,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	cleanup () {
+		mkdir -p /boot/uboot/
+
 		if [ -f /etc/apt/apt.conf ] ; then
 			rm -rf /etc/apt/apt.conf || true
 		fi
