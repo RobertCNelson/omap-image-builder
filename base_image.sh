@@ -208,7 +208,7 @@ function quantal_release {
 	reset_vars
 	DIST="quantal"
 
-	EXTRA=",${UBUNTU_ONLY}"
+	EXTRA=",${UBUNTU_ONLY},wvdial"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -223,7 +223,7 @@ function raring_release {
 	reset_vars
 	DIST="raring"
 
-	EXTRA=",${UBUNTU_ONLY}"
+	EXTRA=",${UBUNTU_ONLY},wvdial"
 	FIXUPSCRIPT="fixup-base.sh"
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
@@ -252,7 +252,7 @@ function wheezy_release {
 	reset_vars
 	DIST=wheezy
 
-	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools"
+	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR="${MIRROR_DEB}"
@@ -267,7 +267,7 @@ function sid_release {
 	reset_vars
 	DIST=sid
 
-	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools"
+	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
 	FIXUPSCRIPT="fixup-debian-base.sh"
 	MIRROR="${MIRROR_DEB}"
