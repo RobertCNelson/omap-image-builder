@@ -470,14 +470,20 @@ __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
+if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
+	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
+fi
+
+if [ -d ${DIR}/git/linux-firmware/rtlwifi/ ] ; then
+	sudo mkdir -p ${tempdir}/lib/firmware/rtlwifi
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt ${tempdir}/lib/firmware/
+	sudo cp -v ${DIR}/git/linux-firmware/rtlwifi/* ${tempdir}/lib/firmware/rtlwifi
+fi
+
 if [ -d ${DIR}/git/linux-firmware/ti-connectivity/ ] ; then
 	sudo mkdir -p ${tempdir}/lib/firmware/ti-connectivity
 	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.ti-connectivity ${tempdir}/lib/firmware/
 	sudo cp -v ${DIR}/git/linux-firmware/ti-connectivity/* ${tempdir}/lib/firmware/ti-connectivity
-fi
-
-if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
-	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
 fi
 
 if [ -f ${DIR}/git/am33x-cm3/bin/am335x-pm-firmware.bin ] ; then
