@@ -142,49 +142,13 @@ function kernel_chooser {
 	else
 		FTP_DIR=${OVERRIDE}
 	fi
-
-	if [ -f ${tempdir}/index.html ] ; then
-		rm -f ${tempdir}/index.html || true
-	fi
-
-	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${DIST}-${ARCH}/${FTP_DIR}/
-	ACTUAL_DEB_FILE=$(cat ${tempdir}/index.html | grep linux-image | awk -F "\"" '{print $2}')
-
-	ACTUAL_DTB_FILE=$(cat ${tempdir}/index.html | grep dtbs.tar.gz) || true
-	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
-		#<a href="3.5.0-imx2-dtbs.tar.gz">3.5.0-imx2-dtbs.tar.gz</a> 08-Aug-2012 21:34 8.7K
-		ACTUAL_DTB_FILE=$(echo ${ACTUAL_DTB_FILE} | awk -F "\"" '{print $2}')
-	else
-		unset ACTUAL_DTB_FILE
-	fi
 }
 
 function select_rcn-ee-net_kernel {
-	#KERNEL_ABI="STABLE"
-	#KERNEL_ABI="TESTING"
-	#KERNEL_ABI="EXPERIMENTAL"
-
-	if [ "${PRIMARY_KERNEL_OVERRIDE}" ] ; then
-		OVERRIDE="${PRIMARY_KERNEL_OVERRIDE}"
-	else
-		unset OVERRIDE
-	fi
-
 	SUBARCH="imx"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	PRIMARY_KERNEL="--kernel-image ${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DEB_FILE}"
-	echo "Using: ${PRIMARY_KERNEL}"
-
 	chroot_KERNEL_HTTP_DIR="${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
-
-	unset PRIMARY_DTB_FILE
-	if [ "x${ACTUAL_DTB_FILE}" != "x" ] ; then
-		PRIMARY_DTB_FILE="${DEB_MIRROR}/${DIST}-${ARCH}/${FTP_DIR}/${ACTUAL_DTB_FILE}"
-		echo "Using dtbs: ${PRIMARY_DTB_FILE}"
-	fi
-
-	unset SECONDARY_KERNEL
 }
 
 function wheezy_release {
