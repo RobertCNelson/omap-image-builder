@@ -75,6 +75,8 @@ function minimal_armel {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_components="${deb_components}"
+
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
@@ -135,8 +137,6 @@ function quantal_release {
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
 
-	COMPONENTS="${UBU_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -148,8 +148,6 @@ function raring_release {
 	release="raring"
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
-
-	COMPONENTS="${UBU_COMPONENTS}"
 
 	minimal_armel
 	compression
@@ -163,8 +161,6 @@ function squeeze_release {
 	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 
-	COMPONENTS="${DEB_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -177,8 +173,6 @@ function wheezy_release {
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
 
-	COMPONENTS="${DEB_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -190,8 +184,6 @@ function sid_release {
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
-
-	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
 	compression

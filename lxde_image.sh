@@ -74,6 +74,8 @@ function minimal_armel {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_components="${deb_components}"
+
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
@@ -152,8 +154,6 @@ function quantal_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
 
-	COMPONENTS="${UBU_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -165,8 +165,6 @@ function raring_release {
 	release="raring"
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
-
-	COMPONENTS="${UBU_COMPONENTS}"
 
 	minimal_armel
 	compression
@@ -180,8 +178,6 @@ function squeeze_release {
 	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 
-	COMPONENTS="${DEB_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -194,8 +190,6 @@ function wheezy_release {
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
 
-	COMPONENTS="${DEB_COMPONENTS}"
-
 	minimal_armel
 	compression
 }
@@ -207,8 +201,6 @@ function sid_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
-
-	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
 	compression

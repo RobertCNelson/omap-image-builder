@@ -87,9 +87,10 @@ run_project () {
 		export_filename="${export_filename}"
 
 		distro="${distro}"
-
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
+
+		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"

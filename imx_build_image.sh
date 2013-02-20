@@ -74,6 +74,8 @@ function minimal_armel {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_components="${deb_components}"
+
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
@@ -130,6 +132,8 @@ is_ubuntu () {
 	user_name="ubuntu"
 	password="temppwd"
 	full_name="Demo User"
+
+	deb_components="main universe multiverse"
 }
 
 is_debian () {
@@ -137,6 +141,8 @@ is_debian () {
 	user_name="debian"
 	password="temppwd"
 	full_name="Demo User"
+
+	deb_components="main contrib non-free"
 }
 
 function wheezy_release {
@@ -146,8 +152,6 @@ function wheezy_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
-
-	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
 	compression

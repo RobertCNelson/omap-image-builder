@@ -67,6 +67,17 @@ check_defines () {
 		esac
 	fi
 
+	if [ ! "${deb_components}" ] ; then
+		case "${distro}" in
+		debian)
+			deb_components="main contrib non-free"
+			;;
+		ubuntu)
+			deb_components="main universe multiverse"
+			;;
+		esac
+	fi
+
 	if [ ! "${user_name}" ] ; then
 		user_name="${distro}"
 		echo "user_name: undefined using: [${user_name}]"
@@ -128,17 +139,6 @@ fi
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
 sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
 report_size
-
-case "${distro}" in
-debian)
-	deb_components="main contrib non-free"
-	deb_mirror="ftp.us.debian.org/debian/"
-	;;
-ubuntu)
-	deb_components="main universe multiverse"
-	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-	;;
-esac
 
 case "${release}" in
 squeeze|quantal)
