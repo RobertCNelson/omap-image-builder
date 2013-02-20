@@ -77,8 +77,7 @@ function minimal_armel {
 		export_filename="${export_filename}"
 
 		distro="${distro}"
-
-		release="${DIST}"
+		release="${release}"
 		dpkg_arch="${ARCH}"
 
 		apt_proxy="${apt_proxy}"
@@ -137,7 +136,7 @@ is_debian () {
 function quantal_release {
 	reset_vars
 	is_ubuntu
-	DIST="quantal"
+	release="quantal"
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
 
@@ -152,7 +151,7 @@ function quantal_release {
 function raring_release {
 	reset_vars
 	is_ubuntu
-	DIST="raring"
+	release="raring"
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
 
@@ -166,7 +165,7 @@ function raring_release {
 function squeeze_release {
 	reset_vars
 	is_debian
-	DIST=squeeze
+	release="squeeze"
 
 	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
@@ -181,7 +180,7 @@ function squeeze_release {
 function wheezy_release {
 	reset_vars
 	is_debian
-	DIST=wheezy
+	release="wheezy"
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
@@ -196,7 +195,7 @@ function wheezy_release {
 function sid_release {
 	reset_vars
 	is_debian
-	DIST=sid
+	release="sid"
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"

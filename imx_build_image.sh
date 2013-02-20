@@ -83,8 +83,7 @@ function minimal_armel {
 		export_filename="${export_filename}"
 
 		distro="${distro}"
-
-		release="${DIST}"
+		release="${release}"
 		dpkg_arch="${ARCH}"
 
 		apt_proxy="${apt_proxy}"
@@ -131,7 +130,7 @@ function kernel_chooser {
 			rm -f ${tempdir}/LATEST-${SUBARCH}
 		fi
 
-		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${ARCH}/LATEST-${SUBARCH}
 		FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 	else
@@ -163,7 +162,7 @@ is_debian () {
 function wheezy_release {
 	reset_vars
 	is_debian
-	DIST=wheezy
+	release="wheezy"
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY}"
 	USER_LOGIN="debian"

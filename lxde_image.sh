@@ -83,8 +83,7 @@ function minimal_armel {
 		export_filename="${export_filename}"
 
 		distro="${distro}"
-
-		release="${DIST}"
+		release="${release}"
 		dpkg_arch="${ARCH}"
 
 		apt_proxy="${apt_proxy}"
@@ -131,7 +130,7 @@ function kernel_chooser {
 			rm -f ${tempdir}/LATEST-${SUBARCH}
 		fi
 
-		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${DIST}-${ARCH}/LATEST-${SUBARCH}
+		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${ARCH}/LATEST-${SUBARCH}
 		FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 	else
@@ -169,7 +168,7 @@ is_debian () {
 function quantal_release {
 	reset_vars
 	is_ubuntu
-	DIST="quantal"
+	release="quantal"
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
 
@@ -184,7 +183,7 @@ function quantal_release {
 function raring_release {
 	reset_vars
 	is_ubuntu
-	DIST="raring"
+	release="raring"
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
 
@@ -198,7 +197,7 @@ function raring_release {
 function squeeze_release {
 	reset_vars
 	is_debian
-	DIST=squeeze
+	release="squeeze"
 	select_rcn-ee-net_kernel
 	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
@@ -213,7 +212,7 @@ function squeeze_release {
 function wheezy_release {
 	reset_vars
 	is_debian
-	DIST=wheezy
+	release="wheezy"
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
@@ -228,7 +227,7 @@ function wheezy_release {
 function sid_release {
 	reset_vars
 	is_debian
-	DIST=sid
+	release="sid"
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
