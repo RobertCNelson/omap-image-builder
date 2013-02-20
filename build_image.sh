@@ -51,10 +51,6 @@ function reset_vars {
 	#Hostname:
 	FQDN="arm"
 
-	USER_LOGIN="ubuntu"
-	USER_PASS="temppwd"
-	USER_NAME="Demo User"
-
 	SERIAL="ttyO2"
 
 	IMAGESIZE="2G"
@@ -101,9 +97,9 @@ function minimal_armel {
 
 		image_hostname="${FQDN}"
 
-		user_name="${USER_LOGIN}"
-		full_name="${USER_NAME}"
-		password="${USER_PASS}"
+		user_name="${user_name}"
+		full_name="${full_name}"
+		password="${password}"
 
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
@@ -165,10 +161,23 @@ function select_rcn-ee-net_kernel {
 	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
 }
 
+is_ubuntu () {
+	user_name="ubuntu"
+	password="temppwd"
+	full_name="Demo User"
+}
+
+is_debian () {
+	user_name="debian"
+	password="temppwd"
+	full_name="Demo User"
+}
+
 #12.10
 function quantal_release {
 	distro="ubuntu"
 	reset_vars
+	is_ubuntu
 	DIST="quantal"
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
@@ -184,6 +193,7 @@ function quantal_release {
 function raring_release {
 	distro="ubuntu"
 	reset_vars
+	is_ubuntu
 	DIST="raring"
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
@@ -198,6 +208,7 @@ function raring_release {
 function squeeze_release {
 	distro="debian"
 	reset_vars
+	is_debian
 	DIST=squeeze
 	select_rcn-ee-net_kernel
 	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
@@ -213,6 +224,7 @@ function squeeze_release {
 function wheezy_release {
 	distro="debian"
 	reset_vars
+	is_debian
 	DIST=wheezy
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
@@ -228,6 +240,7 @@ function wheezy_release {
 function sid_release {
 	distro="debian"
 	reset_vars
+	is_debian
 	DIST=sid
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
