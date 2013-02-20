@@ -30,8 +30,6 @@ DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
-	unset PRIMARY_KERNEL
-	unset SECONDARY_KERNEL
 	unset EXTRA
 	unset USER_PASS
 

@@ -30,19 +30,10 @@ DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
-	unset PRIMARY_KERNEL
-	unset SECONDARY_KERNEL
 	unset EXTRA
 	unset USER_PASS
 
 	source ${DIR}/var/pkg_list.sh
-
-	unset PRIMARY_KERNEL_OVERRIDE
-	unset SECONDARY_KERNEL_OVERRIDE
-
-	if [ -f ${DIR}/release ] ; then
-		source ${DIR}/host/rcn-ee-demo-image.sh
-	fi
 
 	#Hostname:
 	FQDN="arm"
@@ -122,29 +113,21 @@ function compression {
 }
 
 function kernel_chooser {
-	if [ ! "${OVERRIDE}" ] ; then
-		if [ -f ${tempdir}/LATEST-${SUBARCH} ] ; then
-			rm -f ${tempdir}/LATEST-${SUBARCH}
-		fi
-
-		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
-		FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
-		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
-	else
-		FTP_DIR=${OVERRIDE}
-	fi
+	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
+	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
+	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
 
 function select_rcn-ee-net_kernel {
 	SUBARCH="omap"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="TESTING"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${DIST}-${ARCH}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
 is_ubuntu () {
@@ -242,7 +225,6 @@ source ${DIR}/var/check_host.sh
 mirror="http://rcn-ee.net/deb"
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	source ${DIR}/host/rcn-ee-host.sh
-	source ${DIR}/host/rcn-ee-demo-image.sh
 fi
 
 mkdir -p ${DIR}/deploy/
