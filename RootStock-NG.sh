@@ -30,8 +30,6 @@ if [ -f ${DIR}/.project ] ; then
 	source ${DIR}/.project
 fi
 
-image_hostname="arm"
-
 generic_git () {
 	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		git clone ${git_clone_address} ${DIR}/git/${git_project_name}
@@ -70,6 +68,7 @@ run_project () {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
@@ -110,21 +109,6 @@ run_roostock_ng () {
 	sudo rm -rf ${tempdir}/ || true
 }
 
-mirror="http://rcn-ee.net/deb"
-#FIXME: just temp...
-case "${system}" in
-hades|work-e6400)
-	apt_proxy="192.168.0.10:3142/"
-	;;
-a53t|zeus|hestia|poseidon|panda-es-1gb-a3)
-	apt_proxy="rcn-ee.homeip.net:3142/"
-	mirror="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
-	;;
-*)
-	apt_proxy=""
-	;;
-esac
-
 setup_git_trees
 
 cd ${DIR}/git/linux-firmware
@@ -135,37 +119,6 @@ git pull || true
 
 cd ${DIR}/
 
-if [ -f ${DIR}/release ] ; then
-	chroot_ENABLE_DEB_SRC="enable"
-fi
-
 run_roostock_ng
-
-#full_name="Demo User"
-#password="temppwd"
-
-#distro="debian"
-#user_name="${distro}"
-
-#dpkg_arch="armel"
-
-#release="squeeze"
-#run_project
-
-#release="wheezy"
-#run_project
-
-#dpkg_arch="armhf"
-#run_project
-
-#distro="ubuntu"
-#user_name="${distro}"
-
-#dpkg_arch="armhf"
-#release="quantal"
-#run_project
-
-#release="raring"
-#run_project
 
 #

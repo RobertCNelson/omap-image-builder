@@ -53,6 +53,7 @@ function minimal_armel {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
@@ -118,6 +119,7 @@ is_ubuntu () {
 	password="temppwd"
 	full_name="Demo User"
 
+	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
 	deb_components="main universe multiverse"
 
 	source ${DIR}/var/pkg_list.sh
@@ -131,6 +133,7 @@ is_debian () {
 	password="temppwd"
 	full_name="Demo User"
 
+	deb_mirror="ftp.us.debian.org/debian/"
 	deb_components="main contrib non-free"
 
 	source ${DIR}/var/pkg_list.sh
@@ -149,7 +152,7 @@ function quantal_release {
 
 #13.04
 function raring_release {
-	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools"
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="raring"
 	select_rcn-ee-net_kernel
@@ -167,7 +170,7 @@ function squeeze_release {
 }
 
 function wheezy_release {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
 	is_debian
 	release="wheezy"
 	select_rcn-ee-net_kernel
@@ -176,7 +179,7 @@ function wheezy_release {
 }
 
 function sid_release {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
 	is_debian
 	release="sid"
 	select_rcn-ee-net_kernel

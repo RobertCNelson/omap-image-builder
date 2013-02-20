@@ -53,6 +53,7 @@ function minimal_armel {
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 
+		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
@@ -100,6 +101,7 @@ is_ubuntu () {
 	password="temppwd"
 	full_name="Demo User"
 
+	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
 	deb_components="main universe multiverse"
 
 	source ${DIR}/var/pkg_list.sh
@@ -113,6 +115,7 @@ is_debian () {
 	password="temppwd"
 	full_name="Demo User"
 
+	deb_mirror="ftp.us.debian.org/debian/"
 	deb_components="main contrib non-free"
 
 	source ${DIR}/var/pkg_list.sh
