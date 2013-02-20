@@ -26,20 +26,22 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
+image_type="console"
+
 function minimal_armel {
 	rm -f "${DIR}/.project" || true
 
 	#Actual Releases will use version numbers..
-	case "${DIST}" in
+	case "${release}" in
 	squeeze)
 		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.6-console-${dpkg_arch}-${time}"
+		export_filename="${distro}-6.0.6-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-12.10-console-${dpkg_arch}-${time}"
+		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${distro}-${release}-console-${dpkg_arch}-${time}"
+		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	esac
 
