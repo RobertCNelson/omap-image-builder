@@ -99,6 +99,10 @@ function compression {
 }
 
 function kernel_chooser {
+	if [ -f ${tempdir}/LATEST-${SUBARCH} ] ; then
+		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
+	fi
+
 	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
 	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
