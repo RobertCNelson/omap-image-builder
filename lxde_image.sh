@@ -152,7 +152,6 @@ function quantal_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
 
-	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
 
 	minimal_armel
@@ -167,7 +166,6 @@ function raring_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${UBUNTU_ONLY}"
 
-	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
 
 	minimal_armel
@@ -182,7 +180,6 @@ function squeeze_release {
 	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
 
-	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
@@ -197,7 +194,6 @@ function wheezy_release {
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
 
-	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
@@ -212,7 +208,6 @@ function sid_release {
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
 	USER_LOGIN="debian"
 
-	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 
 	minimal_armel
@@ -222,6 +217,7 @@ function sid_release {
 source ${DIR}/var/defaults.sh
 source ${DIR}/var/check_host.sh
 
+apt_proxy=""
 mirror="http://rcn-ee.net/deb"
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	source ${DIR}/host/rcn-ee-host.sh
@@ -230,15 +226,6 @@ fi
 mkdir -p ${DIR}/deploy/
 
 if [ -f ${DIR}/release ] ; then
-	echo "Building Release Package, with no mirrors"
-
-	if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
-		#use local kernel *.deb files from synced mirror
-		DEB_MIRROR="http://192.168.1.95:81/dl/mirrors/deb"
-		MIRROR_UBU="--mirror http://ports.ubuntu.com/ubuntu-ports/"
-		MIRROR_DEB="--mirror http://ftp.us.debian.org/debian/"
-	fi
-
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
