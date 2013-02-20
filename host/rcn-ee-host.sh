@@ -13,3 +13,5 @@ a53t|zeus|hestia|poseidon|panda-es-1gb-a3|imx6q-sabrelite-1gb)
 	;;
 esac
 
+RELEASE_HOST="imx6q-sabrelite-1gb"
+

@@ -169,7 +169,6 @@ function sid_release {
 	compression
 }
 
-source ${DIR}/var/defaults.sh
 source ${DIR}/var/check_host.sh
 
 apt_proxy=""
