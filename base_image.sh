@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2012 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -131,7 +131,7 @@ function quantal_release {
 	DIST="quantal"
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
-	FIXUPSCRIPT="fixup-base.sh"
+
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD="${QUANTAL_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
@@ -146,7 +146,7 @@ function raring_release {
 	DIST="raring"
 
 	EXTRA=",${UBUNTU_ONLY},wvdial"
-	FIXUPSCRIPT="fixup-base.sh"
+
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
 	BUILD="${RARING_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
@@ -161,7 +161,7 @@ function squeeze_release {
 
 	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
-	FIXUPSCRIPT="fixup-debian-base.sh"
+
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${SQUEEZE_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
@@ -176,7 +176,7 @@ function wheezy_release {
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
-	FIXUPSCRIPT="fixup-debian-base.sh"
+
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
@@ -191,7 +191,7 @@ function sid_release {
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 	USER_LOGIN="debian"
-	FIXUPSCRIPT="fixup-debian-base.sh"
+
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${DIST}${MINIMAL}-${ARCH}-${TIME}"

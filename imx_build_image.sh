@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2012 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -194,7 +194,7 @@ function wheezy_release {
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY}"
 	USER_LOGIN="debian"
-	FIXUPSCRIPT="fixup-debian.sh"
+
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
 	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
