@@ -104,9 +104,9 @@ function minimal_armel {
 			;;
 		esac
 
-		if [ -f ${DIR}/release ] ; then
-			chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.7.8-x8/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.8.0-rc7-bone4/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.2.33-psp26/"
-		fi
+#		if [ -f ${DIR}/release ] ; then
+#			chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.7.8-x8/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.8.0-rc7-bone4/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.2.33-psp26/"
+#		fi
 
 		tempdir=$(mktemp -d)
 
@@ -218,7 +218,7 @@ else
 	tar cvf ${export_filename}.tar ./${export_filename}
 
 	if [ -f ${DIR}/release ] ; then
-		echo "xz -z -7 -v ${export_filename}.tar>" >> /mnt/farm/testing/pending/compress.txt
+		echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
 
 		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
