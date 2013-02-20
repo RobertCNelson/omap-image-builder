@@ -22,12 +22,9 @@
 
 SYST=$(uname -n)
 HOST_ARCH=$(uname -m)
-TIME=$(date +%Y-%m-%d)
 time=$(date +%Y-%m-%d)
 
 unset USE_OEM
-
-MINIMAL="-minimal"
 
 DIR=$PWD
 tempdir=$(mktemp -d)
@@ -60,13 +57,13 @@ function minimal_armel {
 	case "${DIST}" in
 	squeeze)
 		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.6-minimal-${ARCH}-${time}"
+		export_filename="${distro}-6.0.6-minimal-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-12.10-minimal-${ARCH}-${time}"
+		export_filename="${distro}-12.10-minimal-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${distro}-${DIST}-minimal-${ARCH}-${time}"
+		export_filename="${distro}-${release}-minimal-${dpkg_arch}-${time}"
 		;;
 	esac
 
@@ -78,7 +75,7 @@ function minimal_armel {
 
 		distro="${distro}"
 		release="${release}"
-		dpkg_arch="${ARCH}"
+		dpkg_arch="${dpkg_arch}"
 
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
@@ -142,7 +139,7 @@ function quantal_release {
 
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD="${QUANTAL_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -157,7 +154,7 @@ function raring_release {
 
 	MIRROR="${MIRROR_UBU}"
 	COMPONENTS="${UBU_COMPONENTS}"
-	BUILD="${RARING_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -172,7 +169,7 @@ function squeeze_release {
 
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD="${SQUEEZE_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -187,7 +184,7 @@ function wheezy_release {
 
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -202,7 +199,7 @@ function sid_release {
 
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD="${DIST}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -230,11 +227,11 @@ if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
-ARCH=armel
+dpkg_arch="armel"
 squeeze_release
 wheezy_release
 
-ARCH=armhf
+dpkg_arch="armhf"
 wheezy_release
 quantal_release
 raring_release

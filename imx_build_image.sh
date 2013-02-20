@@ -22,12 +22,9 @@
 
 SYST=$(uname -n)
 HOST_ARCH=$(uname -m)
-TIME=$(date +%Y-%m-%d)
 time=$(date +%Y-%m-%d)
 
 unset USE_OEM
-
-MINIMAL="-minimal"
 
 DIR=$PWD
 tempdir=$(mktemp -d)
@@ -66,13 +63,13 @@ function minimal_armel {
 	case "${DIST}" in
 	squeeze)
 		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.6-console-${ARCH}-${time}"
+		export_filename="${distro}-6.0.6-console-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-12.10-console-${ARCH}-${time}"
+		export_filename="${distro}-12.10-console-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${distro}-${DIST}-console-${ARCH}-${time}"
+		export_filename="${distro}-${release}-console-${dpkg_arch}-${time}"
 		;;
 	esac
 
@@ -84,7 +81,7 @@ function minimal_armel {
 
 		distro="${distro}"
 		release="${release}"
-		dpkg_arch="${ARCH}"
+		dpkg_arch="${dpkg_arch}"
 
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
@@ -130,7 +127,7 @@ function kernel_chooser {
 			rm -f ${tempdir}/LATEST-${SUBARCH}
 		fi
 
-		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${ARCH}/LATEST-${SUBARCH}
+		wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
 		FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 		FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 	else
@@ -169,7 +166,7 @@ function wheezy_release {
 
 	MIRROR="${MIRROR_DEB}"
 	COMPONENTS="${DEB_COMPONENTS}"
-	BUILD="${WHEEZY_CURRENT}${MINIMAL}-${ARCH}-${TIME}"
+
 	minimal_armel
 	compression
 }
@@ -198,7 +195,7 @@ if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
-ARCH=armhf
+dpkg_arch="armhf"
 wheezy_release
 
 echo "done"
