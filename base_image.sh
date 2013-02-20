@@ -21,27 +21,16 @@
 # THE SOFTWARE.
 
 SYST=$(uname -n)
-HOST_ARCH=$(uname -m)
 time=$(date +%Y-%m-%d)
-
-unset USE_OEM
 
 DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
 	unset EXTRA
-	unset USER_PASS
 
 	source ${DIR}/var/pkg_list.sh
 	MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
-
-	#Hostname:
-	FQDN="arm"
-
-	SERIAL="ttyO2"
-
-	IMAGESIZE="2G"
 }
 
 function minimal_armel {
@@ -80,7 +69,7 @@ function minimal_armel {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
-		image_hostname="${FQDN}"
+		image_hostname="${image_hostname}"
 
 		user_name="${user_name}"
 		full_name="${full_name}"
@@ -116,17 +105,23 @@ function compression {
 }
 
 is_ubuntu () {
+	image_hostname="arm"
 	distro="ubuntu"
 	user_name="ubuntu"
 	password="temppwd"
 	full_name="Demo User"
+
+	deb_components="main universe multiverse"
 }
 
 is_debian () {
+	image_hostname="arm"
 	distro="debian"
 	user_name="debian"
 	password="temppwd"
 	full_name="Demo User"
+
+	deb_components="main contrib non-free"
 }
 
 #12.10
@@ -159,7 +154,6 @@ function squeeze_release {
 	release="squeeze"
 
 	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
-	USER_LOGIN="debian"
 
 	minimal_armel
 	compression
@@ -171,7 +165,6 @@ function wheezy_release {
 	release="wheezy"
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
-	USER_LOGIN="debian"
 
 	minimal_armel
 	compression
@@ -183,7 +176,6 @@ function sid_release {
 	release="sid"
 
 	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
-	USER_LOGIN="debian"
 
 	minimal_armel
 	compression

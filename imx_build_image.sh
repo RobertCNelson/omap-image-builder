@@ -21,26 +21,15 @@
 # THE SOFTWARE.
 
 SYST=$(uname -n)
-HOST_ARCH=$(uname -m)
 time=$(date +%Y-%m-%d)
-
-unset USE_OEM
 
 DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
 	unset EXTRA
-	unset USER_PASS
 
 	source ${DIR}/var/pkg_list.sh
-
-	#Hostname:
-	FQDN="arm"
-
-	SERIAL="ttyO2"
-
-	IMAGESIZE="2G"
 }
 
 function minimal_armel {
@@ -79,7 +68,7 @@ function minimal_armel {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
-		image_hostname="${FQDN}"
+		image_hostname="${image_hostname}"
 
 		user_name="${user_name}"
 		full_name="${full_name}"
@@ -128,6 +117,7 @@ function select_rcn-ee-net_kernel {
 }
 
 is_ubuntu () {
+	image_hostname="arm"
 	distro="ubuntu"
 	user_name="ubuntu"
 	password="temppwd"
@@ -137,6 +127,7 @@ is_ubuntu () {
 }
 
 is_debian () {
+	image_hostname="arm"
 	distro="debian"
 	user_name="debian"
 	password="temppwd"
@@ -151,7 +142,6 @@ function wheezy_release {
 	release="wheezy"
 	select_rcn-ee-net_kernel
 	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
-	USER_LOGIN="debian"
 
 	minimal_armel
 	compression
