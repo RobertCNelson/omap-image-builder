@@ -89,11 +89,16 @@ function compression {
 	tar cvf ${export_filename}.tar ./${export_filename}
 
 	if [ -f ${DIR}/release ] ; then
-		echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-
 		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
+
+				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
+					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
+				else
+					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
+				fi
+
 			fi
 		fi
 	fi
