@@ -147,10 +147,10 @@ esac
 setup_git_trees
 
 cd ${DIR}/git/linux-firmware
-git pull
+git pull || true
 
 cd ${DIR}/git/am33x-cm3
-git pull
+git pull || true
 
 cd ${DIR}/
 
