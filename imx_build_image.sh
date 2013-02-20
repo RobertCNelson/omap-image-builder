@@ -26,18 +26,8 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
-function reset_vars {
-	unset EXTRA
-
-	source ${DIR}/var/pkg_list.sh
-}
-
 function minimal_armel {
 	rm -f "${DIR}/.project" || true
-
-	pkgs="${MINIMAL_APT}${EXTRA}"
-
-	base_pkg_list=$(echo ${pkgs} | sed -e 's/,/ /g')
 
 	#Actual Releases will use version numbers..
 	case "${DIST}" in
@@ -124,6 +114,9 @@ is_ubuntu () {
 	full_name="Demo User"
 
 	deb_components="main universe multiverse"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 is_debian () {
@@ -134,15 +127,16 @@ is_debian () {
 	full_name="Demo User"
 
 	deb_components="main contrib non-free"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 function wheezy_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools"
 	is_debian
 	release="wheezy"
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
-
 	minimal_armel
 	compression
 }

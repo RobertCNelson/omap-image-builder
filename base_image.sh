@@ -26,19 +26,8 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
-function reset_vars {
-	unset EXTRA
-
-	source ${DIR}/var/pkg_list.sh
-	MINIMAL_APT="${MINIMAL_APT},uboot-envtools,uboot-mkimage"
-}
-
 function minimal_armel {
 	rm -f "${DIR}/.project" || true
-
-	pkgs="${MINIMAL_APT}${EXTRA}"
-
-	base_pkg_list=$(echo ${pkgs} | sed -e 's/,/ /g')
 
 	#Actual Releases will use version numbers..
 	case "${DIST}" in
@@ -112,6 +101,9 @@ is_ubuntu () {
 	full_name="Demo User"
 
 	deb_components="main universe multiverse"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 is_debian () {
@@ -122,15 +114,16 @@ is_debian () {
 	full_name="Demo User"
 
 	deb_components="main contrib non-free"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 #12.10
 function quantal_release {
-	reset_vars
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="quantal"
-
-	EXTRA=",${UBUNTU_ONLY},wvdial"
 
 	minimal_armel
 	compression
@@ -138,44 +131,36 @@ function quantal_release {
 
 #13.04
 function raring_release {
-	reset_vars
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="raring"
-
-	EXTRA=",${UBUNTU_ONLY},wvdial"
 
 	minimal_armel
 	compression
 }
 
 function squeeze_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client uboot-mkimage"
 	is_debian
 	release="squeeze"
-
-	EXTRA=",isc-dhcp-client,uboot-mkimage,${DEBIAN_ONLY}"
 
 	minimal_armel
 	compression
 }
 
 function wheezy_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
 	release="wheezy"
-
-	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 
 	minimal_armel
 	compression
 }
 
 function sid_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
 	release="sid"
-
-	EXTRA=",u-boot-tools,${DEBIAN_ONLY},lowpan-tools,wvdial"
 
 	minimal_armel
 	compression

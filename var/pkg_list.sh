@@ -1,14 +1,23 @@
 #!/bin/bash
 
-MINIMAL_APT="git-core,nano,pastebinit,wget"
-MINIMAL_APT="${MINIMAL_APT},i2c-tools,bsdmainutils"
-MINIMAL_APT="${MINIMAL_APT},usb-modeswitch,usbutils"
-#MINIMAL_APT="${MINIMAL_APT},usb-modeswitch,usbutils,wvdial"
-MINIMAL_APT="${MINIMAL_APT},wireless-tools,wpasupplicant"
-MINIMAL_APT="${MINIMAL_APT},openssh-server,apache2,ntpdate,ppp"
-MINIMAL_APT="${MINIMAL_APT},btrfs-tools,cpufrequtils,fbset"
-MINIMAL_APT="${MINIMAL_APT},initramfs-tools,lsb-release"
+#Note: These will be auto installed by chroot.sh script:
+#lsb-release initramfs-tools sudo wget
 
-UBUNTU_ONLY="linux-firmware,devmem2,python-software-properties,u-boot-tools"
-DEBIAN_ONLY="atmel-firmware,firmware-ralink,libertas-firmware,zd1211-firmware"
+#Base
+base_pkgs="git-core nano pastebinit"
+
+#Tools
+base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset"
+
+#OS
+base_pkgs="${base_pkgs} btrfs-tools cpufrequtils ntpdate"
+
+#USB Dongles
+base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
+
+#Server
+base_pkgs="${base_pkgs} apache2 openssh-server"
+
+#Wireless
+base_pkgs="${base_pkgs} wireless-tools wpasupplicant"
 

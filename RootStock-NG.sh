@@ -30,26 +30,6 @@ if [ -f ${DIR}/.project ] ; then
 	source ${DIR}/.project
 fi
 
-#Base
-base_pkg_list="git-core nano pastebinit wget"
-
-#Tools
-base_pkg_list="${base_pkg_list} bsdmainutils i2c-tools fbset"
-
-#OS
-base_pkg_list="${base_pkg_list} btrfs-tools cpufrequtils initramfs-tools"
-base_pkg_list="${base_pkg_list} ntpdate"
-
-#USB Dongles
-base_pkg_list="${base_pkg_list} ppp usb-modeswitch usbutils"
-# wvdial"
-
-#Server
-base_pkg_list="${base_pkg_list} apache2 openssh-server"
-
-#Wireless
-base_pkg_list="${base_pkg_list} wireless-tools wpasupplicant"
-
 image_hostname="arm"
 
 generic_git () {

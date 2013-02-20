@@ -26,18 +26,8 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
-function reset_vars {
-	unset EXTRA
-
-	source ${DIR}/var/pkg_list.sh
-}
-
 function minimal_armel {
 	rm -f "${DIR}/.project" || true
-
-	pkgs="${MINIMAL_APT}${EXTRA}"
-
-	base_pkg_list=$(echo ${pkgs} | sed -e 's/,/ /g')
 
 	#Actual Releases will use version numbers..
 	case "${DIST}" in
@@ -138,6 +128,9 @@ is_ubuntu () {
 	full_name="Demo User"
 
 	deb_components="main universe multiverse"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 is_debian () {
@@ -148,61 +141,54 @@ is_debian () {
 	full_name="Demo User"
 
 	deb_components="main contrib non-free"
+
+	source ${DIR}/var/pkg_list.sh
+	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 #12.10
 function quantal_release {
-	reset_vars
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="quantal"
 	select_rcn-ee-net_kernel
-	EXTRA=",${UBUNTU_ONLY}"
-
 	minimal_armel
 	compression
 }
 
 #13.04
 function raring_release {
-	reset_vars
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools"
 	is_ubuntu
 	release="raring"
 	select_rcn-ee-net_kernel
-	EXTRA=",${UBUNTU_ONLY}"
-
 	minimal_armel
 	compression
 }
 
 function squeeze_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client"
 	is_debian
 	release="squeeze"
 	select_rcn-ee-net_kernel
-	EXTRA=",isc-dhcp-client,${DEBIAN_ONLY}"
-
 	minimal_armel
 	compression
 }
 
 function wheezy_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools"
 	is_debian
 	release="wheezy"
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
-
 	minimal_armel
 	compression
 }
 
 function sid_release {
-	reset_vars
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools"
 	is_debian
 	release="sid"
 	select_rcn-ee-net_kernel
-	EXTRA=",${DEBIAN_ONLY},lowpan-tools"
-
 	minimal_armel
 	compression
 }
