@@ -33,7 +33,6 @@ DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
-	unset DIST
 	unset PRIMARY_KERNEL
 	unset SECONDARY_KERNEL
 	unset EXTRA
@@ -148,19 +147,20 @@ function select_rcn-ee-net_kernel {
 }
 
 is_ubuntu () {
+	distro="ubuntu"
 	user_name="ubuntu"
 	password="temppwd"
 	full_name="Demo User"
 }
 
 is_debian () {
+	distro="debian"
 	user_name="debian"
 	password="temppwd"
 	full_name="Demo User"
 }
 
 function wheezy_release {
-	distro="debian"
 	reset_vars
 	is_debian
 	DIST=wheezy

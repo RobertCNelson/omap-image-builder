@@ -33,7 +33,6 @@ DIR=$PWD
 tempdir=$(mktemp -d)
 
 function reset_vars {
-	unset DIST
 	unset PRIMARY_KERNEL
 	unset SECONDARY_KERNEL
 	unset EXTRA
@@ -162,12 +161,14 @@ function select_rcn-ee-net_kernel {
 }
 
 is_ubuntu () {
+	distro="ubuntu"
 	user_name="ubuntu"
 	password="temppwd"
 	full_name="Demo User"
 }
 
 is_debian () {
+	distro="debian"
 	user_name="debian"
 	password="temppwd"
 	full_name="Demo User"
@@ -175,7 +176,6 @@ is_debian () {
 
 #12.10
 function quantal_release {
-	distro="ubuntu"
 	reset_vars
 	is_ubuntu
 	DIST="quantal"
@@ -191,7 +191,6 @@ function quantal_release {
 
 #13.04
 function raring_release {
-	distro="ubuntu"
 	reset_vars
 	is_ubuntu
 	DIST="raring"
@@ -206,7 +205,6 @@ function raring_release {
 }
 
 function squeeze_release {
-	distro="debian"
 	reset_vars
 	is_debian
 	DIST=squeeze
@@ -222,7 +220,6 @@ function squeeze_release {
 }
 
 function wheezy_release {
-	distro="debian"
 	reset_vars
 	is_debian
 	DIST=wheezy
@@ -238,7 +235,6 @@ function wheezy_release {
 }
 
 function sid_release {
-	distro="debian"
 	reset_vars
 	is_debian
 	DIST=sid
