@@ -48,6 +48,17 @@ check_defines () {
 	if [ ! "${apt_proxy}" ] ; then
 		apt_proxy=""
 	fi
+
+	if [ ! "${deb_mirror}" ] ; then
+		case "${distro}" in
+		debian)
+			deb_mirror="ftp.us.debian.org/debian/"
+			;;
+		ubuntu)
+			deb_mirror="ports.ubuntu.com/ubuntu-ports/"
+			;;
+		esac
+	fi
 }
 
 report_size () {
@@ -56,19 +67,10 @@ report_size () {
 
 check_defines
 
-case "${distro}" in
-debian)
-	deb_mirror="ftp.us.debian.org/debian/"
-	;;
-ubuntu)
-	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-	;;
-esac
-
 echo "Log: Creating: [${distro}] [${release}] image for: [${dpkg_arch}]"
 
 if [ "${apt_proxy}" ] ; then
-	echo "Log: using apt proxy"
+	echo "Log: using apt proxy: [${apt_proxy}]"
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
