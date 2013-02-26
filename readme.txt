@@ -1,1 +1,4 @@
-Simple script i use to build the images on rcn-ee.net
+Simple script I use to build the images found on rcn-ee.net
+
+Supported Hosts:
+Debian Wheezy (amd64/armhf)
