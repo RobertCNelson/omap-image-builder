@@ -35,7 +35,7 @@ function minimal_armel {
 	case "${release}" in
 	squeeze)
 		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.6-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-6.0.7-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
