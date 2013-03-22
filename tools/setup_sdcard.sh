@@ -570,6 +570,9 @@ function unmount_all_drive_partitions {
 		umount ${DRIVE} &> /dev/null || true
 	done
 
+	echo "Zeroing out Partition Table"
+	dd if=/dev/zero of=${MMC} bs=1024 count=1024
+	sync
 	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
 }
 
