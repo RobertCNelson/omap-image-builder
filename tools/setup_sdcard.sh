@@ -340,6 +340,13 @@ function boot_uenv_txt_template {
 
 		__EOF__
 		;;
+	panda|panda_es)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#SPI: enable for userspace spi access on expansion header
+			#buddy=spidev
+
+		__EOF__
+		;;
 	esac
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
@@ -402,7 +409,7 @@ function boot_uenv_txt_template {
 	panda_dtb|panda_es_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion
+			expansion_args=setenv expansion buddy=\${buddy}
 		__EOF__
 		;;
 	mx51evk|mx53loco_dtb)
