@@ -1050,8 +1050,13 @@ function check_mmc {
 		echo "$FDISK_EXEC -l:"
 		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
-		echo "mount:"
-		mount | grep -v none | grep "/dev/" --color=never
+		if which lsblk > /dev/null ; then
+			echo "lsblk:"
+			lsblk
+		else
+			echo "mount:"
+			mount | grep -v none | grep "/dev/" --color=never
+		fi
 		echo ""
 		read -p "Are you 100% sure, on selecting [${MMC}] (y/n)? "
 		[ "${REPLY}" == "y" ] || exit
