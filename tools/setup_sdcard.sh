@@ -323,7 +323,7 @@ function boot_uenv_txt_template {
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Camera: Uncomment to enable:
+			#Camera:
 			#http://shop.leopardimaging.com/product.sc?productId=17
 			#camera=li5m03
 
@@ -403,13 +403,13 @@ function boot_uenv_txt_template {
 	panda|panda_es)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2}
+			expansion_args=setenv expansion buddy=\${buddy}
 		__EOF__
 		;;
 	panda_dtb|panda_es_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy}
+			expansion_args=setenv expansion
 		__EOF__
 		;;
 	mx51evk|mx53loco_dtb)
