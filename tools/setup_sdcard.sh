@@ -1052,7 +1052,7 @@ function check_mmc {
 		echo ""
 		if which lsblk > /dev/null ; then
 			echo "lsblk:"
-			lsblk
+			lsblk | grep -v sr0
 		else
 			echo "mount:"
 			mount | grep -v none | grep "/dev/" --color=never
