@@ -526,7 +526,9 @@ echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user
 report_size
 chroot_umount
 
-sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
+if [ "x${chroot_COPY_SETUP_SDCARD}" == "xenable" ] ; then
+	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
+fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/

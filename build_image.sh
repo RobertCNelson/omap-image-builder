@@ -75,6 +75,8 @@ function minimal_armel {
 
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
+		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
+
 	__EOF__
 
 	cat ${DIR}/.project
@@ -220,6 +222,8 @@ mkdir -p ${DIR}/deploy/
 if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
+
+chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
 quantal_release
