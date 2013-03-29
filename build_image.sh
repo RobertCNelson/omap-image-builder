@@ -46,7 +46,7 @@ function minimal_armel {
 	esac
 
 	if [ -f ${DIR}/release ] ; then
-		chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.7.10-x10/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.8.4-bone9/ http://rcn-ee.net/deb/${DIST}-${ARCH}/v3.2.33-psp26/"
+		chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x10/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.4-bone9/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.33-psp26/"
 	fi
 
 	tempdir=$(mktemp -d)
