@@ -45,9 +45,9 @@ function minimal_armel {
 		;;
 	esac
 
-	if [ -f ${DIR}/release ] ; then
-		chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x10/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.4-bone9/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.33-psp26/"
-	fi
+#	if [ -f ${DIR}/release ] ; then
+#		chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x10/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.4-bone9/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.33-psp26/"
+#	fi
 
 	tempdir=$(mktemp -d)
 
@@ -94,6 +94,7 @@ function compression {
 		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
+				cp -v arm*.tar /mnt/farm/images/
 
 				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
 					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
