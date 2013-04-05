@@ -10,7 +10,7 @@ base_pkgs="git-core nano pastebinit"
 base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset"
 
 #OS
-base_pkgs="${base_pkgs} btrfs-tools cpufrequtils ntpdate"
+base_pkgs="${base_pkgs} dosfstools btrfs-tools cpufrequtils ntpdate"
 
 #USB Dongles
 base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
