@@ -364,11 +364,17 @@ function boot_uenv_txt_template {
 
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Board File:
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+			#Device Tree File:
+			#xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Board File:
+			#xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; echo Booting from mmc ...
+			#Device Tree File:
 			xyz_mmcboot=run xyz_load_image; run xyz_load_initrd; run xyz_load_dtb; echo Booting from mmc ...
 
 		__EOF__
@@ -434,11 +440,17 @@ function boot_uenv_txt_template {
 
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Board File:
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			#Device Tree File:
+			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Board File:
+			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size}
+			#Device Tree File:
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${kernel_addr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
