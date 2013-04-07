@@ -287,13 +287,11 @@ function boot_uenv_txt_template {
 		__EOF__
 	fi
 
-	if [ "${need_dtbs}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			initrd_high=0xffffffff
-			fdt_high=0xffffffff
+	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		initrd_high=0xffffffff
+		fdt_high=0xffffffff
 
-		__EOF__
-	fi
+	__EOF__
 
 	if [ ! "${USE_KMS}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
