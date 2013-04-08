@@ -755,7 +755,7 @@ function populate_boot {
 		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
 			if [ "${USE_UIMAGE}" ] ; then
 				echo "Using mkimage to create uImage"
-				mkimage -A arm -O linux -T kernel -C none -a ${load_addr} -e ${load_addr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
+				mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
 				echo "-----------------------------"
 			else
 				echo "Copying Kernel image:"
@@ -827,7 +827,7 @@ function populate_boot {
 			serial_tty=${SERIAL}
 			conf_loadaddr=${conf_loadaddr}
 			conf_initrdaddr=${conf_initrdaddr}
-			load_addr=${load_addr}
+			conf_zreladdr=${conf_zreladdr}
 			dtb_addr=${dtb_addr}
 			dtb_file=${dtb_file}
 
@@ -1144,7 +1144,7 @@ function is_omap {
 
 	conf_loadaddr="0x80300000"
 	conf_initrdaddr="0x81600000"
-	load_addr="0x80008000"
+	conf_zreladdr="0x80008000"
 	dtb_addr="0x815f0000"
 	boot_script="uEnv.txt"
 
@@ -1362,7 +1362,7 @@ function check_uboot_type {
 		is_imx
 		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
-		load_addr="0x90008000"
+		conf_zreladdr="0x90008000"
 		dtb_addr="0x91ff0000"
 		dtb_file="imx51-babbage.dtb"
 		need_dtbs=1
@@ -1373,7 +1373,7 @@ function check_uboot_type {
 		is_imx
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
-		load_addr="0x70008000"
+		conf_zreladdr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
 		;;
@@ -1384,7 +1384,7 @@ function check_uboot_type {
 		is_imx
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
-		load_addr="0x70008000"
+		conf_zreladdr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
 		need_dtbs=1
@@ -1401,7 +1401,7 @@ function check_uboot_type {
 		dd_uboot_bs="512"
 		conf_loadaddr="0x10000000"
 		conf_initrdaddr="0x12000000"
-		load_addr="0x10008000"
+		conf_zreladdr="0x10008000"
 		dtb_addr="0x11ff0000"
 		dtb_file="imx6q-sabrelite.dtb"
 		need_dtbs=1
