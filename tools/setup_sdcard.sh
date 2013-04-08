@@ -356,7 +356,7 @@ function boot_uenv_txt_template {
 		boot_fstype=${boot_fstype}
 		xyz_load_image=\${boot_fstype}load mmc 0:1 ${conf_loadaddr} \${kernel_file}
 		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${dtb_file}
+		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${conf_fdtfile}
 
 	__EOF__
 
@@ -829,7 +829,7 @@ function populate_boot {
 			conf_initrdaddr=${conf_initrdaddr}
 			conf_zreladdr=${conf_zreladdr}
 			conf_fdtaddr=${conf_fdtaddr}
-			dtb_file=${dtb_file}
+			conf_fdtfile=${conf_fdtfile}
 
 			usbnet_mem=${usbnet_mem}
 
@@ -1205,7 +1205,7 @@ function check_uboot_type {
 	unset DISABLE_ETH
 	unset USE_UIMAGE
 	unset USE_KMS
-	unset dtb_file
+	unset conf_fdtfile
 	unset need_dtbs
 
 	boot="bootz"
@@ -1228,7 +1228,7 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_BX"
 		DISABLE_ETH=1
 		is_omap
-		#dtb_file="omap3-beagle.dtb"
+		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
 		;;
 	beagle_cx)
@@ -1236,7 +1236,7 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_CX"
 		DISABLE_ETH=1
 		is_omap
-		#dtb_file="omap3-beagle.dtb"
+		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
 		;;
 	beagle_xm)
@@ -1244,14 +1244,14 @@ function check_uboot_type {
 		BOOTLOADER="BEAGLEBOARD_XM"
 		is_omap
 		usbnet_mem="16384"
-		#dtb_file="omap3-beagle.dtb"
+		#conf_fdtfile="omap3-beagle.dtb"
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
 		BOOTLOADER="BEAGLEBOARD_XM"
 		is_omap
 		usbnet_mem="16384"
-		#dtb_file="omap3-beagle.dtb"
+		#conf_fdtfile="omap3-beagle.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
@@ -1306,7 +1306,7 @@ function check_uboot_type {
 		SYSTEM="panda"
 		BOOTLOADER="PANDABOARD"
 		is_omap
-		dtb_file="omap4-panda.dtb"
+		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
@@ -1315,7 +1315,7 @@ function check_uboot_type {
 		SYSTEM="panda_dtb"
 		BOOTLOADER="PANDABOARD"
 		is_omap
-		dtb_file="omap4-panda.dtb"
+		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
@@ -1325,7 +1325,7 @@ function check_uboot_type {
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
-		dtb_file="omap4-pandaES.dtb"
+		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="32768"
@@ -1334,7 +1334,7 @@ function check_uboot_type {
 		SYSTEM="panda_es_dtb"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
-		dtb_file="omap4-pandaES.dtb"
+		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
@@ -1344,7 +1344,7 @@ function check_uboot_type {
 		SYSTEM="panda_es"
 		BOOTLOADER="PANDABOARD_ES"
 		is_omap
-		dtb_file="omap4-pandaES.dtb"
+		conf_fdtfile="omap4-pandaES.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
@@ -1364,7 +1364,7 @@ function check_uboot_type {
 		conf_initrdaddr="0x92000000"
 		conf_zreladdr="0x90008000"
 		conf_fdtaddr="0x91ff0000"
-		dtb_file="imx51-babbage.dtb"
+		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
 		;;
 	mx53loco)
@@ -1375,7 +1375,7 @@ function check_uboot_type {
 		conf_initrdaddr="0x72000000"
 		conf_zreladdr="0x70008000"
 		conf_fdtaddr="0x71ff0000"
-		dtb_file="imx53-qsb.dtb"
+		conf_fdtfile="imx53-qsb.dtb"
 		;;
 	mx53loco_dtb)
 		SYSTEM="mx53loco_dtb"
@@ -1386,7 +1386,7 @@ function check_uboot_type {
 		conf_initrdaddr="0x72000000"
 		conf_zreladdr="0x70008000"
 		conf_fdtaddr="0x71ff0000"
-		dtb_file="imx53-qsb.dtb"
+		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
 		;;
 	mx6qsabrelite)
@@ -1403,7 +1403,7 @@ function check_uboot_type {
 		conf_initrdaddr="0x12000000"
 		conf_zreladdr="0x10008000"
 		conf_fdtaddr="0x11ff0000"
-		dtb_file="imx6q-sabrelite.dtb"
+		conf_fdtfile="imx6q-sabrelite.dtb"
 		need_dtbs=1
 		boot_scr_wrapper=1
 		;;
