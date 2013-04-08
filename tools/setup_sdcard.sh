@@ -363,24 +363,6 @@ function boot_uenv_txt_template {
 
 	__EOF__
 
-	if [ ! "${need_dtbs}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Board File:
-			xyz_mmcboot=run boot_classic; echo Booting from mmc ...
-			#Device Tree File:
-			#xyz_mmcboot=run boot_ftd; echo Booting from mmc ...
-
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Board File:
-			#xyz_mmcboot=run boot_classic; echo Booting from mmc ...
-			#Device Tree File:
-			xyz_mmcboot=run boot_ftd; echo Booting from mmc ...
-
-		__EOF__
-	fi
-
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		video_args=setenv video VIDEO_DISPLAY
 		device_args=run video_args; run expansion_args; run mmcargs
@@ -441,18 +423,18 @@ function boot_uenv_txt_template {
 
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Board File:
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
-			#Device Tree File:
-			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#Classic Board File Boot:
+			loaduimage=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#New Device Tree Boot:
+			#loaduimage=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Board File:
-			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
-			#Device Tree File:
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#Classic Board File Boot:
+			#loaduimage=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#New Device Tree Boot:
+			loaduimage=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
