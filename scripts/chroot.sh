@@ -528,6 +528,8 @@ chroot_umount
 
 if [ "x${chroot_COPY_SETUP_SDCARD}" == "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
+	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
+	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then

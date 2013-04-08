@@ -1093,6 +1093,34 @@ function kernel_detection {
 	fi
 }
 
+check_dtb_board () {
+	invalid_dtb=1
+	dtb_board=$(echo ${dtb_board} | awk -F ".conf" '{print $1}')
+	if [ -f "${DIR}"/hwpack/${dtb_board}.conf ] ; then
+		source "${DIR}"/hwpack/${dtb_board}.conf
+
+		boot=${boot_image}
+		populate_dtbs=1
+		unset invalid_dtb
+	else
+		cat <<-__EOF__
+			-----------------------------
+			ERROR: This script does not currently recognize the selected: [--dtb ${dtb_board}] option..
+			Please rerun $(basename $0) with a valid [--dtb <device>] option from the list below:
+			-----------------------------
+		__EOF__
+		cat "${DIR}"/hwpack/*.conf | grep supported
+		echo "-----------------------------"
+		exit
+	fi
+
+	case "${kernel_subarch}" in
+	omap)
+		select_kernel="${omap_kernel}"
+		;;
+	esac
+}
+
 function is_omap {
 	IS_OMAP=1
 
@@ -1159,12 +1187,15 @@ function is_imx {
 	select_kernel="${imx_kernel}"
 }
 
+function convert_uboot_to_dtb_board {
+	populate_dtbs=1
+}
+
 function check_uboot_type {
 	#New defines for hwpack:
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
 
-	kernel_detection
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
 	unset USE_UIMAGE
@@ -1204,11 +1235,9 @@ function check_uboot_type {
 		usbnet_mem="8192"
 		;;
 	beagle_xm)
-		SYSTEM="beagle_xm"
-		conf_board="BEAGLEBOARD_XM"
-		is_omap
-		usbnet_mem="16384"
-		#conf_fdtfile="omap3-beagle.dtb"
+		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
+		source "${DIR}"/hwpack/omap3-beagle-xm.conf
+		convert_uboot_to_dtb_board
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1504,7 +1533,14 @@ while [ ! -z "$1" ] ; do
 	--uboot)
 		checkparm $2
 		UBOOT_TYPE="$2"
+		kernel_detection
 		check_uboot_type
+		;;
+	--dtb)
+		checkparm $2
+		dtb_board="$2"
+		kernel_detection
+		check_dtb_board
 		;;
 	--addon)
 		checkparm $2
@@ -1559,9 +1595,11 @@ if [ ! "${MMC}" ] ; then
 	usage
 fi
 
-if [ "${IN_VALID_UBOOT}" ] ; then
-	echo "ERROR: --uboot undefined"
-	usage
+if [ "${invalid_dtb}" ] ; then
+	if [ "${IN_VALID_UBOOT}" ] ; then
+		echo "ERROR: --uboot undefined"
+		usage
+	fi
 fi
 
 if ! is_valid_rootfs_type ${ROOTFS_TYPE} ; then
