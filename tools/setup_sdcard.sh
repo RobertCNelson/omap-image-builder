@@ -180,13 +180,6 @@ function detect_software {
 	fi
 }
 
-function rcn-ee_down_use_mirror {
-	echo "rcn-ee.net down, switching to slower backup mirror"
-	echo "-----------------------------"
-	MIRROR=${BACKUP_MIRROR}
-	RCNEEDOWN=1
-}
-
 function local_bootloader {
 	echo ""
 	echo "Using Locally Stored Device Bootloader"
@@ -210,37 +203,19 @@ function dl_bootloader {
 	echo ""
 	echo "Downloading Device's Bootloader"
 	echo "-----------------------------"
-	bootlist="bootloader-ng"
 	minimal_boot="1"
-	unset disable_mirror
 
 	mkdir -p ${TEMPDIR}/dl/${DIST}
 	mkdir -p "${DIR}/dl/${DIST}"
 
-	unset RCNEEDOWN
-	if [ "${disable_mirror}" ] ; then
-		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/${bootlist}
-	else
-		echo "attempting to use rcn-ee.net for dl files [10 second time out]..."
-		wget -T 10 -t 1 --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/${bootlist}
+	wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${conf_bl_http}/${conf_bl_listfile}
+
+	if [ ! -f ${TEMPDIR}/dl/${conf_bl_listfile} ] ; then
+		echo "error: can't connect to rcn-ee.net, retry in a few minutes..."
+		exit
 	fi
 
-	if [ ! -f ${TEMPDIR}/dl/${bootlist} ] ; then
-		if [ "${disable_mirror}" ] ; then
-			echo "error: can't connect to rcn-ee.net, retry in a few minutes (backup mirror down)"
-			exit
-		else
-			rcn-ee_down_use_mirror
-			wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MIRROR}/tools/latest/${bootlist}
-		fi
-	fi
-
-	if [ "${RCNEEDOWN}" ] ; then
-		sed -i -e "s/rcn-ee.net/rcn-ee.homeip.net:81/g" ${TEMPDIR}/dl/${bootlist}
-		sed -i -e 's:81/deb/:81/dl/mirrors/deb/:g' ${TEMPDIR}/dl/${bootlist}
-	fi
-
-	boot_version=$(cat ${TEMPDIR}/dl/${bootlist} | grep "VERSION:" | awk -F":" '{print $2}')
+	boot_version=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "VERSION:" | awk -F":" '{print $2}')
 	if [ "x${boot_version}" != "x${minimal_boot}" ] ; then
 		echo "Error: This script is out of date and unsupported..."
 		echo "Please Visit: https://github.com/RobertCNelson to find updates..."
@@ -254,7 +229,7 @@ function dl_bootloader {
 	fi
 
 	if [ "${spl_name}" ] ; then
-		MLO=$(cat ${TEMPDIR}/dl/${bootlist} | grep "${ABI}:${BOOTLOADER}:SPL" | awk '{print $2}')
+		MLO=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
 		wget --no-verbose --directory-prefix=${TEMPDIR}/dl/ ${MLO}
 		MLO=${MLO##*/}
 		echo "SPL Bootloader: ${MLO}"
@@ -263,7 +238,7 @@ function dl_bootloader {
 	fi
 
 	if [ "${boot_name}" ] ; then
-		UBOOT=$(cat ${TEMPDIR}/dl/${bootlist} | grep "${ABI}:${BOOTLOADER}:BOOT" | awk '{print $2}')
+		UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
 		wget --directory-prefix=${TEMPDIR}/dl/ ${UBOOT}
 		UBOOT=${UBOOT##*/}
 		echo "UBOOT Bootloader: ${UBOOT}"
@@ -797,7 +772,7 @@ function populate_boot {
 		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 			#!/bin/sh
 			format=1.0
-			board=${BOOTLOADER}
+			board=${conf_board}
 
 			bootloader_location=${bootloader_location}
 			dd_spl_uboot_seek=${dd_spl_uboot_seek}
@@ -810,11 +785,11 @@ function populate_boot {
 			boot_fstype=${boot_fstype}
 
 			serial_tty=${SERIAL}
-			conf_loadaddr=${conf_loadaddr}
-			conf_initrdaddr=${conf_initrdaddr}
-			conf_zreladdr=${conf_zreladdr}
-			conf_fdtaddr=${conf_fdtaddr}
-			conf_fdtfile=${conf_fdtfile}
+			loadaddr=${conf_loadaddr}
+			initrdaddr=${conf_initrdaddr}
+			zreladdr=${conf_zreladdr}
+			fdtaddr=${conf_fdtaddr}
+			fdtfile=${conf_fdtfile}
 
 			usbnet_mem=${usbnet_mem}
 
@@ -1185,6 +1160,10 @@ function is_imx {
 }
 
 function check_uboot_type {
+	#New defines for hwpack:
+	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
+	conf_bl_listfile="bootloader-ng"
+
 	kernel_detection
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
@@ -1210,7 +1189,7 @@ function check_uboot_type {
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
 		SYSTEM="beagle_bx"
-		BOOTLOADER="BEAGLEBOARD_BX"
+		conf_board="BEAGLEBOARD_BX"
 		DISABLE_ETH=1
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1218,7 +1197,7 @@ function check_uboot_type {
 		;;
 	beagle_cx)
 		SYSTEM="beagle_cx"
-		BOOTLOADER="BEAGLEBOARD_CX"
+		conf_board="BEAGLEBOARD_CX"
 		DISABLE_ETH=1
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1226,14 +1205,14 @@ function check_uboot_type {
 		;;
 	beagle_xm)
 		SYSTEM="beagle_xm"
-		BOOTLOADER="BEAGLEBOARD_XM"
+		conf_board="BEAGLEBOARD_XM"
 		is_omap
 		usbnet_mem="16384"
 		#conf_fdtfile="omap3-beagle.dtb"
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
-		BOOTLOADER="BEAGLEBOARD_XM"
+		conf_board="BEAGLEBOARD_XM"
 		is_omap
 		usbnet_mem="16384"
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1243,7 +1222,7 @@ function check_uboot_type {
 		;;
 	bone)
 		SYSTEM="bone"
-		BOOTLOADER="BEAGLEBONE_A"
+		conf_board="BEAGLEBONE_A"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
@@ -1263,7 +1242,7 @@ function check_uboot_type {
 		;;
 	bone_dtb)
 		SYSTEM="bone"
-		BOOTLOADER="BEAGLEBONE_A"
+		conf_board="BEAGLEBONE_A"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
@@ -1284,12 +1263,12 @@ function check_uboot_type {
 		;;
 	igepv2)
 		SYSTEM="igepv2"
-		BOOTLOADER="IGEP00X0"
+		conf_board="IGEP00X0"
 		is_omap
 		;;
 	panda)
 		SYSTEM="panda"
-		BOOTLOADER="PANDABOARD"
+		conf_board="PANDABOARD"
 		is_omap
 		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1298,7 +1277,7 @@ function check_uboot_type {
 		;;
 	panda_dtb)
 		SYSTEM="panda_dtb"
-		BOOTLOADER="PANDABOARD"
+		conf_board="PANDABOARD"
 		is_omap
 		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1308,7 +1287,7 @@ function check_uboot_type {
 		;;
 	panda_es)
 		SYSTEM="panda_es"
-		BOOTLOADER="PANDABOARD_ES"
+		conf_board="PANDABOARD_ES"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1317,7 +1296,7 @@ function check_uboot_type {
 		;;
 	panda_es_dtb)
 		SYSTEM="panda_es_dtb"
-		BOOTLOADER="PANDABOARD_ES"
+		conf_board="PANDABOARD_ES"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1327,7 +1306,7 @@ function check_uboot_type {
 		;;
 	panda_es_kms)
 		SYSTEM="panda_es"
-		BOOTLOADER="PANDABOARD_ES"
+		conf_board="PANDABOARD_ES"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 
@@ -1338,12 +1317,12 @@ function check_uboot_type {
 		;;
 	crane)
 		SYSTEM="crane"
-		BOOTLOADER="CRANEBOARD"
+		conf_board="CRANEBOARD"
 		is_omap
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
-		BOOTLOADER="MX51EVK"
+		conf_board="MX51EVK"
 		is_imx
 		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
@@ -1354,7 +1333,7 @@ function check_uboot_type {
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
-		BOOTLOADER="MX53LOCO"
+		conf_board="MX53LOCO"
 		is_imx
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
@@ -1364,7 +1343,7 @@ function check_uboot_type {
 		;;
 	mx53loco_dtb)
 		SYSTEM="mx53loco_dtb"
-		BOOTLOADER="MX53LOCO"
+		conf_board="MX53LOCO"
 		SERIAL="ttymxc0"
 		is_imx
 		conf_loadaddr="0x70010000"
@@ -1376,7 +1355,7 @@ function check_uboot_type {
 		;;
 	mx6qsabrelite)
 		SYSTEM="mx6qsabrelite"
-		BOOTLOADER="MX6QSABRELITE_D"
+		conf_board="MX6QSABRELITE_D"
 		is_imx
 		SERIAL="ttymxc1"
 		SERIAL_CONSOLE="${SERIAL},115200"
