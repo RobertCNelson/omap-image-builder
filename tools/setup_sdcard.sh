@@ -358,22 +358,25 @@ function boot_uenv_txt_template {
 		loadinitrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
 		loadftd=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${conf_fdtfile}
 
+		boot_classic=run loadkernel; run loadinitrd
+		boot_ftd=run loadkernel; run loadinitrd; run loadftd
+
 	__EOF__
 
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Board File:
-			xyz_mmcboot=run loadkernel; run loadinitrd; echo Booting from mmc ...
+			xyz_mmcboot=run boot_classic; echo Booting from mmc ...
 			#Device Tree File:
-			#xyz_mmcboot=run loadkernel; run loadinitrd; run loadftd; echo Booting from mmc ...
+			#xyz_mmcboot=run boot_ftd; echo Booting from mmc ...
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Board File:
-			#xyz_mmcboot=run loadkernel; run loadinitrd; echo Booting from mmc ...
+			#xyz_mmcboot=run boot_classic; echo Booting from mmc ...
 			#Device Tree File:
-			xyz_mmcboot=run loadkernel; run loadinitrd; run loadftd; echo Booting from mmc ...
+			xyz_mmcboot=run boot_ftd; echo Booting from mmc ...
 
 		__EOF__
 	fi
