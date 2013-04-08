@@ -356,7 +356,7 @@ function boot_uenv_txt_template {
 		boot_fstype=${boot_fstype}
 		xyz_load_image=\${boot_fstype}load mmc 0:1 ${conf_loadaddr} \${kernel_file}
 		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
+		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${dtb_file}
 
 	__EOF__
 
@@ -441,7 +441,7 @@ function boot_uenv_txt_template {
 			#Board File:
 			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#Device Tree File:
-			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${dtb_addr}
+			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
@@ -449,7 +449,7 @@ function boot_uenv_txt_template {
 			#Board File:
 			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#Device Tree File:
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${dtb_addr}
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
@@ -828,7 +828,7 @@ function populate_boot {
 			conf_loadaddr=${conf_loadaddr}
 			conf_initrdaddr=${conf_initrdaddr}
 			conf_zreladdr=${conf_zreladdr}
-			dtb_addr=${dtb_addr}
+			conf_fdtaddr=${conf_fdtaddr}
 			dtb_file=${dtb_file}
 
 			usbnet_mem=${usbnet_mem}
@@ -1145,7 +1145,7 @@ function is_omap {
 	conf_loadaddr="0x80300000"
 	conf_initrdaddr="0x81600000"
 	conf_zreladdr="0x80008000"
-	dtb_addr="0x815f0000"
+	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
 
 	boot_fstype="fat"
@@ -1363,7 +1363,7 @@ function check_uboot_type {
 		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
 		conf_zreladdr="0x90008000"
-		dtb_addr="0x91ff0000"
+		conf_fdtaddr="0x91ff0000"
 		dtb_file="imx51-babbage.dtb"
 		need_dtbs=1
 		;;
@@ -1374,7 +1374,7 @@ function check_uboot_type {
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
 		conf_zreladdr="0x70008000"
-		dtb_addr="0x71ff0000"
+		conf_fdtaddr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
 		;;
 	mx53loco_dtb)
@@ -1385,7 +1385,7 @@ function check_uboot_type {
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
 		conf_zreladdr="0x70008000"
-		dtb_addr="0x71ff0000"
+		conf_fdtaddr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
 		need_dtbs=1
 		;;
@@ -1402,7 +1402,7 @@ function check_uboot_type {
 		conf_loadaddr="0x10000000"
 		conf_initrdaddr="0x12000000"
 		conf_zreladdr="0x10008000"
-		dtb_addr="0x11ff0000"
+		conf_fdtaddr="0x11ff0000"
 		dtb_file="imx6q-sabrelite.dtb"
 		need_dtbs=1
 		boot_scr_wrapper=1
