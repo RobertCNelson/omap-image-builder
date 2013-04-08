@@ -355,7 +355,7 @@ function boot_uenv_txt_template {
 
 		boot_fstype=${boot_fstype}
 		xyz_load_image=\${boot_fstype}load mmc 0:1 ${conf_loadaddr} \${kernel_file}
-		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${initrd_addr} \${initrd_file}; setenv initrd_size \${filesize}
+		xyz_load_initrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
 		xyz_load_dtb=\${boot_fstype}load mmc 0:1 ${dtb_addr} /dtbs/\${dtb_file}
 
 	__EOF__
@@ -439,17 +439,17 @@ function boot_uenv_txt_template {
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Board File:
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${initrd_addr}:\${initrd_size}
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#Device Tree File:
-			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
+			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Board File:
-			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${initrd_addr}:\${initrd_size}
+			#loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#Device Tree File:
-			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${initrd_addr}:\${initrd_size} ${dtb_addr}
+			loaduimage=run xyz_mmcboot; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${dtb_addr}
 
 		__EOF__
 	fi
@@ -826,7 +826,7 @@ function populate_boot {
 
 			serial_tty=${SERIAL}
 			conf_loadaddr=${conf_loadaddr}
-			initrd_addr=${initrd_addr}
+			conf_initrdaddr=${conf_initrdaddr}
 			load_addr=${load_addr}
 			dtb_addr=${dtb_addr}
 			dtb_file=${dtb_file}
@@ -1143,7 +1143,7 @@ function is_omap {
 	SUBARCH="omap"
 
 	conf_loadaddr="0x80300000"
-	initrd_addr="0x81600000"
+	conf_initrdaddr="0x81600000"
 	load_addr="0x80008000"
 	dtb_addr="0x815f0000"
 	boot_script="uEnv.txt"
@@ -1361,7 +1361,7 @@ function check_uboot_type {
 		BOOTLOADER="MX51EVK"
 		is_imx
 		conf_loadaddr="0x90010000"
-		initrd_addr="0x92000000"
+		conf_initrdaddr="0x92000000"
 		load_addr="0x90008000"
 		dtb_addr="0x91ff0000"
 		dtb_file="imx51-babbage.dtb"
@@ -1372,7 +1372,7 @@ function check_uboot_type {
 		BOOTLOADER="MX53LOCO"
 		is_imx
 		conf_loadaddr="0x70010000"
-		initrd_addr="0x72000000"
+		conf_initrdaddr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
@@ -1383,7 +1383,7 @@ function check_uboot_type {
 		SERIAL="ttymxc0"
 		is_imx
 		conf_loadaddr="0x70010000"
-		initrd_addr="0x72000000"
+		conf_initrdaddr="0x72000000"
 		load_addr="0x70008000"
 		dtb_addr="0x71ff0000"
 		dtb_file="imx53-qsb.dtb"
@@ -1400,7 +1400,7 @@ function check_uboot_type {
 		dd_uboot_seek="2"
 		dd_uboot_bs="512"
 		conf_loadaddr="0x10000000"
-		initrd_addr="0x12000000"
+		conf_initrdaddr="0x12000000"
 		load_addr="0x10008000"
 		dtb_addr="0x11ff0000"
 		dtb_file="imx6q-sabrelite.dtb"
