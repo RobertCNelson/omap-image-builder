@@ -484,6 +484,10 @@ if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
 	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
 fi
 
+if [ -f ${DIR}/git/linux-firmware/htc_9271.fw ] ; then
+	sudo cp -v ${DIR}/git/linux-firmware/htc_9271.fw ${tempdir}/lib/firmware/
+fi
+
 if [ -d ${DIR}/git/linux-firmware/rtlwifi/ ] ; then
 	sudo mkdir -p ${tempdir}/lib/firmware/rtlwifi
 	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt ${tempdir}/lib/firmware/
