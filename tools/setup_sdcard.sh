@@ -331,10 +331,10 @@ function boot_uenv_txt_template {
 		boot_fstype=${boot_fstype}
 		loadkernel=\${boot_fstype}load mmc 0:1 ${conf_loadaddr} \${kernel_file}
 		loadinitrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		loadftd=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${fdtfile}
+		loadfdt=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${fdtfile}
 
 		boot_classic=run loadkernel; run loadinitrd
-		boot_ftd=run loadkernel; run loadinitrd; run loadftd
+		boot_ftd=run loadkernel; run loadinitrd; run loadfdt
 
 	__EOF__
 
