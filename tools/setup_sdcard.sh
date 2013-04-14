@@ -170,13 +170,8 @@ function detect_software {
 	if $FDISK_EXEC -v | grep "GNU Fdisk" >/dev/null ; then
 		echo "Sorry, this script currently doesn't work with GNU Fdisk."
 		echo "Install the version of fdisk from your distribution's util-linux package."
-      echo "Or specify a non-GNU Fdisk using the --fdisk option."
+		echo "Or specify a non-GNU Fdisk using the --fdisk option."
 		exit
-	fi
-
-	unset PARTED_ALIGN
-	if parted -v | grep parted | grep 2.[1-3] >/dev/null ; then
-		PARTED_ALIGN="--align cylinder"
 	fi
 }
 
@@ -624,7 +619,7 @@ function calculate_rootfs_partition {
 	unset END_DEVICE
 	END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
 
-	parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
+	parted --script ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
 	sync
 }
 
@@ -660,14 +655,14 @@ function create_partitions {
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
 		;;
 	*)
-		LC_ALL=C parted --script ${PARTED_ALIGN} ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
 		;;
 	esac
 	calculate_rootfs_partition
