@@ -1193,6 +1193,12 @@ function is_imx {
 
 function convert_uboot_to_dtb_board {
 	populate_dtbs=1
+
+	case "${kernel_subarch}" in
+	omap)
+		select_kernel="${omap_kernel}"
+		;;
+	esac
 }
 
 function check_uboot_type {
