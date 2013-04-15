@@ -394,17 +394,17 @@ function boot_uenv_txt_template {
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			loaduimage=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			#loaduimage=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			#loaduimage=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			loaduimage=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
@@ -1217,6 +1217,8 @@ function check_uboot_type {
 	unset dd_uboot_seek
 	unset dd_uboot_bs
 
+	uboot_SCRIPT_ENTRY="loaduimage"
+
 	unset boot_scr_wrapper
 	unset usbnet_mem
 	boot_partition_size="50"
@@ -1272,6 +1274,13 @@ function check_uboot_type {
 
 		#just to disable the omapfb stuff..
 		USE_KMS=1
+		uboot_SCRIPT_ENTRY="uenvcmd"
+		conf_zreladdr="0x80008000"
+		conf_loadaddr="0x80200000"
+		conf_fdtaddr="0x815f0000"
+		#u-boot:rdaddr="0x81000000"
+		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
+		conf_initrdaddr="0x81000000"
 		;;
 	bone_dtb)
 		SYSTEM="bone"
@@ -1293,6 +1302,13 @@ function check_uboot_type {
 
 		#just to disable the omapfb stuff..
 		USE_KMS=1
+		uboot_SCRIPT_ENTRY="uenvcmd"
+		conf_zreladdr="0x80008000"
+		conf_loadaddr="0x80200000"
+		conf_fdtaddr="0x815f0000"
+		#u-boot:rdaddr="0x81000000"
+		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
+		conf_initrdaddr="0x81000000"
 		;;
 	igepv2)
 		SYSTEM="igepv2"
