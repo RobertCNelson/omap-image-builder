@@ -7,7 +7,7 @@
 base_pkgs="git-core nano pastebinit"
 
 #Tools
-base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset"
+base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit"
 
 #OS
 base_pkgs="${base_pkgs} dosfstools btrfs-tools cpufrequtils ntpdate"
