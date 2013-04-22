@@ -26,11 +26,11 @@ host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
 	unset deb_pkgs
-	dpkg -l | grep debootstrap >/dev/null || deb_pkgs+="debootstrap "
+	dpkg -l | grep debootstrap >/dev/null || deb_pkgs="${deb_pkgs}debootstrap "
 
 	if [ "x${host_arch}" != "xarmv7l" ] ; then
-		dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs+="qemu-user-static "
-		dpkg -l | grep `dpkg --print-architecture` | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs+="qemu "
+		dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
+		dpkg -l | grep `dpkg --print-architecture` | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs="${deb_pkgs}qemu "
 	fi
 
 	if [ "${deb_pkgs}" ] ; then

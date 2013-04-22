@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 #
 # Copyright (c) 2012-2013 Robert Nelson <robertcnelson@gmail.com>
 #
@@ -22,7 +22,7 @@
 
 DIR=$PWD
 
-source ${DIR}/.project
+. ${DIR}/.project
 
 check_defines () {
 	if [ ! "${tempdir}" ] ; then

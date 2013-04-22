@@ -56,7 +56,7 @@ TEMPDIR=$(mktemp -d)
 # --fdisk /path/to/alt/fdisk
 FDISK_EXEC=`which fdisk`
 
-function is_element_of {
+is_element_of () {
 	testelt=$1
 	for validelt in $2 ; do
 		[ $testelt = $validelt ] && return 0
@@ -72,7 +72,7 @@ function is_element_of {
 
 VALID_ROOTFS_TYPES="ext2 ext3 ext4 btrfs"
 
-function is_valid_rootfs_type {
+is_valid_rootfs_type () {
 	if is_element_of $1 "${VALID_ROOTFS_TYPES}" ] ; then
 		return 0
 	else
@@ -88,7 +88,7 @@ function is_valid_rootfs_type {
 
 VALID_ADDONS="pico"
 
-function is_valid_addon {
+is_valid_addon () {
 	if is_element_of $1 "${VALID_ADDONS}" ] ; then
 		return 0
 	else
@@ -96,14 +96,14 @@ function is_valid_addon {
 	fi
 }
 
-function check_root {
+check_root () {
 	if [[ ${UID} -ne 0 ]] ; then
 		echo "$0 must be run as sudo user or root"
 		exit
 	fi
 }
 
-function find_issue {
+find_issue () {
 	check_root
 
 	ROOTFS=$(ls "${DIR}/" | grep rootfs)
@@ -135,7 +135,7 @@ function find_issue {
 	LC_ALL=C $FDISK_EXEC -v
 }
 
-function check_for_command {
+check_for_command () {
 	if ! which "$1" > /dev/null ; then
 		echo -n "You're missing command $1"
 		NEEDS_COMMAND=1
@@ -146,7 +146,7 @@ function check_for_command {
 	fi
 }
 
-function detect_software {
+detect_software () {
 	unset NEEDS_COMMAND
 
 	check_for_command mkfs.vfat dosfstools
@@ -175,7 +175,7 @@ function detect_software {
 	fi
 }
 
-function local_bootloader {
+local_bootloader () {
 	echo ""
 	echo "Using Locally Stored Device Bootloader"
 	echo "-----------------------------"
@@ -194,7 +194,7 @@ function local_bootloader {
 	fi
 }
 
-function dl_bootloader {
+dl_bootloader () {
 	echo ""
 	echo "Downloading Device's Bootloader"
 	echo "-----------------------------"
@@ -242,7 +242,7 @@ function dl_bootloader {
 	fi
 }
 
-function boot_uenv_txt_template {
+boot_uenv_txt_template () {
 	if [ "${USE_UIMAGE}" ] ; then
 		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			kernel_file=uImage
@@ -410,7 +410,7 @@ function boot_uenv_txt_template {
 	fi
 }
 
-function tweak_boot_scripts {
+tweak_boot_scripts () {
 	unset KMS_OVERRIDE
 
 	if [ "x${ADDON}" == "xpico" ] ; then
@@ -511,13 +511,13 @@ function tweak_boot_scripts {
 	fi
 }
 
-function setup_bootscripts {
+setup_bootscripts () {
 	mkdir -p ${TEMPDIR}/bootscripts/
 	boot_uenv_txt_template
 	tweak_boot_scripts
 }
 
-function drive_error_ro {
+drive_error_ro () {
 	echo "-----------------------------"
 	echo "Error: [LC_ALL=C parted --script ${MMC} mklabel msdos] failed..."
 	echo "Error: for some reason your SD card is not writable..."
@@ -529,7 +529,7 @@ function drive_error_ro {
 	exit
 }
 
-function unmount_all_drive_partitions {
+unmount_all_drive_partitions () {
 	echo ""
 	echo "Unmounting Partitions"
 	echo "-----------------------------"
@@ -548,12 +548,12 @@ function unmount_all_drive_partitions {
 	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
 }
 
-function fatfs_boot_error {
+atfs_boot_error () {
 	echo "Failure: [parted --script ${MMC} set 1 boot on]"
 	exit
 }
 
-function fatfs_boot {
+fatfs_boot () {
 	#For: TI: Omap/Sitara Devices
 	echo ""
 	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
@@ -578,7 +578,7 @@ function fatfs_boot {
 	LC_ALL=C parted --script ${MMC} set 1 boot on || fatfs_boot_error
 }
 
-function dd_uboot_boot {
+dd_uboot_boot () {
 	#For: Freescale: i.mx5/6 Devices
 	echo ""
 	echo "Using dd to place bootloader on drive"
@@ -587,7 +587,7 @@ function dd_uboot_boot {
 	bootloader_installed=1
 }
 
-function dd_spl_uboot_boot {
+dd_spl_uboot_boot () {
 	#For: Samsung: Exynos 4 Devices
 	echo ""
 	echo "Using dd to place bootloader on drive"
@@ -597,19 +597,19 @@ function dd_spl_uboot_boot {
 	bootloader_installed=1
 }
 
-function format_partition_error {
+format_partition_error () {
 	echo "Failure: formating partition"
 	exit
 }
 
-function format_boot_partition {
+format_boot_partition () {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
 	partprobe ${MMC}
 	LC_ALL=C ${mkfs} ${MMC}${PARTITION_PREFIX}1 ${mkfs_label} || format_partition_error
 }
 
-function calculate_rootfs_partition {
+calculate_rootfs_partition () {
 	echo "Creating rootfs ${ROOTFS_TYPE} Partition"
 	echo "-----------------------------"
 
@@ -623,14 +623,14 @@ function calculate_rootfs_partition {
 	sync
 }
 
-function format_rootfs_partition {
+format_rootfs_partition () {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
 	partprobe ${MMC}
 	LC_ALL=C mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL} || format_partition_error
 }
 
-function create_partitions {
+create_partitions () {
 	unset bootloader_installed
 
 	if [ "x${boot_fstype}" == "xfat" ] ; then
@@ -670,7 +670,7 @@ function create_partitions {
 	format_rootfs_partition
 }
 
-function populate_boot {
+populate_boot () {
 	echo "Populating Boot Partition"
 	echo "-----------------------------"
 
@@ -821,7 +821,7 @@ function populate_boot {
 	fi
 }
 
-function populate_rootfs {
+populate_rootfs () {
 	echo "Populating rootfs Partition"
 	echo "Please be patient, this may take a few minutes, as its transfering a lot of files.."
 	echo "-----------------------------"
@@ -848,7 +848,7 @@ function populate_rootfs {
 
 		#RootStock-NG
 		if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
-			source ${TEMPDIR}/disk/etc/rcn-ee.conf
+			. ${TEMPDIR}/disk/etc/rcn-ee.conf
 
 			mkdir -p ${TEMPDIR}/disk/boot/uboot || true
 			echo "# /etc/fstab: static file system information." > ${TEMPDIR}/disk/etc/fstab
@@ -1016,7 +1016,7 @@ function populate_rootfs {
 	fi
 }
 
-function check_mmc {
+check_mmc () {
 	FDISK=$(LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk ${MMC}" | awk '{print $2}')
 
 	if [ "x${FDISK}" = "x${MMC}:" ] ; then
@@ -1050,7 +1050,7 @@ function check_mmc {
 	fi
 }
 
-function kernel_detection {
+kernel_detection () {
 	unset HAS_IMX_KERNEL
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep imx | head -n 1)
@@ -1101,7 +1101,7 @@ check_dtb_board () {
 	#${dtb_board}.conf
 	dtb_board=$(echo ${dtb_board} | awk -F ".conf" '{print $1}')
 	if [ -f "${DIR}"/hwpack/${dtb_board}.conf ] ; then
-		source "${DIR}"/hwpack/${dtb_board}.conf
+		. "${DIR}"/hwpack/${dtb_board}.conf
 
 		boot=${boot_image}
 		populate_dtbs=1
@@ -1125,7 +1125,7 @@ check_dtb_board () {
 	esac
 }
 
-function is_omap {
+is_omap () {
 	IS_OMAP=1
 
 	bootloader_location="fatfs_boot"
@@ -1165,7 +1165,7 @@ function is_omap {
 	select_kernel="${omap_kernel}"
 }
 
-function is_imx {
+is_imx () {
 	IS_IMX=1
 
 	bootloader_location="dd_uboot_boot"
@@ -1191,7 +1191,7 @@ function is_imx {
 	select_kernel="${imx_kernel}"
 }
 
-function convert_uboot_to_dtb_board {
+convert_uboot_to_dtb_board () {
 	populate_dtbs=1
 
 	case "${kernel_subarch}" in
@@ -1201,7 +1201,7 @@ function convert_uboot_to_dtb_board {
 	esac
 }
 
-function check_uboot_type {
+check_uboot_type () {
 	#New defines for hwpack:
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
@@ -1248,7 +1248,7 @@ function check_uboot_type {
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
-		source "${DIR}"/hwpack/omap3-beagle-xm.conf
+		. "${DIR}"/hwpack/omap3-beagle-xm.conf
 		convert_uboot_to_dtb_board
 		;;
 	beagle_xm_kms)
@@ -1468,7 +1468,7 @@ function check_uboot_type {
 	fi
 }
 
-function usage {
+usage () {
 	echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
 	#tabed to match 
 		cat <<-__EOF__
@@ -1526,7 +1526,7 @@ function usage {
 	exit
 }
 
-function checkparm {
+checkparm () {
 	if [ "$(echo $1|grep ^'\-')" ] ; then
 		echo "E: Need an argument"
 		usage

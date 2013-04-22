@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 #
 # Copyright (c) 2013 Robert Nelson <robertcnelson@gmail.com>
 #
@@ -27,7 +27,7 @@ TIME=$(date +%Y-%m-%d)
 DIR="$PWD"
 
 if [ -f ${DIR}/.project ] ; then
-	source ${DIR}/.project
+	. ${DIR}/.project
 fi
 
 generic_git () {
@@ -87,8 +87,8 @@ run_project () {
 	__EOF__
 
 	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
-	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
-	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
+	/bin/sh -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	/bin/sh -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
 	sudo rm -rf ${tempdir}/ || true
 }
 
@@ -104,8 +104,8 @@ run_roostock_ng () {
 	fi
 
 	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
-	/bin/bash -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
-	/bin/bash -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
+	/bin/sh -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	/bin/sh -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
 	sudo rm -rf ${tempdir}/ || true
 }
 

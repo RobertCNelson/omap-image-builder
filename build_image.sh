@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 #
 # Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
 #
@@ -28,7 +28,7 @@ tempdir=$(mktemp -d)
 
 image_type="console"
 
-function minimal_armel {
+minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
 	#Actual Releases will use version numbers..
@@ -81,17 +81,17 @@ function minimal_armel {
 
 	cat ${DIR}/.project
 
-	/bin/bash -e "${DIR}/RootStock-NG.sh" || { exit 1 ; }
+	/bin/sh -e "${DIR}/RootStock-NG.sh" || { exit 1 ; }
 }
 
-function compression {
+compression () {
 	echo "Starting Compression"
 	cd ${DIR}/deploy/
 
 	tar cvf ${export_filename}.tar ./${export_filename}
 
 	if [ -f ${DIR}/release ] ; then
-		if [ "x${SYST}" == "x${RELEASE_HOST}" ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
 				cp -v arm*.tar /mnt/farm/images/
@@ -108,7 +108,7 @@ function compression {
 	cd ${DIR}/
 }
 
-function kernel_chooser {
+kernel_chooser () {
 	if [ -f ${tempdir}/LATEST-${SUBARCH} ] ; then
 		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
 	fi
@@ -118,7 +118,7 @@ function kernel_chooser {
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
 
-function select_rcn-ee-net_kernel {
+select_rcn_ee_net_kernel () {
 	SUBARCH="omap"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
@@ -145,7 +145,7 @@ is_ubuntu () {
 	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
 	deb_components="main universe multiverse"
 
-	source ${DIR}/var/pkg_list.sh
+	. ${DIR}/var/pkg_list.sh
 	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
@@ -159,63 +159,63 @@ is_debian () {
 	deb_mirror="ftp.us.debian.org/debian/"
 	deb_components="main contrib non-free"
 
-	source ${DIR}/var/pkg_list.sh
+	. ${DIR}/var/pkg_list.sh
 	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
 #12.10
-function quantal_release {
+quantal_release () {
 	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="quantal"
-	select_rcn-ee-net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
 
 #13.04
-function raring_release {
+raring_release () {
 	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
 	is_ubuntu
 	release="raring"
-	select_rcn-ee-net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
 
-function squeeze_release {
+squeeze_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client"
 	is_debian
 	release="squeeze"
-	select_rcn-ee-net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
 
-function wheezy_release {
+wheezy_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
 	is_debian
 	release="wheezy"
-	select_rcn-ee-net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
 
-function sid_release {
+sid_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
 	is_debian
 	release="sid"
-	select_rcn-ee-net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
 
-source ${DIR}/var/check_host.sh
+. ${DIR}/var/check_host.sh
 
 apt_proxy=""
 mirror="http://rcn-ee.net/deb"
 if [ -f ${DIR}/rcn-ee.host ] ; then
-	source ${DIR}/host/rcn-ee-host.sh
+	. ${DIR}/host/rcn-ee-host.sh
 fi
 
 mkdir -p ${DIR}/deploy/

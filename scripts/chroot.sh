@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 #
 # Copyright (c) 2012-2013 Robert Nelson <robertcnelson@gmail.com>
 #
@@ -24,7 +24,7 @@ DIR=$PWD
 host_arch="$(uname -m)"
 time=$(date +%Y-%m-%d)
 
-source ${DIR}/.project
+. ${DIR}/.project
 
 check_defines () {
 	if [ ! "${tempdir}" ] ; then
@@ -117,15 +117,15 @@ chroot_mount () {
 }
 
 chroot_umount () {
-	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" == "${tempdir}/dev/pts" ] ; then
+	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 		sudo umount -f ${tempdir}/dev/pts
 	fi
 
-	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" == "${tempdir}/proc" ] ; then
+	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 		sudo umount -f ${tempdir}/proc
 	fi
 
-	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" == "${tempdir}/sys" ] ; then
+	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 		sudo umount -f ${tempdir}/sys
 	fi
 }
@@ -530,13 +530,13 @@ echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user
 report_size
 chroot_umount
 
-if [ "x${chroot_COPY_SETUP_SDCARD}" == "xenable" ] ; then
+if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 fi
 
-if [ "x${chroot_ENABLE_DEB_SRC}" == "xenable" ] ; then
+if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 	cd ${tempdir}/tmp/pkg_src/
 	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar .
 	cd ${tempdir}
