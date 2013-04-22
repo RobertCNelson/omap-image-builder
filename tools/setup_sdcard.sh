@@ -97,9 +97,9 @@ is_valid_addon () {
 }
 
 check_root () {
-	if [[ ${UID} -ne 0 ]] ; then
+	if ! [ $(id -u) = 0 ] ; then
 		echo "$0 must be run as sudo user or root"
-		exit
+		exit 1
 	fi
 }
 
@@ -413,7 +413,7 @@ boot_uenv_txt_template () {
 tweak_boot_scripts () {
 	unset KMS_OVERRIDE
 
-	if [ "x${ADDON}" == "xpico" ] ; then
+	if [ "x${ADDON}" = "xpico" ] ; then
 		VIDEO_TIMING="640x480MR-16@60"
 		KMS_OVERRIDE=1
 		KMS_VIDEOA="video=DVI-D-1"
@@ -449,7 +449,7 @@ tweak_boot_scripts () {
 		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#UENV_TIMING -> dvimode=1280x720MR-16@60
-		if [ "x${ADDON}" == "xpico" ] ; then
+		if [ "x${ADDON}" = "xpico" ] ; then
 			sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
 		else
 			sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
@@ -539,16 +539,16 @@ unmount_all_drive_partitions () {
 	for (( c=1; c<=$NUM_MOUNTS; c++ ))
 	do
 		DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
-		umount ${DRIVE} &> /dev/null || true
+		umount ${DRIVE} >/dev/null 2>&1 || true
 	done
 
 	echo "Zeroing out Partition Table"
 	dd if=/dev/zero of=${MMC} bs=1024 count=1024
-	sync
 	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
+	sync
 }
 
-atfs_boot_error () {
+fatfs_boot_error () {
 	echo "Failure: [parted --script ${MMC} set 1 boot on]"
 	exit
 }
@@ -633,7 +633,7 @@ format_rootfs_partition () {
 create_partitions () {
 	unset bootloader_installed
 
-	if [ "x${boot_fstype}" == "xfat" ] ; then
+	if [ "x${boot_fstype}" = "xfat" ] ; then
 		parted_format="fat16"
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
@@ -1033,8 +1033,12 @@ check_mmc () {
 			mount | grep -v none | grep "/dev/" --color=never
 		fi
 		echo ""
-		read -p "Are you 100% sure, on selecting [${MMC}] (y/n)? "
-		[ "${REPLY}" == "y" ] || exit
+		unset response
+		echo -n "Are you 100% sure, on selecting [${MMC}] (y/n)? "
+		read response
+		if [ "x${response}" != "xy" ] ; then
+			exit
+		fi
 		echo ""
 	else
 		echo ""
