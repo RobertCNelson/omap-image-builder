@@ -323,10 +323,9 @@ boot_uenv_txt_template () {
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		boot_fstype=${boot_fstype}
-		loadkernel=\${boot_fstype}load mmc 0:1 ${conf_loadaddr} \${kernel_file}
-		loadinitrd=\${boot_fstype}load mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		loadfdt=\${boot_fstype}load mmc 0:1 ${conf_fdtaddr} /dtbs/\${fdtfile}
+		loadkernel=${uboot_CMD_LOAD} mmc 0:1 ${conf_loadaddr} \${kernel_file}
+		loadinitrd=${uboot_CMD_LOAD} mmc 0:1 ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
+		loadfdt=${uboot_CMD_LOAD} mmc 0:1 ${conf_fdtaddr} /dtbs/\${fdtfile}
 
 		boot_classic=run loadkernel; run loadinitrd
 		boot_ftd=run loadkernel; run loadinitrd; run loadfdt
@@ -1233,6 +1232,8 @@ check_uboot_type () {
 	unset usbnet_mem
 	boot_partition_size="50"
 
+	uboot_CMD_LOAD="load"
+
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
 		SYSTEM="beagle_bx"
@@ -1241,6 +1242,7 @@ check_uboot_type () {
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
+		uboot_CMD_LOAD="fatload"
 		;;
 	beagle_cx)
 		SYSTEM="beagle_cx"
@@ -1249,6 +1251,7 @@ check_uboot_type () {
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
+		uboot_CMD_LOAD="fatload"
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
@@ -1264,6 +1267,7 @@ check_uboot_type () {
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
+		uboot_CMD_LOAD="fatload"
 		;;
 	bone)
 		SYSTEM="bone"
@@ -1324,6 +1328,7 @@ check_uboot_type () {
 		SYSTEM="igepv2"
 		conf_board="IGEP00X0"
 		is_omap
+		uboot_CMD_LOAD="fatload"
 		;;
 	panda)
 		SYSTEM="panda"
@@ -1378,6 +1383,7 @@ check_uboot_type () {
 		SYSTEM="crane"
 		conf_board="CRANEBOARD"
 		is_omap
+		uboot_CMD_LOAD="fatload"
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
