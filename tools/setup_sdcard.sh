@@ -154,13 +154,14 @@ detect_software () {
 	check_for_command pv pv
 	check_for_command parted parted
 	check_for_command git git
+	check_for_command mkimage u-boot-tools
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted git-core"
-		echo "Fedora: as root: yum install wget pv dosfstools parted git-core"
-		echo "Gentoo: emerge wget pv dosfstools parted git"
+		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted git-core u-boot-tools"
+		echo "Fedora: as root: yum install wget pv dosfstools parted git-core uboot-tools"
+		echo "Gentoo: emerge wget pv dosfstools parted git u-boot-tools"
 		echo ""
 		exit
 	fi
@@ -720,15 +721,10 @@ populate_boot () {
 
 		INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
 		if [ "x${INITRD_FILE}" != "x" ] ; then
-			if [ "${USE_UIMAGE}" ] ; then
-				echo "Using mkimage to create uInitrd"
-				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
-				echo "-----------------------------"
-			else
-				echo "Copying Kernel initrd:"
-				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-				echo "-----------------------------"
-			fi
+			echo "Copying Kernel initrd/uInitrd:"
+			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+			echo "-----------------------------"
 		fi
 
 		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
@@ -1461,21 +1457,6 @@ check_uboot_type () {
 		exit
 		;;
 	esac
-
-	if [ "${USE_UIMAGE}" ] ; then
-		unset NEEDS_COMMAND
-		check_for_command mkimage uboot-mkimage
-
-		if [ "${NEEDS_COMMAND}" ] ; then
-			echo ""
-			echo "Your system is missing the mkimage dependency needed for this particular target."
-			echo "Ubuntu/Debian: sudo apt-get install uboot-mkimage"
-			echo "Fedora: as root: yum install uboot-tools"
-			echo "Gentoo: emerge u-boot-tools"
-			echo ""
-			exit
-		fi
-	fi
 }
 
 usage () {
