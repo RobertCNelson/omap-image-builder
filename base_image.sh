@@ -40,6 +40,9 @@ minimal_armel () {
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
 		;;
+	raring)
+		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
+		;;
 	*)
 		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"
 		;;

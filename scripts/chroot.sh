@@ -140,30 +140,31 @@ echo "Log: Running: debootstrap second-stage in [${tempdir}]"
 sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
 report_size
 
+file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
 squeeze)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "" | sudo tee -a /etc/apt/sources.list >/dev/null
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "" | sudo tee -a /etc/apt/sources.list >/dev/null
-	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
+	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
+	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-quantal)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "" | sudo tee -a /etc/apt/sources.list >/dev/null
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
+quantal|raring)
+	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
+	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-wheezy|sid|raring)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "" | sudo tee -a /etc/apt/sources.list >/dev/null
-	echo "#deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${tempdir}/etc/apt/sources.list >/dev/null
+wheezy|sid|saucy)
+	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${file} >/dev/null
+	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "#deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
 esac
 
