@@ -245,8 +245,8 @@ dl_bootloader () {
 
 boot_uenv_txt_template () {
 	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		kernel_file="${kernel_file}"
-		initrd_file="${kernel_file}"
+		kernel_file=${kernel_file}
+		initrd_file=${initrd_file}
 	__EOF__
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
