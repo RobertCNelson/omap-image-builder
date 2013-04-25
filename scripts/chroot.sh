@@ -249,7 +249,7 @@ ubuntu)
 		        DIST=\$(lsb_release -cs)
 
 		        case "\${DIST}" in
-		        maverick|natty|oneiric|precise|quantal|raring)
+		        maverick|natty|oneiric|precise|quantal|raring|saucy)
 		                FLASH_KERNEL_SKIP=yes
 		                ;;
 		        esac
