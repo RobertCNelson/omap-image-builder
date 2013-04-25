@@ -244,19 +244,10 @@ dl_bootloader () {
 }
 
 boot_uenv_txt_template () {
-	if [ "${USE_UIMAGE}" ] ; then
-		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=uImage
-			initrd_file=uInitrd
-
-		__EOF__
-	else
-		cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			kernel_file=zImage
-			initrd_file=initrd.img
-
-		__EOF__
-	fi
+	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		kernel_file="${kernel_file}"
+		initrd_file="${kernel_file}"
+	__EOF__
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		initrd_high=0xffffffff
@@ -1196,6 +1187,8 @@ convert_uboot_to_dtb_board () {
 	case "${kernel_subarch}" in
 	omap)
 		select_kernel="${omap_kernel}"
+		kernel_file="zImage"
+		initrd_file="initrd.img"
 		;;
 	esac
 }
@@ -1204,6 +1197,9 @@ check_uboot_type () {
 	#New defines for hwpack:
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
+
+	kernel_file="zImage"
+	initrd_file="initrd.img"
 
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
@@ -1291,6 +1287,7 @@ check_uboot_type () {
 		#u-boot:rdaddr="0x81000000"
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
+		initrd_file="uInitrd"
 		;;
 	bone_dtb)
 		SYSTEM="bone"
@@ -1319,6 +1316,7 @@ check_uboot_type () {
 		#u-boot:rdaddr="0x81000000"
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
+		initrd_file="uInitrd"
 		;;
 	igepv2)
 		SYSTEM="igepv2"
