@@ -527,7 +527,8 @@ unmount_all_drive_partitions () {
 
 	NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
 
-	for (( c=1; c<=$NUM_MOUNTS; c++ ))
+##	for (i=1;i<=${NUM_MOUNTS};i++)
+	for ((i=1;i<=${NUM_MOUNTS};i++))
 	do
 		DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
 		umount ${DRIVE} >/dev/null 2>&1 || true
@@ -555,7 +556,7 @@ fatfs_boot () {
 		p
 		1
 
-		+64M
+		+${boot_partition_size}M
 		t
 		e
 		p
@@ -575,7 +576,6 @@ dd_uboot_boot () {
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
 	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
-	bootloader_installed=1
 }
 
 dd_spl_uboot_boot () {
@@ -636,24 +636,20 @@ create_partitions () {
 		mkfs_label="-L ${BOOT_LABEL}"
 	fi
 
-	if [ "${boot_startmb}" ] ; then
-		let boot_endmb=${boot_startmb}+${boot_partition_size}
-	fi
-
 	case "${bootloader_location}" in
 	fatfs_boot)
 		fatfs_boot
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	*)
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_endmb}
+		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	esac
 	calculate_rootfs_partition
@@ -683,14 +679,9 @@ populate_boot () {
 				fi
 			fi
 
-			if [ "${boot_name}" ] && [ ! "${IS_IMX}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
-					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
-				fi
-			fi
-
 			if [ "${boot_name}" ] ; then
 				if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
+					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
 					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
 					echo "-----------------------------"
 				fi
@@ -721,7 +712,7 @@ populate_boot () {
 		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
 		if [ "x${DTBS_FILE}" != "x" ] ; then
 			echo "Copying Device Tree Files:"
-			if [ "x${boot_fstype}" == "xfat" ] ; then
+			if [ "x${boot_fstype}" = "xfat" ] ; then
 				tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 			else
 				tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
@@ -1222,7 +1213,7 @@ check_uboot_type () {
 
 	unset boot_scr_wrapper
 	unset usbnet_mem
-	boot_partition_size="50"
+	boot_partition_size="64"
 
 	uboot_CMD_LOAD="load"
 
@@ -1473,7 +1464,7 @@ usage () {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			                bone_dtb - <BeagleBone Ax: experimental v3.8-rc>
+			                bone_dtb - <BeagleBone/BeagleBone Black (v3.8.x)>
 			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
@@ -1539,9 +1530,8 @@ while [ ! -z "$1" ] ; do
 	--mmc)
 		checkparm $2
 		MMC="$2"
-		if [[ "${MMC}" =~ "mmcblk" ]] ; then
-			PARTITION_PREFIX="p"
-		fi
+		unset PARTITION_PREFIX
+		echo ${MMC} | grep mmcblk >/dev/null && PARTITION_PREFIX="p"
 		check_root
 		check_mmc
 		;;
@@ -1624,7 +1614,7 @@ if ! is_valid_rootfs_type ${ROOTFS_TYPE} ; then
 fi
 
 unset BTRFS_FSTAB
-if [ "x${ROOTFS_TYPE}" == "xbtrfs" ] ; then
+if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
 	unset NEEDS_COMMAND
 	check_for_command mkfs.btrfs btrfs-tools
 
