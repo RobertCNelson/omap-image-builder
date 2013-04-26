@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh -e
 
 RAMTMP_TEST=$(cat /etc/default/tmpfs | grep -v "#" | grep RAMTMP | awk -F"=" '{print $2}')
 if [ -f /etc/default/tmpfs ] ; then
-	if [ "x${RAMTMP_TEST}" == "xyes" ] ; then
+	if [ "x${RAMTMP_TEST}" = "xyes" ] ; then
 		echo ""
 		echo "ERROR"
 		echo "With RAMTMP=yes this script will fail..."
