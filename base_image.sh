@@ -153,6 +153,16 @@ raring_release () {
 	compression
 }
 
+#13.10
+saucy_release () {
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
+	is_ubuntu
+	release="saucy"
+
+	minimal_armel
+	compression
+}
+
 squeeze_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client uboot-mkimage"
 	is_debian
@@ -202,5 +212,6 @@ dpkg_arch="armhf"
 wheezy_release
 quantal_release
 raring_release
+saucy_release
 
 echo "done"

@@ -189,8 +189,18 @@ raring_release () {
 	compression
 }
 
+#13.10
+saucy_release () {
+	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
+	is_ubuntu
+	release="saucy"
+	select_rcn_ee_net_kernel
+	minimal_armel
+	compression
+}
+
 squeeze_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client uboot-mkimage"
 	is_debian
 	release="squeeze"
 	select_rcn_ee_net_kernel
@@ -199,7 +209,7 @@ squeeze_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -208,7 +218,7 @@ wheezy_release () {
 }
 
 sid_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel

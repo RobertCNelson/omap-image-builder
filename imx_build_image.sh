@@ -153,7 +153,7 @@ is_debian () {
 }
 
 wheezy_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
