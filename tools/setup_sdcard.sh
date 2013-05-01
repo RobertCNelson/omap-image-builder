@@ -655,6 +655,10 @@ create_partitions () {
 	calculate_rootfs_partition
 	format_boot_partition
 	format_rootfs_partition
+	echo "Final Created Partition:"
+	echo "-----------------------------"
+	LC_ALL=C $FDISK_EXEC -l ${MMC}
+	echo "-----------------------------"
 }
 
 populate_boot () {
