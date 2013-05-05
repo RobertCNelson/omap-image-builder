@@ -142,7 +142,7 @@ report_size
 
 file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
-squeeze)
+wheezy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
 	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
@@ -152,14 +152,14 @@ squeeze)
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-quantal|raring)
+raring)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
 	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
 	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-wheezy|sid|saucy)
+jessie|sid|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${file} >/dev/null
 	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
