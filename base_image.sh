@@ -33,10 +33,6 @@ minimal_armel () {
 
 	#Actual Releases will use version numbers..
 	case "${release}" in
-	squeeze)
-		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.7-${image_type}-${dpkg_arch}-${time}"
-		;;
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${distro}-7.0.0-${image_type}-${dpkg_arch}-${time}"
@@ -167,15 +163,6 @@ saucy_release () {
 	compression
 }
 
-squeeze_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware isc-dhcp-client uboot-mkimage"
-	is_debian
-	release="squeeze"
-
-	minimal_armel
-	compression
-}
-
 wheezy_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
@@ -218,7 +205,6 @@ if [ -f ${DIR}/release ] ; then
 fi
 
 dpkg_arch="armel"
-squeeze_release
 wheezy_release
 jessie_release
 

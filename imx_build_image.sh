@@ -33,10 +33,6 @@ minimal_armel () {
 
 	#Actual Releases will use version numbers..
 	case "${release}" in
-	squeeze)
-		#http://www.debian.org/releases/squeeze/
-		export_filename="${distro}-6.0.7-${image_type}-${dpkg_arch}-${time}"
-		;;
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${distro}-7.0.0-${image_type}-${dpkg_arch}-${time}"
