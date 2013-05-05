@@ -193,12 +193,12 @@ fi
 
 dpkg_arch="armel"
 wheezy_release
-jessie_release
+#jessie_release
 
 dpkg_arch="armhf"
 wheezy_release
-jessie_release
+#jessie_release
 raring_release
-saucy_release
+#saucy_release
 
 echo "done"
