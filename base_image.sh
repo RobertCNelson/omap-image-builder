@@ -132,7 +132,7 @@ is_debian () {
 
 #13.04
 raring_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
+	extra_pkgs="linux-firmware devmem2 python-software-properties"
 	is_ubuntu
 	release="raring"
 
@@ -142,7 +142,7 @@ raring_release () {
 
 #13.10
 saucy_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
+	extra_pkgs="linux-firmware devmem2 python-software-properties"
 	is_ubuntu
 	release="saucy"
 
@@ -151,7 +151,7 @@ saucy_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 
@@ -160,7 +160,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 
@@ -169,7 +169,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 

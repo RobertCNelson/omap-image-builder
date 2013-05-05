@@ -7,7 +7,7 @@
 base_pkgs="git-core nano pastebinit"
 
 #Tools
-base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit memtester"
+base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit memtester u-boot-tools"
 
 #OS
 base_pkgs="${base_pkgs} dosfstools btrfs-tools cpufrequtils ntpdate"
@@ -19,5 +19,5 @@ base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
 base_pkgs="${base_pkgs} apache2 openssh-server"
 
 #Wireless
-base_pkgs="${base_pkgs} wireless-tools wpasupplicant"
+base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
 

@@ -150,7 +150,7 @@ is_debian () {
 }
 
 wheezy_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -159,7 +159,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -168,7 +168,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
