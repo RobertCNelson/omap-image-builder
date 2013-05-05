@@ -37,9 +37,6 @@ minimal_armel () {
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${distro}-7.0.0-${image_type}-${dpkg_arch}-${time}"
 		;;
-	quantal)
-		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
-		;;
 	raring)
 		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
 		;;
@@ -133,16 +130,6 @@ is_debian () {
 	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
-#12.10
-quantal_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
-	is_ubuntu
-	release="quantal"
-
-	minimal_armel
-	compression
-}
-
 #13.04
 raring_release () {
 	extra_pkgs="linux-firmware devmem2 python-software-properties u-boot-tools wvdial"
@@ -211,7 +198,6 @@ jessie_release
 dpkg_arch="armhf"
 wheezy_release
 jessie_release
-quantal_release
 raring_release
 saucy_release
 
