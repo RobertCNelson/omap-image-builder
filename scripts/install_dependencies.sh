@@ -54,3 +54,13 @@ if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	sudo dpkg -i debootstrap_1.0.${minimal_debootstrap}_all.deb
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
+
+#Not yet supported in a production debootstrap
+if [ ! -f /usr/share/debootstrap/scripts/jessie ] ; then
+	sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/jessie
+fi
+
+#Not yet supported in a production debootstrap
+if [ ! -f /usr/share/debootstrap/scripts/saucy ] ; then
+	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/saucy
+fi

@@ -37,6 +37,10 @@ minimal_armel () {
 		#http://www.debian.org/releases/squeeze/
 		export_filename="${distro}-6.0.7-${image_type}-${dpkg_arch}-${time}"
 		;;
+	wheezy)
+		#http://www.debian.org/releases/wheezy/
+		export_filename="${distro}-7.0.0-${image_type}-${dpkg_arch}-${time}"
+		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
 		;;
@@ -217,6 +221,15 @@ wheezy_release () {
 	compression
 }
 
+jessie_release () {
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
+	is_debian
+	release="jessie"
+	select_rcn_ee_net_kernel
+	minimal_armel
+	compression
+}
+
 sid_release () {
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware u-boot-tools lowpan-tools wvdial"
 	is_debian
@@ -245,7 +258,9 @@ chroot_COPY_SETUP_SDCARD="enable"
 dpkg_arch="armhf"
 quantal_release
 raring_release
+#saucy_release
 
 wheezy_release
+jessie_release
 
 echo "done"
