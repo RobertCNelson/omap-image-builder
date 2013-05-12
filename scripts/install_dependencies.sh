@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="48"
+minimal_debootstrap="49"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
@@ -55,10 +55,10 @@ if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
 
-#Not yet supported in a production debootstrap
-if [ ! -f /usr/share/debootstrap/scripts/jessie ] ; then
-	sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/jessie
-fi
+#added in: 1.0.49
+#if [ ! -f /usr/share/debootstrap/scripts/jessie ] ; then
+#	sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/jessie
+#fi
 
 #Not yet supported in a production debootstrap
 if [ ! -f /usr/share/debootstrap/scripts/saucy ] ; then
