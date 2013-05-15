@@ -196,9 +196,13 @@ debian)
 		        if [ -f /boot/uboot/SOC.sh ] ; then
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		                case "\${board}" in
-		                BEAGLEBONE_A)
+		                BEAGLEBONE_A|BEAGLEBONE)
 		                        if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
 		                                /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
+		                        fi
+
+		                        if [ -f /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh ] ; then
+		                                /bin/sh /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh &> /dev/null &
 		                        fi;;
 		                esac
 		        fi
@@ -227,9 +231,13 @@ ubuntu)
 		if [ -f /boot/uboot/SOC.sh ] ; then
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		        case "\${board}" in
-		        BEAGLEBONE_A)
+		        BEAGLEBONE_A|BEAGLEBONE)
 		                if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
 		                        /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
+		                fi
+
+		                if [ -f /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh ] ; then
+		                        /bin/sh /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh &> /dev/null &
 		                fi;;
 		        esac
 		fi

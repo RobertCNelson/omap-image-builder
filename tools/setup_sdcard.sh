@@ -874,12 +874,25 @@ populate_rootfs () {
 			fi
 			echo "# Example to keep MAC address between reboots" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${TEMPDIR}/disk/etc/network/interfaces
+
 			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+
 			echo "# WiFi Example" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#auto wlan0" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#iface wlan0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#    wpa-ssid \"essid\"" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#    wpa-psk  \"password\"" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+			echo "# Ethernet/RNDIS gadget (g_ether)" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "# ... or on host side, usbnet and random hwaddr" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "iface usb0 inet static" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "    address 192.168.7.2" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "    netmask 255.255.255.0" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "    network 192.168.7.0" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
+
 
 		else
 
