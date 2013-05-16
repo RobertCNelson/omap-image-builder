@@ -430,7 +430,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		mkdir -p /opt/boot-scripts/
 		git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
-		chown -R root:root /opt/boot-scripts/
+		chown -R ${user_name}:${user_name} /opt/boot-scripts/
 	}
 
 	cleanup () {
