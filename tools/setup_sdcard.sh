@@ -682,9 +682,19 @@ boot_git_tools () {
 		if [ -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
 			rm -rf ${TEMPDIR}/bone-drivers/.git/ || true
 		fi
-		mv ${TEMPDIR}/bone-drivers/Drivers ${TEMPDIR}/disk/
-		mv ${TEMPDIR}/bone-drivers/autorun.inf ${TEMPDIR}/disk/
-		mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
+
+		if [ -d ${TEMPDIR}/bone-drivers/Drivers ] ; then
+			mv ${TEMPDIR}/bone-drivers/Drivers ${TEMPDIR}/disk/
+		fi
+		if [ -d ${TEMPDIR}/bone-drivers/Docs ] ; then
+			mv ${TEMPDIR}/bone-drivers/Docs ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/bone-drivers/autorun.inf ] ; then
+			mv ${TEMPDIR}/bone-drivers/autorun.inf ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/bone-drivers/LICENSE.txt ] ; then
+			mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
+		fi
 	;;
 	esac
 
