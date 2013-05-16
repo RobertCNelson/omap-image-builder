@@ -660,6 +660,32 @@ create_partitions () {
 	echo "-----------------------------"
 }
 
+boot_git_tools () {
+	echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
+	echo "-----------------------------"
+	mkdir -p ${TEMPDIR}/disk/tools
+	git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+	if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
+		echo "Trying via http:"
+		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+	fi
+
+	case "${SYSTEM}" in
+	bone|bone_dtb)
+		#Not planning to change these too often, once pulled, remove .git stuff...
+		git clone --depth=1 git://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/disk/
+		if [ ! -f ${TEMPDIR}/disk/.git/config ] ; then
+			git clone --depth=1 https://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/disk.git/config ] ; then
+			rm -rf ${TEMPDIR}/disk/.git/ || true
+		fi
+	;;
+	esac
+	echo "-----------------------------"
+
+}
+
 populate_boot () {
 	echo "Populating Boot Partition"
 	echo "-----------------------------"
@@ -773,11 +799,7 @@ populate_boot () {
 		echo "Debug:"
 		cat ${TEMPDIR}/disk/SOC.sh
 
-		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
-		echo "-----------------------------"
-		mkdir -p ${TEMPDIR}/disk/tools
-		git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-		echo "-----------------------------"
+		boot_git_tools
 
 		cd ${TEMPDIR}/disk
 		sync
