@@ -687,6 +687,21 @@ boot_git_tools () {
 		mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
 	;;
 	esac
+
+	wfile=START.htm
+	echo "<!DOCTYPE html>" >> ${TEMPDIR}/disk/${wfile}
+	echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+	echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+	echo "" >> ${TEMPDIR}/disk/${wfile}
+	echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+	echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
+	echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+	echo "" >> ${TEMPDIR}/disk/${wfile}
+	echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+	echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+	echo "" >> ${TEMPDIR}/disk/${wfile}
+	sync
+
 	echo "-----------------------------"
 
 }
@@ -920,6 +935,21 @@ populate_rootfs () {
 			echo "    network 192.168.7.0" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
 
+			rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
+			wfile=var/www/AJAX_terminal.html
+			echo "<!DOCTYPE html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+			echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+			echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
+			echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
+			echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+			echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+			echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+			sync
 
 		else
 
