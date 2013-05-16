@@ -151,7 +151,6 @@ detect_software () {
 
 	check_for_command mkfs.vfat dosfstools
 	check_for_command wget wget
-	check_for_command pv pv
 	check_for_command parted parted
 	check_for_command git git
 	check_for_command mkimage u-boot-tools
@@ -159,9 +158,10 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Ubuntu/Debian: sudo apt-get install wget pv dosfstools parted git-core u-boot-tools"
-		echo "Fedora: as root: yum install wget pv dosfstools parted git-core uboot-tools"
-		echo "Gentoo: emerge wget pv dosfstools parted git u-boot-tools"
+		echo "Angstrom: opkg install dosfstools git util-linux parted wget (u-boot/mkimage pkg?)"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core parted u-boot-tools wget"
+		echo "Fedora: yum install dosfstools dosfstools git-core parted uboot-tools wget"
+		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
 		echo ""
 		exit
 	fi
@@ -871,7 +871,12 @@ populate_rootfs () {
 			echo "${DIR}/${ROOTFS}" | grep ".tgz" && DECOM="xzf"
 			echo "${DIR}/${ROOTFS}" | grep ".tar" && DECOM="xf"
 
-			pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
+			if which pv > /dev/null ; then
+				pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
+			else
+				tar --numeric-owner --preserve-permissions -${DECOM} "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
+			fi
+
 			echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
 			sync
 			sync
