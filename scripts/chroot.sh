@@ -179,10 +179,10 @@ echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
 
 case "${distro}" in
 debian)
-	cat > /tmp/board_tweaks.sh <<-__EOF__
+	cat > /tmp/boot_scripts.sh <<-__EOF__
 		#!/bin/sh -e
 		### BEGIN INIT INFO
-		# Provides:          board_tweaks.sh
+		# Provides:          boot_scripts.sh
 		# Required-Start:    \$local_fs
 		# Required-Stop:     \$local_fs
 		# Default-Start:     2 3 4 5
@@ -195,23 +195,16 @@ debian)
 		start|reload|force-reload|restart)
 		        if [ -f /boot/uboot/SOC.sh ] ; then
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		                case "\${board}" in
-		                BEAGLEBONE_A|BEAGLEBONE)
-		                        if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
-		                                /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
-		                        fi
-
-		                        if [ -f /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh ] ; then
-		                                /bin/sh /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh &> /dev/null &
-		                        fi;;
-		                esac
+		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
+		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
+		                fi
 		        fi
 		        ;;
 		stop)
 		        exit 0
 		        ;;
 		*)
-		        echo "Usage: /etc/init.d/board_tweaks.sh {start|stop|reload|restart|force-reload}"
+		        echo "Usage: /etc/init.d/boot_scripts.sh {start|stop|reload|restart|force-reload}"
 		        exit 1
 		        ;;
 		esac
@@ -220,32 +213,25 @@ debian)
 
 	__EOF__
 
-	sudo mv /tmp/board_tweaks.sh ${tempdir}/etc/init.d/board_tweaks.sh
+	sudo mv /tmp/boot_tweaks.sh ${tempdir}/etc/init.d/boot_tweaks.sh
 
 	;;
 ubuntu)
-	cat > /tmp/board_tweaks.conf <<-__EOF__
+	cat > /tmp/boot_scripts.conf <<-__EOF__
 		start on runlevel 2
 
 		script
 		if [ -f /boot/uboot/SOC.sh ] ; then
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		        case "\${board}" in
-		        BEAGLEBONE_A|BEAGLEBONE)
-		                if [ -f /boot/uboot/tools/target/BeagleBone.sh ] ; then
-		                        /bin/sh /boot/uboot/tools/target/BeagleBone.sh &> /dev/null &
-		                fi
-
-		                if [ -f /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh ] ; then
-		                        /bin/sh /boot/uboot/tools/scripts/beaglebone-black-g-ether-load.sh &> /dev/null &
-		                fi;;
-		        esac
+		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
+		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
+		        fi
 		fi
 		end script
 
 	__EOF__
 
-	sudo mv /tmp/board_tweaks.conf ${tempdir}/etc/init/board_tweaks.conf
+	sudo mv /tmp/boot_scripts.conf ${tempdir}/etc/init/boot_scripts.conf
 
 	cat > /tmp/flash-kernel.conf <<-__EOF__
 		#!/bin/sh -e
@@ -311,7 +297,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates () {
 		apt-get update
 
-		packages="initramfs-tools sudo wget"
+		packages="initramfs-tools git-core sudo wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		distro="\$(lsb_release -si)"
@@ -416,16 +402,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
-		if [ -f /etc/init.d/board_tweaks.sh ] ; then
-			chown root:root /etc/init.d/board_tweaks.sh
-			chmod +x /etc/init.d/board_tweaks.sh
-			insserv board_tweaks.sh || true
+		if [ -f /etc/init.d/boot_scripts.sh ] ; then
+			chown root:root /etc/init.d/boot_scripts.sh
+			chmod +x /etc/init.d/boot_scripts.sh
+			insserv boot_scripts.sh || true
 		fi
 	}
 
 	ubuntu_startup_script () {
-		if [ -f /etc/init/board_tweaks.conf ] ; then
-			chown root:root /etc/init/board_tweaks.conf
+		if [ -f /etc/init/boot_scripts.conf ] ; then
+			chown root:root /etc/init/boot_scripts.conf
 		fi
 		if [ -f /etc/flash-kernel.conf ] ; then
 			chown root:root /etc/flash-kernel.conf
@@ -441,6 +427,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			ubuntu_startup_script
 			;;
 		esac
+
+		mkdir -p /opt/boot-scripts/
+		git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
+		chown -R root:root /opt/boot-scripts/
 	}
 
 	cleanup () {
