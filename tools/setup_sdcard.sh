@@ -689,7 +689,7 @@ boot_git_tools () {
 	esac
 
 	wfile=START.htm
-	echo "<!DOCTYPE html>" >> ${TEMPDIR}/disk/${wfile}
+	echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
 	echo "<html>" >> ${TEMPDIR}/disk/${wfile}
 	echo "<body>" >> ${TEMPDIR}/disk/${wfile}
 	echo "" >> ${TEMPDIR}/disk/${wfile}
@@ -937,7 +937,7 @@ populate_rootfs () {
 
 			rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
 			wfile=var/www/AJAX_terminal.html
-			echo "<!DOCTYPE html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
 			echo "<html>" >> ${TEMPDIR}/disk/${wfile}
 			echo "<body>" >> ${TEMPDIR}/disk/${wfile}
 			echo "" >> ${TEMPDIR}/disk/${wfile}
