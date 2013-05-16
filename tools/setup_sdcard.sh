@@ -672,14 +672,19 @@ boot_git_tools () {
 
 	case "${SYSTEM}" in
 	bone|bone_dtb)
+		echo "Debug: Adding BeagleBone drivers from: https://github.com/RobertCNelson/bone-drivers"
 		#Not planning to change these too often, once pulled, remove .git stuff...
-		git clone --depth=1 git://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/disk/
-		if [ ! -f ${TEMPDIR}/disk/.git/config ] ; then
-			git clone --depth=1 https://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/disk/
+		mkdir -p ${TEMPDIR}/bone-drivers/
+		git clone git://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
+		if [ ! -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
+			git clone https://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
 		fi
-		if [ -f ${TEMPDIR}/disk.git/config ] ; then
-			rm -rf ${TEMPDIR}/disk/.git/ || true
+		if [ -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
+			rm -rf ${TEMPDIR}/bone-drivers/.git/ || true
 		fi
+		mv ${TEMPDIR}/bone-drivers/Drivers ${TEMPDIR}/disk/
+		mv ${TEMPDIR}/bone-drivers/autorun.inf ${TEMPDIR}/disk/
+		mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
 	;;
 	esac
 	echo "-----------------------------"
