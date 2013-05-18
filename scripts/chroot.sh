@@ -152,7 +152,7 @@ wheezy)
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-raring)
+precise|quantal|raring)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
 	echo "deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
