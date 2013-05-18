@@ -179,10 +179,11 @@ echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
 
 case "${distro}" in
 debian)
-	cat > /tmp/boot_scripts.sh <<-__EOF__
+	wfile="boot_scripts.sh"
+	cat > /tmp/${wfile} <<-__EOF__
 		#!/bin/sh -e
 		### BEGIN INIT INFO
-		# Provides:          boot_scripts.sh
+		# Provides:          ${wfile}
 		# Required-Start:    \$local_fs
 		# Required-Stop:     \$local_fs
 		# Default-Start:     2 3 4 5
@@ -213,11 +214,12 @@ debian)
 
 	__EOF__
 
-	sudo mv /tmp/boot_tweaks.sh ${tempdir}/etc/init.d/boot_tweaks.sh
+	sudo mv /tmp/${wfile} ${tempdir}/etc/init.d/${wfile}
 
 	;;
 ubuntu)
-	cat > /tmp/boot_scripts.conf <<-__EOF__
+	wfile="boot_scripts.conf"
+	cat > /tmp/${wfile} <<-__EOF__
 		start on runlevel 2
 
 		script
@@ -231,13 +233,14 @@ ubuntu)
 
 	__EOF__
 
-	sudo mv /tmp/boot_scripts.conf ${tempdir}/etc/init/boot_scripts.conf
+	sudo mv /tmp/${wfile} ${tempdir}/etc/init/${wfile}
 
-	cat > /tmp/flash-kernel.conf <<-__EOF__
+	wfile="flash-kernel.conf"
+	cat > /tmp/${wfile} <<-__EOF__
 		#!/bin/sh -e
 		UBOOT_PART=/dev/mmcblk0p1
 
-		echo "flash-kernel stopped by: /etc/flash-kernel.conf"
+		echo "flash-kernel stopped by: /etc/${wfile}"
 		USE_CUSTOM_KERNEL=1
 
 		if [ "\${USE_CUSTOM_KERNEL}" ] ; then
@@ -252,7 +255,7 @@ ubuntu)
 
 	__EOF__
 
-	sudo mv /tmp/flash-kernel.conf ${tempdir}/etc/flash-kernel.conf
+	sudo mv /tmp/${wfile} ${tempdir}/etc/${wfile}
 
 	;;
 esac
