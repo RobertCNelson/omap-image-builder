@@ -37,8 +37,8 @@ minimal_armel () {
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${distro}-7.0.0-${image_type}-${dpkg_arch}-${time}"
 		;;
-	precise)
-		export_filename="${distro}-12.04.2-${image_type}-${dpkg_arch}-${time}"
+	quantal)
+		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
 		;;
 	raring)
 		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
@@ -169,11 +169,11 @@ is_debian () {
 	base_pkg_list="${base_pkgs} ${extra_pkgs}"
 }
 
-#12.04 (LTS)
-precise_release () {
+#12.10
+quantal_release () {
 	extra_pkgs="linux-firmware devmem2 python-software-properties"
 	is_ubuntu
-	release="precise"
+	release="quantal"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -243,7 +243,7 @@ fi
 chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
-precise_release
+quantal_release
 raring_release
 #saucy_release
 
