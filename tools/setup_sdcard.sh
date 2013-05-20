@@ -875,7 +875,7 @@ populate_rootfs () {
 				pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
 			else
 				echo "pv: not installed, using tar verbose to show progress"
-				tar --numeric-owner --preserve-permissions -${DECOM}v "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
+				tar --numeric-owner --preserve-permissions --verbose -${DECOM} "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
 			fi
 
 			echo "Transfer of data is Complete, now syncing data to disk..."
