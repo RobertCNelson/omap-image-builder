@@ -855,7 +855,7 @@ populate_boot () {
 
 populate_rootfs () {
 	echo "Populating rootfs Partition"
-	echo "Please be patient, this may take a few minutes, as its transfering a lot of files.."
+	echo "Please be patient, this may take a few minutes, as its transfering a lot of data.."
 	echo "-----------------------------"
 
 	partprobe ${MMC}
@@ -874,10 +874,11 @@ populate_rootfs () {
 			if which pv > /dev/null ; then
 				pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
 			else
-				tar --numeric-owner --preserve-permissions -${DECOM} "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
+				echo "pv: not installed, using tar verbose to show progress"
+				tar --numeric-owner --preserve-permissions -${DECOM}v "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
 			fi
 
-			echo "Transfer of Base Rootfs is Complete, now syncing to disk..."
+			echo "Transfer of data is Complete, now syncing data to disk..."
 			sync
 			sync
 			echo "-----------------------------"
