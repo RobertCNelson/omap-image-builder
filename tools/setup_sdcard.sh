@@ -826,6 +826,10 @@ populate_boot () {
 
 		__EOF__
 
+		if [ "${bbb_flasher}" ] ; then
+			touch ${TEMPDIR}/disk/flash-eMMC.txt
+		fi
+
 		echo "Debug:"
 		cat ${TEMPDIR}/disk/SOC.sh
 
@@ -1677,10 +1681,14 @@ while [ ! -z "$1" ] ; do
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
 		;;
-   --fdisk)
-      checkparm $2
-      FDISK_EXEC="$2"
-      ;;
+	--fdisk)
+		checkparm $2
+		FDISK_EXEC="$2"
+		;;
+	--bbb-flasher)
+		checkparm $2
+		bbb_flasher=1
+		;;
 	esac
 	shift
 done
