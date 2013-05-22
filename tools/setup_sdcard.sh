@@ -520,6 +520,11 @@ drive_error_ro () {
 	exit
 }
 
+create_msdos_label () {
+	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
+	sync
+}
+
 unmount_all_drive_partitions () {
 	echo ""
 	echo "Unmounting Partitions"
@@ -536,8 +541,7 @@ unmount_all_drive_partitions () {
 
 	echo "Zeroing out Partition Table"
 	dd if=/dev/zero of=${MMC} bs=1024 count=1024
-	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
-	sync
+	create_msdos_label
 }
 
 fatfs_boot_error () {
@@ -720,141 +724,141 @@ populate_boot () {
 	echo "Populating Boot Partition"
 	echo "-----------------------------"
 
-	partprobe ${MMC}
 	if [ ! -d ${TEMPDIR}/disk ] ; then
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	if mount -t ${mount_partition_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
-		mkdir -p ${TEMPDIR}/disk/backup
-		mkdir -p ${TEMPDIR}/disk/dtbs
-
-		if [ ! "${bootloader_installed}" ] ; then
-			if [ "${spl_name}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
-					cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
-					cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/backup/${spl_name}
-					echo "-----------------------------"
-				fi
-			fi
-
-			if [ "${boot_name}" ] ; then
-				if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
-					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
-					cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
-					echo "-----------------------------"
-				fi
-			fi
-		fi
-
-		VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
-		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
-			if [ "${USE_UIMAGE}" ] ; then
-				echo "Using mkimage to create uImage"
-				mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
-				echo "-----------------------------"
-			else
-				echo "Copying Kernel image:"
-				cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
-				echo "-----------------------------"
-			fi
-		fi
-
-		INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
-		if [ "x${INITRD_FILE}" != "x" ] ; then
-			echo "Copying Kernel initrd/uInitrd:"
-			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
-			echo "-----------------------------"
-		fi
-
-		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
-		if [ "x${DTBS_FILE}" != "x" ] ; then
-			echo "Copying Device Tree Files:"
-			if [ "x${boot_fstype}" = "xfat" ] ; then
-				tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-			else
-				tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-			fi
-			echo "-----------------------------"
-		fi
-
-		if [ "${boot_scr_wrapper}" ] ; then
-			cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
-				echo "boot.scr -> uEnv.txt wrapper..."
-				setenv boot_fstype ${boot_fstype}
-				\${boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
-				env import -t \${loadaddr} \${filesize}
-				run loaduimage
-			__EOF__
-			mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
-			cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
-		fi
-
-		echo "Copying uEnv.txt based boot scripts to Boot Partition"
-		echo "-----------------------------"
-		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
-		echo "-----------------------------"
-		cat  ${TEMPDIR}/bootscripts/normal.cmd
-		echo "-----------------------------"
-
-		#This should be compatible with hwpacks variable names..
-		#https://code.launchpad.net/~linaro-maintainers/linaro-images/
-		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
-			#!/bin/sh
-			format=1.0
-			board=${conf_board}
-
-			bootloader_location=${bootloader_location}
-			dd_spl_uboot_seek=${dd_spl_uboot_seek}
-			dd_spl_uboot_bs=${dd_spl_uboot_bs}
-			dd_uboot_seek=${dd_uboot_seek}
-			dd_uboot_bs=${dd_uboot_bs}
-
-			boot_image=${boot}
-			boot_script=${boot_script}
-			boot_fstype=${boot_fstype}
-
-			serial_tty=${SERIAL}
-			loadaddr=${conf_loadaddr}
-			initrdaddr=${conf_initrdaddr}
-			zreladdr=${conf_zreladdr}
-			fdtaddr=${conf_fdtaddr}
-			fdtfile=${conf_fdtfile}
-
-			usbnet_mem=${usbnet_mem}
-
-		__EOF__
-
-		if [ "${bbb_flasher}" ] ; then
-			touch ${TEMPDIR}/disk/flash-eMMC.txt
-		fi
-
-		echo "Debug:"
-		cat ${TEMPDIR}/disk/SOC.sh
-
-		boot_git_tools
-
-		cd ${TEMPDIR}/disk
-		sync
-		cd "${DIR}"/
-
-		echo "Debug: Contents of Boot Partition"
-		echo "-----------------------------"
-		ls -lh ${TEMPDIR}/disk/
-		echo "-----------------------------"
-
-		umount ${TEMPDIR}/disk || true
-
-		echo "Finished populating Boot Partition"
-		echo "-----------------------------"
-	else
+	partprobe ${MMC}
+	if ! mount -t ${mount_partition_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
 		echo "-----------------------------"
 		echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
 		echo "Please retry running the script, sometimes rebooting your system helps."
 		echo "-----------------------------"
 		exit
 	fi
+
+	mkdir -p ${TEMPDIR}/disk/backup
+	mkdir -p ${TEMPDIR}/disk/dtbs
+
+	if [ ! "${bootloader_installed}" ] ; then
+		if [ "${spl_name}" ] ; then
+			if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
+				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
+				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/backup/${spl_name}
+				echo "-----------------------------"
+			fi
+		fi
+
+		if [ "${boot_name}" ] ; then
+			if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
+				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
+				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
+				echo "-----------------------------"
+			fi
+		fi
+	fi
+
+	VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
+	if [ "x${VMLINUZ_FILE}" != "x" ] ; then
+		if [ "${USE_UIMAGE}" ] ; then
+			echo "Using mkimage to create uImage"
+			mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
+			echo "-----------------------------"
+		else
+			echo "Copying Kernel image:"
+			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+			echo "-----------------------------"
+		fi
+	fi
+
+	INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
+	if [ "x${INITRD_FILE}" != "x" ] ; then
+		echo "Copying Kernel initrd/uInitrd:"
+		cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+		mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+		echo "-----------------------------"
+	fi
+
+	DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
+	if [ "x${DTBS_FILE}" != "x" ] ; then
+		echo "Copying Device Tree Files:"
+		if [ "x${boot_fstype}" = "xfat" ] ; then
+			tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+		else
+			tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+		fi
+		echo "-----------------------------"
+	fi
+
+	if [ "${boot_scr_wrapper}" ] ; then
+		cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
+			echo "boot.scr -> uEnv.txt wrapper..."
+			setenv boot_fstype ${boot_fstype}
+			\${boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
+			env import -t \${loadaddr} \${filesize}
+			run loaduimage
+		__EOF__
+		mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
+		cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
+	fi
+
+	echo "Copying uEnv.txt based boot scripts to Boot Partition"
+	echo "-----------------------------"
+	cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+	echo "-----------------------------"
+	cat  ${TEMPDIR}/bootscripts/normal.cmd
+	echo "-----------------------------"
+
+	#This should be compatible with hwpacks variable names..
+	#https://code.launchpad.net/~linaro-maintainers/linaro-images/
+	cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
+		#!/bin/sh
+		format=1.0
+		board=${conf_board}
+
+		bootloader_location=${bootloader_location}
+		dd_spl_uboot_seek=${dd_spl_uboot_seek}
+		dd_spl_uboot_bs=${dd_spl_uboot_bs}
+		dd_uboot_seek=${dd_uboot_seek}
+		dd_uboot_bs=${dd_uboot_bs}
+
+		boot_image=${boot}
+		boot_script=${boot_script}
+		boot_fstype=${boot_fstype}
+
+		serial_tty=${SERIAL}
+		loadaddr=${conf_loadaddr}
+		initrdaddr=${conf_initrdaddr}
+		zreladdr=${conf_zreladdr}
+		fdtaddr=${conf_fdtaddr}
+		fdtfile=${conf_fdtfile}
+
+		usbnet_mem=${usbnet_mem}
+
+	__EOF__
+
+	if [ "${bbb_flasher}" ] ; then
+		touch ${TEMPDIR}/disk/flash-eMMC.txt
+	fi
+
+	echo "Debug:"
+	cat ${TEMPDIR}/disk/SOC.sh
+
+	boot_git_tools
+
+	cd ${TEMPDIR}/disk
+	sync
+	cd "${DIR}"/
+
+	echo "Debug: Contents of Boot Partition"
+	echo "-----------------------------"
+	ls -lh ${TEMPDIR}/disk/
+	echo "-----------------------------"
+
+	umount ${TEMPDIR}/disk || true
+
+	echo "Finished populating Boot Partition"
+	echo "-----------------------------"
 }
 
 populate_rootfs () {
@@ -862,222 +866,221 @@ populate_rootfs () {
 	echo "Please be patient, this may take a few minutes, as its transfering a lot of data.."
 	echo "-----------------------------"
 
-	partprobe ${MMC}
-
 	if [ ! -d ${TEMPDIR}/disk ] ; then
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	if mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
-
-		if [ -f "${DIR}/${ROOTFS}" ] ; then
-
-			echo "${DIR}/${ROOTFS}" | grep ".tgz" && DECOM="xzf"
-			echo "${DIR}/${ROOTFS}" | grep ".tar" && DECOM="xf"
-
-			if which pv > /dev/null ; then
-				pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
-			else
-				echo "pv: not installed, using tar verbose to show progress"
-				tar --numeric-owner --preserve-permissions --verbose -${DECOM} "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
-			fi
-
-			echo "Transfer of data is Complete, now syncing data to disk..."
-			sync
-			sync
-			echo "-----------------------------"
-		fi
-
-		#RootStock-NG
-		if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
-			. ${TEMPDIR}/disk/etc/rcn-ee.conf
-
-			mkdir -p ${TEMPDIR}/disk/boot/uboot || true
-			echo "# /etc/fstab: static file system information." > ${TEMPDIR}/disk/etc/fstab
-			echo "#" >> ${TEMPDIR}/disk/etc/fstab
-			echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk/etc/fstab
-			echo "#" >> ${TEMPDIR}/disk/etc/fstab
-			if [ "${BTRFS_FSTAB}" ] ; then
-				echo "/dev/mmcblk0p2  /            btrfs  defaults  0  1" >> ${TEMPDIR}/disk/etc/fstab
-			else
-				echo "/dev/mmcblk0p2  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
-			fi
-			echo "/dev/mmcblk0p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
-
-			if [ "x${distro}" = "xDebian" ] ; then
-				serial_num=$(echo -n "${SERIAL}"| tail -c -1)
-				echo "" >> ${TEMPDIR}/disk/etc/inittab
-				echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${TEMPDIR}/disk/etc/inittab
-				echo "" >> ${TEMPDIR}/disk/etc/inittab
-			fi
-
-			if [ "x${distro}" = "xUbuntu" ] ; then
-				echo "start on stopped rc RUNLEVEL=[2345]" > ${TEMPDIR}/disk/etc/init/serial.conf
-				echo "stop on runlevel [!2345]" >> ${TEMPDIR}/disk/etc/init/serial.conf
-				echo "" >> ${TEMPDIR}/disk/etc/init/serial.conf
-				echo "respawn" >> ${TEMPDIR}/disk/etc/init/serial.conf
-				echo "exec /sbin/getty 115200 ${SERIAL}" >> ${TEMPDIR}/disk/etc/init/serial.conf
-			fi
-
-			echo "# This file describes the network interfaces available on your system" > ${TEMPDIR}/disk/etc/network/interfaces
-			echo "# and how to activate them. For more information, see interfaces(5)." >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "# The loopback network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "auto lo" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "iface lo inet loopback" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "# The primary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
-			if [ "${DISABLE_ETH}" ] ; then
-				echo "#auto eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
-				echo "#iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
-			else
-				echo "auto eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
-				echo "iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
-			fi
-			echo "# Example to keep MAC address between reboots" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${TEMPDIR}/disk/etc/network/interfaces
-
-			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
-
-			echo "# WiFi Example" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "#auto wlan0" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "#iface wlan0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "#    wpa-ssid \"essid\"" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "#    wpa-psk  \"password\"" >> ${TEMPDIR}/disk/etc/network/interfaces
-
-			echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
-
-			echo "# Ethernet/RNDIS gadget (g_ether)" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "# ... or on host side, usbnet and random hwaddr" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "iface usb0 inet static" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "    address 192.168.7.2" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "    netmask 255.255.255.0" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "    network 192.168.7.0" >> ${TEMPDIR}/disk/etc/network/interfaces
-			echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
-
-			rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
-			rm -rf ${TEMPDIR}/disk/var/www/index.html || true
-			wfile=var/www/AJAX_terminal.html
-			echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-			echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-			echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-			echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-			echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
-			echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
-			echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-			echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-			echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-			sync
-
-		else
-
-		if [ "${BTRFS_FSTAB}" ] ; then
-			echo "btrfs selected as rootfs type, modifing /etc/fstab..."
-			sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
-			echo "-----------------------------"
-		fi
-
-		if [ "${DISABLE_ETH}" ] ; then
-			echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
-			sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
-			echo "-----------------------------"
-		fi
-
-		#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
-		if [ "x${SERIAL}" != "xttyO2" ] ; then
-			if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ] ; then
-				echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
-				echo "-----------------------------"
-				mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
-				sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
-			elif [ -f ${TEMPDIR}/disk/etc/inittab ] ; then
-				echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
-				echo "-----------------------------"
-				sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
-			fi
-		fi
-
-		fi #RootStock-NG
-
-		case "${SYSTEM}" in
-		bone|bone_dtb)
-			cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
-			fbcon
-			ti_tscadc
-
-			__EOF__
-
-			file="/etc/udev/rules.d/70-persistent-net.rules"
-			echo "" >> ${TEMPDIR}/disk${file}
-			echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk${file}
-			echo "# udevadm info -q all -p /sys/class/net/eth0 --attribute-walk" >> ${TEMPDIR}/disk${file}
-			echo "" >> ${TEMPDIR}/disk${file}
-			echo "# BeagleBone: net device ()" >> ${TEMPDIR}/disk${file}
-			echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
-			echo "" >> ${TEMPDIR}/disk${file}
-
-			;;
-		esac
-
-		if [ "${usbnet_mem}" ] ; then
-			echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
-		fi
-
-		if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
-			echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-			echo "-----------------------------"
-			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
-			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
-			echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
-			echo "-----------------------------"
-			sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-			sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-			sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-		fi
-
-		if [ "${CREATE_SWAP}" ] ; then
-			echo "-----------------------------"
-			echo "Extra: Creating SWAP File"
-			echo "-----------------------------"
-			echo "SWAP BUG creation note:"
-			echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
-			echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
-			echo "Background: usually occured in days before Ubuntu Lucid.."
-			echo "-----------------------------"
-
-			SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
-			let SIZE=${SWAP_SIZE}*1024
-
-			if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
-				dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=${SWAP_SIZE}
-				mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
-				echo "/mnt/SWAP.swap  none  swap  sw  0 0" >> ${TEMPDIR}/disk/etc/fstab
-			else
-				echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
-			fi
-		fi
-
-		cd ${TEMPDIR}/disk/
-		sync
-		sync
-		cd "${DIR}/"
-
-		umount ${TEMPDIR}/disk || true
-
-		echo "Finished populating rootfs Partition"
-		echo "-----------------------------"
-		else
+	partprobe ${MMC}
+	if ! mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
 		echo "-----------------------------"
 		echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
 		echo "Please retry running the script, sometimes rebooting your system helps."
 		echo "-----------------------------"
 		exit
 	fi
+
+	if [ -f "${DIR}/${ROOTFS}" ] ; then
+
+		echo "${DIR}/${ROOTFS}" | grep ".tgz" && DECOM="xzf"
+		echo "${DIR}/${ROOTFS}" | grep ".tar" && DECOM="xf"
+
+		if which pv > /dev/null ; then
+			pv "${DIR}/${ROOTFS}" | tar --numeric-owner --preserve-permissions -${DECOM} - -C ${TEMPDIR}/disk/
+		else
+			echo "pv: not installed, using tar verbose to show progress"
+			tar --numeric-owner --preserve-permissions --verbose -${DECOM} "${DIR}/${ROOTFS}" -C ${TEMPDIR}/disk/
+		fi
+
+		echo "Transfer of data is Complete, now syncing data to disk..."
+		sync
+		sync
+		echo "-----------------------------"
+	fi
+
+	#RootStock-NG
+	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
+		. ${TEMPDIR}/disk/etc/rcn-ee.conf
+
+		mkdir -p ${TEMPDIR}/disk/boot/uboot || true
+		echo "# /etc/fstab: static file system information." > ${TEMPDIR}/disk/etc/fstab
+		echo "#" >> ${TEMPDIR}/disk/etc/fstab
+		echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk/etc/fstab
+		echo "#" >> ${TEMPDIR}/disk/etc/fstab
+		if [ "${BTRFS_FSTAB}" ] ; then
+			echo "/dev/mmcblk0p2  /            btrfs  defaults  0  1" >> ${TEMPDIR}/disk/etc/fstab
+		else
+			echo "/dev/mmcblk0p2  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
+		fi
+		echo "/dev/mmcblk0p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
+
+		if [ "x${distro}" = "xDebian" ] ; then
+			serial_num=$(echo -n "${SERIAL}"| tail -c -1)
+			echo "" >> ${TEMPDIR}/disk/etc/inittab
+			echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${TEMPDIR}/disk/etc/inittab
+			echo "" >> ${TEMPDIR}/disk/etc/inittab
+		fi
+
+		if [ "x${distro}" = "xUbuntu" ] ; then
+			echo "start on stopped rc RUNLEVEL=[2345]" > ${TEMPDIR}/disk/etc/init/serial.conf
+			echo "stop on runlevel [!2345]" >> ${TEMPDIR}/disk/etc/init/serial.conf
+			echo "" >> ${TEMPDIR}/disk/etc/init/serial.conf
+			echo "respawn" >> ${TEMPDIR}/disk/etc/init/serial.conf
+			echo "exec /sbin/getty 115200 ${SERIAL}" >> ${TEMPDIR}/disk/etc/init/serial.conf
+		fi
+
+		echo "# This file describes the network interfaces available on your system" > ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# and how to activate them. For more information, see interfaces(5)." >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# The loopback network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "auto lo" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "iface lo inet loopback" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# The primary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
+		if [ "${DISABLE_ETH}" ] ; then
+			echo "#auto eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "#iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
+		else
+			echo "auto eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
+		fi
+		echo "# Example to keep MAC address between reboots" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		echo "# WiFi Example" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#auto wlan0" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#iface wlan0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#    wpa-ssid \"essid\"" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#    wpa-psk  \"password\"" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# ... or on host side, usbnet and random hwaddr" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "iface usb0 inet static" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "    address 192.168.7.2" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "    netmask 255.255.255.0" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "    network 192.168.7.0" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
+		rm -rf ${TEMPDIR}/disk/var/www/index.html || true
+		wfile=var/www/AJAX_terminal.html
+		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
+		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
+		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		sync
+
+	else
+
+	if [ "${BTRFS_FSTAB}" ] ; then
+		echo "btrfs selected as rootfs type, modifing /etc/fstab..."
+		sed -i 's/auto   errors=remount-ro/btrfs   defaults/g' ${TEMPDIR}/disk/etc/fstab
+		echo "-----------------------------"
+	fi
+
+	if [ "${DISABLE_ETH}" ] ; then
+		echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
+		sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+		sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+		sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+		echo "-----------------------------"
+	fi
+
+	#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
+	if [ "x${SERIAL}" != "xttyO2" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ] ; then
+			echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
+			echo "-----------------------------"
+			mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
+			sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
+		elif [ -f ${TEMPDIR}/disk/etc/inittab ] ; then
+			echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
+			echo "-----------------------------"
+			sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
+		fi
+	fi
+
+	fi #RootStock-NG
+
+	case "${SYSTEM}" in
+	bone|bone_dtb)
+		cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
+		fbcon
+		ti_tscadc
+
+		__EOF__
+
+		file="/etc/udev/rules.d/70-persistent-net.rules"
+		echo "" >> ${TEMPDIR}/disk${file}
+		echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk${file}
+		echo "# udevadm info -q all -p /sys/class/net/eth0 --attribute-walk" >> ${TEMPDIR}/disk${file}
+		echo "" >> ${TEMPDIR}/disk${file}
+		echo "# BeagleBone: net device ()" >> ${TEMPDIR}/disk${file}
+		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
+		echo "" >> ${TEMPDIR}/disk${file}
+
+		;;
+	esac
+
+	if [ "${usbnet_mem}" ] ; then
+		echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
+	fi
+
+	if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
+		echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
+		echo "-----------------------------"
+		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
+		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
+		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
+		echo "-----------------------------"
+		sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+		sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+		sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
+	fi
+
+	if [ "${CREATE_SWAP}" ] ; then
+		echo "-----------------------------"
+		echo "Extra: Creating SWAP File"
+		echo "-----------------------------"
+		echo "SWAP BUG creation note:"
+		echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
+		echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
+		echo "Background: usually occured in days before Ubuntu Lucid.."
+		echo "-----------------------------"
+
+		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
+		let SIZE=${SWAP_SIZE}*1024
+
+		if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
+			dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=${SWAP_SIZE}
+			mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
+			echo "/mnt/SWAP.swap  none  swap  sw  0 0" >> ${TEMPDIR}/disk/etc/fstab
+		else
+			echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
+		fi
+	fi
+
+	cd ${TEMPDIR}/disk/
+	sync
+	sync
+	cd "${DIR}/"
+
+	umount ${TEMPDIR}/disk || true
+
+	echo "Finished populating rootfs Partition"
+	echo "-----------------------------"
+
 	echo "setup_sdcard.sh script complete"
 	if [ -f "${DIR}/user_password.list" ] ; then
 		echo "-----------------------------"
