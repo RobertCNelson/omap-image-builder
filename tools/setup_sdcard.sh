@@ -555,18 +555,22 @@ fatfs_boot () {
 	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
 	echo "-----------------------------"
 
-	$FDISK_EXEC ${MMC} <<-__EOF__
-		n
-		p
-		1
+	if [ ! "${img_file}" ] ; then
+		$FDISK_EXEC ${MMC} <<-__EOF__
+			n
+			p
+			1
 
-		+${boot_partition_size}M
-		t
-		e
-		p
-		w
-	__EOF__
-
+			+${boot_partition_size}M
+			t
+			e
+			p
+			w
+		__EOF__
+	else
+		#FIXME: while this 'works' as far as formating the image, it fails to boot..
+		LC_ALL=C parted --script ${MMC} mkpart primary fat16 -- 1 ${boot_partition_size}
+	fi
 	sync
 
 	echo "Setting Boot Partition's Boot Flag"
@@ -597,11 +601,30 @@ format_partition_error () {
 	exit
 }
 
+losetup_boot () {
+	offset=$(LC_ALL=C parted --script ${MMC} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -1)
+	unset tmp_loop
+	tmp_loop=$(losetup -f || true)
+	if [ ! "${tmp_loop}" ] ; then
+		echo "losetup -f failed"
+		exit
+	fi
+	losetup -o ${offset} ${tmp_loop} ${MMC}
+}
+
 format_boot_partition () {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
-	partprobe ${MMC}
-	LC_ALL=C ${mkfs} ${MMC}${PARTITION_PREFIX}1 ${mkfs_label} || format_partition_error
+
+	if [ "${img_file}" ] ; then
+		losetup_boot
+		LC_ALL=C ${mkfs} ${tmp_loop} ${mkfs_label} || format_partition_error
+		sync
+		losetup -d ${tmp_loop}
+	else
+		partprobe ${MMC}
+		LC_ALL=C ${mkfs} ${MMC}${PARTITION_PREFIX}1 ${mkfs_label} || format_partition_error
+	fi
 }
 
 calculate_rootfs_partition () {
@@ -618,11 +641,29 @@ calculate_rootfs_partition () {
 	sync
 }
 
+losetup_rootfs () {
+	offset=$(LC_ALL=C parted --script ${MMC} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -2 | tail -1)
+	unset tmp_loop
+	tmp_loop=$(losetup -f || true)
+	if [ ! "${tmp_loop}" ] ; then
+		echo "losetup -f failed"
+		exit
+	fi
+	losetup -o ${offset} ${tmp_loop} ${MMC}
+}
+
 format_rootfs_partition () {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
 	partprobe ${MMC}
-	LC_ALL=C mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL} || format_partition_error
+	if [ "${img_file}" ] ; then
+		losetup_rootfs
+		LC_ALL=C mkfs.${ROOTFS_TYPE} ${tmp_loop} -L ${ROOTFS_LABEL} || format_partition_error
+		sync
+		losetup -d ${tmp_loop}
+	else
+		LC_ALL=C mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL} || format_partition_error
+	fi
 }
 
 create_partitions () {
@@ -728,13 +769,18 @@ populate_boot () {
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	partprobe ${MMC}
-	if ! mount -t ${mount_partition_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
-		echo "-----------------------------"
-		echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
-		echo "Please retry running the script, sometimes rebooting your system helps."
-		echo "-----------------------------"
-		exit
+	if [ ! "${img_file}" ] ; then
+		partprobe ${MMC}
+		if ! mount -t ${mount_partition_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
+			echo "-----------------------------"
+			echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+			echo "Please retry running the script, sometimes rebooting your system helps."
+			echo "-----------------------------"
+			exit
+		fi
+	else
+		losetup_boot
+		mount -t ${mount_partition_format} ${tmp_loop} ${TEMPDIR}/disk
 	fi
 
 	mkdir -p ${TEMPDIR}/disk/backup
@@ -856,6 +902,10 @@ populate_boot () {
 	echo "-----------------------------"
 
 	umount ${TEMPDIR}/disk || true
+	if [ "${img_file}" ] ; then
+		sync
+		losetup -d ${tmp_loop} || true
+	fi
 
 	echo "Finished populating Boot Partition"
 	echo "-----------------------------"
@@ -870,13 +920,18 @@ populate_rootfs () {
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	partprobe ${MMC}
-	if ! mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
-		echo "-----------------------------"
-		echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
-		echo "Please retry running the script, sometimes rebooting your system helps."
-		echo "-----------------------------"
-		exit
+	if [ ! "${img_file}" ] ; then
+		partprobe ${MMC}
+		if ! mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
+			echo "-----------------------------"
+			echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+			echo "Please retry running the script, sometimes rebooting your system helps."
+			echo "-----------------------------"
+			exit
+		fi
+	else
+		losetup_rootfs
+		mount -t ${ROOTFS_TYPE} ${tmp_loop} ${TEMPDIR}/disk
 	fi
 
 	if [ -f "${DIR}/${ROOTFS}" ] ; then
@@ -1077,6 +1132,11 @@ populate_rootfs () {
 	cd "${DIR}/"
 
 	umount ${TEMPDIR}/disk || true
+	if [ "${img_file}" ] ; then
+		sync
+		losetup -d ${tmp_loop} || true
+		losetup -d ${MMC} || true
+	fi
 
 	echo "Finished populating rootfs Partition"
 	echo "-----------------------------"
@@ -1086,6 +1146,10 @@ populate_rootfs () {
 		echo "-----------------------------"
 		echo "The default user:password for this image:"
 		cat "${DIR}/user_password.list"
+		echo "-----------------------------"
+	fi
+	if [ "${img_file}" ] ; then
+		echo "Image file: ${imgfile}"
 		echo "-----------------------------"
 	fi
 }
@@ -1632,6 +1696,26 @@ while [ ! -z "$1" ] ; do
 		check_root
 		check_mmc
 		;;
+	--img)
+		checkparm $2
+		imgfile="$2"
+		if [ "x${imgfile}" = "x" ] ; then
+			imgfile=image.img
+		fi
+		img_file=1
+		check_root
+		if [ -f "${DIR}/${imgfile}" ] ; then
+			rm -rf "${DIR}/${imgfile}" || true
+		fi
+		#FIXME: 600Mb initial size...
+		dd if=/dev/zero of="${DIR}/${imgfile}" bs=1024 count=0 seek=$((1024*600))
+		MMC=$(losetup -f || true)
+		if [ ! "${MMC}" ] ; then
+			echo "losetup -f failed"
+			exit
+		fi
+		losetup ${MMC} "${DIR}/${imgfile}"
+		;;
 	--uboot)
 		checkparm $2
 		UBOOT_TYPE="$2"
@@ -1754,7 +1838,11 @@ if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 fi
 
 setup_bootscripts
-unmount_all_drive_partitions
+if [ ! "${img_file}" ] ; then
+	unmount_all_drive_partitions
+else
+	create_msdos_label
+fi
 create_partitions
 populate_boot
 populate_rootfs
