@@ -1710,7 +1710,7 @@ while [ ! -z "$1" ] ; do
 			rm -rf "${DIR}/${imgfile}" || true
 		fi
 		#FIXME: 600Mb initial size...
-		dd if=/dev/zero of="${DIR}/${imgfile}" bs=1024 count=0 seek=$((1024*600))
+		dd if=/dev/zero of="${DIR}/${imgfile}" bs=1 count=0 seek=$((600*1024*1024))
 		MMC=$(losetup -f || true)
 		if [ ! "${MMC}" ] ; then
 			echo "losetup -f failed"
