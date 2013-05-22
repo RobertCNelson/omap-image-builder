@@ -568,13 +568,10 @@ fatfs_boot () {
 			w
 		__EOF__
 	else
-		#FIXME: while this 'works' as far as formating the image, it fails to boot..
-		LC_ALL=C parted --script ${MMC} mkpart primary fat16 -- 1 ${boot_partition_size}
-#<start> <size> <id> <bootable> <c,h,s> <c,h,s>
-#cat <<EOF | sfdisk -S 63 -H 255 -uS -L ${MMC}
-#63,$(((${boot_partition_size} + 3) / 4 * 4 * 2048 - 1)),0xc,*
-#,,,
-#EOF
+		#FIXME: this works on the drive, but not the Img..
+		LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M --Linux ${MMC}  <<-__EOF__
+			,${boot_partition_size},0xe,*
+		__EOF__
 	fi
 	sync
 
@@ -633,7 +630,6 @@ format_boot_partition () {
 }
 
 calculate_rootfs_partition () {
-#	if [ ! "${img_file}" ] ; then
 	echo "Creating rootfs ${ROOTFS_TYPE} Partition"
 	echo "-----------------------------"
 
@@ -645,7 +641,6 @@ calculate_rootfs_partition () {
 
 	parted --script ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
 	sync
-#	fi
 }
 
 losetup_rootfs () {
