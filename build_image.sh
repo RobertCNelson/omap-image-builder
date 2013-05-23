@@ -171,7 +171,7 @@ is_debian () {
 
 #12.10
 quantal_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties cloud-utils"
+	extra_pkgs="linux-firmware devmem2 python-software-properties"
 	is_ubuntu
 	release="quantal"
 	select_rcn_ee_net_kernel
