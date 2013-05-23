@@ -152,12 +152,13 @@ detect_software () {
 	check_for_command parted parted
 	check_for_command git git
 	check_for_command mkimage u-boot-tools
+	check_for_command kpartx kpartx
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
 		echo "Angstrom: opkg install dosfstools git util-linux parted wget (u-boot/mkimage pkg?)"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core parted u-boot-tools wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx parted u-boot-tools wget"
 		echo "Fedora: yum install dosfstools dosfstools git-core parted uboot-tools wget"
 		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
 		echo ""
@@ -553,29 +554,39 @@ fatfs_boot () {
 	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
 	echo "-----------------------------"
 
-	if [ ! "${img_file}" ] ; then
-		$FDISK_EXEC ${media} <<-__EOF__
-			n
-			p
-			1
+	$FDISK_EXEC ${media} <<-__EOF__
+		n
+		p
+		1
 
-			+${boot_partition_size}M
-			t
-			e
-			p
-			w
-		__EOF__
-	else
-		#FIXME: this works on the drive, but not the Img..
-		LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M --Linux ${media}  <<-__EOF__
-			,${boot_partition_size},0xe,*
-		__EOF__
-	fi
+		+${boot_partition_size}M
+		t
+		e
+		p
+		w
+	__EOF__
+
 	sync
 
 	echo "Setting Boot Partition's Boot Flag"
 	echo "-----------------------------"
-	LC_ALL=C parted --script ${media} set 1 boot on || fatfs_boot_error
+	LC_ALL=C parted --script "${media}" set 1 boot on || fatfs_boot_error
+
+	sync
+}
+
+fatfs_img_file () {
+	#For: TI: Omap/Sitara Devices
+	echo ""
+	echo "Using sfdisk to create an omap compatible fatfs BOOT partition"
+	echo "-----------------------------"
+
+	LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M "${media}" <<-__EOF__
+		,${boot_partition_size},0xe,*
+		,,,-
+	__EOF__
+
+	sync
 }
 
 dd_uboot_boot () {
@@ -597,34 +608,10 @@ dd_spl_uboot_boot () {
 }
 
 format_partition_error () {
+	echo "LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label}"
+	echo "LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 ${ROOTFS_LABEL}"
 	echo "Failure: formating partition"
 	exit
-}
-
-losetup_boot () {
-	offset=$(LC_ALL=C parted --script ${media} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -1)
-	unset tmp_loop
-	tmp_loop=$(losetup -f || true)
-	if [ ! "${tmp_loop}" ] ; then
-		echo "losetup -f failed"
-		exit
-	fi
-	losetup -o ${offset} ${tmp_loop} ${media}
-}
-
-format_boot_partition () {
-	echo "Formating Boot Partition"
-	echo "-----------------------------"
-
-	if [ "${img_file}" ] ; then
-		losetup_boot
-		LC_ALL=C ${mkfs} ${tmp_loop} ${mkfs_label} || format_partition_error
-		sync
-		losetup -d ${tmp_loop}
-	else
-		partprobe ${media}
-		LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label} || format_partition_error
-	fi
 }
 
 calculate_rootfs_partition () {
@@ -632,38 +619,27 @@ calculate_rootfs_partition () {
 	echo "-----------------------------"
 
 	unset END_BOOT
-	END_BOOT=$(LC_ALL=C parted -s ${media} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
+	END_BOOT=$(LC_ALL=C parted -s "${media}" unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
 	unset END_DEVICE
-	END_DEVICE=$(LC_ALL=C parted -s ${media} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
+	END_DEVICE=$(LC_ALL=C parted -s "${media}" unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
 
-	parted --script ${media} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
+	parted --script "${media}" mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
 	sync
 }
 
-losetup_rootfs () {
-	offset=$(LC_ALL=C parted --script ${media} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -2 | tail -1)
-	unset tmp_loop
-	tmp_loop=$(losetup -f || true)
-	if [ ! "${tmp_loop}" ] ; then
-		echo "losetup -f failed"
-		exit
-	fi
-	losetup -o ${offset} ${tmp_loop} ${media}
+format_boot_partition () {
+	echo "Formating Boot Partition"
+	echo "-----------------------------"
+	LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label} || format_partition_error
+	sync
 }
 
 format_rootfs_partition () {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
-	partprobe ${media}
-	if [ "${img_file}" ] ; then
-		losetup_rootfs
-		LC_ALL=C mkfs.${ROOTFS_TYPE} ${tmp_loop} -L ${ROOTFS_LABEL} || format_partition_error
-		sync
-		losetup -d ${tmp_loop}
-	else
-		LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 -L ${ROOTFS_LABEL} || format_partition_error
-	fi
+	LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 -L ${ROOTFS_LABEL} || format_partition_error
+	sync
 }
 
 create_partitions () {
@@ -683,26 +659,64 @@ create_partitions () {
 
 	case "${bootloader_location}" in
 	fatfs_boot)
-		fatfs_boot
+		if [ ! "${build_img_file}" ] ; then
+			fatfs_boot
+			calculate_rootfs_partition
+		else
+			fatfs_img_file
+		fi
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
 		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		calculate_rootfs_partition
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
 		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		calculate_rootfs_partition
 		;;
 	*)
 		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		calculate_rootfs_partition
 		;;
 	esac
-	calculate_rootfs_partition
+
+	echo "Partition Setup:"
+	echo "-----------------------------"
+	LC_ALL=C $FDISK_EXEC -l "${media}"
+	echo "-----------------------------"
+
+	if [ "${build_img_file}" ] ; then
+		media_loop=$(losetup -f || true)
+		if [ ! "${media_loop}" ] ; then
+			echo "losetup -f failed"
+			echo "Unmount some via: [sudo losetup -a]"
+			echo "-----------------------------"
+			losetup -a
+			echo "sudo kpartx -d /dev/loopX ; sudo losetup -d /dev/loopX"
+			echo "-----------------------------"
+			exit
+		fi
+
+		losetup ${media_loop} "${media}"
+		kpartx -av ${media_loop}
+		sleep 1
+		sync
+		test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
+		if [ -e /dev/mapper/${test_loop}p1 ] && [ -e /dev/mapper/${test_loop}p2 ] ; then
+			media_prefix="/dev/mapper/${test_loop}p"
+		else
+			ls -lh /dev/mapper/
+			echo "Error: not sure what to do (new feature)."
+			exit
+		fi
+	else
+		partprobe ${media}
+	fi
+
 	format_boot_partition
 	format_rootfs_partition
-	echo "Final Created Partition:"
-	LC_ALL=C $FDISK_EXEC -l ${media}
-	echo "-----------------------------"
 }
 
 boot_git_tools () {
@@ -769,18 +783,13 @@ populate_boot () {
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	if [ ! "${img_file}" ] ; then
-		partprobe ${media}
-		if ! mount -t ${mount_partition_format} ${media_prefix}1 ${TEMPDIR}/disk; then
-			echo "-----------------------------"
-			echo "Unable to mount ${media_prefix}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
-			echo "Please retry running the script, sometimes rebooting your system helps."
-			echo "-----------------------------"
-			exit
-		fi
-	else
-		losetup_boot
-		mount -t ${mount_partition_format} ${tmp_loop} ${TEMPDIR}/disk
+	partprobe ${media}
+	if ! mount -t ${mount_partition_format} ${media_prefix}1 ${TEMPDIR}/disk; then
+		echo "-----------------------------"
+		echo "Unable to mount ${media_prefix}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "-----------------------------"
+		exit
 	fi
 
 	mkdir -p ${TEMPDIR}/disk/backup
@@ -902,10 +911,6 @@ populate_boot () {
 	echo "-----------------------------"
 
 	umount ${TEMPDIR}/disk || true
-	if [ "${img_file}" ] ; then
-		sync
-		losetup -d ${tmp_loop} || true
-	fi
 
 	echo "Finished populating Boot Partition"
 	echo "-----------------------------"
@@ -920,18 +925,13 @@ populate_rootfs () {
 		mkdir -p ${TEMPDIR}/disk
 	fi
 
-	if [ ! "${img_file}" ] ; then
-		partprobe ${media}
-		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}2 ${TEMPDIR}/disk; then
-			echo "-----------------------------"
-			echo "Unable to mount ${media_prefix}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
-			echo "Please retry running the script, sometimes rebooting your system helps."
-			echo "-----------------------------"
-			exit
-		fi
-	else
-		losetup_rootfs
-		mount -t ${ROOTFS_TYPE} ${tmp_loop} ${TEMPDIR}/disk
+	partprobe ${media}
+	if ! mount -t ${ROOTFS_TYPE} ${media_prefix}2 ${TEMPDIR}/disk; then
+		echo "-----------------------------"
+		echo "Unable to mount ${media_prefix}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "-----------------------------"
+		exit
 	fi
 
 	if [ -f "${DIR}/${ROOTFS}" ] ; then
@@ -1132,10 +1132,10 @@ populate_rootfs () {
 	cd "${DIR}/"
 
 	umount ${TEMPDIR}/disk || true
-	if [ "${img_file}" ] ; then
+	if [ "${build_img_file}" ] ; then
 		sync
-		losetup -d ${tmp_loop} || true
-		losetup -d ${media} || true
+		kpartx -d ${media_loop} || true
+		losetup -d ${media_loop} || true
 	fi
 
 	echo "Finished populating rootfs Partition"
@@ -1148,8 +1148,9 @@ populate_rootfs () {
 		cat "${DIR}/user_password.list"
 		echo "-----------------------------"
 	fi
-	if [ "${img_file}" ] ; then
-		echo "Image file: ${imgfile}"
+	if [ "${build_img_file}" ] ; then
+		echo "Image file: ${media}"
+		echo "Compress via: xz -z -7 -v -k ${media}"
 		echo "-----------------------------"
 	fi
 }
@@ -1698,23 +1699,18 @@ while [ ! -z "$1" ] ; do
 		;;
 	--img)
 		checkparm $2
-		imgfile="$2"
-		if [ "x${imgfile}" = "x" ] ; then
-			imgfile=image.img
+		imagename="$2"
+		if [ "x${imagename}" = "x" ] ; then
+			imagename=image.img
 		fi
-		img_file=1
+		media="${DIR}/${imagename}"
+		build_img_file=1
 		check_root
-		if [ -f "${DIR}/${imgfile}" ] ; then
-			rm -rf "${DIR}/${imgfile}" || true
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
 		fi
 		#FIXME: 600Mb initial size...
-		dd if=/dev/zero of="${DIR}/${imgfile}" bs=1 count=0 seek=$((600*1024*1024))
-		media=$(losetup -f || true)
-		if [ ! "${media}" ] ; then
-			echo "losetup -f failed"
-			exit
-		fi
-		losetup ${media} "${DIR}/${imgfile}"
+		dd if=/dev/zero of="${media}" bs=1M count=600
 		;;
 	--uboot)
 		checkparm $2
@@ -1838,7 +1834,7 @@ if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 fi
 
 setup_bootscripts
-if [ ! "${img_file}" ] ; then
+if [ ! "${build_img_file}" ] ; then
 	unmount_all_drive_partitions
 else
 	create_msdos_label
