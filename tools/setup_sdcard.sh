@@ -31,9 +31,7 @@ MIRROR="http://rcn-ee.net/deb"
 BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
 
 BOOT_LABEL="boot"
-PARTITION_PREFIX=""
 
-unset MMC
 unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
@@ -510,7 +508,7 @@ setup_bootscripts () {
 
 drive_error_ro () {
 	echo "-----------------------------"
-	echo "Error: [LC_ALL=C parted --script ${MMC} mklabel msdos] failed..."
+	echo "Error: [LC_ALL=C parted --script ${media} mklabel msdos] failed..."
 	echo "Error: for some reason your SD card is not writable..."
 	echo "Check: is the write protect lever set the locked position?"
 	echo "Check: do you have another SD card reader?"
@@ -521,7 +519,7 @@ drive_error_ro () {
 }
 
 create_msdos_label () {
-	LC_ALL=C parted --script ${MMC} mklabel msdos || drive_error_ro
+	LC_ALL=C parted --script ${media} mklabel msdos || drive_error_ro
 	sync
 }
 
@@ -530,22 +528,22 @@ unmount_all_drive_partitions () {
 	echo "Unmounting Partitions"
 	echo "-----------------------------"
 
-	NUM_MOUNTS=$(mount | grep -v none | grep "$MMC" | wc -l)
+	NUM_MOUNTS=$(mount | grep -v none | grep "${media}" | wc -l)
 
 ##	for (i=1;i<=${NUM_MOUNTS};i++)
 	for ((i=1;i<=${NUM_MOUNTS};i++))
 	do
-		DRIVE=$(mount | grep -v none | grep "$MMC" | tail -1 | awk '{print $1}')
+		DRIVE=$(mount | grep -v none | grep "${media}" | tail -1 | awk '{print $1}')
 		umount ${DRIVE} >/dev/null 2>&1 || true
 	done
 
 	echo "Zeroing out Partition Table"
-	dd if=/dev/zero of=${MMC} bs=1024 count=1024
+	dd if=/dev/zero of=${media} bs=1024 count=1024
 	create_msdos_label
 }
 
 fatfs_boot_error () {
-	echo "Failure: [parted --script ${MMC} set 1 boot on]"
+	echo "Failure: [parted --script ${media} set 1 boot on]"
 	exit
 }
 
@@ -556,7 +554,7 @@ fatfs_boot () {
 	echo "-----------------------------"
 
 	if [ ! "${img_file}" ] ; then
-		$FDISK_EXEC ${MMC} <<-__EOF__
+		$FDISK_EXEC ${media} <<-__EOF__
 			n
 			p
 			1
@@ -569,7 +567,7 @@ fatfs_boot () {
 		__EOF__
 	else
 		#FIXME: this works on the drive, but not the Img..
-		LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M --Linux ${MMC}  <<-__EOF__
+		LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M --Linux ${media}  <<-__EOF__
 			,${boot_partition_size},0xe,*
 		__EOF__
 	fi
@@ -577,7 +575,7 @@ fatfs_boot () {
 
 	echo "Setting Boot Partition's Boot Flag"
 	echo "-----------------------------"
-	LC_ALL=C parted --script ${MMC} set 1 boot on || fatfs_boot_error
+	LC_ALL=C parted --script ${media} set 1 boot on || fatfs_boot_error
 }
 
 dd_uboot_boot () {
@@ -585,7 +583,7 @@ dd_uboot_boot () {
 	echo ""
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
 }
 
 dd_spl_uboot_boot () {
@@ -593,8 +591,8 @@ dd_spl_uboot_boot () {
 	echo ""
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_spl_uboot_seek} bs=${dd_spl_uboot_bs}
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${MMC} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_spl_uboot_seek} bs=${dd_spl_uboot_bs}
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
 	bootloader_installed=1
 }
 
@@ -604,14 +602,14 @@ format_partition_error () {
 }
 
 losetup_boot () {
-	offset=$(LC_ALL=C parted --script ${MMC} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -1)
+	offset=$(LC_ALL=C parted --script ${media} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -1)
 	unset tmp_loop
 	tmp_loop=$(losetup -f || true)
 	if [ ! "${tmp_loop}" ] ; then
 		echo "losetup -f failed"
 		exit
 	fi
-	losetup -o ${offset} ${tmp_loop} ${MMC}
+	losetup -o ${offset} ${tmp_loop} ${media}
 }
 
 format_boot_partition () {
@@ -624,8 +622,8 @@ format_boot_partition () {
 		sync
 		losetup -d ${tmp_loop}
 	else
-		partprobe ${MMC}
-		LC_ALL=C ${mkfs} ${MMC}${PARTITION_PREFIX}1 ${mkfs_label} || format_partition_error
+		partprobe ${media}
+		LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label} || format_partition_error
 	fi
 }
 
@@ -634,37 +632,37 @@ calculate_rootfs_partition () {
 	echo "-----------------------------"
 
 	unset END_BOOT
-	END_BOOT=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
+	END_BOOT=$(LC_ALL=C parted -s ${media} unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
 
 	unset END_DEVICE
-	END_DEVICE=$(LC_ALL=C parted -s ${MMC} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
+	END_DEVICE=$(LC_ALL=C parted -s ${media} unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
 
-	parted --script ${MMC} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
+	parted --script ${media} mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
 	sync
 }
 
 losetup_rootfs () {
-	offset=$(LC_ALL=C parted --script ${MMC} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -2 | tail -1)
+	offset=$(LC_ALL=C parted --script ${media} unit B print | grep primary | awk '{print $2}' | cut -d "B" -f1 | head -2 | tail -1)
 	unset tmp_loop
 	tmp_loop=$(losetup -f || true)
 	if [ ! "${tmp_loop}" ] ; then
 		echo "losetup -f failed"
 		exit
 	fi
-	losetup -o ${offset} ${tmp_loop} ${MMC}
+	losetup -o ${offset} ${tmp_loop} ${media}
 }
 
 format_rootfs_partition () {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
-	partprobe ${MMC}
+	partprobe ${media}
 	if [ "${img_file}" ] ; then
 		losetup_rootfs
 		LC_ALL=C mkfs.${ROOTFS_TYPE} ${tmp_loop} -L ${ROOTFS_LABEL} || format_partition_error
 		sync
 		losetup -d ${tmp_loop}
 	else
-		LC_ALL=C mkfs.${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 -L ${ROOTFS_LABEL} || format_partition_error
+		LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 -L ${ROOTFS_LABEL} || format_partition_error
 	fi
 }
 
@@ -689,21 +687,21 @@ create_partitions () {
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	*)
-		LC_ALL=C parted --script ${MMC} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
 		;;
 	esac
 	calculate_rootfs_partition
 	format_boot_partition
 	format_rootfs_partition
 	echo "Final Created Partition:"
-	LC_ALL=C $FDISK_EXEC -l ${MMC}
+	LC_ALL=C $FDISK_EXEC -l ${media}
 	echo "-----------------------------"
 }
 
@@ -772,10 +770,10 @@ populate_boot () {
 	fi
 
 	if [ ! "${img_file}" ] ; then
-		partprobe ${MMC}
-		if ! mount -t ${mount_partition_format} ${MMC}${PARTITION_PREFIX}1 ${TEMPDIR}/disk; then
+		partprobe ${media}
+		if ! mount -t ${mount_partition_format} ${media_prefix}1 ${TEMPDIR}/disk; then
 			echo "-----------------------------"
-			echo "Unable to mount ${MMC}${PARTITION_PREFIX}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+			echo "Unable to mount ${media_prefix}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
 			echo "Please retry running the script, sometimes rebooting your system helps."
 			echo "-----------------------------"
 			exit
@@ -923,10 +921,10 @@ populate_rootfs () {
 	fi
 
 	if [ ! "${img_file}" ] ; then
-		partprobe ${MMC}
-		if ! mount -t ${ROOTFS_TYPE} ${MMC}${PARTITION_PREFIX}2 ${TEMPDIR}/disk; then
+		partprobe ${media}
+		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}2 ${TEMPDIR}/disk; then
 			echo "-----------------------------"
-			echo "Unable to mount ${MMC}${PARTITION_PREFIX}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+			echo "Unable to mount ${media_prefix}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
 			echo "Please retry running the script, sometimes rebooting your system helps."
 			echo "-----------------------------"
 			exit
@@ -1116,7 +1114,7 @@ populate_rootfs () {
 		echo "Background: usually occured in days before Ubuntu Lucid.."
 		echo "-----------------------------"
 
-		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${MMC}${PARTITION_PREFIX}2 | awk '{print $4}')
+		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${media_prefix}2 | awk '{print $4}')
 		let SIZE=${SWAP_SIZE}*1024
 
 		if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
@@ -1137,7 +1135,7 @@ populate_rootfs () {
 	if [ "${img_file}" ] ; then
 		sync
 		losetup -d ${tmp_loop} || true
-		losetup -d ${MMC} || true
+		losetup -d ${media} || true
 	fi
 
 	echo "Finished populating rootfs Partition"
@@ -1157,9 +1155,9 @@ populate_rootfs () {
 }
 
 check_mmc () {
-	FDISK=$(LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk ${MMC}" | awk '{print $2}')
+	FDISK=$(LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk ${media}" | awk '{print $2}')
 
-	if [ "x${FDISK}" = "x${MMC}:" ] ; then
+	if [ "x${FDISK}" = "x${media}:" ] ; then
 		echo ""
 		echo "I see..."
 		echo "$FDISK_EXEC -l:"
@@ -1174,7 +1172,7 @@ check_mmc () {
 		fi
 		echo ""
 		unset response
-		echo -n "Are you 100% sure, on selecting [${MMC}] (y/n)? "
+		echo -n "Are you 100% sure, on selecting [${media}] (y/n)? "
 		read response
 		if [ "x${response}" != "xy" ] ; then
 			exit
@@ -1182,7 +1180,7 @@ check_mmc () {
 		echo ""
 	else
 		echo ""
-		echo "Are you sure? I Don't see [${MMC}], here is what I do see..."
+		echo "Are you sure? I Don't see [${media}], here is what I do see..."
 		echo ""
 		echo "$FDISK_EXEC -l:"
 		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
@@ -1683,18 +1681,18 @@ while [ ! -z "$1" ] ; do
 	case $1 in
 	-h|--help)
 		usage
-		MMC=1
+		media=1
 		;;
 	--probe-mmc)
-		MMC="/dev/idontknow"
+		media="/dev/idontknow"
 		check_root
 		check_mmc
 		;;
 	--mmc)
 		checkparm $2
-		MMC="$2"
-		unset PARTITION_PREFIX
-		echo ${MMC} | grep mmcblk >/dev/null && PARTITION_PREFIX="p"
+		media="$2"
+		media_prefix="${media}"
+		echo ${media} | grep mmcblk >/dev/null && media_prefix="${media}p"
 		check_root
 		check_mmc
 		;;
@@ -1711,12 +1709,12 @@ while [ ! -z "$1" ] ; do
 		fi
 		#FIXME: 600Mb initial size...
 		dd if=/dev/zero of="${DIR}/${imgfile}" bs=1 count=0 seek=$((600*1024*1024))
-		MMC=$(losetup -f || true)
-		if [ ! "${MMC}" ] ; then
+		media=$(losetup -f || true)
+		if [ ! "${media}" ] ; then
 			echo "losetup -f failed"
 			exit
 		fi
-		losetup ${MMC} "${DIR}/${imgfile}"
+		losetup ${media} "${DIR}/${imgfile}"
 		;;
 	--uboot)
 		checkparm $2
@@ -1782,7 +1780,7 @@ while [ ! -z "$1" ] ; do
 	shift
 done
 
-if [ ! "${MMC}" ] ; then
+if [ ! "${media}" ] ; then
 	echo "ERROR: --mmc undefined"
 	usage
 fi
