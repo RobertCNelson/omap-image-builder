@@ -358,7 +358,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	crane|igepv2|mx53loco)
+	crane|igepv2|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb|mx6qsabrelite)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -370,28 +370,10 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy}
 		__EOF__
 		;;
-	panda_dtb|panda_es_dtb)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion
-		__EOF__
-		;;
-	mx51evk|mx53loco_dtb)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion
-		__EOF__
-		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=
 			expansion_args=setenv expansion ip=\${ip_method}
-		__EOF__
-		;;
-	mx6qsabrelite)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion
 		__EOF__
 		;;
 	esac
