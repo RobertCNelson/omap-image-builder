@@ -264,6 +264,13 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
+	if [ "${kms_conn}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			#Video: Uncomment to override:
+			#kms_force_mode=video=${kms_conn}:1024x768@60
+		__EOF__
+	fi
+
 	case "${SYSTEM}" in
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
@@ -323,12 +330,20 @@ boot_uenv_txt_template () {
 
 	__EOF__
 
-	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		video_args=setenv video VIDEO_DISPLAY
-		device_args=run video_args; run expansion_args; run mmcargs
-		mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+	if [ ! "${USE_KMS}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			video_args=setenv video VIDEO_DISPLAY
+			device_args=run video_args; run expansion_args; run mmcargs
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
 
-	__EOF__
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			device_args=run expansion_args; run mmcargs
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+
+		__EOF__
+	fi
 
 	case "${SYSTEM}" in
 	beagle_bx|beagle_cx)
@@ -1378,6 +1393,7 @@ check_uboot_type () {
 	boot_partition_size="64"
 
 	uboot_CMD_LOAD="load"
+	unset kms_conn
 
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
@@ -1462,6 +1478,7 @@ check_uboot_type () {
 
 		#just to disable the omapfb stuff..
 		USE_KMS=1
+		kms_conn="HDMI-A-1"
 		uboot_SCRIPT_ENTRY="uenvcmd"
 		conf_zreladdr="0x80008000"
 		conf_loadaddr="0x80200000"
