@@ -300,7 +300,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates () {
 		apt-get update
 
-		packages="initramfs-tools git-core sudo wget"
+		#packages this script must always have installed
+		packages="initramfs-tools git-core sudo u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		distro="\$(lsb_release -si)"
