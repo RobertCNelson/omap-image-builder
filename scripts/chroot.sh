@@ -371,6 +371,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		depmod \${kernel_version}
 		update-initramfs -c -k \${kernel_version}
+		mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\${kernel_version} /boot/uInitrd-\${kernel_version}
 		rm -f /tmp/index.html || true
 		rm -f /tmp/temp.html || true
 		rm -f /tmp/\${deb_file} || true
@@ -521,6 +522,10 @@ fi
 
 if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
+fi
+
+if ls ${tempdir}/boot/uInitrd-* >/dev/null 2>&1 ; then
+	sudo mv -v ${tempdir}/boot/uInitrd-* ${DIR}/deploy/${export_filename}/
 fi
 
 if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then

@@ -151,18 +151,25 @@ detect_software () {
 	check_for_command wget wget
 	check_for_command parted parted
 	check_for_command git git
-	check_for_command mkimage u-boot-tools
-	check_for_command kpartx kpartx
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Angstrom: opkg install dosfstools git util-linux parted wget (u-boot/mkimage pkg?)"
+		echo "Angstrom: opkg install dosfstools git util-linux parted wget"
 		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx parted u-boot-tools wget"
 		echo "Fedora: yum install dosfstools dosfstools git-core parted uboot-tools wget"
 		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
 		echo ""
 		exit
+	fi
+
+	unset NEEDS_COMMAND
+	check_for_command kpartx kpartx
+	if [ "${NEEDS_COMMAND}" ] ; then
+		echo ""
+		echo "Your system is missing some dependencies (Optional), safe to ignore, unless using [--img]"
+		echo "Debian/Ubuntu: sudo apt-get install kpartx"
+		echo ""
 	fi
 
 	#Check for gnu-fdisk
@@ -827,7 +834,13 @@ populate_boot () {
 	if [ "x${INITRD_FILE}" != "x" ] ; then
 		echo "Copying Kernel initrd/uInitrd:"
 		cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-		mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+		echo "-----------------------------"
+	fi
+
+	uInitrd_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep uInitrd- | head -n 1)
+	if [ "x${uInitrd_FILE}" != "x" ] ; then
+		echo "Copying Kernel uInitrd:"
+		cp -v "${DIR}/${uInitrd_FILE}" ${TEMPDIR}/disk/uInitrd
 		echo "-----------------------------"
 	fi
 
