@@ -152,6 +152,10 @@ detect_software () {
 	check_for_command parted parted
 	check_for_command git git
 
+	if [ "${build_img_file}" ] ; then
+		check_for_command kpartx kpartx
+	fi
+
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
@@ -161,15 +165,6 @@ detect_software () {
 		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
 		echo ""
 		exit
-	fi
-
-	unset NEEDS_COMMAND
-	check_for_command kpartx kpartx
-	if [ "${NEEDS_COMMAND}" ] ; then
-		echo ""
-		echo "Your system is missing some dependencies (Optional), safe to ignore, unless using [--img]"
-		echo "Debian/Ubuntu: sudo apt-get install kpartx"
-		echo ""
 	fi
 
 	#Check for gnu-fdisk
