@@ -1426,7 +1426,7 @@ check_uboot_type () {
 		;;
 	bone)
 		SYSTEM="bone"
-		conf_board="BEAGLEBONE_A"
+		conf_board="BEAGLEBONE"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
@@ -1454,7 +1454,7 @@ check_uboot_type () {
 		;;
 	bone_dtb)
 		SYSTEM="bone"
-		conf_board="BEAGLEBONE_A"
+		conf_board="BEAGLEBONE"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
