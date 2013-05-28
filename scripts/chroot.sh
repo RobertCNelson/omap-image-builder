@@ -194,7 +194,7 @@ debian)
 
 		case "\$1" in
 		start|reload|force-reload|restart)
-		        if [ -f /boot/uboot/SOC.sh ] ; then
+		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
@@ -223,7 +223,7 @@ ubuntu)
 		start on runlevel 2
 
 		script
-		if [ -f /boot/uboot/SOC.sh ] ; then
+		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
@@ -247,7 +247,7 @@ ubuntu)
 		        DIST=\$(lsb_release -cs)
 
 		        case "\${DIST}" in
-		        maverick|natty|oneiric|precise|quantal|raring|saucy)
+		        natty|oneiric|precise|quantal|raring|saucy)
 		                FLASH_KERNEL_SKIP=yes
 		                ;;
 		        esac

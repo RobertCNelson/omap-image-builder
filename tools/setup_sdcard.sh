@@ -791,8 +791,9 @@ populate_boot () {
 		exit
 	fi
 
-	mkdir -p ${TEMPDIR}/disk/backup
-	mkdir -p ${TEMPDIR}/disk/dtbs
+	mkdir -p ${TEMPDIR}/disk/backup || true
+	mkdir -p ${TEMPDIR}/disk/debug || true
+	mkdir -p ${TEMPDIR}/disk/dtbs || true
 
 	if [ ! "${bootloader_installed}" ] ; then
 		if [ "${spl_name}" ] ; then
@@ -903,6 +904,9 @@ populate_boot () {
 
 	echo "Debug:"
 	cat ${TEMPDIR}/disk/SOC.sh
+
+	echo "Adding: /opt/boot-scripts/*.sh trigger file, remove [run_boot-scripts] (in boot partition) to disable custom startup scripts..."
+	touch ${TEMPDIR}/disk/run_boot-scripts
 
 	boot_git_tools
 
