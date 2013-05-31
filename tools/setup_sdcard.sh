@@ -976,6 +976,7 @@ populate_rootfs () {
 			echo "/dev/mmcblk0p2  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
 		fi
 		echo "/dev/mmcblk0p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
+		echo "debugfs         /sys/kernel/debug  debugfs  defaults          0  0" >> ${TEMPDIR}/disk/etc/fstab
 
 		if [ "x${distro}" = "xDebian" ] ; then
 			serial_num=$(echo -n "${SERIAL}"| tail -c -1)
