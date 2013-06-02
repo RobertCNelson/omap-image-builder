@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="49"
+minimal_debootstrap="52"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
@@ -60,7 +60,7 @@ fi
 #	sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/jessie
 #fi
 
-#Not yet supported in a production debootstrap
-if [ ! -f /usr/share/debootstrap/scripts/saucy ] ; then
-	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/saucy
-fi
+#added in: 1.0.52
+#if [ ! -f /usr/share/debootstrap/scripts/saucy ] ; then
+#	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/saucy
+#fi
