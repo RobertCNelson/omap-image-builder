@@ -23,3 +23,5 @@ base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
 
 #broken:
 #shellinabox
+#possible replacment:
+#Ajaxterm
