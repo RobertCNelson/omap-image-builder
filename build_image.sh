@@ -26,6 +26,10 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
+if [ -f ${DIR}/config ] ; then
+	. ${DIR}/config
+fi
+
 image_type="console"
 
 minimal_armel () {
@@ -230,10 +234,18 @@ sid_release () {
 	compression
 }
 
+if [ -f ${DIR}/releases.sh ] ; then
+	. ${DIR}/releases.sh
+fi
+
 . ${DIR}/var/check_host.sh
 
-apt_proxy=""
-mirror="http://rcn-ee.net/deb"
+if [ ! "${apt_proxy}" ] ; then
+	apt_proxy=""
+fi
+if [ ! "${mirror}" ] ; then
+	mirror="http://rcn-ee.net/deb"
+fi
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	. ${DIR}/host/rcn-ee-host.sh
 fi
@@ -247,11 +259,10 @@ fi
 chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
-quantal_release
-raring_release
-#saucy_release
 
-wheezy_release
-jessie_release
+DEFAULT_RELEASES="quantel raring wheezy jessie"
+for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
+	${REL}_release
+done
 
 echo "done"
