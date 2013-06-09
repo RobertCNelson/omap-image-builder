@@ -113,6 +113,11 @@ compression () {
 				fi
 
 			fi
+		else
+			xz -z -7 -v "${export_filename}.tar"
+			if [ -n "${release_dir}" ] ; then
+				mv "${export_filename}.tar.xz" "${release_dir}"
+			fi
 		fi
 	fi
 	cd ${DIR}/

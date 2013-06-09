@@ -7,3 +7,11 @@ RELEASES="quantal raring wheezy jessie"
 # image build scripts cannot be (easily) pointed to a local repository
 apt_proxy=""
 
+# Output file generation
+# Files are generated, copied to the deploy/ directory, and tar'd
+# If the file "release" exists in the base directory
+#   The tar file is xz compressed
+#   The tar.zx file is moved to $release_dir
+# If release_dir is empty, the xz file is left in the deploy/ directory
+release_dir=""
+
