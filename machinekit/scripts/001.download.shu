@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd ~
+
+# Download source files
+git clone --depth 1 -b master git://git.mah.priv.at/xenomai-linuxcnc.git xenomai-2.6
+git clone -b rtos-master-v0 git://git.mah.priv.at/emc2-dev.git linuxcnc
+
+wget http://static.mah.priv.at/public/beaglebone/starterkit/deploy/3.8.13xenomai-bone20.config
+

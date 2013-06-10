@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd ~/linuxcnc/src
+./autogen.sh
+./configure --with-threads=xenomai-user --with-platform=beaglebone --with-kernel=/boot/3.8.13xenomai-bone20.config
+make
+

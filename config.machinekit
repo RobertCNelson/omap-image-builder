@@ -1,0 +1,8 @@
+# Space separated list of releases to build, one or more of:
+#   quantal raring saucy wheezy jessie
+RELEASES="machinekit"
+
+# Using an apt proxy (like apt-cacher-ng) is HIGHLY recommended, as the
+# image build scripts cannot be (easily) pointed to a local repository
+apt_proxy="localhost:3142/"
+

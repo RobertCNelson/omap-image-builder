@@ -1,0 +1,5 @@
+#!/bin/sh
+
+eval cd ~$1/linuxcnc/src
+make setuid
+
