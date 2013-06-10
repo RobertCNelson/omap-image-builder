@@ -1,7 +1,17 @@
 #!/bin/sh
 
-cd ~/linuxcnc/src
-./autogen.sh
-./configure --with-threads=xenomai-user --with-platform=beaglebone --with-kernel=/boot/3.8.13xenomai-bone20.config
-make
+SOURCE=linuxcnc
+
+cd ~
+
+# Unpack the kickstart file, if it exists, then remove it
+if [ -f kickstart.${SOURCE}.tar ] ; then
+	tar xf kickstart.${SOURCE}.tar
+else
+	git clone -b rtos-master-v0 git://git.mah.priv.at/emc2-dev.git linuxcnc
+	cd ~/linuxcnc/src
+	./autogen.sh
+	./configure --with-threads=xenomai-user --with-platform=beaglebone --with-kernel=/boot/3.8.13xenomai-bone20.config
+	make
+fi
 

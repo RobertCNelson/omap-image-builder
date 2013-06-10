@@ -12,5 +12,5 @@ EOF
 
 ldconfig
 
-usermod -aG xenomai,kmem linuxcnc
+usermod -aG xenomai linuxcnc
 

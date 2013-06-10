@@ -1,4 +1,4 @@
 #!/bin/sh
 
-eval sudo mv ~$1/3.8.13xenomai-bone20.config /boot/
+eval mv ~$1/3.8.13xenomai-bone20.config /boot/
 
