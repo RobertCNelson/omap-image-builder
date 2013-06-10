@@ -87,6 +87,8 @@ minimal_armel () {
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
+		chroot_hook="${chroot_hook}"
+
 	__EOF__
 
 	cat ${DIR}/.project
@@ -113,11 +115,11 @@ compression () {
 				fi
 
 			fi
-		else
-			xz -z -7 -v "${export_filename}.tar"
-			if [ -n "${release_dir}" ] ; then
-				mv "${export_filename}.tar.xz" "${release_dir}"
-			fi
+		fi
+	elif [ -f ${DIR}/compress ] ; then
+		xz -z -7 -v "${export_filename}.tar"
+		if [ -n "${release_dir}" ] ; then
+			mv "${export_filename}.tar.xz" "${release_dir}"
 		fi
 	fi
 	cd ${DIR}/
