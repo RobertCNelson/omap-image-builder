@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Remove .git directory from xenomai user tools to save space
+eval cd ~$1/xenomai-2.6
+rm -rf .git
+

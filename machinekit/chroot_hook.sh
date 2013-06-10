@@ -9,11 +9,13 @@ echo "userid: ${user_name}:${password}"
 
 sudo rsync -va ${DIR}/machinekit/scripts/* ${tempdir}/tmp/
 
-for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]*.sh[ur] ; do
+for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]* ; do
 	case "$SCRIPT" in
 	*.shr)	sudo chroot ${tempdir} /bin/sh  ${SCRIPT#$tempdir} ${user_name}
 		;;
 	*.shu)	sudo chroot ${tempdir} /bin/su  ${user_name} -c ${SCRIPT#$tempdir}
+		;;
+	*.sh)	. ${SCRIPT}
 		;;
 	*)	echo "Log: Unknown script format: ${SCRIPT}"
 		;;

@@ -2,9 +2,29 @@
 
 cd ~
 
-# Download source files
-git clone --depth 1 -b master git://git.mah.priv.at/xenomai-linuxcnc.git xenomai-2.6
-git clone -b rtos-master-v0 git://git.mah.priv.at/emc2-dev.git linuxcnc
+# Unpack the kickstart file, if it exists, then remove it
+if [ -f kickstart.tar ] ; then
+	tar xf kickstart.tar
+	sudo rm kickstart.tar
+fi
 
+# Update source directories if they exist, or pull fresh copy if needed
+if [ -d xenomai-2.6 ] ; then
+	cd xenomai-2.6
+	git pull origin
+	cd ~
+else
+	git clone --depth 1 -b master git://git.mah.priv.at/xenomai-linuxcnc.git xenomai-2.6
+fi
+
+if [ -d linuxcnc ] ; then
+	cd ~/linuxcnc
+	get pull origin
+	cd ~
+else
+	git clone -b rtos-master-v0 git://git.mah.priv.at/emc2-dev.git linuxcnc
+fi
+
+cd ~
 wget http://static.mah.priv.at/public/beaglebone/starterkit/deploy/3.8.13xenomai-bone20.config
 
