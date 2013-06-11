@@ -15,8 +15,7 @@ cat << EOF > /etc/init.d/ssh_gen_host_keys
 # Short-Description: Generates new ssh host keys on first boot
 # Description:       Generates new ssh host keys on first boot
 ### END INIT INFO
-ssh-keygen -f /etc/ssh/ssh_host_rsa_key -t rsa -N ""
-ssh-keygen -f /etc/ssh/ssh_host_dsa_key -t dsa -N ""
+dpkg-reconfigure openssh-server
 insserv -r /etc/init.d/ssh_gen_host_keys
 rm -f \$0
 EOF
@@ -49,7 +48,7 @@ cat << EOF > /etc/rc.local
 echo $XENOGID > /sys/module/xeno_nucleus/parameters/xenomai_gid
 
 # Make /dev/mem group writable
-chroot 664 /dev/mem
+chmod 664 /dev/mem
 
 exit 0
 
