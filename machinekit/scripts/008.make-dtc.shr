@@ -3,3 +3,11 @@
 eval cd ~$1/dtc
 make PREFIX=/usr/local/ install
 
+
+eval cd ~$1/linuxcnc/configs/BeagleBone/BeBoPr
+./dtc.sh
+
+
+eval cd ~$1/linuxcnc/configs/BeagleBone/K9.3D
+./dtc.sh
+

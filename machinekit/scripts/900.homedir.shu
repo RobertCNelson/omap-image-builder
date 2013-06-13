@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cd ~
+
+mkdir -p ~/.local/share
+
+cat << _EOF_ >>.bashrc
+if [ -f ~/linuxcnc/scripts/rip-environment ]; then
+    . ~/linuxcnc/scripts/rip-environment
+    echo Environment set up for linuxcnc
+fi
+
+# Set DISPLAY to point to an open X server if necessary
+#export DISPLAY=192.168.1.2:0.0
+
+_EOF_
