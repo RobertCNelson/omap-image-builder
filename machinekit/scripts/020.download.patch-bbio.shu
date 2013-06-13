@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd ~
+
+git clone git://github.com/alexanderhiam/PyBBIO.git
+
+cd PyBBIO
+
+patch -p 1 << _EOF_
+diff --git a/bbio/config.py b/bbio/config.py
+index c399bf4..bbd61f7 100644
+--- a/bbio/config.py
++++ b/bbio/config.py
+@@ -393,8 +393,8 @@ PWM_CTRL_DIR = "/sys/class/pwm/"
+ #  [mux_file, mux_mode, pwm_ctrl_dir]
+
+ PWM_PINS = {
+-  'PWM1A' : [ 'gpmc_a2', 0x06, 'ehrpwm.1:0/'],
+-  'PWM1B' : [ 'gpmc_a3', 0x06, 'ehrpwm.1:1/']
++#  'PWM1A' : [ 'gpmc_a2', 0x06, 'ehrpwm.1:0/'],
++#  'PWM1B' : [ 'gpmc_a3', 0x06, 'ehrpwm.1:1/']
+ }
+ PWM1A = 'PWM1A'
+ PWM1B = 'PWM1B'
+_EOF_
+
