@@ -1031,19 +1031,19 @@ populate_rootfs () {
 
 		rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
 		rm -rf ${TEMPDIR}/disk/var/www/index.html || true
-		wfile=var/www/AJAX_terminal.html
-		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
-		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
-		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		wfile=var/www/AJAX_terminal.html
+#		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+#		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
+#		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
 		sync
 
 	else
