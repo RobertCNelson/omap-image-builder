@@ -270,10 +270,22 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Video: Uncomment to override:
 			#kms_force_mode=video=${kms_conn}:1024x768@60
+
 		__EOF__
 	fi
 
 	case "${SYSTEM}" in
+	bone|bone_dtbbeagle_cx)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##BeagleBone Cape Overrides
+			##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
+
+			##BeagleBone Black:
+			##Disable HDMI/eMMC
+			#capemgr=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
+
+		__EOF__
+		;;
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
@@ -336,13 +348,13 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			video_args=setenv video VIDEO_DISPLAY
 			device_args=run video_args; run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${capemgr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${capemgr}
 
 		__EOF__
 	fi
