@@ -1,0 +1,18 @@
+########################################
+# Configure sudo askpass 
+########################################
+
+# Setup askpass for all users
+cat << EOF > /etc/sudo.conf
+# Path to askpass helper program
+Path askpass /usr/bin/ssh-askpass
+
+EOF
+
+# Setup linuxcnc to not need an sudo password
+cat << EOF > /etc/sudoers.d/001_linuxcnc
+# No sudo password for linuxcnc user
+linuxcnc ALL=(ALL) NOPASSWD: ALL
+
+EOF
+
