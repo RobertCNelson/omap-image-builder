@@ -272,4 +272,6 @@ for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
 
+rm -rf ${tempdir} || true
+
 echo "done"
