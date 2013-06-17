@@ -284,6 +284,9 @@ boot_uenv_txt_template () {
 			##Disable HDMI/eMMC
 			#optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
 
+			#Merge from config-hooks branch, in theory the above should work uncommented too..
+			optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
+
 		__EOF__
 		;;
 	beagle_bx|beagle_cx)

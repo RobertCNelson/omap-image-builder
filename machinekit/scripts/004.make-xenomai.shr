@@ -1,0 +1,16 @@
+#!/bin/sh
+
+eval cd ~$1/xenomai-2.6
+make install
+groupadd --system xenomai
+
+# Add xenomai libraries to ld config
+cat << EOF >/etc/ld.so.conf.d/xenomai.conf
+# Xenomai user libraries
+/usr/xenomai/lib
+EOF
+
+ldconfig
+
+usermod -aG xenomai linuxcnc
+

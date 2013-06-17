@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd ~
+
+wget http://static.mah.priv.at/public/beaglebone/starterkit/deploy/3.8.13xenomai-bone20.config
+
