@@ -275,7 +275,7 @@ boot_uenv_txt_template () {
 	fi
 
 	case "${SYSTEM}" in
-	bone|bone_dtbbeagle_cx)
+	bone|bone_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			##BeagleBone Cape Overrides
 			##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
