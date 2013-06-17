@@ -21,6 +21,9 @@ base_pkgs="${base_pkgs} apache2 openssh-server udhcpd"
 #Wireless
 base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
 
+#Gateone:
+base_pkgs="${base_pkgs} python-tornado"
+
 #broken:
 #shellinabox
 #possible replacment:

@@ -270,10 +270,22 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Video: Uncomment to override:
 			#kms_force_mode=video=${kms_conn}:1024x768@60
+
 		__EOF__
 	fi
 
 	case "${SYSTEM}" in
+	bone|bone_dtbbeagle_cx)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##BeagleBone Cape Overrides
+			##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
+
+			##BeagleBone Black:
+			##Disable HDMI/eMMC
+			#capemgr=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
+
+		__EOF__
+		;;
 	beagle_bx|beagle_cx)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
@@ -336,13 +348,13 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			video_args=setenv video VIDEO_DISPLAY
 			device_args=run video_args; run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${capemgr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${capemgr}
 
 		__EOF__
 	fi
@@ -1031,19 +1043,19 @@ populate_rootfs () {
 
 		rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
 		rm -rf ${TEMPDIR}/disk/var/www/index.html || true
-		wfile=var/www/AJAX_terminal.html
-		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
-		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
-		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		wfile=var/www/AJAX_terminal.html
+#		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+#		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
+#		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+#		echo "" >> ${TEMPDIR}/disk/${wfile}
 		sync
 
 	else
@@ -1100,18 +1112,6 @@ populate_rootfs () {
 
 	if [ "${usbnet_mem}" ] ; then
 		echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
-	fi
-
-	if [ -f ${TEMPDIR}/disk/etc/init/failsafe.conf ] ; then
-		echo "Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-		echo "-----------------------------"
-		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 20:sleep 20:g' /etc/init/failsafe.conf"
-		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 40:sleep 40:g' /etc/init/failsafe.conf"
-		echo "Ubuntu: to unfix: sudo sed -i -e 's:#sleep 59:sleep 59:g' /etc/init/failsafe.conf"
-		echo "-----------------------------"
-		sed -i -e 's:sleep 20:#sleep 20:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-		sed -i -e 's:sleep 40:#sleep 40:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
-		sed -i -e 's:sleep 59:#sleep 59:g' ${TEMPDIR}/disk/etc/init/failsafe.conf
 	fi
 
 	if [ "${CREATE_SWAP}" ] ; then

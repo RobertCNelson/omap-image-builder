@@ -257,6 +257,13 @@ ubuntu)
 
 	sudo mv /tmp/${wfile} ${tempdir}/etc/${wfile}
 
+	if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
+		#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
+		sudo sed -i -e 's:sleep 20:#sleep 20:g' ${tempdir}/etc/init/failsafe.conf
+		sudo sed -i -e 's:sleep 40:#sleep 40:g' ${tempdir}/etc/init/failsafe.conf
+		sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
+	fi
+
 	;;
 esac
 
