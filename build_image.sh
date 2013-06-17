@@ -267,7 +267,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
 
-DEFAULT_RELEASES="quantel raring wheezy jessie"
+DEFAULT_RELEASES="quantal raring wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
