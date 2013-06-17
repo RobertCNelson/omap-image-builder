@@ -374,7 +374,7 @@ boot_uenv_txt_template () {
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=
+			optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
 			expansion_args=setenv expansion ip=\${ip_method}
 		__EOF__
 		;;

@@ -8,3 +8,6 @@ rm kickstart.*.tar
 # Remove .git directory from xenomai user tools to save space
 rm -rf xenomai-2.6/.git
 
+# Remove /tmp files
+rm -rf /tmp/*
+
