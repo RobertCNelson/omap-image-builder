@@ -129,6 +129,14 @@ find_issue () {
 		HAS_DTBS=1
 	fi
 
+	unset has_uenvtxt
+	unset check
+	check=$(ls "${DIR}/" | grep uEnv.txt | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		echo "Debug: image has pre-generated uEnv.txt file"
+		has_uenvtxt=1
+	fi
+
 	echo "Debug: $FDISK_EXEC version:"
 	LC_ALL=C $FDISK_EXEC -v
 }
@@ -879,9 +887,15 @@ populate_boot () {
 
 	echo "Copying uEnv.txt based boot scripts to Boot Partition"
 	echo "-----------------------------"
-	cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
-	echo "-----------------------------"
-	cat  ${TEMPDIR}/bootscripts/normal.cmd
+	if [ ${has_uenvtxt} ] ; then
+		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
+		echo "-----------------------------"
+		cat "${DIR}/uEnv.txt"
+	else
+		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+		echo "-----------------------------"
+		cat ${TEMPDIR}/bootscripts/normal.cmd
+	fi
 	echo "-----------------------------"
 
 	#This should be compatible with hwpacks variable names..
