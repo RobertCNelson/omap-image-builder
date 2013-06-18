@@ -311,9 +311,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="initramfs-tools git-core sudo u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
-		distro="\$(lsb_release -si)"
-		echo "distro=\${distro}" > /etc/rcn-ee.conf
-
 		apt-get upgrade -y --force-yes
 	}
 
