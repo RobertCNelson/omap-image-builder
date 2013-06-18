@@ -306,15 +306,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates () {
 		apt-get update
-
-		#packages this script must always have installed
-		packages="initramfs-tools git-core sudo u-boot-tools wget"
-		for pkg in \${packages} ; do check_n_install ; done
-
 		apt-get upgrade -y --force-yes
 	}
 
 	install_pkgs () {
+		#These packages have binaries needed by this script.
+		packages="initramfs-tools git-core sudo u-boot-tools wget"
+		for pkg in \${packages} ; do check_n_install ; done
+
+		#Install the user choosen list.
 		apt-get -y --force-yes install ${base_pkg_list}
 	}
 
