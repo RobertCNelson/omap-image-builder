@@ -19,12 +19,11 @@ base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
 base_pkgs="${base_pkgs} apache2 openssh-server udhcpd"
 
 #Wireless
-base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
+base_pkgs="${base_pkgs} wireless-toolspython-pyopenssl wpasupplicant lowpan-tools wvdial lshw"
+
+#shellinabox (breaks ssh over eth/usb)
+#base_pkgs="${base_pkgs} shellinabox"
 
 #Gateone:
-base_pkgs="${base_pkgs} python-tornado"
+#base_pkgs="${base_pkgs} python-tornado python-pyopenssl"
 
-#broken:
-#shellinabox
-#possible replacment:
-#Ajaxterm
