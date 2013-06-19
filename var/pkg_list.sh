@@ -7,7 +7,7 @@
 base_pkgs="nano pastebinit"
 
 #Tools
-base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit memtester parted read-edid"
+base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit memtester read-edid"
 
 #OS
 base_pkgs="${base_pkgs} dosfstools btrfs-tools cpufrequtils ntpdate"
