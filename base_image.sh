@@ -179,8 +179,12 @@ sid_release () {
 
 . ${DIR}/var/check_host.sh
 
-apt_proxy=""
-mirror="http://rcn-ee.net/deb"
+if [ ! "${apt_proxy}" ] ; then
+	apt_proxy=""
+fi
+if [ ! "${mirror}" ] ; then
+	mirror="http://rcn-ee.net/deb"
+fi
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	. ${DIR}/host/rcn-ee-host.sh
 fi
