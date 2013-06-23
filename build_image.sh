@@ -192,9 +192,7 @@ quantal_release () {
 
 #13.04
 raring_release () {
-	flasher_growpart="cloud-init cloud-tools cloud-initiramfs-growroot"
 	extra_pkgs="linux-firmware devmem2 python-software-properties"
-	#extra_pkgs="linux-firmware devmem2 python-software-properties cloud-utils"
 	is_ubuntu
 	release="raring"
 	select_rcn_ee_net_kernel
@@ -204,9 +202,7 @@ raring_release () {
 
 #13.10
 saucy_release () {
-	flasher_growpart="cloud-init cloud-tools cloud-initiramfs-growroot"
 	extra_pkgs="linux-firmware devmem2 python-software-properties"
-	#extra_pkgs="linux-firmware devmem2 python-software-properties cloud-utils"
 	is_ubuntu
 	release="saucy"
 	select_rcn_ee_net_kernel
@@ -224,9 +220,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	flasher_growpart="cloud-init cloud-tools cloud-initiramfs-growroot"
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
-#	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware cloud-utils"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -235,9 +229,7 @@ jessie_release () {
 }
 
 sid_release () {
-	flasher_growpart="cloud-init cloud-tools cloud-initiramfs-growroot"
 	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
-#	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware cloud-utils"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
