@@ -1737,8 +1737,8 @@ while [ ! -z "$1" ] ; do
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
 		fi
-		#FIXME: 800Mb initial size...
-		dd if=/dev/zero of="${media}" bs=1M count=800
+		#FIXME: 1,900Mb initial size...
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*1900]
 		;;
 	--uboot)
 		checkparm $2
