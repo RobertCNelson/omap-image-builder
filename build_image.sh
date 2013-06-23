@@ -182,7 +182,7 @@ is_debian () {
 
 #12.10
 quantal_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties"
+	extra_pkgs="linux-firmware devmem2"
 	is_ubuntu
 	release="quantal"
 	select_rcn_ee_net_kernel
@@ -192,7 +192,7 @@ quantal_release () {
 
 #13.04
 raring_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties"
+	extra_pkgs="linux-firmware devmem2"
 	is_ubuntu
 	release="raring"
 	select_rcn_ee_net_kernel
@@ -202,7 +202,7 @@ raring_release () {
 
 #13.10
 saucy_release () {
-	extra_pkgs="linux-firmware devmem2 python-software-properties"
+	extra_pkgs="linux-firmware devmem2"
 	is_ubuntu
 	release="saucy"
 	select_rcn_ee_net_kernel
