@@ -152,6 +152,14 @@ select_rcn_ee_net_kernel () {
 	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
+select_saucy_rcn_ee_net_kernel () {
+	#one is actuall built now!!! ;)
+	SUBARCH="omap"
+	KERNEL_ABI="STABLE"
+	kernel_chooser
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+}
+
 is_ubuntu () {
 	image_hostname="arm"
 	distro="ubuntu"
@@ -205,7 +213,7 @@ saucy_release () {
 	extra_pkgs="linux-firmware devmem2"
 	is_ubuntu
 	release="saucy"
-	select_rcn_ee_net_kernel
+	select_saucy_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
@@ -263,7 +271,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
 
-DEFAULT_RELEASES="quantal raring wheezy jessie"
+DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
