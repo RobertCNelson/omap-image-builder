@@ -138,6 +138,7 @@ fi
 
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
 sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
+echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
 report_size
 
 file="${tempdir}/etc/apt/sources.list"
@@ -488,6 +489,10 @@ __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
+if [ ! -d ${tempdir}/lib/firmware/ ] ; then
+	sudo mkdir -p ${tempdir}/lib/firmware/ || true
+fi
+
 if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
 	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
 fi
@@ -514,6 +519,7 @@ fi
 
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
+echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
 	report_size
