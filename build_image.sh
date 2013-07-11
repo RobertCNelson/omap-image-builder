@@ -158,6 +158,11 @@ select_saucy_rcn_ee_net_kernel () {
 	KERNEL_ABI="STABLE"
 	kernel_chooser
 	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+
+	SUBARCH="omap-psp"
+	KERNEL_ABI="TESTING"
+	kernel_chooser
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
 is_ubuntu () {
