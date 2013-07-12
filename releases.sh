@@ -11,7 +11,7 @@ select_custom_kernel () {
 	#SUBARCH="omap-psp"
 	#KERNEL_ABI="TESTING"
 	#kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone20/"
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone23/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
