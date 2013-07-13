@@ -22,3 +22,7 @@ for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]* ; do
 	esac
 done
 
+# Copy custom uEnv.txt file to destination, which will prevent the 
+# setup_sdcard.sh script from using it's default version
+cp ${DIR}/machinekit/uEnv.txt ${DIR}/deploy/${export_filename}/
+

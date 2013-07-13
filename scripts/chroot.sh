@@ -521,6 +521,8 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
+mkdir -p ${DIR}/deploy/${export_filename}/ || true
+
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
 	report_size
 	echo "Calling chroot_hook script: ${chroot_hook}"
@@ -531,8 +533,6 @@ fi
 if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
 fi
-
-mkdir -p ${DIR}/deploy/${export_filename}/ || true
 
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
