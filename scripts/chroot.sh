@@ -397,8 +397,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		case "\${distro}" in
 		Debian)
-			usermod -aG sudo debian || true
-			usermod -aG dialout debian || true
+			usermod -aG sudo ${user_name} || true
+			usermod -aG dialout ${user_name} || true
 
 			passwd <<-EOF
 			root
