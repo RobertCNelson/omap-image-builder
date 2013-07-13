@@ -22,7 +22,7 @@ select_custom_kernel () {
 
 machinekit_release () {
 	image_type="machinekit"
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware nfs-common git-core build-essential autoconf libgd2-xpm libpth-dev dvipng tcl8.5-dev tk8.5-dev bwidget blt libxaw7-dev libncurses5-dev libreadline-dev asciidoc source-highlight dblatex xsltproc groff python-dev python-support python-tk python-lxml libglu1-mesa-dev libgl1-mesa-dev libgtk2.0-dev libgnomeprintui2.2-dev gettext libboost-python-dev texlive-lang-cyrillic libmodbus-dev libboost-thread-dev libboost-serialization-dev python-gtk2 python-gtk2-dev python-gtk2-doc python-gi python-gtksourceview2 python-imaging-tk python-notify2 python-vte python-xlib flex bison python-gtkglext1 python-serial ssh-askpass"
+	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware nfs-common git-core build-essential autoconf libgd2-xpm libpth-dev dvipng tcl8.5-dev tk8.5-dev bwidget blt libxaw7-dev libncurses5-dev libreadline-dev asciidoc source-highlight dblatex xsltproc groff python-dev python-support python-tk python-lxml libglu1-mesa-dev libgl1-mesa-dev libgtk2.0-dev libgnomeprintui2.2-dev gettext libboost-python-dev texlive-lang-cyrillic libmodbus-dev libboost-thread-dev libboost-serialization-dev python-gtk2 python-gtk2-dev python-gtk2-doc python-gi python-gtksourceview2 python-imaging-tk python-notify2 python-vte python-xlib flex bison python-gtkglext1 python-serial ssh-askpass xfce4 xdm"
 	#extra_pkgs="gitk git-gui"
 
 	#is_debian - inlined below with some changes
