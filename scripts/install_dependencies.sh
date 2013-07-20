@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="52"
+minimal_debootstrap="53"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
