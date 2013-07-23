@@ -52,11 +52,11 @@ minimal_armel () {
 		;;
 	esac
 
-	if [ -f ${DIR}/release ] ; then
-		chroot_KERNEL_HTTP_DIR="\
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone24/"
-	fi
+#	if [ -f ${DIR}/release ] ; then
+#		chroot_KERNEL_HTTP_DIR="\
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone24/"
+#	fi
 
 	tempdir=$(mktemp -d)
 
