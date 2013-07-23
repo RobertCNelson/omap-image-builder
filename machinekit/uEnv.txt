@@ -1,0 +1,43 @@
+kernel_file=zImage
+initrd_file=uInitrd
+initrd_high=0xffffffff
+fdt_high=0xffffffff
+
+#Video: Uncomment to override:
+#kms_force_mode=video=HDMI-A-1:1024x768@60
+
+##BeagleBone Cape Overrides
+##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
+
+##BeagleBone Black:
+# Disable HDMI/eMMC
+# Note it is necessary to disable BOTH HDMI and HDMIN (no audio) "capes"
+# in order to use the HDMI pins for I/O
+#optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
+
+# Default to leaving the HDMIN "cape" enabled, so HDMI works "out of the box"
+# Comment the line below and uncomment the optargs= line above to use an unmodified
+# BeBoPr or other board that uses the HDMI/LCD pins 
+optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
+
+console=ttyO0,115200n8
+
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=ext4 rootwait fixrtc
+
+loadkernel=load mmc ${mmcdev}:${mmcpart} 0x80200000 ${kernel_file}
+loadinitrd=load mmc ${mmcdev}:${mmcpart} 0x81000000 ${initrd_file}; setenv initrd_size ${filesize}
+loadfdt=load mmc ${mmcdev}:${mmcpart} 0x815f0000 /dtbs/${fdtfile}
+
+boot_classic=run loadkernel; run loadinitrd
+boot_ftd=run loadkernel; run loadinitrd; run loadfdt
+
+device_args=run expansion_args; run mmcargs
+mmcargs=setenv bootargs console=${console} ${optargs} ${kms_force_mode} root=${mmcroot} rootfstype=${mmcrootfstype} ${expansion}
+
+expansion_args=setenv expansion ip=${ip_method}
+#Classic Board File Boot:
+#uenvcmd=run boot_classic; run device_args; bootz 0x80200000 0x81000000:${initrd_size}
+#New Device Tree Boot:
+uenvcmd=run boot_ftd; run device_args; bootz 0x80200000 0x81000000:${initrd_size} 0x815f0000
+

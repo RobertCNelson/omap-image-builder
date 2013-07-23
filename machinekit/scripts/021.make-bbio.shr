@@ -1,6 +1,0 @@
-#!/bin/sh
-
-eval cd ~$1/PyBBIO
-
-python setup.py install
-
