@@ -135,10 +135,15 @@ kernel_chooser () {
 }
 
 select_rcn_ee_net_kernel () {
+	SUBARCH="armv7"
+	KERNEL_ABI="TESTING"
+	kernel_chooser
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+
 	SUBARCH="omap"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="TESTING"
@@ -257,7 +262,8 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
 
-DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+#DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+DEFAULT_RELEASES="quantal raring wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
