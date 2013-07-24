@@ -1211,13 +1211,13 @@ check_mmc () {
 }
 
 kernel_detection () {
-	unset HAS_IMX_KERNEL
+	unset HAS_MULTI_ARMV7_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep imx | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		imx_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep imx | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has imx kernel support: v${imx_kernel}"
-		HAS_IMX_KERNEL=1
+		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
+		HAS_MULTI_ARMV7_KERNEL=1
 	fi
 
 	unset HAS_BONE_DT_KERNEL
@@ -1339,7 +1339,7 @@ is_imx () {
 	HAS_IMX_BLOB=1
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
-	select_kernel="${imx_kernel}"
+	select_kernel="${armv7_kernel}"
 }
 
 convert_uboot_to_dtb_board () {
