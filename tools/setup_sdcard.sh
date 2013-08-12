@@ -566,33 +566,6 @@ fatfs_boot_error () {
 	exit
 }
 
-fatfs_boot () {
-	#For: TI: Omap/Sitara Devices
-	echo ""
-	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
-	echo "-----------------------------"
-
-	$FDISK_EXEC ${media} <<-__EOF__
-		n
-		p
-		1
-
-		+${conf_boot_endmb}M
-		t
-		e
-		p
-		w
-	__EOF__
-
-	sync
-
-	echo "Setting Boot Partition's Boot Flag"
-	echo "-----------------------------"
-	LC_ALL=C parted --script "${media}" set 1 boot on || fatfs_boot_error
-
-	sync
-}
-
 sfdisk_partition_layout () {
 	#Generic boot partition created by sfdisk
 	echo ""
