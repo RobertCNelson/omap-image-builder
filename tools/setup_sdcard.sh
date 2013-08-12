@@ -328,7 +328,7 @@ boot_uenv_txt_template () {
 
 		__EOF__
 		;;
-	panda|panda_es)
+	panda)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
@@ -386,7 +386,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion
 		__EOF__
 		;;
-	panda|panda_es)
+	panda)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy}
@@ -1448,11 +1448,10 @@ check_uboot_type () {
 		conf_initrdaddr="0x81000000"
 		initrd_file="uInitrd"
 		;;
-	panda)
+	panda|panda_es)
 		SYSTEM="panda"
 		conf_board="omap4_panda"
 		is_omap
-		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
@@ -1466,15 +1465,6 @@ check_uboot_type () {
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
 		need_dtbs=1
-		;;
-	panda_es)
-		SYSTEM="panda_es"
-		conf_board="omap4_panda"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="32768"
 		;;
 	panda_es_dtb)
 		SYSTEM="panda_es_dtb"
@@ -1521,8 +1511,7 @@ check_uboot_type () {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			                panda - <PandaBoard Ax>
-			                panda_es - <PandaBoard ES>
+			                panda - <PandaBoard Ax/ES>
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
@@ -1549,8 +1538,7 @@ usage () {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
-			                panda - <PandaBoard Ax>
-			                panda_es - <PandaBoard ES>
+			                panda - <PandaBoard Ax/ES>
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
