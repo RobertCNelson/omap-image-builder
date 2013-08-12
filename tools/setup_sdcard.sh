@@ -1486,17 +1486,6 @@ check_uboot_type () {
 		usbnet_mem="16384"
 		need_dtbs=1
 		;;
-	panda_es_kms)
-		SYSTEM="panda_es"
-		conf_board="omap4_panda"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
-
-		USE_KMS=1
-		unset HAS_OMAPFB_DSS2
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="32768"
-		;;
 	mx51evk)
 		SYSTEM="mx51evk"
 		conf_board="mx51evk"
