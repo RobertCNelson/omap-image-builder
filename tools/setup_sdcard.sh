@@ -129,9 +129,6 @@ find_issue () {
 		echo "Debug: image has pre-generated uEnv.txt file"
 		has_uenvtxt=1
 	fi
-
-	echo "Debug: fdisk version:"
-	LC_ALL=C fdisk -v
 }
 
 check_for_command () {
