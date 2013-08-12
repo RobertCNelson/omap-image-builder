@@ -691,14 +691,7 @@ create_partitions () {
 
 	case "${bootloader_location}" in
 	fatfs_boot)
-		if [ ! "${build_img_file}" ] ; then
-			fatfs_boot
-			calculate_rootfs_partition
-		else
-			sfdisk_partition_layout
-		fi
-#switch to sfdisk
-#		sfdisk_partition_layout
+		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
