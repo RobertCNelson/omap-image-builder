@@ -380,7 +380,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	crane|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb)
+	mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -1496,12 +1496,6 @@ check_uboot_type () {
 		unset HAS_OMAPFB_DSS2
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="32768"
-		;;
-	crane)
-		SYSTEM="crane"
-		conf_board="CRANEBOARD"
-		is_omap
-		uboot_CMD_LOAD="fatload"
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
