@@ -380,7 +380,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	crane|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb|mx6qsabrelite)
+	crane|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -1536,24 +1536,6 @@ check_uboot_type () {
 		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
 		;;
-	mx6qsabrelite)
-		SYSTEM="mx6qsabrelite"
-		conf_board="MX6QSABRELITE_D"
-		is_imx
-		SERIAL="ttymxc1"
-		SERIAL_CONSOLE="${SERIAL},115200"
-		boot="bootm"
-		USE_UIMAGE=1
-		dd_uboot_seek="2"
-		dd_uboot_bs="512"
-		conf_loadaddr="0x10000000"
-		conf_initrdaddr="0x12000000"
-		conf_zreladdr="0x10008000"
-		conf_fdtaddr="0x11ff0000"
-		conf_fdtfile="imx6q-sabrelite.dtb"
-		need_dtbs=1
-		boot_scr_wrapper=1
-		;;
 	*)
 		IN_VALID_UBOOT=1
 		cat <<-__EOF__
@@ -1572,7 +1554,6 @@ check_uboot_type () {
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
-			                mx6qsabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 			-----------------------------
 		__EOF__
 		exit
@@ -1602,7 +1583,6 @@ usage () {
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
-			                mx6qsabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 
 			--addon <additional peripheral device>
 			        pico
