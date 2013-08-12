@@ -695,7 +695,7 @@ create_partitions () {
 			fatfs_boot
 			calculate_rootfs_partition
 		else
-			fatfs_img_file
+			sfdisk_partition_layout
 		fi
 #switch to sfdisk
 #		sfdisk_partition_layout
