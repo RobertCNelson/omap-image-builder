@@ -380,7 +380,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	panda_dtb|panda_es_dtb|mx51evk|mx53loco)
+	mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -1446,26 +1446,6 @@ check_uboot_type () {
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
-		;;
-	panda_dtb)
-		SYSTEM="panda_dtb"
-		conf_board="omap4_panda"
-		is_omap
-		conf_fdtfile="omap4-panda.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-		need_dtbs=1
-		;;
-	panda_es_dtb)
-		SYSTEM="panda_es_dtb"
-		conf_board="omap4_panda"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-		need_dtbs=1
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
