@@ -157,7 +157,6 @@ detect_software () {
 
 	check_for_command mkfs.vfat dosfstools
 	check_for_command wget wget
-	check_for_command parted parted
 	check_for_command git git
 
 	if [ "${build_img_file}" ] ; then
@@ -167,10 +166,10 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Angstrom: opkg install dosfstools git util-linux parted wget"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx parted u-boot-tools wget"
-		echo "Fedora: yum install dosfstools dosfstools git-core parted uboot-tools wget"
-		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
+		echo "Angstrom: opkg install dosfstools git util-linux wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget"
+		echo "Fedora: yum install dosfstools dosfstools git-core uboot-tools wget"
+		echo "Gentoo: emerge dosfstools git u-boot-tools wget"
 		echo ""
 		exit
 	fi
@@ -612,12 +611,10 @@ create_partitions () {
 	unset bootloader_installed
 
 	if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-		parted_format="fat16"
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
 		mkfs_label="-n ${BOOT_LABEL}"
 	else
-		parted_format="ext2"
 		mount_partition_format="ext2"
 		mkfs="mkfs.ext2"
 		mkfs_label="-L ${BOOT_LABEL}"
