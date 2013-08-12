@@ -695,17 +695,14 @@ create_partitions () {
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	*)
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	esac
 
