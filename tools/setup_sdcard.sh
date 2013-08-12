@@ -593,20 +593,6 @@ fatfs_boot () {
 	sync
 }
 
-fatfs_img_file () {
-	#For: TI: Omap/Sitara Devices
-	echo ""
-	echo "Using sfdisk to create an omap compatible fatfs BOOT partition"
-	echo "-----------------------------"
-
-	LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M "${media}" <<-__EOF__
-		,${conf_boot_endmb},0xe,*
-		,,,-
-	__EOF__
-
-	sync
-}
-
 sfdisk_partition_layout () {
 	#Generic boot partition created by sfdisk
 	echo ""
