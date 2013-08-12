@@ -380,7 +380,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb)
+	panda_dtb|panda_es_dtb|mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -1511,16 +1511,6 @@ check_uboot_type () {
 	mx53loco)
 		SYSTEM="mx53loco"
 		conf_board="mx53loco"
-		is_imx
-		conf_loadaddr="0x70010000"
-		conf_initrdaddr="0x72000000"
-		conf_zreladdr="0x70008000"
-		conf_fdtaddr="0x71ff0000"
-		conf_fdtfile="imx53-qsb.dtb"
-		;;
-	mx53loco_dtb)
-		SYSTEM="mx53loco_dtb"
-		conf_board="mx53loco"
 		SERIAL="ttymxc0"
 		is_imx
 		conf_loadaddr="0x70010000"
@@ -1547,7 +1537,6 @@ check_uboot_type () {
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
-			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
 			-----------------------------
 		__EOF__
 		exit
@@ -1576,7 +1565,6 @@ usage () {
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
-			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
 
 			--addon <additional peripheral device>
 			        pico
