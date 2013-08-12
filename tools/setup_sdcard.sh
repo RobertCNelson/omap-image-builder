@@ -527,7 +527,6 @@ setup_bootscripts () {
 
 drive_error_ro () {
 	echo "-----------------------------"
-	echo "Error: [LC_ALL=C parted --script ${media} mklabel msdos] failed..."
 	echo "Error: for some reason your SD card is not writable..."
 	echo "Check: is the write protect lever set the locked position?"
 	echo "Check: do you have another SD card reader?"
@@ -535,11 +534,6 @@ drive_error_ro () {
 	echo "Script gave up..."
 
 	exit
-}
-
-create_msdos_label () {
-	LC_ALL=C parted --script ${media} mklabel msdos || drive_error_ro
-	sync
 }
 
 unmount_all_drive_partitions () {
@@ -557,8 +551,8 @@ unmount_all_drive_partitions () {
 	done
 
 	echo "Zeroing out Partition Table"
-	dd if=/dev/zero of=${media} bs=1024 count=1024
-	create_msdos_label
+	dd if=/dev/zero of=${media} bs=1M count=16 || drive_error_ro
+	sync
 }
 
 sfdisk_partition_layout () {
