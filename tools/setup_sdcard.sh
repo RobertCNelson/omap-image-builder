@@ -577,7 +577,7 @@ fatfs_boot () {
 		p
 		1
 
-		+${boot_partition_size}M
+		+${conf_boot_endmb}M
 		t
 		e
 		p
@@ -600,7 +600,7 @@ fatfs_img_file () {
 	echo "-----------------------------"
 
 	LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M "${media}" <<-__EOF__
-		,${boot_partition_size},0xe,*
+		,${conf_boot_endmb},0xe,*
 		,,,-
 	__EOF__
 
@@ -663,7 +663,7 @@ format_rootfs_partition () {
 create_partitions () {
 	unset bootloader_installed
 
-	if [ "x${boot_fstype}" = "xfat" ] ; then
+	if [ "x${conf_boot_fstype}" = "xfat" ] ; then
 		parted_format="fat16"
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
@@ -686,16 +686,16 @@ create_partitions () {
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
 		calculate_rootfs_partition
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
 		calculate_rootfs_partition
 		;;
 	*)
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
+		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${conf_boot_startmb} ${conf_boot_endmb}
 		calculate_rootfs_partition
 		;;
 	esac
@@ -862,7 +862,7 @@ populate_boot () {
 	DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
 	if [ "x${DTBS_FILE}" != "x" ] ; then
 		echo "Copying Device Tree Files:"
-		if [ "x${boot_fstype}" = "xfat" ] ; then
+		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
 			tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 		else
 			tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
@@ -873,8 +873,8 @@ populate_boot () {
 	if [ "${boot_scr_wrapper}" ] ; then
 		cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
 			echo "boot.scr -> uEnv.txt wrapper..."
-			setenv boot_fstype ${boot_fstype}
-			\${boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
+			setenv conf_boot_fstype ${conf_boot_fstype}
+			\${conf_boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
 			env import -t \${loadaddr} \${filesize}
 			run loaduimage
 		__EOF__
@@ -910,7 +910,7 @@ populate_boot () {
 
 		boot_image=${boot}
 		boot_script=${boot_script}
-		boot_fstype=${boot_fstype}
+		boot_fstype=${conf_boot_fstype}
 
 		serial_tty=${SERIAL}
 		loadaddr=${conf_loadaddr}
@@ -1291,8 +1291,6 @@ is_omap () {
 	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
 
-	boot_fstype="fat"
-
 	SERIAL="ttyO2"
 	SERIAL_CONSOLE="${SERIAL},115200n8"
 
@@ -1314,6 +1312,11 @@ is_omap () {
 
 	#Kernel Options
 	select_kernel="${omap_kernel}"
+
+#Bootloader Partition:
+conf_boot_fstype="fat"
+conf_boot_startmb="1"
+conf_boot_endmb="64"
 }
 
 is_imx () {
@@ -1324,7 +1327,6 @@ is_imx () {
 	boot_name="u-boot.imx"
 	dd_uboot_seek="1"
 	dd_uboot_bs="1024"
-	boot_startmb="2"
 
 	SUBARCH="imx"
 
@@ -1333,13 +1335,16 @@ is_imx () {
 
 	boot_script="uEnv.txt"
 
-	boot_fstype="ext2"
-
 	VIDEO_CONSOLE="console=tty0"
 	HAS_IMX_BLOB=1
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
 	select_kernel="${armv7_kernel}"
+
+#Bootloader Partition:
+conf_conf_boot_fstype="ext2"
+conf_boot_startmb="1"
+conf_boot_endmb="64"
 }
 
 convert_uboot_to_dtb_board () {
@@ -1383,7 +1388,6 @@ check_uboot_type () {
 
 	unset boot_scr_wrapper
 	unset usbnet_mem
-	boot_partition_size="64"
 
 	uboot_CMD_LOAD="load"
 	unset kms_conn
