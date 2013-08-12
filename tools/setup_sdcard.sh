@@ -1391,7 +1391,7 @@ check_uboot_type () {
 	case "${UBOOT_TYPE}" in
 	beagle_bx)
 		SYSTEM="beagle_bx"
-		conf_board="BEAGLEBOARD_BX"
+		conf_board="omap3_beagle"
 		DISABLE_ETH=1
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1400,7 +1400,7 @@ check_uboot_type () {
 		;;
 	beagle_cx)
 		SYSTEM="beagle_cx"
-		conf_board="BEAGLEBOARD_CX"
+		conf_board="omap3_beagle"
 		DISABLE_ETH=1
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1414,7 +1414,7 @@ check_uboot_type () {
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
-		conf_board="BEAGLEBOARD_XM"
+		conf_board="omap3_beagle"
 		is_omap
 		usbnet_mem="16384"
 		#conf_fdtfile="omap3-beagle.dtb"
@@ -1425,7 +1425,7 @@ check_uboot_type () {
 		;;
 	bone|bone_dtb)
 		SYSTEM="bone"
-		conf_board="BEAGLEBONE"
+		conf_board="am335x_evm"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
@@ -1456,7 +1456,7 @@ check_uboot_type () {
 		;;
 	panda)
 		SYSTEM="panda"
-		conf_board="PANDABOARD"
+		conf_board="omap4_panda"
 		is_omap
 		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1465,7 +1465,7 @@ check_uboot_type () {
 		;;
 	panda_dtb)
 		SYSTEM="panda_dtb"
-		conf_board="PANDABOARD"
+		conf_board="omap4_panda"
 		is_omap
 		conf_fdtfile="omap4-panda.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1475,7 +1475,7 @@ check_uboot_type () {
 		;;
 	panda_es)
 		SYSTEM="panda_es"
-		conf_board="PANDABOARD_ES"
+		conf_board="omap4_panda"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1484,7 +1484,7 @@ check_uboot_type () {
 		;;
 	panda_es_dtb)
 		SYSTEM="panda_es_dtb"
-		conf_board="PANDABOARD_ES"
+		conf_board="omap4_panda"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 		VIDEO_OMAP_RAM="16MB"
@@ -1494,7 +1494,7 @@ check_uboot_type () {
 		;;
 	panda_es_kms)
 		SYSTEM="panda_es"
-		conf_board="PANDABOARD_ES"
+		conf_board="omap4_panda"
 		is_omap
 		conf_fdtfile="omap4-pandaES.dtb"
 
@@ -1511,7 +1511,7 @@ check_uboot_type () {
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
-		conf_board="MX51EVK"
+		conf_board="mx51evk"
 		is_imx
 		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
@@ -1522,7 +1522,7 @@ check_uboot_type () {
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
-		conf_board="MX53LOCO"
+		conf_board="mx53loco"
 		is_imx
 		conf_loadaddr="0x70010000"
 		conf_initrdaddr="0x72000000"
@@ -1532,7 +1532,7 @@ check_uboot_type () {
 		;;
 	mx53loco_dtb)
 		SYSTEM="mx53loco_dtb"
-		conf_board="MX53LOCO"
+		conf_board="mx53loco"
 		SERIAL="ttymxc0"
 		is_imx
 		conf_loadaddr="0x70010000"
