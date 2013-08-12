@@ -607,6 +607,20 @@ fatfs_img_file () {
 	sync
 }
 
+sfdisk_partition_layout () {
+	#Generic boot partition created by sfdisk
+	echo ""
+	echo "Using sfdisk to create partition layout"
+	echo "-----------------------------"
+
+	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
+		${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
+		,,,-
+	__EOF__
+
+	sync
+}
+
 dd_uboot_boot () {
 	#For: Freescale: i.mx5/6 Devices
 	echo ""
@@ -683,6 +697,8 @@ create_partitions () {
 		else
 			fatfs_img_file
 		fi
+#switch to sfdisk
+#		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
@@ -1317,6 +1333,8 @@ is_omap () {
 conf_boot_fstype="fat"
 conf_boot_startmb="1"
 conf_boot_endmb="64"
+
+sfdisk_fstype="0xE"
 }
 
 is_imx () {
@@ -1345,6 +1363,8 @@ is_imx () {
 conf_conf_boot_fstype="ext2"
 conf_boot_startmb="1"
 conf_boot_endmb="64"
+
+sfdisk_fstype="0x83"
 }
 
 convert_uboot_to_dtb_board () {
