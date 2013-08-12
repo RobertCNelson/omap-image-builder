@@ -1247,9 +1247,9 @@ kernel_detection () {
 
 	unset HAS_OMAP_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
+		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has omap kernel support: v${omap_kernel}"
 		HAS_OMAP_KERNEL=1
 	fi
