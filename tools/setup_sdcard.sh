@@ -646,20 +646,6 @@ format_partition_error () {
 	exit
 }
 
-calculate_rootfs_partition () {
-	echo "Creating rootfs ${ROOTFS_TYPE} Partition"
-	echo "-----------------------------"
-
-	unset END_BOOT
-	END_BOOT=$(LC_ALL=C parted -s "${media}" unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
-
-	unset END_DEVICE
-	END_DEVICE=$(LC_ALL=C parted -s "${media}" unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
-
-	parted --script "${media}" mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
-	sync
-}
-
 format_boot_partition () {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
