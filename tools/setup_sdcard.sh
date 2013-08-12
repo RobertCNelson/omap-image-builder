@@ -380,7 +380,7 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	crane|igepv2|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb|mx6qsabrelite)
+	crane|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb|mx6qsabrelite)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
@@ -1448,12 +1448,6 @@ check_uboot_type () {
 		conf_initrdaddr="0x81000000"
 		initrd_file="uInitrd"
 		;;
-	igepv2)
-		SYSTEM="igepv2"
-		conf_board="IGEP00X0"
-		is_omap
-		uboot_CMD_LOAD="fatload"
-		;;
 	panda)
 		SYSTEM="panda"
 		conf_board="omap4_panda"
@@ -1572,7 +1566,6 @@ check_uboot_type () {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
 			        Freescale:
@@ -1603,7 +1596,6 @@ usage () {
 			                beagle_cx - <BeagleBoard Cx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
-			                igepv2 - <serial mode only>
 			                panda - <PandaBoard Ax>
 			                panda_es - <PandaBoard ES>
 			        Freescale:
