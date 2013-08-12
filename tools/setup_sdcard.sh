@@ -561,11 +561,6 @@ unmount_all_drive_partitions () {
 	create_msdos_label
 }
 
-fatfs_boot_error () {
-	echo "Failure: [parted --script ${media} set 1 boot on]"
-	exit
-}
-
 sfdisk_partition_layout () {
 	#Generic boot partition created by sfdisk
 	echo ""
