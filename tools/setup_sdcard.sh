@@ -294,7 +294,7 @@ boot_uenv_txt_template () {
 
 		__EOF__
 		;;
-	beagle_bx|beagle_cx)
+	beagle)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
@@ -368,7 +368,7 @@ boot_uenv_txt_template () {
 	fi
 
 	case "${SYSTEM}" in
-	beagle_bx|beagle_cx)
+	beagle)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5 wl12xx_clk=\${wl12xx_clk}
@@ -1389,17 +1389,8 @@ check_uboot_type () {
 	unset kms_conn
 
 	case "${UBOOT_TYPE}" in
-	beagle_bx)
-		SYSTEM="beagle_bx"
-		conf_board="omap3_beagle"
-		DISABLE_ETH=1
-		is_omap
-		#conf_fdtfile="omap3-beagle.dtb"
-		usbnet_mem="8192"
-		uboot_CMD_LOAD="fatload"
-		;;
-	beagle_cx)
-		SYSTEM="beagle_cx"
+	beagle|beagle_bx|beagle_cx)
+		SYSTEM="beagle"
 		conf_board="omap3_beagle"
 		DISABLE_ETH=1
 		is_omap
@@ -1507,8 +1498,7 @@ check_uboot_type () {
 			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
 			-----------------------------
 			        TI:
-			                beagle_bx - <BeagleBoard Ax/Bx>
-			                beagle_cx - <BeagleBoard Cx>
+			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
 			                panda - <PandaBoard Ax/ES>
@@ -1534,8 +1524,7 @@ usage () {
 
 			--uboot <dev board>
 			        TI:
-			                beagle_bx - <BeagleBoard Ax/Bx>
-			                beagle_cx - <BeagleBoard Cx>
+			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
 			                panda - <PandaBoard Ax/ES>
