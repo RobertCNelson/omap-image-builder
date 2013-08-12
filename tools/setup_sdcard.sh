@@ -1426,6 +1426,7 @@ check_uboot_type () {
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
 		. "${DIR}"/hwpack/omap3-beagle-xm.conf
 		convert_uboot_to_dtb_board
+		sfdisk_fstype="0xE"
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
