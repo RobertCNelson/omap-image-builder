@@ -596,8 +596,8 @@ create_partitions () {
 		mkfs="mkfs.vfat -F 16"
 		mkfs_label="-n ${BOOT_LABEL}"
 	else
-		mount_partition_format="ext2"
-		mkfs="mkfs.ext2"
+		mount_partition_format="${conf_boot_fstype}"
+		mkfs="mkfs.${conf_boot_fstype}"
 		mkfs_label="-L ${BOOT_LABEL}"
 	fi
 
@@ -1179,6 +1179,25 @@ process_dtb_conf () {
 		conf_boot_endmb="64"
 		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
 	fi
+
+	#error checking...
+	if [ ! "${conf_boot_fstype}" ] ; then
+		echo "Error: [conf_boot_fstype] not defined, stopping..."
+		exit
+	else
+		case "${conf_boot_fstype}" in
+		fat)
+			sfdisk_fstype="0xE"
+			;;
+		ext2|ext3|ext4)
+			sfdisk_fstype="0x83"
+			;;
+		*)
+			echo "Error: [conf_boot_fstype] not recognized, stopping..."
+			exit
+			;;
+		esac
+	fi
 }
 
 check_dtb_board () {
@@ -1255,11 +1274,6 @@ is_omap () {
 
 	#Kernel Options
 	select_kernel="${omap_kernel}"
-
-#Bootloader Partition:
-conf_boot_fstype="fat"
-
-sfdisk_fstype="0xE"
 }
 
 is_imx () {
@@ -1283,11 +1297,6 @@ is_imx () {
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
 	select_kernel="${armv7_kernel}"
-
-#Bootloader Partition:
-conf_conf_boot_fstype="ext2"
-
-sfdisk_fstype="0x83"
 }
 
 convert_uboot_to_dtb_board () {
@@ -1344,13 +1353,14 @@ check_uboot_type () {
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
 		uboot_CMD_LOAD="fatload"
+
+		conf_boot_fstype="fat"
 		process_dtb_conf
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
 		. "${DIR}"/hwpack/omap3-beagle-xm.conf
 		convert_uboot_to_dtb_board
-		sfdisk_fstype="0xE"
 		process_dtb_conf
 		;;
 	beagle_xm_kms)
@@ -1363,6 +1373,8 @@ check_uboot_type () {
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
 		uboot_CMD_LOAD="fatload"
+
+		conf_boot_fstype="fat"
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1389,6 +1401,8 @@ check_uboot_type () {
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
 		initrd_file="uInitrd"
+
+		conf_boot_fstype="fat"
 		process_dtb_conf
 		;;
 	panda|panda_es)
@@ -1398,6 +1412,8 @@ check_uboot_type () {
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
+
+		conf_boot_fstype="fat"
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1410,6 +1426,8 @@ check_uboot_type () {
 		conf_fdtaddr="0x91ff0000"
 		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
+
+		conf_boot_fstype="ext2"
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1423,6 +1441,8 @@ check_uboot_type () {
 		conf_fdtaddr="0x71ff0000"
 		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
+
+		conf_boot_fstype="ext2"
 		process_dtb_conf
 		;;
 	*)
