@@ -234,7 +234,7 @@ dl_bootloader () {
 
 boot_uenv_txt_template () {
 	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		kernel_file=${kernel_file}
+		kernel_file=${conf_normal_kernel_file}
 		initrd_file=${initrd_file}
 	__EOF__
 
@@ -382,17 +382,17 @@ boot_uenv_txt_template () {
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
@@ -826,7 +826,7 @@ populate_boot () {
 		dd_uboot_seek=${dd_uboot_seek}
 		dd_uboot_bs=${dd_uboot_bs}
 
-		boot_image=${boot}
+		conf_bootcmd=${conf_bootcmd}
 		boot_script=${boot_script}
 		boot_fstype=${conf_boot_fstype}
 
@@ -1198,6 +1198,14 @@ process_dtb_conf () {
 			;;
 		esac
 	fi
+
+	if [ "${conf_uboot_CONFIG_CMD_BOOTZ}" ] ; then
+		conf_bootcmd="bootz"
+		conf_normal_kernel_file=zImage
+	else
+		conf_bootcmd="bootm"
+		conf_normal_kernel_file=uImage
+	fi
 }
 
 check_dtb_board () {
@@ -1305,7 +1313,6 @@ convert_uboot_to_dtb_board () {
 	case "${kernel_subarch}" in
 	omap)
 		select_kernel="${omap_kernel}"
-		kernel_file="zImage"
 		initrd_file="initrd.img"
 		;;
 	esac
@@ -1316,7 +1323,6 @@ check_uboot_type () {
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
 
-	kernel_file="zImage"
 	initrd_file="initrd.img"
 
 	unset IN_VALID_UBOOT
@@ -1326,7 +1332,6 @@ check_uboot_type () {
 	unset conf_fdtfile
 	unset need_dtbs
 
-	boot="bootz"
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
@@ -1355,6 +1360,7 @@ check_uboot_type () {
 		uboot_CMD_LOAD="fatload"
 
 		conf_boot_fstype="fat"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	beagle_xm)
@@ -1375,6 +1381,7 @@ check_uboot_type () {
 		uboot_CMD_LOAD="fatload"
 
 		conf_boot_fstype="fat"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1403,6 +1410,7 @@ check_uboot_type () {
 		initrd_file="uInitrd"
 
 		conf_boot_fstype="fat"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	panda|panda_es)
@@ -1414,6 +1422,7 @@ check_uboot_type () {
 		usbnet_mem="16384"
 
 		conf_boot_fstype="fat"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1428,6 +1437,7 @@ check_uboot_type () {
 		need_dtbs=1
 
 		conf_boot_fstype="ext2"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1443,6 +1453,7 @@ check_uboot_type () {
 		need_dtbs=1
 
 		conf_boot_fstype="ext2"
+		conf_uboot_CONFIG_CMD_BOOTZ=1
 		process_dtb_conf
 		;;
 	*)
