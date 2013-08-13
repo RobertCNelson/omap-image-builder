@@ -235,7 +235,7 @@ dl_bootloader () {
 boot_uenv_txt_template () {
 	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		kernel_file=${conf_normal_kernel_file}
-		initrd_file=${initrd_file}
+		initrd_file=${conf_normal_initrd_file}
 	__EOF__
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
@@ -1206,6 +1206,12 @@ process_dtb_conf () {
 		conf_bootcmd="bootm"
 		conf_normal_kernel_file=uImage
 	fi
+
+	if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
+		conf_normal_initrd_file=initrd.img
+	else
+		conf_normal_initrd_file=uInitrd
+	fi
 }
 
 check_dtb_board () {
@@ -1313,7 +1319,6 @@ convert_uboot_to_dtb_board () {
 	case "${kernel_subarch}" in
 	omap)
 		select_kernel="${omap_kernel}"
-		initrd_file="initrd.img"
 		;;
 	esac
 }
@@ -1322,8 +1327,6 @@ check_uboot_type () {
 	#New defines for hwpack:
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
-
-	initrd_file="initrd.img"
 
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
@@ -1361,6 +1364,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		process_dtb_conf
 		;;
 	beagle_xm)
@@ -1382,6 +1386,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1407,7 +1412,6 @@ check_uboot_type () {
 		#u-boot:rdaddr="0x81000000"
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
-		initrd_file="uInitrd"
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
@@ -1423,6 +1427,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1438,6 +1443,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="ext2"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1454,6 +1460,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="ext2"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		process_dtb_conf
 		;;
 	*)
