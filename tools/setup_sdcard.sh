@@ -1251,7 +1251,6 @@ check_dtb_board () {
 		. "${DIR}"/hwpack/${dtb_board}.conf
 
 		boot=${boot_image}
-		populate_dtbs=1
 		unset error_invalid_dtb
 		process_dtb_conf
 	else
@@ -1335,8 +1334,6 @@ is_imx () {
 }
 
 convert_uboot_to_dtb_board () {
-	populate_dtbs=1
-
 	case "${kernel_subarch}" in
 	omap)
 		select_kernel="${omap_kernel}"
@@ -1379,10 +1376,8 @@ check_uboot_type () {
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
 
-		conf_boot_fstype="fat"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/omap3-beagle.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	beagle_xm)
@@ -1401,10 +1396,8 @@ check_uboot_type () {
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
 
-		conf_boot_fstype="fat"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/omap3-beagle-xm.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1413,9 +1406,6 @@ check_uboot_type () {
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-		select_kernel="${bone_dt_kernel}"
-		need_dtbs=1
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
@@ -1430,11 +1420,12 @@ check_uboot_type () {
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
 
-		conf_boot_fstype="fat"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_CMD_FS_GENERIC=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/beaglebone.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
+
+		select_kernel="${bone_dt_kernel}"
+		need_dtbs=1
 		;;
 	panda|panda_es)
 		SYSTEM="panda"
@@ -1444,11 +1435,8 @@ check_uboot_type () {
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
 
-		conf_boot_fstype="fat"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
-		conf_uboot_CONFIG_CMD_FS_GENERIC=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/pandaboard.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1462,11 +1450,8 @@ check_uboot_type () {
 		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
 
-		conf_boot_fstype="ext2"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
-		conf_uboot_CONFIG_CMD_FS_GENERIC=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/mx51evk.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1481,11 +1466,8 @@ check_uboot_type () {
 		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
 
-		conf_boot_fstype="ext2"
-		conf_uboot_CONFIG_CMD_BOOTZ=1
-		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
-		conf_uboot_CONFIG_CMD_FS_GENERIC=1
-		conf_uboot_use_uenvcmd=1
+		. "${DIR}"/hwpack/mx53loco.conf
+		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	*)
