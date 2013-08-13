@@ -323,9 +323,9 @@ boot_uenv_txt_template () {
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		loadkernel=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
-		loadinitrd=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		loadfdt=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
+		loadkernel=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
+		loadinitrd=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
+		loadfdt=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
 
 		boot_classic=run loadkernel; run loadinitrd
 		boot_ftd=run loadkernel; run loadinitrd; run loadfdt
@@ -1212,6 +1212,16 @@ process_dtb_conf () {
 	else
 		conf_normal_initrd_file=uInitrd
 	fi
+
+	if [ "${conf_uboot_CONFIG_CMD_FS_GENERIC}" ] ; then
+		conf_fileload="load"
+	else
+		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
+			conf_fileload="fatload"
+		else
+			conf_fileload="ext2load"
+		fi
+	fi
 }
 
 check_dtb_board () {
@@ -1349,7 +1359,6 @@ check_uboot_type () {
 	unset boot_scr_wrapper
 	unset usbnet_mem
 
-	uboot_CMD_LOAD="load"
 	unset kms_conn
 
 	case "${UBOOT_TYPE}" in
@@ -1360,7 +1369,6 @@ check_uboot_type () {
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
-		uboot_CMD_LOAD="fatload"
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
@@ -1382,7 +1390,6 @@ check_uboot_type () {
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
-		uboot_CMD_LOAD="fatload"
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
@@ -1415,6 +1422,7 @@ check_uboot_type () {
 
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
+		conf_uboot_CONFIG_CMD_FS_GENERIC=1
 		process_dtb_conf
 		;;
 	panda|panda_es)
@@ -1428,6 +1436,7 @@ check_uboot_type () {
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
+		conf_uboot_CONFIG_CMD_FS_GENERIC=1
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1444,6 +1453,7 @@ check_uboot_type () {
 		conf_boot_fstype="ext2"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
+		conf_uboot_CONFIG_CMD_FS_GENERIC=1
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1461,6 +1471,7 @@ check_uboot_type () {
 		conf_boot_fstype="ext2"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
+		conf_uboot_CONFIG_CMD_FS_GENERIC=1
 		process_dtb_conf
 		;;
 	*)
