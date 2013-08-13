@@ -1163,7 +1163,7 @@ kernel_detection () {
 }
 
 check_dtb_board () {
-	invalid_dtb=1
+	error_invalid_dtb=1
 
 	#/hwpack/${dtb_board}.conf
 	unset leading_slash
@@ -1179,7 +1179,7 @@ check_dtb_board () {
 
 		boot=${boot_image}
 		populate_dtbs=1
-		unset invalid_dtb
+		unset error_invalid_dtb
 	else
 		cat <<-__EOF__
 			-----------------------------
@@ -1585,9 +1585,11 @@ if [ ! "${media}" ] ; then
 	usage
 fi
 
-if [ "${invalid_dtb}" ] ; then
+if [ "${error_invalid_dtb}" ] ; then
 	if [ "${IN_VALID_UBOOT}" ] ; then
-		echo "ERROR: --uboot undefined"
+		echo "-----------------------------"
+		echo "ERROR: --uboot/--dtb undefined"
+		echo "-----------------------------"
 		usage
 	fi
 fi
