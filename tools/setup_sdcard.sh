@@ -382,17 +382,17 @@ boot_uenv_txt_template () {
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
@@ -1222,6 +1222,17 @@ process_dtb_conf () {
 			conf_fileload="ext2load"
 		fi
 	fi
+
+	if [ "${conf_uboot_use_uenvcmd}" ] ; then
+		conf_entrypt="uenvcmd"
+	else
+		if [ ! "x${conf_uboot_no_uenvcmd}" = "x" ] ; then
+			conf_entrypt="${conf_uboot_no_uenvcmd}"
+		else
+			echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
+			exit
+		fi
+	fi
 }
 
 check_dtb_board () {
@@ -1354,8 +1365,6 @@ check_uboot_type () {
 	unset dd_uboot_seek
 	unset dd_uboot_bs
 
-	uboot_SCRIPT_ENTRY="loaduimage"
-
 	unset boot_scr_wrapper
 	unset usbnet_mem
 
@@ -1373,6 +1382,7 @@ check_uboot_type () {
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	beagle_xm)
@@ -1394,6 +1404,7 @@ check_uboot_type () {
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1412,7 +1423,6 @@ check_uboot_type () {
 		#just to disable the omapfb stuff..
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
-		uboot_SCRIPT_ENTRY="uenvcmd"
 		conf_zreladdr="0x80008000"
 		conf_loadaddr="0x80200000"
 		conf_fdtaddr="0x815f0000"
@@ -1423,6 +1433,7 @@ check_uboot_type () {
 		conf_boot_fstype="fat"
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_CMD_FS_GENERIC=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	panda|panda_es)
@@ -1437,6 +1448,7 @@ check_uboot_type () {
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		conf_uboot_CONFIG_CMD_FS_GENERIC=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	mx51evk)
@@ -1454,6 +1466,7 @@ check_uboot_type () {
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		conf_uboot_CONFIG_CMD_FS_GENERIC=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	mx53loco)
@@ -1472,6 +1485,7 @@ check_uboot_type () {
 		conf_uboot_CONFIG_CMD_BOOTZ=1
 		conf_uboot_CONFIG_SUPPORT_RAW_INITRD=1
 		conf_uboot_CONFIG_CMD_FS_GENERIC=1
+		conf_uboot_use_uenvcmd=1
 		process_dtb_conf
 		;;
 	*)
