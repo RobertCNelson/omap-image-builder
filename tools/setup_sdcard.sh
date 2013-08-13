@@ -1162,6 +1162,25 @@ kernel_detection () {
 	fi
 }
 
+process_dtb_conf () {
+	if [ "${conf_warning}" ] ; then
+		show_board_warning
+	fi
+
+	echo "-----------------------------"
+
+	#defaults, if not set...
+	if [ ! "${conf_boot_startmb}" ] ; then
+		conf_boot_startmb="1"
+		echo "info: [conf_boot_startmb] undefined using default value: ${conf_boot_startmb}"
+	fi
+
+	if [ ! "${conf_boot_endmb}" ] ; then
+		conf_boot_endmb="64"
+		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
+	fi
+}
+
 check_dtb_board () {
 	error_invalid_dtb=1
 
@@ -1180,6 +1199,7 @@ check_dtb_board () {
 		boot=${boot_image}
 		populate_dtbs=1
 		unset error_invalid_dtb
+		process_dtb_conf
 	else
 		cat <<-__EOF__
 			-----------------------------
@@ -1238,8 +1258,6 @@ is_omap () {
 
 #Bootloader Partition:
 conf_boot_fstype="fat"
-conf_boot_startmb="1"
-conf_boot_endmb="64"
 
 sfdisk_fstype="0xE"
 }
@@ -1268,8 +1286,6 @@ is_imx () {
 
 #Bootloader Partition:
 conf_conf_boot_fstype="ext2"
-conf_boot_startmb="1"
-conf_boot_endmb="64"
 
 sfdisk_fstype="0x83"
 }
@@ -1328,12 +1344,14 @@ check_uboot_type () {
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
 		uboot_CMD_LOAD="fatload"
+		process_dtb_conf
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
 		. "${DIR}"/hwpack/omap3-beagle-xm.conf
 		convert_uboot_to_dtb_board
 		sfdisk_fstype="0xE"
+		process_dtb_conf
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
@@ -1345,6 +1363,7 @@ check_uboot_type () {
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
 		uboot_CMD_LOAD="fatload"
+		process_dtb_conf
 		;;
 	bone|bone_dtb)
 		SYSTEM="bone"
@@ -1370,6 +1389,7 @@ check_uboot_type () {
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
 		initrd_file="uInitrd"
+		process_dtb_conf
 		;;
 	panda|panda_es)
 		SYSTEM="panda"
@@ -1378,6 +1398,7 @@ check_uboot_type () {
 		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
+		process_dtb_conf
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
@@ -1389,6 +1410,7 @@ check_uboot_type () {
 		conf_fdtaddr="0x91ff0000"
 		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
+		process_dtb_conf
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
@@ -1401,6 +1423,7 @@ check_uboot_type () {
 		conf_fdtaddr="0x71ff0000"
 		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
+		process_dtb_conf
 		;;
 	*)
 		IN_VALID_UBOOT=1
