@@ -493,11 +493,18 @@ if [ ! -d ${tempdir}/lib/firmware/ ] ; then
 	sudo mkdir -p ${tempdir}/lib/firmware/ || true
 fi
 
+if [ -d ${DIR}/git/linux-firmware/brcm/ ] ; then
+	sudo mkdir -p ${tempdir}/lib/firmware/brcm
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx ${tempdir}/lib/firmware/
+	sudo cp -v ${DIR}/git/linux-firmware/brcm/* ${tempdir}/lib/firmware/brcm
+fi
+
 if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
 	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
 fi
 
 if [ -f ${DIR}/git/linux-firmware/htc_9271.fw ] ; then
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.atheros_firmware ${tempdir}/lib/firmware/
 	sudo cp -v ${DIR}/git/linux-firmware/htc_9271.fw ${tempdir}/lib/firmware/
 fi
 
