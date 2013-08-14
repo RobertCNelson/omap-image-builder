@@ -278,6 +278,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
 
 		if [ "\${deb_pkgs}" ] ; then
+			echo "Log: (chroot) Installing: \${deb_pkgs}"
 			apt-get -y --force-yes install \${deb_pkgs}
 		fi
 	}
