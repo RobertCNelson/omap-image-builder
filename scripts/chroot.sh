@@ -312,11 +312,17 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		#These packages have binaries needed by this script.
-		packages="initramfs-tools git-core sudo u-boot-tools wget"
+		packages="initramfs-tools locales git-core sudo u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		#Install the user choosen list.
 		apt-get -y --force-yes install ${base_pkg_list}
+	}
+
+	set_locale () {
+		echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+		locale-gen
+		echo "LANG=en_US.UTF-8" > /etc/default/locale
 	}
 
 	dl_pkg_src () {
@@ -472,6 +478,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
+	set_locale
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
