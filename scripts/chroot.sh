@@ -322,8 +322,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	set_locale () {
-		echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-		locale-gen
+		if [ -f /etc/locale.gen ] ; then
+			#Debian:
+			sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
+			locale-gen
+		else
+			#Ubuntu:
+			locale-gen en_US.UTF-8
+		fi
 		echo "LANG=en_US.UTF-8" > /etc/default/locale
 	}
 
