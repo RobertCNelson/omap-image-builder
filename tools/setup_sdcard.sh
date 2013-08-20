@@ -1386,17 +1386,9 @@ check_uboot_type () {
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
-	beagle_xm_kms)
-		SYSTEM="beagle_xm"
-		conf_board="omap3_beagle"
-		is_omap
-		usbnet_mem="16384"
-		#conf_fdtfile="omap3-beagle.dtb"
-
-		USE_KMS=1
-		unset HAS_OMAPFB_DSS2
-
-		. "${DIR}"/hwpack/omap3-beagle-xm.conf
+	dt-beagle-xm)
+		echo "Note: [--dtb dt-beagle-xm] now replaces [--uboot dt-beagle-xm]"
+		. "${DIR}"/hwpack/dt-beagle-xm.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
