@@ -278,6 +278,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
 
 		if [ "\${deb_pkgs}" ] ; then
+			echo "Log: (chroot) Installing: \${deb_pkgs}"
 			apt-get -y --force-yes install \${deb_pkgs}
 		fi
 	}
@@ -312,11 +313,24 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		#These packages have binaries needed by this script.
-		packages="initramfs-tools git-core sudo u-boot-tools wget"
+		packages="initramfs-tools locales git-core sudo u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		#Install the user choosen list.
+		echo "Log: (chroot) Installing: ${base_pkg_list}"
 		apt-get -y --force-yes install ${base_pkg_list}
+	}
+
+	set_locale () {
+		if [ -f /etc/locale.gen ] ; then
+			#Debian:
+			sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
+			locale-gen
+		else
+			#Ubuntu:
+			locale-gen en_US.UTF-8
+		fi
+		echo "LANG=en_US.UTF-8" > /etc/default/locale
 	}
 
 	dl_pkg_src () {
@@ -472,6 +486,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
+	set_locale
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
@@ -493,11 +508,18 @@ if [ ! -d ${tempdir}/lib/firmware/ ] ; then
 	sudo mkdir -p ${tempdir}/lib/firmware/ || true
 fi
 
+if [ -d ${DIR}/git/linux-firmware/brcm/ ] ; then
+	sudo mkdir -p ${tempdir}/lib/firmware/brcm
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx ${tempdir}/lib/firmware/
+	sudo cp -v ${DIR}/git/linux-firmware/brcm/* ${tempdir}/lib/firmware/brcm
+fi
+
 if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
 	sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
 fi
 
 if [ -f ${DIR}/git/linux-firmware/htc_9271.fw ] ; then
+	sudo cp -v ${DIR}/git/linux-firmware/LICENCE.atheros_firmware ${tempdir}/lib/firmware/
 	sudo cp -v ${DIR}/git/linux-firmware/htc_9271.fw ${tempdir}/lib/firmware/
 fi
 

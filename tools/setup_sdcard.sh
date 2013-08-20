@@ -47,13 +47,6 @@ ROOTFS_LABEL=rootfs
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
 
-# non-GNU fdisk is included with Debian Wheezy (and possibly other versions of debian)
-# but it has a slightly different name "fdisk.distrib" calling fdisk with a variable
-# allows us to specify this alternate name easily.
-# to specify an alternate path to fdisk use:
-# --fdisk /path/to/alt/fdisk
-FDISK_EXEC=`which fdisk`
-
 is_element_of () {
 	testelt=$1
 	for validelt in $2 ; do
@@ -136,9 +129,6 @@ find_issue () {
 		echo "Debug: image has pre-generated uEnv.txt file"
 		has_uenvtxt=1
 	fi
-
-	echo "Debug: $FDISK_EXEC version:"
-	LC_ALL=C $FDISK_EXEC -v
 }
 
 check_for_command () {
@@ -157,7 +147,6 @@ detect_software () {
 
 	check_for_command mkfs.vfat dosfstools
 	check_for_command wget wget
-	check_for_command parted parted
 	check_for_command git git
 
 	if [ "${build_img_file}" ] ; then
@@ -167,20 +156,11 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Angstrom: opkg install dosfstools git util-linux parted wget"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx parted u-boot-tools wget"
-		echo "Fedora: yum install dosfstools dosfstools git-core parted uboot-tools wget"
-		echo "Gentoo: emerge dosfstools parted git u-boot-tools wget"
+		echo "Angstrom: opkg install dosfstools git util-linux wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget"
+		echo "Fedora: yum install dosfstools dosfstools git-core uboot-tools wget"
+		echo "Gentoo: emerge dosfstools git u-boot-tools wget"
 		echo ""
-		exit
-	fi
-
-	#Check for gnu-fdisk
-	#FIXME: GNU Fdisk seems to halt at "Using /dev/xx" when trying to script it..
-	if $FDISK_EXEC -v | grep "GNU Fdisk" >/dev/null ; then
-		echo "Sorry, this script currently doesn't work with GNU Fdisk."
-		echo "Install the version of fdisk from your distribution's util-linux package."
-		echo "Or specify a non-GNU Fdisk using the --fdisk option."
 		exit
 	fi
 }
@@ -213,7 +193,7 @@ dl_bootloader () {
 	mkdir -p ${TEMPDIR}/dl/${DIST}
 	mkdir -p "${DIR}/dl/${DIST}"
 
-	wget --quiet -P "${TEMPDIR}/dl/" ${conf_bl_http}/${conf_bl_listfile}
+	wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${conf_bl_http}/${conf_bl_listfile}
 
 	if [ ! -f ${TEMPDIR}/dl/${conf_bl_listfile} ] ; then
 		echo "error: can't connect to rcn-ee.net, retry in a few minutes..."
@@ -235,7 +215,7 @@ dl_bootloader () {
 
 	if [ "${spl_name}" ] ; then
 		MLO=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
-		wget --quiet -P "${TEMPDIR}/dl/" ${MLO}
+		wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${MLO}
 		MLO=${MLO##*/}
 		echo "SPL Bootloader: ${MLO}"
 	else
@@ -244,7 +224,7 @@ dl_bootloader () {
 
 	if [ "${boot_name}" ] ; then
 		UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
-		wget -P "${TEMPDIR}/dl/" ${UBOOT}
+		wget --directory-prefix="${TEMPDIR}/dl/" ${UBOOT}
 		UBOOT=${UBOOT##*/}
 		echo "UBOOT Bootloader: ${UBOOT}"
 	else
@@ -254,8 +234,8 @@ dl_bootloader () {
 
 boot_uenv_txt_template () {
 	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		kernel_file=${kernel_file}
-		initrd_file=${initrd_file}
+		kernel_file=${conf_normal_kernel_file}
+		initrd_file=${conf_normal_initrd_file}
 	__EOF__
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
@@ -292,12 +272,9 @@ boot_uenv_txt_template () {
 			##Disable HDMI/eMMC
 			#optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
 
-			#Merge from config-hooks branch, in theory the above should work uncommented too..
-			optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
-
 		__EOF__
 		;;
-	beagle_bx|beagle_cx)
+	beagle)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
@@ -331,7 +308,7 @@ boot_uenv_txt_template () {
 
 		__EOF__
 		;;
-	panda|panda_es)
+	panda)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#SPI: enable for userspace spi access on expansion header
 			#buddy=spidev
@@ -346,9 +323,9 @@ boot_uenv_txt_template () {
 		mmcroot=/dev/mmcblk0p2 ro
 		mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
-		loadkernel=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
-		loadinitrd=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-		loadfdt=${uboot_CMD_LOAD} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
+		loadkernel=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
+		loadinitrd=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
+		loadfdt=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
 
 		boot_classic=run loadkernel; run loadinitrd
 		boot_ftd=run loadkernel; run loadinitrd; run loadfdt
@@ -371,7 +348,7 @@ boot_uenv_txt_template () {
 	fi
 
 	case "${SYSTEM}" in
-	beagle_bx|beagle_cx)
+	beagle)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5 wl12xx_clk=\${wl12xx_clk}
@@ -383,13 +360,13 @@ boot_uenv_txt_template () {
 			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
-	crane|igepv2|mx53loco|panda_dtb|panda_es_dtb|mx51evk|mx53loco_dtb|mx6qsabrelite)
+	mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion
 		__EOF__
 		;;
-	panda|panda_es)
+	panda)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
 			expansion_args=setenv expansion buddy=\${buddy}
@@ -405,17 +382,17 @@ boot_uenv_txt_template () {
 	if [ ! "${need_dtbs}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			#${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Classic Board File Boot:
-			#${uboot_SCRIPT_ENTRY}=run boot_classic; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
+			#${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
 			#New Device Tree Boot:
-			${uboot_SCRIPT_ENTRY}=run boot_ftd; run device_args; ${boot} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+			${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 
 		__EOF__
 	fi
@@ -530,7 +507,6 @@ setup_bootscripts () {
 
 drive_error_ro () {
 	echo "-----------------------------"
-	echo "Error: [LC_ALL=C parted --script ${media} mklabel msdos] failed..."
 	echo "Error: for some reason your SD card is not writable..."
 	echo "Check: is the write protect lever set the locked position?"
 	echo "Check: do you have another SD card reader?"
@@ -538,11 +514,6 @@ drive_error_ro () {
 	echo "Script gave up..."
 
 	exit
-}
-
-create_msdos_label () {
-	LC_ALL=C parted --script ${media} mklabel msdos || drive_error_ro
-	sync
 }
 
 unmount_all_drive_partitions () {
@@ -560,50 +531,18 @@ unmount_all_drive_partitions () {
 	done
 
 	echo "Zeroing out Partition Table"
-	dd if=/dev/zero of=${media} bs=1024 count=1024
-	create_msdos_label
-}
-
-fatfs_boot_error () {
-	echo "Failure: [parted --script ${media} set 1 boot on]"
-	exit
-}
-
-fatfs_boot () {
-	#For: TI: Omap/Sitara Devices
-	echo ""
-	echo "Using fdisk to create an omap compatible fatfs BOOT partition"
-	echo "-----------------------------"
-
-	$FDISK_EXEC ${media} <<-__EOF__
-		n
-		p
-		1
-
-		+${boot_partition_size}M
-		t
-		e
-		p
-		w
-	__EOF__
-
-	sync
-
-	echo "Setting Boot Partition's Boot Flag"
-	echo "-----------------------------"
-	LC_ALL=C parted --script "${media}" set 1 boot on || fatfs_boot_error
-
+	dd if=/dev/zero of=${media} bs=1M count=16 || drive_error_ro
 	sync
 }
 
-fatfs_img_file () {
-	#For: TI: Omap/Sitara Devices
+sfdisk_partition_layout () {
+	#Generic boot partition created by sfdisk
 	echo ""
-	echo "Using sfdisk to create an omap compatible fatfs BOOT partition"
+	echo "Using sfdisk to create partition layout"
 	echo "-----------------------------"
 
-	LC_ALL=C sfdisk --DOS --sectors 63 --heads 255 --unit M "${media}" <<-__EOF__
-		,${boot_partition_size},0xe,*
+	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
+		${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
 		,,,-
 	__EOF__
 
@@ -635,20 +574,6 @@ format_partition_error () {
 	exit
 }
 
-calculate_rootfs_partition () {
-	echo "Creating rootfs ${ROOTFS_TYPE} Partition"
-	echo "-----------------------------"
-
-	unset END_BOOT
-	END_BOOT=$(LC_ALL=C parted -s "${media}" unit mb print free | grep primary | awk '{print $3}' | cut -d "M" -f1)
-
-	unset END_DEVICE
-	END_DEVICE=$(LC_ALL=C parted -s "${media}" unit mb print free | grep Free | tail -n 1 | awk '{print $2}' | cut -d "M" -f1)
-
-	parted --script "${media}" mkpart primary ${ROOTFS_TYPE} ${END_BOOT} ${END_DEVICE}
-	sync
-}
-
 format_boot_partition () {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
@@ -666,46 +591,36 @@ format_rootfs_partition () {
 create_partitions () {
 	unset bootloader_installed
 
-	if [ "x${boot_fstype}" = "xfat" ] ; then
-		parted_format="fat16"
+	if [ "x${conf_boot_fstype}" = "xfat" ] ; then
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
 		mkfs_label="-n ${BOOT_LABEL}"
 	else
-		parted_format="ext2"
-		mount_partition_format="ext2"
-		mkfs="mkfs.ext2"
+		mount_partition_format="${conf_boot_fstype}"
+		mkfs="mkfs.${conf_boot_fstype}"
 		mkfs_label="-L ${BOOT_LABEL}"
 	fi
 
 	case "${bootloader_location}" in
 	fatfs_boot)
-		if [ ! "${build_img_file}" ] ; then
-			fatfs_boot
-			calculate_rootfs_partition
-		else
-			fatfs_img_file
-		fi
+		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	*)
-		LC_ALL=C parted --script ${media} mkpart primary ${parted_format} ${boot_startmb} ${boot_partition_size}
-		calculate_rootfs_partition
+		sfdisk_partition_layout
 		;;
 	esac
 
 	echo "Partition Setup:"
 	echo "-----------------------------"
-	LC_ALL=C $FDISK_EXEC -l "${media}"
+	LC_ALL=C fdisk -l "${media}"
 	echo "-----------------------------"
 
 	if [ "${build_img_file}" ] ; then
@@ -865,7 +780,7 @@ populate_boot () {
 	DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
 	if [ "x${DTBS_FILE}" != "x" ] ; then
 		echo "Copying Device Tree Files:"
-		if [ "x${boot_fstype}" = "xfat" ] ; then
+		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
 			tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 		else
 			tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
@@ -876,8 +791,8 @@ populate_boot () {
 	if [ "${boot_scr_wrapper}" ] ; then
 		cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
 			echo "boot.scr -> uEnv.txt wrapper..."
-			setenv boot_fstype ${boot_fstype}
-			\${boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
+			setenv conf_boot_fstype ${conf_boot_fstype}
+			\${conf_boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
 			env import -t \${loadaddr} \${filesize}
 			run loaduimage
 		__EOF__
@@ -911,9 +826,9 @@ populate_boot () {
 		dd_uboot_seek=${dd_uboot_seek}
 		dd_uboot_bs=${dd_uboot_bs}
 
-		boot_image=${boot}
+		conf_bootcmd=${conf_bootcmd}
 		boot_script=${boot_script}
-		boot_fstype=${boot_fstype}
+		boot_fstype=${conf_boot_fstype}
 
 		serial_tty=${SERIAL}
 		loadaddr=${conf_loadaddr}
@@ -1108,12 +1023,6 @@ populate_rootfs () {
 
 	case "${SYSTEM}" in
 	bone|bone_dtb)
-		cat >> ${TEMPDIR}/disk/etc/modules <<-__EOF__
-		fbcon
-		ti_tscadc
-
-		__EOF__
-
 		file="/etc/udev/rules.d/70-persistent-net.rules"
 		echo "" >> ${TEMPDIR}/disk${file}
 		echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk${file}
@@ -1182,13 +1091,13 @@ populate_rootfs () {
 }
 
 check_mmc () {
-	FDISK=$(LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk ${media}" | awk '{print $2}')
+	FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${media}" | awk '{print $2}')
 
 	if [ "x${FDISK}" = "x${media}:" ] ; then
 		echo ""
 		echo "I see..."
-		echo "$FDISK_EXEC -l:"
-		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
+		echo "fdisk -l:"
+		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
 		if which lsblk > /dev/null ; then
 			echo "lsblk:"
@@ -1209,24 +1118,29 @@ check_mmc () {
 		echo ""
 		echo "Are you sure? I Don't see [${media}], here is what I do see..."
 		echo ""
-		echo "$FDISK_EXEC -l:"
-		LC_ALL=C $FDISK_EXEC -l 2>/dev/null | grep "Disk /dev/" --color=never
+		echo "fdisk -l:"
+		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
-		echo "mount:"
-		mount | grep -v none | grep "/dev/" --color=never
+		if which lsblk > /dev/null ; then
+			echo "lsblk:"
+			lsblk | grep -v sr0
+		else
+			echo "mount:"
+			mount | grep -v none | grep "/dev/" --color=never
+		fi
 		echo ""
 		exit
 	fi
 }
 
 kernel_detection () {
-	unset HAS_IMX_KERNEL
+	unset HAS_MULTI_ARMV7_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep imx | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		imx_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep imx | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has imx kernel support: v${imx_kernel}"
-		HAS_IMX_KERNEL=1
+		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
+		HAS_MULTI_ARMV7_KERNEL=1
 	fi
 
 	unset HAS_BONE_DT_KERNEL
@@ -1238,27 +1152,91 @@ kernel_detection () {
 		HAS_BONE_DT_KERNEL=1
 	fi
 
-	unset HAS_BONE_KERNEL
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep psp | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		bone_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep psp | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has bone kernel support: v${bone_kernel}"
-		HAS_BONE_KERNEL=1
-	fi
-
 	unset HAS_OMAP_KERNEL
 	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v vmlinuz-3.2 | awk -F'vmlinuz-' '{print $2}')
+		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has omap kernel support: v${omap_kernel}"
 		HAS_OMAP_KERNEL=1
 	fi
 }
 
+process_dtb_conf () {
+	if [ "${conf_warning}" ] ; then
+		show_board_warning
+	fi
+
+	echo "-----------------------------"
+
+	#defaults, if not set...
+	if [ ! "${conf_boot_startmb}" ] ; then
+		conf_boot_startmb="1"
+		echo "info: [conf_boot_startmb] undefined using default value: ${conf_boot_startmb}"
+	fi
+
+	if [ ! "${conf_boot_endmb}" ] ; then
+		conf_boot_endmb="64"
+		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
+	fi
+
+	#error checking...
+	if [ ! "${conf_boot_fstype}" ] ; then
+		echo "Error: [conf_boot_fstype] not defined, stopping..."
+		exit
+	else
+		case "${conf_boot_fstype}" in
+		fat)
+			sfdisk_fstype="0xE"
+			;;
+		ext2|ext3|ext4)
+			sfdisk_fstype="0x83"
+			;;
+		*)
+			echo "Error: [conf_boot_fstype] not recognized, stopping..."
+			exit
+			;;
+		esac
+	fi
+
+	if [ "${conf_uboot_CONFIG_CMD_BOOTZ}" ] ; then
+		conf_bootcmd="bootz"
+		conf_normal_kernel_file=zImage
+	else
+		conf_bootcmd="bootm"
+		conf_normal_kernel_file=uImage
+	fi
+
+	if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
+		conf_normal_initrd_file=initrd.img
+	else
+		conf_normal_initrd_file=uInitrd
+	fi
+
+	if [ "${conf_uboot_CONFIG_CMD_FS_GENERIC}" ] ; then
+		conf_fileload="load"
+	else
+		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
+			conf_fileload="fatload"
+		else
+			conf_fileload="ext2load"
+		fi
+	fi
+
+	if [ "${conf_uboot_use_uenvcmd}" ] ; then
+		conf_entrypt="uenvcmd"
+	else
+		if [ ! "x${conf_uboot_no_uenvcmd}" = "x" ] ; then
+			conf_entrypt="${conf_uboot_no_uenvcmd}"
+		else
+			echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
+			exit
+		fi
+	fi
+}
+
 check_dtb_board () {
-	invalid_dtb=1
+	error_invalid_dtb=1
 
 	#/hwpack/${dtb_board}.conf
 	unset leading_slash
@@ -1273,8 +1251,8 @@ check_dtb_board () {
 		. "${DIR}"/hwpack/${dtb_board}.conf
 
 		boot=${boot_image}
-		populate_dtbs=1
-		unset invalid_dtb
+		unset error_invalid_dtb
+		process_dtb_conf
 	else
 		cat <<-__EOF__
 			-----------------------------
@@ -1309,8 +1287,6 @@ is_omap () {
 	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
 
-	boot_fstype="fat"
-
 	SERIAL="ttyO2"
 	SERIAL_CONSOLE="${SERIAL},115200n8"
 
@@ -1342,7 +1318,6 @@ is_imx () {
 	boot_name="u-boot.imx"
 	dd_uboot_seek="1"
 	dd_uboot_bs="1024"
-	boot_startmb="2"
 
 	SUBARCH="imx"
 
@@ -1351,23 +1326,17 @@ is_imx () {
 
 	boot_script="uEnv.txt"
 
-	boot_fstype="ext2"
-
 	VIDEO_CONSOLE="console=tty0"
 	HAS_IMX_BLOB=1
 	VIDEO_FB="mxcdi1fb"
 	VIDEO_TIMING="RGB24,1280x720M@60"
-	select_kernel="${imx_kernel}"
+	select_kernel="${armv7_kernel}"
 }
 
 convert_uboot_to_dtb_board () {
-	populate_dtbs=1
-
 	case "${kernel_subarch}" in
 	omap)
 		select_kernel="${omap_kernel}"
-		kernel_file="zImage"
-		initrd_file="initrd.img"
 		;;
 	esac
 }
@@ -1377,9 +1346,6 @@ check_uboot_type () {
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
 
-	kernel_file="zImage"
-	initrd_file="initrd.img"
-
 	unset IN_VALID_UBOOT
 	unset DISABLE_ETH
 	unset USE_UIMAGE
@@ -1387,7 +1353,6 @@ check_uboot_type () {
 	unset conf_fdtfile
 	unset need_dtbs
 
-	boot="bootz"
 	unset bootloader_location
 	unset spl_name
 	unset boot_name
@@ -1397,92 +1362,50 @@ check_uboot_type () {
 	unset dd_uboot_seek
 	unset dd_uboot_bs
 
-	uboot_SCRIPT_ENTRY="loaduimage"
-
 	unset boot_scr_wrapper
 	unset usbnet_mem
-	boot_partition_size="64"
 
-	uboot_CMD_LOAD="load"
 	unset kms_conn
 
 	case "${UBOOT_TYPE}" in
-	beagle_bx)
-		SYSTEM="beagle_bx"
-		conf_board="BEAGLEBOARD_BX"
+	beagle|beagle_bx|beagle_cx)
+		SYSTEM="beagle"
+		conf_board="omap3_beagle"
 		DISABLE_ETH=1
 		is_omap
 		#conf_fdtfile="omap3-beagle.dtb"
 		usbnet_mem="8192"
-		uboot_CMD_LOAD="fatload"
-		;;
-	beagle_cx)
-		SYSTEM="beagle_cx"
-		conf_board="BEAGLEBOARD_CX"
-		DISABLE_ETH=1
-		is_omap
-		#conf_fdtfile="omap3-beagle.dtb"
-		usbnet_mem="8192"
-		uboot_CMD_LOAD="fatload"
+
+		. "${DIR}"/hwpack/omap3-beagle.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
 		. "${DIR}"/hwpack/omap3-beagle-xm.conf
 		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
 	beagle_xm_kms)
 		SYSTEM="beagle_xm"
-		conf_board="BEAGLEBOARD_XM"
+		conf_board="omap3_beagle"
 		is_omap
 		usbnet_mem="16384"
 		#conf_fdtfile="omap3-beagle.dtb"
 
 		USE_KMS=1
 		unset HAS_OMAPFB_DSS2
-		uboot_CMD_LOAD="fatload"
+
+		. "${DIR}"/hwpack/omap3-beagle-xm.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
-	bone)
+	bone|bone_dtb)
 		SYSTEM="bone"
-		conf_board="BEAGLEBONE"
+		conf_board="am335x_evm"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-#		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
-#			select_kernel="${bone_dt_kernel}"
-#			need_dtbs=1
-#		else
-			select_kernel="${bone_kernel}"
-#		fi
-
-		unset HAS_OMAPFB_DSS2
-		unset KMS_VIDEOA
-
-		#just to disable the omapfb stuff..
-		USE_KMS=1
-		uboot_SCRIPT_ENTRY="uenvcmd"
-		conf_zreladdr="0x80008000"
-		conf_loadaddr="0x80200000"
-		conf_fdtaddr="0x815f0000"
-		#u-boot:rdaddr="0x81000000"
-		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
-		conf_initrdaddr="0x81000000"
-		initrd_file="uInitrd"
-		;;
-	bone_dtb)
-		SYSTEM="bone"
-		conf_board="BEAGLEBONE"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-		if [ "${HAS_BONE_DT_KERNEL}" ] ; then
-			select_kernel="${bone_dt_kernel}"
-			need_dtbs=1
-		else
-			select_kernel="${bone_kernel}"
-			unset need_dtbs
-		fi
 
 		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
@@ -1490,79 +1413,35 @@ check_uboot_type () {
 		#just to disable the omapfb stuff..
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
-		uboot_SCRIPT_ENTRY="uenvcmd"
 		conf_zreladdr="0x80008000"
 		conf_loadaddr="0x80200000"
 		conf_fdtaddr="0x815f0000"
 		#u-boot:rdaddr="0x81000000"
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
 		conf_initrdaddr="0x81000000"
-		initrd_file="uInitrd"
-		;;
-	igepv2)
-		SYSTEM="igepv2"
-		conf_board="IGEP00X0"
-		is_omap
-		uboot_CMD_LOAD="fatload"
-		;;
-	panda)
-		SYSTEM="panda"
-		conf_board="PANDABOARD"
-		is_omap
-		conf_fdtfile="omap4-panda.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-		;;
-	panda_dtb)
-		SYSTEM="panda_dtb"
-		conf_board="PANDABOARD"
-		is_omap
-		conf_fdtfile="omap4-panda.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-		need_dtbs=1
-		;;
-	panda_es)
-		SYSTEM="panda_es"
-		conf_board="PANDABOARD_ES"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="32768"
-		;;
-	panda_es_dtb)
-		SYSTEM="panda_es_dtb"
-		conf_board="PANDABOARD_ES"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
-		VIDEO_OMAP_RAM="16MB"
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-		need_dtbs=1
-		;;
-	panda_es_kms)
-		SYSTEM="panda_es"
-		conf_board="PANDABOARD_ES"
-		is_omap
-		conf_fdtfile="omap4-pandaES.dtb"
 
-		USE_KMS=1
-		unset HAS_OMAPFB_DSS2
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="32768"
+		. "${DIR}"/hwpack/beaglebone.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
+
+		select_kernel="${bone_dt_kernel}"
+		need_dtbs=1
 		;;
-	crane)
-		SYSTEM="crane"
-		conf_board="CRANEBOARD"
+	panda|panda_es)
+		SYSTEM="panda"
+		conf_board="omap4_panda"
 		is_omap
-		uboot_CMD_LOAD="fatload"
+		VIDEO_OMAP_RAM="16MB"
+		KMS_VIDEOB="video=HDMI-A-1"
+		usbnet_mem="16384"
+
+		. "${DIR}"/hwpack/pandaboard.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
 	mx51evk)
 		SYSTEM="mx51evk"
-		conf_board="MX51EVK"
+		conf_board="mx51evk"
 		is_imx
 		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
@@ -1570,20 +1449,14 @@ check_uboot_type () {
 		conf_fdtaddr="0x91ff0000"
 		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
+
+		. "${DIR}"/hwpack/mx51evk.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
 	mx53loco)
 		SYSTEM="mx53loco"
-		conf_board="MX53LOCO"
-		is_imx
-		conf_loadaddr="0x70010000"
-		conf_initrdaddr="0x72000000"
-		conf_zreladdr="0x70008000"
-		conf_fdtaddr="0x71ff0000"
-		conf_fdtfile="imx53-qsb.dtb"
-		;;
-	mx53loco_dtb)
-		SYSTEM="mx53loco_dtb"
-		conf_board="MX53LOCO"
+		conf_board="mx53loco"
 		SERIAL="ttymxc0"
 		is_imx
 		conf_loadaddr="0x70010000"
@@ -1592,24 +1465,10 @@ check_uboot_type () {
 		conf_fdtaddr="0x71ff0000"
 		conf_fdtfile="imx53-qsb.dtb"
 		need_dtbs=1
-		;;
-	mx6qsabrelite)
-		SYSTEM="mx6qsabrelite"
-		conf_board="MX6QSABRELITE_D"
-		is_imx
-		SERIAL="ttymxc1"
-		SERIAL_CONSOLE="${SERIAL},115200"
-		boot="bootm"
-		USE_UIMAGE=1
-		dd_uboot_seek="2"
-		dd_uboot_bs="512"
-		conf_loadaddr="0x10000000"
-		conf_initrdaddr="0x12000000"
-		conf_zreladdr="0x10008000"
-		conf_fdtaddr="0x11ff0000"
-		conf_fdtfile="imx6q-sabrelite.dtb"
-		need_dtbs=1
-		boot_scr_wrapper=1
+
+		. "${DIR}"/hwpack/mx53loco.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
 		;;
 	*)
 		IN_VALID_UBOOT=1
@@ -1619,18 +1478,13 @@ check_uboot_type () {
 			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
 			-----------------------------
 			        TI:
-			                beagle_bx - <BeagleBoard Ax/Bx>
-			                beagle_cx - <BeagleBoard Cx>
+			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			                igepv2 - <serial mode only>
-			                panda - <PandaBoard Ax>
-			                panda_es - <PandaBoard ES>
+			                panda - <PandaBoard Ax/ES>
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
-			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
-			                mx6qsabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 			-----------------------------
 		__EOF__
 		exit
@@ -1650,19 +1504,13 @@ usage () {
 
 			--uboot <dev board>
 			        TI:
-			                beagle_bx - <BeagleBoard Ax/Bx>
-			                beagle_cx - <BeagleBoard Cx>
+			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
-			                bone - <BeagleBone Ax>
-			                bone_dtb - <BeagleBone/BeagleBone Black (v3.8.x)>
-			                igepv2 - <serial mode only>
-			                panda - <PandaBoard Ax>
-			                panda_es - <PandaBoard ES>
+			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
+			                panda - <PandaBoard Ax/ES>
 			        Freescale:
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
-			                mx53loco_dtb - <i.MX53 Quick Start Development Board>
-			                mx6qsabrelite - <http://boundarydevices.com/products/sabre-lite-imx6-sbc/>
 
 			--addon <additional peripheral device>
 			        pico
@@ -1737,8 +1585,8 @@ while [ ! -z "$1" ] ; do
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
 		fi
-		#FIXME: 1,850Mb initial size... (should fit most 2Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*1850]
+		#FIXME: 800Mb initial size... (should fit most 2Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*800]
 		;;
 	--uboot)
 		checkparm $2
@@ -1792,10 +1640,6 @@ while [ ! -z "$1" ] ; do
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
 		;;
-	--fdisk)
-		checkparm $2
-		FDISK_EXEC="$2"
-		;;
 	--bbb-flasher)
 		checkparm $2
 		bbb_flasher=1
@@ -1809,9 +1653,11 @@ if [ ! "${media}" ] ; then
 	usage
 fi
 
-if [ "${invalid_dtb}" ] ; then
+if [ "${error_invalid_dtb}" ] ; then
 	if [ "${IN_VALID_UBOOT}" ] ; then
-		echo "ERROR: --uboot undefined"
+		echo "-----------------------------"
+		echo "ERROR: --uboot/--dtb undefined"
+		echo "-----------------------------"
 		usage
 	fi
 fi

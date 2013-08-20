@@ -54,9 +54,8 @@ minimal_armel () {
 
 #	if [ -f ${DIR}/release ] ; then
 #		chroot_KERNEL_HTTP_DIR="\
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x12/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone21/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.2.42-psp27/"
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone24/"
 #	fi
 
 	tempdir=$(mktemp -d)
@@ -136,28 +135,20 @@ kernel_chooser () {
 }
 
 select_rcn_ee_net_kernel () {
-	SUBARCH="omap"
-	KERNEL_ABI="STABLE"
-	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
-
-	SUBARCH="omap-psp"
+	SUBARCH="armv7"
 	KERNEL_ABI="TESTING"
 	kernel_chooser
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+
+	SUBARCH="omap"
+	KERNEL_ABI="STABLE"
+	kernel_chooser
 	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
 	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
-}
-
-select_saucy_rcn_ee_net_kernel () {
-	#one is actuall built now!!! ;)
-	SUBARCH="omap"
-	KERNEL_ABI="STABLE"
-	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
 is_ubuntu () {
@@ -213,7 +204,7 @@ saucy_release () {
 	extra_pkgs="linux-firmware devmem2"
 	is_ubuntu
 	release="saucy"
-	select_saucy_rcn_ee_net_kernel
+	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
 }
@@ -271,7 +262,8 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 dpkg_arch="armhf"
 
-DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+#DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+DEFAULT_RELEASES="quantal raring wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
