@@ -317,10 +317,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkgs () {
-		#These packages have binaries needed by this script.
-		packages="locales"
-		for pkg in \${packages} ; do check_n_install ; done
-
 		if [ ! "x\${base_pkg_list}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${base_pkg_list}"
@@ -329,6 +325,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	set_locale () {
+		packages="locales"
+		for pkg in \${packages} ; do check_n_install ; done
+
 		if [ -f /etc/locale.gen ] ; then
 			#Debian:
 			sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
@@ -505,7 +504,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="initramfs-tools u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
-	set_locale
+	if [ "x${chroot_no_locales}" = "x" ] ; then
+		set_locale
+	fi
 	add_user
 
 	if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
