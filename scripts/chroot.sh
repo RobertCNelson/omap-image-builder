@@ -313,7 +313,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		#These packages have binaries needed by this script.
-		packages="initramfs-tools locales git-core sudo u-boot-tools wget"
+		packages="initramfs-tools locales sudo u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		#Install the user choosen list.
@@ -443,6 +443,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	startup_script () {
+		packages="git-core"
+		for pkg in \${packages} ; do check_n_install ; done
+
 		case "\${distro}" in
 		Debian)
 			debian_startup_script
@@ -487,6 +490,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 	set_locale
+	add_user
+
+	if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		startup_script
+	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
@@ -496,8 +504,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
 	fi
 
-	add_user
-	startup_script
 	cleanup
 	rm -f /chroot_script.sh || true
 __EOF__

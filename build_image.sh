@@ -82,8 +82,8 @@ minimal_armel () {
 
 		include_firmware="${include_firmware}"
 
+		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
-
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
@@ -278,6 +278,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 #FIXME: things to add to .config:
 include_firmware="enable"
+chroot_rcnee_startup_scripts="enable"
 
 dpkg_arch="armhf"
 #DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
