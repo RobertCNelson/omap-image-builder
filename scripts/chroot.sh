@@ -318,7 +318,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		#These packages have binaries needed by this script.
-		packages="locales sudo"
+		packages="locales"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		if [ ! "x\${base_pkg_list}" = "x" ] ; then
@@ -409,8 +409,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	add_user () {
 		groupadd admin || true
-		echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
 		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
+
+		if [ "x${chroot_no_sudo}" = "x" ] ; then
+			packages="sudo"
+			for pkg in \${packages} ; do check_n_install ; done
+			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+		fi
 
 		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
 

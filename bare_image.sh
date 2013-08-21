@@ -70,6 +70,7 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_no_lsb_release="${chroot_no_lsb_release}"
+		chroot_no_sudo="${chroot_no_sudo}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -143,6 +144,7 @@ is_debian () {
 
 	pkg_list
 	chroot_no_lsb_release="Debian"
+	chroot_no_sudo="enable"
 }
 
 #13.04
