@@ -75,6 +75,8 @@ minimal_armel () {
 		chroot_no_aptitude="${chroot_no_aptitude}"
 		chroot_no_tasksel="${chroot_no_tasksel}"
 		chroot_no_manpages="${chroot_no_manpages}"
+		chroot_no_info="${chroot_no_info}"
+		chroot_no_wget="${chroot_no_wget}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -153,6 +155,8 @@ is_debian () {
 	chroot_no_aptitude="enable"
 	chroot_no_tasksel="enable"
 	chroot_no_manpages="enable"
+	chroot_no_info="enable"
+	chroot_no_wget="enable"
 }
 
 #13.04
