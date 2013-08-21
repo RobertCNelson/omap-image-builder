@@ -326,7 +326,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	trim_pkgs () {
 		if [ "x${chroot_no_aptitude}" = "xenable" ] ; then
-			apt-get -y remove aptitude
+			apt-get -y remove aptitude aptitude-common
+			apt-get -y autoremove
+		fi
+		if [ "x${chroot_no_tasksel}" = "xenable" ] ; then
+			apt-get -y remove tasksel tasksel-data
 			apt-get -y autoremove
 		fi
 	}

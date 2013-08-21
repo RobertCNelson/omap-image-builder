@@ -86,6 +86,7 @@ minimal_armel () {
 		chroot_no_sudo="${chroot_no_sudo}"
 		chroot_no_locales="${chroot_no_locales}"
 		chroot_no_aptitude="${chroot_no_aptitude}"
+		chroot_no_tasksel="${chroot_no_tasksel}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -198,6 +199,7 @@ is_debian () {
 #	chroot_no_sudo="enable"
 #	chroot_no_locales="enable"
 #	chroot_no_aptitude="enable"
+#	chroot_no_tasksel="enable"
 }
 
 #12.10
