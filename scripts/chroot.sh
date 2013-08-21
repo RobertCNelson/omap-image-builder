@@ -324,6 +324,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	trim_pkgs () {
+		if [ "x${chroot_no_aptitude}" = "xenable" ] ; then
+			apt-get -y remove aptitude
+			apt-get -y autoremove
+		fi
+	}
+
 	set_locale () {
 		packages="locales"
 		for pkg in \${packages} ; do check_n_install ; done
@@ -500,6 +507,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
+	trim_pkgs
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
 		packages="initramfs-tools u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
