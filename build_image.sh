@@ -80,6 +80,8 @@ minimal_armel () {
 		full_name="${full_name}"
 		password="${password}"
 
+		include_firmware="${include_firmware}"
+
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -162,7 +164,11 @@ is_ubuntu () {
 	deb_components="main universe multiverse"
 
 	. ${DIR}/var/pkg_list.sh
-	base_pkg_list="${base_pkgs} ${extra_pkgs}"
+	if [ "x${include_firmware}" = "xenable" ] ; then
+		base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+	else
+		base_pkg_list="${base_pkgs} ${extra_pkgs}"
+	fi
 }
 
 is_debian () {
@@ -176,12 +182,17 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	. ${DIR}/var/pkg_list.sh
-	base_pkg_list="${base_pkgs} ${extra_pkgs}"
+	if [ "x${include_firmware}" = "xenable" ] ; then
+		base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+	else
+		base_pkg_list="${base_pkgs} ${extra_pkgs}"
+	fi
 }
 
 #12.10
 quantal_release () {
-	extra_pkgs="linux-firmware devmem2"
+	extra_pkgs="devmem2"
+	firmware_pkgs="linux-firmware"
 	is_ubuntu
 	release="quantal"
 	select_rcn_ee_net_kernel
@@ -191,7 +202,8 @@ quantal_release () {
 
 #13.04
 raring_release () {
-	extra_pkgs="linux-firmware devmem2"
+	extra_pkgs="devmem2"
+	firmware_pkgs="linux-firmware"
 	is_ubuntu
 	release="raring"
 	select_rcn_ee_net_kernel
@@ -201,7 +213,8 @@ raring_release () {
 
 #13.10
 saucy_release () {
-	extra_pkgs="linux-firmware devmem2"
+	extra_pkgs="devmem2"
+	firmware_pkgs="linux-firmware"
 	is_ubuntu
 	release="saucy"
 	select_rcn_ee_net_kernel
@@ -210,7 +223,8 @@ saucy_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	extra_pkgs=""
+	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -219,7 +233,8 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	extra_pkgs=""
+	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -228,7 +243,8 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	extra_pkgs=""
+	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
@@ -260,8 +276,10 @@ fi
 
 chroot_COPY_SETUP_SDCARD="enable"
 
-dpkg_arch="armhf"
+#FIXME: things to add to .config:
+include_firmware="enable"
 
+dpkg_arch="armhf"
 #DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
 DEFAULT_RELEASES="quantal raring wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
