@@ -326,25 +326,20 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	trim_pkgs () {
 		if [ "x${chroot_no_aptitude}" = "xenable" ] ; then
-			apt-get -y remove aptitude aptitude-common libept1.4.12
-			apt-get -y autoremove
+			apt-get -y remove aptitude aptitude-common libept1.4.12 --purge
 		fi
 		if [ "x${chroot_no_tasksel}" = "xenable" ] ; then
-			apt-get -y remove tasksel tasksel-data
-			apt-get -y autoremove
+			apt-get -y remove tasksel tasksel-data --purge
 		fi
 		if [ "x${chroot_no_manpages}" = "xenable" ] ; then
-			apt-get -y remove manpages man-db
-			apt-get -y autoremove
+			apt-get -y remove manpages man-db --purge
 			rm -rf /usr/share/man/* || true
 		fi
 		if [ "x${chroot_no_info}" = "xenable" ] ; then
-			apt-get -y remove info install-info
-			apt-get -y autoremove
+			apt-get -y remove info install-info --purge
 		fi
 		if [ "x${chroot_no_wget}" = "xenable" ] ; then
-			apt-get -y remove wget
-			apt-get -y autoremove
+			apt-get -y remove wget --purge
 		fi
 	}
 
@@ -361,6 +356,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			locale-gen en_US.UTF-8
 		fi
 		echo "LANG=en_US.UTF-8" > /etc/default/locale
+
+		if [ "x${chroot_enable_localepurge}" = "xenable" ] ; then
+			packages="localepurge"
+			for pkg in \${packages} ; do check_n_install ; done
+
+			echo "en" >> /etc/locale.nopurge
+			echo "en_US" >> /etc/locale.nopurge
+			echo "en_US.UTF-8" >> /etc/locale.nopurge
+			localepurge
+		fi
 	}
 
 	dl_pkg_src () {
@@ -529,9 +534,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="initramfs-tools u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
-	if [ "x${chroot_no_locales}" = "x" ] ; then
-		set_locale
-	fi
+	set_locale
 	add_user
 
 	if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
