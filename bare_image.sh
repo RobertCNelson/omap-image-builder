@@ -74,6 +74,7 @@ minimal_armel () {
 		chroot_no_locales="${chroot_no_locales}"
 		chroot_no_aptitude="${chroot_no_aptitude}"
 		chroot_no_tasksel="${chroot_no_tasksel}"
+		chroot_no_manpages="${chroot_no_manpages}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -151,6 +152,7 @@ is_debian () {
 	chroot_no_locales="enable"
 	chroot_no_aptitude="enable"
 	chroot_no_tasksel="enable"
+	chroot_no_manpages="enable"
 }
 
 #13.04
@@ -228,8 +230,8 @@ fi
 #chroot_rcnee_startup_scripts="enable"
 no_pkgs="enable"
 
-dpkg_arch="armel"
-wheezy_release
+#dpkg_arch="armel"
+#wheezy_release
 #jessie_release
 
 dpkg_arch="armhf"
