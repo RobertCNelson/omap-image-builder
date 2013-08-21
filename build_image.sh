@@ -153,6 +153,18 @@ select_rcn_ee_net_kernel () {
 	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
+pkg_list () {
+	base_pkg_list=""
+	if [ ! "x${no_pkgs}" = "xenable" ] ; then
+		. ${DIR}/var/pkg_list.sh
+		if [ "x${include_firmware}" = "xenable" ] ; then
+			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+		else
+			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+		fi
+	fi
+}
+
 is_ubuntu () {
 	image_hostname="arm"
 	distro="ubuntu"
@@ -163,12 +175,7 @@ is_ubuntu () {
 	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
 	deb_components="main universe multiverse"
 
-	. ${DIR}/var/pkg_list.sh
-	if [ "x${include_firmware}" = "xenable" ] ; then
-		base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
-	else
-		base_pkg_list="${base_pkgs} ${extra_pkgs}"
-	fi
+	pkg_list
 }
 
 is_debian () {
@@ -181,12 +188,7 @@ is_debian () {
 	deb_mirror="ftp.us.debian.org/debian/"
 	deb_components="main contrib non-free"
 
-	. ${DIR}/var/pkg_list.sh
-	if [ "x${include_firmware}" = "xenable" ] ; then
-		base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
-	else
-		base_pkg_list="${base_pkgs} ${extra_pkgs}"
-	fi
+	pkg_list
 }
 
 #12.10
@@ -279,6 +281,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 #FIXME: things to add to .config:
 include_firmware="enable"
 chroot_rcnee_startup_scripts="enable"
+#no_pkgs="enable"
 
 dpkg_arch="armhf"
 #DEFAULT_RELEASES="quantal raring saucy wheezy jessie"

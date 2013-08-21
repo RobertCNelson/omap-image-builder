@@ -316,9 +316,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="locales sudo"
 		for pkg in \${packages} ; do check_n_install ; done
 
-		#Install the user choosen list.
-		echo "Log: (chroot) Installing: ${base_pkg_list}"
-		apt-get -y --force-yes install ${base_pkg_list}
+		if [ ! "x\${base_pkg_list}" = "x" ] ; then
+			#Install the user choosen list.
+			echo "Log: (chroot) Installing: ${base_pkg_list}"
+			apt-get -y --force-yes install ${base_pkg_list}
+		fi
 	}
 
 	set_locale () {
