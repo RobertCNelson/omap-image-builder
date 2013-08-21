@@ -333,7 +333,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 		if [ "x${chroot_no_manpages}" = "xenable" ] ; then
 			apt-get -y remove manpages man-db --purge
-			rm -rf /usr/share/man/* || true
 		fi
 		if [ "x${chroot_no_info}" = "xenable" ] ; then
 			apt-get -y remove info install-info --purge
