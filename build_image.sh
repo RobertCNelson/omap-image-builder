@@ -83,6 +83,7 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_enable_localepurge="${chroot_enable_localepurge}"
+		chroot_enable_deborphan="${chroot_enable_deborphan}"
 		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_no_sudo="${chroot_no_sudo}"
 		chroot_no_aptitude="${chroot_no_aptitude}"
@@ -199,6 +200,7 @@ is_debian () {
 
 	pkg_list
 #	chroot_enable_localepurge="enable"
+#	chroot_enable_deborphan="enable"
 #	chroot_no_lsb_release="Debian"
 #	chroot_no_sudo="enable"
 #	chroot_no_aptitude="enable"

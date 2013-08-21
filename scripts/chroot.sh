@@ -368,6 +368,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	run_deborphan () {
+		packages="deborphan"
+		for pkg in \${packages} ; do check_n_install ; done
+
+		deborphan | xargs apt-get -y remove --purge
+
+		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
+		apt-get clean
+	}
+
 	dl_pkg_src () {
 		mkdir -p /tmp/pkg_src/
 		cd /tmp/pkg_src/
@@ -535,6 +545,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
 	set_locale
+	if [ "x${chroot_enable_deborphan}" = "xenable" ] ; then
+		run_deborphan
+	fi
 	add_user
 
 	if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
