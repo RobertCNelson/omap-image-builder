@@ -82,6 +82,7 @@ minimal_armel () {
 
 		include_firmware="${include_firmware}"
 
+		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -176,6 +177,7 @@ is_ubuntu () {
 	deb_components="main universe multiverse"
 
 	pkg_list
+#	chroot_no_lsb_release="Ubuntu"
 }
 
 is_debian () {
@@ -189,6 +191,7 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	pkg_list
+#	chroot_no_lsb_release="Debian"
 }
 
 #12.10

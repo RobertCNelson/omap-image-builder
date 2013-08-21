@@ -286,11 +286,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_chroot_pkgs () {
 		apt-get update
 
-		packages="lsb-release"
-		for pkg in \${packages} ; do check_n_install ; done
+		if [ "x${chroot_no_lsb_release}" = "x" ] ; then
+			packages="lsb-release"
+			for pkg in \${packages} ; do check_n_install ; done
 
-		distro="\$(lsb_release -si)"
-		echo "distro=\${distro}" > /etc/rcn-ee.conf
+			distro="\$(lsb_release -si)"
+			echo "distro=\${distro}" > /etc/rcn-ee.conf
+		else
+			distro="${chroot_no_lsb_release}"
+			echo "distro=${chroot_no_lsb_release}" > /etc/rcn-ee.conf
+		fi
 	}
 
 	stop_init () {
