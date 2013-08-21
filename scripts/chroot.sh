@@ -313,7 +313,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkgs () {
 		#These packages have binaries needed by this script.
-		packages="initramfs-tools locales sudo u-boot-tools wget"
+		packages="locales sudo"
 		for pkg in \${packages} ; do check_n_install ; done
 
 		#Install the user choosen list.
@@ -489,6 +489,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
+	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
+		packages="initramfs-tools u-boot-tools wget"
+		for pkg in \${packages} ; do check_n_install ; done
+	fi
 	set_locale
 	add_user
 
