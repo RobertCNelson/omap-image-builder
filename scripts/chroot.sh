@@ -146,6 +146,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	#but then allow dpkg to delete these extra files when installed later..
 	sudo rm -rf ${tempdir}/usr/share/locale/* || true
 	sudo rm -rf ${tempdir}/usr/share/man/* || true
+	sudo rm -rf ${tempdir}/usr/share/doc/* || true
 
 	#dpkg 1.15.8++
 	mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/
@@ -154,6 +155,9 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
 	sudo sh -c "echo \"# Delete translated man pages\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
 	sudo sh -c "echo \"path-exclude=/usr/share/man/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"# Delete docs\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"path-exclude=/usr/share/doc/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
 	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
 
 	echo "Log: after locale/man purge"
