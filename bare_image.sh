@@ -224,8 +224,8 @@ fi
 #chroot_rcnee_startup_scripts="enable"
 no_pkgs="enable"
 
-#dpkg_arch="armel"
-#wheezy_release
+dpkg_arch="armel"
+wheezy_release
 #jessie_release
 
 dpkg_arch="armhf"
