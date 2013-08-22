@@ -379,16 +379,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			locale-gen en_US.UTF-8
 		fi
 		echo "LANG=en_US.UTF-8" > /etc/default/locale
-
-		if [ "x${chroot_enable_localepurge}" = "xenable" ] ; then
-			packages="localepurge"
-			for pkg in \${packages} ; do check_n_install ; done
-
-			echo "en" >> /etc/locale.nopurge
-			echo "en_US" >> /etc/locale.nopurge
-			echo "en_US.UTF-8" >> /etc/locale.nopurge
-			localepurge
-		fi
 	}
 
 	run_deborphan () {

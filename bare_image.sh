@@ -71,7 +71,6 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_enable_localepurge="${chroot_enable_localepurge}"
 		chroot_enable_deborphan="${chroot_enable_deborphan}"
 		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_no_sudo="${chroot_no_sudo}"
@@ -149,7 +148,6 @@ is_debian () {
 	pkg_list
 	exclude_pkgs_list="aptitude,aptitude-common,groff-base,info,install-info,libept1.4.12,manpages,man-db,tasksel,tasksel-data,vim-common,vim-tiny,wget,whiptail"
 	chroot_very_small_image="enable"
-	chroot_enable_localepurge="enable"
 	chroot_enable_deborphan="enable"
 	chroot_no_lsb_release="Debian"
 	chroot_no_sudo="enable"
