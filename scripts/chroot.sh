@@ -148,17 +148,20 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo rm -rf ${tempdir}/usr/share/man/* || true
 	sudo rm -rf ${tempdir}/usr/share/doc/* || true
 
-	#dpkg 1.15.8++
+	#dpkg 1.15.8++, No Docs...
 	mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/
-	sudo sh -c "echo \"# Delete locales\" > ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"path-exclude=/usr/share/locale/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"# Delete translated man pages\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"path-exclude=/usr/share/man/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"# Delete docs\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"path-exclude=/usr/share/doc/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
-	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	echo "# Delete locales" > /tmp/01_nodoc
+	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
+	echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+	echo ""  >> /tmp/01_nodoc
+	echo "# Delete man pages" >> /tmp/01_nodoc
+	echo "path-exclude=/usr/share/man/*" >> /tmp/01_nodoc
+	echo "" >> /tmp/01_nodoc
+	echo "# Delete docs" >> /tmp/01_nodoc
+	echo "path-exclude=/usr/share/doc/*" >> /tmp/01_nodoc
+	echo "path-include=/usr/share/doc/*/copyright" >> /tmp/01_nodoc
+	echo "" >> /tmp/01_nodoc
+	sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
 
 	#apt: no local cache
 	echo "Dir::Cache {" > /tmp/02nocache
