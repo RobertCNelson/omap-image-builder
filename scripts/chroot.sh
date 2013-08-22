@@ -563,7 +563,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	if [ "x${chroot_very_small_image}" = "x" ] ; then
 		set_locale
 	fi
-	if [ "x${chroot_enable_deborphan}" = "xenable" ] ; then
+	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 		run_deborphan
 	fi
 	add_user

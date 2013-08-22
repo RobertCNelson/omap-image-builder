@@ -84,7 +84,6 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_enable_deborphan="${chroot_enable_deborphan}"
 		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_no_sudo="${chroot_no_sudo}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
@@ -197,7 +196,6 @@ is_debian () {
 	pkg_list
 	exclude_pkgs_list=""
 #	chroot_very_small_image="enable"
-#	chroot_enable_deborphan="enable"
 #	chroot_no_lsb_release="Debian"
 #	chroot_no_sudo="enable"
 }
