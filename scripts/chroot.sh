@@ -161,14 +161,18 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
 
 	#apt: no local cache
-	sudo sh -c "echo \"Dir::Cache {\" >> ${tempdir}/etc/apt/apt.conf.d/02nocache"
-	sudo sh -c "echo \"  srcpkgcache \"\";\" >> ${tempdir}/etc/apt/apt.conf.d/02nocache"
-	sudo sh -c "echo \"  pkgcache \"\";\" >> ${tempdir}/etc/apt/apt.conf.d/02nocache"
-	sudo sh -c "echo \"}\" >> ${tempdir}/etc/apt/apt.conf.d/02nocache"
+	echo "Dir::Cache {" > /tmp/02nocache
+	echo "  srcpkgcache \"\";" >> /tmp/02nocache
+	echo "  pkgcache \"\";" >> /tmp/02nocache
+	echo "}" >> /tmp/02nocache
+	sudo mv  /tmp/02nocache ${tempdir}/etc/apt/apt.conf.d/02nocache
+	cat ${tempdir}/etc/apt/apt.conf.d/02nocache
 
 	#apt: /var/lib/apt/lists/, store compressed only
-	sudo sh -c "echo \"Acquire::GzipIndexes \"true\";\" >> ${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-	sudo sh -c "echo \"Acquire::CompressionTypes::Order:: \"gz\";\" >> ${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+	echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
+	echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
+	sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
+	cat ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 
 	echo "Log: after locale/man purge"
 	report_size
