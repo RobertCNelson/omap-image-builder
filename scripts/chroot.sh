@@ -401,19 +401,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get clean
 	}
 
-	run_hardlink () {
-		packages="hardlink"
-		for pkg in \${packages} ; do check_n_install ; done
-		/usr/bin/hardlink -t /usr/share/doc
-
-		echo "// Hardlink identical docs, changelogs, copyrights, examples, etc" > /etc/apt/apt.conf.d/98-hardlink-doc
-		echo "" >> /etc/apt/apt.conf.d/98-hardlink-doc
-		echo "DPkg" >> /etc/apt/apt.conf.d/98-hardlink-doc
-		echo "{" >> /etc/apt/apt.conf.d/98-hardlink-doc
-		echo "Post-Invoke {\"if [ -x /usr/bin/hardlink ]; then /usr/bin/hardlink -t /usr/share/doc; else exit 0; fi\";};" >> /etc/apt/apt.conf.d/98-hardlink-doc
-		echo "};" >> /etc/apt/apt.conf.d/98-hardlink-doc
-	}
-
 	dl_pkg_src () {
 		mkdir -p /tmp/pkg_src/
 		cd /tmp/pkg_src/
@@ -588,9 +575,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	fi
 	if [ "x${chroot_enable_deborphan}" = "xenable" ] ; then
 		run_deborphan
-	fi
-	if [ "x${chroot_enable_hardlink}" = "xenable" ] ; then
-		run_hardlink
 	fi
 	add_user
 
