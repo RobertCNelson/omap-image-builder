@@ -59,6 +59,12 @@ check_defines () {
 			;;
 		esac
 	fi
+
+	if [ "${exclude_pkgs_list}" ] ; then
+		exclude="--exclude ${exclude_pkgs_list}"
+	else
+		exclude=""
+	fi
 }
 
 report_size () {
@@ -74,7 +80,7 @@ if [ "${apt_proxy}" ] ; then
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
-echo "Log: [sudo debootstrap --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}]"
-sudo debootstrap --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}
+echo "Log: [sudo debootstrap ${exclude} --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}]"
+sudo debootstrap ${exclude} --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}
 report_size
 #

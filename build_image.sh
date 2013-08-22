@@ -72,6 +72,7 @@ minimal_armel () {
 		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
+		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
 
 		image_hostname="${image_hostname}"
@@ -84,13 +85,9 @@ minimal_armel () {
 
 		chroot_enable_localepurge="${chroot_enable_localepurge}"
 		chroot_enable_deborphan="${chroot_enable_deborphan}"
+		chroot_enable_hardlink="${chroot_enable_hardlink}"
 		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_no_sudo="${chroot_no_sudo}"
-		chroot_no_aptitude="${chroot_no_aptitude}"
-		chroot_no_tasksel="${chroot_no_tasksel}"
-		chroot_no_manpages="${chroot_no_manpages}"
-		chroot_no_info="${chroot_no_info}"
-		chroot_no_wget="${chroot_no_wget}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -199,15 +196,12 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	pkg_list
+	exclude_pkgs_list=""
 #	chroot_enable_localepurge="enable"
 #	chroot_enable_deborphan="enable"
+#	chroot_enable_hardlink="enable"
 #	chroot_no_lsb_release="Debian"
 #	chroot_no_sudo="enable"
-#	chroot_no_aptitude="enable"
-#	chroot_no_tasksel="enable"
-#	chroot_no_manpages="enable"
-#	chroot_no_info="enable"
-#	chroot_no_wget="enable"
 }
 
 #12.10
