@@ -148,7 +148,7 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	pkg_list
-	exclude_pkgs_list="aptitude,aptitude-common,info,install-info,libept1.4.12,manpages,man-db,tasksel,tasksel-data,vim-common,vim-tiny,wget,whiptail"
+	exclude_pkgs_list="aptitude,aptitude-common,groff-base,info,install-info,libept1.4.12,manpages,man-db,tasksel,tasksel-data,vim-common,vim-tiny,wget,whiptail"
 	chroot_very_small_image="enable"
 	chroot_enable_localepurge="enable"
 	chroot_enable_deborphan="enable"
