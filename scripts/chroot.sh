@@ -141,6 +141,25 @@ sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
 echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
 report_size
 
+if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+	#so debootstrap just extracts the *.deb's, so lets clean this up hackish now,
+	#but then allow dpkg to delete these extra files when installed later..
+	sudo rm -rf ${tempdir}/usr/share/locale/* || true
+	sudo rm -rf ${tempdir}/usr/share/man/* || true
+
+	#dpkg 1.15.8++
+	mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/
+	sudo sh -c "echo \"# Delete locales\" > ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"path-exclude=/usr/share/locale/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"# Delete translated man pages\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"path-exclude=/usr/share/man/*\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+	sudo sh -c "echo \"\" >> ${tempdir}/etc/dpkg/dpkg.cfg.d/excludes"
+
+	echo "Log: after locale/man purge"
+	report_size
+fi
+
 file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
 wheezy)
@@ -284,9 +303,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_chroot_pkgs () {
-		apt-get update
-
 		if [ "x${chroot_no_lsb_release}" = "x" ] ; then
+			apt-get update
 			packages="lsb-release"
 			for pkg in \${packages} ; do check_n_install ; done
 
@@ -510,6 +528,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ -f /etc/apt/apt.conf ] ; then
 			rm -rf /etc/apt/apt.conf || true
 		fi
+		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+			#if your flash is already small, the apt cache might overfill it so drop src...
+			sed -i -e 's:deb-src:#deb-src:g' /etc/apt/sources.list
+		fi
 		apt-get update
 		apt-get clean
 
@@ -537,7 +559,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="initramfs-tools u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
-	set_locale
+	if [ "x${chroot_very_small_image}" = "x" ] ; then
+		set_locale
+	fi
 	if [ "x${chroot_enable_deborphan}" = "xenable" ] ; then
 		run_deborphan
 	fi

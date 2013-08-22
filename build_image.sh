@@ -83,6 +83,7 @@ minimal_armel () {
 
 		include_firmware="${include_firmware}"
 
+		chroot_very_small_image="${chroot_very_small_image}"
 		chroot_enable_localepurge="${chroot_enable_localepurge}"
 		chroot_enable_deborphan="${chroot_enable_deborphan}"
 		chroot_enable_hardlink="${chroot_enable_hardlink}"
@@ -197,6 +198,7 @@ is_debian () {
 
 	pkg_list
 	exclude_pkgs_list=""
+#	chroot_very_small_image="enable"
 #	chroot_enable_localepurge="enable"
 #	chroot_enable_deborphan="enable"
 #	chroot_enable_hardlink="enable"
