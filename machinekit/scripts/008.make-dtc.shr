@@ -3,11 +3,10 @@
 eval cd ~$1/dtc
 make PREFIX=/usr/local/ install
 
+for FILE in $( eval find ~$1/linuxcnc/configs -name dtc.sh ) ; do
 
-eval cd ~$1/linuxcnc/configs/BeagleBone/BeBoPr
-./dtc.sh
+    cd $( dirname $FILE )
+    ./dtc.sh
 
-
-eval cd ~$1/linuxcnc/configs/BeagleBone/K9.3D
-./dtc.sh
-
+done
+~
