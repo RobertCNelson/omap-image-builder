@@ -359,7 +359,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkgs () {
-		if [ ! "x\${base_pkg_list}" = "x" ] ; then
+		if [ ! "x${base_pkg_list}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${base_pkg_list}"
 			apt-get -y --force-yes install ${base_pkg_list}
