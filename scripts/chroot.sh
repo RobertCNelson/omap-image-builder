@@ -670,7 +670,8 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
-	#FIXME: copy uEnv.txt here... ?? Do we want to cat to a file from a variable, or just copy a file stored in the repo?
+	#just not these this week...
+	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/mx*.conf || true
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
