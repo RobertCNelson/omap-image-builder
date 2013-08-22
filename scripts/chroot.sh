@@ -462,9 +462,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		groupadd admin || true
 		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
 
-		if [ "x${chroot_no_sudo}" = "x" ] ; then
+		if [ "x${chroot_very_small_image}" = "x" ] ; then
 			packages="sudo"
 			for pkg in \${packages} ; do check_n_install ; done
+		fi
+		if [ -f /etc/sudoers ] ; then
 			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
 		fi
 
@@ -474,7 +476,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		case "\${distro}" in
 		Debian)
-			usermod -aG sudo ${user_name} || true
+			if [ -f /etc/sudoers ] ; then
+				usermod -aG sudo ${user_name} || true
+			fi
 			usermod -aG dialout ${user_name} || true
 
 			passwd <<-EOF
