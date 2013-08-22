@@ -185,6 +185,9 @@ echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
 echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
 sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 
+#set initial 'seed' time...
+sudo sh -c "date -u \"+%2m%2d%2H%2M%4Y\" > ${tempdir}/etc/timestamp"
+
 file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
 wheezy)
@@ -240,6 +243,9 @@ debian)
 		case "\$1" in
 		start|reload|force-reload|restart)
 		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
+		                if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
+		                        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		                fi
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
@@ -269,6 +275,9 @@ ubuntu)
 
 		script
 		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
+		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
+		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		        fi
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
