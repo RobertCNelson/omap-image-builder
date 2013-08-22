@@ -149,7 +149,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo rm -rf ${tempdir}/usr/share/doc/* || true
 
 	#dpkg 1.15.8++, No Docs...
-	mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/
+	sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
 	echo "# Delete locales" > /tmp/01_nodoc
 	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
 	echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
@@ -172,6 +172,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 fi
 
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
+sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
 #apt: no local cache
 echo "Dir::Cache {" > /tmp/02nocache
 echo "  srcpkgcache \"\";" >> /tmp/02nocache
