@@ -186,7 +186,7 @@ echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
 sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 
 #set initial 'seed' time...
-sudo sh -c "date -u \"+%2m%2d%2H%2M%4Y\" > ${tempdir}/etc/timestamp"
+sudo sh -c "date --utc \"+%2m%2d%2H%2M%4Y\" > ${tempdir}/etc/timestamp"
 
 file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
