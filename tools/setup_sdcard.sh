@@ -1702,8 +1702,6 @@ fi
 setup_bootscripts
 if [ ! "${build_img_file}" ] ; then
 	unmount_all_drive_partitions
-else
-	create_msdos_label
 fi
 create_partitions
 populate_boot
