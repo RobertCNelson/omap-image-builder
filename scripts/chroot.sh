@@ -328,7 +328,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	check_n_install () {
 		unset deb_pkgs
-		dpkg -l | grep "\${pkg}" >/dev/null || deb_pkgs="\${pkg} "
+		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || deb_pkgs="\${pkg}"
 
 		if [ "\${deb_pkgs}" ] ; then
 			echo "Log: (chroot) Installing: \${deb_pkgs}"
