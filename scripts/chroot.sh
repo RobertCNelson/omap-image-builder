@@ -331,6 +331,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || deb_pkgs="\${pkg}"
 
 		if [ "\${deb_pkgs}" ] ; then
+			echo "Warn: (chroot) check_n_install going away: add [\${deb_pkgs}] to include_pkgs_list or base_pkg_list"
 			echo "Log: (chroot) Installing: \${deb_pkgs}"
 			apt-get -y --force-yes install \${deb_pkgs}
 		fi
