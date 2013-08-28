@@ -1,8 +1,20 @@
-Scripts to support customized image generation for the BeagleBone
+Scripts to support customized image generation for many arm systems
 
-master tracks RobertCNelson's version
+Master branch:
+  git clone git://github.com/RobertCNelson/omap-image-builder
 
-For the customized version, use the config-hooks branch:
+Images:
+  http://eewiki.net/display/linuxonarm/Home
+  http://elinux.org/BeagleBoardUbuntu#Demo_Image
+  http://elinux.org/BeagleBoardDebian#Demo_Image
 
-  git checkout -t origin/config-hooks
+MachineKit:
 
+Branch:
+  git clone -b config-hooks https://github.com/cdsteinkuehler/omap-image-builder
+
+Images:
+  http://bb-lcnc.blogspot.com/p/machinekit_16.html
+
+Developer hints:
+  git pull --no-edit https://github.com/cdsteinkuehler/omap-image-builder config-hooks
