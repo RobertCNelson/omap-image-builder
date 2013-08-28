@@ -490,7 +490,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			if [ -f /etc/sudoers ] ; then
 				usermod -aG sudo ${user_name} || true
 			fi
-			usermod -aG dialout ${user_name} || true
 
 			passwd <<-EOF
 			root
