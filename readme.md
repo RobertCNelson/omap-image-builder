@@ -22,6 +22,6 @@ Images:
 
     http://bb-lcnc.blogspot.com/p/machinekit_16.html
 
-Developer hints:
+Maintainer hints (aka me):
 
     git pull --no-edit https://github.com/cdsteinkuehler/omap-image-builder config-hooks
