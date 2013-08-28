@@ -113,6 +113,9 @@ pkg_list () {
 	base_pkg_list=""
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
+
+		include_pkgs_list=""
+
 		if [ "x${include_firmware}" = "xenable" ] ; then
 			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
