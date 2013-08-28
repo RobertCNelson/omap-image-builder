@@ -9,4 +9,4 @@ for FILE in $( eval find ~$1/linuxcnc/configs -name dtc.sh ) ; do
     ./dtc.sh
 
 done
-~
+
