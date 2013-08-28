@@ -326,6 +326,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	export LC_ALL=C
 	export DEBIAN_FRONTEND=noninteractive
 
+	dpkg_check () {
+		unset pkg_is_not_installed
+		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || pkg_is_not_installed="1"
+	}
+
 	check_n_install () {
 		unset deb_pkgs
 		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || deb_pkgs="\${pkg}"
