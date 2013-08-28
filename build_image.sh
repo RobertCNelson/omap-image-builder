@@ -73,6 +73,8 @@ minimal_armel () {
 		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
+
+		include_pkgs_list="${include_pkgs_list}"
 		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
 
