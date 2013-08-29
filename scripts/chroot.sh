@@ -494,10 +494,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		case "\${distro}" in
 		Debian)
-			if [ -f /etc/sudoers ] ; then
-				usermod -aG sudo ${user_name} || true
-			fi
-
 			passwd <<-EOF
 			root
 			root
