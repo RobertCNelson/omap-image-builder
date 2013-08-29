@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 #Note: These will be auto installed by chroot.sh script:
-#lsb-release initramfs-tools sudo wget
+#initramfs-tools sudo wget
 
 #Base
 base_pkgs="nano pastebinit"

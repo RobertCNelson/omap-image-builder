@@ -267,6 +267,10 @@ debian)
 
 	sudo mv /tmp/${wfile} ${tempdir}/etc/init.d/${wfile}
 
+	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
+	echo "distro=Debian" > /tmp/rcn-ee.conf
+	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
+
 	;;
 ubuntu)
 	wfile="boot_scripts.conf"
@@ -318,6 +322,10 @@ ubuntu)
 		sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
 	fi
 
+	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
+	echo "distro=Ubuntu" > /tmp/rcn-ee.conf
+	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
+
 	;;
 esac
 
@@ -342,26 +350,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
-	install_chroot_pkgs () {
-		if [ "x${chroot_no_lsb_release}" = "x" ] ; then
-			apt-get update
-			packages="lsb-release"
-			for pkg in \${packages} ; do check_n_install ; done
-
-			distro="\$(lsb_release -si)"
-			echo "distro=\${distro}" > /etc/rcn-ee.conf
-		else
-			distro="${chroot_no_lsb_release}"
-			echo "distro=${chroot_no_lsb_release}" > /etc/rcn-ee.conf
-		fi
-	}
-
 	stop_init () {
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
 		exit 101
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
+
+		#set distro:
+		. /etc/rcn-ee.conf
 
 		if [ "x\${distro}" = "xUbuntu" ] ; then
 			dpkg-divert --local --rename --add /sbin/initctl
@@ -567,8 +564,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	#cat /chroot_script.sh
-
-	install_chroot_pkgs
 	stop_init
 
 	install_pkg_updates

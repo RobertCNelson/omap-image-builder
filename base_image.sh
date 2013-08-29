@@ -73,7 +73,6 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_no_lsb_release="${chroot_no_lsb_release}"
 		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
@@ -114,7 +113,7 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list="initramfs-tools,lsb-release,locales,sudo"
+		include_pkgs_list="initramfs-tools,locales,sudo"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
 			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
@@ -135,7 +134,6 @@ is_ubuntu () {
 	deb_components="main universe multiverse"
 
 	pkg_list
-#	chroot_no_lsb_release="Ubuntu"
 }
 
 is_debian () {
@@ -151,7 +149,6 @@ is_debian () {
 	pkg_list
 	exclude_pkgs_list=""
 #	chroot_very_small_image="enable"
-#	chroot_no_lsb_release="Debian"
 }
 
 #13.04
