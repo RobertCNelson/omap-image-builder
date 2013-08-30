@@ -484,11 +484,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		groupadd admin || true
 		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
 
-		if [ "x${chroot_very_small_image}" = "x" ] ; then
-			packages="sudo"
-			for pkg in \${packages} ; do check_n_install ; done
-		fi
-		if [ -f /etc/sudoers ] ; then
+		pkg="sudo"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			echo "Log: (chroot) adding admin group to /etc/sudoers"
 			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
 		fi
 
