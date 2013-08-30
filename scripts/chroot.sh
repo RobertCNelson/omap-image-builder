@@ -339,6 +339,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || pkg_is_not_installed="true"
 	}
 
+	dpkg_package_missing () {
+		echo "Log: (chroot) package [\${pkg}] was not installed... (add to base_pkg_list if functionality is really needed)"
+	}
+
 	check_n_install () {
 		unset deb_pkgs
 		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || deb_pkgs="\${pkg}"
@@ -398,6 +402,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			esac
 
 			echo "LANG=en_US.UTF-8" > /etc/default/locale
+		else
+			dpkg_package_missing
 		fi
 	}
 
@@ -490,6 +496,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 			echo "Log: (chroot) adding admin group to /etc/sudoers"
 			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+		else
+			dpkg_package_missing
 		fi
 
 		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
@@ -551,6 +559,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				mkdir -p /opt/boot-scripts/ || true
 				git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
 				chown -R ${user_name}:${user_name} /opt/boot-scripts/
+			else
+				dpkg_package_missing
 			fi
 		fi
 	}
@@ -608,6 +618,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
 			for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
 		fi
+	else
+		dpkg_package_missing
 	fi
 
 	cleanup
