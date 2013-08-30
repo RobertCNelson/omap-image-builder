@@ -336,7 +336,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	dpkg_check () {
 		unset pkg_is_not_installed
-		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || pkg_is_not_installed="1"
+		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || pkg_is_not_installed="true"
 	}
 
 	check_n_install () {
@@ -380,18 +380,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	set_locale () {
-		packages="locales"
-		for pkg in \${packages} ; do check_n_install ; done
+		pkg="locales"
+		dpkg_check
 
-		if [ -f /etc/locale.gen ] ; then
-			#Debian:
-			sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
-			locale-gen
-		else
-			#Ubuntu:
-			locale-gen en_US.UTF-8
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+
+			case "\${distro}" in
+			Debian)
+				echo "Log: (chroot) Debian: setting up locales: [en_US.UTF-8]"
+				sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
+				locale-gen
+				;;
+			Ubuntu)
+				echo "Log: (chroot) Ubuntu: setting up locales: [en_US.UTF-8]"
+				locale-gen en_US.UTF-8
+				;;
+			esac
+
+			echo "LANG=en_US.UTF-8" > /etc/default/locale
 		fi
-		echo "LANG=en_US.UTF-8" > /etc/default/locale
 	}
 
 	run_deborphan () {
@@ -443,7 +450,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dtb_file=\$(echo \${dtb_file} | awk -F "\"" '{print \$2}')
 
 		if [ "\${dtb_file}" ] ; then
-				wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
+			wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
 		fi
 
 		unset firmware_file
@@ -572,9 +579,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		packages="initramfs-tools u-boot-tools wget"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
-	if [ "x${chroot_very_small_image}" = "x" ] ; then
-		set_locale
-	fi
+	set_locale
 	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 		run_deborphan
 	fi
