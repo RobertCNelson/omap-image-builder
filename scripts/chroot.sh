@@ -587,7 +587,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		packages="initramfs-tools u-boot-tools wget"
+		packages="initramfs-tools u-boot-tools"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
 	set_locale
@@ -601,8 +601,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dl_pkg_src
 	fi
 
-	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
+	pkg="wget"
+	dpkg_check
+
+	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+		if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
+			for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
+		fi
 	fi
 
 	cleanup
