@@ -475,14 +475,23 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		dpkg -x /tmp/\${deb_file} /
 
-		depmod \${kernel_version}
-		update-initramfs -c -k \${kernel_version}
+		pkg="initramfs-tools"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			depmod \${kernel_version}
+			update-initramfs -c -k \${kernel_version}
+		else
+			dpkg_package_missing
+		fi
 
 		pkg="u-boot-tools"
 		dpkg_check
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\${kernel_version} /boot/uInitrd-\${kernel_version}
+			if [ -f /boot/initrd.img-\${kernel_version} ] ; then
+				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\${kernel_version} /boot/uInitrd-\${kernel_version}
+			fi
 		else
 			dpkg_package_missing
 		fi
@@ -605,10 +614,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
-	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		packages="initramfs-tools"
-		for pkg in \${packages} ; do check_n_install ; done
-	fi
 	set_locale
 	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 		run_deborphan
