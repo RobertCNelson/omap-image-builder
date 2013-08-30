@@ -343,17 +343,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "Log: (chroot) package [\${pkg}] was not installed... (add to base_pkg_list if functionality is really needed)"
 	}
 
-	check_n_install () {
-		unset deb_pkgs
-		LC_ALL=C dpkg --list | awk '{print \$2}' | grep "^\${pkg}$" >/dev/null || deb_pkgs="\${pkg}"
-
-		if [ "\${deb_pkgs}" ] ; then
-			echo "Warn: (chroot) check_n_install going away: add [\${deb_pkgs}] to include_pkgs_list or base_pkg_list"
-			echo "Log: (chroot) Installing: \${deb_pkgs}"
-			apt-get -y --force-yes install \${deb_pkgs}
-		fi
-	}
-
 	stop_init () {
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
