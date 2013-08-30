@@ -408,8 +408,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	run_deborphan () {
-		packages="deborphan"
-		for pkg in \${packages} ; do check_n_install ; done
+		apt-get -y --force-yes install deborphan
 
 		deborphan | xargs apt-get -y remove --purge
 
