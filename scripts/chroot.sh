@@ -401,6 +401,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		deborphan | xargs apt-get -y remove --purge
 
+		#FIXME, only tested on wheezy...
 		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
 		apt-get clean
 	}
