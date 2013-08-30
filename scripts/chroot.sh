@@ -510,26 +510,30 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
-		if [ -f /etc/init.d/boot_scripts.sh ] ; then
-			chown root:root /etc/init.d/boot_scripts.sh
-			chmod +x /etc/init.d/boot_scripts.sh
-			insserv boot_scripts.sh || true
+		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+			if [ -f /etc/init.d/boot_scripts.sh ] ; then
+				chown root:root /etc/init.d/boot_scripts.sh
+				chmod +x /etc/init.d/boot_scripts.sh
+				insserv boot_scripts.sh || true
+			fi
 		fi
 	}
 
 	ubuntu_startup_script () {
-		if [ -f /etc/init/boot_scripts.conf ] ; then
-			chown root:root /etc/init/boot_scripts.conf
+		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+			if [ -f /etc/init/boot_scripts.conf ] ; then
+				chown root:root /etc/init/boot_scripts.conf
+			fi
 		fi
+
+		#Not Optional...
+		#(protects your kernel, from Ubuntu repo which may try to take over your system on an upgrade)...
 		if [ -f /etc/flash-kernel.conf ] ; then
 			chown root:root /etc/flash-kernel.conf
 		fi
 	}
 
 	startup_script () {
-		packages="git-core"
-		for pkg in \${packages} ; do check_n_install ; done
-
 		case "\${distro}" in
 		Debian)
 			debian_startup_script
@@ -539,9 +543,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			;;
 		esac
 
-		mkdir -p /opt/boot-scripts/
-		git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
-		chown -R ${user_name}:${user_name} /opt/boot-scripts/
+		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+			pkg="git-core"
+			dpkg_check
+
+			if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+				mkdir -p /opt/boot-scripts/ || true
+				git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
+				chown -R ${user_name}:${user_name} /opt/boot-scripts/
+			fi
+		fi
 	}
 
 	cleanup () {
@@ -584,10 +595,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		run_deborphan
 	fi
 	add_user
-
-	if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
-		startup_script
-	fi
+	startup_script
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
