@@ -477,7 +477,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		depmod \${kernel_version}
 		update-initramfs -c -k \${kernel_version}
-		mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\${kernel_version} /boot/uInitrd-\${kernel_version}
+
+		pkg="u-boot-tools"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d /boot/initrd.img-\${kernel_version} /boot/uInitrd-\${kernel_version}
+		else
+			dpkg_package_missing
+		fi
+
 		rm -f /tmp/index.html || true
 		rm -f /tmp/temp.html || true
 		rm -f /tmp/\${deb_file} || true
@@ -597,7 +606,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-		packages="initramfs-tools u-boot-tools"
+		packages="initramfs-tools"
 		for pkg in \${packages} ; do check_n_install ; done
 	fi
 	set_locale
