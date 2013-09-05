@@ -24,4 +24,4 @@ Images:
 
 Maintainer hints (aka me):
 
-    git pull --no-edit https://github.com/cdsteinkuehler/omap-image-builder config-hooks
+    git pull --no-edit https://github.com/cdsteinkuehler/omap-image-builder MachineKit
