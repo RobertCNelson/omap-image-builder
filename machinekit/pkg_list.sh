@@ -17,7 +17,7 @@ base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
 
 #Server
 #base_pkgs="${base_pkgs} apache2 openssh-server udhcpd"
-base_pkgs="${base_pkgs} openssh-server"
+base_pkgs="${base_pkgs} openssh-server udhcpd"
 
 #Wireless
 base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
