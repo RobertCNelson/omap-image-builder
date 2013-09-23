@@ -1547,6 +1547,7 @@ checkparm () {
 }
 
 IN_VALID_UBOOT=1
+error_invalid_dtb=1
 
 # parse commandline options
 while [ ! -z "$1" ] ; do
