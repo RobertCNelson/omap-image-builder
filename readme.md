@@ -7,7 +7,11 @@ Master branch:
 
 Images:
 
+    ./base_image.sh
+    ./bare_image.sh
     http://eewiki.net/display/linuxonarm/Home
+
+    ./build_image.sh
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
     http://elinux.org/BeagleBoardDebian#Demo_Image
 
