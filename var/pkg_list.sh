@@ -21,6 +21,9 @@ base_pkgs="${base_pkgs} apache2 openssh-server udhcpd"
 #Wireless
 base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw"
 
+#Flasher
+base_pkgs="${base_pkgs} rsync"
+
 #shellinabox (breaks ssh over eth/usb)
 #base_pkgs="${base_pkgs} shellinabox"
 
