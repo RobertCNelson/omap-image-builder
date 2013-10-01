@@ -713,6 +713,8 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 	#just not these this week...
 	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/mx*.conf || true
+	##FIXME: remove after v3.12.x hits...
+	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-wand*.conf || true
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
