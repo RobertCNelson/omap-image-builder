@@ -244,6 +244,13 @@ boot_uenv_txt_template () {
 
 	__EOF__
 
+	if [ ! "${uboot_fdt_auto_detection}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			fdtfile=${conf_fdtfile}
+
+		__EOF__
+	fi
+
 	if [ ! "${USE_KMS}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			#Video: Uncomment to override U-Boots value:
