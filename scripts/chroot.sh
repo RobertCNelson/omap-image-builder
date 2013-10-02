@@ -715,6 +715,8 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/mx*.conf || true
 	##FIXME: remove after v3.12.x hits...
 	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-wand*.conf || true
+	##FIXME: remove after WiFi/Video works...
+	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-panda.conf || true
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
