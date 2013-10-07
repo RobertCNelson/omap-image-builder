@@ -976,6 +976,8 @@ populate_rootfs () {
 
 		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "# ... or on host side, usbnet and random hwaddr" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# Note on some boards, usb0 is automaticly setup with an init script" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# in that case, to completely disable remove file [run_boot-scripts] from the boot partition" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "iface usb0 inet static" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "    address 192.168.7.2" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "    netmask 255.255.255.0" >> ${TEMPDIR}/disk/etc/network/interfaces
