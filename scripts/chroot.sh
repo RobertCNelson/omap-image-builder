@@ -200,14 +200,14 @@ wheezy)
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-precise|quantal|raring)
+precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
 	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
 	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-jessie|sid|saucy)
+jessie|sid)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${file} >/dev/null
 	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
@@ -305,7 +305,7 @@ ubuntu)
 		        DIST=\$(lsb_release -cs)
 
 		        case "\${DIST}" in
-		        natty|oneiric|precise|quantal|raring|saucy)
+		        oneiric|precise|quantal|raring|saucy)
 		                FLASH_KERNEL_SKIP=yes
 		                ;;
 		        esac

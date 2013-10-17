@@ -37,8 +37,14 @@ minimal_armel () {
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${distro}-7.2-${image_type}-${dpkg_arch}-${time}"
 		;;
+	quantal)
+		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
+		;;
 	raring)
 		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
+		;;
+	saucy)
+		export_filename="${distro}-13.10-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
 		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"

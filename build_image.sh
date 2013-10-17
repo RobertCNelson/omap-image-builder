@@ -47,6 +47,9 @@ minimal_armel () {
 	raring)
 		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
 		;;
+	saucy)
+		export_filename="${distro}-13.10-${image_type}-${dpkg_arch}-${time}"
+		;;
 	*)
 		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"
 		;;
