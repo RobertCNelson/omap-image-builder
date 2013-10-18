@@ -237,6 +237,17 @@ saucy_release () {
 	compression
 }
 
+#14.04
+trusty_release () {
+	extra_pkgs="devmem2"
+	firmware_pkgs="linux-firmware"
+	is_ubuntu
+	release="trusty"
+	select_rcn_ee_net_kernel
+	minimal_armel
+	compression
+}
+
 wheezy_release () {
 	extra_pkgs=""
 	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
@@ -298,6 +309,7 @@ chroot_rcnee_startup_scripts="enable"
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+#DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done

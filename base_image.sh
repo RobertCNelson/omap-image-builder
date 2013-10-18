@@ -179,6 +179,17 @@ saucy_release () {
 	compression
 }
 
+#14.04
+trusty_release () {
+	extra_pkgs="devmem2 python-software-properties"
+	firmware_pkgs="linux-firmware"
+	is_ubuntu
+	release="trusty"
+
+	minimal_armel
+	compression
+}
+
 wheezy_release () {
 	extra_pkgs=""
 	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
@@ -241,5 +252,6 @@ wheezy_release
 #jessie_release
 raring_release
 #saucy_release
+#trusty_release
 
 echo "done"

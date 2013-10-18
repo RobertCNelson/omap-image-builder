@@ -207,7 +207,7 @@ precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
-jessie|sid)
+jessie|sid|trusty)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${file} >/dev/null
 	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
@@ -305,7 +305,7 @@ ubuntu)
 		        DIST=\$(lsb_release -cs)
 
 		        case "\${DIST}" in
-		        oneiric|precise|quantal|raring|saucy)
+		        oneiric|precise|quantal|raring|saucy|trusty)
 		                FLASH_KERNEL_SKIP=yes
 		                ;;
 		        esac

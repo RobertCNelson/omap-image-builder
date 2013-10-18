@@ -56,12 +56,12 @@ if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
 
-#added in: 1.0.49
-#if [ ! -f /usr/share/debootstrap/scripts/jessie ] ; then
-#	sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/jessie
-#fi
-
 #added in: 1.0.52
 #if [ ! -f /usr/share/debootstrap/scripts/saucy ] ; then
 #	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/saucy
 #fi
+
+#added in: ?
+if [ ! -f /usr/share/debootstrap/scripts/trusty ] ; then
+	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/trusty
+fi
