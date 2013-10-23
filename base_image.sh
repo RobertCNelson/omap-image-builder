@@ -27,6 +27,7 @@ DIR=$PWD
 tempdir=$(mktemp -d)
 
 image_type="minimal"
+nand_pkgs="mtd-utils"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -122,9 +123,9 @@ pkg_list () {
 		include_pkgs_list="initramfs-tools,locales,sudo"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			base_pkg_list="${nand_pkgs} ${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			base_pkg_list="${nand_pkgs} ${base_pkgs} ${extra_pkgs}"
 		fi
 	fi
 }
