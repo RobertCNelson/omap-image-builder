@@ -308,7 +308,7 @@ chroot_rcnee_startup_scripts="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
-DEFAULT_RELEASES="quantal raring saucy wheezy jessie"
+DEFAULT_RELEASES="raring saucy wheezy jessie"
 #DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
