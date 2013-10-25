@@ -148,10 +148,10 @@ detect_software () {
 	check_for_command mkfs.vfat dosfstools
 	check_for_command wget wget
 	check_for_command git git
+	check_for_command partprobe parted
 
 	if [ "${build_img_file}" ] ; then
 		check_for_command kpartx kpartx
-		check_for_command partprobe parted
 	fi
 
 	if [ "${NEEDS_COMMAND}" ] ; then
