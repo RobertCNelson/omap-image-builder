@@ -151,13 +151,14 @@ detect_software () {
 
 	if [ "${build_img_file}" ] ; then
 		check_for_command kpartx kpartx
+		check_for_command partprobe parted
 	fi
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
 		echo "Angstrom: opkg install dosfstools git util-linux wget"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget parted"
 		echo "Fedora: yum install dosfstools dosfstools git-core uboot-tools wget"
 		echo "Gentoo: emerge dosfstools git u-boot-tools wget"
 		echo ""
