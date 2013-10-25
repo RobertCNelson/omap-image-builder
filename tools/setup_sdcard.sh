@@ -1510,7 +1510,7 @@ usage () {
 			Bugs email: "bugs at rcn-ee.com"
 
 			Required Options:
-			--mmc </dev/sdX>
+			--mmc </dev/sdX> or --img <filename.img>
 
 			--uboot <dev board>
 			        TI:
