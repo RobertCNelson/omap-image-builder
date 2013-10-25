@@ -163,6 +163,15 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	echo "" >> /tmp/01_nodoc
 	sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
 
+	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
+
+	#apt: no local cache
+	echo "Dir::Cache {" > /tmp/02nocache
+	echo "  srcpkgcache \"\";" >> /tmp/02nocache
+	echo "  pkgcache \"\";" >> /tmp/02nocache
+	echo "}" >> /tmp/02nocache
+	sudo mv  /tmp/02nocache ${tempdir}/etc/apt/apt.conf.d/02nocache
+
 	#apt: drop translations...
 	echo "Acquire::Languages \"none\";" > /tmp/02translations
 	sudo mv /tmp/02translations ${tempdir}/etc/apt/apt.conf.d/02translations
@@ -173,12 +182,6 @@ fi
 
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
-#apt: no local cache
-echo "Dir::Cache {" > /tmp/02nocache
-echo "  srcpkgcache \"\";" >> /tmp/02nocache
-echo "  pkgcache \"\";" >> /tmp/02nocache
-echo "}" >> /tmp/02nocache
-sudo mv  /tmp/02nocache ${tempdir}/etc/apt/apt.conf.d/02nocache
 
 #apt: /var/lib/apt/lists/, store compressed only
 echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
