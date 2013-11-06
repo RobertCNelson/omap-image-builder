@@ -1054,7 +1054,9 @@ populate_rootfs () {
 
 	if [ "${need_wandboard_firmware}" ] ; then
 		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" https://rcn-ee.net/firmware/wandboard/brcmfmac-sdio.txt || true
-		cp -v ${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329.bin ${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac-sdio.bin
+		if [ -f "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329-sdio.bin" ] ; then
+			cp -v "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329-sdio.bin" ${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac-sdio.bin
+		fi
 	fi
 
 	if [ "${CREATE_SWAP}" ] ; then
