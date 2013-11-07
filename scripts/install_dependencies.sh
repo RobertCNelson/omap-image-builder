@@ -22,7 +22,7 @@
 
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="53"
+minimal_debootstrap="55"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
@@ -61,7 +61,7 @@ fi
 #	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/saucy
 #fi
 
-#added in: ?
-if [ ! -f /usr/share/debootstrap/scripts/trusty ] ; then
-	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/trusty
-fi
+#added in: 1.0.55
+#if [ ! -f /usr/share/debootstrap/scripts/trusty ] ; then
+#	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/trusty
+#fi
