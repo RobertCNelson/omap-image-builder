@@ -251,8 +251,8 @@ wheezy_release
 dpkg_arch="armhf"
 wheezy_release
 #jessie_release
-raring_release
-#saucy_release
+#raring_release
+saucy_release
 #trusty_release
 
 echo "done"
