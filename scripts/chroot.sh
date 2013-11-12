@@ -245,6 +245,10 @@ debian)
 
 		case "\$1" in
 		start|reload|force-reload|restart)
+		        if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
+		                rm -rf /etc/ssh/ssh_host_* || true
+		                dpkg-reconfigure openssh-server
+		        fi
 		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		                if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
 		                        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
@@ -281,6 +285,10 @@ ubuntu)
 		start on runlevel 2
 
 		script
+		if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
+		        rm -rf /etc/ssh/ssh_host_* || true
+		        dpkg-reconfigure openssh-server
+		fi
 		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
 		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
@@ -691,6 +699,10 @@ if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
 fi
 
 echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user_password.list >/dev/null
+
+#Fixes:
+#Remove pre-generated ssh keys, these will be regenerated on first bootup...
+sudo rm -rf ${tempdir}/etc/ssh/ssh_host_* || true
 
 report_size
 chroot_umount
