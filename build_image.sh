@@ -55,12 +55,12 @@ minimal_armel () {
 		;;
 	esac
 
-	if [ -f ${DIR}/release ] ; then
-		chroot_KERNEL_HTTP_DIR="\
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.0-armv7-x7/ \
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone28/"
-	fi
+#	if [ -f ${DIR}/release ] ; then
+#		chroot_KERNEL_HTTP_DIR="\
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.0-armv7-x7/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone28/"
+#	fi
 
 	tempdir=$(mktemp -d)
 
@@ -308,8 +308,7 @@ chroot_rcnee_startup_scripts="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
-DEFAULT_RELEASES="raring saucy wheezy jessie"
-#DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
+DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
