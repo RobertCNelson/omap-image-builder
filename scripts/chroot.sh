@@ -245,14 +245,14 @@ debian)
 
 		case "\$1" in
 		start|reload|force-reload|restart)
+		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
+		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		        fi
 		        if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
 		                rm -rf /etc/ssh/ssh_host_* || true
 		                dpkg-reconfigure openssh-server
 		        fi
 		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		                if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		                        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
-		                fi
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
@@ -285,14 +285,14 @@ ubuntu)
 		start on runlevel 2
 
 		script
+		if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
+		        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		fi
 		if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
 		        rm -rf /etc/ssh/ssh_host_* || true
 		        dpkg-reconfigure openssh-server
 		fi
 		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
-		        fi
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
