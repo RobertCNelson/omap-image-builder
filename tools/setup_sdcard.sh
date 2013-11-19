@@ -35,10 +35,6 @@ BOOT_LABEL="boot"
 unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
-unset ADDON
-
-unset SVIDEO_NTSC
-unset SVIDEO_PAL
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -65,22 +61,6 @@ VALID_ROOTFS_TYPES="ext2 ext3 ext4 btrfs"
 
 is_valid_rootfs_type () {
 	if is_element_of $1 "${VALID_ROOTFS_TYPES}" ] ; then
-		return 0
-	else
-		return 1
-	fi
-}
-
-#########################################################################
-#
-#  Define valid "--addon" values.
-#
-#########################################################################
-
-VALID_ADDONS="pico"
-
-is_valid_addon () {
-	if is_element_of $1 "${VALID_ADDONS}" ] ; then
 		return 0
 	else
 		return 1
@@ -409,25 +389,6 @@ boot_uenv_txt_template () {
 tweak_boot_scripts () {
 	unset KMS_OVERRIDE
 
-	if [ "x${ADDON}" = "xpico" ] ; then
-		VIDEO_TIMING="640x480MR-16@60"
-		KMS_OVERRIDE=1
-		KMS_VIDEOA="video=DVI-D-1"
-		KMS_VIDEO_RESOLUTION="640x480"
-	fi
-
-	if [ "${SVIDEO_NTSC}" ] ; then
-		VIDEO_TIMING="ntsc"
-		VIDEO_OMAPFB_MODE="tv"
-		##FIXME need to figure out KMS Options
-	fi
-
-	if [ "${SVIDEO_PAL}" ] ; then
-		VIDEO_TIMING="pal"
-		VIDEO_OMAPFB_MODE="tv"
-		##FIXME need to figure out KMS Options
-	fi
-
 	ALL="*.cmd"
 	#Set the Serial Console
 	sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/${ALL}
@@ -445,11 +406,7 @@ tweak_boot_scripts () {
 		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#UENV_TIMING -> dvimode=1280x720MR-16@60
-		if [ "x${ADDON}" = "xpico" ] ; then
-			sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		else
-			sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		fi
+		sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
@@ -1325,7 +1282,6 @@ is_omap () {
 
 	#KMS Video Options (overrides when edid fails)
 	# From: ls /sys/class/drm/
-	# Unknown-1 might be s-video..
 	KMS_VIDEO_RESOLUTION="1280x720"
 	KMS_VIDEOA="video=DVI-D-1"
 	unset KMS_VIDEOB
@@ -1528,9 +1484,6 @@ usage () {
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 
-			--addon <additional peripheral device>
-			        pico
-
 			--rootfs <fs_type>
 			        ext2
 			        ext3
@@ -1543,12 +1496,6 @@ usage () {
 
 			--swap_file <xxx>
 					<create a swap file of (xxx)MB's>
-
-			--svideo-ntsc
-			        <force ntsc mode for S-Video>
-
-			--svideo-pal
-			        <force pal mode for S-Video>
 
 			Additional Options:
 			        -h --help
@@ -1617,19 +1564,9 @@ while [ ! -z "$1" ] ; do
 		kernel_detection
 		check_dtb_board
 		;;
-	--addon)
-		checkparm $2
-		ADDON=$2
-		;;
 	--rootfs)
 		checkparm $2
 		ROOTFS_TYPE="$2"
-		;;
-	--svideo-ntsc)
-		SVIDEO_NTSC=1
-		;;
-	--svideo-pal)
-		SVIDEO_PAL=1
 		;;
 	--boot_label)
 		checkparm $2
@@ -1701,16 +1638,6 @@ if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
 	fi
 
 	BTRFS_FSTAB=1
-fi
-
-if [ -n "${ADDON}" ] ; then
-	if ! is_valid_addon ${ADDON} ; then
-		echo "ERROR: ${ADDON} is not a valid addon type"
-		echo "-----------------------------"
-		echo "Supported --addon options:"
-		echo "    pico"
-		exit
-	fi
 fi
 
 find_issue
