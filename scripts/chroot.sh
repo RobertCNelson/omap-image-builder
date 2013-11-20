@@ -245,19 +245,40 @@ debian)
 
 		case "\$1" in
 		start|reload|force-reload|restart)
-		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		        #This script is to just get the (non-battery backed up) rtc 'in the ballbark'..
+		        #Usually it will be around a month at most off, vs 40-ish years...
+		        #/etc/timestamp is set via:
+		        #date --utc "+%4Y%2m%2d%2H%2M" > /etc/timestamp
+
+		        if [ -f /etc/timestamp ] ; then
+		                systemdate=\$(/bin/date --utc "+%4Y%2m%2d%2H%2M")
+		                timestamp=\$(cat /etc/timestamp)
+
+		                if [ \${timestamp} -gt \${systemdate} ] ; then
+		                        year=\$(cat /etc/timestamp | cut -b 1-4)
+		                        month=\$(cat /etc/timestamp | cut -b 5-6)
+		                        day=\$(cat /etc/timestamp | cut -b 7-8)
+		                        hour=\$(cat /etc/timestamp | cut -b 9-10)
+		                        min=\$(cat /etc/timestamp | cut -b 11-12)
+
+		                        #/bin/date --utc -s "10/08/2008 11:37:23"
+		                        /bin/date --utc -s "\${month}/\${day}/\${year} \${hour}:\${min}:00"
+		                        /sbin/hwclock --systohc
+		                fi
 		        fi
+
 		        if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
 		                rm -rf /etc/ssh/ssh_host_* || true
 		                dpkg-reconfigure openssh-server
 		        fi
+
 		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
 		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
 		                fi
 		        fi
+
 		        ;;
 		stop)
 		        exit 0
@@ -285,13 +306,33 @@ ubuntu)
 		start on runlevel 2
 
 		script
-		if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
+		#This script is to just get the (non-battery backed up) rtc 'in the ballbark'..
+		#Usually it will be around a month at most off, vs 40-ish years...
+		#/etc/timestamp is set via:
+		#date --utc "+%4Y%2m%2d%2H%2M" > /etc/timestamp
+
+		if [ -f /etc/timestamp ] ; then
+		        systemdate=\$(/bin/date --utc "+%4Y%2m%2d%2H%2M")
+		        timestamp=\$(cat /etc/timestamp)
+
+		        if [ \${timestamp} -gt \${systemdate} ] ; then
+		                year=\$(cat /etc/timestamp | cut -b 1-4)
+		                month=\$(cat /etc/timestamp | cut -b 5-6)
+		                day=\$(cat /etc/timestamp | cut -b 7-8)
+		                hour=\$(cat /etc/timestamp | cut -b 9-10)
+		                min=\$(cat /etc/timestamp | cut -b 11-12)
+
+		                #/bin/date --utc -s "10/08/2008 11:37:23"
+		                /bin/date --utc -s "\${month}/\${day}/\${year} \${hour}:\${min}:00"
+		                /sbin/hwclock --systohc
+		        fi
 		fi
+
 		if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
 		        rm -rf /etc/ssh/ssh_host_* || true
 		        dpkg-reconfigure openssh-server
 		fi
+
 		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
 		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
