@@ -300,7 +300,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 include_firmware="enable"
 chroot_rcnee_startup_scripts="enable"
 chroot_nuke_root_password="enable"
-#chroot_cloud9_ide="enable"
+chroot_cloud9_ide="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"

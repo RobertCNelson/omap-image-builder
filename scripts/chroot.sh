@@ -629,23 +629,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
 			if [ "x${release}" = "xwheezy" ] ; then
-				apt-get -y -t wheezy-backports install nodejs
-			else
-				apt-get -y install nodejs
-			fi
+				apt-get -y -t wheezy-backports install nodejs-legacy
 
-			if [ ! -f /usr/bin/node ] ; then
-				sudo ln -s /usr/bin/nodejs /usr/bin/node
-			fi
-			if [ ! -d /usr/lib/node ] ; then
-				sudo mkdir -p /usr/lib/node
-			fi
+				curl https://npmjs.org/install.sh | sh
 
-			curl https://npmjs.org/install.sh | sh
-
-			mkdir -p /opt/cloud9/ || true
-			clone git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
-			chown -R ${user_name}:${user_name} /opt/cloud9/
+				mkdir -p /opt/cloud9/ || true
+				clone git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				chown -R ${user_name}:${user_name} /opt/cloud9/
+			fi
 		else
 			dpkg_package_missing
 		fi
