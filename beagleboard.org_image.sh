@@ -34,6 +34,7 @@ image_type="console"
 
 #Cloud9 IDE
 bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev"
+bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
