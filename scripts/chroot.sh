@@ -202,6 +202,9 @@ wheezy)
 	echo "" | sudo tee -a ${file} >/dev/null
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "#deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
 precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
