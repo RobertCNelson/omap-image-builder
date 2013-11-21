@@ -616,6 +616,35 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	install_cloud9 () {
+		pkg="git-core"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+
+			if [ "x${release}" = "xwheezy" ] ; then
+				apt-get -y -t wheezy-backports install nodejs
+			else
+				apt-get -y install nodejs
+			fi
+
+			if [ ! -f /usr/bin/node ] ; then
+				sudo ln -s /usr/bin/nodejs /usr/bin/node
+			fi
+			if [ ! -d /usr/lib/node ] ; then
+				sudo mkdir -p /usr/lib/node
+			fi
+
+			curl https://npmjs.org/install.sh | sh
+
+			mkdir -p /opt/cloud9/ || true
+			clone git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+			chown -R ${user_name}:${user_name} /opt/cloud9/
+		else
+			dpkg_package_missing
+		fi
+	}
+
 	cleanup () {
 		mkdir -p /boot/uboot/
 
@@ -653,6 +682,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	fi
 	add_user
 	startup_script
+
+	if [ "x${chroot_cloud9_ide}" = "xenable" ] ; then
+		install_cloud9
+	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src

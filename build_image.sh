@@ -97,6 +97,8 @@ minimal_armel () {
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
+		chroot_cloud9_ide="${chroot_cloud9_ide}"
+
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
 		chroot_hook="${chroot_hook}"
@@ -308,6 +310,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 #FIXME: things to add to .config:
 include_firmware="enable"
 chroot_rcnee_startup_scripts="enable"
+#chroot_cloud9_ide="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
