@@ -32,6 +32,9 @@ fi
 
 image_type="console"
 
+#Cloud9 IDE
+bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev"
+
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
@@ -79,7 +82,7 @@ minimal_armel () {
 
 		include_pkgs_list="${include_pkgs_list}"
 		exclude_pkgs_list="${exclude_pkgs_list}"
-		base_pkg_list="${base_pkg_list}"
+		base_pkg_list="${base_pkg_list} ${bborg_pkg_list}"
 
 		image_hostname="${image_hostname}"
 
