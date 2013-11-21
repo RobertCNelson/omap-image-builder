@@ -661,13 +661,13 @@ boot_git_tools () {
 			if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
 				mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
 			fi
-			if [ -f ${TEMPDIR}/drivers/README.htm
+			if [ -f ${TEMPDIR}/drivers/README.htm ] ; then
 				mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
 			fi
-			if [ -f ${TEMPDIR}/drivers/README.md
+			if [ -f ${TEMPDIR}/drivers/README.md ] ; then
 				mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
 			fi
-			if [ -f ${TEMPDIR}/drivers/START.htm
+			if [ -f ${TEMPDIR}/drivers/START.htm ] ; then
 				mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
 			fi
 		;;
