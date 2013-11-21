@@ -632,28 +632,28 @@ boot_git_tools () {
 
 	case "${SYSTEM}" in
 	bone|bone_dtb)
-		echo "Debug: Adding BeagleBone drivers from: https://github.com/RobertCNelson/bone-drivers"
+		echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
 		#Not planning to change these too often, once pulled, remove .git stuff...
-		mkdir -p ${TEMPDIR}/bone-drivers/
-		git clone git://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
-		if [ ! -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
-			git clone https://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
+		mkdir -p ${TEMPDIR}/drivers/
+		git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/
+		if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
+			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/
 		fi
-		if [ -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
-			rm -rf ${TEMPDIR}/bone-drivers/.git/ || true
+		if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
+			rm -rf ${TEMPDIR}/drivers/.git/ || true
 		fi
 
-		if [ -d ${TEMPDIR}/bone-drivers/Drivers ] ; then
-			mv ${TEMPDIR}/bone-drivers/Drivers ${TEMPDIR}/disk/
+		if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
+			mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
 		fi
-		if [ -d ${TEMPDIR}/bone-drivers/Docs ] ; then
-			mv ${TEMPDIR}/bone-drivers/Docs ${TEMPDIR}/disk/
+		if [ -d ${TEMPDIR}/drivers/Docs ] ; then
+			mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
 		fi
-		if [ -f ${TEMPDIR}/bone-drivers/autorun.inf ] ; then
-			mv ${TEMPDIR}/bone-drivers/autorun.inf ${TEMPDIR}/disk/
+		if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
+			mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
 		fi
-		if [ -f ${TEMPDIR}/bone-drivers/LICENSE.txt ] ; then
-			mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
+		if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
+			mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
 		fi
 	;;
 	esac
