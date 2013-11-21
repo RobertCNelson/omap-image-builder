@@ -60,8 +60,6 @@ minimal_armel () {
 
 #	if [ -f ${DIR}/release ] ; then
 #		chroot_KERNEL_HTTP_DIR="\
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.0-armv7-x8/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
 #http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone30/"
 #	fi
 
@@ -150,20 +148,10 @@ kernel_chooser () {
 }
 
 select_rcn_ee_net_kernel () {
-	SUBARCH="armv7"
-	KERNEL_ABI="STABLE"
-	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
-
-	SUBARCH="omap"
-	KERNEL_ABI="STABLE"
-	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
-
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 }
 
 pkg_list () {
@@ -182,7 +170,7 @@ pkg_list () {
 }
 
 is_ubuntu () {
-	image_hostname="arm"
+	image_hostname="beaglebone"
 	distro="ubuntu"
 	user_name="ubuntu"
 	password="temppwd"
@@ -195,7 +183,7 @@ is_ubuntu () {
 }
 
 is_debian () {
-	image_hostname="arm"
+	image_hostname="beaglebone"
 	distro="debian"
 	user_name="debian"
 	password="temppwd"
