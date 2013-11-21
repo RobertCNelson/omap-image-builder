@@ -646,6 +646,9 @@ boot_git_tools () {
 				rm -rf ${TEMPDIR}/drivers/.git/ || true
 			fi
 
+			if [ -d ${TEMPDIR}/drivers/App ] ; then
+				mv ${TEMPDIR}/drivers/App ${TEMPDIR}/disk/
+			fi
 			if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
 				mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
 			fi
@@ -657,6 +660,15 @@ boot_git_tools () {
 			fi
 			if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
 				mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/README.htm
+				mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/README.md
+				mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/START.htm
+				mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
 			fi
 		;;
 		esac
