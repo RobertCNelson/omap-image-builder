@@ -635,9 +635,9 @@ boot_git_tools () {
 		echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
 		#Not planning to change these too often, once pulled, remove .git stuff...
 		mkdir -p ${TEMPDIR}/drivers/
-		git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/
+		git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
 		if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
-			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/
+			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
 		fi
 		if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
 			rm -rf ${TEMPDIR}/drivers/.git/ || true
