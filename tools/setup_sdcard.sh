@@ -1642,7 +1642,7 @@ while [ ! -z "$1" ] ; do
 		bbb_flasher=1
 		;;
 	--beagleboard.org-production)
-		bborg_prodution=1
+		bborg_production=1
 		;;
 	--offline)
 		offline=1
