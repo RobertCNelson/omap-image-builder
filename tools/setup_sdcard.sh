@@ -1559,6 +1559,8 @@ while [ ! -z "$1" ] ; do
 		if [ "x${imagename}" = "x" ] ; then
 			imagename=image.img
 		fi
+		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
+		imagename="${name}-2gb.img"
 		media="${DIR}/${imagename}"
 		build_img_file=1
 		check_root
@@ -1574,6 +1576,8 @@ while [ ! -z "$1" ] ; do
 		if [ "x${imagename}" = "x" ] ; then
 			imagename=image.img
 		fi
+		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
+		imagename="${name}-4gb.img"
 		media="${DIR}/${imagename}"
 		build_img_file=1
 		check_root
