@@ -621,59 +621,61 @@ create_partitions () {
 }
 
 boot_git_tools () {
-	echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
-	echo "-----------------------------"
-	mkdir -p ${TEMPDIR}/disk/tools
-	git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-	if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
-		echo "Trying via http:"
-		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+	if [ ! "${offline}" ] ; then
+		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
+		echo "-----------------------------"
+		mkdir -p ${TEMPDIR}/disk/tools
+		git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+		if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
+			echo "Trying via http:"
+			git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+		fi
 	fi
 
-	case "${SYSTEM}" in
-	bone|bone_dtb)
-		echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
-		#Not planning to change these too often, once pulled, remove .git stuff...
-		mkdir -p ${TEMPDIR}/drivers/
-		git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-		if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
-			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-		fi
-		if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
-			rm -rf ${TEMPDIR}/drivers/.git/ || true
-		fi
+	if [ ! "${offline}" ] && [ "${bborg_production}" ] ; then
+		case "${SYSTEM}" in
+		bone|bone_dtb)
+			echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
+			#Not planning to change these too often, once pulled, remove .git stuff...
+			mkdir -p ${TEMPDIR}/drivers/
+			git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+			if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
+				git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+			fi
+			if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
+				rm -rf ${TEMPDIR}/drivers/.git/ || true
+			fi
 
-		if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
-			mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
-		fi
-		if [ -d ${TEMPDIR}/drivers/Docs ] ; then
-			mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
-			mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
-			mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
-		fi
-	;;
-	esac
+			if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
+				mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
+			fi
+			if [ -d ${TEMPDIR}/drivers/Docs ] ; then
+				mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
+				mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
+				mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
+			fi
+		;;
+		esac
 
-	wfile=START.htm
-	echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-	echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-	echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-	echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
-	echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-	echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	sync
-
-	echo "-----------------------------"
-
+		wfile=BASIC_START.htm
+		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
+		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		sync
+		echo "-----------------------------"
+	fi
 }
 
 populate_boot () {
@@ -1495,7 +1497,7 @@ usage () {
 			--rootfs_label <rootfs_label>
 
 			--swap_file <xxx>
-					<create a swap file of (xxx)MB's>
+			        <create a swap file of (xxx)MB's>
 
 			Additional Options:
 			        -h --help
@@ -1625,8 +1627,13 @@ while [ ! -z "$1" ] ; do
 		USE_BETA_BOOTLOADER=1
 		;;
 	--bbb-flasher)
-		checkparm $2
 		bbb_flasher=1
+		;;
+	--beagleboard.org-production)
+		bborg_prodution=1
+		;;
+	--offline)
+		offline=1
 		;;
 	esac
 	shift
