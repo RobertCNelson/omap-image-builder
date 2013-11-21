@@ -87,6 +87,7 @@ minimal_armel () {
 		user_name="${user_name}"
 		full_name="${full_name}"
 		password="${password}"
+		chroot_nuke_root_password="${chroot_nuke_root_password}"
 
 		include_firmware="${include_firmware}"
 
@@ -298,6 +299,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 #FIXME: things to add to .config:
 include_firmware="enable"
 chroot_rcnee_startup_scripts="enable"
+chroot_nuke_root_password="enable"
 #chroot_cloud9_ide="enable"
 #no_pkgs="enable"
 

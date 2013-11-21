@@ -561,6 +561,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			root
 			root
 			EOF
+
+			if [ "x${chroot_nuke_root_password}" = "xenable" ] ; then
+				root_password=\$(cat /etc/shadow | grep root | awk -F ':' '{print \$2}')
+				sed -i -e 's:'\$root_password'::g' /etc/shadow
+			fi
+
 			;;
 		Ubuntu)
 			passwd -l root || true
