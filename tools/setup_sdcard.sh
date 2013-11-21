@@ -1552,6 +1552,36 @@ while [ ! -z "$1" ] ; do
 		#FIXME: 800Mb initial size... (should fit most 2Gb microSD cards)
 		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*800]
 		;;
+	--img-2gb)
+		checkparm $2
+		imagename="$2"
+		if [ "x${imagename}" = "x" ] ; then
+			imagename=image.img
+		fi
+		media="${DIR}/${imagename}"
+		build_img_file=1
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+		#FIXME: 1,800Mb initial size... (should fit most 2Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*1800]
+		;;
+	--img-4gb)
+		checkparm $2
+		imagename="$2"
+		if [ "x${imagename}" = "x" ] ; then
+			imagename=image.img
+		fi
+		media="${DIR}/${imagename}"
+		build_img_file=1
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+		#FIXME: 3,800Mb initial size... (should fit most 4Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3800]
+		;;
 	--uboot)
 		checkparm $2
 		UBOOT_TYPE="$2"
