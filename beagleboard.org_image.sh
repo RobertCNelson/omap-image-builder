@@ -304,7 +304,7 @@ chroot_nuke_root_password="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
-DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
+DEFAULT_RELEASES="wheezy"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
