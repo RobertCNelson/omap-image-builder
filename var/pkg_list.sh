@@ -30,3 +30,5 @@ base_pkgs="${base_pkgs} rsync"
 #Gateone:
 #base_pkgs="${base_pkgs} python-tornado python-pyopenssl"
 
+#Cloud9 IDE
+base_pkgs="${base_pkgs} build-essential g++ curl libssl-dev apache2-utils libxml2-dev"
