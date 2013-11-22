@@ -663,6 +663,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_command="npm install"
 				qemu_warning
 				npm install
+
+				mkdir -p /var/lib/cloud9 || true
+				qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 || true"
+				qemu_warning
+				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 || true
+				chown -R ${user_name}:${user_name} /var/lib/cloud9
 			fi
 		else
 			dpkg_package_missing
