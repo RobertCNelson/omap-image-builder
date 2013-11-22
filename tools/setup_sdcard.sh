@@ -655,6 +655,9 @@ boot_git_tools () {
 			if [ -d ${TEMPDIR}/drivers/Docs ] ; then
 				mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
 			fi
+			if [ -d ${TEMPDIR}/drivers/scripts ] ; then
+				mv ${TEMPDIR}/drivers/scripts ${TEMPDIR}/disk/
+			fi
 			if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
 				mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
 			fi
