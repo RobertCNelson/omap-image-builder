@@ -16,7 +16,7 @@ base_pkgs="${base_pkgs} dosfstools btrfs-tools cpufrequtils ntpdate"
 base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
 
 #Server
-base_pkgs="${base_pkgs} apache2 openssh-server udhcpd"
+base_pkgs="${base_pkgs} apache2 openssh-server udhcpd avahi-daemon"
 
 #Wireless
 base_pkgs="${base_pkgs} wireless-tools wpasupplicant lowpan-tools wvdial lshw hostapd"
