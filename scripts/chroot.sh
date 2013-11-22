@@ -573,6 +573,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			if [ "x${chroot_nuke_root_password}" = "xenable" ] ; then
 				root_password=\$(cat /etc/shadow | grep root | awk -F ':' '{print \$2}')
 				sed -i -e 's:'\$root_password'::g' /etc/shadow
+
+				#Make ssh root@beaglebone work..
+				sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
+				sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
 			fi
 
 			;;
