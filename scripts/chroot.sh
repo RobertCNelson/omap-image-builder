@@ -673,6 +673,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 || true
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
+
+				#node8
+				mkdir -p /opt/node-src/ || true
+				cd /opt/node-src
+				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
+				tar xf node-v0.8.26.tar.gz
+				cd node-v0.8.26
+				./configure --prefix=/opt/node8/ && make -j4 && make install
+				cd /
+				rm -rf /opt/node-src/node-v0.8.26/ || true
 			fi
 		else
 			dpkg_package_missing
