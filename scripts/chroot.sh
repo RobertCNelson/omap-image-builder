@@ -649,15 +649,20 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				curl https://npmjs.org/install.sh | sh
 
-				qemu_command="npm install -g cloud9"
-				qemu_warning
-				npm install -g cloud9
-
-				#mkdir -p /opt/cloud9/ || true
-				#qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+				#qemu_command="npm install -g cloud9"
 				#qemu_warning
-				#git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
-				#chown -R ${user_name}:${user_name} /opt/cloud9/
+				#npm install -g cloud9
+
+				mkdir -p /opt/cloud9/ || true
+				qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+				qemu_warning
+				git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				chown -R ${user_name}:${user_name} /opt/cloud9/
+
+				cd /opt/cloud9
+				qemu_command="npm install"
+				qemu_warning
+				npm install
 			fi
 		else
 			dpkg_package_missing
