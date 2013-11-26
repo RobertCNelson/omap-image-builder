@@ -647,16 +647,26 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
 			if [ "x${release}" = "xwheezy" ] ; then
-				apt-get -y -t wheezy-backports install nodejs-legacy
+				#apt-get -y -t wheezy-backports install nodejs-legacy
+
+				#node8
+				mkdir -p /opt/node-src/ || true
+				cd /opt/node-src
+				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
+				tar xf node-v0.8.26.tar.gz
+				cd node-v0.8.26
+				./configure --prefix=/usr/local/ && make -j5 && make install
+				cd /
+				rm -rf /opt/node-src/node-v0.8.26/ || true
 
 				qemu_command="curl https://npmjs.org/install.sh | sh"
 				qemu_warning
 				curl https://npmjs.org/install.sh | sh
 
 				#Do this to just clear up a dependicy...
-				qemu_command="npm install -g cloud9"
-				qemu_warning
-				npm install -g cloud9
+				#qemu_command="npm install -g cloud9"
+				#qemu_warning
+				#npm install -g cloud9
 
 				mkdir -p /opt/cloud9/ || true
 				qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
@@ -674,16 +684,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 || true
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
-
-				#node8
-				mkdir -p /opt/node-src/ || true
-				cd /opt/node-src
-				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
-				tar xf node-v0.8.26.tar.gz
-				cd node-v0.8.26
-				./configure --prefix=/opt/node8/ && make -j4 && make install
-				cd /
-				rm -rf /opt/node-src/node-v0.8.26/ || true
 			fi
 		else
 			dpkg_package_missing
