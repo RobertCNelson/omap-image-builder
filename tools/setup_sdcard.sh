@@ -1446,18 +1446,8 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	mx53loco)
-		SYSTEM="mx53loco"
-		conf_board="mx53loco"
-		SERIAL="ttymxc0"
-		is_imx
-		conf_loadaddr="0x70010000"
-		conf_initrdaddr="0x72000000"
-		conf_zreladdr="0x70008000"
-		conf_fdtaddr="0x71ff0000"
-		conf_fdtfile="imx53-qsb.dtb"
-		need_dtbs=1
-
-		. "${DIR}"/hwpack/mx53loco.conf
+		echo "Note: [--dtb dt-mx53loco] now replaces [--uboot mx53loco]"
+		. "${DIR}"/hwpack/dt-mx53loco.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
