@@ -8,8 +8,9 @@ cd ~
 if [ -f kickstart.${SOURCE}.tar ] ; then
 	tar xf kickstart.${SOURCE}.tar
 else
-	git clone -b MachineKit-ubc git://git.mah.priv.at/emc2-dev.git linuxcnc
-	git remote add github https://github.com/cdsteinkuehler/MachineKit.git
+	#git clone -b MachineKit-ubc git://git.mah.priv.at/emc2-dev.git linuxcnc
+	git clone -b MachineKit-ubc https://github.com/cdsteinkuehler/MachineKit.git linuxcnc
+	cd ~/linuxcnc/
 	git remote add linuxcnc git://git.linuxcnc.org/git/linuxcnc.git
 	cd ~/linuxcnc/src
 	./autogen.sh
