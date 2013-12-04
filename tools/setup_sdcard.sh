@@ -1279,7 +1279,6 @@ is_omap () {
 
 	SUBARCH="omap"
 
-	conf_zreladdr="0x80008000"
 	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
 
@@ -1400,7 +1399,6 @@ check_uboot_type () {
 		#just to disable the omapfb stuff..
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
-		conf_zreladdr="0x80008000"
 		conf_fdtaddr="0x815f0000"
 		#u-boot:rdaddr="0x81000000"
 
@@ -1429,7 +1427,7 @@ check_uboot_type () {
 		SYSTEM="mx51evk"
 		conf_board="mx51evk"
 		is_imx
-		conf_zreladdr="0x90008000"
+
 		conf_fdtaddr="0x91ff0000"
 		conf_fdtfile="imx51-babbage.dtb"
 		need_dtbs=1
