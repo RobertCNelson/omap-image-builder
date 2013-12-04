@@ -833,8 +833,6 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
-	#just not these this week...
-	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/mx*.conf || true
 	##FIXME: remove after WiFi/Video works...
 	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-panda.conf || true
 fi
