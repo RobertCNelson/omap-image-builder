@@ -271,9 +271,17 @@ debian)
 		                fi
 		        fi
 
-		        if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
+		        if [ ! -f /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
 		                rm -rf /etc/ssh/ssh_host_* || true
 		                dpkg-reconfigure openssh-server
+		                sync
+		        fi
+
+		        #There is a chance, if user reboots to soon, these are not saved, thus a zero size...
+		        if [ ! -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
+		                rm -rf /etc/ssh/ssh_host_* || true
+		                dpkg-reconfigure openssh-server
+		                sync
 		        fi
 
 		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
@@ -336,9 +344,17 @@ ubuntu)
 		        fi
 		fi
 
-		if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
+		if [ ! -f /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
 		        rm -rf /etc/ssh/ssh_host_* || true
 		        dpkg-reconfigure openssh-server
+		        sync
+		fi
+
+		#There is a chance, if user reboots to soon, these are not saved, thus a zero size...
+		if [ ! -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
+		        rm -rf /etc/ssh/ssh_host_* || true
+		        dpkg-reconfigure openssh-server
+		        sync
 		fi
 
 		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
