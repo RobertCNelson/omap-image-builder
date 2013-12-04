@@ -420,25 +420,6 @@ tweak_boot_scripts () {
 		sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
 
-	if [ "${HAS_IMX_BLOB}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#not used:
-		sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#framebuffer=VIDEO_FB
-		sed -i -e 's:UENV_FB:framebuffer=VIDEO_FB:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_FB:'$VIDEO_FB':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#dvimode=VIDEO_TIMING
-		sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
-		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#video=\${framebuffer}:${dvimode}
-		sed -i -e 's/VIDEO_DISPLAY/'video=\${framebuffer}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
-	fi
-
 	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
 		#optargs=VIDEO_CONSOLE
 		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
@@ -1301,29 +1282,6 @@ is_omap () {
 
 	#Kernel Options
 	select_kernel="${omap_kernel}"
-}
-
-is_imx () {
-	IS_IMX=1
-
-	bootloader_location="dd_uboot_boot"
-	unset spl_name
-	boot_name="u-boot.imx"
-	dd_uboot_seek="1"
-	dd_uboot_bs="1024"
-
-	SUBARCH="imx"
-
-	SERIAL="ttymxc0"
-	SERIAL_CONSOLE="${SERIAL},115200"
-
-	boot_script="uEnv.txt"
-
-	VIDEO_CONSOLE="console=tty0"
-	HAS_IMX_BLOB=1
-	VIDEO_FB="mxcdi1fb"
-	VIDEO_TIMING="RGB24,1280x720M@60"
-	select_kernel="${armv7_kernel}"
 }
 
 convert_uboot_to_dtb_board () {
