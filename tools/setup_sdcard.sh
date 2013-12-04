@@ -1421,11 +1421,8 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	mx51evk)
-		SYSTEM="mx51evk"
-		conf_board="mx51evk"
-		is_imx
-
-		. "${DIR}"/hwpack/mx51evk.conf
+		echo "Note: [--dtb dt-mx51evk] now replaces [--uboot mx51evk"
+		. "${DIR}"/hwpack/dt-mx51evk.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
