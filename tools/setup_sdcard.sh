@@ -1279,7 +1279,6 @@ is_omap () {
 
 	SUBARCH="omap"
 
-	conf_loadaddr="0x80300000"
 	conf_initrdaddr="0x81600000"
 	conf_zreladdr="0x80008000"
 	conf_fdtaddr="0x815f0000"
@@ -1403,7 +1402,6 @@ check_uboot_type () {
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
 		conf_zreladdr="0x80008000"
-		conf_loadaddr="0x80200000"
 		conf_fdtaddr="0x815f0000"
 		#u-boot:rdaddr="0x81000000"
 		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
@@ -1434,7 +1432,6 @@ check_uboot_type () {
 		SYSTEM="mx51evk"
 		conf_board="mx51evk"
 		is_imx
-		conf_loadaddr="0x90010000"
 		conf_initrdaddr="0x92000000"
 		conf_zreladdr="0x90008000"
 		conf_fdtaddr="0x91ff0000"
