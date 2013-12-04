@@ -1424,8 +1424,6 @@ check_uboot_type () {
 		SYSTEM="mx51evk"
 		conf_board="mx51evk"
 		is_imx
-		conf_fdtfile="imx51-babbage.dtb"
-		need_dtbs=1
 
 		. "${DIR}"/hwpack/mx51evk.conf
 		convert_uboot_to_dtb_board
