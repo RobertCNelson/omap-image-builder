@@ -1279,7 +1279,6 @@ is_omap () {
 
 	SUBARCH="omap"
 
-	conf_initrdaddr="0x81600000"
 	conf_zreladdr="0x80008000"
 	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
@@ -1404,8 +1403,6 @@ check_uboot_type () {
 		conf_zreladdr="0x80008000"
 		conf_fdtaddr="0x815f0000"
 		#u-boot:rdaddr="0x81000000"
-		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
-		conf_initrdaddr="0x81000000"
 
 		conf_boot_endmb="96"
 
@@ -1432,7 +1429,6 @@ check_uboot_type () {
 		SYSTEM="mx51evk"
 		conf_board="mx51evk"
 		is_imx
-		conf_initrdaddr="0x92000000"
 		conf_zreladdr="0x90008000"
 		conf_fdtaddr="0x91ff0000"
 		conf_fdtfile="imx51-babbage.dtb"
