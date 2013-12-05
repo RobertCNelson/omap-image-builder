@@ -204,8 +204,8 @@ wheezy)
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "" | sudo tee -a ${file} >/dev/null
-	echo "deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "#deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
 	;;
 precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
@@ -667,18 +667,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
 			if [ "x${release}" = "xwheezy" ] ; then
-				#apt-get -y -t wheezy-backports install nodejs-legacy
-
-				#node8
-				#mkdir -p /opt/node-src/ || true
-				#cd /opt/node-src
-				#wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
-				#tar xf node-v0.8.26.tar.gz
-				#cd node-v0.8.26
-				#./configure --prefix=/usr/local/ && make -j5 && make install
-				#cd /
-				#rm -rf /opt/node-src/node-v0.8.26/ || true
-
 				#qemu_command="curl https://npmjs.org/install.sh | sh"
 				#qemu_warning
 				#curl https://npmjs.org/install.sh | sh
@@ -700,7 +688,17 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#npm install
 
 				#From: https://github.com/ajaxorg/cloud9/wiki/Installation-and-Usage
-				apt-get -y -t wheezy-backports install nodejs-legacy
+				#apt-get -y -t wheezy-backports install nodejs-legacy
+
+				#node8
+				mkdir -p /opt/node-src/ || true
+				cd /opt/node-src
+				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
+				tar xf node-v0.8.26.tar.gz
+				cd node-v0.8.26
+				./configure --prefix=/usr/local/ && make -j5 && make install
+				cd /
+				rm -rf /opt/node-src/node-v0.8.26/ || true
 
 				qemu_command="curl https://npmjs.org/install.sh | sh"
 				qemu_warning
