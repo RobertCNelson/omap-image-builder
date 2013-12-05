@@ -811,6 +811,9 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
+if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
+	rm -rf ${DIR}/deploy/${export_filename}/ || true
+fi
 mkdir -p ${DIR}/deploy/${export_filename}/ || true
 
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
