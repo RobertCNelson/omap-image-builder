@@ -115,27 +115,7 @@ compression () {
 	cd ${DIR}/deploy/
 
 	tar cvf ${export_filename}.tar ./${export_filename}
-
-	if [ -f ${DIR}/release ] ; then
-		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
-			if [ -d /mnt/farm/testing/pending/ ] ; then
-				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-				cp -v arm*.tar /mnt/farm/images/
-
-				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
-					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
-				else
-					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-				fi
-
-			fi
-		fi
-	elif [ -f ${DIR}/compress ] ; then
-		xz -z -7 -v "${export_filename}.tar"
-		if [ -n "${release_dir}" ] ; then
-			mv "${export_filename}.tar.xz" "${release_dir}"
-		fi
-	fi
+	xz -z -7 -v "${export_filename}.tar"
 	cd ${DIR}/
 }
 
@@ -291,9 +271,8 @@ fi
 
 mkdir -p ${DIR}/deploy/
 
-#if [ -f ${DIR}/release ] ; then
-#	chroot_ENABLE_DEB_SRC="enable"
-#fi
+#include gpl/source package...
+chroot_ENABLE_DEB_SRC="enable"
 
 chroot_COPY_SETUP_SDCARD="enable"
 
