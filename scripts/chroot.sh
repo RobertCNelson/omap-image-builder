@@ -295,6 +295,10 @@ debian)
 		                #/usr/local/bin/node /opt/cloud9/server.js -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
 		        #fi
 
+		        if [ -f /opt/cloud9/bin/cloud9.sh ] ; then
+		                /opt/cloud9/bin/cloud9.sh -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
+		        fi
+
 		        ;;
 		stop)
 		        exit 0
@@ -666,18 +670,18 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#apt-get -y -t wheezy-backports install nodejs-legacy
 
 				#node8
-				mkdir -p /opt/node-src/ || true
-				cd /opt/node-src
-				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
-				tar xf node-v0.8.26.tar.gz
-				cd node-v0.8.26
-				./configure --prefix=/usr/local/ && make -j5 && make install
-				cd /
-				rm -rf /opt/node-src/node-v0.8.26/ || true
+				#mkdir -p /opt/node-src/ || true
+				#cd /opt/node-src
+				#wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
+				#tar xf node-v0.8.26.tar.gz
+				#cd node-v0.8.26
+				#./configure --prefix=/usr/local/ && make -j5 && make install
+				#cd /
+				#rm -rf /opt/node-src/node-v0.8.26/ || true
 
-				qemu_command="curl https://npmjs.org/install.sh | sh"
-				qemu_warning
-				curl https://npmjs.org/install.sh | sh
+				#qemu_command="curl https://npmjs.org/install.sh | sh"
+				#qemu_warning
+				#curl https://npmjs.org/install.sh | sh
 
 				#Do this to just clear up a dependicy...
 				#qemu_command="npm install -g cloud9"
@@ -685,15 +689,37 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#npm install -g cloud9
 
 				#mkdir -p /opt/cloud9/ || true
-				#qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+				#qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true"
 				#qemu_warning
-				#git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				#git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true
 				#chown -R ${user_name}:${user_name} /opt/cloud9/
 
 				#cd /opt/cloud9
 				#qemu_command="npm install"
 				#qemu_warning
 				#npm install
+
+				#From: https://github.com/ajaxorg/cloud9/wiki/Installation-and-Usage
+				apt-get -y -t wheezy-backports install nodejs-legacy
+
+				qemu_command="curl https://npmjs.org/install.sh | sh"
+				qemu_warning
+				curl https://npmjs.org/install.sh | sh
+
+				qemu_command="npm install -g sm"
+				qemu_warning
+				npm install -g sm
+
+				mkdir -p /opt/cloud9/ || true
+				qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true"
+				qemu_warning
+				git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true
+				chown -R ${user_name}:${user_name} /opt/cloud9/
+
+				cd /opt/cloud9
+				qemu_command="sm install"
+				qemu_warning
+				sm install
 
 				mkdir -p /var/lib/cloud9 || true
 				qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true"
