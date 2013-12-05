@@ -291,9 +291,9 @@ debian)
 		                fi
 		        fi
 
-		        if [ -f /usr/local/bin/node ] && [ -f /opt/cloud9/server.js ] ; then
-		                /usr/local/bin/node /opt/cloud9/server.js -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
-		        fi
+		        #if [ -f /usr/local/bin/node ] && [ -f /opt/cloud9/server.js ] ; then
+		                #/usr/local/bin/node /opt/cloud9/server.js -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
+		        #fi
 
 		        ;;
 		stop)
@@ -684,16 +684,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#qemu_warning
 				#npm install -g cloud9
 
-				mkdir -p /opt/cloud9/ || true
-				qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
-				qemu_warning
-				git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
-				chown -R ${user_name}:${user_name} /opt/cloud9/
+				#mkdir -p /opt/cloud9/ || true
+				#qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+				#qemu_warning
+				#git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				#chown -R ${user_name}:${user_name} /opt/cloud9/
 
-				cd /opt/cloud9
-				qemu_command="npm install"
-				qemu_warning
-				npm install
+				#cd /opt/cloud9
+				#qemu_command="npm install"
+				#qemu_warning
+				#npm install
 
 				mkdir -p /var/lib/cloud9 || true
 				qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 || true"
