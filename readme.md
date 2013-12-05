@@ -11,10 +11,12 @@ Images:
     http://beagleboard.org/source
 
 Flasher:
+
     sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.2-2013-11-21 --uboot bone --beagleboard.org-production --bbb-flasher
     xz -z -7 -v BBB-eMMC-flasher-debian-7.2-2013-11-21-2gb.img
 
 4GB, microSD:
+
     sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.2-2013-11-26 --uboot bone --beagleboard.org-production
     xz -z -7 -v BBB-debian-7.2-2013-11-21-4gb.img
 
