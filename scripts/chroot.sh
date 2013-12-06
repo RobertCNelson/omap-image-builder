@@ -694,25 +694,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				mount -t tmpfs shmfs -o size=256M /dev/shm
 				df -Th
 
-				#node10
 				mkdir -p /opt/node-src/ || true
 				cd /opt/node-src
-				wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz
-				tar xf node-v0.10.22.tar.gz
-				cd node-v0.10.22
-				./configure --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/ && make -j5 && make install
+				wget http://nodejs.org/dist/${chroot_cloud9_node_version}/node-${chroot_cloud9_node_version}.tar.gz
+				tar xf node-${chroot_cloud9_node_version}.tar.gz
+				cd node-${chroot_cloud9_node_version}
+				./configure ${chroot_cloud9_node_options} && make -j5 && make install
 				cd /
-				rm -rf /opt/node-src/node-v0.10.22/ || true
-
-				#node8
-				#mkdir -p /opt/node-src/ || true
-				#cd /opt/node-src
-				#wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
-				#tar xf node-v0.8.26.tar.gz
-				#cd node-v0.8.26
-				#./configure --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/ && make -j5 && make install
-				#cd /
-				#rm -rf /opt/node-src/node-v0.8.26/ || true
+				rm -rf /opt/node-src/node-${chroot_cloud9_node_version}/ || true
 
 				qemu_command="curl https://npmjs.org/install.sh | sh"
 				qemu_warning

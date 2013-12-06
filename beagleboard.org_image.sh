@@ -98,6 +98,8 @@ minimal_armel () {
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
 		chroot_cloud9_ide="${chroot_cloud9_ide}"
+		chroot_cloud9_node_version="${chroot_cloud9_node_version}"
+		chroot_cloud9_node_options="${chroot_cloud9_node_options}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -281,6 +283,8 @@ include_firmware="enable"
 chroot_rcnee_startup_scripts="enable"
 chroot_nuke_root_password="enable"
 chroot_cloud9_ide="enable"
+chroot_cloud9_node_version="v0.10.22"
+chroot_cloud9_node_options="--without-npm --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
