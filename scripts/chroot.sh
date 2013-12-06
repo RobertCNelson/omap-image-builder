@@ -700,7 +700,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz
 				tar xf node-v0.10.22.tar.gz
 				cd node-v0.10.22
-				./configure --prefix=/usr/local/ && make -j5 && make install
+				./configure --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/ && make -j5 && make install
 				cd /
 				rm -rf /opt/node-src/node-v0.10.22/ || true
 
@@ -710,7 +710,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
 				#tar xf node-v0.8.26.tar.gz
 				#cd node-v0.8.26
-				#./configure --prefix=/usr/local/ && make -j5 && make install
+				#./configure --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/ && make -j5 && make install
 				#cd /
 				#rm -rf /opt/node-src/node-v0.8.26/ || true
 
