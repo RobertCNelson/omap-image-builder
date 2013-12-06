@@ -690,6 +690,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#From: https://github.com/ajaxorg/cloud9/wiki/Installation-and-Usage
 				#apt-get -y -t wheezy-backports install nodejs-legacy
 
+				#node10: needs /dev/shm when building with -jX
+				mount -t tmpfs shmfs -o size=256M /dev/shm
+				df -Th
+
 				#node10
 				mkdir -p /opt/node-src/ || true
 				cd /opt/node-src
@@ -734,6 +738,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
+
+				sync
+				umount -l /dev/shm
 			fi
 		else
 			dpkg_package_missing
