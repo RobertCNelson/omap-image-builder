@@ -284,7 +284,7 @@ chroot_rcnee_startup_scripts="enable"
 chroot_nuke_root_password="enable"
 chroot_cloud9_ide="enable"
 chroot_cloud9_node_version="v0.10.22"
-chroot_cloud9_node_options="--without-npm --without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
+chroot_cloud9_node_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"

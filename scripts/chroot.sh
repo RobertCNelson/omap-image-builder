@@ -703,9 +703,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				cd /
 				rm -rf /opt/node-src/node-${chroot_cloud9_node_version}/ || true
 
-				qemu_command="curl https://npmjs.org/install.sh | sh"
-				qemu_warning
-				curl https://npmjs.org/install.sh | sh
+				#qemu_command="curl https://npmjs.org/install.sh | sh"
+				#qemu_warning
+				#curl https://npmjs.org/install.sh | sh
 
 				qemu_command="npm install -g sm"
 				qemu_warning
