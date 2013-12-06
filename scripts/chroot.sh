@@ -690,15 +690,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#From: https://github.com/ajaxorg/cloud9/wiki/Installation-and-Usage
 				#apt-get -y -t wheezy-backports install nodejs-legacy
 
-				#node8
+				#node10
 				mkdir -p /opt/node-src/ || true
 				cd /opt/node-src
-				wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
-				tar xf node-v0.8.26.tar.gz
-				cd node-v0.8.26
+				wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz
+				tar xf node-v0.10.22.tar.gz
+				cd node-v0.10.22
 				./configure --prefix=/usr/local/ && make -j5 && make install
 				cd /
-				rm -rf /opt/node-src/node-v0.8.26/ || true
+				rm -rf /opt/node-src/node-v0.10.22/ || true
+
+				#node8
+				#mkdir -p /opt/node-src/ || true
+				#cd /opt/node-src
+				#wget http://nodejs.org/dist/v0.8.26/node-v0.8.26.tar.gz
+				#tar xf node-v0.8.26.tar.gz
+				#cd node-v0.8.26
+				#./configure --prefix=/usr/local/ && make -j5 && make install
+				#cd /
+				#rm -rf /opt/node-src/node-v0.8.26/ || true
 
 				qemu_command="curl https://npmjs.org/install.sh | sh"
 				qemu_warning
