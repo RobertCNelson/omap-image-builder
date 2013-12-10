@@ -707,6 +707,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#qemu_warning
 				#curl https://npmjs.org/install.sh | sh
 
+				echo "debug: node: [\`node --version\`]"
+				echo "debug: npm: [\`npm --version\`]"
+
 				qemu_command="npm install -g sm"
 				qemu_warning
 				npm install -g sm
