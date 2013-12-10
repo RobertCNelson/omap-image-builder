@@ -98,6 +98,7 @@ minimal_armel () {
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
 		chroot_cloud9_ide="${chroot_cloud9_ide}"
+		chroot_cloud9="${chroot_cloud9}"
 		chroot_cloud9_node_version="${chroot_cloud9_node_version}"
 		chroot_cloud9_node_options="${chroot_cloud9_node_options}"
 
