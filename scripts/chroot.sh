@@ -691,9 +691,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				npm install -g sm
 
 				mkdir -p /opt/cloud9/ || true
-				qemu_command="git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
-				qemu_warning
-				git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				if [ "x${chroot_cloud9}" = "x" ] ; then
+					qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+					qemu_warning
+					git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				else
+					qemu_command="git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+					qemu_warning
+					git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+				fi
 				chown -R ${user_name}:${user_name} /opt/cloud9/
 
 				if [ -f /usr/local/bin/sm ] ; then
