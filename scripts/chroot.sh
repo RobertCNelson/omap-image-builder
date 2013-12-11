@@ -720,10 +720,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
 				chown -R ${user_name}:${user_name} /opt/cloud9/
 
-				cd /opt/cloud9
-				qemu_command="sm install"
-				qemu_warning
-				sm install
+				if [ -f /usr/local/bin/sm ] ; then
+					echo "debug: sm: [\`sm --version\`]"
+					cd /opt/cloud9
+					qemu_command="sm install"
+					qemu_warning
+					sm install
+				fi
 
 				mkdir -p /var/lib/cloud9 || true
 				qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true"
