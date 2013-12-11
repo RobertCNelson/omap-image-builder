@@ -672,12 +672,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 				mkdir -p /opt/node-src/ || true
 				cd /opt/node-src
-				wget http://nodejs.org/dist/${chroot_cloud9_node_version}/node-${chroot_cloud9_node_version}.tar.gz
-				tar xf node-${chroot_cloud9_node_version}.tar.gz
-				cd node-${chroot_cloud9_node_version}
-				./configure ${chroot_cloud9_node_options} && make -j5 && make install
+				wget http://nodejs.org/dist/${chroot_node_release}/node-${chroot_node_release}.tar.gz
+				tar xf node-${chroot_node_release}.tar.gz
+				cd node-${chroot_node_release}
+				./configure ${chroot_node_build_options} && make -j5 && make install
 				cd /
-				rm -rf /opt/node-src/node-${chroot_cloud9_node_version}/ || true
+				rm -rf /opt/node-src/node-${chroot_node_release}/ || true
 
 				#qemu_command="curl https://npmjs.org/install.sh | sh"
 				#qemu_warning
@@ -691,14 +691,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				npm install -g sm
 
 				mkdir -p /opt/cloud9/ || true
-				if [ "x${chroot_cloud9}" = "x" ] ; then
+				if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
 					qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 					qemu_warning
 					git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
 				else
-					qemu_command="git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+					qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 					qemu_warning
-					git clone --depth 1 -b ${chroot_cloud9} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+					git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
 				fi
 				chown -R ${user_name}:${user_name} /opt/cloud9/
 
@@ -762,7 +762,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	add_user
 	startup_script
 
-	if [ "x${chroot_cloud9_ide}" = "xenable" ] ; then
+	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
 		install_cloud9
 	fi
 
