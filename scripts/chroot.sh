@@ -667,30 +667,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
 			if [ "x${release}" = "xwheezy" ] ; then
-				#qemu_command="curl https://npmjs.org/install.sh | sh"
-				#qemu_warning
-				#curl https://npmjs.org/install.sh | sh
-
-				#Do this to just clear up a dependicy...
-				#qemu_command="npm install -g cloud9"
-				#qemu_warning
-				#npm install -g cloud9
-
-				#mkdir -p /opt/cloud9/ || true
-				#qemu_command="git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true"
-				#qemu_warning
-				#git clone https://github.com/ajaxorg/cloud9.git /opt/cloud9/ --depth 1 || true
-				#chown -R ${user_name}:${user_name} /opt/cloud9/
-
-				#cd /opt/cloud9
-				#qemu_command="npm install"
-				#qemu_warning
-				#npm install
-
-				#From: https://github.com/ajaxorg/cloud9/wiki/Installation-and-Usage
-				#apt-get -y -t wheezy-backports install nodejs-legacy
-
-				#node10: needs /dev/shm when building with -jX
 				mount -t tmpfs shmfs -o size=256M /dev/shm
 				df -Th
 
