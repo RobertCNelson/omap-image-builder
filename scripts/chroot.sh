@@ -745,7 +745,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				make PREFIX=/usr/local/ install
 			fi
 			chown -R ${user_name}:${user_name} /opt/dtc
-		then
+		fi
 	}
 
 	cleanup () {
