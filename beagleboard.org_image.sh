@@ -33,7 +33,7 @@ fi
 image_type="console"
 
 #Cloud9 IDE
-bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev"
+bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
 bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev"
 
 minimal_armel () {
@@ -101,6 +101,8 @@ minimal_armel () {
 		chroot_cloud9_git_tag="${chroot_cloud9_git_tag}"
 		chroot_node_release="${chroot_node_release}"
 		chroot_node_build_options="${chroot_node_build_options}"
+
+		chroot_install_dtc="${chroot_install_dtc}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -289,6 +291,7 @@ chroot_install_cloud9="enable"
 #chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
 chroot_node_release="v0.10.22"
 chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
+chroot_install_dtc="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"

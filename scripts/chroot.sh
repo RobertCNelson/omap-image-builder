@@ -723,6 +723,31 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	#beaglebones need 1.4.0+overlay...
+	install_dtc () {
+		pkg="git-core"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			git_sha="65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf"
+
+			mkdir -p /opt/dtc || true
+			qemu_command="git clone git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git /opt/dtc --depth 1 || true"
+			qemu_warning
+			git clone git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git /opt/dtc --depth 1 || true
+			cd /opt/dtc
+			#qemu can fail...
+			if [ -f /opt/dtc/Makefile ] ; then
+				git checkout \${git_sha} -b \${git_sha}-build
+				git pull --no-edit git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
+				make clean
+				make PREFIX=/usr/local/ CC=gcc CROSS_COMPILE= all
+				make PREFIX=/usr/local/ install
+			fi
+			chown -R ${user_name}:${user_name} /opt/dtc
+		then
+	}
+
 	cleanup () {
 		mkdir -p /boot/uboot/
 
@@ -763,6 +788,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
 		install_cloud9
+	fi
+
+	if [ "x${chroot_install_dtc}" = "xenable" ] ; then
+		install_dtc
 	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
