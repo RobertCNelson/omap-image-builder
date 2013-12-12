@@ -679,16 +679,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				cd /
 				rm -rf /opt/node-src/node-${chroot_node_release}/ || true
 
-				#qemu_command="curl https://npmjs.org/install.sh | sh"
-				#qemu_warning
-				#curl https://npmjs.org/install.sh | sh
-
 				echo "debug: node: [\`node --version\`]"
 				echo "debug: npm: [\`npm --version\`]"
 
-				qemu_command="npm install -g sm"
-				qemu_warning
-				npm install -g sm
+				#qemu_command="npm install -g sm"
+				#qemu_warning
+				#npm install -g sm
 
 				mkdir -p /opt/cloud9/ || true
 				if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
@@ -708,6 +704,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 					qemu_command="sm install"
 					qemu_warning
 					sm install
+				#else
+					#cd /opt/cloud9
+					#npm install
 				fi
 
 				mkdir -p /var/lib/cloud9 || true
