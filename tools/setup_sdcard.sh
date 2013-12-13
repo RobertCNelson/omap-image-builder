@@ -144,6 +144,16 @@ detect_software () {
 		echo ""
 		exit
 	fi
+
+	unset test_sfdisk
+	test_sfdisk=$(LC_ALL=C sfdisk -v 2>/dev/null | grep 2.17.2 | awk '{print $1}')
+	if [ "x${test_sdfdisk}" = "xsfdisk" ] ; then
+		echo ""
+		echo "Detected known broken sfdisk:"
+		echo "See: https://github.com/RobertCNelson/netinstall/issues/20"
+		echo ""
+		exit
+	fi
 }
 
 local_bootloader () {
