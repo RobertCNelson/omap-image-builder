@@ -695,7 +695,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 				#qemu_command="npm install -g sm"
 				#qemu_warning
-				#npm install -g sm
+				#npm install -g sm --arch=armhf
 
 				mkdir -p /opt/cloud9/ || true
 				if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
@@ -717,7 +717,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 					sm install
 				#else
 					#cd /opt/cloud9
-					#npm install
+					#npm install --arch=armhf
 				fi
 
 				mkdir -p /var/lib/cloud9 || true
