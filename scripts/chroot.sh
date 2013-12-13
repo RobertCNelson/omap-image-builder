@@ -206,6 +206,11 @@ wheezy)
 	echo "" | sudo tee -a ${file} >/dev/null
 	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+		echo "" | sudo tee -a ${file} >/dev/null
+		echo "deb http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
+		echo "#deb-src http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
+	fi
 	;;
 precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
@@ -447,6 +452,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkg_updates () {
+		if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+			wget --no-verbose --directory-prefix=/tmp/ http://bbb.aikidev.net/keyring-bbb.aikidev.net.asc
+			apt-key add /tmp/keyring-bbb.aikidev.net.asc
+			rm -rf /tmp/keyring-bbb.aikidev.net.asc || true
+		fi
+
 		apt-get update
 		apt-get upgrade -y --force-yes
 	}
@@ -723,31 +734,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
-	#beaglebones need 1.4.0+overlay...
-	install_dtc () {
-		pkg="git-core"
-		dpkg_check
-
-		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-			git_sha="65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf"
-
-			mkdir -p /opt/dtc || true
-			qemu_command="git clone git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git /opt/dtc --depth 1 || true"
-			qemu_warning
-			git clone git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git /opt/dtc --depth 1 || true
-			cd /opt/dtc
-			#qemu can fail...
-			if [ -f /opt/dtc/Makefile ] ; then
-				git checkout \${git_sha} -b \${git_sha}-build
-				git pull --no-edit git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
-				make clean
-				make PREFIX=/usr/local/ CC=gcc CROSS_COMPILE= all
-				make PREFIX=/usr/local/ install
-			fi
-			chown -R ${user_name}:${user_name} /opt/dtc
-		fi
-	}
-
 	cleanup () {
 		mkdir -p /boot/uboot/
 
@@ -788,10 +774,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
 		install_cloud9
-	fi
-
-	if [ "x${chroot_install_dtc}" = "xenable" ] ; then
-		install_dtc
 	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then

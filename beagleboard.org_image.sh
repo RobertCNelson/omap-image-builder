@@ -102,7 +102,7 @@ minimal_armel () {
 		chroot_node_release="${chroot_node_release}"
 		chroot_node_build_options="${chroot_node_build_options}"
 
-		chroot_install_dtc="${chroot_install_dtc}"
+		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -291,7 +291,7 @@ chroot_install_cloud9="enable"
 #chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
 chroot_node_release="v0.10.22"
 chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
-chroot_install_dtc="enable"
+chroot_enable_bborg_repo="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
