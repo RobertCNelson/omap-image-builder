@@ -35,6 +35,8 @@ image_type="console"
 #Cloud9 IDE
 bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
 bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev"
+#lxde
+bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -103,6 +105,7 @@ minimal_armel () {
 		chroot_node_build_options="${chroot_node_build_options}"
 
 		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
+		chroot_enable_xorg="${chroot_enable_xorg}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -292,6 +295,7 @@ chroot_install_cloud9="enable"
 chroot_node_release="v0.10.22"
 chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 chroot_enable_bborg_repo="enable"
+chroot_enable_xorg="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"

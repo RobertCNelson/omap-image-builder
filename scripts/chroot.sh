@@ -320,6 +320,36 @@ debian)
 
 	sudo mv /tmp/${wfile} ${tempdir}/etc/init.d/${wfile}
 
+	if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
+		wfile="xorg.conf"
+		cat > /tmp/${wfile} <<-__EOF__
+			Section "Monitor"
+			                Identifier      "Builtin Default Monitor"
+			        EndSection
+
+			        Section "Device"
+			                Identifier      "Builtin Default fbdev Device 0"
+			                Driver          "modesetting"
+			                Option          "HWcursor"      "false"
+			        EndSection
+
+			        Section "Screen"
+			                Identifier      "Builtin Default fbdev Screen 0"
+			                Device          "Builtin Default fbdev Device 0"
+			                Monitor         "Builtin Default Monitor"
+			                DefaultDepth    16
+			        EndSection
+
+			        Section "ServerLayout"
+			                Identifier      "Builtin Default Layout"
+			                Screen          "Builtin Default fbdev Screen 0"
+			        EndSection
+
+		__EOF__
+
+		sudo mv /tmp/${wfile} ${tempdir}/etc/X11/${wfile}
+	fi
+
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
