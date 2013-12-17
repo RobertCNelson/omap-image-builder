@@ -117,14 +117,6 @@ compression () {
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-				cp -v arm*.tar /mnt/farm/images/
-
-				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
-					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
-				else
-					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-				fi
-
 			fi
 		fi
 	elif [ -f ${DIR}/compress ] ; then
@@ -134,6 +126,58 @@ compression () {
 		fi
 	fi
 	cd ${DIR}/
+}
+
+production () {
+	unset actual_dir
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v arm*.tar /mnt/farm/images/
+				actual_dir="/mnt/farm/testing/pending"
+			fi
+		fi
+	fi
+
+	cd ${DIR}/deploy/
+
+	cat > ${DIR}/ship.sh <<-__EOF__
+	#!/bin/bash
+
+	xz -z -7 -v ubuntu-13.04-console-armhf-${time}.tar
+	xz -z -7 -v ubuntu-13.10-console-armhf-${time}.tar
+	xz -z -7 -v ubuntu-trusty-console-armhf-${time}.tar
+	xz -z -7 -v debian-7.3-console-armhf-${time}.tar
+	xz -z -7 -v debian-jessie-console-armhf-${time}.tar
+
+	tar xf debian-7.3-console-armhf-${time}.tar.xz
+	tar xf ubuntu-13.10-console-armhf-${time}.tar.xz
+
+	cd debian-7.3-console-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.3-${time} --uboot bone --beagleboard.org-production
+	mv *.img ../
+	cd ..
+
+	cd ubuntu-13.10-console-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb BBB-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
+	mv *.img ../
+	cd ..
+
+	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
+	xz -z -7 -v BBB-debian-7.3-${time}-4gb.img
+	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
+	xz -z -7 -v BBB-ubuntu-13.10-${time}-4gb.img
+
+	__EOF__
+
+	chmod +x ${DIR}/ship.sh
+
+	if [ ! "x${actual_dir}" = "x" ] ; then
+		cp ${DIR}/ship.sh ${actual_dir}/ship.sh
+		chmod +x ${actual_dir}/ship.sh
+	fi
 }
 
 kernel_chooser () {
@@ -315,6 +359,7 @@ DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
+production
 
 rm -rf ${tempdir} || true
 
