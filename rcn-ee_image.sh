@@ -129,6 +129,9 @@ compression () {
 }
 
 production () {
+	echo "Starting Production Stage"
+	cd ${DIR}/deploy/
+
 	unset actual_dir
 	if [ -f ${DIR}/release ] ; then
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
@@ -139,9 +142,7 @@ production () {
 		fi
 	fi
 
-	cd ${DIR}/deploy/
-
-	cat > ${DIR}/ship.sh <<-__EOF__
+	cat > ${DIR}/deploy/ship.sh <<-__EOF__
 	#!/bin/bash
 
 	xz -z -7 -v ubuntu-13.04-console-armhf-${time}.tar
@@ -172,10 +173,10 @@ production () {
 
 	__EOF__
 
-	chmod +x ${DIR}/ship.sh
+	chmod +x ${DIR}/deploy/ship.sh
 
 	if [ ! "x${actual_dir}" = "x" ] ; then
-		cp ${DIR}/ship.sh ${actual_dir}/ship.sh
+		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
 		chmod +x ${actual_dir}/ship.sh
 	fi
 }
