@@ -36,7 +36,8 @@ image_type="console"
 bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
 bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev less"
 #lxde
-bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils"
+bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils alsa-utils evtest"
+
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -233,7 +234,7 @@ trusty_release () {
 
 wheezy_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -243,7 +244,7 @@ wheezy_release () {
 
 jessie_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -253,7 +254,7 @@ jessie_release () {
 
 sid_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
