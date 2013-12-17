@@ -347,6 +347,7 @@ debian)
 
 		__EOF__
 
+		sudo mkdir -p ${tempdir}/etc/X11/ || true
 		sudo mv /tmp/${wfile} ${tempdir}/etc/X11/${wfile}
 	fi
 
