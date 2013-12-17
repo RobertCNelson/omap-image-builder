@@ -582,7 +582,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	add_user () {
 		groupadd admin || true
-		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
+		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video,netdev"
 
 		pkg="sudo"
 		dpkg_check
