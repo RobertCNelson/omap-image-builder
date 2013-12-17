@@ -32,9 +32,6 @@ fi
 
 image_type="console"
 
-#Cloud9 IDE
-bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev"
-
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
@@ -58,12 +55,12 @@ minimal_armel () {
 		;;
 	esac
 
-#	if [ -f ${DIR}/release ] ; then
-#		chroot_KERNEL_HTTP_DIR="\
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.0-armv7-x8/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone30/"
-#	fi
+	if [ -f ${DIR}/release ] ; then
+		chroot_KERNEL_HTTP_DIR="\
+http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.5-armv7-x10/ \
+http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
+http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone32/"
+	fi
 
 	tempdir=$(mktemp -d)
 
@@ -174,9 +171,9 @@ pkg_list () {
 		include_pkgs_list="git-core,initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${bborg_pkg_list} ${firmware_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${bborg_pkg_list}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs}"
 		fi
 	fi
 }
@@ -255,7 +252,7 @@ trusty_release () {
 
 wheezy_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -265,7 +262,7 @@ wheezy_release () {
 
 jessie_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -275,7 +272,7 @@ jessie_release () {
 
 sid_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
