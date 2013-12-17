@@ -625,6 +625,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 						echo "default_user        ${user_name}" >> /etc/slim.conf
 						echo "auto_login        yes" >> /etc/slim.conf
 					fi
+
+					#FixMe: move to github beagleboard repo...
+					wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
+					chown -R ${user_name}:${user_name} /opt/beaglebg.jpg
+
+					echo "[desktop]" > /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					chown -R ${user_name}:${user_name} /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 				fi
 			fi
 
