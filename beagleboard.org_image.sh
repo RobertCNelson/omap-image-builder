@@ -38,7 +38,7 @@ bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pk
 #utils:
 bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest"
 #lxde
-bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils network-manager network-manager-gnome"
+bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
