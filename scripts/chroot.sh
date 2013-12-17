@@ -857,26 +857,27 @@ if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
 	wfile="xorg.conf"
 	cat > /tmp/${wfile} <<-__EOF__
 		Section "Monitor"
-		                Identifier      "Builtin Default Monitor"
-		        EndSection
+		        Identifier      "Builtin Default Monitor"
+		EndSection
 
-		        Section "Device"
-		                Identifier      "Builtin Default fbdev Device 0"
-		                Driver          "modesetting"
-		                Option          "HWcursor"      "false"
-		        EndSection
+		Section "Device"
+		        Identifier      "Builtin Default fbdev Device 0"
+		        Driver          "modesetting"
+		#        Option          "HWcursor"      "false"
+		        Option          "SWCursor"      "true"
+		EndSection
 
-		        Section "Screen"
-		                Identifier      "Builtin Default fbdev Screen 0"
-		                Device          "Builtin Default fbdev Device 0"
-		                Monitor         "Builtin Default Monitor"
-		                DefaultDepth    16
-		        EndSection
+		Section "Screen"
+		        Identifier      "Builtin Default fbdev Screen 0"
+		        Device          "Builtin Default fbdev Device 0"
+		        Monitor         "Builtin Default Monitor"
+		        DefaultDepth    16
+		EndSection
 
-		        Section "ServerLayout"
-		                Identifier      "Builtin Default Layout"
-		                Screen          "Builtin Default fbdev Screen 0"
-		        EndSection
+		Section "ServerLayout"
+		        Identifier      "Builtin Default Layout"
+		        Screen          "Builtin Default fbdev Screen 0"
+		EndSection
 
 	__EOF__
 
