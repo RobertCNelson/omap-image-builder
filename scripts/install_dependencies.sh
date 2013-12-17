@@ -51,7 +51,7 @@ debootstrap_what_version
 
 if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	echo "Log: Installing minimal debootstrap version: 1.0."${minimal_debootstrap}"..."
-	wget https://rcn-ee.net/mirror/debootstrap/debootstrap_1.0.${minimal_debootstrap}_all.deb
+	wget http://rcn-ee.net/mirror/debootstrap/debootstrap_1.0.${minimal_debootstrap}_all.deb
 	sudo dpkg -i debootstrap_1.0.${minimal_debootstrap}_all.deb
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
