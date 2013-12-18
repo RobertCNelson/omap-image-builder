@@ -136,6 +136,10 @@ production () {
 	cat > ${DIR}/deploy/ship.sh <<-__EOF__
 	#!/bin/bash
 
+	if [ -d ./debian-7.3-console-armhf-${time} ] ; then
+		rm -rf debian-7.3-console-armhf-${time} || true
+	fi
+
 	xz -z -7 -v debian-7.3-console-armhf-${time}.tar
 
 	tar xf debian-7.3-console-armhf-${time}.tar.xz
