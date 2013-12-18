@@ -1593,6 +1593,7 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-systemd)
 		enable_systemd="enabled"
+		;;
 	--offline)
 		offline=1
 		;;
