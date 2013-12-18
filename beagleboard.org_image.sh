@@ -36,7 +36,7 @@ image_type="console"
 bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
 bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev less"
 #utils:
-bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest"
+bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
 #lxde
 bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
 
