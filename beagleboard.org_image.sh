@@ -125,7 +125,35 @@ compression () {
 	cd ${DIR}/deploy/
 
 	tar cvf ${export_filename}.tar ./${export_filename}
-	xz -z -7 -v "${export_filename}.tar"
+	#xz -z -7 -v "${export_filename}.tar"
+	cd ${DIR}/
+}
+
+production () {
+	echo "Starting Production Stage"
+	cd ${DIR}/deploy/
+
+	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	#!/bin/bash
+
+	xz -z -7 -v debian-7.3-console-armhf-${time}.tar
+
+	tar xf debian-7.3-console-armhf-${time}.tar.xz
+
+	cd debian-7.3-console-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.3-${time} --uboot bone --beagleboard.org-production
+	mv *.img ../
+	cd ..
+	rm -rf debian-7.3-console-armhf-${time}/ || true
+
+	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
+	xz -z -7 -v BBB-debian-7.3-${time}-4gb.img
+
+	__EOF__
+
+	chmod +x ${DIR}/deploy/ship.sh
+
 	cd ${DIR}/
 }
 
@@ -305,6 +333,7 @@ DEFAULT_RELEASES="wheezy"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
+production
 
 rm -rf ${tempdir} || true
 

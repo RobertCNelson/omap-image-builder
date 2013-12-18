@@ -159,12 +159,14 @@ production () {
 	sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.3-${time} --uboot bone --beagleboard.org-production
 	mv *.img ../
 	cd ..
+	rm -rf debian-7.3-console-armhf-${time}/ || true
 
 	cd ubuntu-13.10-console-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
 	sudo ./setup_sdcard.sh --img-4gb BBB-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
 	mv *.img ../
 	cd ..
+	rm -rf ubuntu-13.10-console-armhf-${time}/ || true
 
 	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
 	xz -z -7 -v BBB-debian-7.3-${time}-4gb.img
@@ -179,6 +181,8 @@ production () {
 		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
 		chmod +x ${actual_dir}/ship.sh
 	fi
+
+	cd ${DIR}/
 }
 
 kernel_chooser () {
