@@ -260,11 +260,19 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		##Enable systemd
-		#systemd=quiet init=/lib/systemd/systemd
+	if [ "x${enable_systemd}" = "xenabled" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##Enable systemd
+			systemd=quiet init=/lib/systemd/systemd
 
-	__EOF__
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##Enable systemd
+			#systemd=quiet init=/lib/systemd/systemd
+
+		__EOF__
+	fi
 
 	case "${SYSTEM}" in
 	bone|bone_dtb)
@@ -1583,6 +1591,8 @@ while [ ! -z "$1" ] ; do
 	--beagleboard.org-production)
 		bborg_production=1
 		;;
+	--enable-systemd)
+		enable_systemd="enabled"
 	--offline)
 		offline=1
 		;;
