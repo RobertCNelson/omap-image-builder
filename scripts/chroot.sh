@@ -630,10 +630,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 					wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
 					chown -R ${user_name}:${user_name} /opt/beaglebg.jpg
 
+					mkdir -p /home/${user_name}/.config/pcmanfm/LXDE/ || true
 					echo "[desktop]" > /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 					echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 					echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
-					chown -R ${user_name}:${user_name} /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					chown -R ${user_name}:${user_name} /home/${user_name}/.config/
 				fi
 			fi
 
