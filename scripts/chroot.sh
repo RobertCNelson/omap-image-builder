@@ -444,11 +444,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 
 		unset source_file
-		source_file=\$(cat /tmp/index.html | grep patch-*.diff.gz | head -n 1)
+		source_file=\$(cat /tmp/index.html | grep .diff.gz | head -n 1)
 		source_file=\$(echo \${source_file} | awk -F "\"" '{print \$2}')
 
 		if [ "\${source_file}" ] ; then
-			wget --directory-prefix=/opt/source \${kernel_url}\${source_file}
+			wget --directory-prefix=/opt/source/ \${kernel_url}\${source_file}
 		fi
 
 		rm -f /tmp/index.html || true
@@ -564,7 +564,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		dpkg_check
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-
 			if [ "x${release}" = "xwheezy" ] ; then
 				mount -t tmpfs shmfs -o size=256M /dev/shm
 				df -Th
@@ -612,6 +611,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
+
+				qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
+				qemu_warning
+				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
 
 				sync
 				umount -l /dev/shm
