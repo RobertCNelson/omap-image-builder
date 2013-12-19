@@ -443,11 +443,19 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			dpkg_package_missing
 		fi
 
+		unset source_file
+		source_file=\$(cat /tmp/index.html | grep patch-*.diff.gz | head -n 1)
+		source_file=\$(echo \${source_file} | awk -F "\"" '{print \$2}')
+
+		if [ "\${source_file}" ] ; then
+			wget --directory-prefix=/opt/source \${kernel_url}\${source_file}
+		fi
+
 		rm -f /tmp/index.html || true
 		rm -f /tmp/temp.html || true
 		rm -f /tmp/\${deb_file} || true
 		rm -f /boot/System.map-\${kernel_version} || true
-		rm -f /boot/config-\${kernel_version} || true
+		mv /boot/config-\${kernel_version} /opt/source || true
 		rm -rf /usr/src/linux-headers* || true
 	}
 
@@ -561,14 +569,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				mount -t tmpfs shmfs -o size=256M /dev/shm
 				df -Th
 
-				mkdir -p /opt/node-src/ || true
-				cd /opt/node-src
+				cd /opt/source
 				wget http://nodejs.org/dist/${chroot_node_release}/node-${chroot_node_release}.tar.gz
 				tar xf node-${chroot_node_release}.tar.gz
 				cd node-${chroot_node_release}
 				./configure ${chroot_node_build_options} && make -j5 && make install
 				cd /
-				rm -rf /opt/node-src/node-${chroot_node_release}/ || true
+				rm -rf /opt/source/node-${chroot_node_release}/ || true
 
 				echo "debug: node: [\`node --version\`]"
 				echo "debug: npm: [\`npm --version\`]"
@@ -652,6 +659,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	add_user
 	startup_script
 
+	mkdir -p /opt/source || true
 	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
 		install_cloud9
 	fi
