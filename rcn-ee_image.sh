@@ -145,33 +145,33 @@ production () {
 	cat > ${DIR}/deploy/ship.sh <<-__EOF__
 	#!/bin/bash
 
-	xz -z -7 -v ubuntu-13.04-console-armhf-${time}.tar
-	xz -z -7 -v ubuntu-13.10-console-armhf-${time}.tar
-	xz -z -7 -v ubuntu-trusty-console-armhf-${time}.tar
-	xz -z -7 -v debian-7.3-console-armhf-${time}.tar
-	xz -z -7 -v debian-jessie-console-armhf-${time}.tar
+	xz -z -7 -v ubuntu-13.04-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-trusty-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
-	tar xf debian-7.3-console-armhf-${time}.tar.xz
-	tar xf ubuntu-13.10-console-armhf-${time}.tar.xz
+	tar xf debian-7.3-${image_type}-armhf-${time}.tar.xz
+	tar xf ubuntu-13.10-${image_type}-armhf-${time}.tar.xz
 
-	cd debian-7.3-console-armhf-${time}/
+	cd debian-7.3-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
-	sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.3-${time} --uboot bone --beagleboard.org-production
+	sudo ./setup_sdcard.sh --img-4gb bone-debian-7.3-${time} --uboot bone --beagleboard.org-production
 	mv *.img ../
 	cd ..
-	rm -rf debian-7.3-console-armhf-${time}/ || true
+	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
 
-	cd ubuntu-13.10-console-armhf-${time}/
+	cd ubuntu-13.10-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
-	sudo ./setup_sdcard.sh --img-4gb BBB-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
+	sudo ./setup_sdcard.sh --img-4gb bone-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
 	mv *.img ../
 	cd ..
-	rm -rf ubuntu-13.10-console-armhf-${time}/ || true
+	rm -rf ubuntu-13.10-${image_type}-armhf-${time}/ || true
 
 	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
-	xz -z -7 -v BBB-debian-7.3-${time}-4gb.img
+	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
 	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
-	xz -z -7 -v BBB-ubuntu-13.10-${time}-4gb.img
+	xz -z -7 -v bone-ubuntu-13.10-${time}-4gb.img
 
 	__EOF__
 
