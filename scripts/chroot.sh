@@ -760,7 +760,7 @@ if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
 fi
 
 sudo mkdir -p ${tempdir}/opt/scripts/ || true
-sudo cp -v ${DIR}/device_scripts/*.sh ${tempdir}/opt/scripts/
+sudo cp -v ${DIR}/scripts_device/*.sh ${tempdir}/opt/scripts/
 
 if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
