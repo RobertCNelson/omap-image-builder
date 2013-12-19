@@ -48,8 +48,8 @@ start|reload|force-reload|restart)
 
 	if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
 		board=$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print $2}')
-		if [ -f "/opt/boot-scripts/${board}.sh" ] ; then
-			/bin/sh /opt/boot-scripts/${board}.sh >/dev/null 2>&1 &
+		if [ -f "/opt/scripts/${board}.sh" ] ; then
+			/bin/sh /opt/scripts/${board}.sh >/dev/null 2>&1 &
 		fi
 	fi
 
