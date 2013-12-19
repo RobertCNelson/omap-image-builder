@@ -39,6 +39,8 @@ bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pk
 bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
 #lxde
 bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
+#lxde utils
+bborg_pkg_list="${bborg_pkg_list} leafpad"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -326,7 +328,7 @@ chroot_install_cloud9="enable"
 #chroot_cloud9_git_tag="v2.0.93"
 #chroot_node_release="v0.8.26"
 #chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
-chroot_node_release="v0.10.23"
+chroot_node_release="v0.10.24"
 chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 chroot_enable_bborg_repo="enable"
 chroot_enable_xorg="enable"
