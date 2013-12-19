@@ -754,6 +754,10 @@ fi
 sudo mkdir -p ${tempdir}/opt/scripts/ || true
 sudo cp -v ${DIR}/device_scripts/*.sh ${tempdir}/opt/scripts/
 
+if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
+fi
+
 if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
 	rm -rf ${DIR}/deploy/${export_filename}/ || true
 fi
