@@ -216,7 +216,7 @@ trusty_release () {
 
 wheezy_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 
@@ -226,7 +226,7 @@ wheezy_release () {
 
 jessie_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 
@@ -236,7 +236,7 @@ jessie_release () {
 
 sid_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 
