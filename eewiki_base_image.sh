@@ -101,17 +101,43 @@ compression () {
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-				cp -v arm*.tar /mnt/farm/images/
-
-				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
-					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
-				else
-					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-				fi
-
 			fi
 		fi
 	fi
+	cd ${DIR}/
+}
+
+production () {
+	echo "Starting Production Stage"
+	cd ${DIR}/deploy/
+
+	unset actual_dir
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v arm*.tar /mnt/farm/images/
+				actual_dir="/mnt/farm/testing/pending"
+			fi
+		fi
+	fi
+
+	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	#!/bin/bash
+
+	xz -z -7 -v debian-7.3-${image_type}-armel-${time}.tar
+	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+
+	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
+
+	__EOF__
+
+	chmod +x ${DIR}/deploy/ship.sh
+
+	if [ ! "x${actual_dir}" = "x" ] ; then
+		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
+		chmod +x ${actual_dir}/ship.sh
+	fi
+
 	cd ${DIR}/
 }
 
@@ -254,5 +280,9 @@ wheezy_release
 #raring_release
 saucy_release
 #trusty_release
+
+production
+
+rm -rf ${tempdir} || true
 
 echo "done"
