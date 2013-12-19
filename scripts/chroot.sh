@@ -239,86 +239,7 @@ echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
 
 case "${distro}" in
 debian)
-	wfile="boot_scripts.sh"
-	cat > /tmp/${wfile} <<-__EOF__
-		#!/bin/sh -e
-		### BEGIN INIT INFO
-		# Provides:          ${wfile}
-		# Required-Start:    \$local_fs
-		# Required-Stop:     \$local_fs
-		# Default-Start:     2 3 4 5
-		# Default-Stop:      0 1 6
-		# Short-Description: Start daemon at boot time
-		# Description:       Enable service provided by daemon.
-		### END INIT INFO
-
-		case "\$1" in
-		start|reload|force-reload|restart)
-		        #This script is to just get the (non-battery backed up) rtc 'in the ballbark'..
-		        #Usually it will be around a month at most off, vs 40-ish years...
-		        #/etc/timestamp is set via:
-		        #date --utc "+%4Y%2m%2d%2H%2M" > /etc/timestamp
-
-		        if [ -f /etc/timestamp ] ; then
-		                systemdate=\$(/bin/date --utc "+%4Y%2m%2d%2H%2M")
-		                timestamp=\$(cat /etc/timestamp)
-
-		                if [ \${timestamp} -gt \${systemdate} ] ; then
-		                        year=\$(cat /etc/timestamp | cut -b 1-4)
-		                        month=\$(cat /etc/timestamp | cut -b 5-6)
-		                        day=\$(cat /etc/timestamp | cut -b 7-8)
-		                        hour=\$(cat /etc/timestamp | cut -b 9-10)
-		                        min=\$(cat /etc/timestamp | cut -b 11-12)
-
-		                        #/bin/date --utc -s "10/08/2008 11:37:23"
-		                        /bin/date --utc -s "\${month}/\${day}/\${year} \${hour}:\${min}:00"
-		                        /sbin/hwclock --systohc
-		                fi
-		        fi
-
-		        if [ ! -f /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
-		                rm -rf /etc/ssh/ssh_host_* || true
-		                dpkg-reconfigure openssh-server
-		                sync
-		        fi
-
-		        #There is a chance, if user reboots to soon, these are not saved, thus a zero size...
-		        if [ ! -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
-		                rm -rf /etc/ssh/ssh_host_* || true
-		                dpkg-reconfigure openssh-server
-		                sync
-		        fi
-
-		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
-		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
-		                fi
-		        fi
-
-		        #if [ -f /usr/local/bin/node ] && [ -f /opt/cloud9/server.js ] ; then
-		                #/usr/local/bin/node /opt/cloud9/server.js -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
-		        #fi
-
-		        if [ -f /opt/cloud9/bin/cloud9.sh ] ; then
-		                /opt/cloud9/bin/cloud9.sh -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
-		        fi
-
-		        ;;
-		stop)
-		        exit 0
-		        ;;
-		*)
-		        echo "Usage: /etc/init.d/boot_scripts.sh {start|stop|reload|restart|force-reload}"
-		        exit 1
-		        ;;
-		esac
-
-		exit 0
-
-	__EOF__
-
-	sudo mv /tmp/${wfile} ${tempdir}/etc/init.d/${wfile}
+	sudo cp ${DIR}/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
@@ -326,57 +247,7 @@ debian)
 
 	;;
 ubuntu)
-	wfile="boot_scripts.conf"
-	cat > /tmp/${wfile} <<-__EOF__
-		start on runlevel 2
-
-		script
-		#This script is to just get the (non-battery backed up) rtc 'in the ballbark'..
-		#Usually it will be around a month at most off, vs 40-ish years...
-		#/etc/timestamp is set via:
-		#date --utc "+%4Y%2m%2d%2H%2M" > /etc/timestamp
-
-		if [ -f /etc/timestamp ] ; then
-		        systemdate=\$(/bin/date --utc "+%4Y%2m%2d%2H%2M")
-		        timestamp=\$(cat /etc/timestamp)
-
-		        if [ \${timestamp} -gt \${systemdate} ] ; then
-		                year=\$(cat /etc/timestamp | cut -b 1-4)
-		                month=\$(cat /etc/timestamp | cut -b 5-6)
-		                day=\$(cat /etc/timestamp | cut -b 7-8)
-		                hour=\$(cat /etc/timestamp | cut -b 9-10)
-		                min=\$(cat /etc/timestamp | cut -b 11-12)
-
-		                #/bin/date --utc -s "10/08/2008 11:37:23"
-		                /bin/date --utc -s "\${month}/\${day}/\${year} \${hour}:\${min}:00"
-		                /sbin/hwclock --systohc
-		        fi
-		fi
-
-		if [ ! -f /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
-		        rm -rf /etc/ssh/ssh_host_* || true
-		        dpkg-reconfigure openssh-server
-		        sync
-		fi
-
-		#There is a chance, if user reboots to soon, these are not saved, thus a zero size...
-		if [ ! -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
-		        rm -rf /etc/ssh/ssh_host_* || true
-		        dpkg-reconfigure openssh-server
-		        sync
-		fi
-
-		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
-		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
-		        fi
-		fi
-		end script
-
-	__EOF__
-
-	sudo mv /tmp/${wfile} ${tempdir}/etc/init/${wfile}
+	sudo cp ${DIR}/init_scripts/generic-ubuntu.sh ${tempdir}/etc/init.d/boot_scripts.conf
 
 	wfile="flash-kernel.conf"
 	cat > /tmp/${wfile} <<-__EOF__
