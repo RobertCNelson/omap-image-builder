@@ -761,6 +761,7 @@ fi
 
 sudo mkdir -p ${tempdir}/opt/scripts/ || true
 sudo cp -v ${DIR}/scripts_device/*.sh ${tempdir}/opt/scripts/
+sudo chmod +x ${tempdir}/opt/scripts/*.sh
 
 if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
