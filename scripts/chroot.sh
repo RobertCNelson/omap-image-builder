@@ -615,6 +615,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
 				echo "/var/lib/cloud9 : https://github.com/beagleboard/bonescript" >> /opt/source/list.txt
 
+				if [ -f /var/www/index.html ] ; then
+					rm -rf /var/www/index.html || true
+				fi
 				qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
 				qemu_warning
 				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
