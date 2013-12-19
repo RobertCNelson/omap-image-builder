@@ -626,7 +626,7 @@ create_partitions () {
 }
 
 boot_git_tools () {
-	if [ ! "${offline}" ] ; then
+	if [ ! "${offline}" ] && [ ! "${bborg_production}" ] ; then
 		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
 		echo "-----------------------------"
 		mkdir -p ${TEMPDIR}/disk/tools
