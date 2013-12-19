@@ -278,4 +278,8 @@ wheezy_release
 #saucy_release
 #trusty_release
 
+production
+
+rm -rf ${tempdir} || true
+
 echo "done"
