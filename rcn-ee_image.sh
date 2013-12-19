@@ -217,12 +217,12 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list="git-core,initramfs-tools,locales,sudo,wget"
+		include_pkgs_list="initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core"
 		fi
 	fi
 }

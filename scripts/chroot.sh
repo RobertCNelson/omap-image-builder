@@ -549,21 +549,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			ubuntu_startup_script
 			;;
 		esac
-
-		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
-			pkg="git-core"
-			dpkg_check
-
-			if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-				mkdir -p /opt/boot-scripts/ || true
-				qemu_command="git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true"
-				qemu_warning
-				git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
-				chown -R ${user_name}:${user_name} /opt/boot-scripts/
-			else
-				dpkg_package_missing
-			fi
-		fi
 	}
 
 	install_cloud9 () {
