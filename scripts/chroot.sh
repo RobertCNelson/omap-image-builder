@@ -588,10 +588,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 					qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 					qemu_warning
 					git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+					echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
 				else
 					qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 					qemu_warning
 					git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+					echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
 				fi
 				chown -R ${user_name}:${user_name} /opt/cloud9/
 
@@ -611,10 +613,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
 				chown -R ${user_name}:${user_name} /var/lib/cloud9
+				echo "/var/lib/cloud9 : https://github.com/beagleboard/bonescript" >> /opt/source/list.txt
 
 				qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
 				qemu_warning
 				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
+				echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
 
 				sync
 				umount -l /dev/shm
@@ -663,6 +667,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	startup_script
 
 	mkdir -p /opt/source || true
+	touch /opt/source/list.txt
 	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
 		install_cloud9
 	fi
