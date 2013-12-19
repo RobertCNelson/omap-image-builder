@@ -79,7 +79,7 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
+		chroot_generic_startup_scripts="${chroot_generic_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
@@ -264,7 +264,7 @@ fi
 
 #FIXME: things to add to .config:
 #include_firmware="enable"
-#chroot_rcnee_startup_scripts="enable"
+#chroot_generic_startup_scripts="enable"
 no_pkgs="enable"
 
 dpkg_arch="armel"

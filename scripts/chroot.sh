@@ -517,7 +517,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init.d/boot_scripts.sh ] ; then
 				chown root:root /etc/init.d/boot_scripts.sh
 				chmod +x /etc/init.d/boot_scripts.sh
@@ -527,7 +527,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	ubuntu_startup_script () {
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init/boot_scripts.conf ] ; then
 				chown root:root /etc/init/boot_scripts.conf
 			fi
@@ -550,7 +550,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			;;
 		esac
 
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 			pkg="git-core"
 			dpkg_check
 
