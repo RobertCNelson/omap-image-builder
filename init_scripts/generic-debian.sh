@@ -53,14 +53,12 @@ start|reload|force-reload|restart)
 		fi
 	fi
 
-	#if [ -f /usr/local/bin/node ] && [ -f /opt/cloud9/server.js ] ; then
-		#/usr/local/bin/node /opt/cloud9/server.js -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
-	#fi
-
-	#if [ -f /opt/cloud9/bin/cloud9.sh ] ; then
-		#/opt/cloud9/bin/cloud9.sh -l 0.0.0.0 -w /var/lib/cloud9 -p 3000 >/opt/cloud9/log 2>&1 &
-	#fi
-
+	if [ -f /boot/uboot/flash-eMMC.txt ] ; then
+		if [ -f /opt/scripts/beaglebone-black-eMMC-flasher.sh ] ; then
+			mkdir -p /boot/uboot/debug/
+			/bin/bash /opt/scripts/beaglebone-black-eMMC-flasher.sh >/boot/uboot/debug/flash-eMMC.log 2>&1
+		fi
+	fi
 	;;
 stop)
 	exit 0

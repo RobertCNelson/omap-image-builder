@@ -766,6 +766,9 @@ if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
 	sudo mv /tmp/${wfile} ${tempdir}/etc/X11/${wfile}
 fi
 
+sudo mkdir -p ${tempdir}/opt/scripts/ || true
+sudo cp -v ${DIR}/device_scripts/*.sh ${tempdir}/opt/scripts/
+
 if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
 	rm -rf ${DIR}/deploy/${export_filename}/ || true
 fi
