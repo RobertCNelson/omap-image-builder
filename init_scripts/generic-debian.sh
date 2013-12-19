@@ -52,13 +52,6 @@ start|reload|force-reload|restart)
 			/bin/sh /opt/scripts/${board}.sh >/dev/null 2>&1 &
 		fi
 	fi
-
-	if [ -f /boot/uboot/flash-eMMC.txt ] ; then
-		if [ -f /opt/scripts/beaglebone-black-eMMC-flasher.sh ] ; then
-			mkdir -p /boot/uboot/debug/
-			/bin/bash /opt/scripts/beaglebone-black-eMMC-flasher.sh >/boot/uboot/debug/flash-eMMC.log 2>&1
-		fi
-	fi
 	;;
 stop)
 	exit 0
