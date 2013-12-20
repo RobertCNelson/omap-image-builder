@@ -40,7 +40,7 @@ bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
 #lxde
 bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
 #lxde utils
-bborg_pkg_list="${bborg_pkg_list} leafpad"
+bborg_pkg_list="${bborg_pkg_list} leafpad python-opencv libsdl1.2-dev"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
