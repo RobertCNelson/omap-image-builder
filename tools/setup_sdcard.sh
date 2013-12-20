@@ -715,7 +715,6 @@ populate_boot () {
 		exit
 	fi
 
-	mkdir -p ${TEMPDIR}/disk/backup || true
 	mkdir -p ${TEMPDIR}/disk/debug || true
 	mkdir -p ${TEMPDIR}/disk/dtbs || true
 
@@ -723,7 +722,6 @@ populate_boot () {
 		if [ "${spl_name}" ] ; then
 			if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
 				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
-				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/backup/${spl_name}
 				echo "-----------------------------"
 			fi
 		fi
@@ -731,7 +729,6 @@ populate_boot () {
 		if [ "${boot_name}" ] ; then
 			if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
 				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
-				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
 				echo "-----------------------------"
 			fi
 		fi
@@ -788,7 +785,6 @@ populate_boot () {
 			run loaduimage
 		__EOF__
 		mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
-		cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
 	fi
 
 	echo "Copying uEnv.txt based boot scripts to Boot Partition"
