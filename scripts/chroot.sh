@@ -622,6 +622,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
 				echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
+				if [ ! -f /var/www/index.html ] ; then
+					if [ -f /var/www/Support/bone101/index.html ] ; then
+						cp /var/www/Support/bone101/index.html /var/www/index.html
+					fi
+				fi
 
 				sync
 				umount -l /dev/shm
