@@ -835,9 +835,6 @@ populate_boot () {
 	echo "Debug:"
 	cat ${TEMPDIR}/disk/SOC.sh
 
-	echo "Adding: /opt/boot-scripts/*.sh trigger file, remove [run_boot-scripts] (in boot partition) to disable custom startup scripts..."
-	touch ${TEMPDIR}/disk/run_boot-scripts
-
 	boot_git_tools
 
 	cd ${TEMPDIR}/disk

@@ -46,7 +46,7 @@ start|reload|force-reload|restart)
 		sync
 	fi
 
-	if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
+	if [ -f /boot/uboot/SOC.sh ] ; then
 		board=$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print $2}')
 		if [ -f "/opt/scripts/${board}.sh" ] ; then
 			/bin/sh /opt/scripts/${board}.sh >/dev/null 2>&1 &
