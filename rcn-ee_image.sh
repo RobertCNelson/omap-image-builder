@@ -39,7 +39,7 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-7.2-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-7.3-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
@@ -55,12 +55,12 @@ minimal_armel () {
 		;;
 	esac
 
-	if [ -f ${DIR}/release ] ; then
-		chroot_KERNEL_HTTP_DIR="\
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.0-armv7-x8/ \
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone30/"
-	fi
+#	if [ -f ${DIR}/release ] ; then
+#		chroot_KERNEL_HTTP_DIR="\
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.5-armv7-x10/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
+#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone32/"
+#	fi
 
 	tempdir=$(mktemp -d)
 
@@ -90,9 +90,11 @@ http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone30/"
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
+		chroot_generic_startup_scripts="${chroot_generic_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
+
+		chroot_install_cloud9="${chroot_install_cloud9}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -115,14 +117,6 @@ compression () {
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-				cp -v arm*.tar /mnt/farm/images/
-
-				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
-					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
-				else
-					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-				fi
-
 			fi
 		fi
 	elif [ -f ${DIR}/compress ] ; then
@@ -131,6 +125,63 @@ compression () {
 			mv "${export_filename}.tar.xz" "${release_dir}"
 		fi
 	fi
+	cd ${DIR}/
+}
+
+production () {
+	echo "Starting Production Stage"
+	cd ${DIR}/deploy/
+
+	unset actual_dir
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v arm*.tar /mnt/farm/images/
+				actual_dir="/mnt/farm/testing/pending"
+			fi
+		fi
+	fi
+
+	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	#!/bin/bash
+
+	xz -z -7 -v ubuntu-13.04-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-trusty-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
+
+	tar xf debian-7.3-${image_type}-armhf-${time}.tar.xz
+	tar xf ubuntu-13.10-${image_type}-armhf-${time}.tar.xz
+
+	cd debian-7.3-${image_type}-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb bone-debian-7.3-${time} --uboot bone --beagleboard.org-production
+	mv *.img ../
+	cd ..
+	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
+
+	cd ubuntu-13.10-${image_type}-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb bone-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
+	mv *.img ../
+	cd ..
+	rm -rf ubuntu-13.10-${image_type}-armhf-${time}/ || true
+
+	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
+	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
+	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
+	xz -z -7 -v bone-ubuntu-13.10-${time}-4gb.img
+
+	__EOF__
+
+	chmod +x ${DIR}/deploy/ship.sh
+
+	if [ ! "x${actual_dir}" = "x" ] ; then
+		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
+		chmod +x ${actual_dir}/ship.sh
+	fi
+
 	cd ${DIR}/
 }
 
@@ -166,12 +217,12 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list="git-core,initramfs-tools,locales,sudo,wget"
+		include_pkgs_list="initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core"
 		fi
 	fi
 }
@@ -250,7 +301,7 @@ trusty_release () {
 
 wheezy_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 	select_rcn_ee_net_kernel
@@ -260,7 +311,7 @@ wheezy_release () {
 
 jessie_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 	select_rcn_ee_net_kernel
@@ -270,7 +321,7 @@ jessie_release () {
 
 sid_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 	select_rcn_ee_net_kernel
@@ -304,7 +355,8 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 #FIXME: things to add to .config:
 include_firmware="enable"
-chroot_rcnee_startup_scripts="enable"
+chroot_generic_startup_scripts="enable"
+#chroot_install_cloud9="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
@@ -312,6 +364,7 @@ DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
+production
 
 rm -rf ${tempdir} || true
 

@@ -26,7 +26,8 @@ time=$(date +%Y-%m-%d)
 DIR=$PWD
 tempdir=$(mktemp -d)
 
-image_type="bare"
+image_type="minimal"
+nand_pkgs="mtd-utils"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -35,7 +36,7 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-7.2-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-7.3-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
@@ -79,7 +80,7 @@ minimal_armel () {
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_rcnee_startup_scripts="${chroot_rcnee_startup_scripts}"
+		chroot_generic_startup_scripts="${chroot_generic_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
@@ -100,17 +101,43 @@ compression () {
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
 				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-				cp -v arm*.tar /mnt/farm/images/
-
-				if [ ! -f /mnt/farm/testing/pending/compress.txt ] ; then
-					echo "xz -z -7 -v ${export_filename}.tar" > /mnt/farm/testing/pending/compress.txt
-				else
-					echo "xz -z -7 -v ${export_filename}.tar" >> /mnt/farm/testing/pending/compress.txt
-				fi
-
 			fi
 		fi
 	fi
+	cd ${DIR}/
+}
+
+production () {
+	echo "Starting Production Stage"
+	cd ${DIR}/deploy/
+
+	unset actual_dir
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v arm*.tar /mnt/farm/images/
+				actual_dir="/mnt/farm/testing/pending"
+			fi
+		fi
+	fi
+
+	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	#!/bin/bash
+
+	xz -z -7 -v debian-7.3-${image_type}-armel-${time}.tar
+	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+
+	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
+
+	__EOF__
+
+	chmod +x ${DIR}/deploy/ship.sh
+
+	if [ ! "x${actual_dir}" = "x" ] ; then
+		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
+		chmod +x ${actual_dir}/ship.sh
+	fi
+
 	cd ${DIR}/
 }
 
@@ -119,12 +146,12 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list=""
+		include_pkgs_list="initramfs-tools,locales,sudo"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			base_pkg_list="${nand_pkgs} ${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			base_pkg_list="${nand_pkgs} ${base_pkgs} ${extra_pkgs}"
 		fi
 	fi
 }
@@ -153,8 +180,8 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	pkg_list
-	exclude_pkgs_list="aptitude,aptitude-common,groff-base,info,install-info,libept1.4.12,manpages,man-db,tasksel,tasksel-data,vim-common,vim-tiny,wget,whiptail"
-	chroot_very_small_image="enable"
+	exclude_pkgs_list=""
+#	chroot_very_small_image="enable"
 }
 
 #13.04
@@ -191,8 +218,8 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	extra_pkgs="systemd"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
 
@@ -202,7 +229,7 @@ wheezy_release () {
 
 jessie_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
 
@@ -212,7 +239,7 @@ jessie_release () {
 
 sid_release () {
 	extra_pkgs=""
-	firmware_pkgs="atmel-firmware firmware-ralink libertas-firmware zd1211-firmware"
+	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
 
@@ -239,9 +266,9 @@ if [ -f ${DIR}/release ] ; then
 fi
 
 #FIXME: things to add to .config:
-#include_firmware="enable"
-#chroot_rcnee_startup_scripts="enable"
-no_pkgs="enable"
+include_firmware="enable"
+chroot_generic_startup_scripts="enable"
+#no_pkgs="enable"
 
 dpkg_arch="armel"
 wheezy_release
@@ -251,7 +278,11 @@ dpkg_arch="armhf"
 wheezy_release
 #jessie_release
 #raring_release
-#saucy_release
+saucy_release
 #trusty_release
+
+production
+
+rm -rf ${tempdir} || true
 
 echo "done"

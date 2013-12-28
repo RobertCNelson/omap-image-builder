@@ -134,6 +134,7 @@ check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] ; then
 	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
+	warn_qemu_will_fail=1
 fi
 
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
@@ -202,6 +203,14 @@ wheezy)
 	echo "" | sudo tee -a ${file} >/dev/null
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
 	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "" | sudo tee -a ${file} >/dev/null
+	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+		echo "" | sudo tee -a ${file} >/dev/null
+		echo "deb http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
+		echo "#deb-src http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
+	fi
 	;;
 precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
@@ -230,49 +239,7 @@ echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
 
 case "${distro}" in
 debian)
-	wfile="boot_scripts.sh"
-	cat > /tmp/${wfile} <<-__EOF__
-		#!/bin/sh -e
-		### BEGIN INIT INFO
-		# Provides:          ${wfile}
-		# Required-Start:    \$local_fs
-		# Required-Stop:     \$local_fs
-		# Default-Start:     2 3 4 5
-		# Default-Stop:      0 1 6
-		# Short-Description: Start daemon at boot time
-		# Description:       Enable service provided by daemon.
-		### END INIT INFO
-
-		case "\$1" in
-		start|reload|force-reload|restart)
-		        if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
-		                rm -rf /etc/ssh/ssh_host_* || true
-		                dpkg-reconfigure openssh-server
-		        fi
-		        if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		                if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		                        /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
-		                fi
-		                board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		                if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
-		                        /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
-		                fi
-		        fi
-		        ;;
-		stop)
-		        exit 0
-		        ;;
-		*)
-		        echo "Usage: /etc/init.d/boot_scripts.sh {start|stop|reload|restart|force-reload}"
-		        exit 1
-		        ;;
-		esac
-
-		exit 0
-
-	__EOF__
-
-	sudo mv /tmp/${wfile} ${tempdir}/etc/init.d/${wfile}
+	sudo cp ${DIR}/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
@@ -280,29 +247,7 @@ debian)
 
 	;;
 ubuntu)
-	wfile="boot_scripts.conf"
-	cat > /tmp/${wfile} <<-__EOF__
-		start on runlevel 2
-
-		script
-		if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ] ; then
-		        rm -rf /etc/ssh/ssh_host_* || true
-		        dpkg-reconfigure openssh-server
-		fi
-		if [ -f /boot/uboot/SOC.sh ] && [ -f /boot/uboot/run_boot-scripts ] ; then
-		        if [ -f "/opt/boot-scripts/set_date.sh" ] ; then
-		                /bin/sh /opt/boot-scripts/set_date.sh >/dev/null 2>&1 &
-		        fi
-		        board=\$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print \$2}')
-		        if [ -f "/opt/boot-scripts/\${board}.sh" ] ; then
-		                /bin/sh /opt/boot-scripts/\${board}.sh >/dev/null 2>&1 &
-		        fi
-		fi
-		end script
-
-	__EOF__
-
-	sudo mv /tmp/${wfile} ${tempdir}/etc/init/${wfile}
+	sudo cp ${DIR}/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init.d/boot_scripts.conf
 
 	wfile="flash-kernel.conf"
 	cat > /tmp/${wfile} <<-__EOF__
@@ -354,6 +299,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "Log: (chroot) package [\${pkg}] was not installed... (add to base_pkg_list if functionality is really needed)"
 	}
 
+	qemu_warning () {
+		if [ "${warn_qemu_will_fail}" ] ; then
+			echo "Log: (chroot) Warning, qemu can fail here... (run on real armv7l hardware for production images)"
+			echo "Log: (chroot): [\${qemu_command}]"
+		fi
+	}
+
 	stop_init () {
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
@@ -371,6 +323,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkg_updates () {
+		if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+			wget --no-verbose --directory-prefix=/tmp/ http://bbb.aikidev.net/keyring-bbb.aikidev.net.asc
+			apt-key add /tmp/keyring-bbb.aikidev.net.asc
+			rm -rf /tmp/keyring-bbb.aikidev.net.asc || true
+		fi
+
 		apt-get update
 		apt-get upgrade -y --force-yes
 	}
@@ -485,17 +443,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			dpkg_package_missing
 		fi
 
+		unset source_file
+		source_file=\$(cat /tmp/index.html | grep .diff.gz | head -n 1)
+		source_file=\$(echo \${source_file} | awk -F "\"" '{print \$2}')
+
+		if [ "\${source_file}" ] ; then
+			wget --directory-prefix=/opt/source/ \${kernel_url}\${source_file}
+		fi
+
 		rm -f /tmp/index.html || true
 		rm -f /tmp/temp.html || true
 		rm -f /tmp/\${deb_file} || true
 		rm -f /boot/System.map-\${kernel_version} || true
-		rm -f /boot/config-\${kernel_version} || true
+		mv /boot/config-\${kernel_version} /opt/source || true
 		rm -rf /usr/src/linux-headers* || true
 	}
 
 	add_user () {
 		groupadd admin || true
-		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video"
+		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video,netdev"
 
 		pkg="sudo"
 		dpkg_check
@@ -517,6 +483,40 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			root
 			root
 			EOF
+
+			if [ "x${chroot_nuke_root_password}" = "xenable" ] ; then
+				root_password=\$(cat /etc/shadow | grep root | awk -F ':' '{print \$2}')
+				sed -i -e 's:'\$root_password'::g' /etc/shadow
+
+				#Make ssh root@beaglebone work..
+				sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
+				sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+
+				if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
+					if [ -f /etc/slim.conf ] ; then
+						echo "#!/bin/sh" > /home/${user_name}/.xinitrc
+						echo "" >> /home/${user_name}/.xinitrc
+						echo "exec startlxde" >> /home/${user_name}/.xinitrc
+						chmod +x /home/${user_name}/.xinitrc
+
+						#/etc/slim.conf modfications:
+						sed -i -e 's:default,start:startlxde,default,start:g' /etc/slim.conf
+						echo "default_user        ${user_name}" >> /etc/slim.conf
+						echo "auto_login        yes" >> /etc/slim.conf
+					fi
+
+					#FixMe: move to github beagleboard repo...
+					wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
+					chown -R ${user_name}:${user_name} /opt/beaglebg.jpg
+
+					mkdir -p /home/${user_name}/.config/pcmanfm/LXDE/ || true
+					echo "[desktop]" > /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+					chown -R ${user_name}:${user_name} /home/${user_name}/.config/
+				fi
+			fi
+
 			;;
 		Ubuntu)
 			passwd -l root || true
@@ -525,7 +525,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init.d/boot_scripts.sh ] ; then
 				chown root:root /etc/init.d/boot_scripts.sh
 				chmod +x /etc/init.d/boot_scripts.sh
@@ -535,7 +535,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	ubuntu_startup_script () {
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init/boot_scripts.conf ] ; then
 				chown root:root /etc/init/boot_scripts.conf
 			fi
@@ -557,18 +557,82 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			ubuntu_startup_script
 			;;
 		esac
+	}
 
-		if [ "x${chroot_rcnee_startup_scripts}" = "xenable" ] ; then
-			pkg="git-core"
-			dpkg_check
+	install_cloud9 () {
+		pkg="git-core"
+		dpkg_check
 
-			if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-				mkdir -p /opt/boot-scripts/ || true
-				git clone git://github.com/RobertCNelson/boot-scripts.git /opt/boot-scripts/ || true
-				chown -R ${user_name}:${user_name} /opt/boot-scripts/
-			else
-				dpkg_package_missing
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			if [ "x${release}" = "xwheezy" ] ; then
+				mount -t tmpfs shmfs -o size=256M /dev/shm
+				df -Th
+
+				cd /opt/source
+				wget http://nodejs.org/dist/${chroot_node_release}/node-${chroot_node_release}.tar.gz
+				tar xf node-${chroot_node_release}.tar.gz
+				cd node-${chroot_node_release}
+				./configure ${chroot_node_build_options} && make -j5 && make install
+				cd /
+				rm -rf /opt/source/node-${chroot_node_release}/ || true
+
+				echo "debug: node: [\`node --version\`]"
+				echo "debug: npm: [\`npm --version\`]"
+
+				#qemu_command="npm install -g sm"
+				#qemu_warning
+				#npm install -g sm --arch=armhf
+
+				mkdir -p /opt/cloud9/ || true
+				if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
+					qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+					qemu_warning
+					git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+					echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
+				else
+					qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+					qemu_warning
+					git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+					echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
+				fi
+				chown -R ${user_name}:${user_name} /opt/cloud9/
+
+				if [ -f /usr/local/bin/sm ] ; then
+					echo "debug: sm: [\`sm --version\`]"
+					cd /opt/cloud9
+					qemu_command="sm install"
+					qemu_warning
+					sm install
+				#else
+					#cd /opt/cloud9
+					#npm install --arch=armhf
+				fi
+
+				mkdir -p /var/lib/cloud9 || true
+				qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true"
+				qemu_warning
+				git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
+				chown -R ${user_name}:${user_name} /var/lib/cloud9
+				echo "/var/lib/cloud9 : https://github.com/beagleboard/bonescript" >> /opt/source/list.txt
+
+				if [ -f /var/www/index.html ] ; then
+					rm -rf /var/www/index.html || true
+				fi
+				qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
+				qemu_warning
+				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
+				echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
+				if [ ! -f /var/www/index.html ] ; then
+					if [ -f /var/www/Support/bone101/index.html ] ; then
+						cp /var/www/Support/bone101/index.html /var/www/index.html
+					fi
+				fi
+
+				sync
+				umount -l /dev/shm
 			fi
+		else
+			dpkg_package_missing
 		fi
 	}
 
@@ -609,6 +673,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	fi
 	add_user
 	startup_script
+
+	mkdir -p /opt/source || true
+	touch /opt/source/list.txt
+	if [ "x${chroot_install_cloud9}" = "xenable" ] ; then
+		install_cloud9
+	fi
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
@@ -673,6 +743,49 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
+if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
+	wfile="xorg.conf"
+	cat > /tmp/${wfile} <<-__EOF__
+		Section "Monitor"
+		        Identifier      "Builtin Default Monitor"
+		EndSection
+
+		Section "Device"
+		        Identifier      "Builtin Default fbdev Device 0"
+		        Driver          "modesetting"
+		#        Option          "HWcursor"      "false"
+		        Option          "SWCursor"      "true"
+		EndSection
+
+		Section "Screen"
+		        Identifier      "Builtin Default fbdev Screen 0"
+		        Device          "Builtin Default fbdev Device 0"
+		        Monitor         "Builtin Default Monitor"
+		        DefaultDepth    16
+		EndSection
+
+		Section "ServerLayout"
+		        Identifier      "Builtin Default Layout"
+		        Screen          "Builtin Default fbdev Screen 0"
+		EndSection
+
+	__EOF__
+
+	sudo mkdir -p ${tempdir}/etc/X11/ || true
+	sudo mv /tmp/${wfile} ${tempdir}/etc/X11/${wfile}
+fi
+
+sudo mkdir -p ${tempdir}/opt/scripts/ || true
+sudo cp -v ${DIR}/scripts_device/*.sh ${tempdir}/opt/scripts/
+sudo chmod +x ${tempdir}/opt/scripts/*.sh
+
+if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
+	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
+fi
+
+if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
+	rm -rf ${DIR}/deploy/${export_filename}/ || true
+fi
 mkdir -p ${DIR}/deploy/${export_filename}/ || true
 
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
@@ -711,8 +824,6 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
-	#just not these this week...
-	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/mx*.conf || true
 	##FIXME: remove after WiFi/Video works...
 	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-panda.conf || true
 fi

@@ -35,10 +35,6 @@ BOOT_LABEL="boot"
 unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
-unset ADDON
-
-unset SVIDEO_NTSC
-unset SVIDEO_PAL
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -65,22 +61,6 @@ VALID_ROOTFS_TYPES="ext2 ext3 ext4 btrfs"
 
 is_valid_rootfs_type () {
 	if is_element_of $1 "${VALID_ROOTFS_TYPES}" ] ; then
-		return 0
-	else
-		return 1
-	fi
-}
-
-#########################################################################
-#
-#  Define valid "--addon" values.
-#
-#########################################################################
-
-VALID_ADDONS="pico"
-
-is_valid_addon () {
-	if is_element_of $1 "${VALID_ADDONS}" ] ; then
 		return 0
 	else
 		return 1
@@ -161,6 +141,16 @@ detect_software () {
 		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget parted"
 		echo "Fedora: yum install dosfstools dosfstools git-core uboot-tools wget"
 		echo "Gentoo: emerge dosfstools git u-boot-tools wget"
+		echo ""
+		exit
+	fi
+
+	unset test_sfdisk
+	test_sfdisk=$(LC_ALL=C sfdisk -v 2>/dev/null | grep 2.17.2 | awk '{print $1}')
+	if [ "x${test_sdfdisk}" = "xsfdisk" ] ; then
+		echo ""
+		echo "Detected known broken sfdisk:"
+		echo "See: https://github.com/RobertCNelson/netinstall/issues/20"
 		echo ""
 		exit
 	fi
@@ -270,6 +260,20 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
+	if [ "x${enable_systemd}" = "xenabled" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##Enable systemd
+			systemd=quiet init=/lib/systemd/systemd
+
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##Enable systemd
+			#systemd=quiet init=/lib/systemd/systemd
+
+		__EOF__
+	fi
+
 	case "${SYSTEM}" in
 	bone|bone_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
@@ -344,13 +348,13 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			video_args=setenv video VIDEO_DISPLAY
 			device_args=run video_args; run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${systemd}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion}
+			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${systemd}
 
 		__EOF__
 	fi
@@ -409,25 +413,6 @@ boot_uenv_txt_template () {
 tweak_boot_scripts () {
 	unset KMS_OVERRIDE
 
-	if [ "x${ADDON}" = "xpico" ] ; then
-		VIDEO_TIMING="640x480MR-16@60"
-		KMS_OVERRIDE=1
-		KMS_VIDEOA="video=DVI-D-1"
-		KMS_VIDEO_RESOLUTION="640x480"
-	fi
-
-	if [ "${SVIDEO_NTSC}" ] ; then
-		VIDEO_TIMING="ntsc"
-		VIDEO_OMAPFB_MODE="tv"
-		##FIXME need to figure out KMS Options
-	fi
-
-	if [ "${SVIDEO_PAL}" ] ; then
-		VIDEO_TIMING="pal"
-		VIDEO_OMAPFB_MODE="tv"
-		##FIXME need to figure out KMS Options
-	fi
-
 	ALL="*.cmd"
 	#Set the Serial Console
 	sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/${ALL}
@@ -445,11 +430,7 @@ tweak_boot_scripts () {
 		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#UENV_TIMING -> dvimode=1280x720MR-16@60
-		if [ "x${ADDON}" = "xpico" ] ; then
-			sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		else
-			sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		fi
+		sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
@@ -461,25 +442,6 @@ tweak_boot_scripts () {
 		sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/${ALL}
-	fi
-
-	if [ "${HAS_IMX_BLOB}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#not used:
-		sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#framebuffer=VIDEO_FB
-		sed -i -e 's:UENV_FB:framebuffer=VIDEO_FB:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_FB:'$VIDEO_FB':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#dvimode=VIDEO_TIMING
-		sed -i -e 's:UENV_TIMING:dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
-		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#video=\${framebuffer}:${dvimode}
-		sed -i -e 's/VIDEO_DISPLAY/'video=\${framebuffer}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
 
 	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
@@ -664,59 +626,76 @@ create_partitions () {
 }
 
 boot_git_tools () {
-	echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
-	echo "-----------------------------"
-	mkdir -p ${TEMPDIR}/disk/tools
-	git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-	if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
-		echo "Trying via http:"
-		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+	if [ ! "${offline}" ] && [ ! "${bborg_production}" ] ; then
+		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
+		echo "-----------------------------"
+		mkdir -p ${TEMPDIR}/disk/tools
+		git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+		if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
+			echo "Trying via http:"
+			git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+		fi
 	fi
 
-	case "${SYSTEM}" in
-	bone|bone_dtb)
-		echo "Debug: Adding BeagleBone drivers from: https://github.com/RobertCNelson/bone-drivers"
-		#Not planning to change these too often, once pulled, remove .git stuff...
-		mkdir -p ${TEMPDIR}/bone-drivers/
-		git clone git://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
-		if [ ! -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
-			git clone https://github.com/RobertCNelson/bone-drivers.git ${TEMPDIR}/bone-drivers/
-		fi
-		if [ -f ${TEMPDIR}/bone-drivers/.git/config ] ; then
-			rm -rf ${TEMPDIR}/bone-drivers/.git/ || true
-		fi
+	if [ ! "${offline}" ] && [ "${bborg_production}" ] ; then
+		case "${SYSTEM}" in
+		bone|bone_dtb)
+			echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
+			#Not planning to change these too often, once pulled, remove .git stuff...
+			mkdir -p ${TEMPDIR}/drivers/
+			git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+			if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
+				git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+			fi
+			if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
+				rm -rf ${TEMPDIR}/drivers/.git/ || true
+			fi
 
-		if [ -d ${TEMPDIR}/bone-drivers/Drivers ] ; then
-			mv ${TEMPDIR}/bone-drivers/Drivers ${TEMPDIR}/disk/
-		fi
-		if [ -d ${TEMPDIR}/bone-drivers/Docs ] ; then
-			mv ${TEMPDIR}/bone-drivers/Docs ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/bone-drivers/autorun.inf ] ; then
-			mv ${TEMPDIR}/bone-drivers/autorun.inf ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/bone-drivers/LICENSE.txt ] ; then
-			mv ${TEMPDIR}/bone-drivers/LICENSE.txt ${TEMPDIR}/disk/
-		fi
-	;;
-	esac
+			if [ -d ${TEMPDIR}/drivers/App ] ; then
+				mv ${TEMPDIR}/drivers/App ${TEMPDIR}/disk/
+			fi
+			if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
+				mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
+			fi
+			if [ -d ${TEMPDIR}/drivers/Docs ] ; then
+				mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
+			fi
+			if [ -d ${TEMPDIR}/drivers/scripts ] ; then
+				mv ${TEMPDIR}/drivers/scripts ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
+				mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
+				mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/README.htm ] ; then
+				mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/README.md ] ; then
+				mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
+			fi
+			if [ -f ${TEMPDIR}/drivers/START.htm ] ; then
+				mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
+			fi
+		;;
+		esac
 
-	wfile=START.htm
-	echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-	echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-	echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-	echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
-	echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-	echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-	echo "" >> ${TEMPDIR}/disk/${wfile}
-	sync
-
-	echo "-----------------------------"
-
+		wfile=BASIC_START.htm
+		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
+		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+		echo "" >> ${TEMPDIR}/disk/${wfile}
+		sync
+		echo "-----------------------------"
+	fi
 }
 
 populate_boot () {
@@ -736,7 +715,6 @@ populate_boot () {
 		exit
 	fi
 
-	mkdir -p ${TEMPDIR}/disk/backup || true
 	mkdir -p ${TEMPDIR}/disk/debug || true
 	mkdir -p ${TEMPDIR}/disk/dtbs || true
 
@@ -744,7 +722,6 @@ populate_boot () {
 		if [ "${spl_name}" ] ; then
 			if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
 				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
-				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/backup/${spl_name}
 				echo "-----------------------------"
 			fi
 		fi
@@ -752,7 +729,6 @@ populate_boot () {
 		if [ "${boot_name}" ] ; then
 			if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
 				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
-				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/backup/${boot_name}
 				echo "-----------------------------"
 			fi
 		fi
@@ -809,7 +785,6 @@ populate_boot () {
 			run loaduimage
 		__EOF__
 		mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
-		cp -v ${TEMPDIR}/disk/boot.scr ${TEMPDIR}/disk/backup/boot.scr
 	fi
 
 	echo "Copying uEnv.txt based boot scripts to Boot Partition"
@@ -859,9 +834,6 @@ populate_boot () {
 
 	echo "Debug:"
 	cat ${TEMPDIR}/disk/SOC.sh
-
-	echo "Adding: /opt/boot-scripts/*.sh trigger file, remove [run_boot-scripts] (in boot partition) to disable custom startup scripts..."
-	touch ${TEMPDIR}/disk/run_boot-scripts
 
 	boot_git_tools
 
@@ -1305,10 +1277,6 @@ is_omap () {
 
 	SUBARCH="omap"
 
-	conf_loadaddr="0x80300000"
-	conf_initrdaddr="0x81600000"
-	conf_zreladdr="0x80008000"
-	conf_fdtaddr="0x815f0000"
 	boot_script="uEnv.txt"
 
 	SERIAL="ttyO2"
@@ -1325,36 +1293,12 @@ is_omap () {
 
 	#KMS Video Options (overrides when edid fails)
 	# From: ls /sys/class/drm/
-	# Unknown-1 might be s-video..
 	KMS_VIDEO_RESOLUTION="1280x720"
 	KMS_VIDEOA="video=DVI-D-1"
 	unset KMS_VIDEOB
 
 	#Kernel Options
 	select_kernel="${omap_kernel}"
-}
-
-is_imx () {
-	IS_IMX=1
-
-	bootloader_location="dd_uboot_boot"
-	unset spl_name
-	boot_name="u-boot.imx"
-	dd_uboot_seek="1"
-	dd_uboot_bs="1024"
-
-	SUBARCH="imx"
-
-	SERIAL="ttymxc0"
-	SERIAL_CONSOLE="${SERIAL},115200"
-
-	boot_script="uEnv.txt"
-
-	VIDEO_CONSOLE="console=tty0"
-	HAS_IMX_BLOB=1
-	VIDEO_FB="mxcdi1fb"
-	VIDEO_TIMING="RGB24,1280x720M@60"
-	select_kernel="${armv7_kernel}"
 }
 
 convert_uboot_to_dtb_board () {
@@ -1429,12 +1373,8 @@ check_uboot_type () {
 		#just to disable the omapfb stuff..
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
-		conf_zreladdr="0x80008000"
-		conf_loadaddr="0x80200000"
-		conf_fdtaddr="0x815f0000"
-		#u-boot:rdaddr="0x81000000"
-		#initrdaddr = 0x80200000 + 10(mb) * 10 0000 = 0x80C0 0000 (10MB)
-		conf_initrdaddr="0x81000000"
+
+		conf_boot_endmb="96"
 
 		. "${DIR}"/hwpack/beaglebone.conf
 		convert_uboot_to_dtb_board
@@ -1456,33 +1396,14 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	mx51evk)
-		SYSTEM="mx51evk"
-		conf_board="mx51evk"
-		is_imx
-		conf_loadaddr="0x90010000"
-		conf_initrdaddr="0x92000000"
-		conf_zreladdr="0x90008000"
-		conf_fdtaddr="0x91ff0000"
-		conf_fdtfile="imx51-babbage.dtb"
-		need_dtbs=1
-
-		. "${DIR}"/hwpack/mx51evk.conf
+		echo "Note: [--dtb dt-mx51evk] now replaces [--uboot mx51evk"
+		. "${DIR}"/hwpack/dt-mx51evk.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx53loco)
-		SYSTEM="mx53loco"
-		conf_board="mx53loco"
-		SERIAL="ttymxc0"
-		is_imx
-		conf_loadaddr="0x70010000"
-		conf_initrdaddr="0x72000000"
-		conf_zreladdr="0x70008000"
-		conf_fdtaddr="0x71ff0000"
-		conf_fdtfile="imx53-qsb.dtb"
-		need_dtbs=1
-
-		. "${DIR}"/hwpack/mx53loco.conf
+		echo "Note: [--dtb dt-mx53loco] now replaces [--uboot mx53loco]"
+		. "${DIR}"/hwpack/dt-mx53loco.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
@@ -1528,9 +1449,6 @@ usage () {
 			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 
-			--addon <additional peripheral device>
-			        pico
-
 			--rootfs <fs_type>
 			        ext2
 			        ext3
@@ -1542,13 +1460,7 @@ usage () {
 			--rootfs_label <rootfs_label>
 
 			--swap_file <xxx>
-					<create a swap file of (xxx)MB's>
-
-			--svideo-ntsc
-			        <force ntsc mode for S-Video>
-
-			--svideo-pal
-			        <force pal mode for S-Video>
+			        <create a swap file of (xxx)MB's>
 
 			Additional Options:
 			        -h --help
@@ -1596,14 +1508,33 @@ while [ ! -z "$1" ] ; do
 		if [ "x${imagename}" = "x" ] ; then
 			imagename=image.img
 		fi
+		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
+		imagename="${name}-2gb.img"
 		media="${DIR}/${imagename}"
 		build_img_file=1
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
 		fi
-		#FIXME: 800Mb initial size... (should fit most 2Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*800]
+		#FIXME: 1,700Mb initial size... (should fit most 2Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*1700]
+		;;
+	--img-4gb)
+		checkparm $2
+		imagename="$2"
+		if [ "x${imagename}" = "x" ] ; then
+			imagename=image.img
+		fi
+		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
+		imagename="${name}-4gb.img"
+		media="${DIR}/${imagename}"
+		build_img_file=1
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+		#FIXME: 3,750Mb initial size... (should fit most 4Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3750]
 		;;
 	--uboot)
 		checkparm $2
@@ -1617,19 +1548,9 @@ while [ ! -z "$1" ] ; do
 		kernel_detection
 		check_dtb_board
 		;;
-	--addon)
-		checkparm $2
-		ADDON=$2
-		;;
 	--rootfs)
 		checkparm $2
 		ROOTFS_TYPE="$2"
-		;;
-	--svideo-ntsc)
-		SVIDEO_NTSC=1
-		;;
-	--svideo-pal)
-		SVIDEO_PAL=1
 		;;
 	--boot_label)
 		checkparm $2
@@ -1658,8 +1579,16 @@ while [ ! -z "$1" ] ; do
 		USE_BETA_BOOTLOADER=1
 		;;
 	--bbb-flasher)
-		checkparm $2
 		bbb_flasher=1
+		;;
+	--beagleboard.org-production)
+		bborg_production=1
+		;;
+	--enable-systemd)
+		enable_systemd="enabled"
+		;;
+	--offline)
+		offline=1
 		;;
 	esac
 	shift
@@ -1701,16 +1630,6 @@ if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
 	fi
 
 	BTRFS_FSTAB=1
-fi
-
-if [ -n "${ADDON}" ] ; then
-	if ! is_valid_addon ${ADDON} ; then
-		echo "ERROR: ${ADDON} is not a valid addon type"
-		echo "-----------------------------"
-		echo "Supported --addon options:"
-		echo "    pico"
-		exit
-	fi
 fi
 
 find_issue
