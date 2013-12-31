@@ -8,11 +8,6 @@ select_custom_kernel () {
 	kernel_chooser
 	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
 
-	SUBARCH="omap"
-	KERNEL_ABI="STABLE"
-	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} ${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
-
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
