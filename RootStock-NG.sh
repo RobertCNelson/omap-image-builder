@@ -25,6 +25,8 @@ HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
 DIR="$PWD"
+mkdir -p ${DIR}/ignore
+
 
 if [ -f ${DIR}/.project ] ; then
 	. ${DIR}/.project
@@ -58,7 +60,7 @@ run_project () {
 	#3.7.6-x8-firmware.tar.gz
 	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/v3.7.6-x8/ ${mirror}/${release}-${dpkg_arch}/v3.2.33-psp26/ ${mirror}/${release}-${dpkg_arch}/v3.8.0-rc6-bone3/"
 
-	tempdir=$(mktemp -d)
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 	cat > ${DIR}/.project <<-__EOF__
 		tempdir="${tempdir}"
@@ -99,7 +101,7 @@ run_roostock_ng () {
 	fi
 
 	if [ ! "${tempdir}" ] ; then
-		tempdir=$(mktemp -d)
+		tempdir=$(mktemp -d -p ${DIR}/ignore)
 		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
 	fi
 

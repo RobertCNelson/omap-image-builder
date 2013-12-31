@@ -24,7 +24,8 @@ SYST=$(uname -n)
 time=$(date +%Y-%m-%d)
 
 DIR=$PWD
-tempdir=$(mktemp -d)
+mkdir -p ${DIR}/ignore
+tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 if [ -f ${DIR}/config ] ; then
 	. ${DIR}/config
@@ -62,7 +63,7 @@ minimal_armel () {
 #http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone32/"
 #	fi
 
-	tempdir=$(mktemp -d)
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 	cat > ${DIR}/.project <<-__EOF__
 		tempdir="${tempdir}"
