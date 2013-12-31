@@ -24,7 +24,6 @@ SYST=$(uname -n)
 time=$(date +%Y-%m-%d)
 
 DIR=$PWD
-mkdir -p ${DIR}/ignore
 tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 if [ -f ${DIR}/config ] ; then

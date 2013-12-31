@@ -24,7 +24,7 @@ SYST=$(uname -n)
 time=$(date +%Y-%m-%d)
 
 DIR=$PWD
-tempdir=$(mktemp -d)
+tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 image_type="bare"
 
@@ -51,7 +51,7 @@ minimal_armel () {
 		;;
 	esac
 
-	tempdir=$(mktemp -d)
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 	cat > ${DIR}/.project <<-__EOF__
 		tempdir="${tempdir}"
