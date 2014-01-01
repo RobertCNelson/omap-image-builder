@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2012-2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2014 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -622,10 +622,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				qemu_warning
 				git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
 				echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
-				if [ ! -f /var/www/index.html ] ; then
-					if [ -f /var/www/Support/bone101/index.html ] ; then
-						cp /var/www/Support/bone101/index.html /var/www/index.html
-					fi
+				if [ -f /var/www/index.html ] ; then
+					rm -rf /var/www/index.html || true
+				fi
+				if [ -f /var/www/Support/bone101/index.html ] ; then
+					cp -v /var/www/Support/bone101/index.html /var/www/index.html
 				fi
 
 				sync
