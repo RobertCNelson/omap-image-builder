@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2014 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -300,8 +300,6 @@ sid_release () {
 if [ -f ${DIR}/releases.sh ] ; then
 	. ${DIR}/releases.sh
 fi
-
-. ${DIR}/var/check_host.sh
 
 if [ ! "${apt_proxy}" ] ; then
 	apt_proxy=""
