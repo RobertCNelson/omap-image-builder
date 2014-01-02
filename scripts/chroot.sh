@@ -784,19 +784,17 @@ if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
 fi
 
+if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
+	rm -rf ${DIR}/deploy/${export_filename}/ || true
+fi
+mkdir -p ${DIR}/deploy/${export_filename}/ || true
+
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
 	report_size
 	echo "Calling chroot_hook script: ${chroot_hook}"
 	. "${DIR}/${chroot_hook}"
 	chroot_hook=""
 fi
-
-###Start building final tarball...
-
-if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
-	rm -rf ${DIR}/deploy/${export_filename}/ || true
-fi
-mkdir -p ${DIR}/deploy/${export_filename}/ || true
 
 if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
