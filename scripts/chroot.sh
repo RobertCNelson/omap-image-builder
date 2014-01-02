@@ -792,8 +792,7 @@ mkdir -p ${DIR}/deploy/${export_filename}/ || true
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
 	report_size
 	echo "Calling chroot_hook script: ${chroot_hook}"
-	sudo cp -v "${DIR}/${chroot_hook}" ${tempdir}/${chroot_hook}
-	sudo chroot ${tempdir} /bin/sh "${chroot_hook}"
+	. "${DIR}/${chroot_hook}"
 	chroot_hook=""
 fi
 
