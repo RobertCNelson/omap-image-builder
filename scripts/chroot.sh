@@ -784,6 +784,16 @@ if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 	echo "BeagleBoard.org BeagleBone Debian Image ${time}"| sudo tee ${tempdir}/etc/dogtag >/dev/null
 fi
 
+if [ -n "${chroot_script}" -a -r "${DIR}/chroot_script/${chroot_script}" ] ; then
+	report_size
+	echo "Calling chroot_script script: ${chroot_script}"
+	sudo mv ${DIR}/chroot_script/${chroot_script} ${tempdir}/final.sh
+	sudo chroot ${tempdir} /bin/sh final.sh
+	chroot_script=""
+fi
+
+##Building final tar file...
+
 if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
 	rm -rf ${DIR}/deploy/${export_filename}/ || true
 fi

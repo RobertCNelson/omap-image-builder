@@ -117,6 +117,7 @@ minimal_armel () {
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
 		chroot_hook="${chroot_hook}"
+		chroot_script="${chroot_script}"
 
 	__EOF__
 
@@ -325,7 +326,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 include_firmware="enable"
 chroot_generic_startup_scripts="enable"
 chroot_nuke_root_password="enable"
-chroot_hook="chroot_hooks/beagleboard.org.sh"
+chroot_script="beagleboard.org.sh"
 
 #chroot_install_cloud9="enable"
 #chroot_cloud9_git_tag="v2.0.93"
