@@ -787,7 +787,7 @@ fi
 if [ -n "${chroot_script}" -a -r "${DIR}/chroot_script/${chroot_script}" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
-	sudo mv ${DIR}/chroot_script/${chroot_script} ${tempdir}/final.sh
+	sudo cp -v ${DIR}/chroot_script/${chroot_script} ${tempdir}/final.sh
 	sudo chroot ${tempdir} /bin/sh final.sh
 	chroot_script=""
 fi
