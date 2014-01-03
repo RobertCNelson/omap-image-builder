@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/sh -e
+export LC_ALL=C
 
 #chroot_cloud9_git_tag="v2.0.93"
 #chroot_node_release="v0.8.26"
@@ -17,7 +18,7 @@ qemu_warning () {
 
 install_cloud9 () {
 	mount -t tmpfs shmfs -o size=256M /dev/shm
-	df -Th
+	#df -Th
 
 	cd /opt/source
 	wget http://nodejs.org/dist/${chroot_node_release}/node-${chroot_node_release}.tar.gz
