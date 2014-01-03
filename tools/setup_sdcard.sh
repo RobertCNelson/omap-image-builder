@@ -961,8 +961,10 @@ populate_rootfs () {
 		echo "    network 192.168.7.0" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
 
-		rm -rf ${TEMPDIR}/disk/var/www/index.htm || true
-		rm -rf ${TEMPDIR}/disk/var/www/index.html || true
+		if [ ! "${bborg_production}" ] ; then
+			rm -rf ${TEMPDIR}/disk/var/www/index.html || true
+		fi
+
 #		wfile=var/www/AJAX_terminal.html
 #		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
 #		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
