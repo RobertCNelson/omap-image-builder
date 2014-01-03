@@ -36,11 +36,13 @@ install_cloud9 () {
 		qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 		qemu_warning
 		git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+		sync
 		echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
 	else
 		qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 		qemu_warning
 		git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+		sync
 		echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
 	fi
 	chown -R ${user_name}:${user_name} /opt/cloud9/
@@ -60,6 +62,7 @@ install_cloud9 () {
 	qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true"
 	qemu_warning
 	git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
+	sync
 	chown -R ${user_name}:${user_name} /var/lib/cloud9
 	echo "/var/lib/cloud9 : https://github.com/beagleboard/bonescript" >> /opt/source/list.txt
 
@@ -69,10 +72,14 @@ install_cloud9 () {
 	qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
 	qemu_warning
 	git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
+	sync
 	echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
+
 	if [ -f /var/www/index.html ] ; then
 		rm -rf /var/www/index.html || true
+		sync
 	fi
+
 	if [ -f /var/www/Support/bone101/index.html ] ; then
 		cp -v /var/www/Support/bone101/index.html /var/www/index.html
 	fi
