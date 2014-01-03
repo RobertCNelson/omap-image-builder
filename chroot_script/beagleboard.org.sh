@@ -78,7 +78,7 @@ install_cloud9 () {
 	fi
 
 	sync
-	umount -l /dev/shm
+	umount -l /dev/shm || true
 }
 
 install_cloud9
