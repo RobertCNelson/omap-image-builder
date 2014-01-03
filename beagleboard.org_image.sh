@@ -150,12 +150,19 @@ production () {
 	cd debian-7.3-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
 	sudo ./setup_sdcard.sh --img-4gb bone-debian-7.3-${time} --uboot bone --beagleboard.org-production
+
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-systemd-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img-4gb bone-systemd-debian-7.3-${time} --uboot bone --beagleboard.org-production --enable-systemd
+
 	mv *.img ../
 	cd ..
 	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
 
 	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
 	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
+
+	xz -z -7 -v BBB-eMMC-flasher-systemd-debian-7.3-${time}-2gb.img
+	xz -z -7 -v bone-systemd-debian-7.3-${time}-4gb.img
 
 	__EOF__
 
