@@ -106,11 +106,6 @@ minimal_armel () {
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
-		chroot_install_cloud9="${chroot_install_cloud9}"
-		chroot_cloud9_git_tag="${chroot_cloud9_git_tag}"
-		chroot_node_release="${chroot_node_release}"
-		chroot_node_build_options="${chroot_node_build_options}"
-
 		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
 		chroot_enable_xorg="${chroot_enable_xorg}"
 
@@ -327,13 +322,6 @@ include_firmware="enable"
 chroot_generic_startup_scripts="enable"
 chroot_nuke_root_password="enable"
 chroot_script="beagleboard.org.sh"
-
-#chroot_install_cloud9="enable"
-#chroot_cloud9_git_tag="v2.0.93"
-#chroot_node_release="v0.8.26"
-#chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
-#chroot_node_release="v0.10.24"
-#chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 
 chroot_enable_bborg_repo="enable"
 chroot_enable_xorg="enable"
