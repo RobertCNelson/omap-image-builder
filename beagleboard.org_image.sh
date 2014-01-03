@@ -41,7 +41,7 @@ bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pk
 #utils:
 bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
 #lxde
-bborg_pkg_list="${bborg_pkg_list} lxde-core slim xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
+bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils wicd-gtk"
 #lxde utils
 bborg_pkg_list="${bborg_pkg_list} leafpad python-opencv libsdl1.2-dev screen"
 
