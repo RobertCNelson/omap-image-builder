@@ -75,15 +75,6 @@ install_cloud9 () {
 	sync
 	echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
 
-	if [ -f /var/www/index.html ] ; then
-		rm -rf /var/www/index.html || true
-		sync
-	fi
-
-	if [ -f /var/www/Support/bone101/index.html ] ; then
-		cp -v /var/www/Support/bone101/index.html /var/www/index.html
-	fi
-
 	sync
 	umount -l /dev/shm || true
 }
