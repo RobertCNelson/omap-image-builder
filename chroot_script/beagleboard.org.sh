@@ -103,7 +103,7 @@ build_node () {
 	umount -l /dev/shm || true
 }
 
-install_cloud9 () {
+install_repos () {
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
 		git_repo="https://github.com/ajaxorg/cloud9.git"
 		git_target_dir="/opt/cloud9/"
@@ -132,6 +132,14 @@ install_cloud9 () {
 	git_repo="https://github.com/beagleboard/bone101"
 	git_target_dir="/var/www/"
 	git_clone
+
+	git_repo="https://github.com/jackmitch/libsoc"
+	git_target_dir="/opt/source/libsoc"
+	git_clone
+
+	git_repo="https://github.com/prpplague/Userspace-Arduino"
+	git_target_dir="/opt/source/Userspace-Arduino"
+	git_clone
 }
 
 unseure_root () {
@@ -148,5 +156,5 @@ setup_autologin
 install_desktop_branding
 dogtag
 build_node
-install_cloud9
+install_repos
 unsecure_root
