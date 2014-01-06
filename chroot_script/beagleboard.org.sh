@@ -148,7 +148,7 @@ install_repos () {
 	git_clone
 }
 
-unseure_root () {
+unsecure_root () {
 	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
 	sed -i -e 's:'$root_password'::g' /etc/shadow
 
@@ -164,3 +164,4 @@ dogtag
 build_node
 install_repos
 unsecure_root
+#
