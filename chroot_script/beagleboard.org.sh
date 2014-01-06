@@ -84,7 +84,7 @@ dogtag () {
 	echo "BeagleBoard.org BeagleBone Debian Image ${time}" > /etc/dogtag
 }
 
-install_cloud9 () {
+build_node () {
 	mount -t tmpfs shmfs -o size=256M /dev/shm
 	#df -Th
 
@@ -99,6 +99,11 @@ install_cloud9 () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
+	sync
+	umount -l /dev/shm || true
+}
+
+install_cloud9 () {
 	mkdir -p /opt/cloud9/ || true
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
 		qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
@@ -115,16 +120,8 @@ install_cloud9 () {
 	fi
 	chown -R ${user_name}:${user_name} /opt/cloud9/
 
-	if [ -f /usr/local/bin/sm ] ; then
-		echo "debug: sm: [`sm --version`]"
-		cd /opt/cloud9
-		qemu_command="sm install"
-		qemu_warning
-		sm install
-	#else
-		#cd /opt/cloud9
-		#npm install --arch=armhf
-	fi
+	#cd /opt/cloud9
+	#npm install --arch=armhf
 
 	git_repo="https://github.com/beagleboard/bonescript"
 	git_target_dir="/var/lib/cloud9"
@@ -137,9 +134,6 @@ install_cloud9 () {
 	git_repo="https://github.com/beagleboard/bone101"
 	git_target_dir="/var/www/"
 	git_clone
-
-	sync
-	umount -l /dev/shm || true
 }
 
 unseure_root () {
@@ -155,5 +149,6 @@ setup_xorg
 setup_autologin
 install_desktop_branding
 dogtag
+build_node
 install_cloud9
 unsecure_root
