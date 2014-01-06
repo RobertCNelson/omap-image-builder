@@ -29,13 +29,13 @@ git_clone () {
 
 setup_xorg () {
 	echo "Section \"Monitor\"" > /etc/X11/xorg.conf
-	echo "        Identifier      "Builtin Default Monitor"" >> /etc/X11/xorg.conf
+	echo "        Identifier      \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
 	echo "EndSection" >> /etc/X11/xorg.conf
 	echo "" >> /etc/X11/xorg.conf
 	echo "Section \"Device\"" >> /etc/X11/xorg.conf
 	echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
 	echo "        Driver          \"modesetting\"" >> /etc/X11/xorg.conf
-	echo "        Option          \"SWCursor\"      "true"" >> /etc/X11/xorg.conf
+	echo "        Option          \"SWCursor\"      \"true\"" >> /etc/X11/xorg.conf
 	echo "EndSection" >> /etc/X11/xorg.conf
 	echo "" >> /etc/X11/xorg.conf
 	echo "Section \"Screen\"" >> /etc/X11/xorg.conf
