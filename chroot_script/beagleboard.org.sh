@@ -71,6 +71,10 @@ install_desktop_branding () {
 	chown -R ${user_name}:${user_name} /home/${user_name}/.config/
 }
 
+dogtag () {
+	echo "BeagleBoard.org BeagleBone Debian Image ${time}" > /etc/dogtag
+}
+
 install_cloud9 () {
 	mount -t tmpfs shmfs -o size=256M /dev/shm
 	#df -Th
@@ -146,5 +150,6 @@ unseure_root () {
 setup_xorg
 setup_autologin
 install_desktop_branding
+dogtag
 install_cloud9
 unsecure_root
