@@ -121,11 +121,6 @@ install_repos () {
 	#cd /opt/cloud9
 	#npm install --arch=armhf
 
-	git_repo="https://github.com/beagleboard/bonescript"
-	git_target_dir="/var/lib/cloud9"
-	git_clone
-	chown -R ${user_name}:${user_name} ${git_target_dir}
-
 	if [ -f /var/www/index.html ] ; then
 		rm -rf /var/www/index.html || true
 	fi
@@ -133,9 +128,20 @@ install_repos () {
 	git_target_dir="/var/www/"
 	git_clone
 
+	git_repo="https://github.com/beagleboard/bonescript"
+	git_target_dir="/var/lib/cloud9"
+	git_clone
+	chown -R ${user_name}:${user_name} ${git_target_dir}
+
 	git_repo="https://github.com/jackmitch/libsoc"
 	git_target_dir="/opt/source/libsoc"
 	git_clone
+	cd ${git_target_dir}/
+	./autogen.sh
+	./configure
+	make
+	make install
+	make distclean
 
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
