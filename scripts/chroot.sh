@@ -491,25 +491,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				#Make ssh root@beaglebone work..
 				sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 				sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
-
-				if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
-					if [ -f /etc/slim.conf ] ; then
-						echo "#!/bin/sh" > /home/${user_name}/.xinitrc
-						echo "" >> /home/${user_name}/.xinitrc
-						echo "exec startlxde" >> /home/${user_name}/.xinitrc
-						chmod +x /home/${user_name}/.xinitrc
-
-						#/etc/slim.conf modfications:
-						sed -i -e 's:default,start:startlxde,default,start:g' /etc/slim.conf
-						echo "default_user        ${user_name}" >> /etc/slim.conf
-						echo "auto_login        yes" >> /etc/slim.conf
-					fi
-
-					if [ -f /etc/lightdm/lightdm.conf ] ; then
-						sed -i -e 's:#autologin-user=:autologin-user=${user_name}:g' /etc/lightdm/lightdm.conf
-						sed -i -e 's:#autologin-session=:autologin-session=LXDE:g' /etc/lightdm/lightdm.conf
-					fi
-				fi
 			fi
 
 			;;

@@ -16,6 +16,25 @@ qemu_warning () {
 	fi
 }
 
+setup_autologin () {
+	if [ -f /etc/lightdm/lightdm.conf ] ; then
+		sed -i -e 's:#autologin-user=:autologin-user=${user_name}:g' /etc/lightdm/lightdm.conf
+		sed -i -e 's:#autologin-session=:autologin-session=LXDE:g' /etc/lightdm/lightdm.conf
+	fi
+
+	if [ -f /etc/slim.conf ] ; then
+		echo "#!/bin/sh" > /home/${user_name}/.xinitrc
+		echo "" >> /home/${user_name}/.xinitrc
+		echo "exec startlxde" >> /home/${user_name}/.xinitrc
+		chmod +x /home/${user_name}/.xinitrc
+
+		#/etc/slim.conf modfications:
+		sed -i -e 's:default,start:startlxde,default,start:g' /etc/slim.conf
+		echo "default_user        ${user_name}" >> /etc/slim.conf
+		echo "auto_login        yes" >> /etc/slim.conf
+	fi
+}
+
 install_desktop_branding () {
 	#FixMe: move to github beagleboard repo...
 	wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
@@ -91,5 +110,6 @@ install_cloud9 () {
 	umount -l /dev/shm || true
 }
 
+setup_autologin
 install_desktop_branding
 install_cloud9
