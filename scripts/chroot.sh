@@ -639,38 +639,6 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
-if [ "x${chroot_enable_xorg}" = "xenable" ] ; then
-	wfile="xorg.conf"
-	cat > /tmp/${wfile} <<-__EOF__
-		Section "Monitor"
-		        Identifier      "Builtin Default Monitor"
-		EndSection
-
-		Section "Device"
-		        Identifier      "Builtin Default fbdev Device 0"
-		        Driver          "modesetting"
-		#        Option          "HWcursor"      "false"
-		        Option          "SWCursor"      "true"
-		EndSection
-
-		Section "Screen"
-		        Identifier      "Builtin Default fbdev Screen 0"
-		        Device          "Builtin Default fbdev Device 0"
-		        Monitor         "Builtin Default Monitor"
-		        DefaultDepth    16
-		EndSection
-
-		Section "ServerLayout"
-		        Identifier      "Builtin Default Layout"
-		        Screen          "Builtin Default fbdev Screen 0"
-		EndSection
-
-	__EOF__
-
-	sudo mkdir -p ${tempdir}/etc/X11/ || true
-	sudo mv /tmp/${wfile} ${tempdir}/etc/X11/${wfile}
-fi
-
 sudo mkdir -p ${tempdir}/opt/scripts/ || true
 sudo cp -v ${DIR}/scripts_device/*.sh ${tempdir}/opt/scripts/
 sudo chmod +x ${tempdir}/opt/scripts/*.sh

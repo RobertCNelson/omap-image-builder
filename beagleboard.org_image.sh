@@ -109,7 +109,6 @@ minimal_armel () {
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
 		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
-		chroot_enable_xorg="${chroot_enable_xorg}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -333,7 +332,6 @@ chroot_nuke_root_password="enable"
 chroot_script="beagleboard.org.sh"
 
 chroot_enable_bborg_repo="enable"
-chroot_enable_xorg="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"

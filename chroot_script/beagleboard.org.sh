@@ -16,6 +16,30 @@ qemu_warning () {
 	fi
 }
 
+setup_xorg () {
+	echo "Section \"Monitor\"" > /etc/X11/xorg.conf
+	echo "        Identifier      "Builtin Default Monitor"" >> /etc/X11/xorg.conf
+	echo "EndSection" >> /etc/X11/xorg.conf
+	echo "" >> /etc/X11/xorg.conf
+	echo "Section \"Device\"" >> /etc/X11/xorg.conf
+	echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
+	echo "        Driver          \"modesetting\"" >> /etc/X11/xorg.conf
+	echo "        Option          \"SWCursor\"      "true"" >> /etc/X11/xorg.conf
+	echo "EndSection" >> /etc/X11/xorg.conf
+	echo "" >> /etc/X11/xorg.conf
+	echo "Section \"Screen\"" >> /etc/X11/xorg.conf
+	echo "        Identifier      \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
+	echo "        Device          \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
+	echo "        Monitor         \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
+	echo "        DefaultDepth    16" >> /etc/X11/xorg.conf
+	echo "EndSection" >> /etc/X11/xorg.conf
+	echo "" >> /etc/X11/xorg.conf
+	echo "Section \"ServerLayout\"" >> /etc/X11/xorg.conf
+	echo "        Identifier      \"Builtin Default Layout\"" >> /etc/X11/xorg.conf
+	echo "        Screen          \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
+	echo "EndSection" >> /etc/X11/xorg.conf
+}
+
 setup_autologin () {
 	if [ -f /etc/lightdm/lightdm.conf ] ; then
 		sed -i -e 's:#autologin-user=:autologin-user=${user_name}:g' /etc/lightdm/lightdm.conf
@@ -110,6 +134,7 @@ install_cloud9 () {
 	umount -l /dev/shm || true
 }
 
+setup_xorg
 setup_autologin
 install_desktop_branding
 install_cloud9
