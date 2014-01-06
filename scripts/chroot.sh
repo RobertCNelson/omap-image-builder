@@ -505,20 +505,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 						echo "auto_login        yes" >> /etc/slim.conf
 					fi
 
-					#FixMe: move to github beagleboard repo...
-					wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
-					chown -R ${user_name}:${user_name} /opt/beaglebg.jpg
-
 					if [ -f /etc/lightdm/lightdm.conf ] ; then
 						sed -i -e 's:#autologin-user=:autologin-user=${user_name}:g' /etc/lightdm/lightdm.conf
 						sed -i -e 's:#autologin-session=:autologin-session=LXDE:g' /etc/lightdm/lightdm.conf
 					fi
-
-					mkdir -p /home/${user_name}/.config/pcmanfm/LXDE/ || true
-					echo "[desktop]" > /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
-					echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
-					echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
-					chown -R ${user_name}:${user_name} /home/${user_name}/.config/
 				fi
 			fi
 
