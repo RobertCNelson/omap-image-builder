@@ -84,6 +84,7 @@ minimal_armel () {
 		distro="${distro}"
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
+		time="${time}"
 
 		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"
