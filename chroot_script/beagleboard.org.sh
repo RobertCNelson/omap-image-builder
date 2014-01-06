@@ -134,7 +134,17 @@ install_cloud9 () {
 	umount -l /dev/shm || true
 }
 
+unseure_root () {
+	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
+	sed -i -e 's:'$root_password'::g' /etc/shadow
+
+	#Make ssh root@beaglebone work..
+	sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
+	sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+}
+
 setup_xorg
 setup_autologin
 install_desktop_branding
 install_cloud9
+unsecure_root
