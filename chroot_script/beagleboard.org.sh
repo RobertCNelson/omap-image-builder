@@ -104,14 +104,12 @@ build_node () {
 }
 
 install_cloud9 () {
-	mkdir -p /opt/cloud9/ || true
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
-		qemu_command="git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
-		qemu_warning
-		git clone --depth 1 https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
-		sync
-		echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
+		git_repo="https://github.com/ajaxorg/cloud9.git"
+		git_target_dir="/opt/cloud9/"
+		git_clone
 	else
+		mkdir -p /opt/cloud9/ || true
 		qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
 		qemu_warning
 		git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
