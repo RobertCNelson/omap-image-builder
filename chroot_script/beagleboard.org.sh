@@ -16,6 +16,15 @@ qemu_warning () {
 	fi
 }
 
+git_clone () {
+	mkdir -p ${git_target_dir} || true
+	qemu_command="git clone ${git_repo} ${git_target_dir} --depth 1 || true"
+	qemu_warning
+	git clone ${git_repo} ${git_target_dir} --depth 1 || true
+	sync
+	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
+}
+
 setup_xorg () {
 	echo "Section \"Monitor\"" > /etc/X11/xorg.conf
 	echo "        Identifier      "Builtin Default Monitor"" >> /etc/X11/xorg.conf
@@ -117,22 +126,17 @@ install_cloud9 () {
 		#npm install --arch=armhf
 	fi
 
-	mkdir -p /var/lib/cloud9 || true
-	qemu_command="git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true"
-	qemu_warning
-	git clone https://github.com/beagleboard/bonescript /var/lib/cloud9 --depth 1 || true
-	sync
-	chown -R ${user_name}:${user_name} /var/lib/cloud9
-	echo "/var/lib/cloud9 : https://github.com/beagleboard/bonescript" >> /opt/source/list.txt
+	git_repo="https://github.com/beagleboard/bonescript"
+	git_target_dir="/var/lib/cloud9"
+	git_clone
+	chown -R ${user_name}:${user_name} ${git_target_dir}
 
 	if [ -f /var/www/index.html ] ; then
 		rm -rf /var/www/index.html || true
 	fi
-	qemu_command="git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true"
-	qemu_warning
-	git clone https://github.com/beagleboard/bone101 /var/www/ --depth 1 || true
-	sync
-	echo "/var/www/ : https://github.com/beagleboard/bone101" >> /opt/source/list.txt
+	git_repo="https://github.com/beagleboard/bone101"
+	git_target_dir="/var/www/"
+	git_clone
 
 	sync
 	umount -l /dev/shm || true
