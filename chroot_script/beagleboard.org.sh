@@ -7,7 +7,7 @@ export LC_ALL=C
 chroot_node_release="v0.10.24"
 chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
 
-user_name="debian"
+. /.project
 
 qemu_warning () {
 	if [ "${warn_qemu_will_fail}" ] ; then
