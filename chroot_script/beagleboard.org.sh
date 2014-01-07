@@ -53,7 +53,7 @@ setup_xorg () {
 
 setup_autologin () {
 	if [ -f /etc/lightdm/lightdm.conf ] ; then
-		sed -i -e 's:#autologin-user=:autologin-user=${user_name}:g' /etc/lightdm/lightdm.conf
+		sed -i -e 's:#autologin-user=:autologin-user='$user_name':g' /etc/lightdm/lightdm.conf
 		sed -i -e 's:#autologin-session=:autologin-session=LXDE:g' /etc/lightdm/lightdm.conf
 	fi
 
