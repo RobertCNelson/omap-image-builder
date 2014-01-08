@@ -97,6 +97,8 @@ build_node () {
 	./configure ${chroot_node_build_options} && make -j5 && make install
 	cd /
 	rm -rf /opt/source/node-${chroot_node_release}/ || true
+	rm -rf /opt/source/node-${chroot_node_release}.tar.gz || true
+	echo "node-${chroot_node_release} : http://rcn-ee.net/pkgs/nodejs/node-${chroot_node_release}.tar.gz" >> /opt/source/list.txt
 
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
