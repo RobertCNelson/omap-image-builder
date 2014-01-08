@@ -932,13 +932,20 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "# The primary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
 
-		#let wicd handle eth0
-		if [ "${DISABLE_ETH}" ] || [ -f ${TEMPDIR}/disk/etc/wicd/wired-settings.conf ] ; then
+		if [ "${DISABLE_ETH}" ] ; then
 			echo "#auto eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 		else
 			echo "auto eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
+		fi
+
+		#if we have systemd & wicd, diable eth0 in /etc/network/interfaces
+		if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
+			if [ -f ${TEMPDIR}/disk/etc/wicd/wired-settings.conf ] ; then
+				sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
+			fi
 		fi
 
 		echo "# Example to keep MAC address between reboots" >> ${TEMPDIR}/disk/etc/network/interfaces
