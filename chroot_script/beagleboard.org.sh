@@ -107,6 +107,13 @@ build_node () {
 	umount -l /dev/shm || true
 }
 
+install_builds () {
+	cd /opt/
+	wget http://rcn-ee.net/pkgs/chromium/chromium-31.0.1650.69-armhf.tar.xz
+	tar xf chromium-31.0.1650.69-armhf.tar.xz -C /
+	rm -rf chromium-31.0.1650.69-armhf.tar.xz || true
+}
+
 install_repos () {
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
 		git_repo="https://github.com/ajaxorg/cloud9.git"
@@ -166,6 +173,7 @@ setup_autologin
 install_desktop_branding
 dogtag
 build_node
+install_builds
 install_repos
 unsecure_root
 #
