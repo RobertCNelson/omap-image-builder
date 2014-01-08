@@ -46,6 +46,8 @@ bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm xserver-xorg-video-modesetti
 bborg_pkg_list="${bborg_pkg_list} leafpad python-opencv libsdl1.2-dev screen"
 #big stuff
 bborg_pkg_list="${bborg_pkg_list} xchat"
+#chromium
+bborg_pkg_list="${bborg_pkg_list} libxss1 libnss3 libxslt1.1 libspeechd2"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
