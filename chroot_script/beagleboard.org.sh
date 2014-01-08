@@ -1,6 +1,8 @@
 #!/bin/sh -e
 export LC_ALL=C
 
+chromium_release="chromium-31.0.1650.69"
+
 #chroot_cloud9_git_tag="v2.0.93"
 #chroot_node_release="v0.8.26"
 #chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
@@ -109,9 +111,10 @@ build_node () {
 
 install_builds () {
 	cd /opt/
-	wget http://rcn-ee.net/pkgs/chromium/chromium-31.0.1650.69-armhf.tar.xz
-	tar xf chromium-31.0.1650.69-armhf.tar.xz -C /
-	rm -rf chromium-31.0.1650.69-armhf.tar.xz || true
+	wget http://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
+	tar xf ${chromium_release}-armhf.tar.xz -C /
+	rm -rf ${chromium_release}-armhf.tar.xz || true
+	echo "${chromium_release} : http://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
 }
 
 install_repos () {
