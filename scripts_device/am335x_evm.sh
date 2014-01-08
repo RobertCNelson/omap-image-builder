@@ -22,7 +22,13 @@ if [ -f ${mac_address} ] ; then
 	cpsw_1_mac=$(hexdump -v -e '1/1 "%02X" ":"' ${mac_address} | sed 's/.$//')
 fi
 
-modprobe g_multi file=/dev/mmcblk0p1 cdrom=0 stall=0 removable=1 nofua=1 iSerialNumber=${SERIAL_NUMBER} iManufacturer=Circuitco  iProduct=BeagleBone${BLACK} host_addr=${cpsw_1_mac}
+unset boot_partition
+boot_partition=$(LC_ALL=C lsblk -l | grep "/boot/uboot" | awk '{print $1}')
+if [ "x${boot_partition}" = "x" ] ; then
+	boot_partition="/dev/mmcblk0p1"
+fi
+
+modprobe g_multi file=${boot_partition} cdrom=0 stall=0 removable=1 nofua=1 iSerialNumber=${SERIAL_NUMBER} iManufacturer=Circuitco  iProduct=BeagleBone${BLACK} host_addr=${cpsw_1_mac}
 
 sleep 1
 
