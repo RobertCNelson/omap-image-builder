@@ -247,7 +247,6 @@ boot_uenv_txt_template () {
 			#Video: Uncomment to override U-Boots value:
 			UENV_FB
 			UENV_TIMING
-			UENV_VRAM
 
 		__EOF__
 	fi
@@ -421,10 +420,6 @@ tweak_boot_scripts () {
 	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 	if [ "${HAS_OMAPFB_DSS2}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#UENV_VRAM -> vram=12MB
-		sed -i -e 's:UENV_VRAM:#vram=VIDEO_OMAP_RAM:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_OMAP_RAM:'$VIDEO_OMAP_RAM':g' ${TEMPDIR}/bootscripts/${ALL}
-
 		#UENV_FB -> defaultdisplay=dvi
 		sed -i -e 's:UENV_FB:#defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
@@ -437,9 +432,8 @@ tweak_boot_scripts () {
 		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
 
 		#Setting up:
-		#vram=\${vram} omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
-		sed -i -e 's:VIDEO_DISPLAY:TMP_VRAM TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:TMP_VRAM:'vram=\${vram}':g' ${TEMPDIR}/bootscripts/${ALL}
+		#omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
+		sed -i -e 's:VIDEO_DISPLAY:TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
 		sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
@@ -458,7 +452,6 @@ tweak_boot_scripts () {
 	if [ "${SERIAL_MODE}" ] ; then
 		#In pure serial mode, remove all traces of VIDEO
 		if [ ! "${USE_KMS}" ] ; then
-			sed -i -e 's:UENV_VRAM::g' ${TEMPDIR}/bootscripts/${ALL}
 			sed -i -e 's:UENV_FB::g' ${TEMPDIR}/bootscripts/${ALL}
 			sed -i -e 's:UENV_TIMING::g' ${TEMPDIR}/bootscripts/${ALL}
 		fi
@@ -1299,7 +1292,6 @@ is_omap () {
 	#Older DSS2 omapfb framebuffer driver:
 	HAS_OMAPFB_DSS2=1
 	VIDEO_DRV="omapfb.mode=dvi"
-	VIDEO_OMAP_RAM="12MB"
 	VIDEO_OMAPFB_MODE="dvi"
 	VIDEO_TIMING="1280x720MR-16@60"
 
@@ -1399,7 +1391,6 @@ check_uboot_type () {
 		SYSTEM="panda"
 		conf_board="omap4_panda"
 		is_omap
-		VIDEO_OMAP_RAM="16MB"
 		KMS_VIDEOB="video=HDMI-A-1"
 		usbnet_mem="16384"
 
