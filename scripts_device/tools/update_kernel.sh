@@ -25,32 +25,48 @@ if ! id | grep -q root; then
 	exit
 fi
 
-machine=$(cat /proc/device-tree/model | sed "s/ /_/g")
-case "${machine}" in
-TI_AM335x_BeagleBone)
-        SOC="omap-psp"
-        ;;
-*)
-        echo "Machine: [${machine}]"
-        unset SOC
-        ;;
-esac
+installer () {
+	machine=$(cat /proc/device-tree/model | sed "s/ /_/g")
+	case "${machine}" in
+	TI_AM335x_BeagleBone)
+		SOC="omap-psp"
+		;;
+	*)
+		echo "Machine: [${machine}]"
+		unset SOC
+		;;
+	esac
 
-dist=$(lsb_release -cs)
-arch=$(dpkg --print-architecture)
+	dist=$(lsb_release -cs)
+	arch=$(dpkg --print-architecture)
 
-if [ ! "x${SOC}" = "x" ] ; then
-        cd /tmp/
-        if [ -f /tmp/LATEST-${SOC} ] ; then
-                rm -f /tmp/LATEST-${SOC} || true
-        fi
-        if [ -f /tmp/install-me.sh ] ; then
-                rm -f /tmp/install-me.sh || true
-        fi
+	if [ ! "x${SOC}" = "x" ] ; then
+		cd /tmp/
+		if [ -f /tmp/LATEST-${SOC} ] ; then
+			rm -f /tmp/LATEST-${SOC} || true
+		fi
+		if [ -f /tmp/install-me.sh ] ; then
+			rm -f /tmp/install-me.sh || true
+		fi
 
-        wget http://rcn-ee.net/deb/${dist}-${arch}/LATEST-${SOC}
-        if [ -f /tmp/LATEST-${SOC} ] ; then
-                wget $(cat /tmp/LATEST-${SOC} | grep STABLE | awk '{print $3}')
-                /bin/bash /tmp/install-me.sh
-        fi
-fi
+		wget http://rcn-ee.net/deb/${dist}-${arch}/LATEST-${SOC}
+		if [ -f /tmp/LATEST-${SOC} ] ; then
+			wget $(cat /tmp/LATEST-${SOC} | grep ${kernel} | awk '{print $3}')
+			/bin/bash /tmp/install-me.sh
+		fi
+	fi
+}
+
+kernel="STABLE"
+# parse commandline options
+while [ ! -z "$1" ] ; do
+	case $1 in
+	--beta-kernel)
+		kernel="TESTING"
+		;;
+	esac
+	shift
+done
+
+installer
+#
