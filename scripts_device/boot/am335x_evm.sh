@@ -58,8 +58,8 @@ if [ -f /boot/uboot/flash-eMMC.txt ] ; then
 		mkdir -p /boot/uboot/debug/ || true
 	fi
 
-	if [ -f /opt/scripts/beaglebone-black-eMMC-flasher.sh ] ; then
-		/bin/bash /opt/scripts/beaglebone-black-eMMC-flasher.sh >/boot/uboot/debug/flash-eMMC.log 2>&1
+	if [ -f /opt/scripts/tools/beaglebone-black-eMMC-flasher.sh ] ; then
+		/bin/bash /opt/scripts/tools/beaglebone-black-eMMC-flasher.sh >/boot/uboot/debug/flash-eMMC.log 2>&1
 	fi
 fi
 #
