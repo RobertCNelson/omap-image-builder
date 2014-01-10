@@ -152,7 +152,7 @@ install_repos () {
 	git_clone
 	cd ${git_target_dir}/
 	./autogen.sh
-	./configure
+	./configure --enable-debug
 	make
 	make install
 	make distclean
