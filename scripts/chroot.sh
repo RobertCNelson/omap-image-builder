@@ -630,7 +630,7 @@ sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
 sudo mkdir -p ${tempdir}/opt/scripts/ || true
-sudo cp -rv ${DIR}/scripts_device/ ${tempdir}/opt/scripts/
+sudo cp -rv ${DIR}/scripts_device/* ${tempdir}/opt/scripts/
 sudo chmod +x -R ${tempdir}/opt/scripts/*
 
 if [ -n "${chroot_script}" -a -r "${DIR}/chroot_script/${chroot_script}" ] ; then
