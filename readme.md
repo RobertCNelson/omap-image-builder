@@ -26,10 +26,9 @@ Bug Tracker:
 
 Release Process:
 
-    bb.org-vYEAR.MONTH
-    git tag -a bb.org-v2014.01 -m 'bb.org-v2014.01'
+    bb.org-vYEAR.MONTH.DAY
+    git tag -a bb.org-v2014.01.10 -m 'bb.org-v2014.01.10'
     git push origin --tags
-
 
 Master branch:
 ------------
