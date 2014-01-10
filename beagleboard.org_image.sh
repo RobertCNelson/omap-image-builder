@@ -36,18 +36,34 @@ fi
 image_type="console"
 bborg_pkg_list=""
 
-#Cloud9 IDE
-bborg_pkg_list="${bborg_pkg_list} build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
-bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev less"
-#utils:
-bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
-#lxde
-bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput wicd-gtk"
-#lxde utils
-bborg_pkg_list="${bborg_pkg_list} leafpad python-opencv libsdl1.2-dev screen"
-#big stuff
+#Development tools:
+bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison device-tree-compiler libtool lessflex g++ gdb pkg-config"
+
+#Node libs:
+bborg_pkg_list="${bborg_pkg_list} libc-ares-dev"
+
+#Cloud9 libs:
+bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev"
+
+#xorg:
+bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput"
+
+#lxde:
+bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm leafpad alsa-utils evtest screen"
+
+#lxde wifi:
+bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
+
+#lxde wifi:
+#bborg_pkg_list="${bborg_pkg_list} connman"
+
+#development libs:
+bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev"
+
+#Web Stuff:
 bborg_pkg_list="${bborg_pkg_list} xchat"
-#chromium
+
+#Chromium libs:
 bborg_pkg_list="${bborg_pkg_list} libxss1 libnss3 libxslt1.1 libspeechd2"
 
 minimal_armel () {
@@ -270,7 +286,7 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
@@ -280,7 +296,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
@@ -290,7 +306,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
