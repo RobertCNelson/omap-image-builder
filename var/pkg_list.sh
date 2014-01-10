@@ -3,8 +3,10 @@
 #Note: These will be auto installed by chroot.sh script:
 #initramfs-tools sudo wget
 
+base_pkgs=""
+
 #Base
-base_pkgs="nano pastebinit"
+base_pkgs="${base_pkgs} nano pastebinit"
 
 #Tools
 base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit memtester read-edid u-boot-tools"
