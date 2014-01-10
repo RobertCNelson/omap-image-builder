@@ -20,6 +20,17 @@ Flasher:
     sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.2-2013-11-26 --uboot bone --beagleboard.org-production
     xz -z -7 -v BBB-debian-7.2-2013-11-21-4gb.img
 
+Bug Tracker:
+
+    http://bugs.elinux.org/projects/debian-image-releases
+
+Release Process:
+
+    bb.org-vYEAR.MONTH
+    git tag -a bb.org-v2014.01 -m 'bb.org-v2014.01'
+    git push origin --tags
+
+
 Master branch:
 ------------
 
@@ -34,6 +45,12 @@ Images:
     ./rcn-ee_image.sh
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
     http://elinux.org/BeagleBoardDebian#Demo_Image
+
+Release Process:
+
+    vYEAR.MONTH
+    git tag -a v2014.01 -m 'v2014.01'
+    git push origin --tags
 
 MachineKit:
 ------------
