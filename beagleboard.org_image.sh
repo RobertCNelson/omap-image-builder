@@ -34,9 +34,10 @@ if [ -f ${DIR}/config ] ; then
 fi
 
 image_type="console"
+bborg_pkg_list=""
 
 #Cloud9 IDE
-bborg_pkg_list="build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
+bborg_pkg_list="${bborg_pkg_list} build-essential g++ curl libssl-dev apache2-utils libxml2-dev device-tree-compiler"
 bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 libtool flex bison gdb pkg-config libc-ares-dev less"
 #utils:
 bborg_pkg_list="${bborg_pkg_list} alsa-utils evtest systemd"
