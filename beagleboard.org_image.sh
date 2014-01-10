@@ -33,7 +33,7 @@ if [ -f ${DIR}/config ] ; then
 	. ${DIR}/config
 fi
 
-image_type="console"
+image_type="lxde"
 bborg_pkg_list=""
 
 #Development tools:
