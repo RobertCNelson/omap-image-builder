@@ -3,8 +3,10 @@ initrd_file=uInitrd
 initrd_high=0xffffffff
 fdt_high=0xffffffff
 
-#Video: Uncomment to override:
+#Video: Uncomment to override detected HDMI resolution:
+# Add an M before the @ to calculate values for non-standard resolutions, like 800x480
 #kms_force_mode=video=HDMI-A-1:1024x768@60
+#kms_force_mode=video=HDMI-A-1:800x480M@60
 
 ##BeagleBone Cape Overrides
 ##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
@@ -20,7 +22,11 @@ fdt_high=0xffffffff
 # BeBoPr or other board that uses the HDMI/LCD pins 
 optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G
 
-console=ttyO0,115200n8
+# Console on serial port only
+#console=ttyO0,115200n8
+
+# Console on serial port and HDMI out
+console=ttyO0,115200n8 console=tty0
 
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=ext4 rootwait fixrtc
