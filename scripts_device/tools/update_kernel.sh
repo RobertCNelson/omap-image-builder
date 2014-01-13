@@ -38,10 +38,7 @@ get_device () {
 	esac
 }
 
-installer () {
-	dist=$(lsb_release -cs)
-	arch=$(dpkg --print-architecture)
-
+latest_version () {
 	if [ ! "x${SOC}" = "x" ] ; then
 		cd /tmp/
 		if [ -f /tmp/LATEST-${SOC} ] ; then
@@ -59,10 +56,36 @@ installer () {
 	fi
 }
 
+specific_version () {
+	cd /tmp/
+	if [ -f /tmp/install-me.sh ] ; then
+		rm -f /tmp/install-me.sh || true
+	fi
+	wget http://rcn-ee.net/deb/${dist}-${arch}/${kernel_version}/install-me.sh
+	if [ -f /tmp/install-me.sh ] ; then
+		/bin/bash /tmp/install-me.sh
+	fi
+}
+
+checkparm () {
+	if [ "$(echo $1|grep ^'\-')" ] ; then
+		echo "E: Need an argument"
+		exit
+	fi
+}
+
+dist=$(lsb_release -cs)
+arch=$(dpkg --print-architecture)
+
 kernel="STABLE"
+unset kernel_version
 # parse commandline options
 while [ ! -z "$1" ] ; do
 	case $1 in
+	--kernel)
+		checkparm $2
+		kernel_version="$2"
+		;;
 	--beta-kernel)
 		kernel="TESTING"
 		;;
@@ -71,5 +94,9 @@ while [ ! -z "$1" ] ; do
 done
 
 get_device
-installer
+if [ "x${kernel_version}" = "x" ] ; then
+	latest_version
+else
+	specific_version
+fi
 #
