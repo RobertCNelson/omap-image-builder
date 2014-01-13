@@ -82,6 +82,13 @@ install_desktop_branding () {
 	echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 	echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 	chown -R ${user_name}:${user_name} /home/${user_name}/.config/
+
+	#Disable LXDE's screensaver on autostart
+	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
+		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
+		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
+		rm -rf /tmp/autostart || true
+	fi
 }
 
 dogtag () {
