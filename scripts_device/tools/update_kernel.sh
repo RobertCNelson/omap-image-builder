@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ if ! id | grep -q root; then
 	exit
 fi
 
-installer () {
+get_device () {
 	machine=$(cat /proc/device-tree/model | sed "s/ /_/g")
 	case "${machine}" in
 	TI_AM335x_BeagleBone)
@@ -36,7 +36,9 @@ installer () {
 		unset SOC
 		;;
 	esac
+}
 
+installer () {
 	dist=$(lsb_release -cs)
 	arch=$(dpkg --print-architecture)
 
@@ -68,5 +70,6 @@ while [ ! -z "$1" ] ; do
 	shift
 done
 
+get_device
 installer
 #
