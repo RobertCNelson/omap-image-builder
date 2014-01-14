@@ -125,19 +125,21 @@ install_builds () {
 }
 
 install_repos () {
+	git_repo="https://github.com/ajaxorg/cloud9.git"
+	git_target_dir="/opt/cloud9"
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
-		git_repo="https://github.com/ajaxorg/cloud9.git"
-		git_target_dir="/opt/cloud9/"
 		git_clone
 	else
 		mkdir -p /opt/cloud9/ || true
-		qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true"
+		qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true"
 		qemu_warning
-		git clone --depth 1 -b ${chroot_cloud9_git_tag} https://github.com/ajaxorg/cloud9.git /opt/cloud9/ || true
+		git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true
 		sync
-		echo "/opt/cloud9/ : https://github.com/ajaxorg/cloud9.git" >> /opt/source/list.txt
+		echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 	fi
-	chown -R ${user_name}:${user_name} /opt/cloud9/
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${user_name}:${user_name} ${git_target_dir}
+	fi
 
 	#cd /opt/cloud9
 	#npm install --arch=armhf
@@ -152,17 +154,21 @@ install_repos () {
 	git_repo="https://github.com/beagleboard/bonescript"
 	git_target_dir="/var/lib/cloud9"
 	git_clone
-	chown -R ${user_name}:${user_name} ${git_target_dir}
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${user_name}:${user_name} ${git_target_dir}
+	fi
 
 	git_repo="https://github.com/jackmitch/libsoc"
 	git_target_dir="/opt/source/libsoc"
 	git_clone
-	cd ${git_target_dir}/
-	./autogen.sh
-	./configure --enable-debug
-	make
-	make install
-	make distclean
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		./autogen.sh
+		./configure --enable-debug
+		make
+		make install
+		make distclean
+	fi
 
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
