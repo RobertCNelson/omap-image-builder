@@ -37,7 +37,7 @@ image_type="lxde"
 bborg_pkg_list=""
 
 #Development tools:
-bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison device-tree-compiler libtool lessflex g++ gdb pkg-config"
+bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison device-tree-compiler libtool less flex g++ gdb pkg-config"
 
 #Node libs:
 bborg_pkg_list="${bborg_pkg_list} libc-ares-dev"
