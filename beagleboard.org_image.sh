@@ -159,9 +159,19 @@ production () {
 		rm -rf debian-7.3-${image_type}-armhf-${time} || true
 	fi
 
-	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
-
+	#user may run ./ship.sh twice...
+	if [ ! -f debian-7.3-${image_type}-armhf-${time}.tar.xz ] ; then
+		xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	fi
 	tar xf debian-7.3-${image_type}-armhf-${time}.tar.xz
+
+	if [ -f BBB-eMMC-flasher-debian-7.3-${time}-2gb.img ] ; then
+		rm BBB-eMMC-flasher-debian-7.3-${time}-2gb.img || true
+	fi
+
+	if [ -f bone-debian-7.3-${time}-4gb.img ] ; then
+		rm bone-debian-7.3-${time}-4gb.img || true
+	fi
 
 	cd debian-7.3-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
@@ -171,7 +181,14 @@ production () {
 	cd ..
 	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
 
+	if [ -f BBB-eMMC-flasher-debian-7.3-${time}-2gb.img.xz ] ; then
+		rm BBB-eMMC-flasher-debian-7.3-${time}-2gb.img.xz || true
+	fi
 	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
+
+	if [ -f bone-debian-7.3-${time}-4gb.img.xz ] ; then
+		rm bone-debian-7.3-${time}-4gb.img.xz || true
+	fi
 	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
 
 	__EOF__
