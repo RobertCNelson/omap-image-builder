@@ -581,10 +581,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		run_deborphan
 	fi
 	add_user
-	startup_script
 
 	mkdir -p /opt/source || true
 	touch /opt/source/list.txt
+
+	startup_script
 
 	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 		dl_pkg_src
