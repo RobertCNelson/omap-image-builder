@@ -525,23 +525,27 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			;;
 		esac
 
-		pkg="git-core"
-		dpkg_check
+		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 
-		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+			pkg="git-core"
+			dpkg_check
 
-			mkdir -p /opt/scripts/ || true
-			qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
-			qemu_warning
-			git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
-			sync
-			if [ -f /opt/scripts/.git/config ] ; then
-				echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
-				chown -R ${user_name}:${user_name} /opt/scripts/
+			if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+
+				mkdir -p /opt/scripts/ || true
+				qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
+				qemu_warning
+				git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
+				sync
+				if [ -f /opt/scripts/.git/config ] ; then
+					echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
+					chown -R ${user_name}:${user_name} /opt/scripts/
+				fi
+
+			else
+				dpkg_package_missing
 			fi
 
-		else
-			dpkg_package_missing
 		fi
 	}
 
