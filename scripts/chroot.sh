@@ -135,6 +135,7 @@ check_defines
 if [ "x${host_arch}" != "xarmv7l" ] ; then
 	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
 	warn_qemu_will_fail=1
+	echo "warn_qemu_will_fail=1" >> ${DIR}/.project
 fi
 
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
@@ -523,6 +524,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			ubuntu_startup_script
 			;;
 		esac
+
+		pkg="git-core"
+		dpkg_check
+
+		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+
+			mkdir -p /opt/scripts/ || true
+			qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
+			qemu_warning
+			git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
+			sync
+			if [ -f /opt/scripts/.git/config ] ; then
+				echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
+				chown -R ${user_name}:${user_name} /opt/scripts/
+			fi
+
+		else
+			dpkg_package_missing
+		fi
 	}
 
 	cleanup () {
@@ -629,9 +649,9 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
-sudo mkdir -p ${tempdir}/opt/scripts/ || true
-sudo cp -rv ${DIR}/scripts_device/* ${tempdir}/opt/scripts/
-sudo chmod +x -R ${tempdir}/opt/scripts/*
+#sudo mkdir -p ${tempdir}/opt/scripts/ || true
+#sudo cp -rv ${DIR}/scripts_device/* ${tempdir}/opt/scripts/
+#sudo chmod +x -R ${tempdir}/opt/scripts/*
 
 if [ -n "${chroot_script}" -a -r "${DIR}/chroot_script/${chroot_script}" ] ; then
 	report_size
