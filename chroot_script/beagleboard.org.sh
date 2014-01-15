@@ -1,7 +1,7 @@
 #!/bin/sh -e
 export LC_ALL=C
 
-chromium_release="chromium-31.0.1650.69"
+chromium_release="chromium-32.0.1700.76"
 
 #chroot_cloud9_git_tag="v2.0.93"
 #chroot_node_release="v0.8.26"
