@@ -34,6 +34,8 @@ if [ -f ${DIR}/config ] ; then
 fi
 
 image_type="lxde"
+wheezy_release="7.3"
+
 bborg_pkg_list=""
 
 #Development tools:
@@ -73,7 +75,7 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-7.3-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
@@ -156,41 +158,41 @@ production () {
 	#!/bin/bash
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
-	if [ -d ./debian-7.3-${image_type}-armhf-${time} ] ; then
-		rm -rf debian-7.3-${image_type}-armhf-${time} || true
+	if [ -d ./debian-${wheezy_release}-${image_type}-armhf-${time} ] ; then
+		rm -rf debian-${wheezy_release}-${image_type}-armhf-${time} || true
 	fi
 
 	#user may run ./ship.sh twice...
-	if [ ! -f debian-7.3-${image_type}-armhf-${time}.tar.xz ] ; then
-		xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	if [ ! -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
+		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
-	tar xf debian-7.3-${image_type}-armhf-${time}.tar.xz
+	tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
 
-	if [ -f BBB-eMMC-flasher-debian-7.3-${time}-2gb.img ] ; then
-		rm BBB-eMMC-flasher-debian-7.3-${time}-2gb.img || true
-	fi
-
-	if [ -f bone-debian-7.3-${time}-4gb.img ] ; then
-		rm bone-debian-7.3-${time}-4gb.img || true
+	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img ] ; then
+		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img || true
 	fi
 
-	cd debian-7.3-${image_type}-armhf-${time}/
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
-	sudo ./setup_sdcard.sh --img-4gb bone-debian-7.3-${time} --uboot bone --beagleboard.org-production --enable-systemd
+	if [ -f bone-debian-${wheezy_release}-${time}-4gb.img ] ; then
+		rm bone-debian-${wheezy_release}-${time}-4gb.img || true
+	fi
+
+	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img-4gb bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --enable-systemd
 
 	mv *.img ../
 	cd ..
-	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
+	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
 
-	if [ -f BBB-eMMC-flasher-debian-7.3-${time}-2gb.img.xz ] ; then
-		rm BBB-eMMC-flasher-debian-7.3-${time}-2gb.img.xz || true
+	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
+		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
+	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
 
-	if [ -f bone-debian-7.3-${time}-4gb.img.xz ] ; then
-		rm bone-debian-7.3-${time}-4gb.img.xz || true
+	if [ -f bone-debian-${wheezy_release}-${time}-4gb.img.xz ] ; then
+		rm bone-debian-${wheezy_release}-${time}-4gb.img.xz || true
 	fi
-	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
+	xz -z -7 -v bone-debian-${wheezy_release}-${time}-4gb.img
 
 	__EOF__
 

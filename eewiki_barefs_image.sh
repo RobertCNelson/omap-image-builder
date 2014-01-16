@@ -30,6 +30,7 @@ fi
 tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 image_type="bare"
+wheezy_release="7.3"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -38,7 +39,7 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-7.3-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
@@ -135,8 +136,8 @@ production () {
 	#!/bin/bash
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
-	xz -z -7 -v debian-7.3-${image_type}-armel-${time}.tar
-	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-${wheezy_release}-${image_type}-armel-${time}.tar
+	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 
 	__EOF__
 

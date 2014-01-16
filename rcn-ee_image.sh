@@ -34,6 +34,7 @@ if [ -f ${DIR}/config ] ; then
 fi
 
 image_type="console"
+wheezy_release="7.3"
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -42,7 +43,7 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-7.3-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
 		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
@@ -154,18 +155,18 @@ production () {
 	xz -z -7 -v ubuntu-13.04-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-trusty-${image_type}-armhf-${time}.tar
-	xz -z -7 -v debian-7.3-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
-	tar xf debian-7.3-${image_type}-armhf-${time}.tar.xz
+	tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
 	tar xf ubuntu-13.10-${image_type}-armhf-${time}.tar.xz
 
-	cd debian-7.3-${image_type}-armhf-${time}/
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.3-${time} --uboot bone --beagleboard.org-production --bbb-flasher
-	sudo ./setup_sdcard.sh --img-4gb bone-debian-7.3-${time} --uboot bone --beagleboard.org-production
+	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img-4gb bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production
 	mv *.img ../
 	cd ..
-	rm -rf debian-7.3-${image_type}-armhf-${time}/ || true
+	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
 
 	cd ubuntu-13.10-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
@@ -174,8 +175,8 @@ production () {
 	cd ..
 	rm -rf ubuntu-13.10-${image_type}-armhf-${time}/ || true
 
-	xz -z -7 -v BBB-eMMC-flasher-debian-7.3-${time}-2gb.img
-	xz -z -7 -v bone-debian-7.3-${time}-4gb.img
+	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
+	xz -z -7 -v bone-debian-${wheezy_release}-${time}-4gb.img
 	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
 	xz -z -7 -v bone-ubuntu-13.10-${time}-4gb.img
 
