@@ -63,6 +63,7 @@ minimal_armel () {
 		distro="${distro}"
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
+		time="${time}"
 
 		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"
@@ -85,6 +86,13 @@ minimal_armel () {
 		chroot_generic_startup_scripts="${chroot_generic_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
+
+		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
+
+		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
+
+		chroot_hook="${chroot_hook}"
+		chroot_script="${chroot_script}"
 
 	__EOF__
 
@@ -264,9 +272,14 @@ if [ -f ${DIR}/release ] ; then
 	chroot_ENABLE_DEB_SRC="enable"
 fi
 
+#chroot_COPY_SETUP_SDCARD="enable"
+
 #FIXME: things to add to .config:
 #include_firmware="enable"
 #chroot_generic_startup_scripts="enable"
+#chroot_script=""
+
+#chroot_enable_bborg_repo=""
 no_pkgs="enable"
 
 dpkg_arch="armel"
