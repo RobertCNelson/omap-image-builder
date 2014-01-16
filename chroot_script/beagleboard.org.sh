@@ -158,14 +158,14 @@ install_repos () {
 	git_target_dir="/var/lib/cloud9"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${user_name}:${user_name} ${git_target_dir}
-		if [ -d /var/lib/cloud9/node_modules/bonescript/ ] ; then
-			cd /var/lib/cloud9/node_modules/bonescript/
+		if [ -d ${git_target_dir}/node_modules/bonescript/ ] ; then
+			cd ${git_target_dir}/node_modules/bonescript/
 			npm install -d --arch=armhf
 			if [ -d /root/.node-gyp/${chroot_node_release}/ ] ; then
 				rm -rf /root/.node-gyp/${chroot_node_release}/ || true
 			fi
 		fi
+		chown -R ${user_name}:${user_name} ${git_target_dir}
 	fi
 
 	git_repo="https://github.com/jackmitch/libsoc"
