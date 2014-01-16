@@ -62,7 +62,6 @@ minimal_armel () {
 #	if [ -f ${DIR}/release ] ; then
 #		chroot_KERNEL_HTTP_DIR="\
 #http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.12.5-armv7-x10/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.7.10-x13/ \
 #http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone32/"
 #	fi
 
@@ -219,12 +218,12 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list="initramfs-tools,locales,sudo,wget"
+		include_pkgs_list="git-core,initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core ${firmware_pkgs}"
+			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs} git-core"
+			base_pkg_list="${base_pkgs} ${extra_pkgs}"
 		fi
 	fi
 }
@@ -302,7 +301,7 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="wheezy"
@@ -312,7 +311,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="jessie"
@@ -322,7 +321,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs=""
+	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	release="sid"
