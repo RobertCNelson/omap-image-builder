@@ -143,8 +143,9 @@ production () {
 		fi
 	fi
 
-	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 	#!/bin/bash
+	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
 	xz -z -7 -v ubuntu-13.04-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
@@ -176,11 +177,11 @@ production () {
 
 	__EOF__
 
-	chmod +x ${DIR}/deploy/ship.sh
+	chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
 	if [ ! "x${actual_dir}" = "x" ] ; then
-		cp ${DIR}/deploy/ship.sh ${actual_dir}/ship.sh
-		chmod +x ${actual_dir}/ship.sh
+		cp ${DIR}/deploy/gift_wrap_final_images.sh ${actual_dir}/gift_wrap_final_images.sh
+		chmod +x ${actual_dir}/gift_wrap_final_images.sh
 	fi
 
 	cd ${DIR}/

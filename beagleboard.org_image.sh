@@ -152,8 +152,9 @@ production () {
 	echo "Starting Production Stage"
 	cd ${DIR}/deploy/
 
-	cat > ${DIR}/deploy/ship.sh <<-__EOF__
+	cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 	#!/bin/bash
+	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
 	if [ -d ./debian-7.3-${image_type}-armhf-${time} ] ; then
 		rm -rf debian-7.3-${image_type}-armhf-${time} || true
@@ -193,7 +194,7 @@ production () {
 
 	__EOF__
 
-	chmod +x ${DIR}/deploy/ship.sh
+	chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
 	cd ${DIR}/
 }
