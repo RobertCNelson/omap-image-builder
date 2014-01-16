@@ -1536,8 +1536,8 @@ while [ ! -z "$1" ] ; do
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
 		fi
-		#FIXME: 3,750Mb initial size... (should fit most 4Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3750]
+		#FIXME: (should fit most 4Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3700]
 		;;
 	--uboot)
 		checkparm $2
