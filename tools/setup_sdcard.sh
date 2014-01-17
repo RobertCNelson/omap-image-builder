@@ -1152,15 +1152,6 @@ kernel_detection () {
 		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
 		HAS_BONE_DT_KERNEL=1
 	fi
-
-	unset HAS_OMAP_KERNEL
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		omap_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep x | grep -v armv7 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has omap kernel support: v${omap_kernel}"
-		HAS_OMAP_KERNEL=1
-	fi
 }
 
 process_dtb_conf () {
@@ -1265,12 +1256,6 @@ check_dtb_board () {
 		echo "-----------------------------"
 		exit
 	fi
-
-	case "${kernel_subarch}" in
-	omap)
-		select_kernel="${omap_kernel}"
-		;;
-	esac
 }
 
 is_omap () {
@@ -1300,15 +1285,12 @@ is_omap () {
 	KMS_VIDEO_RESOLUTION="1280x720"
 	KMS_VIDEOA="video=DVI-D-1"
 	unset KMS_VIDEOB
-
-	#Kernel Options
-	select_kernel="${omap_kernel}"
 }
 
 convert_uboot_to_dtb_board () {
 	case "${kernel_subarch}" in
 	omap)
-		select_kernel="${omap_kernel}"
+		select_kernel=""
 		;;
 	esac
 }
