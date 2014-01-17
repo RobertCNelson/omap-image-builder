@@ -1400,8 +1400,8 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	mx51evk)
-		echo "Note: [--dtb dt-mx51evk] now replaces [--uboot mx51evk]"
-		. "${DIR}"/hwpack/dt-mx51evk.conf
+		echo "Note: [--dtb imx51-babbage] now replaces [--uboot mx51evk]"
+		. "${DIR}"/hwpack/imx51-babbage.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
@@ -1422,9 +1422,7 @@ check_uboot_type () {
 			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			                panda - <PandaBoard Ax/ES>
 			        Freescale:
-			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 			-----------------------------
 		__EOF__
@@ -1448,9 +1446,7 @@ usage () {
 			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
-			                panda - <PandaBoard Ax/ES>
 			        Freescale:
-			                mx51evk - <i.MX51 "Babbage" Development Board>
 			                mx53loco - <i.MX53 Quick Start Development Board>
 
 			--rootfs <fs_type>
