@@ -1422,7 +1422,7 @@ check_uboot_type () {
 }
 
 usage () {
-	echo "usage: sudo $(basename $0) --mmc /dev/sdX --uboot <dev board>"
+	echo "usage: sudo $(basename $0) --mmc /dev/sdX --dtb <dev board>"
 	#tabed to match 
 		cat <<-__EOF__
 			-----------------------------
@@ -1431,22 +1431,7 @@ usage () {
 			Required Options:
 			--mmc </dev/sdX> or --img <filename.img>
 
-			--uboot <dev board>
-			        TI:
-			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
-
-			--rootfs <fs_type>
-			        ext2
-			        ext3
-			        ext4 - <set as default>
-			        btrfs
-
-			--boot_label <boot_label>
-
-			--rootfs_label <rootfs_label>
-
-			--swap_file <xxx>
-			        <create a swap file of (xxx)MB's>
+			--dtb <dev board>
 
 			Additional Options:
 			        -h --help
