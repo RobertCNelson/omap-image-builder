@@ -239,7 +239,7 @@ fi
 
 echo "127.0.0.1       localhost" > /tmp/hosts
 echo "127.0.1.1       ${image_hostname}" >> /tmp/hosts
-sudo mv /tmp/hosts${tempdir}/etc/hosts
+sudo mv /tmp/hosts ${tempdir}/etc/hosts
 
 echo "${image_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname ${tempdir}/etc/hostname
