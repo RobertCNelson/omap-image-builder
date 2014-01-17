@@ -193,41 +193,44 @@ sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
-file="${tempdir}/etc/apt/sources.list"
 case "${release}" in
 wheezy)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "" | sudo tee -a ${file} >/dev/null
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "" | sudo tee -a ${file} >/dev/null
-	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "" | sudo tee -a ${file} >/dev/null
-	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
 	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
-		echo "" | sudo tee -a ${file} >/dev/null
-		echo "deb http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
-		echo "#deb-src http://bbb.aikidev.net/debian ${release}-bbb main" | sudo tee -a ${file} >/dev/null
+		echo "" >> /tmp/sources.list
+		echo "deb http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
+		echo "#deb-src http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
 	fi
 	;;
 precise|quantal|raring|saucy)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}"| sudo tee ${file} >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "" | sudo tee -a ${file} >/dev/null
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 jessie|sid|trusty)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}" | sudo tee ${file} >/dev/null
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "" | sudo tee -a ${file} >/dev/null
-	echo "#deb http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
-	echo "##deb-src http://${deb_mirror} ${release}-updates ${deb_components}" | sudo tee -a ${file} >/dev/null
+	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "#deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "##deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 esac
+
+if [ -f /tmp/sources.list ] ; then
+	sudo mv /tmp/sources.list ${tempdir}/etc/apt/sources.list
+fi
 
 if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" | sudo tee ${tempdir}/etc/apt/apt.conf >/dev/null
