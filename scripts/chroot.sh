@@ -720,7 +720,7 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 	##FIXME: remove after WiFi/Video works...
-	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/dt-panda.conf || true
+	sudo rm -rf ${DIR}/deploy/${export_filename}/hwpack/omap4-panda* || true
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
