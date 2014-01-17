@@ -1343,19 +1343,16 @@ check_uboot_type () {
 	beagle|beagle_bx|beagle_cx)
 		echo "Note: [--dtb omap3-beagle] now replaces [--uboot beagle]"
 		. "${DIR}"/hwpack/omap3-beagle.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	beagle_xm)
 		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
 		. "${DIR}"/hwpack/omap3-beagle-xm.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	dt-beagle-xm)
 		echo "Note: [--dtb dt-beagle-xm] now replaces [--uboot dt-beagle-xm]"
 		. "${DIR}"/hwpack/dt-beagle-xm.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
@@ -1375,7 +1372,6 @@ check_uboot_type () {
 		conf_boot_endmb="96"
 
 		. "${DIR}"/hwpack/beaglebone.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 
 		select_kernel="${bone_dt_kernel}"
@@ -1384,25 +1380,21 @@ check_uboot_type () {
 	panda)
 		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
 		. "${DIR}"/hwpack/omap4-panda.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	panda_es)
 		echo "Note: [--dtb omap4-panda-es] now replaces [--uboot panda_es]"
 		. "${DIR}"/hwpack/omap4-panda-es.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx51evk)
 		echo "Note: [--dtb imx51-babbage] now replaces [--uboot mx51evk]"
 		. "${DIR}"/hwpack/imx51-babbage.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx53loco)
 		echo "Note: [--dtb imx53-qsb] now replaces [--uboot mx53loco]"
 		. "${DIR}"/hwpack/imx53-qsb.conf
-		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	*)
