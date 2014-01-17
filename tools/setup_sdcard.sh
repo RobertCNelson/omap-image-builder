@@ -419,25 +419,6 @@ tweak_boot_scripts () {
 	#Set filesystem type
 	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
-	if [ "${HAS_OMAPFB_DSS2}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#UENV_FB -> defaultdisplay=dvi
-		sed -i -e 's:UENV_FB:#defaultdisplay=VIDEO_OMAPFB_MODE:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_OMAPFB_MODE:'$VIDEO_OMAPFB_MODE':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#UENV_TIMING -> dvimode=1280x720MR-16@60
-		sed -i -e 's:UENV_TIMING:#dvimode=VIDEO_TIMING:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:VIDEO_TIMING:'$VIDEO_TIMING':g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#optargs=VIDEO_CONSOLE -> optargs=console=tty0
-		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
-
-		#Setting up:
-		#omapfb.mode=\${defaultdisplay}:\${dvimode} omapdss.def_disp=\${defaultdisplay}
-		sed -i -e 's:VIDEO_DISPLAY:TMP_OMAPFB TMP_OMAPDSS:g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's/TMP_OMAPFB/'omapfb.mode=\${defaultdisplay}:\${dvimode}'/g' ${TEMPDIR}/bootscripts/${ALL}
-		sed -i -e 's:TMP_OMAPDSS:'omapdss.def_disp=\${defaultdisplay}':g' ${TEMPDIR}/bootscripts/${ALL}
-	fi
-
 	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
 		#optargs=VIDEO_CONSOLE
 		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
@@ -1274,12 +1255,6 @@ is_omap () {
 
 	VIDEO_CONSOLE="console=tty0"
 
-	#Older DSS2 omapfb framebuffer driver:
-	HAS_OMAPFB_DSS2=1
-	VIDEO_DRV="omapfb.mode=dvi"
-	VIDEO_OMAPFB_MODE="dvi"
-	VIDEO_TIMING="1280x720MR-16@60"
-
 	#KMS Video Options (overrides when edid fails)
 	# From: ls /sys/class/drm/
 	KMS_VIDEO_RESOLUTION="1280x720"
@@ -1336,7 +1311,6 @@ check_uboot_type () {
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
 
-		unset HAS_OMAPFB_DSS2
 		unset KMS_VIDEOA
 
 		#just to disable the omapfb stuff..
