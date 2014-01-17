@@ -1406,8 +1406,8 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	mx53loco)
-		echo "Note: [--dtb dt-mx53loco] now replaces [--uboot mx53loco]"
-		. "${DIR}"/hwpack/dt-mx53loco.conf
+		echo "Note: [--dtb imx53-qsb] now replaces [--uboot mx53loco]"
+		. "${DIR}"/hwpack/imx53-qsb.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
@@ -1422,8 +1422,6 @@ check_uboot_type () {
 			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
-			        Freescale:
-			                mx53loco - <i.MX53 Quick Start Development Board>
 			-----------------------------
 		__EOF__
 		exit
@@ -1446,8 +1444,6 @@ usage () {
 			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
 			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
-			        Freescale:
-			                mx53loco - <i.MX53 Quick Start Development Board>
 
 			--rootfs <fs_type>
 			        ext2
