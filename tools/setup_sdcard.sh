@@ -1287,14 +1287,6 @@ is_omap () {
 	unset KMS_VIDEOB
 }
 
-convert_uboot_to_dtb_board () {
-	case "${kernel_subarch}" in
-	omap)
-		select_kernel=""
-		;;
-	esac
-}
-
 check_uboot_type () {
 	#New defines for hwpack:
 	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
