@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2014 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1410,10 +1410,6 @@ check_uboot_type () {
 		cat <<-__EOF__
 			-----------------------------
 			ERROR: This script does not currently recognize the selected: [--uboot ${UBOOT_TYPE}] option..
-			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
-			-----------------------------
-			        TI:
-			                bone - <BeagleBone Ax>
 			-----------------------------
 		__EOF__
 		exit
