@@ -1387,19 +1387,20 @@ check_uboot_type () {
 		select_kernel="${bone_dt_kernel}"
 		need_dtbs=1
 		;;
-	panda|panda_es)
-		SYSTEM="panda"
-		conf_board="omap4_panda"
-		is_omap
-		KMS_VIDEOB="video=HDMI-A-1"
-		usbnet_mem="16384"
-
-		. "${DIR}"/hwpack/pandaboard.conf
+	panda)
+		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
+		. "${DIR}"/hwpack/omap4-panda.conf
+		convert_uboot_to_dtb_board
+		process_dtb_conf
+		;;
+	panda_es)
+		echo "Note: [--dtb omap4-panda-es] now replaces [--uboot panda_es]"
+		. "${DIR}"/hwpack/omap4-panda-es.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
 		;;
 	mx51evk)
-		echo "Note: [--dtb dt-mx51evk] now replaces [--uboot mx51evk"
+		echo "Note: [--dtb dt-mx51evk] now replaces [--uboot mx51evk]"
 		. "${DIR}"/hwpack/dt-mx51evk.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
