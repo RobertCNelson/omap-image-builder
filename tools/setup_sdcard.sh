@@ -338,7 +338,6 @@ boot_uenv_txt_template () {
 		loadinitrd=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
 		loadfdt=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
 
-		boot_classic=run loadkernel; run loadinitrd
 		boot_ftd=run loadkernel; run loadinitrd; run loadfdt
 
 	__EOF__
@@ -390,23 +389,10 @@ boot_uenv_txt_template () {
 		;;
 	esac
 
-	if [ ! "${need_dtbs}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Classic Board File Boot:
-			${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
-			#New Device Tree Boot:
-			#${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
-
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Classic Board File Boot:
-			#${conf_entrypt}=run boot_classic; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size}
-			#New Device Tree Boot:
-			${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
-
-		__EOF__
-	fi
+	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+		#
+	__EOF__
 }
 
 tweak_boot_scripts () {
@@ -1272,7 +1258,6 @@ check_uboot_type () {
 	unset USE_UIMAGE
 	unset USE_KMS
 	unset conf_fdtfile
-	unset need_dtbs
 
 	unset bootloader_location
 	unset spl_name
@@ -1323,7 +1308,6 @@ check_uboot_type () {
 		process_dtb_conf
 
 		select_kernel="${bone_dt_kernel}"
-		need_dtbs=1
 		;;
 	panda)
 		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
