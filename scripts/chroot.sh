@@ -233,13 +233,16 @@ if [ -f /tmp/sources.list ] ; then
 fi
 
 if [ "${apt_proxy}" ] ; then
-	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" | sudo tee ${tempdir}/etc/apt/apt.conf >/dev/null
+	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" > /tmp/apt.conf
+	sudo mv /tmp/apt.conf ${tempdir}/etc/apt/apt.conf
 fi
 
-echo "127.0.0.1       localhost" | sudo tee ${tempdir}/etc/hosts >/dev/null
-echo "127.0.1.1       ${image_hostname}" | sudo tee -a ${tempdir}/etc/hosts >/dev/null
+echo "127.0.0.1       localhost" > /tmp/hosts
+echo "127.0.1.1       ${image_hostname}" >> /tmp/hosts
+sudo mv /tmp/hosts${tempdir}/etc/hosts
 
-echo "${image_hostname}" | sudo tee ${tempdir}/etc/hostname >/dev/null
+echo "${image_hostname}" > /tmp/hostname
+sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${distro}" in
 debian)
@@ -702,7 +705,8 @@ if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
 fi
 
-echo "${user_name}:${password}" | sudo tee ${DIR}/deploy/${export_filename}/user_password.list >/dev/null
+echo "${user_name}:${password}" > /tmp/user_password.list
+sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.list
 
 #Fixes:
 #Remove pre-generated ssh keys, these will be regenerated on first bootup...
