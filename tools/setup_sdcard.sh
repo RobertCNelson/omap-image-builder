@@ -1341,13 +1341,7 @@ check_uboot_type () {
 
 	case "${UBOOT_TYPE}" in
 	beagle|beagle_bx|beagle_cx)
-		SYSTEM="beagle"
-		conf_board="omap3_beagle"
-		DISABLE_ETH=1
-		is_omap
-		#conf_fdtfile="omap3-beagle.dtb"
-		usbnet_mem="8192"
-
+		echo "Note: [--dtb omap3-beagle] now replaces [--uboot beagle]"
 		. "${DIR}"/hwpack/omap3-beagle.conf
 		convert_uboot_to_dtb_board
 		process_dtb_conf
@@ -1419,8 +1413,6 @@ check_uboot_type () {
 			Please rerun $(basename $0) with a valid [--uboot <device>] option from the list below:
 			-----------------------------
 			        TI:
-			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
-			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone Ax>
 			-----------------------------
 		__EOF__
@@ -1441,8 +1433,6 @@ usage () {
 
 			--uboot <dev board>
 			        TI:
-			                beagle - <BeagleBoard Ax/Bx/Cx/Dx>
-			                beagle_xm - <BeagleBoard xMA/B/C>
 			                bone - <BeagleBone/BeagleBone Black (v3.8.x)>
 
 			--rootfs <fs_type>
