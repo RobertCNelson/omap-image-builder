@@ -128,7 +128,7 @@ install_builds () {
 }
 
 install_repos () {
-	git_repo="https://github.com/ajaxorg/cloud9.git"
+	git_repo="git://github.com/ajaxorg/cloud9.git"
 	git_target_dir="/opt/cloud9"
 	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
 		git_clone
@@ -150,11 +150,11 @@ install_repos () {
 	if [ -f /var/www/index.html ] ; then
 		rm -rf /var/www/index.html || true
 	fi
-	git_repo="https://github.com/beagleboard/bone101"
+	git_repo="git://github.com/beagleboard/bone101"
 	git_target_dir="/var/www/"
 	git_clone
 
-	git_repo="https://github.com/beagleboard/bonescript"
+	git_repo="git://github.com/beagleboard/bonescript"
 	git_target_dir="/var/lib/cloud9"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
@@ -168,7 +168,7 @@ install_repos () {
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 	fi
 
-	git_repo="https://github.com/jackmitch/libsoc"
+	git_repo="git://github.com/jackmitch/libsoc"
 	git_target_dir="/opt/source/libsoc"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
@@ -180,7 +180,7 @@ install_repos () {
 		make distclean
 	fi
 
-	git_repo="https://github.com/prpplague/Userspace-Arduino"
+	git_repo="git://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
 }

@@ -535,12 +535,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 			if [ -f /usr/bin/git ] ; then
 				mkdir -p /opt/scripts/ || true
-				qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
+				qemu_command="git clone git://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
 				qemu_warning
-				git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
+				git clone git://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
 				sync
 				if [ -f /opt/scripts/.git/config ] ; then
-					echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
+					echo "/opt/scripts/ : git://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
 					chown -R ${user_name}:${user_name} /opt/scripts/
 				fi
 			fi
