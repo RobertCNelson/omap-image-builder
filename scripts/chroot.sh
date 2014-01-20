@@ -533,11 +533,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 
-			pkg="git-core"
-			dpkg_check
-
-			if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-
+			if [ -f /usr/bin/git ] ; then
 				mkdir -p /opt/scripts/ || true
 				qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
 				qemu_warning
@@ -547,9 +543,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 					echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
 					chown -R ${user_name}:${user_name} /opt/scripts/
 				fi
-
-			else
-				dpkg_package_missing
 			fi
 
 		fi
@@ -659,6 +652,13 @@ fi
 chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
+
+if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
+	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
+		echo "Log: ERROR: git clone of https://github.com/RobertCNelson/boot-scripts failed.."
+		exit 1
+	fi
+fi
 
 #sudo mkdir -p ${tempdir}/opt/scripts/ || true
 #sudo cp -rv ${DIR}/scripts_device/* ${tempdir}/opt/scripts/
