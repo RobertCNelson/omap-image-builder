@@ -30,27 +30,29 @@ git_clone () {
 }
 
 setup_xorg () {
-	echo "Section \"Monitor\"" > /etc/X11/xorg.conf
-	echo "        Identifier      \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
-	echo "EndSection" >> /etc/X11/xorg.conf
-	echo "" >> /etc/X11/xorg.conf
-	echo "Section \"Device\"" >> /etc/X11/xorg.conf
-	echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
-	echo "        Driver          \"modesetting\"" >> /etc/X11/xorg.conf
-	echo "        Option          \"SWCursor\"      \"true\"" >> /etc/X11/xorg.conf
-	echo "EndSection" >> /etc/X11/xorg.conf
-	echo "" >> /etc/X11/xorg.conf
-	echo "Section \"Screen\"" >> /etc/X11/xorg.conf
-	echo "        Identifier      \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
-	echo "        Device          \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
-	echo "        Monitor         \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
-	echo "        DefaultDepth    16" >> /etc/X11/xorg.conf
-	echo "EndSection" >> /etc/X11/xorg.conf
-	echo "" >> /etc/X11/xorg.conf
-	echo "Section \"ServerLayout\"" >> /etc/X11/xorg.conf
-	echo "        Identifier      \"Builtin Default Layout\"" >> /etc/X11/xorg.conf
-	echo "        Screen          \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
-	echo "EndSection" >> /etc/X11/xorg.conf
+	if [ -d /etc/X11/ ] ; then
+		echo "Section \"Monitor\"" > /etc/X11/xorg.conf
+		echo "        Identifier      \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
+		echo "EndSection" >> /etc/X11/xorg.conf
+		echo "" >> /etc/X11/xorg.conf
+		echo "Section \"Device\"" >> /etc/X11/xorg.conf
+		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
+		echo "        Driver          \"modesetting\"" >> /etc/X11/xorg.conf
+		echo "        Option          \"SWCursor\"      \"true\"" >> /etc/X11/xorg.conf
+		echo "EndSection" >> /etc/X11/xorg.conf
+		echo "" >> /etc/X11/xorg.conf
+		echo "Section \"Screen\"" >> /etc/X11/xorg.conf
+		echo "        Identifier      \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
+		echo "        Device          \"Builtin Default fbdev Device 0\"" >> /etc/X11/xorg.conf
+		echo "        Monitor         \"Builtin Default Monitor\"" >> /etc/X11/xorg.conf
+		echo "        DefaultDepth    16" >> /etc/X11/xorg.conf
+		echo "EndSection" >> /etc/X11/xorg.conf
+		echo "" >> /etc/X11/xorg.conf
+		echo "Section \"ServerLayout\"" >> /etc/X11/xorg.conf
+		echo "        Identifier      \"Builtin Default Layout\"" >> /etc/X11/xorg.conf
+		echo "        Screen          \"Builtin Default fbdev Screen 0\"" >> /etc/X11/xorg.conf
+		echo "EndSection" >> /etc/X11/xorg.conf
+	fi
 }
 
 setup_autologin () {
