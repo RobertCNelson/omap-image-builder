@@ -468,7 +468,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	add_user () {
 		groupadd admin || true
-		default_groups="admin,adm,dialout,cdrom,floppy,audio,dip,video,netdev"
+		default_groups="admin,adm,dialout,i2c,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
 
 		pkg="sudo"
 		dpkg_check
@@ -490,6 +490,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			root
 			root
 			EOF
+
+			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
+			sed -i -e 's:dialout:dialout i2c:g' /etc/adduser.conf
+			sed -i -e 's:#ADD_EXTRA_GROUPS:ADD_EXTRA_GROUPS:g' /etc/adduser.conf
+
 			;;
 		Ubuntu)
 			passwd -l root || true
