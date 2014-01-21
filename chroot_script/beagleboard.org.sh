@@ -29,6 +29,14 @@ git_clone () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+system_patches () {
+	#For when sed/grep/etc just gets way to complex...
+	cd /
+	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
+		patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
+	fi
+}
+
 setup_xorg () {
 	if [ -d /etc/X11/ ] ; then
 		echo "Section \"Monitor\"" > /etc/X11/xorg.conf
@@ -196,6 +204,7 @@ unsecure_root () {
 	sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
 }
 
+system_patches
 setup_xorg
 setup_autologin
 install_desktop_branding
