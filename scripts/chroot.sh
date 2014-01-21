@@ -470,7 +470,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		groupadd admin || true
 
 		groupadd spi || true
-		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"' > /etc/udev/rules.d/50-spi.rules
+		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
 		default_groups="admin,adm,dialout,i2c,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
 
