@@ -246,7 +246,7 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${distro}" in
 debian)
-	sudo cp ${DIR}/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
+	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
@@ -254,7 +254,7 @@ debian)
 
 	;;
 ubuntu)
-	sudo cp ${DIR}/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init.d/boot_scripts.conf
+	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init.d/boot_scripts.conf
 
 	wfile="flash-kernel.conf"
 	cat > /tmp/${wfile} <<-__EOF__
