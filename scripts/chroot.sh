@@ -728,6 +728,10 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
+
+	if [ -n "${chroot_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_uenv_txt}" ] ; then
+		sudo cp "${DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
+	fi
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then

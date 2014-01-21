@@ -133,6 +133,7 @@ minimal_armel () {
 
 		chroot_hook="${chroot_hook}"
 		chroot_script="${chroot_script}"
+		chroot_uenv_txt="${chroot_uenv_txt}"
 
 	__EOF__
 
@@ -360,6 +361,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 include_firmware="enable"
 chroot_generic_startup_scripts="enable"
 chroot_script="beagleboard.org.sh"
+chroot_uenv_txt="beagleboard.org.txt"
 
 chroot_enable_bborg_repo="enable"
 #no_pkgs="enable"
