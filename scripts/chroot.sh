@@ -669,10 +669,6 @@ if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
 	fi
 fi
 
-#sudo mkdir -p ${tempdir}/opt/scripts/ || true
-#sudo cp -rv ${DIR}/scripts_device/* ${tempdir}/opt/scripts/
-#sudo chmod +x -R ${tempdir}/opt/scripts/*
-
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
