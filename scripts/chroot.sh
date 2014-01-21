@@ -468,7 +468,11 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	add_user () {
 		groupadd admin || true
-		default_groups="admin,adm,dialout,i2c,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
+
+		groupadd spi || true
+		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"' > /etc/udev/rules.d/50-spi.rules
+
+		default_groups="admin,adm,dialout,i2c,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
 
 		pkg="sudo"
 		dpkg_check
@@ -492,7 +496,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			EOF
 
 			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
-			sed -i -e 's:dialout:dialout i2c:g' /etc/adduser.conf
+			sed -i -e 's:dialout:dialout i2c spi:g' /etc/adduser.conf
 			sed -i -e 's:#ADD_EXTRA_GROUPS:ADD_EXTRA_GROUPS:g' /etc/adduser.conf
 
 			;;
