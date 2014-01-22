@@ -130,11 +130,26 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
-	echo "debug: npm config ls -l"
+	echo "debug: npm config ls -l (before)"
+	echo "--------------------------------"
 	npm config ls -l
+	echo "--------------------------------"
 
-	#echo "Installing bonescript"
-	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
+	#fix npm in chroot.. (did i mention i hate npm...)
+	npm config set cache /root/.npm
+	npm config set group 0
+	npm config set init-module /root/.npm-init.js
+	npm config set tmp /root/tmp
+	npm config set user 0
+	npm config set userconfig /root/.npmrc
+
+	echo "debug: npm config ls -l (after)"
+	echo "--------------------------------"
+	npm config ls -l
+	echo "--------------------------------"
+
+	echo "Installing bonescript"
+	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
 
 	sync
 	umount -l /dev/shm || true
