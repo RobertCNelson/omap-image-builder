@@ -205,6 +205,12 @@ install_repos () {
 #			fi
 #		fi
 		chown -R ${user_name}:${user_name} ${git_target_dir}
+		cd ${git_target_dir}/
+
+		#TESTME: this may fail in chroot...
+		cp -v systemd/* /lib/systemd/system/
+		#systemctl enable bonescript.socket
+		#systemctl enable bonescript-autorun.service
 	fi
 
 	git_repo="git://github.com/jackmitch/libsoc"
