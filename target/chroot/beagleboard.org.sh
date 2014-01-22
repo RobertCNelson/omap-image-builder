@@ -130,6 +130,9 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
+	echo "debug: npm config ls -l"
+	npm config ls -l
+
 	#echo "Installing bonescript"
 	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
 
