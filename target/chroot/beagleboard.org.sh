@@ -5,9 +5,9 @@ chromium_release="chromium-32.0.1700.76"
 
 #chroot_cloud9_git_tag="v2.0.93"
 #chroot_node_release="0.8.26"
-#chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/local/"
+#chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/"
 chroot_node_release="0.10.24"
-chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/local/"
+chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/"
 
 user_name="debian"
 
