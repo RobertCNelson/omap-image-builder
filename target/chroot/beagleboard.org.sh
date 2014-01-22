@@ -4,10 +4,10 @@ export LC_ALL=C
 chromium_release="chromium-32.0.1700.76"
 
 #chroot_cloud9_git_tag="v2.0.93"
-#chroot_node_release="0.8.26"
-#chroot_node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/"
-chroot_node_release="0.10.24"
-chroot_node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/"
+#node_release="0.8.26"
+#node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/"
+node_release="0.10.24"
+node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/"
 
 user_name="debian"
 
@@ -110,14 +110,14 @@ build_node () {
 	#df -Th
 
 	cd /opt/source
-	wget http://nodejs.org/dist/v${chroot_node_release}/node-v${chroot_node_release}.tar.gz
-	tar xf node-v${chroot_node_release}.tar.gz
-	cd node-v${chroot_node_release}
-	./configure ${chroot_node_build_options} && make -j5 && make install
+	wget http://nodejs.org/dist/v${node_release}/node-v${node_release}.tar.gz
+	tar xf node-v${node_release}.tar.gz
+	cd node-v${node_release}
+	./configure ${node_build_options} && make -j5 && make install
 	cd /
-	rm -rf /opt/source/node-v${chroot_node_release}/ || true
-	rm -rf /opt/source/node-v${chroot_node_release}.tar.gz || true
-	echo "node-v${chroot_node_release} : http://rcn-ee.net/pkgs/nodejs/node-v${chroot_node_release}.tar.gz" >> /opt/source/list.txt
+	rm -rf /opt/source/node-v${node_release}/ || true
+	rm -rf /opt/source/node-v${node_release}.tar.gz || true
+	echo "node-v${node_release} : http://rcn-ee.net/pkgs/nodejs/node-v${node_release}.tar.gz" >> /opt/source/list.txt
 
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
@@ -171,8 +171,8 @@ install_repos () {
 		if [ -d ${git_target_dir}/node_modules/bonescript/ ] ; then
 			cd ${git_target_dir}/node_modules/bonescript/
 			npm install -d --arch=armhf
-			if [ -d /root/.node-gyp/${chroot_node_release}/ ] ; then
-				rm -rf /root/.node-gyp/${chroot_node_release}/ || true
+			if [ -d /root/.node-gyp/${node_release}/ ] ; then
+				rm -rf /root/.node-gyp/${node_release}/ || true
 			fi
 		fi
 		chown -R ${user_name}:${user_name} ${git_target_dir}
