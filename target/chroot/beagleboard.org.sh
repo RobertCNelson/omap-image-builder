@@ -4,10 +4,11 @@ export LC_ALL=C
 chromium_release="chromium-32.0.1700.76"
 
 #chroot_cloud9_git_tag="v2.0.93"
+node_prefix="/usr"
 #node_release="0.8.26"
-#node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=/usr/"
+#node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=${node_prefix}"
 node_release="0.10.24"
-node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=/usr/"
+node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=${node_prefix}"
 
 user_name="debian"
 
@@ -122,6 +123,9 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
+	echo "Installing bonescript"
+	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
+
 	sync
 	umount -l /dev/shm || true
 }
@@ -168,13 +172,13 @@ install_repos () {
 	git_target_dir="/var/lib/cloud9"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
-		if [ -d ${git_target_dir}/node_modules/bonescript/ ] ; then
-			cd ${git_target_dir}/node_modules/bonescript/
-			npm install -d --arch=armhf
-			if [ -d /root/.node-gyp/${node_release}/ ] ; then
-				rm -rf /root/.node-gyp/${node_release}/ || true
-			fi
-		fi
+#		if [ -d ${git_target_dir}/node_modules/bonescript/ ] ; then
+#			cd ${git_target_dir}/node_modules/bonescript/
+#			npm install -d --arch=armhf
+#			if [ -d /root/.node-gyp/${node_release}/ ] ; then
+#				rm -rf /root/.node-gyp/${node_release}/ || true
+#			fi
+#		fi
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 	fi
 
