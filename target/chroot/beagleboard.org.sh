@@ -230,6 +230,17 @@ install_repos () {
 	git_repo="git://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
+
+	git_repo="git://github.com/tias/xinput_calibrator"
+	git_target_dir="/opt/source/xinput_calibrator"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		./autogen.sh --with-gui=x11
+		make
+		make install
+		make distclean
+	fi
 }
 
 unsecure_root () {

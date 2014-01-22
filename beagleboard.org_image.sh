@@ -59,6 +59,10 @@ bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
 #lxde wifi:
 #bborg_pkg_list="${bborg_pkg_list} connman"
 
+#touchscreen: (xinput_calibrator)
+#when we have to build it...
+bborg_pkg_list="${bborg_pkg_list} libxi-dev"
+
 #development libs:
 bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev"
 
