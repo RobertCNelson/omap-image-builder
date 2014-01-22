@@ -79,18 +79,6 @@ setup_autologin () {
 			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' /etc/lightdm/lightdm.conf
 		fi
 	fi
-
-	if [ -f /etc/slim.conf ] ; then
-		echo "#!/bin/sh" > /home/${user_name}/.xinitrc
-		echo "" >> /home/${user_name}/.xinitrc
-		echo "exec startlxde" >> /home/${user_name}/.xinitrc
-		chmod +x /home/${user_name}/.xinitrc
-
-		#/etc/slim.conf modfications:
-		sed -i -e 's:default,start:startlxde,default,start:g' /etc/slim.conf
-		echo "default_user        ${user_name}" >> /etc/slim.conf
-		echo "auto_login        yes" >> /etc/slim.conf
-	fi
 }
 
 install_desktop_branding () {
