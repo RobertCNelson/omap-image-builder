@@ -134,10 +134,11 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
-	echo "debug: npm config ls -l (before)"
-	echo "--------------------------------"
-	npm config ls -l
-	echo "--------------------------------"
+	#debug
+	#echo "debug: npm config ls -l (before)"
+	#echo "--------------------------------"
+	#npm config ls -l
+	#echo "--------------------------------"
 
 	#fix npm in chroot.. (did i mention i hate npm...)
 	npm config set cache /root/.npm
@@ -147,10 +148,10 @@ build_node () {
 	npm config set user 0
 	npm config set userconfig /root/.npmrc
 
-	echo "debug: npm config ls -l (after)"
-	echo "--------------------------------"
-	npm config ls -l
-	echo "--------------------------------"
+	#echo "debug: npm config ls -l (after)"
+	#echo "--------------------------------"
+	#npm config ls -l
+	#echo "--------------------------------"
 
 	echo "Installing bonescript"
 	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
@@ -201,13 +202,6 @@ install_repos () {
 	git_target_dir="/var/lib/cloud9"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
-#		if [ -d ${git_target_dir}/node_modules/bonescript/ ] ; then
-#			cd ${git_target_dir}/node_modules/bonescript/
-#			npm install -d --arch=armhf
-#			if [ -d /root/.node-gyp/${node_release}/ ] ; then
-#				rm -rf /root/.node-gyp/${node_release}/ || true
-#			fi
-#		fi
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 		cd ${git_target_dir}/
 
