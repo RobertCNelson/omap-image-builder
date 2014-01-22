@@ -134,8 +134,6 @@ check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] ; then
 	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
-	warn_qemu_will_fail=1
-	echo "warn_qemu_will_fail=1" >> ${DIR}/.project
 fi
 
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
@@ -306,8 +304,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "Log: (chroot) package [\${pkg}] was not installed... (add to base_pkg_list if functionality is really needed)"
 	}
 
+	is_this_qemu () {
+		unset warn_qemu_will_fail
+		if [ -f /usr/bin/qemu-arm-static ] ; then
+			warn_qemu_will_fail=1
+		fi
+	}
+
 	qemu_warning () {
-		if [ "${warn_qemu_will_fail}" ] ; then
+		if [ "\${warn_qemu_will_fail}" ] ; then
 			echo "Log: (chroot) Warning, qemu can fail here... (run on real armv7l hardware for production images)"
 			echo "Log: (chroot): [\${qemu_command}]"
 		fi
@@ -584,6 +589,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	#cat /chroot_script.sh
+	is_this_qemu
 	stop_init
 
 	install_pkg_updates

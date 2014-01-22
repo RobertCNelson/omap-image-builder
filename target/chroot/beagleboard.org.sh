@@ -14,6 +14,13 @@ user_name="debian"
 
 . /.project
 
+is_this_qemu () {
+	unset warn_qemu_will_fail
+	if [ -f /usr/bin/qemu-arm-static ] ; then
+		warn_qemu_will_fail=1
+	fi
+}
+
 qemu_warning () {
 	if [ "${warn_qemu_will_fail}" ] ; then
 		echo "Log: (chroot) Warning, qemu can fail here... (run on real armv7l hardware for production images)"
@@ -208,6 +215,7 @@ unsecure_root () {
 	sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
 }
 
+is_this_qemu
 system_patches
 setup_xorg
 setup_autologin
