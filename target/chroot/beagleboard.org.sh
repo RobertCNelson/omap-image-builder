@@ -156,6 +156,10 @@ build_node () {
 	echo "Installing bonescript"
 	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
 
+	if [ -d /root/tmp/ ] ; then
+		rm -rf /root/tmp/ || true
+	fi
+
 	sync
 	umount -l /dev/shm || true
 }
