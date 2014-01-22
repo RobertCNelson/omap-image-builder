@@ -114,8 +114,12 @@ dogtag () {
 }
 
 build_node () {
+	if [ ! -d /run/shm ] ; then
+		mkdir -p /run/shm
+	fi
+
 	mount -t tmpfs shmfs -o size=256M /dev/shm
-	#df -Th
+	df -Th
 
 	cd /opt/source
 	wget http://nodejs.org/dist/v${node_release}/node-v${node_release}.tar.gz
