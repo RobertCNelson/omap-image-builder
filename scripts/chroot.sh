@@ -495,6 +495,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		case "\${distro}" in
 		Debian)
+			echo "the default username and password is [${user_name}:${password}]" >> /etc/issue
+			echo "" >> /etc/issue
+
 			passwd <<-EOF
 			root
 			root
