@@ -190,7 +190,7 @@ install_repos () {
 		rm -rf /var/www/index.html || true
 	fi
 	git_repo="git://github.com/beagleboard/bone101"
-	git_target_dir="/var/www/"
+	git_target_dir="/usr/share/bone101/"
 	git_clone
 
 	git_repo="git://github.com/beagleboard/bonescript"
@@ -202,7 +202,8 @@ install_repos () {
 
 		#TESTME: this may fail in chroot...
 		cp -v systemd/* /lib/systemd/system/
-		#systemctl enable bonescript.socket
+		systemctl enable bonescript.socket
+		#needs cloud9...
 		#systemctl enable bonescript-autorun.service
 	fi
 
