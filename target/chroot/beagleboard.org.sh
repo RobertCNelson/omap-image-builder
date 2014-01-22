@@ -130,8 +130,8 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
-	echo "Installing bonescript"
-	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
+	#echo "Installing bonescript"
+	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
 
 	sync
 	umount -l /dev/shm || true
