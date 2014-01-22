@@ -75,6 +75,9 @@ setup_autologin () {
 	if [ -f /etc/lightdm/lightdm.conf ] ; then
 		sed -i -e 's:#autologin-user=:autologin-user='$user_name':g' /etc/lightdm/lightdm.conf
 		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session=LXDE:g' /etc/lightdm/lightdm.conf
+		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
+			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' /etc/lightdm/lightdm.conf
+		fi
 	fi
 
 	if [ -f /etc/slim.conf ] ; then
