@@ -104,6 +104,7 @@ minimal_armel () {
 
 		chroot_hook="${chroot_hook}"
 		chroot_script="${chroot_script}"
+		chroot_uenv_txt="${chroot_uenv_txt}"
 
 	__EOF__
 

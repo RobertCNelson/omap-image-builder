@@ -151,13 +151,30 @@ compression () {
 	cd ${DIR}/deploy/
 
 	tar cvf ${export_filename}.tar ./${export_filename}
-	#xz -z -7 -v "${export_filename}.tar"
+
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
+			fi
+		fi
+	fi
 	cd ${DIR}/
 }
 
 production () {
 	echo "Starting Production Stage"
 	cd ${DIR}/deploy/
+
+	unset actual_dir
+	if [ -f ${DIR}/release ] ; then
+		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
+			if [ -d /mnt/farm/testing/pending/ ] ; then
+				cp -v arm*.tar /mnt/farm/images/
+				actual_dir="/mnt/farm/testing/pending"
+			fi
+		fi
+	fi
 
 	cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 	#!/bin/bash
@@ -202,6 +219,11 @@ production () {
 	__EOF__
 
 	chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
+
+	if [ ! "x${actual_dir}" = "x" ] ; then
+		cp ${DIR}/deploy/gift_wrap_final_images.sh ${actual_dir}/gift_wrap_final_images.sh
+		chmod +x ${actual_dir}/gift_wrap_final_images.sh
+	fi
 
 	cd ${DIR}/
 }
@@ -356,8 +378,9 @@ fi
 
 mkdir -p ${DIR}/deploy/
 
-#include gpl/source package...
-chroot_ENABLE_DEB_SRC="enable"
+if [ -f ${DIR}/release ] ; then
+	chroot_ENABLE_DEB_SRC="enable"
+fi
 
 chroot_COPY_SETUP_SDCARD="enable"
 
