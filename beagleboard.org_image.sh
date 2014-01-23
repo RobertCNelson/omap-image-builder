@@ -194,13 +194,13 @@ production () {
 		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img || true
 	fi
 
-	if [ -f bone-debian-${wheezy_release}-${time}-4gb.img ] ; then
-		rm bone-debian-${wheezy_release}-${time}-4gb.img || true
+	if [ -f bone-debian-${wheezy_release}-${time}-2gb.img ] ; then
+		rm bone-debian-${wheezy_release}-${time}-2gb.img || true
 	fi
 
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
-	sudo ./setup_sdcard.sh --img-4gb bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
 	cd ..
@@ -211,10 +211,10 @@ production () {
 	fi
 	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
 
-	if [ -f bone-debian-${wheezy_release}-${time}-4gb.img.xz ] ; then
-		rm bone-debian-${wheezy_release}-${time}-4gb.img.xz || true
+	if [ -f bone-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
+		rm bone-debian-${wheezy_release}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v bone-debian-${wheezy_release}-${time}-4gb.img
+	xz -z -7 -v bone-debian-${wheezy_release}-${time}-2gb.img
 
 	__EOF__
 
