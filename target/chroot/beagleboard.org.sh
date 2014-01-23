@@ -202,8 +202,11 @@ install_repos () {
 
 		cp -v systemd/* /lib/systemd/system/
 		systemctl enable bonescript.socket
-		#needs cloud9...
-		#systemctl enable bonescript-autorun.service
+
+		if [ ! -d ${git_target_dir}/autorun ] ; then
+			mkdir -p ${git_target_dir}/autorun || true
+		fi
+		systemctl enable bonescript-autorun.service
 	fi
 
 	git_repo="git://github.com/jackmitch/libsoc"
