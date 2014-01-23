@@ -1135,7 +1135,7 @@ process_dtb_conf () {
 	fi
 
 	if [ ! "${conf_boot_endmb}" ] ; then
-		conf_boot_endmb="64"
+		conf_boot_endmb="96"
 		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
 	fi
 
@@ -1301,8 +1301,6 @@ check_uboot_type () {
 		#just to disable the omapfb stuff..
 		USE_KMS=1
 		kms_conn="HDMI-A-1"
-
-		conf_boot_endmb="96"
 
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
