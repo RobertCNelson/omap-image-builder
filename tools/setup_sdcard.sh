@@ -1393,7 +1393,24 @@ while [ ! -z "$1" ] ; do
 		check_root
 		check_mmc
 		;;
-	--img)
+	--img-1gb)
+		checkparm $2
+		imagename="$2"
+		if [ "x${imagename}" = "x" ] ; then
+			imagename=image.img
+		fi
+		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
+		imagename="${name}-1gb.img"
+		media="${DIR}/${imagename}"
+		build_img_file=1
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+		#FIXME: 700Mb initial size... (should fit most 1Gb microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*700]
+		;;
+	--img|--img-2gb)
 		checkparm $2
 		imagename="$2"
 		if [ "x${imagename}" = "x" ] ; then
