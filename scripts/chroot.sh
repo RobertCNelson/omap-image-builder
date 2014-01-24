@@ -252,7 +252,7 @@ debian)
 
 	;;
 ubuntu)
-	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init.d/boot_scripts.conf
+	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/boot_scripts.conf
 
 	wfile="flash-kernel.conf"
 	cat > /tmp/${wfile} <<-__EOF__
