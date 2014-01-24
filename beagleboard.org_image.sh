@@ -64,7 +64,7 @@ bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
 bborg_pkg_list="${bborg_pkg_list} libxi-dev"
 
 #development libs:
-bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev"
+bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev python-pip python-setuptools"
 
 #Web Stuff:
 bborg_pkg_list="${bborg_pkg_list} xchat"
