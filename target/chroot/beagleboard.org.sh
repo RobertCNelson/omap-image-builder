@@ -224,6 +224,14 @@ install_repos () {
 		cp -v systemd/* /lib/systemd/system/
 		systemctl enable bonescript.socket
 
+		#bonescript.socket takes over port 80, so shove apache/etc to 8080:
+		if [ -f /etc/apache2/ports.conf ] ; then
+			sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+		fi
+		if [ -f /etc/apache2/sites-enabled/000-default ] ; then
+			sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+		fi
+
 		if [ ! -d ${git_target_dir}/autorun ] ; then
 			mkdir -p ${git_target_dir}/autorun || true
 		fi
