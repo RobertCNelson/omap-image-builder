@@ -266,6 +266,36 @@ install_repos () {
 	fi
 }
 
+install_pip_pkgs () {
+	echo "Install pip packages"
+
+	#debian@beaglebone:~$ pip install Adafruit_BBIO
+	#Downloading/unpacking Adafruit-BBIO
+	#  Downloading Adafruit_BBIO-0.0.19.tar.gz
+	#  Running setup.py egg_info for package Adafruit-BBIO
+	#    The required version of distribute (>=0.6.45) is not available,
+	#    and can't be installed while this script is running. Please
+	#    install a more recent version first, using
+	#    'easy_install -U distribute'.
+	#
+	#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+	#    Complete output from command python setup.py egg_info:
+	#    The required version of distribute (>=0.6.45) is not available,
+	#
+	#and can't be installed while this script is running. Please
+	#
+	#install a more recent version first, using
+	#
+	#'easy_install -U distribute'.
+	#
+	#
+	#
+	#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+
+	easy_install -U distribute
+	pip install Adafruit_BBIO
+}
+
 unsecure_root () {
 	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
 	sed -i -e 's:'$root_password'::g' /etc/shadow
@@ -284,5 +314,6 @@ dogtag
 build_node
 install_builds
 install_repos
+install_pip_pkgs
 unsecure_root
 #
