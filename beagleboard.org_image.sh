@@ -117,6 +117,7 @@ minimal_armel () {
 		include_pkgs_list="${include_pkgs_list}"
 		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
+		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
 		image_hostname="${image_hostname}"
 
@@ -392,6 +393,9 @@ chroot_uenv_txt="beagleboard.org.txt"
 
 chroot_enable_bborg_repo="enable"
 #no_pkgs="enable"
+
+#add's /lib/ld-linux.so.3 so users who don't use a hardfp compiler atleast can run their program...
+chroot_multiarch_armel="enable"
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"

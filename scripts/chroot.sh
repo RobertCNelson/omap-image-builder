@@ -340,6 +340,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			apt-key add /tmp/keyring-bbb.aikidev.net.asc
 			rm -rf /tmp/keyring-bbb.aikidev.net.asc || true
 		fi
+		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
+			echo "Log: (chroot) multiarch enabled added: [armel]"
+			sudo dpkg --add-architecture armel
+		fi
 
 		apt-get update
 		apt-get upgrade -y --force-yes
@@ -350,6 +354,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${base_pkg_list}"
 			apt-get -y --force-yes install ${base_pkg_list}
+		fi
+		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
+			echo "Log: (chroot) Installing: libc6:armel"
+			sudo apt-get -y --force-yes install libc6:armel
 		fi
 	}
 
