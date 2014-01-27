@@ -206,8 +206,8 @@ wheezy)
 	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
 	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
-		echo "deb http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
-		echo "#deb-src http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
+		echo "deb [arch=armhf] http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
+		echo "#deb-src [arch=armhf] http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
 	fi
 	;;
 precise|quantal|raring|saucy)
