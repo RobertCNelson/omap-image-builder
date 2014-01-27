@@ -264,6 +264,10 @@ install_repos () {
 		make install
 		make distclean
 	fi
+
+	git_repo="https://github.com/beagleboard/am335x_pru_package.git"
+	git_target_dir="/opt/source/am335x_pru_package"
+	git_clone
 }
 
 install_pip_pkgs () {
