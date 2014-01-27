@@ -28,7 +28,7 @@ chromium_release="chromium-32.0.1700.76"
 node_prefix="/usr"
 #node_release="0.8.26"
 #node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=${node_prefix}"
-node_release="0.10.24"
+node_release="0.10.25"
 node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=${node_prefix}"
 
 user_name="debian"
