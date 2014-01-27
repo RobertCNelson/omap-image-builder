@@ -186,10 +186,11 @@ production () {
 	fi
 
 	#user may run ./ship.sh twice...
-	if [ ! -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
-		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
+	if [ -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
+		tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
+	else
+		tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
-	tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
 
 	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img ] ; then
 		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img || true
@@ -206,6 +207,10 @@ production () {
 	mv *.img ../
 	cd ..
 	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
+
+	if [ ! -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
+		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
+	fi
 
 	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
 		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
