@@ -363,6 +363,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	tweak_systemd () {
+		if [ -f /etc/systemd/systemd-journald.conf ] ; then
+			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
+		fi
+	}
+
 	set_locale () {
 		pkg="locales"
 		dpkg_check
@@ -614,6 +620,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
+	tweak_systemd
 	set_locale
 	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 		run_deborphan
