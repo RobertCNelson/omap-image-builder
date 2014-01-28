@@ -245,6 +245,8 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 case "${distro}" in
 debian)
 	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
+	sudo cp ${DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
+	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
@@ -528,6 +530,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				chown root:root /etc/init.d/boot_scripts.sh
 				chmod +x /etc/init.d/boot_scripts.sh
 				insserv boot_scripts.sh || true
+			fi
+
+			if [ -f /etc/init.d/capemgr.sh ] ; then
+				chown root:root /etc/init.d/capemgr.sh
+				chown root:root /etc/default/capemgr
+				chmod +x /etc/init.d/capemgr.sh
+				insserv capemgr.sh || true
 			fi
 		fi
 	}

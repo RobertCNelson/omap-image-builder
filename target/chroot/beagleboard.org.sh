@@ -66,6 +66,10 @@ system_patches () {
 	fi
 }
 
+setup_capemgr () {
+	echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
+}
+
 setup_xorg () {
 	if [ -d /etc/X11/ ] ; then
 		echo "Section \"Monitor\"" > /etc/X11/xorg.conf
@@ -311,6 +315,7 @@ unsecure_root () {
 
 is_this_qemu
 system_patches
+setup_capemgr
 setup_xorg
 setup_autologin
 install_desktop_branding
