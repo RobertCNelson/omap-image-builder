@@ -263,6 +263,7 @@ install_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
+		#git pull --no-edit https://github.com/RobertCNelson/xinput_calibrator kreijack-swap_xy_axes
 		./autogen.sh --with-gui=x11
 		make
 		make install
