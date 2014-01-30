@@ -206,8 +206,8 @@ wheezy)
 	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
 	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
-		echo "deb [arch=armhf] http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
-		echo "#deb-src [arch=armhf] http://bbb.aikidev.net/debian ${release}-bbb main" >> /tmp/sources.list
+		echo "deb [arch=armhf] http://beagle.s3.amazonaws.com/debian ${release}-bbb main" >> /tmp/sources.list
+		echo "#deb-src [arch=armhf] http://beagle.s3.amazonaws.com/debian ${release}-bbb main" >> /tmp/sources.list
 	fi
 	;;
 precise|quantal|raring|saucy)
@@ -338,9 +338,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates () {
 		if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
-			wget --no-verbose --directory-prefix=/tmp/ http://bbb.aikidev.net/keyring-bbb.aikidev.net.asc
-			apt-key add /tmp/keyring-bbb.aikidev.net.asc
-			rm -rf /tmp/keyring-bbb.aikidev.net.asc || true
+			wget --no-verbose http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc -O - | apt-key add -
 		fi
 		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
 			echo "Log: (chroot) multiarch enabled added: [armel]"
