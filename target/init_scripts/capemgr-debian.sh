@@ -15,13 +15,18 @@ fi
 
 #CAPE="cape-bone-proto"
 
+cape_list=$(echo ${CAPE} | sed "s/ //g" | sed "s/,/ /g")
+capemgr=$(ls /sys/devices/bone_capemgr.*/slots 2> /dev/null)
+
+load_overlay () {
+	echo ${overlay} > ${capemgr}
+}
+
 case "$1" in
 start)
-	#FIXME: just a proof of concept..
-	if [ ! "x${CAPE}" = "x" ] ; then
-		capemgr=$(ls /sys/devices/bone_capemgr.*/slots 2> /dev/null)
+	if [ ! "x${cape_list}" = "x" ] ; then
 		if [ ! "x${capemgr}" = "x" ] ; then
-			echo ${CAPE} > ${capemgr}
+			for overlay in ${cape_list} ; do load_overlay ; done
 		fi
 	fi
 	;;
