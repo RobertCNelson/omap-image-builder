@@ -25,11 +25,7 @@ start)
 		fi
 	fi
 	;;
-reload|force-reload|restart)
-	#FIXME
-	exit 0
-	;;
-stop)
+reload|force-reload|restart|stop)
 	exit 0
 	;;
 *)
