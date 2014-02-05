@@ -248,7 +248,7 @@ install_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		./autogen.sh
-		./configure --enable-debug
+		./configure
 		make
 		make install
 		make distclean
