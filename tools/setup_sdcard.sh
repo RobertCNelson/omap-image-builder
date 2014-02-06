@@ -932,7 +932,16 @@ populate_rootfs () {
 		echo "    gateway 192.168.7.1" >> ${TEMPDIR}/disk/etc/network/interfaces
 
 		if [ ! "${bborg_production}" ] ; then
-			rm -rf ${TEMPDIR}/disk/var/www/index.html || true
+			rm -f ${TEMPDIR}/disk/var/www/index.html || true
+		fi
+
+		if [ "${bbb_flasher}" ] ; then
+			if [ -f ${TEMPDIR}/disk/opt/scripts/images/beaglebg-eMMC.jpg ] ; then
+				if [ -f ${TEMPDIR}/disk/opt/desktop-background.jpg ] ; then
+					rm -f ${TEMPDIR}/disk/opt/desktop-background.jpg || true
+				fi
+				cp -v ${TEMPDIR}/disk/opt/scripts/images/beaglebg-eMMC.jpg ${TEMPDIR}/disk/opt/desktop-background.jpg
+			fi
 		fi
 
 #		wfile=var/www/AJAX_terminal.html

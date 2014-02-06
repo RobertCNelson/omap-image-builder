@@ -108,14 +108,12 @@ setup_autologin () {
 }
 
 install_desktop_branding () {
-	#FixMe: move to github beagleboard repo...
-	wget --no-verbose --directory-prefix=/opt/ http://rcn-ee.net/deb/testing/beaglebg.jpg
-	chown -R ${user_name}:${user_name} /opt/beaglebg.jpg
+	cp /opt/scripts/images/beaglebg.jpg /opt/desktop-background.jpg
 
 	mkdir -p /home/${user_name}/.config/pcmanfm/LXDE/ || true
 	echo "[desktop]" > /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 	echo "wallpaper_mode=1" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
-	echo "wallpaper=/opt/beaglebg.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
+	echo "wallpaper=/opt/desktop-background.jpg" >> /home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf
 	chown -R ${user_name}:${user_name} /home/${user_name}/.config/
 
 	#Disable LXDE's screensaver on autostart
