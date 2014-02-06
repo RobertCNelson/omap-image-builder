@@ -1303,7 +1303,6 @@ check_uboot_type () {
 		;;
 	bone|bone_dtb)
 		SYSTEM="bone"
-		conf_board="am335x_evm"
 		is_omap
 		SERIAL="ttyO0"
 		SERIAL_CONSOLE="${SERIAL},115200n8"
@@ -1317,6 +1316,24 @@ check_uboot_type () {
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
 
+		select_kernel="${bone_dt_kernel}"
+		;;
+	boneblack_flasher)
+		SYSTEM="bone"
+		is_omap
+		SERIAL="ttyO0"
+		SERIAL_CONSOLE="${SERIAL},115200n8"
+
+		unset KMS_VIDEOA
+
+		#just to disable the omapfb stuff..
+		USE_KMS=1
+		kms_conn="HDMI-A-1"
+
+		. "${DIR}"/hwpack/beaglebone.conf
+		process_dtb_conf
+
+		conf_board="am335x_boneblack"
 		select_kernel="${bone_dt_kernel}"
 		;;
 	panda)

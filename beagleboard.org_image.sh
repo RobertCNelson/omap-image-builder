@@ -201,7 +201,10 @@ production () {
 	fi
 
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+
+	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+
 	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
