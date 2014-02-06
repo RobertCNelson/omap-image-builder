@@ -23,6 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-32.0.1700.102"
+u_boot_release="v2013.10"
 
 #chroot_cloud9_git_tag="v2.0.93"
 node_prefix="/usr"
@@ -275,6 +276,15 @@ install_repos () {
 	git_clone
 }
 
+install_source_patches () {
+	mkdir -p /opt/source/u-boot_${u_boot_release}/
+	cd /opt/source/u-boot_${u_boot_release}/
+	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
+	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0002-NFM-Production-eeprom-assume-device-is-BeagleBone-Bl.patch
+	cd /
+	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
+}
+
 install_pip_pkgs () {
 	echo "Install pip packages"
 
@@ -324,6 +334,7 @@ dogtag
 build_node
 install_builds
 install_repos
+install_source_patches
 install_pip_pkgs
 unsecure_root
 #
