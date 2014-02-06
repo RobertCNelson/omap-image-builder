@@ -278,7 +278,6 @@ install_source_patches () {
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
 	cd /opt/source/u-boot_${u_boot_release}/
 	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
-	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0002-NFM-Production-eeprom-assume-device-is-BeagleBone-Bl.patch
 	cd /
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 }
