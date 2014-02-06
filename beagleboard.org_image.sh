@@ -203,7 +203,9 @@ production () {
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
 
 	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
 	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
@@ -214,6 +216,11 @@ production () {
 	if [ ! -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
 		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
+
+	if [ -f BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
+		rm BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
+	fi
+	xz -z -7 -v BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
 
 	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
 		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
