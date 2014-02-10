@@ -30,8 +30,9 @@ fi
 tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 image_type="minimal"
-wheezy_release="7.3"
 nand_pkgs="mtd-utils"
+
+. ${DIR}/lib/distro.sh
 
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
@@ -43,13 +44,13 @@ minimal_armel () {
 		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	raring)
-		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${raring_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	saucy)
-		export_filename="${distro}-13.10-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
 		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"

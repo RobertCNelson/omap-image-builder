@@ -34,7 +34,8 @@ if [ -f ${DIR}/config ] ; then
 fi
 
 image_type="lxde"
-wheezy_release="7.3"
+
+. ${DIR}/lib/distro.sh
 
 bborg_pkg_list=""
 
@@ -82,13 +83,13 @@ minimal_armel () {
 		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-12.10-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	raring)
-		export_filename="${distro}-13.04-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${raring_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	saucy)
-		export_filename="${distro}-13.10-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
 		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"
