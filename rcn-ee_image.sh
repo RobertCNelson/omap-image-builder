@@ -165,6 +165,7 @@ production () {
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher
 	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production
+	sudo ./setup_sdcard.sh --img bbxm-debian-${wheezy_release}-${time} --dtb omap3-beagle-xm
 	mv *.img ../
 	cd ..
 	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
@@ -172,14 +173,17 @@ production () {
 	cd ubuntu-13.10-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
 	sudo ./setup_sdcard.sh --img bone-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
+	sudo ./setup_sdcard.sh --img bbxm-ubuntu-13.10-${time}.img --dtb omap3-beagle-xm
 	mv *.img ../
 	cd ..
 	rm -rf ubuntu-13.10-${image_type}-armhf-${time}/ || true
 
 	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
 	xz -z -7 -v bone-debian-${wheezy_release}-${time}-2gb.img
+	xz -z -7 -v bbxm-debian-${wheezy_release}-${time}-2gb.img
 	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
 	xz -z -7 -v bone-ubuntu-13.10-${time}-2gb.img
+	xz -z -7 -v bbxm-ubuntu-13.10-${time}-2gb.img
 
 	__EOF__
 
