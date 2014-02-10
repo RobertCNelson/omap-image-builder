@@ -760,12 +760,19 @@ populate_boot () {
 	fi
 	echo "-----------------------------"
 
+	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
+	if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
+		board="am335x_evm"
+	else
+		board=${conf_board}
+	fi
+
 	#This should be compatible with hwpacks variable names..
 	#https://code.launchpad.net/~linaro-maintainers/linaro-images/
 	cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
 		#!/bin/sh
 		format=1.0
-		board=${conf_board}
+		board=${board}
 
 		bootloader_location=${bootloader_location}
 		dd_spl_uboot_seek=${dd_spl_uboot_seek}
