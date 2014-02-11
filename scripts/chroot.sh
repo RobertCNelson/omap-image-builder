@@ -265,13 +265,7 @@ ubuntu)
 		USE_CUSTOM_KERNEL=1
 
 		if [ "\${USE_CUSTOM_KERNEL}" ] ; then
-		        DIST=\$(lsb_release -cs)
-
-		        case "\${DIST}" in
-		        oneiric|precise|quantal|raring|saucy|trusty)
-		                FLASH_KERNEL_SKIP=yes
-		                ;;
-		        esac
+		        FLASH_KERNEL_SKIP=yes
 		fi
 
 	__EOF__
