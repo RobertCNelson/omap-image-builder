@@ -389,8 +389,13 @@ fi
 if [ ! "${mirror}" ] ; then
 	mirror="http://rcn-ee.net/deb"
 fi
+
+#FIXME: (something simple)
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	. ${DIR}/host/rcn-ee-host.sh
+fi
+if [ -f ${DIR}/circuitco.host ] ; then
+	. ${DIR}/host/circuitco-host.sh
 fi
 
 mkdir -p ${DIR}/deploy/
