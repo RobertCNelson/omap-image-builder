@@ -746,9 +746,10 @@ report_size
 chroot_umount
 
 if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
-	sudo cp -v ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
+	echo "Log: copying setup_sdcard.sh related files"
+	sudo cp ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
-	sudo cp -v ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
+	sudo cp ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 
 	if [ -n "${chroot_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_uenv_txt}" ] ; then
 		sudo cp "${DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
@@ -756,6 +757,7 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
+	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar]"
 	cd ${tempdir}/tmp/pkg_src/
 	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar .
 	cd ${tempdir}
@@ -765,6 +767,7 @@ if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
 fi
 
 cd ${tempdir}
+echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${distro}-${release}.tar]"
 sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
 cd ${DIR}/
 ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar
