@@ -45,9 +45,6 @@ minimal_armel () {
 	quantal)
 		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
-	raring)
-		export_filename="${distro}-${raring_release}-${image_type}-${dpkg_arch}-${time}"
-		;;
 	saucy)
 		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
@@ -195,17 +192,6 @@ is_debian () {
 	chroot_very_small_image="enable"
 }
 
-#13.04
-raring_release () {
-	extra_pkgs="devmem2 python-software-properties"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	release="raring"
-
-	minimal_armel
-	compression
-}
-
 #13.10
 saucy_release () {
 	extra_pkgs="devmem2 python-software-properties"
@@ -291,7 +277,6 @@ wheezy_release
 dpkg_arch="armhf"
 wheezy_release
 #jessie_release
-#raring_release
 #saucy_release
 #trusty_release
 

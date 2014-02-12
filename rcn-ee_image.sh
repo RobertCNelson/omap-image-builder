@@ -49,9 +49,6 @@ minimal_armel () {
 	quantal)
 		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
-	raring)
-		export_filename="${distro}-${raring_release}-${image_type}-${dpkg_arch}-${time}"
-		;;
 	saucy)
 		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
@@ -153,7 +150,6 @@ production () {
 	#!/bin/bash
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
-	xz -z -7 -v ubuntu-13.04-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-trusty-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
@@ -273,17 +269,6 @@ quantal_release () {
 	compression
 }
 
-#13.04
-raring_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	release="raring"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
 #13.10
 saucy_release () {
 	extra_pkgs="devmem2"
@@ -367,7 +352,7 @@ chroot_generic_startup_scripts="enable"
 #no_pkgs="enable"
 
 dpkg_arch="armhf"
-DEFAULT_RELEASES="raring saucy trusty wheezy jessie"
+DEFAULT_RELEASES="saucy trusty wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done

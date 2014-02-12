@@ -85,9 +85,6 @@ minimal_armel () {
 	quantal)
 		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
-	raring)
-		export_filename="${distro}-${raring_release}-${image_type}-${dpkg_arch}-${time}"
-		;;
 	saucy)
 		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
@@ -311,17 +308,6 @@ quantal_release () {
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
 	release="quantal"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
-#13.04
-raring_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	release="raring"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
