@@ -192,21 +192,27 @@ install_builds () {
 }
 
 install_repos () {
-	git_repo="https://github.com/ajaxorg/cloud9.git"
-	git_target_dir="/opt/cloud9"
-	if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
-		git_clone
-	else
-		mkdir -p /opt/cloud9/ || true
-		qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true"
-		qemu_warning
-		git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true
-		sync
-		echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
-	fi
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${user_name}:${user_name} ${git_target_dir}
-	fi
+	cd /opt/
+	mkdir -p /opt/cloud9/
+	wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
+	tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
+	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
+
+	#git_repo="https://github.com/ajaxorg/cloud9.git"
+	#git_target_dir="/opt/cloud9"
+	#if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
+	#	git_clone
+	#else
+	#	mkdir -p /opt/cloud9/ || true
+	#	qemu_command="git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true"
+	#	qemu_warning
+	#	git clone --depth 1 -b ${chroot_cloud9_git_tag} ${git_repo} ${git_target_dir} || true
+	#	sync
+	#	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
+	#fi
+	#if [ -f ${git_target_dir}/.git/config ] ; then
+	#	chown -R ${user_name}:${user_name} ${git_target_dir}
+	#fi
 
 	#cd /opt/cloud9
 	#npm install --arch=armhf
