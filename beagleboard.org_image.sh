@@ -40,13 +40,13 @@ image_type="lxde"
 bborg_pkg_list=""
 
 #Development tools:
-bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison device-tree-compiler libtool less flex g++ gdb pkg-config"
+bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison device-tree-compiler libtool less flex g++ gdb pkg-config vim"
 
 #Node libs:
 bborg_pkg_list="${bborg_pkg_list} libc-ares-dev"
 
-#Cloud9 libs:
-bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev"
+#Cloud9 stuff:
+bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev tmux"
 
 #xorg:
 bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput"
@@ -66,9 +66,6 @@ bborg_pkg_list="${bborg_pkg_list} libxi-dev"
 
 #development libs:
 bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev python-pip python-setuptools python2.7-dev"
-
-#cloud9 stuff:
-bborg_pkg_list="${bborg_pkg_list} tmux"
 
 #Web Stuff:
 bborg_pkg_list="${bborg_pkg_list} xchat"
