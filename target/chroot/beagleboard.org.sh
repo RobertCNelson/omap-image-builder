@@ -197,6 +197,7 @@ install_repos () {
 	wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
 	tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
 	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
+	chown -R ${user_name}:${user_name} /opt/cloud9/
 
 	#git_repo="https://github.com/ajaxorg/cloud9.git"
 	#git_target_dir="/opt/cloud9"
