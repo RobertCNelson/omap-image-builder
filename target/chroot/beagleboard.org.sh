@@ -32,9 +32,10 @@ node_prefix="/usr"
 node_release="0.10.25"
 node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=${node_prefix}"
 
-user_name="debian"
-
-. /.project
+#contains: user_name, release_date
+if [ -f /etc/rcn-ee.conf ] ; then
+	. /etc/rcn-ee.conf
+fi
 
 is_this_qemu () {
 	unset warn_qemu_will_fail
@@ -125,7 +126,7 @@ install_desktop_branding () {
 }
 
 dogtag () {
-	echo "BeagleBoard.org BeagleBone Debian Image ${time}" > /etc/dogtag
+	echo "BeagleBoard.org BeagleBone Debian Image ${release_date}" > /etc/dogtag
 }
 
 build_node () {
