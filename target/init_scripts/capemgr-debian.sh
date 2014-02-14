@@ -16,7 +16,7 @@ fi
 #CAPE="cape-bone-proto"
 
 cape_list=$(echo ${CAPE} | sed "s/ //g" | sed "s/,/ /g")
-capemgr=$(ls /sys/devices/bone_capemgr.*/slots 2> /dev/null)
+capemgr=$(ls /sys/devices/bone_capemgr.*/slots 2> /dev/null || true)
 
 load_overlay () {
 	echo ${overlay} > ${capemgr}
@@ -31,7 +31,6 @@ start)
 	fi
 	;;
 reload|force-reload|restart|stop)
-	exit 0
 	;;
 *)
 	echo "Usage: /etc/init.d/capemgr.sh {start|stop|reload|restart|force-reload}"
