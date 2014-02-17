@@ -212,8 +212,13 @@ wheezy)
 	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
-	echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
-	echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
+		echo "deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+		echo "#deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+	else
+		echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+		echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+	fi
 	if [ "x${chroot_enable_bborg_repo}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
 		echo "deb [arch=armhf] http://beagle.s3.amazonaws.com/debian ${release}-bbb main" >> /tmp/sources.list
@@ -366,6 +371,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
 			echo "Log: (chroot) Installing: libc6:armel"
 			sudo apt-get -y --force-yes install libc6:armel
+		fi
+		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
+			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
+				echo "Log: (chroot) Installing: ${chroot_debian_backports_pkg_list}"
+				sudo apt-get -y --force-yes install ${chroot_debian_backports_pkg_list}
+			fi
 		fi
 	}
 

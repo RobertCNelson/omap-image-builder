@@ -145,18 +145,20 @@ build_node () {
 		mkdir -p /run/shm
 	fi
 
-	mount -t tmpfs shmfs -o size=256M /dev/shm
-	df -Th
+	if [ ! -f /usr/bin/node ] ; then
+		mount -t tmpfs shmfs -o size=256M /dev/shm
+		df -Th
 
-	cd /opt/source
-	wget http://nodejs.org/dist/v${node_release}/node-v${node_release}.tar.gz
-	tar xf node-v${node_release}.tar.gz
-	cd node-v${node_release}
-	./configure ${node_build_options} && make -j5 && make install
-	cd /
-	rm -rf /opt/source/node-v${node_release}/ || true
-	rm -rf /opt/source/node-v${node_release}.tar.gz || true
-	echo "node-v${node_release} : http://rcn-ee.net/pkgs/nodejs/node-v${node_release}.tar.gz" >> /opt/source/list.txt
+		cd /opt/source
+		wget http://nodejs.org/dist/v${node_release}/node-v${node_release}.tar.gz
+		tar xf node-v${node_release}.tar.gz
+		cd node-v${node_release}
+		./configure ${node_build_options} && make -j5 && make install
+		cd /
+		rm -rf /opt/source/node-v${node_release}/ || true
+		rm -rf /opt/source/node-v${node_release}.tar.gz || true
+		echo "node-v${node_release} : http://rcn-ee.net/pkgs/nodejs/node-v${node_release}.tar.gz" >> /opt/source/list.txt
+	fi
 
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"

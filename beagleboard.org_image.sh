@@ -138,6 +138,9 @@ minimal_armel () {
 		chroot_script="${chroot_script}"
 		chroot_uenv_txt="${chroot_uenv_txt}"
 
+		chroot_enable_debian_backports="${chroot_enable_debian_backports}"
+		chroot_debian_backports_pkg_list="${chroot_debian_backports_pkg_list}"
+
 	__EOF__
 
 	cat ${DIR}/.project
@@ -403,6 +406,9 @@ chroot_enable_bborg_repo="enable"
 
 #add's /lib/ld-linux.so.3 so users who don't use a hardfp compiler atleast can run their program...
 chroot_multiarch_armel="enable"
+
+chroot_enable_debian_backports="enable"
+chroot_debian_backports_pkg_list="nodejs nodejs-legacy npm"
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"
