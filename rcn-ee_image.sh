@@ -59,7 +59,7 @@ minimal_armel () {
 
 	if [ -f ${DIR}/release ] ; then
 		chroot_KERNEL_HTTP_DIR="\
-http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.13.2-armv7-x10/ \
+http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.13.3-armv7-x10/ \
 http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone40/"
 	fi
 
