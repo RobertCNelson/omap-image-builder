@@ -159,9 +159,9 @@ production () {
 	tar xf ubuntu-13.10-${image_type}-armhf-${time}.tar.xz
 
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher
-	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production
-	sudo ./setup_sdcard.sh --img bbxm-debian-${wheezy_release}-${time} --dtb omap3-beagle-xm
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --enable-systemd
+	sudo ./setup_sdcard.sh --img bbxm-debian-${wheezy_release}-${time} --dtb omap3-beagle-xm --enable-systemd
 	mv *.img ../
 	cd ..
 	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
