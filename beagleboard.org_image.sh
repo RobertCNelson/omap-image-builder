@@ -389,10 +389,6 @@ fi
 
 mkdir -p ${DIR}/deploy/
 
-if [ -f ${DIR}/release ] ; then
-	chroot_ENABLE_DEB_SRC="enable"
-fi
-
 chroot_COPY_SETUP_SDCARD="enable"
 
 #FIXME: things to add to .config:
@@ -409,6 +405,13 @@ chroot_multiarch_armel="enable"
 
 chroot_enable_debian_backports="enable"
 chroot_debian_backports_pkg_list="nodejs nodejs-legacy npm"
+
+#FIXME: when backports is added, the src dump fails..
+if [ "x${chroot_enable_debian_backports}" = "x" ] ; then
+	if [ -f ${DIR}/release ] ; then
+		chroot_ENABLE_DEB_SRC="enable"
+	fi
+fi
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"
