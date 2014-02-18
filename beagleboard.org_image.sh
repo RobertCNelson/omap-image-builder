@@ -175,7 +175,7 @@ production () {
 	if [ -f ${DIR}/release ] ; then
 		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
 			if [ -d /mnt/farm/testing/pending/ ] ; then
-				cp -v arm*.tar /mnt/farm/images/
+				cp -v arm*.tar /mnt/farm/images/ || true
 				actual_dir="/mnt/farm/testing/pending"
 			fi
 		fi
