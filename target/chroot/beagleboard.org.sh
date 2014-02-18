@@ -287,7 +287,7 @@ install_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		git checkout 4a42d0b2511b536c53a3a8de410d1961af602fa0 -b working
+		git checkout c8ba2708cd465c2b45e9a800ca739213e4677a79 -b working
 		git pull --no-edit https://github.com/RobertCNelson/xinput_calibrator bb.org-0.7.5-1
 		./autogen.sh --with-gui=x11
 		make
