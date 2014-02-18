@@ -73,6 +73,9 @@ bborg_pkg_list="${bborg_pkg_list} xchat"
 #Chromium libs:
 bborg_pkg_list="${bborg_pkg_list} libxss1 libnss3 libxslt1.1 libspeechd2"
 
+#s3: beagleboard repo:
+bborg_pkg_list="${bborg_pkg_list} libsoc2"
+
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
