@@ -235,11 +235,6 @@ install_repos () {
 	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
 	chown -R ${user_name}:${user_name} /opt/cloud9/
 
-	cd /var/lib/cloud9
-	#FIXME: winston needs to be installed locally, for some reason the global one fails...
-	npm install winston --arch=armhf
-	cleanup_npm_cache
-
 	#git_repo="https://github.com/ajaxorg/cloud9.git"
 	#git_target_dir="/opt/cloud9"
 	#if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
@@ -272,6 +267,10 @@ install_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 		cd ${git_target_dir}/
+
+		#FIXME: winston needs to be installed locally, for some reason the global one fails...
+		npm install winston --arch=armhf
+		cleanup_npm_cache
 
 		cp -v systemd/* /lib/systemd/system/
 		#Backports nodejs uses /usr/local/lib/ vs /usr/lib/
