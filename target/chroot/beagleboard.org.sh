@@ -250,6 +250,11 @@ install_repos () {
 		cd ${git_target_dir}/
 
 		cp -v systemd/* /lib/systemd/system/
+		#Backports nodejs uses /usr/local/lib/ vs /usr/lib/
+		if [ -d /usr/local/lib/node_modules/bonescript ] ; then
+			sed -i -e 's:r/lib/node_modules/bone:r/local/lib/node_modules/bone:g' /lib/systemd/system/bonescript-autorun.service
+			sed -i -e 's:r/lib/node_modules/bone:r/local/lib/node_modules/bone:g' /lib/systemd/system/bonescript.service
+		fi
 		systemctl enable bonescript.socket
 
 		#bonescript.socket takes over port 80, so shove apache/etc to 8080:
