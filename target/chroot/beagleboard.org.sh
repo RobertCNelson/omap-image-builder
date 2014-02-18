@@ -183,11 +183,13 @@ build_node () {
 	#echo "--------------------------------"
 
 	echo "Installing bonescript"
-	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
+	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
+	npm install -g bonescript --arch=armhf
 
 	#Cloud9:
 	echo "Installing winston"
-	NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g winston --arch=armhf
+	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g winston --arch=armhf
+	npm install -g winston --arch=armhf
 
 	if [ -d /root/tmp/ ] ; then
 		rm -rf /root/tmp/ || true
