@@ -60,6 +60,15 @@ git_clone () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+git_clone_full () {
+	mkdir -p ${git_target_dir} || true
+	qemu_command="git clone ${git_repo} ${git_target_dir} || true"
+	qemu_warning
+	git clone ${git_repo} ${git_target_dir} || true
+	sync
+	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
+}
+
 system_patches () {
 	#For when sed/grep/etc just gets way to complex...
 	cd /
@@ -292,7 +301,7 @@ install_repos () {
 
 	git_repo="https://github.com/tias/xinput_calibrator"
 	git_target_dir="/opt/source/xinput_calibrator"
-	git_clone
+	git_clone_full
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		git checkout c8ba2708cd465c2b45e9a800ca739213e4677a79 -b working
