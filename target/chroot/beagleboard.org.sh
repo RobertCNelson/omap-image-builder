@@ -149,6 +149,16 @@ dogtag () {
 	echo "BeagleBoard.org BeagleBone Debian Image ${release_date}" > /etc/dogtag
 }
 
+cleanup_npm_cache () {
+	if [ -d /root/tmp/ ] ; then
+		rm -rf /root/tmp/ || true
+	fi
+
+	if [ -d /root/.npm ] ; then
+		rm -rf /root/.npm || true
+	fi
+}
+
 build_node () {
 	if [ ! -d /run/shm ] ; then
 		mkdir -p /run/shm
@@ -200,9 +210,7 @@ build_node () {
 	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g winston --arch=armhf
 	npm install -g winston --arch=armhf
 
-	if [ -d /root/tmp/ ] ; then
-		rm -rf /root/tmp/ || true
-	fi
+	cleanup_npm_cache
 
 	sync
 	umount -l /dev/shm || true
@@ -226,6 +234,11 @@ install_repos () {
 	tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
 	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
 	chown -R ${user_name}:${user_name} /opt/cloud9/
+
+	cd /var/lib/cloud9
+	#FIXME: winston needs to be installed locally, for some reason the global one fails...
+	npm install winston --arch=armhf
+	cleanup_npm_cache
 
 	#git_repo="https://github.com/ajaxorg/cloud9.git"
 	#git_target_dir="/opt/cloud9"
