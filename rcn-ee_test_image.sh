@@ -308,9 +308,9 @@ fi
 
 mkdir -p ${DIR}/deploy/
 
-if [ -f ${DIR}/release ] ; then
-	chroot_ENABLE_DEB_SRC="enable"
-fi
+#if [ -f ${DIR}/release ] ; then
+#	chroot_ENABLE_DEB_SRC="enable"
+#fi
 
 chroot_COPY_SETUP_SDCARD="enable"
 
