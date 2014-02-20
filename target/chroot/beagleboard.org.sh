@@ -27,8 +27,6 @@ u_boot_release="v2013.10"
 
 #chroot_cloud9_git_tag="v2.0.93"
 node_prefix="/usr"
-#node_release="0.8.26"
-#node_build_options="--without-snapshot --shared-openssl --shared-zlib --prefix=${node_prefix}"
 node_release="0.10.25"
 node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=${node_prefix}"
 
