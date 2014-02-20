@@ -294,19 +294,6 @@ install_repos () {
 		systemctl enable bonescript-autorun.service
 	fi
 
-#	#Now provided by "libsoc2" in s3 repo..
-#	git_repo="https://github.com/jackmitch/libsoc"
-#	git_target_dir="/opt/source/libsoc"
-#	git_clone
-#	if [ -f ${git_target_dir}/.git/config ] ; then
-#		cd ${git_target_dir}/
-#		./autogen.sh
-#		./configure
-#		make
-#		make install
-#		make distclean
-#	fi
-
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
