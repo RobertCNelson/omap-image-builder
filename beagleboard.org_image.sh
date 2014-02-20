@@ -73,9 +73,6 @@ bborg_pkg_list="${bborg_pkg_list} xchat"
 #Chromium libs:
 bborg_pkg_list="${bborg_pkg_list} libxss1 libnss3 libxslt1.1 libspeechd2"
 
-#s3: beagleboard repo:
-bborg_pkg_list="${bborg_pkg_list} libsoc2"
-
 minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
@@ -139,6 +136,7 @@ minimal_armel () {
 		repo_external_dist="${repo_external_dist}"
 		repo_external_components="${repo_external_components}"
 		repo_external_key="${repo_external_key}"
+		repo_external_pkg_list="${repo_external_pkg_list}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -411,6 +409,7 @@ repo_external_server="http://beagle.s3.amazonaws.com/debian"
 repo_external_dist="wheezy-bbb"
 repo_external_components="main"
 repo_external_key="http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc"
+repo_external_pkg_list="libsoc2"
 
 #no_pkgs="enable"
 
