@@ -26,9 +26,6 @@ chromium_release="chromium-32.0.1700.102"
 u_boot_release="v2013.10"
 
 #chroot_cloud9_git_tag="v2.0.93"
-node_prefix="/usr"
-node_release="0.10.25"
-node_build_options="--without-snapshot --shared-cares --shared-openssl --shared-zlib --prefix=${node_prefix}"
 
 #contains: user_name, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -181,12 +178,10 @@ build_node () {
 	#echo "--------------------------------"
 
 	echo "Installing bonescript"
-	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g bonescript --arch=armhf
 	npm install -g bonescript --arch=armhf
 
 	#Cloud9:
 	echo "Installing winston"
-	#NODE_PATH=${node_prefix}/lib/node_modules/ npm install -g winston --arch=armhf
 	npm install -g winston --arch=armhf
 
 	cleanup_npm_cache
