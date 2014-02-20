@@ -133,7 +133,12 @@ minimal_armel () {
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
-		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
+		repo_external="${repo_external}"
+		repo_external_arch="${repo_external_arch}"
+		repo_external_server="${repo_external_server}"
+		repo_external_dist="${repo_external_dist}"
+		repo_external_components="${repo_external_components}"
+		repo_external_key="${repo_external_key}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
@@ -400,7 +405,13 @@ chroot_generic_startup_scripts="enable"
 chroot_script="beagleboard.org.sh"
 chroot_uenv_txt="beagleboard.org.txt"
 
-chroot_enable_bborg_repo="enable"
+repo_external="enable"
+repo_external_arch="armhf"
+repo_external_server="http://beagle.s3.amazonaws.com/debian"
+repo_external_dist="wheezy-bbb"
+repo_external_components="main"
+repo_external_key="http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc"
+
 #no_pkgs="enable"
 
 #add's /lib/ld-linux.so.3 so users who don't use a hardfp compiler atleast can run their program...

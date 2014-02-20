@@ -82,6 +82,7 @@ minimal_armel () {
 		include_pkgs_list="${include_pkgs_list}"
 		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
+		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
 		image_hostname="${image_hostname}"
 
@@ -96,13 +97,21 @@ minimal_armel () {
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
-		chroot_enable_bborg_repo="${chroot_enable_bborg_repo}"
+		repo_external="${repo_external}"
+		repo_external_arch="${repo_external_arch}"
+		repo_external_server="${repo_external_server}"
+		repo_external_dist="${repo_external_dist}"
+		repo_external_components="${repo_external_components}"
+		repo_external_key="${repo_external_key}"
 
 		chroot_COPY_SETUP_SDCARD="${chroot_COPY_SETUP_SDCARD}"
 
 		chroot_hook="${chroot_hook}"
 		chroot_script="${chroot_script}"
 		chroot_uenv_txt="${chroot_uenv_txt}"
+
+		chroot_enable_debian_backports="${chroot_enable_debian_backports}"
+		chroot_debian_backports_pkg_list="${chroot_debian_backports_pkg_list}"
 
 	__EOF__
 
@@ -319,8 +328,19 @@ include_firmware="enable"
 chroot_generic_startup_scripts="enable"
 #chroot_script=""
 
-#chroot_enable_bborg_repo=""
+#repo_external=""
+#repo_external_arch=""
+#repo_external_server=""
+#repo_external_dist=""
+#repo_external_components=""
+#repo_external_key=""
+
 #no_pkgs="enable"
+
+#chroot_multiarch_armel=""
+
+#chroot_enable_debian_backports=""
+#chroot_debian_backports_pkg_list=""
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"
