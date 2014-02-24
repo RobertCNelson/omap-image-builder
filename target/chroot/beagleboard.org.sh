@@ -183,6 +183,7 @@ build_node () {
 
 	echo "Installing bonescript"
 	TERM=dumb npm install -g bonescript --arch=armhf
+	sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
 
 	#Cloud9:
 	echo "Installing winston"
