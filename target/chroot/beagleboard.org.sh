@@ -22,7 +22,7 @@
 
 export LC_ALL=C
 
-chromium_release="chromium-32.0.1700.102"
+chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2013.10"
 
 #chroot_cloud9_git_tag="v2.0.93"
