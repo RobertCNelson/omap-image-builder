@@ -158,6 +158,10 @@ build_node () {
 	echo "debug: node: [`node --version`]"
 	echo "debug: npm: [`npm --version`]"
 
+	echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
+	echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
+	chmod 755 /etc/profile.d/node.sh
+
 	#debug
 	#echo "debug: npm config ls -l (before)"
 	#echo "--------------------------------"
@@ -272,10 +276,6 @@ install_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 		cd ${git_target_dir}/
-
-		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
-		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
-		chmod 755 /etc/profile.d/node.sh
 
 		wfile="/etc/default/cloud9"
 		echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
