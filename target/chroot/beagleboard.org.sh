@@ -73,7 +73,8 @@ system_patches () {
 }
 
 setup_capemgr () {
-	echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
+	#Disable for now
+	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 }
 
 setup_xorg () {
@@ -277,6 +278,10 @@ install_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 		cd ${git_target_dir}/
+
+		#FIXME: winston needs to be installed locally, for some reason the global one fails...
+		TERM=dumb npm install winston --arch=armhf
+		cleanup_npm_cache
 
 		wfile="/etc/default/cloud9"
 		echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
