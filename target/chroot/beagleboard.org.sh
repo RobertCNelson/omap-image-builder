@@ -213,6 +213,10 @@ install_repos () {
 	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
 	chown -R ${user_name}:${user_name} /opt/cloud9/
 
+	if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
+		patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
+	fi
+
 	#git_repo="https://github.com/ajaxorg/cloud9.git"
 	#git_target_dir="/opt/cloud9"
 	#if [ "x${chroot_cloud9_git_tag}" = "x" ] ; then
