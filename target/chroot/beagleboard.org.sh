@@ -213,7 +213,9 @@ install_repos () {
 	chown -R ${user_name}:${user_name} /opt/cloud9/
 
 	if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
+		cd /opt/cloud9/
 		patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
+		cd /opt/
 	fi
 
 	#git_repo="https://github.com/ajaxorg/cloud9.git"
