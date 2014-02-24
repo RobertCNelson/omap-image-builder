@@ -178,11 +178,11 @@ build_node () {
 	#echo "--------------------------------"
 
 	echo "Installing bonescript"
-	npm install -g bonescript --arch=armhf
+	TERM=dumb npm install -g bonescript --arch=armhf
 
 	#Cloud9:
 	echo "Installing winston"
-	npm install -g winston --arch=armhf
+	TERM=dumb npm install -g winston --arch=armhf
 
 	cleanup_npm_cache
 	sync
@@ -231,11 +231,11 @@ install_repos () {
 	fi
 	git_repo="https://github.com/beagleboard/bone101"
 	git_target_dir="/usr/share/bone101/"
-	git_clone
+	#git_clone
 
 	git_repo="https://github.com/beagleboard/bonescript"
 	git_target_dir="/var/lib/cloud9"
-	git_clone
+	#git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		chown -R ${user_name}:${user_name} ${git_target_dir}
 		cd ${git_target_dir}/
@@ -264,6 +264,86 @@ install_repos () {
 			mkdir -p ${git_target_dir}/autorun || true
 		fi
 		systemctl enable bonescript-autorun.service
+	fi
+
+	git_repo="http://github.com/beagleboard/bone101"
+	git_target_dir="/var/lib/cloud9"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${user_name}:${user_name} ${git_target_dir}
+		cd ${git_target_dir}/
+
+		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
+		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
+		chmod 755 /etc/profile.d/node.sh
+
+		wfile="/etc/default/cloud9"
+		echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
+		echo "HOME=/root" >> ${wfile}
+		echo "PORT=systemd" >> ${wfile}
+
+		wfile="/lib/systemd/system/bonescript.socket"
+		echo "[Socket]" > ${wfile}
+		echo "ListenStream=80" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Install]" >> ${wfile}
+		echo "WantedBy=sockets.target" >> ${wfile}
+
+		wfile="/lib/systemd/system/bonescript.service"
+		echo "[Unit]" > ${wfile}
+		echo "Description=Bonescript server" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Service]" >> ${wfile}
+		echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
+		echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
+		echo "SyslogIdentifier=bonescript" >> ${wfile}
+
+		systemctl enable bonescript.socket
+
+		wfile="/lib/systemd/system/bonescript-autorun.service"
+		echo "[Unit]" > ${wfile}
+		echo "Description=Bonescript autorun" >> ${wfile}
+		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Service]" >> ${wfile}
+		echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
+		echo "EnvironmentFile=/etc/default/node" >> ${wfile}
+		echo "ExecStart=/usr/bin/node autorun.js" >> ${wfile}
+		echo "SyslogIdentifier=bonescript-autorun" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Install]" >> ${wfile}
+		echo "WantedBy=multi-user.target" >> ${wfile}
+
+		systemctl enable bonescript-autorun.service
+
+		wfile="/lib/systemd/system/cloud9.socket"
+		echo "[Socket]" > ${wfile}
+		echo "ListenStream=3000" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Install]" >> ${wfile}
+		echo "WantedBy=sockets.target" >> ${wfile}
+
+		wfile="/lib/systemd/system/cloud9.service"
+		echo "[Unit]" > ${wfile}
+		echo "Description=Cloud9 IDE" >> ${wfile}
+		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Service]" >> ${wfile}
+		echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
+		echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
+		echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
+		echo "SyslogIdentifier=cloud9ide" >> ${wfile}
+
+		systemctl enable cloud9.socket
+
+		#bonescript.socket takes over port 80, so shove apache/etc to 8080:
+		if [ -f /etc/apache2/ports.conf ] ; then
+			sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+		fi
+		if [ -f /etc/apache2/sites-enabled/000-default ] ; then
+			sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+		fi
+
 	fi
 
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
