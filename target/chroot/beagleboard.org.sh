@@ -73,8 +73,7 @@ system_patches () {
 }
 
 setup_capemgr () {
-	#Disable for now
-	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
+	echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 }
 
 setup_xorg () {
@@ -427,7 +426,8 @@ unsecure_root () {
 
 is_this_qemu
 system_patches
-setup_capemgr
+##Disable for now...
+#setup_capemgr
 setup_xorg
 setup_autologin
 setup_udev
