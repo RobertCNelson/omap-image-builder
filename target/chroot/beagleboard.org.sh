@@ -361,20 +361,6 @@ install_repos () {
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
 
-	#Now Packaged up:
-	#git_repo="https://github.com/tias/xinput_calibrator"
-	#git_target_dir="/opt/source/xinput_calibrator"
-	#git_clone_full
-	#if [ -f ${git_target_dir}/.git/config ] ; then
-	#	cd ${git_target_dir}/
-	#	git checkout c8ba2708cd465c2b45e9a800ca739213e4677a79 -b working
-	#	git pull --no-edit https://github.com/RobertCNelson/xinput_calibrator bb.org-0.7.5-1
-	#	./autogen.sh --with-gui=x11
-	#	make
-	#	make install
-	#	make distclean
-	#fi
-
 	git_repo="https://github.com/beagleboard/am335x_pru_package.git"
 	git_target_dir="/opt/source/am335x_pru_package"
 	git_clone
