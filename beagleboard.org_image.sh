@@ -62,7 +62,7 @@ bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
 
 #touchscreen: (xinput_calibrator)
 #when we have to build it...
-bborg_pkg_list="${bborg_pkg_list} libxi-dev"
+#bborg_pkg_list="${bborg_pkg_list} libxi-dev"
 
 #development libs:
 bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev python-pip python-setuptools python2.7-dev python-serial"
