@@ -409,7 +409,7 @@ repo_external_server="http://beagle.s3.amazonaws.com/debian"
 repo_external_dist="wheezy-bbb"
 repo_external_components="main"
 repo_external_key="http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc"
-repo_external_pkg_list="libsoc2"
+repo_external_pkg_list="libsoc2 xinput-calibrator"
 
 #no_pkgs="enable"
 
