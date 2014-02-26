@@ -261,6 +261,10 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
+	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
+		sed -i -e 's:#kms_force_mode:kms_force_mode:g' ${TEMPDIR}/bootscripts/normal.cmd
+	fi
+
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			##Enable systemd
