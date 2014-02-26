@@ -253,7 +253,7 @@ boot_uenv_txt_template () {
 
 	if [ "${drm_device_identifier}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##Video: [ls /sys/class/drm/]ls /sys/class/drm/
+			##Video: [ls /sys/class/drm/]
 			##Docs: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/fb/modedb.txt
 			##Uncomment to override:
 			#kms_force_mode=video=${drm_device_identifier}:1024x768@60e
