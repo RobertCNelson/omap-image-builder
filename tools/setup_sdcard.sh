@@ -251,10 +251,12 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	if [ "${kms_conn}" ] ; then
+	if [ "${drm_device_identifier}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Video: Uncomment to override:
-			#kms_force_mode=video=${kms_conn}:1024x768@60
+			##Video: [ls /sys/class/drm/]ls /sys/class/drm/
+			##Docs: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/fb/modedb.txt
+			##Uncomment to override:
+			#kms_force_mode=video=${drm_device_identifier}:1024x768@60e
 
 		__EOF__
 	fi
@@ -1290,7 +1292,7 @@ check_uboot_type () {
 	unset boot_scr_wrapper
 	unset usbnet_mem
 
-	unset kms_conn
+	unset drm_device_identifier
 
 	case "${UBOOT_TYPE}" in
 	beagle|beagle_bx|beagle_cx)
@@ -1318,7 +1320,7 @@ check_uboot_type () {
 
 		#just to disable the omapfb stuff..
 		USE_KMS=1
-		kms_conn="HDMI-A-1"
+		drm_device_identifier="HDMI-A-1"
 
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
@@ -1335,7 +1337,7 @@ check_uboot_type () {
 
 		#just to disable the omapfb stuff..
 		USE_KMS=1
-		kms_conn="HDMI-A-1"
+		drm_device_identifier="HDMI-A-1"
 
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
