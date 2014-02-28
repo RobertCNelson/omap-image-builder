@@ -416,11 +416,12 @@ chroot_multiarch_armel="enable"
 #chroot_debian_backports_pkg_list=""
 
 #FIXME: when backports is added, the src dump fails..
-if [ "x${chroot_enable_debian_backports}" = "x" ] ; then
-	if [ -f ${DIR}/release ] ; then
-		chroot_ENABLE_DEB_SRC="enable"
-	fi
-fi
+#FIXME: this just fails with node-* so just fails disable...
+#if [ "x${chroot_enable_debian_backports}" = "x" ] ; then
+#	if [ -f ${DIR}/release ] ; then
+#		chroot_ENABLE_DEB_SRC="enable"
+#	fi
+#fi
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"
