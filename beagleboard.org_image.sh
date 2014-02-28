@@ -405,15 +405,15 @@ repo_external_server="http://beagle.s3.amazonaws.com/debian"
 repo_external_dist="wheezy-bbb"
 repo_external_components="main"
 repo_external_key="http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc"
-repo_external_pkg_list="libsoc2 xinput-calibrator"
+repo_external_pkg_list="am335x-pru-package libsoc2 nodejs nodejs-legacy npm xinput-calibrator"
 
 #no_pkgs="enable"
 
 #add's /lib/ld-linux.so.3 so users who don't use a hardfp compiler atleast can run their program...
 chroot_multiarch_armel="enable"
 
-chroot_enable_debian_backports="enable"
-chroot_debian_backports_pkg_list="nodejs nodejs-legacy npm"
+#chroot_enable_debian_backports="enable"
+#chroot_debian_backports_pkg_list=""
 
 #FIXME: when backports is added, the src dump fails..
 if [ "x${chroot_enable_debian_backports}" = "x" ] ; then
