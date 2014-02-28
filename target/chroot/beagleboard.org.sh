@@ -364,11 +364,6 @@ install_repos () {
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
-
-	#In bb.org repo..
-	#git_repo="https://github.com/beagleboard/am335x_pru_package.git"
-	#git_target_dir="/opt/source/am335x_pru_package"
-	#git_clone
 }
 
 install_source_patches () {
