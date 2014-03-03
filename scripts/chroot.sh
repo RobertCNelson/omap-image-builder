@@ -486,11 +486,22 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		dpkg -x /tmp/\${deb_file} /
 
+		unset thirdparty_file
+		thirdparty_file=\$(cat /tmp/index.html | grep thirdparty)
+		thirdparty_file=\$(echo \${thirdparty_file} | awk -F "\"" '{print \$2}')
+		if [ "\${thirdparty_file}" ] ; then
+			wget --directory-prefix=/tmp/ \${kernel_url}\${thirdparty_file}
+
+			if [ -f /tmp/thirdparty ] ; then
+				/bin/sh /tmp/thirdparty
+			fi
+		fi
+
 		pkg="initramfs-tools"
 		dpkg_check
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-			depmod \${kernel_version}
+			depmod \${kernel_version} -a
 			update-initramfs -c -k \${kernel_version}
 		else
 			dpkg_package_missing
