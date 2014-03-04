@@ -289,8 +289,8 @@ install_repos () {
 		cd ${git_target_dir}/
 
 		#FIXME: winston needs to be installed locally, for some reason the global one fails...
-		TERM=dumb npm install winston --arch=armhf
-		cleanup_npm_cache
+		#TERM=dumb npm install winston --arch=armhf
+		#cleanup_npm_cache
 
 		wfile="/etc/default/cloud9"
 		echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
