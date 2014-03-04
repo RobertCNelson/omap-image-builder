@@ -223,9 +223,6 @@ install_repos () {
 	if [ -f /var/www/index.html ] ; then
 		rm -rf /var/www/index.html || true
 	fi
-	git_repo="https://github.com/beagleboard/bone101"
-	git_target_dir="/usr/share/bone101/"
-	#git_clone
 
 	git_repo="https://github.com/beagleboard/bonescript"
 	git_target_dir="/var/lib/cloud9"
