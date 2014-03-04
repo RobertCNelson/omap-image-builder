@@ -305,14 +305,6 @@ install_repos () {
 	git_clone
 }
 
-install_source_patches () {
-	mkdir -p /opt/source/u-boot_${u_boot_release}/
-	cd /opt/source/u-boot_${u_boot_release}/
-	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
-	cd /
-	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
-}
-
 install_pip_pkgs () {
 	echo "Install pip packages"
 
@@ -343,6 +335,19 @@ install_pip_pkgs () {
 	pip install Adafruit_BBIO
 }
 
+
+other_source_links () {
+	mkdir -p /opt/source/u-boot_${u_boot_release}/
+	cd /opt/source/u-boot_${u_boot_release}/
+	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
+	cd /
+	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
+
+	echo "MT7601: /etc/Wireless/RT2870/RT2870STA.dat" >> /opt/source/list.txt
+	echo "MT7601: MODULES/kernel/drivers/net/wireless/mt7601Usta.ko" >> /opt/source/list.txt
+	echo "MT7601: http://rcn-ee.net/deb/thirdparty/MT7601/DPO_MT7601U_LinuxSTA_3.0.0.4_20130913.tar.bz2" >> /opt/source/list.txt
+}
+
 unsecure_root () {
 	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
 	sed -i -e 's:'$root_password'::g' /etc/shadow
@@ -364,7 +369,7 @@ dogtag
 build_node
 install_builds
 install_repos
-install_source_patches
 install_pip_pkgs
+other_source_links
 unsecure_root
 #
