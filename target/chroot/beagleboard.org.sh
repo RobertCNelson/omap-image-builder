@@ -224,39 +224,6 @@ install_repos () {
 		rm -rf /var/www/index.html || true
 	fi
 
-	git_repo="https://github.com/beagleboard/bonescript"
-	git_target_dir="/var/lib/cloud9"
-	#git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${user_name}:${user_name} ${git_target_dir}
-		cd ${git_target_dir}/
-
-		#FIXME: winston needs to be installed locally, for some reason the global one fails...
-		npm install winston --arch=armhf
-		cleanup_npm_cache
-
-		cp -v systemd/* /lib/systemd/system/
-		#Backports nodejs uses /usr/local/lib/ vs /usr/lib/
-		if [ -d /usr/local/lib/node_modules/bonescript ] ; then
-			sed -i -e 's:r/lib/node_modules/bone:r/local/lib/node_modules/bone:g' /lib/systemd/system/bonescript-autorun.service
-			sed -i -e 's:r/lib/node_modules/bone:r/local/lib/node_modules/bone:g' /lib/systemd/system/bonescript.service
-		fi
-		systemctl enable bonescript.socket
-
-		#bonescript.socket takes over port 80, so shove apache/etc to 8080:
-		if [ -f /etc/apache2/ports.conf ] ; then
-			sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
-		fi
-		if [ -f /etc/apache2/sites-enabled/000-default ] ; then
-			sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
-		fi
-
-		if [ ! -d ${git_target_dir}/autorun ] ; then
-			mkdir -p ${git_target_dir}/autorun || true
-		fi
-		systemctl enable bonescript-autorun.service
-	fi
-
 	git_repo="http://github.com/beagleboard/bone101"
 	git_target_dir="/var/lib/cloud9"
 	git_clone
