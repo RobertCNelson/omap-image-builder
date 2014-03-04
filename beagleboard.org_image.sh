@@ -143,6 +143,8 @@ minimal_armel () {
 		chroot_enable_debian_backports="${chroot_enable_debian_backports}"
 		chroot_debian_backports_pkg_list="${chroot_debian_backports_pkg_list}"
 
+		third_party_modules="${third_party_modules}"
+
 	__EOF__
 
 	cat ${DIR}/.project
@@ -422,6 +424,8 @@ chroot_multiarch_armel="enable"
 #		chroot_ENABLE_DEB_SRC="enable"
 #	fi
 #fi
+
+third_party_modules="enable"
 
 dpkg_arch="armhf"
 DEFAULT_RELEASES="wheezy"

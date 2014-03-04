@@ -267,6 +267,7 @@ debian)
 	echo "distro=Debian" > /tmp/rcn-ee.conf
 	echo "user_name=${user_name}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
+	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 	;;
@@ -486,14 +487,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		dpkg -x /tmp/\${deb_file} /
 
-		unset thirdparty_file
-		thirdparty_file=\$(cat /tmp/index.html | grep thirdparty)
-		thirdparty_file=\$(echo \${thirdparty_file} | awk -F "\"" '{print \$2}')
-		if [ "\${thirdparty_file}" ] ; then
-			wget --directory-prefix=/tmp/ \${kernel_url}\${thirdparty_file}
+		if [ "x\${third_party_modules}" = "xenable" ] ; then
+			unset thirdparty_file
+			thirdparty_file=\$(cat /tmp/index.html | grep thirdparty)
+			thirdparty_file=\$(echo \${thirdparty_file} | awk -F "\"" '{print \$2}')
+			if [ "\${thirdparty_file}" ] ; then
+				wget --directory-prefix=/tmp/ \${kernel_url}\${thirdparty_file}
 
-			if [ -f /tmp/thirdparty ] ; then
-				/bin/sh /tmp/thirdparty
+				if [ -f /tmp/thirdparty ] ; then
+					/bin/sh /tmp/thirdparty
+				fi
 			fi
 		fi
 
