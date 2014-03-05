@@ -1,0 +1,9 @@
+So, better late then never.
+
+User Setup:
+rfs_username
+rfs_fullname
+rfs_password
+
+Image Setup:
+rfs_hostname

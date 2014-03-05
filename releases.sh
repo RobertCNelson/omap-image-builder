@@ -24,11 +24,11 @@ machinekit_release () {
 
 	#is_debian - inlined below with some changes
 
-	image_hostname="arm"
+	rfs_hostname="arm"
 	distro="debian"
-	user_name="linuxcnc"
-	password="linuxcnc"
-	full_name="Tux Chipcutter"
+	rfs_username="linuxcnc"
+	rfs_password="linuxcnc"
+	rfs_fullname="Tux Chipcutter"
 	chroot_hook="machinekit/chroot_hook.sh"
 
 	deb_mirror="ftp.us.debian.org/debian/"

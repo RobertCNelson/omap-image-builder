@@ -52,11 +52,11 @@ run_rootstock () {
 
 		apt_proxy="${apt_proxy}"
 
-		image_hostname="${image_hostname}"
+		rfs_hostname="${rfs_hostname}"
 
-		user_name="${user_name}"
-		full_name="${full_name}"
-		password="${password}"
+		rfs_username="${rfs_username}"
+		rfs_fullname="${rfs_fullname}"
+		rfs_password="${rfs_password}"
 
 	__EOF__
 
@@ -120,10 +120,10 @@ if [ ! "${export_filename}" ] ; then
 	##Generic file name
 	export_filename="${distro}-${release}-${image_name}-${dpkg_arch}-${time}"
 fi
-image_hostname=${image_hostname:-"arm"}
-user_name=${user_name:-"${distro}"}
-password=${password:-"temppwd"}
-full_name=${full_name:-"Demo User"}
+rfs_hostname=${rfs_hostname:-"arm"}
+rfs_username=${rfs_username:-"${distro}"}
+rfs_password=${rfs_password:-"temppwd"}
+rfs_fullname=${rfs_fullname:-"Demo User"}
 
 run_rootstock
 

@@ -25,7 +25,7 @@ export LC_ALL=C
 chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2013.10"
 
-#contains: user_name, release_date
+#contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
 	. /etc/rcn-ee.conf
 fi
@@ -98,7 +98,7 @@ setup_desktop () {
 
 	wfile="/etc/lightdm/lightdm.conf"
 	if [ -f ${wfile} ] ; then
-		sed -i -e 's:#autologin-user=:autologin-user='$user_name':g' ${wfile}
+		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
 		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session=LXDE:g' ${wfile}
 		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
 			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
@@ -107,12 +107,12 @@ setup_desktop () {
 
 	cp /opt/scripts/images/beaglebg.jpg /opt/desktop-background.jpg
 
-	mkdir -p /home/${user_name}/.config/pcmanfm/LXDE/ || true
-	wfile="/home/${user_name}/.config/pcmanfm/LXDE/pcmanfm.conf"
+	mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
+	wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
 	echo "[desktop]" > ${wfile}
 	echo "wallpaper_mode=1" >> ${wfile}
 	echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-	chown -R ${user_name}:${user_name} /home/${user_name}/.config/
+	chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 
 	#Disable LXDE's screensaver on autostart
 	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
@@ -192,7 +192,7 @@ install_node_pkgs () {
 	wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
 	tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
 	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
-	chown -R ${user_name}:${user_name} /opt/cloud9/
+	chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
 	if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
 		cd /opt/cloud9/
@@ -208,7 +208,7 @@ install_node_pkgs () {
 	git_target_dir="/var/lib/cloud9"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${user_name}:${user_name} ${git_target_dir}
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 		cd ${git_target_dir}/
 
 		wfile="/etc/default/cloud9"

@@ -78,19 +78,44 @@ check_defines () {
 		esac
 	fi
 
-	if [ ! "${user_name}" ] ; then
-		user_name="${distro}"
-		echo "user_name: undefined using: [${user_name}]"
+	if [ ! "${rfs_username}" ] ; then
+		##Backwards compat pre variables.txt doc
+		if [ "${user_name}" ] ; then
+			rfs_username="${user_name}"
+		else
+			rfs_username="${distro}"
+			echo "rfs_username: undefined using: [${rfs_username}]"
+		fi
 	fi
 
-	if [ ! "${password}" ] ; then
-		password="temppwd"
-		echo "password: undefined using: [${password}]"
+	if [ ! "${rfs_fullname}" ] ; then
+		##Backwards compat pre variables.txt doc
+		if [ "${full_name}" ] ; then
+			rfs_fullname="${full_name}"
+		else
+			rfs_fullname="Demo User"
+			echo "rfs_fullname: undefined using: [${rfs_fullname}]"
+		fi
 	fi
 
-	if [ ! "${full_name}" ] ; then
-		full_name="Demo User"
-		echo "full_name: undefined using: [${full_name}]"
+	if [ ! "${rfs_password}" ] ; then
+		##Backwards compat pre variables.txt doc
+		if [ "${password}" ] ; then
+			rfs_password="${password}"
+		else
+			rfs_password="temppwd"
+			echo "rfs_password: undefined using: [${rfs_password}]"
+		fi
+	fi
+
+	if [ ! "${rfs_hostname}" ] ; then
+		##Backwards compat pre variables.txt doc
+		if [ "${image_hostname}" ] ; then
+			rfs_hostname="${image_hostname}"
+		else
+			rfs_hostname="arm"
+			echo "rfs_hostname: undefined using: [${rfs_hostname}]"
+		fi
 	fi
 }
 
@@ -251,10 +276,10 @@ if [ "${apt_proxy}" ] ; then
 fi
 
 echo "127.0.0.1       localhost" > /tmp/hosts
-echo "127.0.1.1       ${image_hostname}" >> /tmp/hosts
+echo "127.0.1.1       ${rfs_hostname}" >> /tmp/hosts
 sudo mv /tmp/hosts ${tempdir}/etc/hosts
 
-echo "${image_hostname}" > /tmp/hostname
+echo "${rfs_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${distro}" in
@@ -265,7 +290,7 @@ debian)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
-	echo "user_name=${user_name}" >> /tmp/rcn-ee.conf
+	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
@@ -299,7 +324,7 @@ ubuntu)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Ubuntu" > /tmp/rcn-ee.conf
-	echo "user_name=${user_name}" >> /tmp/rcn-ee.conf
+	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
@@ -544,13 +569,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			dpkg_package_missing
 		fi
 
-		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${password})
+		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${rfs_password})
 
-		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${full_name}" ${user_name}
+		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
 
 		case "\${distro}" in
 		Debian)
-			echo "default username:password is [${user_name}:${password}]" >> /etc/issue
+			echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
 			echo "" >> /etc/issue
 
 			passwd <<-EOF
@@ -620,7 +645,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				sync
 				if [ -f /opt/scripts/.git/config ] ; then
 					echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
-					chown -R ${user_name}:${user_name} /opt/scripts/
+					chown -R ${rfs_username}:${rfs_username} /opt/scripts/
 				fi
 			fi
 
@@ -782,7 +807,7 @@ if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
 fi
 
-echo "${user_name}:${password}" > /tmp/user_password.list
+echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
 sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.list
 
 #Fixes:

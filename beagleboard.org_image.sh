@@ -113,11 +113,11 @@ minimal_armel () {
 		base_pkg_list="${base_pkg_list}"
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
-		image_hostname="${image_hostname}"
+		rfs_hostname="${rfs_hostname}"
 
-		user_name="${user_name}"
-		full_name="${full_name}"
-		password="${password}"
+		rfs_username="${rfs_username}"
+		rfs_fullname="${rfs_fullname}"
+		rfs_password="${rfs_password}"
 
 		include_firmware="${include_firmware}"
 
@@ -282,11 +282,11 @@ pkg_list () {
 }
 
 is_ubuntu () {
-	image_hostname="beaglebone"
+	rfs_hostname="beaglebone"
 	distro="ubuntu"
-	user_name="ubuntu"
-	password="temppwd"
-	full_name="Demo User"
+	rfs_username="ubuntu"
+	rfs_password="temppwd"
+	rfs_fullname="Demo User"
 
 	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
 	deb_components="main universe multiverse"
@@ -295,11 +295,11 @@ is_ubuntu () {
 }
 
 is_debian () {
-	image_hostname="beaglebone"
+	rfs_hostname="beaglebone"
 	distro="debian"
-	user_name="debian"
-	password="temppwd"
-	full_name="Demo User"
+	rfs_username="debian"
+	rfs_password="temppwd"
+	rfs_fullname="Demo User"
 
 	deb_mirror="ftp.us.debian.org/debian/"
 	deb_components="main contrib non-free"

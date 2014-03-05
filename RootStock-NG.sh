@@ -76,11 +76,11 @@ run_project () {
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"
 
-		image_hostname="${image_hostname}"
+		rfs_hostname="${rfs_hostname}"
 
-		user_name="${user_name}"
-		full_name="${full_name}"
-		password="${password}"
+		rfs_username="${rfs_username}"
+		rfs_fullname="${rfs_fullname}"
+		rfs_password="${rfs_password}"
 
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 
