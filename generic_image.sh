@@ -120,18 +120,10 @@ if [ ! "${export_filename}" ] ; then
 	##Generic file name
 	export_filename="${distro}-${release}-${image_name}-${dpkg_arch}-${time}"
 fi
-if [ ! "${image_hostname}" ] ; then
-	image_hostname="arm"
-fi
-if [ ! "${user_name}" ] ; then
-	user_name="${distro}"
-fi
-if [ ! "${password}" ] ; then
-	password="temppwd"
-fi
-if [ ! "${full_name}" ] ; then
-	full_name="Demo User"
-fi
+image_hostname=${image_hostname:-"arm"}
+user_name=${user_name:-"${distro}"}
+password=${password:-"temppwd"}
+full_name=${full_name:-"Demo User"}
 
 run_rootstock
 
