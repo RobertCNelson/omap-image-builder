@@ -775,6 +775,10 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	sudo rm -f ${tempdir}/final.sh || true
 	sudo rm -f ${tempdir}/.project || true
 	chroot_script=""
+	if [ -f ${tempdir}/npm-debug.log ] ; then
+		echo "Log: ERROR: npm error in script, review log [cat ${tempdir}/npm-debug.log]..."
+		exit 1
+	fi
 fi
 
 ##Building final tar file...
