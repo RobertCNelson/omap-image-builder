@@ -180,7 +180,9 @@ install_node_pkgs () {
 
 		echo "Installing bonescript"
 		TERM=dumb npm install -g bonescript --arch=armhf
-		sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
+		if [ -f /usr/local/lib/node_modules/bonescript/server.js ] ; then
+			sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
+		fi
 
 		#Cloud9:
 		echo "Installing winston"
