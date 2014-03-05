@@ -162,9 +162,16 @@ install_node_pkgs () {
 		#echo "--------------------------------"
 
 		#fix npm in chroot.. (did i mention i hate npm...)
+		if [ ! -d /root/.npm ] ; then
+			mkdir -p /root/.npm
+		fi
 		npm config set cache /root/.npm
 		npm config set group 0
 		npm config set init-module /root/.npm-init.js
+
+		if [ ! -d /root/tmp ] ; then
+			mkdir -p /root/tmp
+		fi
 		npm config set tmp /root/tmp
 		npm config set user 0
 		npm config set userconfig /root/.npmrc
