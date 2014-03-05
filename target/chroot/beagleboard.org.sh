@@ -194,14 +194,16 @@ install_node_pkgs () {
 		cd /opt/
 		mkdir -p /opt/cloud9/
 		wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
-		tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
-		rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
-		chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
+		if [ -f /opt/c9v3-6280b336-standalonebuild-systemd.tgz ] ; then
+			tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
+			rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
+			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
-		if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-			cd /opt/cloud9/
-			patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
-			cd /opt/
+			if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
+				cd /opt/cloud9/
+				patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
+				cd /opt/
+			fi
 		fi
 
 		git_repo="http://github.com/beagleboard/bone101"
@@ -323,12 +325,14 @@ install_git_repos () {
 install_build_pkgs () {
 	cd /opt/
 	wget http://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
-	tar xf ${chromium_release}-armhf.tar.xz -C /
-	rm -rf ${chromium_release}-armhf.tar.xz || true
-	echo "${chromium_release} : http://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
+	if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
+		tar xf ${chromium_release}-armhf.tar.xz -C /
+		rm -rf ${chromium_release}-armhf.tar.xz || true
+		echo "${chromium_release} : http://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
 
-	#link Chromium to /usr/bin/x-www-browser
-	update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
+		#link Chromium to /usr/bin/x-www-browser
+		update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
+	fi
 }
 
 other_source_links () {
