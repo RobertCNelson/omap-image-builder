@@ -258,7 +258,7 @@ if [ ! "${apt_proxy}" ] ; then
 	apt_proxy=""
 fi
 if [ ! "${mirror}" ] ; then
-	mirror="http://rcn-ee.net/deb"
+	mirror="https://rcn-ee.net/deb"
 fi
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	. ${DIR}/host/rcn-ee-host.sh

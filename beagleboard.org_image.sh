@@ -90,7 +90,7 @@ minimal_armel () {
 	esac
 
 	#When doing offical releases, always hard lock the kernel version...
-	#chroot_KERNEL_HTTP_DIR="http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone41/"
+	#chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/v3.8.13-bone41/"
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
@@ -254,7 +254,7 @@ kernel_chooser () {
 		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
 	fi
 
-	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
+	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${release}-${dpkg_arch}/LATEST-${SUBARCH}
 	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
@@ -380,7 +380,7 @@ if [ ! "${apt_proxy}" ] ; then
 	apt_proxy=""
 fi
 if [ ! "${mirror}" ] ; then
-	mirror="http://rcn-ee.net/deb"
+	mirror="https://rcn-ee.net/deb"
 fi
 
 #FIXME: (something simple)

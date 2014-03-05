@@ -59,8 +59,8 @@ minimal_armel () {
 
 #	if [ -f ${DIR}/release ] ; then
 #		chroot_KERNEL_HTTP_DIR="\
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.13.3-armv7-x10/ \
-#http://rcn-ee.net/deb/${release}-${dpkg_arch}/v3.8.13-bone40/"
+#${mirror}/${release}-${dpkg_arch}/v3.13.3-armv7-x10/ \
+#${mirror}/${release}-${dpkg_arch}/v3.8.13-bone40/"
 #	fi
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
@@ -207,7 +207,7 @@ kernel_chooser () {
 		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
 	fi
 
-	wget --no-verbose --directory-prefix=${tempdir}/ http://rcn-ee.net/deb/${release}-${dpkg_arch}/LATEST-${SUBARCH}
+	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${release}-${dpkg_arch}/LATEST-${SUBARCH}
 	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
@@ -338,7 +338,7 @@ if [ ! "${apt_proxy}" ] ; then
 	apt_proxy=""
 fi
 if [ ! "${mirror}" ] ; then
-	mirror="http://rcn-ee.net/deb"
+	mirror="https://rcn-ee.net/deb"
 fi
 if [ -f ${DIR}/rcn-ee.host ] ; then
 	. ${DIR}/host/rcn-ee-host.sh
