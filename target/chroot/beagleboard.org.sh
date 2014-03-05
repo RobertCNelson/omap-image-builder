@@ -146,168 +146,170 @@ cleanup_npm_cache () {
 }
 
 install_node_pkgs () {
-	echo "debug: node: [`node --version`]"
-	echo "debug: npm: [`npm --version`]"
+	if [ -f /usr/bin/npm ] ; then
+		echo "Installing npm packages"
+		echo "debug: node: [`node --version`]"
+		echo "debug: npm: [`npm --version`]"
 
-	echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
-	echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
-	chmod 755 /etc/profile.d/node.sh
+		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
+		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
+		chmod 755 /etc/profile.d/node.sh
 
-	#debug
-	#echo "debug: npm config ls -l (before)"
-	#echo "--------------------------------"
-	#npm config ls -l
-	#echo "--------------------------------"
+		#debug
+		#echo "debug: npm config ls -l (before)"
+		#echo "--------------------------------"
+		#npm config ls -l
+		#echo "--------------------------------"
 
-	#fix npm in chroot.. (did i mention i hate npm...)
-	npm config set cache /root/.npm
-	npm config set group 0
-	npm config set init-module /root/.npm-init.js
-	npm config set tmp /root/tmp
-	npm config set user 0
-	npm config set userconfig /root/.npmrc
+		#fix npm in chroot.. (did i mention i hate npm...)
+		npm config set cache /root/.npm
+		npm config set group 0
+		npm config set init-module /root/.npm-init.js
+		npm config set tmp /root/tmp
+		npm config set user 0
+		npm config set userconfig /root/.npmrc
 
-	#http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
-	#The cause: npm no longer supports its self-signed certificates.
-	npm config set ca ""
+		#http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
+		#The cause: npm no longer supports its self-signed certificates.
+		npm config set ca ""
 
-	#echo "debug: npm config ls -l (after)"
-	#echo "--------------------------------"
-	#npm config ls -l
-	#echo "--------------------------------"
+		#echo "debug: npm config ls -l (after)"
+		#echo "--------------------------------"
+		#npm config ls -l
+		#echo "--------------------------------"
 
-	echo "Installing bonescript"
-	TERM=dumb npm install -g bonescript --arch=armhf
-	sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
+		echo "Installing bonescript"
+		TERM=dumb npm install -g bonescript --arch=armhf
+		sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
 
-	#Cloud9:
-	echo "Installing winston"
-	TERM=dumb npm install -g winston --arch=armhf
+		#Cloud9:
+		echo "Installing winston"
+		TERM=dumb npm install -g winston --arch=armhf
 
-	cleanup_npm_cache
-	sync
+		cleanup_npm_cache
+		sync
 
-	cd /opt/
-	mkdir -p /opt/cloud9/
-	wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
-	tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
-	rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
-	chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
-
-	if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-		cd /opt/cloud9/
-		patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
 		cd /opt/
-	fi
+		mkdir -p /opt/cloud9/
+		wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
+		tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
+		rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
+		chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
-	if [ -f /var/www/index.html ] ; then
-		rm -rf /var/www/index.html || true
-	fi
-
-	git_repo="http://github.com/beagleboard/bone101"
-	git_target_dir="/var/lib/cloud9"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
-		cd ${git_target_dir}/
-
-		wfile="/etc/default/cloud9"
-		echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
-		echo "HOME=/root" >> ${wfile}
-		echo "PORT=systemd" >> ${wfile}
-
-		wfile="/lib/systemd/system/bonescript.socket"
-		echo "[Socket]" > ${wfile}
-		echo "ListenStream=80" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Install]" >> ${wfile}
-		echo "WantedBy=sockets.target" >> ${wfile}
-
-		wfile="/lib/systemd/system/bonescript.service"
-		echo "[Unit]" > ${wfile}
-		echo "Description=Bonescript server" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Service]" >> ${wfile}
-		echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-		echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
-		echo "SyslogIdentifier=bonescript" >> ${wfile}
-
-		systemctl enable bonescript.socket
-
-		wfile="/lib/systemd/system/bonescript-autorun.service"
-		echo "[Unit]" > ${wfile}
-		echo "Description=Bonescript autorun" >> ${wfile}
-		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Service]" >> ${wfile}
-		echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-		echo "EnvironmentFile=/etc/default/node" >> ${wfile}
-		echo "ExecStart=/usr/bin/node autorun.js" >> ${wfile}
-		echo "SyslogIdentifier=bonescript-autorun" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Install]" >> ${wfile}
-		echo "WantedBy=multi-user.target" >> ${wfile}
-
-		systemctl enable bonescript-autorun.service
-
-		wfile="/lib/systemd/system/cloud9.socket"
-		echo "[Socket]" > ${wfile}
-		echo "ListenStream=3000" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Install]" >> ${wfile}
-		echo "WantedBy=sockets.target" >> ${wfile}
-
-		wfile="/lib/systemd/system/cloud9.service"
-		echo "[Unit]" > ${wfile}
-		echo "Description=Cloud9 IDE" >> ${wfile}
-		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Service]" >> ${wfile}
-		echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
-		echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
-		echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
-		echo "SyslogIdentifier=cloud9ide" >> ${wfile}
-
-		systemctl enable cloud9.socket
-
-		#bonescript.socket takes over port 80, so shove apache/etc to 8080:
-		if [ -f /etc/apache2/ports.conf ] ; then
-			sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+		if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
+			cd /opt/cloud9/
+			patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
+			cd /opt/
 		fi
-		if [ -f /etc/apache2/sites-enabled/000-default ] ; then
-			sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+
+		git_repo="http://github.com/beagleboard/bone101"
+		git_target_dir="/var/lib/cloud9"
+		git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
+			cd ${git_target_dir}/
+
+			wfile="/etc/default/cloud9"
+			echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
+			echo "HOME=/root" >> ${wfile}
+			echo "PORT=systemd" >> ${wfile}
+
+			wfile="/lib/systemd/system/bonescript.socket"
+			echo "[Socket]" > ${wfile}
+			echo "ListenStream=80" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=sockets.target" >> ${wfile}
+
+			wfile="/lib/systemd/system/bonescript.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=Bonescript server" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
+			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
+			echo "SyslogIdentifier=bonescript" >> ${wfile}
+
+			systemctl enable bonescript.socket
+
+			wfile="/lib/systemd/system/bonescript-autorun.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=Bonescript autorun" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
+			echo "EnvironmentFile=/etc/default/node" >> ${wfile}
+			echo "ExecStart=/usr/bin/node autorun.js" >> ${wfile}
+			echo "SyslogIdentifier=bonescript-autorun" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=multi-user.target" >> ${wfile}
+
+			systemctl enable bonescript-autorun.service
+
+			wfile="/lib/systemd/system/cloud9.socket"
+			echo "[Socket]" > ${wfile}
+			echo "ListenStream=3000" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=sockets.target" >> ${wfile}
+
+			wfile="/lib/systemd/system/cloud9.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=Cloud9 IDE" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
+			echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
+			echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
+			echo "SyslogIdentifier=cloud9ide" >> ${wfile}
+
+			systemctl enable cloud9.socket
+
+			#bonescript.socket takes over port 80, so shove apache/etc to 8080:
+			if [ -f /etc/apache2/ports.conf ] ; then
+				sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+			fi
+			if [ -f /etc/apache2/sites-enabled/000-default ] ; then
+				sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+			fi
+			if [ -f /var/www/index.html ] ; then
+				rm -rf /var/www/index.html || true
+			fi
 		fi
 	fi
 }
 
 install_pip_pkgs () {
-	echo "Installing pip packages"
+	if [ -f /usr/bin/pip ] ; then
+		echo "Installing pip packages"
 
-	#debian@beaglebone:~$ pip install Adafruit_BBIO
-	#Downloading/unpacking Adafruit-BBIO
-	#  Downloading Adafruit_BBIO-0.0.19.tar.gz
-	#  Running setup.py egg_info for package Adafruit-BBIO
-	#    The required version of distribute (>=0.6.45) is not available,
-	#    and can't be installed while this script is running. Please
-	#    install a more recent version first, using
-	#    'easy_install -U distribute'.
-	#
-	#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-	#    Complete output from command python setup.py egg_info:
-	#    The required version of distribute (>=0.6.45) is not available,
-	#
-	#and can't be installed while this script is running. Please
-	#
-	#install a more recent version first, using
-	#
-	#'easy_install -U distribute'.
-	#
-	#
-	#
-	#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+		#debian@beaglebone:~$ pip install Adafruit_BBIO
+		#Downloading/unpacking Adafruit-BBIO
+		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
+		#  Running setup.py egg_info for package Adafruit-BBIO
+		#    The required version of distribute (>=0.6.45) is not available,
+		#    and can't be installed while this script is running. Please
+		#    install a more recent version first, using
+		#    'easy_install -U distribute'.
+		#
+		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+		#    Complete output from command python setup.py egg_info:
+		#    The required version of distribute (>=0.6.45) is not available,
+		#
+		#and can't be installed while this script is running. Please
+		#
+		#install a more recent version first, using
+		#
+		#'easy_install -U distribute'.
+		#
+		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
 
-	easy_install -U distribute
-	pip install Adafruit_BBIO
+		easy_install -U distribute
+		pip install Adafruit_BBIO
+	fi
 }
 
 install_git_repos () {
