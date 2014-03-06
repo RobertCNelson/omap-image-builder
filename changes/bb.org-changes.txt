@@ -1,10 +1,13 @@
 bb.org-next
 
-Added: libopencv-dev
+Added: beaglebone meta package
+https://github.com/beagleboard/image-builder/commit/(next)
+
+Added: libopencv-dev package
 Fixes: http://bugs.elinux.org/issues/61
 https://github.com/beagleboard/image-builder/commit/1c0e5f8f272c6e3a3b659ea7e3854abe5c81df40
 
-Added: libopencv-core-dev
+Added: libopencv-core-dev package
 https://github.com/beagleboard/image-builder/commit/6af879606f2638dda363c54264e8e72ddb032b98
 
 bb.org-v2014.03.04

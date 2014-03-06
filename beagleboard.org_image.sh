@@ -410,7 +410,11 @@ repo_external_server="http://beagle.s3.amazonaws.com/debian"
 repo_external_dist="wheezy-bbb"
 repo_external_components="main"
 repo_external_key="http://beagle.s3.amazonaws.com/debian/beagleboneblack-archive-keyring.asc"
-repo_external_pkg_list="am335x-pru-package libsoc2 nodejs nodejs-legacy npm xinput-calibrator"
+
+#Package: beaglebone
+#Version: 0.20140306.1
+#Depends: acpi-support-base, am335x-pru-package, libsoc2, nodejs, nodejs-legacy, npm, xinput-calibrator, xserver-xorg-video-modesetting
+repo_external_pkg_list="beaglebone"
 
 #no_pkgs="enable"
 
