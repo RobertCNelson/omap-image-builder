@@ -13,15 +13,16 @@ Images:
 Flasher:
 
     sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD --uboot bone \
---beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE \
---rootfs_label eMMC-Flasher --enable-systemd
+    --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE \
+    --rootfs_label eMMC-Flasher --enable-systemd
 
     xz -z -7 -v BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD-2gb.img
 
 2GB, microSD:
 
     sudo ./setup_sdcard.sh --img bone-debian-7.X-YYYY-MM-DD --uboot bone \
---beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+    --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+
     xz -z -7 -v bone-debian-7.X-YYYY-MM-DD-2gb.img
 
 Bug Tracker:
