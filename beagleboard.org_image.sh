@@ -60,8 +60,11 @@ bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
 #lxde wifi:
 #bborg_pkg_list="${bborg_pkg_list} connman"
 
+#opencv
+bborg_pkg_list="${bborg_pkg_list} libopencv-dev libopencv-core-dev python-opencv"
+
 #development libs:
-bborg_pkg_list="${bborg_pkg_list} libopencv-core-dev python-opencv libsdl1.2-dev python-pip python-setuptools python2.7-dev python-serial"
+bborg_pkg_list="${bborg_pkg_list} libsdl1.2-dev python-pip python-setuptools python2.7-dev python-serial"
 
 #Web Stuff:
 bborg_pkg_list="${bborg_pkg_list} xchat"
