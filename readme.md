@@ -12,13 +12,17 @@ Images:
 
 Flasher:
 
-    sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.2-2013-11-21 --uboot bone --beagleboard.org-production --bbb-flasher
-    xz -z -7 -v BBB-eMMC-flasher-debian-7.2-2013-11-21-2gb.img
+    sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD --uboot bone \
+--beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE \
+--rootfs_label eMMC-Flasher --enable-systemd
 
-4GB, microSD:
+    xz -z -7 -v BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD-2gb.img
 
-    sudo ./setup_sdcard.sh --img-4gb BBB-debian-7.2-2013-11-26 --uboot bone --beagleboard.org-production
-    xz -z -7 -v BBB-debian-7.2-2013-11-21-4gb.img
+2GB, microSD:
+
+    sudo ./setup_sdcard.sh --img bone-debian-7.X-YYYY-MM-DD --uboot bone \
+--beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+    xz -z -7 -v bone-debian-7.X-YYYY-MM-DD-2gb.img
 
 Bug Tracker:
 
@@ -26,8 +30,8 @@ Bug Tracker:
 
 Release Process:
 
-    bb.org-vYEAR.MONTH.DAY
-    git tag -a bb.org-v2014.01.10 -m 'bb.org-v2014.01.10'
+    bb.org-vYYYY.MM.DD
+    git tag -a bb.org-vYYYY.MM.DD -m 'bb.org-vYYYY.MM.DD'
     git push origin --tags
 
 Master branch:
