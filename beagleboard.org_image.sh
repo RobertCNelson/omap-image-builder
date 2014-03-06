@@ -61,7 +61,7 @@ bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
 #bborg_pkg_list="${bborg_pkg_list} connman"
 
 #development libs:
-bborg_pkg_list="${bborg_pkg_list} python-opencv libsdl1.2-dev python-pip python-setuptools python2.7-dev python-serial"
+bborg_pkg_list="${bborg_pkg_list} libopencv-core-dev python-opencv libsdl1.2-dev python-pip python-setuptools python2.7-dev python-serial"
 
 #Web Stuff:
 bborg_pkg_list="${bborg_pkg_list} xchat"
