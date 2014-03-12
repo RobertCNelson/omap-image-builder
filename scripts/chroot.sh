@@ -298,6 +298,8 @@ debian)
 	;;
 ubuntu)
 	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/boot_scripts.conf
+	sudo cp ${DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
+	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
 	wfile="flash-kernel.conf"
 	cat > /tmp/${wfile} <<-__EOF__
