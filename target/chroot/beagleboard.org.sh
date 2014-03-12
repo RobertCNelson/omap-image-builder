@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2013.10"
+u_boot_release="v2014.04-rc2"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then

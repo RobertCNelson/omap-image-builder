@@ -1,8 +1,11 @@
 bb.org-next
 
+Upgrade: u-boot v2014.04-rc2
+https://github.com/beagleboard/image-builder/commit/(next)
+
 LCD: disable DPMS/blanking mode
 Cursor: set cursor via [xsetroot -cursor_name left_ptr] instead of xorg SWCursor true, fixes random lockups (Thanks Cody Lacey)
-https://github.com/beagleboard/image-builder/commit/(next)
+https://github.com/beagleboard/image-builder/commit/3faedf9308b4adcdac6a747aadff44ede33cb59b
 
 Added: beaglebone meta package
 https://github.com/beagleboard/image-builder/commit/1b4caa3de385414674b734157f6bf1d487e0cd9d
