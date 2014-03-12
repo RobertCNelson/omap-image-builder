@@ -717,7 +717,6 @@ __EOF__
 
 sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
 
-
 if [ "x${include_firmware}" = "xenable" ] ; then
 	if [ ! -d ${tempdir}/lib/firmware/ ] ; then
 		sudo mkdir -p ${tempdir}/lib/firmware/ || true
@@ -817,6 +816,15 @@ sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.l
 #Fixes:
 #Remove pre-generated ssh keys, these will be regenerated on first bootup...
 sudo rm -rf ${tempdir}/etc/ssh/ssh_host_* || true
+
+#extra home, from chroot machine when running npm install xyz:
+unset extra_home
+extra_home=$(ls -lh ${tempdir}/home/ | grep -v ${rfs_username} | awk '{print $9}' | tail -1 || true)
+if [ ! "x${extra_home}" = "x" ] ; then
+	if [ -d ${tempdir}/home/${extra_home}/ ] ; then
+		sudo rm -rf ${tempdir}/home/${extra_home}/ || true
+	fi
+fi
 
 report_size
 chroot_umount
