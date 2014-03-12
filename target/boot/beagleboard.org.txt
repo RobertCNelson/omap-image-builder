@@ -28,9 +28,9 @@ console=ttyO0,115200n8
 kernel_file=zImage
 initrd_file=initrd.img
 
-loadaddr=0x80300000
-initrd_addr=0x81600000
-fdtaddr=0x815f0000
+loadaddr=0x82000000
+initrd_addr=0x88080000
+fdtaddr=0x88000000
 
 initrd_high=0xffffffff
 fdt_high=0xffffffff
