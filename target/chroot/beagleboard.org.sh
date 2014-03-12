@@ -80,7 +80,6 @@ setup_desktop () {
 		echo "Section \"Device\"" >> ${wfile}
 		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> ${wfile}
 		echo "        Driver          \"modesetting\"" >> ${wfile}
-		echo "        Option          \"SWCursor\"      \"true\"" >> ${wfile}
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "Section \"Screen\"" >> ${wfile}
@@ -113,6 +112,16 @@ setup_desktop () {
 	echo "wallpaper_mode=1" >> ${wfile}
 	echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+
+	#Disable dpms mode and screen blanking
+	#Better fix for missing cursor
+	wfile="/home/${rfs_username}/.xsessionrc"
+	echo "#!/bin/sh" > ${wfile}
+	echo "" >> ${wfile}
+	echo "xset -dpms" >> ${wfile}
+	echo "xset s off" >> ${wfile}
+	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
+	chown -R ${rfs_username}:${rfs_username} ${wfile}
 
 	#Disable LXDE's screensaver on autostart
 	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then

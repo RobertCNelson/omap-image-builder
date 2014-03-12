@@ -1,7 +1,11 @@
 bb.org-next
 
-Added: beaglebone meta package
+LCD: disable DPMS/blanking mode
+Cursor: set cursor via [xsetroot -cursor_name left_ptr] instead of xorg SWCursor true, fixes random lockups (Thanks Cody Lacey)
 https://github.com/beagleboard/image-builder/commit/(next)
+
+Added: beaglebone meta package
+https://github.com/beagleboard/image-builder/commit/1b4caa3de385414674b734157f6bf1d487e0cd9d
 
 Added: libopencv-dev package
 Fixes: http://bugs.elinux.org/issues/61
