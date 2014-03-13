@@ -36,11 +36,13 @@ check_defines () {
 	fi
 
 	if [ "${deb_include}" ] ; then
-		options="${options} --include=${deb_include}"
+		include=$(echo ${deb_include} | sed 's/ /,/g')
+		options="${options} --include=${include}"
 	fi
 
 	if [ "${deb_exclude}" ] ; then
-		options="${options} --exclude=${deb_exclude}"
+		exclude=$(echo ${deb_exclude} | sed 's/ /,/g')
+		options="${options} --exclude=${exclude}"
 	fi
 
 	if [ "${deb_components}" ] ; then
