@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2012-2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2014 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,45 @@ DIR=$PWD
 . ${DIR}/.project
 
 check_defines () {
+	#http://linux.die.net/man/8/debootstrap
+
+	unset options
+	if [ ! "${deb_arch}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_arch undefined"
+		exit 1
+	else
+		options="--arch=${deb_arch}"
+	fi
+
+	if [ "${deb_include}" ] ; then
+		options="${options} --include=${deb_include}"
+	fi
+
+	if [ "${deb_exclude}" ] ; then
+		options="${options} --exclude=${deb_exclude}"
+	fi
+
+	if [ "${deb_components}" ] ; then
+		components=$(echo ${deb_components} | sed 's/ /,/g')
+		options="${options} --components=${components}"
+	fi
+
+	options="${options} --foreign"
+
+	unset suite
+	if [ ! "${deb_codename}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
+		exit 1
+	else
+		suite="${deb_codename}"
+	fi
+
+	unset target
 	if [ ! "${tempdir}" ] ; then
 		echo "scripts/deboostrap_first_stage.sh: Error: tempdir undefined"
 		exit 1
+	else
+		target="${tempdir}"
 	fi
 
 	if [ ! "${deb_distribution}" ] ; then
@@ -35,20 +71,10 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${deb_codename}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
-		exit 1
-	fi
-
-	if [ ! "${deb_arch}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: deb_arch undefined"
-		exit 1
-	fi
-
+	unset mirror
 	if [ ! "${apt_proxy}" ] ; then
 		apt_proxy=""
 	fi
-
 	if [ ! "${deb_mirror}" ] ; then
 		case "${deb_distribution}" in
 		debian)
@@ -59,18 +85,7 @@ check_defines () {
 			;;
 		esac
 	fi
-
-	if [ "${deb_include}" ] ; then
-		include="--include ${deb_include}"
-	else
-		include=""
-	fi
-
-	if [ "${deb_exclude}" ] ; then
-		exclude="--exclude ${deb_exclude}"
-	else
-		exclude=""
-	fi
+	mirror="http://${apt_proxy}${deb_mirror}"
 }
 
 report_size () {
@@ -86,7 +101,7 @@ if [ "${apt_proxy}" ] ; then
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
-echo "Log: [sudo debootstrap ${include} ${exclude} --foreign --arch ${deb_arch} ${deb_codename} ${tempdir} http://${apt_proxy}${deb_mirror}]"
-sudo debootstrap ${include} ${exclude} --foreign --arch ${deb_arch} ${deb_codename} ${tempdir} http://${apt_proxy}${deb_mirror}
+echo "Log: [sudo debootstrap ${options} ${suite} ${target} ${mirror}]"
+sudo debootstrap ${options} ${suite} ${target} ${mirror}
 report_size
 #
