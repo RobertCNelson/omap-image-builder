@@ -66,8 +66,8 @@ check_defines () {
 		include=""
 	fi
 
-	if [ "${exclude_pkgs_list}" ] ; then
-		exclude="--exclude ${exclude_pkgs_list}"
+	if [ "${deb_exclude}" ] ; then
+		exclude="--exclude ${deb_exclude}"
 	else
 		exclude=""
 	fi

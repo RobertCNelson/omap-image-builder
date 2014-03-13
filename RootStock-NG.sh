@@ -69,6 +69,8 @@ run_project () {
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
 		deb_arch="${deb_arch}"
+		deb_include="${deb_include}"
+		deb_exclude="${deb_exclude}"
 
 		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"

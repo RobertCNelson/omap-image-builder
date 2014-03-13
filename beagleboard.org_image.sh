@@ -105,6 +105,7 @@ minimal_armel () {
 		deb_codename="${deb_codename}"
 		deb_arch="${deb_arch}"
 		deb_include="${deb_include}"
+		deb_exclude="${deb_exclude}"
 
 		time="${time}"
 
@@ -113,7 +114,6 @@ minimal_armel () {
 
 		apt_proxy="${apt_proxy}"
 
-		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
@@ -297,6 +297,7 @@ is_ubuntu () {
 	deb_components="main universe multiverse"
 
 	pkg_list
+	deb_exclude=""
 }
 
 is_debian () {
@@ -311,7 +312,7 @@ is_debian () {
 	deb_components="main contrib non-free"
 
 	pkg_list
-	exclude_pkgs_list=""
+	deb_exclude=""
 #	chroot_very_small_image="enable"
 }
 
