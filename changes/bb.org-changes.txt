@@ -1,7 +1,10 @@
 bb.org-next
 
-Upgrade: u-boot v2014.04-rc2
+Remove: Desktop root terminal (password is blank, this application requires one.)
 https://github.com/beagleboard/image-builder/commit/(next)
+
+Upgrade: u-boot v2014.04-rc2
+https://github.com/beagleboard/image-builder/commit/a505a395f184eaa655676833255fdfc3f31872f5
 
 LCD: disable DPMS/blanking mode
 Cursor: set cursor via [xsetroot -cursor_name left_ptr] instead of xorg SWCursor true, fixes random lockups (Thanks Cody Lacey)

@@ -142,6 +142,11 @@ setup_desktop () {
 	echo "BeagleBoard.org BeagleBone Debian Image ${release_date}" > /etc/dogtag
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
+
+	#root password is blank, so remove useless application as it requires a password.
+	if [ -f /usr/share/applications/gksu.desktop ] ; then
+		rm -f /usr/share/applications/gksu.desktop || true
+	fi
 }
 
 cleanup_npm_cache () {
