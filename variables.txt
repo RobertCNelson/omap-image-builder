@@ -1,5 +1,14 @@
 So, better late then never.
 
+#http://linux.die.net/man/8/debootstrap
+Debootstrap:
+deb_distribution
+deb_codename
+deb_arch
+deb_include
+deb_exclude
+deb_components
+
 User Setup:
 rfs_username
 rfs_fullname
