@@ -79,21 +79,21 @@ minimal_armel () {
 	case "${deb_codename}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	saucy)
-		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	*)
-		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
 	esac
 
 	#When doing offical releases, always hard lock the kernel version...
-	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/v3.8.13-bone41/"
+	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone41/"
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
@@ -103,7 +103,7 @@ minimal_armel () {
 
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
-		dpkg_arch="${dpkg_arch}"
+		deb_arch="${deb_arch}"
 		time="${time}"
 
 		deb_mirror="${deb_mirror}"
@@ -257,7 +257,7 @@ kernel_chooser () {
 		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
 	fi
 
-	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${deb_codename}-${dpkg_arch}/LATEST-${SUBARCH}
+	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${deb_codename}-${deb_arch}/LATEST-${SUBARCH}
 	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
@@ -266,7 +266,7 @@ select_rcn_ee_net_kernel () {
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/${FTP_DIR}/"
 }
 
 pkg_list () {
@@ -436,7 +436,7 @@ chroot_multiarch_armel="enable"
 
 third_party_modules="enable"
 
-dpkg_arch="armhf"
+deb_arch="armhf"
 DEFAULT_RELEASES="wheezy"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release

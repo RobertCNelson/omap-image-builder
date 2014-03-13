@@ -47,7 +47,7 @@ run_rootstock () {
 
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
-		dpkg_arch="${dpkg_arch}"
+		deb_arch="${deb_arch}"
 		time="${time}"
 
 		apt_proxy="${apt_proxy}"
@@ -102,14 +102,14 @@ if [ ! "${deb_codename}" ] ; then
 		#deb_codename="trusty"
 	fi
 fi
-if [ ! "${dpkg_arch}" ] ; then
+if [ ! "${deb_arch}" ] ; then
 	##Selects which base archtecture
 	if [ "x${deb_distribution}" = "xdebian" ] ; then
-		dpkg_arch="armhf"
-		#dpkg_arch="armel"
+		deb_arch="armhf"
+		#deb_arch="armel"
 	fi
 	if [ "x${deb_distribution}" = "xubuntu" ] ; then
-		dpkg_arch="armhf"
+		deb_arch="armhf"
 	fi
 fi
 if [ ! "${image_name}" ] ; then
@@ -118,7 +118,7 @@ if [ ! "${image_name}" ] ; then
 fi
 if [ ! "${export_filename}" ] ; then
 	##Generic file name
-	export_filename="${deb_distribution}-${deb_codename}-${image_name}-${dpkg_arch}-${time}"
+	export_filename="${deb_distribution}-${deb_codename}-${image_name}-${deb_arch}-${time}"
 fi
 rfs_hostname=${rfs_hostname:-"arm"}
 rfs_username=${rfs_username:-"${deb_distribution}"}

@@ -6,7 +6,7 @@ select_custom_kernel () {
 	SUBARCH="armv7"
 	KERNEL_ABI="TESTING"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/${FTP_DIR}/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"

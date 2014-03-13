@@ -58,7 +58,7 @@ run_project () {
 	#Optional:
 	#3.7.6-x8-dtbs.tar.gz
 	#3.7.6-x8-firmware.tar.gz
-	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/v3.7.6-x8/ ${mirror}/${deb_codename}-${dpkg_arch}/v3.2.33-psp26/ ${mirror}/${deb_codename}-${dpkg_arch}/v3.8.0-rc6-bone3/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/v3.7.6-x8/ ${mirror}/${deb_codename}-${deb_arch}/v3.2.33-psp26/ ${mirror}/${deb_codename}-${deb_arch}/v3.8.0-rc6-bone3/"
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
@@ -68,7 +68,7 @@ run_project () {
 
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
-		dpkg_arch="${dpkg_arch}"
+		deb_arch="${deb_arch}"
 
 		deb_mirror="${deb_mirror}"
 		deb_components="${deb_components}"

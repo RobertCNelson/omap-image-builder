@@ -40,16 +40,16 @@ minimal_armel () {
 	case "${deb_codename}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	saucy)
-		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	*)
-		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
 	esac
 
@@ -61,7 +61,7 @@ minimal_armel () {
 
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
-		dpkg_arch="${dpkg_arch}"
+		deb_arch="${deb_arch}"
 		time="${time}"
 
 		deb_mirror="${deb_mirror}"
@@ -293,11 +293,11 @@ no_pkgs="enable"
 #chroot_enable_debian_backports=""
 #chroot_debian_backports_pkg_list=""
 
-dpkg_arch="armel"
+deb_arch="armel"
 wheezy_release
 #jessie_release
 
-dpkg_arch="armhf"
+deb_arch="armhf"
 wheezy_release
 #jessie_release
 #saucy_release

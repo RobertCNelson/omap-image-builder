@@ -47,8 +47,8 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${dpkg_arch}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: dpkg_arch undefined"
+	if [ ! "${deb_arch}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_arch undefined"
 		exit 1
 	fi
 
@@ -845,20 +845,20 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar]"
+	echo "Log: packaging src files: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar]"
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar .
 	cd ${tempdir}
-	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar
+	ls -lh ${DIR}/deploy/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
 
 cd ${tempdir}
-echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
-sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
+echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
+sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
 cd ${DIR}/
-ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
+ls -lh ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
 
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 #
