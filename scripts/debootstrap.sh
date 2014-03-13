@@ -60,8 +60,8 @@ check_defines () {
 		esac
 	fi
 
-	if [ "${include_pkgs_list}" ] ; then
-		include="--include ${include_pkgs_list}"
+	if [ "${deb_include}" ] ; then
+		include="--include ${deb_include}"
 	else
 		include=""
 	fi

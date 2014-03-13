@@ -62,6 +62,8 @@ minimal_armel () {
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
 		deb_arch="${deb_arch}"
+		deb_include="${deb_include}"
+
 		time="${time}"
 
 		deb_mirror="${deb_mirror}"
@@ -69,7 +71,6 @@ minimal_armel () {
 
 		apt_proxy="${apt_proxy}"
 
-		include_pkgs_list="${include_pkgs_list}"
 		exclude_pkgs_list="${exclude_pkgs_list}"
 		base_pkg_list="${base_pkg_list}"
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
@@ -164,7 +165,7 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		include_pkgs_list=""
+		deb_include=""
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
 			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
