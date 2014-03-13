@@ -37,8 +37,8 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${distro}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: distro undefined"
+	if [ ! "${deb_distribution}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_distribution undefined"
 		exit 1
 	fi
 
@@ -57,7 +57,7 @@ check_defines () {
 	fi
 
 	if [ ! "${deb_mirror}" ] ; then
-		case "${distro}" in
+		case "${deb_distribution}" in
 		debian)
 			deb_mirror="ftp.us.debian.org/debian/"
 			;;
@@ -68,7 +68,7 @@ check_defines () {
 	fi
 
 	if [ ! "${deb_components}" ] ; then
-		case "${distro}" in
+		case "${deb_distribution}" in
 		debian)
 			deb_components="main contrib non-free"
 			;;
@@ -83,7 +83,7 @@ check_defines () {
 		if [ "${user_name}" ] ; then
 			rfs_username="${user_name}"
 		else
-			rfs_username="${distro}"
+			rfs_username="${deb_distribution}"
 			echo "rfs_username: undefined using: [${rfs_username}]"
 		fi
 	fi
@@ -282,7 +282,7 @@ sudo mv /tmp/hosts ${tempdir}/etc/hosts
 echo "${rfs_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
-case "${distro}" in
+case "${deb_distribution}" in
 debian)
 	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
 	sudo cp ${DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
@@ -290,6 +290,7 @@ debian)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
+	echo "deb_distribution=Debian" > /tmp/rcn-ee.conf
 	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
@@ -326,6 +327,7 @@ ubuntu)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Ubuntu" > /tmp/rcn-ee.conf
+	echo "deb_distribution=Ubuntu" > /tmp/rcn-ee.conf
 	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
@@ -368,10 +370,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
 
-		#set distro:
+		#set deb_distribution:
 		. /etc/rcn-ee.conf
 
-		if [ "x\${distro}" = "xUbuntu" ] ; then
+		if [ "x\${deb_distribution}" = "xUbuntu" ] ; then
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
 		fi
@@ -428,7 +430,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
-			case "\${distro}" in
+			case "\${deb_distribution}" in
 			Debian)
 				echo "Log: (chroot) Debian: setting up locales: [en_US.UTF-8]"
 				sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
@@ -575,7 +577,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
 
-		case "\${distro}" in
+		case "\${deb_distribution}" in
 		Debian)
 			echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
 			echo "" >> /etc/issue
@@ -628,7 +630,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	startup_script () {
-		case "\${distro}" in
+		case "\${deb_distribution}" in
 		Debian)
 			debian_startup_script
 			;;
@@ -669,7 +671,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		rm -f /usr/sbin/policy-rc.d
 
-		if [ "x\${distro}" = "xUbuntu" ] ; then
+		if [ "x\${deb_distribution}" = "xUbuntu" ] ; then
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
@@ -843,20 +845,20 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar]"
+	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar]"
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar .
 	cd ${tempdir}
-	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${distro}-${release}-${time}-src.tar
+	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
 
 cd ${tempdir}
-echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${distro}-${release}.tar]"
-sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar .
+echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar]"
+sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar .
 cd ${DIR}/
-ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${distro}-${release}.tar
+ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar
 
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 #

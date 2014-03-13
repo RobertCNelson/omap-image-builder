@@ -66,7 +66,7 @@ run_project () {
 		tempdir="${tempdir}"
 		export_filename="${export_filename}"
 
-		distro="${distro}"
+		deb_distribution="${deb_distribution}"
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 

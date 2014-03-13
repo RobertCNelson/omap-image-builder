@@ -25,7 +25,7 @@ machinekit_release () {
 	#is_debian - inlined below with some changes
 
 	rfs_hostname="arm"
-	distro="debian"
+	deb_distribution="debian"
 	rfs_username="linuxcnc"
 	rfs_password="linuxcnc"
 	rfs_fullname="Tux Chipcutter"

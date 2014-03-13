@@ -45,7 +45,7 @@ run_rootstock () {
 		tempdir="${tempdir}"
 		export_filename="${export_filename}"
 
-		distro="${distro}"
+		deb_distribution="${deb_distribution}"
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 		time="${time}"
@@ -83,18 +83,18 @@ if [ -f ${DIR}/circuitco.host ] ; then
 	. ${DIR}/host/circuitco-host.sh
 fi
 
-if [ ! "${distro}" ] ; then
-	##Selects which base distro
-	distro="debian"
-	#distro="ubuntu"
+if [ ! "${deb_distribution}" ] ; then
+	##Selects which base deb_distribution
+	deb_distribution="debian"
+	#deb_distribution="ubuntu"
 fi
 if [ ! "${release}" ] ; then
-	if [ "x${distro}" = "xdebian" ] ; then
+	if [ "x${deb_distribution}" = "xdebian" ] ; then
 		release="wheezy"
 		#release="jessie"
 		#release="sid"
 	fi
-	if [ "x${distro}" = "xubuntu" ] ; then
+	if [ "x${deb_distribution}" = "xubuntu" ] ; then
 		#release="precise"
 		#release="quantal"
 		#release="raring"
@@ -104,11 +104,11 @@ if [ ! "${release}" ] ; then
 fi
 if [ ! "${dpkg_arch}" ] ; then
 	##Selects which base archtecture
-	if [ "x${distro}" = "xdebian" ] ; then
+	if [ "x${deb_distribution}" = "xdebian" ] ; then
 		dpkg_arch="armhf"
 		#dpkg_arch="armel"
 	fi
-	if [ "x${distro}" = "xubuntu" ] ; then
+	if [ "x${deb_distribution}" = "xubuntu" ] ; then
 		dpkg_arch="armhf"
 	fi
 fi
@@ -118,10 +118,10 @@ if [ ! "${image_name}" ] ; then
 fi
 if [ ! "${export_filename}" ] ; then
 	##Generic file name
-	export_filename="${distro}-${release}-${image_name}-${dpkg_arch}-${time}"
+	export_filename="${deb_distribution}-${release}-${image_name}-${dpkg_arch}-${time}"
 fi
 rfs_hostname=${rfs_hostname:-"arm"}
-rfs_username=${rfs_username:-"${distro}"}
+rfs_username=${rfs_username:-"${deb_distribution}"}
 rfs_password=${rfs_password:-"temppwd"}
 rfs_fullname=${rfs_fullname:-"Demo User"}
 

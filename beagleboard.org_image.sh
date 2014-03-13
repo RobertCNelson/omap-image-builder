@@ -79,16 +79,16 @@ minimal_armel () {
 	case "${release}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
-		export_filename="${distro}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	quantal)
-		export_filename="${distro}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	saucy)
-		export_filename="${distro}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${distro}-${release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	esac
 
@@ -101,7 +101,7 @@ minimal_armel () {
 		tempdir="${tempdir}"
 		export_filename="${export_filename}"
 
-		distro="${distro}"
+		deb_distribution="${deb_distribution}"
 		release="${release}"
 		dpkg_arch="${dpkg_arch}"
 		time="${time}"
@@ -285,8 +285,9 @@ pkg_list () {
 }
 
 is_ubuntu () {
+	deb_distribution="ubuntu"
+
 	rfs_hostname="beaglebone"
-	distro="ubuntu"
 	rfs_username="ubuntu"
 	rfs_password="temppwd"
 	rfs_fullname="Demo User"
@@ -298,8 +299,9 @@ is_ubuntu () {
 }
 
 is_debian () {
+	deb_distribution="debian"
+
 	rfs_hostname="beaglebone"
-	distro="debian"
 	rfs_username="debian"
 	rfs_password="temppwd"
 	rfs_fullname="Demo User"

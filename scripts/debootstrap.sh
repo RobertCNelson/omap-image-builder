@@ -30,8 +30,8 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${distro}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: distro undefined"
+	if [ ! "${deb_distribution}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_distribution undefined"
 		exit 1
 	fi
 
@@ -50,7 +50,7 @@ check_defines () {
 	fi
 
 	if [ ! "${deb_mirror}" ] ; then
-		case "${distro}" in
+		case "${deb_distribution}" in
 		debian)
 			deb_mirror="ftp.us.debian.org/debian/"
 			;;
@@ -79,7 +79,7 @@ report_size () {
 
 check_defines
 
-echo "Log: Creating: [${distro}] [${release}] image for: [${dpkg_arch}]"
+echo "Log: Creating: [${deb_distribution}] [${release}] image for: [${dpkg_arch}]"
 
 if [ "${apt_proxy}" ] ; then
 	echo "Log: using apt proxy: [${apt_proxy}]"
