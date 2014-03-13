@@ -71,9 +71,9 @@ run_project () {
 		deb_arch="${deb_arch}"
 		deb_include="${deb_include}"
 		deb_exclude="${deb_exclude}"
+		deb_components="${deb_components}"
 
 		deb_mirror="${deb_mirror}"
-		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
 		base_pkg_list="${base_pkg_list}"

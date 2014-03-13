@@ -48,6 +48,10 @@ run_rootstock () {
 		deb_distribution="${deb_distribution}"
 		deb_codename="${deb_codename}"
 		deb_arch="${deb_arch}"
+		deb_include="${deb_include}"
+		deb_exclude="${deb_exclude}"
+		deb_components="${deb_components}"
+
 		time="${time}"
 
 		apt_proxy="${apt_proxy}"
@@ -110,6 +114,15 @@ if [ ! "${deb_arch}" ] ; then
 	fi
 	if [ "x${deb_distribution}" = "xubuntu" ] ; then
 		deb_arch="armhf"
+	fi
+fi
+if [ ! "${deb_components}" ] ; then
+	##Selects which base archtecture
+	if [ "x${deb_distribution}" = "xdebian" ] ; then
+		deb_components="main contrib non-free"
+	fi
+	if [ "x${deb_distribution}" = "xubuntu" ] ; then
+		deb_components="main universe multiverse"
 	fi
 fi
 if [ ! "${image_name}" ] ; then

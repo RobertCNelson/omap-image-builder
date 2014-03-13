@@ -74,11 +74,11 @@ minimal_armel () {
 		deb_arch="${deb_arch}"
 		deb_include="${deb_include}"
 		deb_exclude="${deb_exclude}"
+		deb_components="${deb_components}"
 
 		time="${time}"
 
 		deb_mirror="${deb_mirror}"
-		deb_components="${deb_components}"
 
 		apt_proxy="${apt_proxy}"
 
@@ -249,10 +249,10 @@ is_ubuntu () {
 	rfs_fullname="Demo User"
 
 	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-	deb_components="main universe multiverse"
 
 	pkg_list
 	deb_exclude=""
+	deb_components="main universe multiverse"
 }
 
 is_debian () {
@@ -264,10 +264,10 @@ is_debian () {
 	rfs_fullname="Demo User"
 
 	deb_mirror="ftp.us.debian.org/debian/"
-	deb_components="main contrib non-free"
 
 	pkg_list
 	deb_exclude=""
+	deb_components="main contrib non-free"
 #	chroot_very_small_image="enable"
 }
 
