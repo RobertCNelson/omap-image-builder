@@ -42,8 +42,8 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${release}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: release undefined"
+	if [ ! "${deb_codename}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
 		exit 1
 	fi
 
@@ -226,23 +226,23 @@ sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
-case "${release}" in
+case "${deb_codename}" in
 wheezy)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
-	echo "deb http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://security.debian.org/ ${release}/updates ${deb_components}" >> /tmp/sources.list
+	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
 	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
-		echo "#deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+		echo "deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
+		echo "#deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	else
-		echo "#deb http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
-		echo "##deb-src http://ftp.debian.org/debian ${release}-backports ${deb_components}" >> /tmp/sources.list
+		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
+		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	fi
 	if [ "x${repo_external}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
@@ -251,18 +251,18 @@ wheezy)
 	fi
 	;;
 precise|quantal|raring|saucy)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
-	echo "deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 jessie|sid|trusty)
-	echo "deb http://${deb_mirror} ${release} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${release} ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
-	echo "#deb http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
-	echo "##deb-src http://${deb_mirror} ${release}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 esac
 
@@ -845,20 +845,20 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 fi
 
 if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar]"
+	echo "Log: packaging src files: [${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar]"
 	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar .
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar .
 	cd ${tempdir}
-	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${release}-${time}-src.tar
+	ls -lh ${DIR}/deploy/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar
 	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
 	report_size
 fi
 
 cd ${tempdir}
-echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar]"
-sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar .
+echo "Log: packaging rootfs: [${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
+sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
 cd ${DIR}/
-ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${release}.tar
+ls -lh ${DIR}/deploy/${export_filename}/${dpkg_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
 
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 #

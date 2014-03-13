@@ -37,7 +37,7 @@ minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
 	#Actual Releases will use version numbers..
-	case "${release}" in
+	case "${deb_codename}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
@@ -49,7 +49,7 @@ minimal_armel () {
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${deb_distribution}-${release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	esac
 
@@ -60,7 +60,7 @@ minimal_armel () {
 		export_filename="${export_filename}"
 
 		deb_distribution="${deb_distribution}"
-		release="${release}"
+		deb_codename="${deb_codename}"
 		dpkg_arch="${dpkg_arch}"
 		time="${time}"
 
@@ -209,7 +209,7 @@ saucy_release () {
 	extra_pkgs="devmem2 python-software-properties"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
-	release="saucy"
+	deb_codename="saucy"
 
 	minimal_armel
 	compression
@@ -220,7 +220,7 @@ trusty_release () {
 	extra_pkgs="devmem2 python-software-properties"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
-	release="trusty"
+	deb_codename="trusty"
 
 	minimal_armel
 	compression
@@ -230,7 +230,7 @@ wheezy_release () {
 	extra_pkgs=""
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="wheezy"
+	deb_codename="wheezy"
 
 	minimal_armel
 	compression
@@ -240,7 +240,7 @@ jessie_release () {
 	extra_pkgs=""
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="jessie"
+	deb_codename="jessie"
 
 	minimal_armel
 	compression
@@ -250,7 +250,7 @@ sid_release () {
 	extra_pkgs=""
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="sid"
+	deb_codename="sid"
 
 	minimal_armel
 	compression

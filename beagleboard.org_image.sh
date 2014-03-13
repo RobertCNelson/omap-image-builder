@@ -76,7 +76,7 @@ minimal_armel () {
 	rm -f "${DIR}/.project" || true
 
 	#Actual Releases will use version numbers..
-	case "${release}" in
+	case "${deb_codename}" in
 	wheezy)
 		#http://www.debian.org/releases/wheezy/
 		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${dpkg_arch}-${time}"
@@ -88,12 +88,12 @@ minimal_armel () {
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	*)
-		export_filename="${deb_distribution}-${release}-${image_type}-${dpkg_arch}-${time}"
+		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${dpkg_arch}-${time}"
 		;;
 	esac
 
 	#When doing offical releases, always hard lock the kernel version...
-	#chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/v3.8.13-bone41/"
+	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/v3.8.13-bone41/"
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
@@ -102,7 +102,7 @@ minimal_armel () {
 		export_filename="${export_filename}"
 
 		deb_distribution="${deb_distribution}"
-		release="${release}"
+		deb_codename="${deb_codename}"
 		dpkg_arch="${dpkg_arch}"
 		time="${time}"
 
@@ -257,7 +257,7 @@ kernel_chooser () {
 		rm -rf ${tempdir}/LATEST-${SUBARCH} || true
 	fi
 
-	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${release}-${dpkg_arch}/LATEST-${SUBARCH}
+	wget --no-verbose --directory-prefix=${tempdir}/ ${mirror}/${deb_codename}-${dpkg_arch}/LATEST-${SUBARCH}
 	FTP_DIR=$(cat ${tempdir}/LATEST-${SUBARCH} | grep "ABI:1 ${KERNEL_ABI}" | awk '{print $3}')
 	FTP_DIR=$(echo ${FTP_DIR} | awk -F'/' '{print $6}')
 }
@@ -266,7 +266,7 @@ select_rcn_ee_net_kernel () {
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/${FTP_DIR}/"
 }
 
 pkg_list () {
@@ -319,7 +319,7 @@ quantal_release () {
 	extra_pkgs="devmem2"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
-	release="quantal"
+	deb_codename="quantal"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -330,7 +330,7 @@ saucy_release () {
 	extra_pkgs="devmem2"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
-	release="saucy"
+	deb_codename="saucy"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -341,7 +341,7 @@ trusty_release () {
 	extra_pkgs="devmem2"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
-	release="trusty"
+	deb_codename="trusty"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -351,7 +351,7 @@ wheezy_release () {
 	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="wheezy"
+	deb_codename="wheezy"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -361,7 +361,7 @@ jessie_release () {
 	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="jessie"
+	deb_codename="jessie"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
@@ -371,7 +371,7 @@ sid_release () {
 	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
-	release="sid"
+	deb_codename="sid"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression

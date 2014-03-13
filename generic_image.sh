@@ -46,7 +46,7 @@ run_rootstock () {
 		export_filename="${export_filename}"
 
 		deb_distribution="${deb_distribution}"
-		release="${release}"
+		deb_codename="${deb_codename}"
 		dpkg_arch="${dpkg_arch}"
 		time="${time}"
 
@@ -88,18 +88,18 @@ if [ ! "${deb_distribution}" ] ; then
 	deb_distribution="debian"
 	#deb_distribution="ubuntu"
 fi
-if [ ! "${release}" ] ; then
+if [ ! "${deb_codename}" ] ; then
 	if [ "x${deb_distribution}" = "xdebian" ] ; then
-		release="wheezy"
-		#release="jessie"
-		#release="sid"
+		deb_codename="wheezy"
+		#deb_codename="jessie"
+		#deb_codename="sid"
 	fi
 	if [ "x${deb_distribution}" = "xubuntu" ] ; then
-		#release="precise"
-		#release="quantal"
-		#release="raring"
-		release="saucy"
-		#release="trusty"
+		#deb_codename="precise"
+		#deb_codename="quantal"
+		#deb_codename="raring"
+		deb_codename="saucy"
+		#deb_codename="trusty"
 	fi
 fi
 if [ ! "${dpkg_arch}" ] ; then
@@ -118,7 +118,7 @@ if [ ! "${image_name}" ] ; then
 fi
 if [ ! "${export_filename}" ] ; then
 	##Generic file name
-	export_filename="${deb_distribution}-${release}-${image_name}-${dpkg_arch}-${time}"
+	export_filename="${deb_distribution}-${deb_codename}-${image_name}-${dpkg_arch}-${time}"
 fi
 rfs_hostname=${rfs_hostname:-"arm"}
 rfs_username=${rfs_username:-"${deb_distribution}"}

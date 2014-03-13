@@ -6,7 +6,7 @@ select_custom_kernel () {
 	SUBARCH="armv7"
 	KERNEL_ABI="TESTING"
 	kernel_chooser
-	chroot_KERNEL_HTTP_DIR="${mirror}/${release}-${dpkg_arch}/${FTP_DIR}/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${dpkg_arch}/${FTP_DIR}/"
 
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
@@ -39,7 +39,7 @@ machinekit_release () {
 
 	#is_debian - end
 
-	release="wheezy"
+	deb_codename="wheezy"
 	select_custom_kernel
 	minimal_armel
 	compression

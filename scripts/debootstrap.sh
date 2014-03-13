@@ -35,8 +35,8 @@ check_defines () {
 		exit 1
 	fi
 
-	if [ ! "${release}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: release undefined"
+	if [ ! "${deb_codename}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
 		exit 1
 	fi
 
@@ -79,14 +79,14 @@ report_size () {
 
 check_defines
 
-echo "Log: Creating: [${deb_distribution}] [${release}] image for: [${dpkg_arch}]"
+echo "Log: Creating: [${deb_distribution}] [${deb_codename}] image for: [${dpkg_arch}]"
 
 if [ "${apt_proxy}" ] ; then
 	echo "Log: using apt proxy: [${apt_proxy}]"
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
-echo "Log: [sudo debootstrap ${include} ${exclude} --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}]"
-sudo debootstrap ${include} ${exclude} --foreign --arch ${dpkg_arch} ${release} ${tempdir} http://${apt_proxy}${deb_mirror}
+echo "Log: [sudo debootstrap ${include} ${exclude} --foreign --arch ${dpkg_arch} ${deb_codename} ${tempdir} http://${apt_proxy}${deb_mirror}]"
+sudo debootstrap ${include} ${exclude} --foreign --arch ${dpkg_arch} ${deb_codename} ${tempdir} http://${apt_proxy}${deb_mirror}
 report_size
 #
