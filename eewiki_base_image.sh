@@ -175,6 +175,7 @@ pkg_list () {
 		else
 			base_pkg_list="${nand_pkgs} ${base_pkgs} ${extra_pkgs}"
 		fi
+		base_pkg_list=$(echo ${base_pkg_list} | sed 's/  / /g')
 	fi
 }
 
