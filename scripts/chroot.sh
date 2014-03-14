@@ -577,6 +577,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
 
+		mkdir -p /home/${rfs_username}/bin
+		chown ${rfs_username}:${rfs_username} /home/${rfs_username}/bin
+
 		case "\${deb_distribution}" in
 		Debian)
 			echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
