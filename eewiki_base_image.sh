@@ -75,16 +75,16 @@ minimal_armel () {
 		base_pkg_list=""
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
-		rfs_hostname="${rfs_hostname}"
-
 		rfs_username="${rfs_username}"
 		rfs_fullname="${rfs_fullname}"
 		rfs_password="${rfs_password}"
 
+		rfs_hostname="${rfs_hostname}"
+		rfs_startup_scripts="${rfs_startup_scripts}"
+
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
-		chroot_generic_startup_scripts="${chroot_generic_startup_scripts}"
 		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
 		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
 
@@ -281,7 +281,7 @@ fi
 
 #FIXME: things to add to .config:
 include_firmware="enable"
-chroot_generic_startup_scripts="enable"
+rfs_startup_scripts="enable"
 #chroot_script=""
 
 #repo_external=""

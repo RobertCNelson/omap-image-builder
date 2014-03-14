@@ -602,7 +602,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
-		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
+		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init.d/boot_scripts.sh ] ; then
 				chown root:root /etc/init.d/boot_scripts.sh
 				chmod +x /etc/init.d/boot_scripts.sh
@@ -619,7 +619,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	ubuntu_startup_script () {
-		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
+		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init/boot_scripts.conf ] ; then
 				chown root:root /etc/init/boot_scripts.conf
 			fi
@@ -642,7 +642,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			;;
 		esac
 
-		if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
+		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 
 			if [ -f /usr/bin/git ] ; then
 				mkdir -p /opt/scripts/ || true
@@ -765,7 +765,7 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
-if [ "x${chroot_generic_startup_scripts}" = "xenable" ] ; then
+if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
 		echo "Log: ERROR: git clone of https://github.com/RobertCNelson/boot-scripts failed.."
 		exit 1
