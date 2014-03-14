@@ -56,11 +56,13 @@ run_rootstock () {
 
 		apt_proxy="${apt_proxy}"
 
-		rfs_hostname="${rfs_hostname}"
-
 		rfs_username="${rfs_username}"
 		rfs_fullname="${rfs_fullname}"
 		rfs_password="${rfs_password}"
+
+		rfs_hostname="${rfs_hostname}"
+		rfs_startup_scripts="${rfs_startup_scripts}"
+		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
 	__EOF__
 

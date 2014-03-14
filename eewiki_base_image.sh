@@ -81,6 +81,7 @@ minimal_armel () {
 
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
+		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
 		include_firmware="${include_firmware}"
 
@@ -167,7 +168,7 @@ pkg_list () {
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		required="initramfs-tools,locales,sudo,mtd-utils"
+		required="initramfs-tools,locales,sudo,mtd-utils,git-core"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
 			deb_include="${required} ${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
@@ -282,6 +283,7 @@ fi
 #FIXME: things to add to .config:
 include_firmware="enable"
 rfs_startup_scripts="enable"
+rfs_startup_scripts_rcnee="enable"
 #chroot_script=""
 
 #repo_external=""

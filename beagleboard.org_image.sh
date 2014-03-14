@@ -123,6 +123,7 @@ minimal_armel () {
 
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
+		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
 		include_firmware="${include_firmware}"
 
@@ -406,6 +407,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 #FIXME: things to add to .config:
 include_firmware="enable"
 rfs_startup_scripts="enable"
+rfs_startup_scripts_rcnee="enable"
 chroot_script="beagleboard.org.sh"
 chroot_uenv_txt="beagleboard.org.txt"
 

@@ -85,13 +85,13 @@ minimal_armel () {
 		base_pkg_list="${base_pkg_list}"
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
-
 		rfs_username="${rfs_username}"
 		rfs_fullname="${rfs_fullname}"
 		rfs_password="${rfs_password}"
 
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
+		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
 		include_firmware="${include_firmware}"
 
@@ -332,6 +332,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 #FIXME: things to add to .config:
 include_firmware="enable"
 rfs_startup_scripts="enable"
+rfs_startup_scripts_rcnee="enable"
 #chroot_script=""
 
 #repo_external=""
