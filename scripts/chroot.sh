@@ -341,10 +341,6 @@ ubuntu)
 	;;
 esac
 
-if [ "${deb_include}" ] ; then
-	include=$(echo ${deb_include} | sed 's/,/ /g')
-fi
-
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
@@ -403,12 +399,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkgs () {
-		if [ ! "x${include}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log (DEBUG): (chroot) Installing: ${include}"
-			apt-get -y --force-yes install ${include}
-		fi
-
 		if [ ! "x${base_pkg_list}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${base_pkg_list}"
