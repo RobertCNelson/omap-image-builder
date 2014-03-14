@@ -82,7 +82,7 @@ minimal_armel () {
 
 		apt_proxy="${apt_proxy}"
 
-		base_pkg_list="${base_pkg_list}"
+		base_pkg_list=""
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
 		rfs_username="${rfs_username}"
@@ -227,18 +227,18 @@ select_rcn_ee_net_kernel () {
 }
 
 pkg_list () {
-	base_pkg_list=""
+	deb_include=""
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		deb_include="git-core,initramfs-tools,locales,sudo,wget"
+		required="git-core,initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			deb_include="${required} ${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			deb_include="${required} ${base_pkgs} ${extra_pkgs}"
 		fi
-		base_pkg_list=$(echo ${base_pkg_list} | sed 's/  / /g')
+		deb_include=$(echo ${deb_include} | sed 's/  / /g')
 	fi
 }
 
