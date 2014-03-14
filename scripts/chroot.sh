@@ -161,9 +161,15 @@ if [ "x${host_arch}" != "xarmv7l" ] ; then
 	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
 fi
 
-echo "Log: Running: debootstrap second-stage in [${tempdir}]"
-sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
-echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
+unset options
+if [ "${deb_components}" ] ; then
+	components=$(echo ${deb_components} | sed 's/ /,/g')
+	options="--components=${components}"
+fi
+
+echo "Log: Running: [sudo chroot ${tempdir} debootstrap/debootstrap ${options} --second-stage]"
+sudo chroot ${tempdir} debootstrap/debootstrap ${options} --second-stage
+echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap ${options} --second-stage]"
 report_size
 
 if [ "x${chroot_very_small_image}" = "xenable" ] ; then
