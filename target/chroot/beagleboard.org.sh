@@ -147,6 +147,16 @@ setup_desktop () {
 	if [ -f /usr/share/applications/gksu.desktop ] ; then
 		rm -f /usr/share/applications/gksu.desktop || true
 	fi
+
+	#Add Website for Help:
+	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue
+	echo "" >> /etc/issue
+
+	echo "" >> /etc/issue.net
+	cat /etc/dogtag >> /etc/issue.net
+	echo "" >> /etc/issue.net
+	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue.net
+	sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
 }
 
 cleanup_npm_cache () {

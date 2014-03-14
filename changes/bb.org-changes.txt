@@ -1,7 +1,10 @@
 bb.org-next
 
-Remove: Desktop root terminal (password is blank, this application requires one.)
+Add: serial/dvi & ssh banner to: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
 https://github.com/beagleboard/image-builder/commit/(next)
+
+Remove: Desktop root terminal (password is blank, this application requires one.)
+https://github.com/beagleboard/image-builder/commit/92910a3709f0480ea9dc727eb90610cccab5b371
 
 Upgrade: u-boot v2014.04-rc2
 https://github.com/beagleboard/image-builder/commit/a505a395f184eaa655676833255fdfc3f31872f5
