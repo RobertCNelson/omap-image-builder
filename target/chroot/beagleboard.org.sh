@@ -158,15 +158,11 @@ setup_desktop () {
 	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue.net
 	sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
 
-	#lxterminal doesnt reference .profile, so add ~/bin path via .bashrc
+	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
 	if [ -f /usr/bin/lxterminal ] ; then
-		wfile="/home/${rfs_username}/.bashrc"
-		echo '' >> ${wfile}
-		echo "# set PATH so it includes user's private bin if it exists" >> ${wfile}
-		echo 'if [ -d "$HOME/bin" ] ; then' >> ${wfile}
-		echo '    PATH="$HOME/bin:$PATH"' >> ${wfile}
-		echo 'fi' >> ${wfile}
-		chown -R ${rfs_username}:${rfs_username} ${wfile}
+		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
+			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
+		fi
 	fi
 }
 
