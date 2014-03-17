@@ -162,6 +162,7 @@ setup_desktop () {
 	if [ -f /usr/bin/lxterminal ] ; then
 		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
 			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
+			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
 		fi
 	fi
 }
