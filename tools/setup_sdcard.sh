@@ -647,18 +647,20 @@ boot_git_tools () {
 		;;
 		esac
 
-		wfile=BASIC_START.htm
-		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
-		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
-		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-		echo "" >> ${TEMPDIR}/disk/${wfile}
+		if [ ! -f ${TEMPDIR}/disk/START.htm ] ; then
+			wfile=START.htm
+			echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
+			echo "<html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "<body>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+			echo "<script>" >> ${TEMPDIR}/disk/${wfile}
+			echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
+			echo "</script>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+			echo "</body>" >> ${TEMPDIR}/disk/${wfile}
+			echo "</html>" >> ${TEMPDIR}/disk/${wfile}
+			echo "" >> ${TEMPDIR}/disk/${wfile}
+		fi
 		sync
 		echo "-----------------------------"
 	fi
