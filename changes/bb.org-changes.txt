@@ -1,7 +1,12 @@
 bb.org-next
 
+bb.org-2014.03.19
+
+Add: ID.txt like Angstrom for version info.
+https://github.com/beagleboard/image-builder/commit/b5bd2dd6d46d413da0e84543073c92177a05652c
+
 Add: serial/dvi & ssh banner to: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
-https://github.com/beagleboard/image-builder/commit/(next)
+https://github.com/beagleboard/image-builder/commit/3548f4516be3cce253d8529584894b43cbbd895f
 
 Remove: Desktop root terminal (password is blank, this application requires one.)
 https://github.com/beagleboard/image-builder/commit/92910a3709f0480ea9dc727eb90610cccab5b371
