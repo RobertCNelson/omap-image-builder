@@ -768,6 +768,10 @@ populate_boot () {
 	fi
 	echo "-----------------------------"
 
+	if [ -f "${DIR}/ID.txt" ] ; then
+		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
+	fi
+
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
 	if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
 		board="am335x_evm"

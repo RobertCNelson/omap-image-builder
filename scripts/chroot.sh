@@ -833,6 +833,11 @@ if [ ! "x${extra_home}" = "x" ] ; then
 	fi
 fi
 
+#ID.txt:
+if [ -f ${tempdir}/etc/dogtag ] ; then
+	sudo cp ${tempdir}/etc/dogtag ${DIR}/deploy/${export_filename}/ID.txt
+fi
+
 report_size
 chroot_umount
 
