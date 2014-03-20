@@ -55,7 +55,7 @@ bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x1
 bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm leafpad alsa-utils evtest screen"
 
 #lxde wifi:
-bborg_pkg_list="${bborg_pkg_list} wicd-gtk"
+bborg_pkg_list="${bborg_pkg_list} wicd-gtk wicd-cli"
 
 #lxde wifi:
 #bborg_pkg_list="${bborg_pkg_list} connman"
