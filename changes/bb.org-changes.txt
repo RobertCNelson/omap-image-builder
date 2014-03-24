@@ -1,5 +1,11 @@
 bb.org-next
 
+Added: wicd-curses
+https://github.com/beagleboard/image-builder/commit/c1e5c3dc1d2df5606f2c623b2b8f011ba08deae1
+
+Added: wicd-cli
+https://github.com/beagleboard/image-builder/commit/ba070615432e5b0aced36b60c76cec5766b95320
+
 bb.org-2014.03.19
 
 Add: ID.txt like Angstrom for version info.
