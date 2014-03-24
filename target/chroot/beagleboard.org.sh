@@ -62,11 +62,19 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
-system_patches () {
+setup_system () {
 	#For when sed/grep/etc just gets way to complex...
 	cd /
 	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
 		patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
+	fi
+
+	if [ -f /lib/systemd/system/getty@.service ] ; then
+		ln -s /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@ttyGS0.service
+
+		echo "" >> /etc/securetty
+		echo "#USB Gadget Serial Port" >> /etc/securetty
+		echo "ttyGS0" >> /etc/securetty
 	fi
 }
 
@@ -396,8 +404,8 @@ unsecure_root () {
 }
 
 is_this_qemu
-system_patches
 
+setup_system
 setup_desktop
 
 install_node_pkgs

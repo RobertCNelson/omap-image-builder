@@ -1,5 +1,8 @@
 bb.org-next
 
+Enable: sytemd start getty over ttyGS0
+https://github.com/beagleboard/image-builder/commit/(next)
+
 Added: wicd-curses
 https://github.com/beagleboard/image-builder/commit/c1e5c3dc1d2df5606f2c623b2b8f011ba08deae1
 
