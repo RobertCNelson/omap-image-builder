@@ -52,7 +52,7 @@ bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev tmux
 bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput"
 
 #lxde:
-bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm leafpad alsa-utils evtest screen"
+bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm leafpad alsa-utils evtest screen xrdp"
 
 #lxde wifi:
 bborg_pkg_list="${bborg_pkg_list} wicd-gtk wicd-cli wicd-curses"
