@@ -57,11 +57,11 @@ minimal_armel () {
 		;;
 	esac
 
-#	if [ -f ${DIR}/release ] ; then
-#		chroot_KERNEL_HTTP_DIR="\
-#${mirror}/${deb_codename}-${deb_arch}/v3.13.3-armv7-x10/ \
-#${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone40/"
-#	fi
+	if [ -f ${DIR}/release ] ; then
+		chroot_KERNEL_HTTP_DIR="\
+${mirror}/${deb_codename}-${deb_arch}/v3.13.7-armv7-x11/ \
+${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone43/"
+	fi
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
