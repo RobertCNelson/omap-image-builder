@@ -807,6 +807,11 @@ fi
 
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
+else
+	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
+		echo "Log: ERROR: kernel install failure..."
+		exit 1
+	fi
 fi
 
 if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
