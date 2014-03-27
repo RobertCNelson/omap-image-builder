@@ -1,7 +1,9 @@
 bb.org-next
 
+bb.org-2014.03.27
+
 Added: xrdp
-https://github.com/beagleboard/image-builder/commit/(next)
+https://github.com/beagleboard/image-builder/commit/5cefdbb727c7b68c87dcafeeb74ca8f8ff7c9a76
 
 Enable: sytemd start getty over ttyGS0
 https://github.com/beagleboard/image-builder/commit/e644b65932ad23a6446dcaf889813310d0f22d6a
