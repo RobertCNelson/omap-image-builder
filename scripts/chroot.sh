@@ -418,7 +418,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	}
 
-	tweak_systemd () {
+	system_tweaks () {
+		echo "[options]" > /etc/e2fsck.conf
+		echo "broken_system_clock = true" >> /etc/e2fsck.conf
+
 		if [ -f /etc/systemd/systemd-journald.conf ] ; then
 			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
 		fi
@@ -691,7 +694,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates
 	install_pkgs
-	tweak_systemd
+	system_tweaks
 	set_locale
 	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 		run_deborphan
