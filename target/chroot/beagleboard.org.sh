@@ -411,6 +411,9 @@ unsecure_root () {
 	#Make ssh root@beaglebone work..
 	sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 	sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+
+	#Don't require password for sudo access
+	echo "${rfs_username}  ALL=NOPASSWD: ALL" >>/etc/sudoers
 }
 
 is_this_qemu
