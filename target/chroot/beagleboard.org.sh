@@ -69,8 +69,9 @@ setup_system () {
 		patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
 	fi
 
-	if [ -f /lib/systemd/system/getty@.service ] ; then
-		ln -s /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@ttyGS0.service
+	if [ -f /lib/systemd/system/serial-getty@.service ] ; then
+		cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
+		ln -s /etc/systemd/system/serial-getty@ttyGS0.service /etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
 
 		echo "" >> /etc/securetty
 		echo "#USB Gadget Serial Port" >> /etc/securetty
