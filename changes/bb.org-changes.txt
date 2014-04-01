@@ -1,6 +1,17 @@
 bb.org-next
 
-bb.org-2014.03.27
+bb.org-v2014.03.31
+
+Feature: no password required for the default sudo user (root was already no password)
+https://github.com/beagleboard/image-builder/commit/93952245774e6986c2a54b4993533e2e37601c8a
+
+Feature: console boot to tty0
+https://github.com/beagleboard/image-builder/commit/bf4f9050e0a82f6d18f77ca2e9b329d811a3b149
+
+Fix: halt/reboot lockup (usb serial gadget/systemd)
+https://github.com/beagleboard/image-builder/commit/15f944399c2ec3b88c9269411480bc0887468928
+
+bb.org-v2014.03.27
 
 Added: xrdp
 https://github.com/beagleboard/image-builder/commit/5cefdbb727c7b68c87dcafeeb74ca8f8ff7c9a76
@@ -14,7 +25,7 @@ https://github.com/beagleboard/image-builder/commit/c1e5c3dc1d2df5606f2c623b2b8f
 Added: wicd-cli
 https://github.com/beagleboard/image-builder/commit/ba070615432e5b0aced36b60c76cec5766b95320
 
-bb.org-2014.03.19
+bb.org-v2014.03.19
 
 Add: ID.txt like Angstrom for version info.
 https://github.com/beagleboard/image-builder/commit/b5bd2dd6d46d413da0e84543073c92177a05652c
