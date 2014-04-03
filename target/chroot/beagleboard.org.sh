@@ -377,6 +377,14 @@ install_git_repos () {
 			ln -s ${git_target_dir}/config-pin /usr/local/bin/
 		fi
 	fi
+
+	git_repo="https://github.com/prpplague/fb-test-app.git"
+	git_target_dir="/opt/source/fb-test-app"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		make
+	fi
 }
 
 install_build_pkgs () {
