@@ -407,12 +407,11 @@ mkdir -p ${DIR}/deploy/
 
 chroot_COPY_SETUP_SDCARD="enable"
 
-#FIXME: things to add to .config:
-include_firmware="enable"
-rfs_startup_scripts="enable"
-rfs_startup_scripts_rcnee="enable"
-chroot_script="beagleboard.org.sh"
-chroot_uenv_txt="beagleboard.org.txt"
+include_firmware="${include_firmware:-enable}"
+rfs_startup_scripts="${rfs_startup_scripts:-enable}"
+rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee:-enable}"
+chroot_script="${chroot_script:-beagleboard.org.sh}"
+chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
 
 repo_external="enable"
 repo_external_arch="armhf"
