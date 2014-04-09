@@ -205,14 +205,16 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	report_size
 fi
 
-#dpkg: strip some files
-if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
-	sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
-	#FIXME: en only, ping me for enabling other locales by default
-	echo "# Delete locales" > /tmp/01_nodoc
-	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-	echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
-	sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
+if [ "x${rfs_strip_locales}" = "xenable" ] ; then
+	#dpkg: strip some files
+	if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
+		sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
+		#FIXME: en only, ping me for enabling other locales by default
+		echo "# Delete locales" > /tmp/01_nodoc
+		echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
+		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+		sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
+	fi
 fi
 
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...

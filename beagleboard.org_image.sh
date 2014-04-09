@@ -128,6 +128,8 @@ minimal_armel () {
 		rfs_startup_scripts="${rfs_startup_scripts}"
 		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
+		rfs_strip_locales="${rfs_strip_locales}"
+
 		include_firmware="${include_firmware}"
 
 		chroot_very_small_image="${chroot_very_small_image}"
@@ -412,6 +414,8 @@ rfs_startup_scripts="${rfs_startup_scripts:-enable}"
 rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee:-enable}"
 chroot_script="${chroot_script:-beagleboard.org.sh}"
 chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
+
+rfs_strip_locales="${rfs_strip_locales:-enable}"
 
 repo_external="enable"
 repo_external_arch="armhf"

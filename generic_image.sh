@@ -64,6 +64,8 @@ run_rootstock () {
 		rfs_startup_scripts="${rfs_startup_scripts}"
 		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
+		rfs_strip_locales="${rfs_strip_locales}"
+
 	__EOF__
 
 	cat ${DIR}/.project
@@ -139,6 +141,7 @@ rfs_hostname=${rfs_hostname:-"arm"}
 rfs_username=${rfs_username:-"${deb_distribution}"}
 rfs_password=${rfs_password:-"temppwd"}
 rfs_fullname=${rfs_fullname:-"Demo User"}
+rfs_strip_locales="${rfs_strip_locales:-enable}"
 
 run_rootstock
 
