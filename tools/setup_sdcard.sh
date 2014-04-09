@@ -889,9 +889,6 @@ populate_rootfs () {
 			echo "" >> ${TEMPDIR}/disk/etc/inittab
 			echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${TEMPDIR}/disk/etc/inittab
 			echo "" >> ${TEMPDIR}/disk/etc/inittab
-
-			echo "[options]" > ${TEMPDIR}/disk/etc/e2fsck.conf
-			echo "broken_system_clock = true" >> ${TEMPDIR}/disk/etc/e2fsck.conf
 		fi
 
 		if [ "x${distro}" = "xUbuntu" ] ; then
