@@ -12,7 +12,7 @@ base_pkgs="${base_pkgs} ca-certificates nano pastebinit"
 base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit hdparm memtester read-edid u-boot-tools"
 
 #OS
-base_pkgs="${base_pkgs} acpid dosfstools btrfs-tools cpufrequtils ntpdate"
+base_pkgs="${base_pkgs} acpid dosfstools btrfs-tools cpufrequtils ntpdate watchdog"
 
 #USB Dongles
 base_pkgs="${base_pkgs} ppp usb-modeswitch usbutils"
