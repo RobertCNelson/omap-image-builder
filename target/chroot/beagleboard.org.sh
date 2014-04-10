@@ -378,6 +378,10 @@ install_git_repos () {
 		fi
 	fi
 
+	git_repo="https://github.com/strahlex/BBIOConfig.git"
+	git_target_dir="/opt/source/BBIOConfig"
+	git_clone
+
 	git_repo="https://github.com/prpplague/fb-test-app.git"
 	git_target_dir="/opt/source/fb-test-app"
 	git_clone
