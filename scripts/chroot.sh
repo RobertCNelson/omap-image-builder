@@ -268,6 +268,12 @@ jessie|sid|trusty)
 	;;
 esac
 
+if [ "x${repo_external}" = "xenable" ] ; then
+	if [ ! "x${repo_external_key}" = "x" ] ; then
+		sudo cp -v ${DIR}/target/keyring/${repo_external_key} ${tempdir}/tmp/${repo_external_key}
+	fi
+fi
+
 if [ -f /tmp/sources.list ] ; then
 	sudo mv /tmp/sources.list ${tempdir}/etc/apt/sources.list
 fi
@@ -383,7 +389,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	install_pkg_updates () {
 		if [ "x${repo_external}" = "xenable" ] ; then
-			wget --no-verbose ${repo_external_key} -O - | apt-key add -
+			apt-key add /tmp/${repo_external_key}
+			rm -f /tmp/${repo_external_key} || true
 		fi
 		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
 			echo "Log: (chroot) multiarch enabled added: [armel]"

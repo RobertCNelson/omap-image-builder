@@ -422,7 +422,7 @@ repo_external_arch="armhf"
 repo_external_server="http://debian.beagleboard.org/packages"
 repo_external_dist="wheezy-bbb"
 repo_external_components="main"
-repo_external_key="http://debian.beagleboard.org/packages/beagleboneblack-archive-keyring.asc"
+repo_external_key="debian.beagleboard.org-archive-keyring.asc"
 
 #Package: beaglebone
 #Version: 0.20140306.1
