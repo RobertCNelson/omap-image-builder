@@ -2,7 +2,7 @@
 
 system=$(uname -n)
 
-mirror="http://rcn-ee.net/deb"
+mirror="https://rcn-ee.net/deb"
 case "${system}" in
 poseidon)
 	mirror="http://rcn-ee.homeip.net:81/dl/mirrors/deb"

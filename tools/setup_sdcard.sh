@@ -22,13 +22,10 @@
 # THE SOFTWARE.
 #
 # Latest can be found at:
-# http://github.com/RobertCNelson/omap-image-builder/blob/master/tools/setup_sdcard.sh
+# https://github.com/RobertCNelson/omap-image-builder/blob/master/tools/setup_sdcard.sh
 
 #REQUIREMENTS:
 #uEnv.txt bootscript support
-
-MIRROR="http://rcn-ee.net/deb"
-BACKUP_MIRROR="http://rcn-ee.homeip.net:81/dl/mirrors/deb"
 
 BOOT_LABEL="boot"
 
@@ -1278,7 +1275,7 @@ is_omap () {
 
 check_uboot_type () {
 	#New defines for hwpack:
-	conf_bl_http="http://rcn-ee.net/deb/tools/latest"
+	conf_bl_http="https://rcn-ee.net/deb/tools/latest"
 	conf_bl_listfile="bootloader-ng"
 
 	unset IN_VALID_UBOOT
