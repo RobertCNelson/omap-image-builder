@@ -46,7 +46,7 @@ bborg_pkg_list="${bborg_pkg_list} autoconf automake1.9 build-essential bison dev
 bborg_pkg_list="${bborg_pkg_list} libc-ares-dev"
 
 #Cape Stuff:
-bborg_pkg_list="${bborg_pkg_list} tpm-tools"
+#bborg_pkg_list="${bborg_pkg_list} tpm-tools"
 
 #Cloud9 stuff:
 bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev tmux"

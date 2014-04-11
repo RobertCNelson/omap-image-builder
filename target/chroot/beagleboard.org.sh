@@ -430,6 +430,10 @@ unsecure_root () {
 
 is_this_qemu
 
+##FIXME: test..
+apt-get -y --force-yes install tpm-tools
+apt-get clean
+
 setup_system
 setup_desktop
 
