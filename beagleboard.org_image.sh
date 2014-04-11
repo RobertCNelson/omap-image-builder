@@ -96,7 +96,7 @@ minimal_armel () {
 	esac
 
 	#When doing offical releases, always hard lock the kernel version...
-	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone43/"
+	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone47/"
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
