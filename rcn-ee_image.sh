@@ -43,7 +43,7 @@ minimal_armel () {
 	#Actual Releases will use version numbers..
 	case "${deb_codename}" in
 	wheezy)
-		#http://www.debian.org/releases/wheezy/
+		#https://www.debian.org/releases/wheezy/
 		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${deb_arch}-${time}"
 		;;
 	quantal)

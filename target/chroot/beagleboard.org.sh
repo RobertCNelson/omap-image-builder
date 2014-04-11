@@ -241,7 +241,7 @@ install_node_pkgs () {
 
 		cd /opt/
 		mkdir -p /opt/cloud9/
-		wget http://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
+		wget https://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
 		if [ -f /opt/c9v3-6280b336-standalonebuild-systemd.tgz ] ; then
 			tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
 			rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
@@ -254,7 +254,7 @@ install_node_pkgs () {
 			fi
 		fi
 
-		git_repo="http://github.com/beagleboard/bone101"
+		git_repo="https://github.com/beagleboard/bone101"
 		git_target_dir="/var/lib/cloud9"
 		git_clone
 		if [ -f ${git_target_dir}/.git/config ] ; then
@@ -393,11 +393,11 @@ install_git_repos () {
 
 install_build_pkgs () {
 	cd /opt/
-	wget http://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
+	wget https://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
 	if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
 		tar xf ${chromium_release}-armhf.tar.xz -C /
 		rm -rf ${chromium_release}-armhf.tar.xz || true
-		echo "${chromium_release} : http://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
+		echo "${chromium_release} : https://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
 
 		#link Chromium to /usr/bin/x-www-browser
 		update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
@@ -413,7 +413,7 @@ other_source_links () {
 
 	echo "MT7601: /etc/Wireless/RT2870/RT2870STA.dat" >> /opt/source/list.txt
 	echo "MT7601: MODULES/kernel/drivers/net/wireless/mt7601Usta.ko" >> /opt/source/list.txt
-	echo "MT7601: http://rcn-ee.net/deb/thirdparty/MT7601/DPO_MT7601U_LinuxSTA_3.0.0.4_20130913.tar.bz2" >> /opt/source/list.txt
+	echo "MT7601: https://rcn-ee.net/deb/thirdparty/MT7601/DPO_MT7601U_LinuxSTA_3.0.0.4_20130913.tar.bz2" >> /opt/source/list.txt
 }
 
 unsecure_root () {
