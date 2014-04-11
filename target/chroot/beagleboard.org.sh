@@ -62,6 +62,31 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+install_picky_packages () {
+	#Setting up trousers (0.3.9-3+wheezy1) ...
+	#dpkg: error processing trousers (--configure):
+	# subprocess installed post-installation script returned error exit status 2
+	#dpkg: dependency problems prevent configuration of tpm-tools:
+	# tpm-tools depends on trousers; however:
+	#  Package trousers is not configured yet.
+	#
+	#dpkg: error processing tpm-tools (--configure):
+	# dependency problems - leaving unconfigured
+	#Errors were encountered while processing:
+	# trousers
+	# tpm-tools
+
+	pkg="trousers"
+	echo "Installing picky package: ${pkg}"
+	apt-get -y --force-yes install ${pkg}
+	apt-get clean
+
+	pkg="tpm-tools"
+	echo "Installing picky package: ${pkg}"
+	apt-get -y --force-yes install ${pkg}
+	apt-get clean
+}
+
 setup_system () {
 	#For when sed/grep/etc just gets way to complex...
 	cd /
@@ -430,9 +455,7 @@ unsecure_root () {
 
 is_this_qemu
 
-##FIXME: test..
-apt-get -y --force-yes install tpm-tools
-apt-get clean
+install_picky_packages
 
 setup_system
 setup_desktop
