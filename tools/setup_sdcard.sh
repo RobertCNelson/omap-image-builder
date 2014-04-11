@@ -593,7 +593,7 @@ boot_git_tools () {
 		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
 		echo "-----------------------------"
 		mkdir -p ${TEMPDIR}/disk/tools
-		git clone git://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
+		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
 		if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
 			echo "Trying via http:"
 			git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
@@ -606,7 +606,7 @@ boot_git_tools () {
 			echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
 			#Not planning to change these too often, once pulled, remove .git stuff...
 			mkdir -p ${TEMPDIR}/drivers/
-			git clone git://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
 			if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
 				git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
 			fi

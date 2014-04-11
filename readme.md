@@ -3,7 +3,7 @@ Scripts to support customized image generation for many arm systems
 BeagleBoard branch:
 ------------
 
-    git clone git://github.com/beagleboard/image-builder.git
+    git clone https://github.com/beagleboard/image-builder.git
 
 Images:
 
@@ -38,7 +38,7 @@ Release Process:
 Master branch:
 ------------
 
-    git clone git://github.com/RobertCNelson/omap-image-builder
+    git clone https://github.com/RobertCNelson/omap-image-builder
 
 Images:
 

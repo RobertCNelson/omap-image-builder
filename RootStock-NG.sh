@@ -44,7 +44,7 @@ setup_git_trees () {
 	fi
 
 	git_project_name="linux-firmware"
-	git_clone_address="git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 	generic_git
 
 	git_project_name="am33x-cm3"
