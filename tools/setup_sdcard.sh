@@ -594,10 +594,6 @@ boot_git_tools () {
 		echo "-----------------------------"
 		mkdir -p ${TEMPDIR}/disk/tools
 		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-		if [ ! -f ${TEMPDIR}/disk/tools/.git/config ] ; then
-			echo "Trying via http:"
-			git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-		fi
 	fi
 
 	if [ ! "${offline}" ] && [ "${bborg_production}" ] ; then
@@ -607,9 +603,6 @@ boot_git_tools () {
 			#Not planning to change these too often, once pulled, remove .git stuff...
 			mkdir -p ${TEMPDIR}/drivers/
 			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-			if [ ! -f ${TEMPDIR}/drivers/.git/config ] ; then
-				git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-			fi
 			if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
 				rm -rf ${TEMPDIR}/drivers/.git/ || true
 			fi
