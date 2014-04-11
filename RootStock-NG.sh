@@ -48,7 +48,7 @@ setup_git_trees () {
 	generic_git
 
 	git_project_name="am33x-cm3"
-	git_clone_address="git://arago-project.org/git/projects/am33x-cm3.git"
+	git_clone_address="https://github.com/RobertCNelson/am33x-cm3.git"
 	generic_git
 }
 
