@@ -24,5 +24,5 @@ done
 
 # Copy custom uEnv.txt file to destination, which will prevent the 
 # setup_sdcard.sh script from using it's default version
-cp ${DIR}/machinekit/uEnv.txt ${DIR}/deploy/${export_filename}/
+#cp ${DIR}/machinekit/uEnv.txt ${DIR}/deploy/${export_filename}/
 

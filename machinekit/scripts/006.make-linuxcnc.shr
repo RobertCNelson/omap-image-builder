@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eval cd ~$1/linuxcnc/src
+eval cd ~$1/machinekit-dev/src
 make setuid
 
-usermod -aG kmem linuxcnc
+usermod -aG kmem machinekit
