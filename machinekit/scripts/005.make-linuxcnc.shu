@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SOURCE=linuxcnc
+SOURCE=machinekit
 
 cd ~
 
@@ -8,19 +8,13 @@ cd ~
 if [ -f kickstart.${SOURCE}.tar ] ; then
 	tar xf kickstart.${SOURCE}.tar
 else
-	#git clone -b MachineKit-ubc git://git.mah.priv.at/emc2-dev.git linuxcnc
-	# Primary upstream origin, with periodic stable releases
-	git clone -b MachineKit-ubc https://github.com/cdsteinkuehler/linuxcnc.git linuxcnc
-	cd ~/linuxcnc/
-
-	# Add repositories where development work is taking place
-	git remote add cds https://github.com/cdsteinkuehler/linuxcnc.git
-	git remote add mah https://github.com/mhaberler/linuxcnc.git
-
-	# Add main github LinuxCNC mirror
-	git remote add linuxcnc git://git.linuxcnc.org/git/linuxcnc.git
-
-	cd ~/linuxcnc/src
+	#git clone -b MachineKit-ubc git://git.mah.priv.at/emc2-dev.git machinekit-dev
+	git clone -b MachineKit-ubc https://github.com/cdsteinkuehler/MachineKit.git machinekit-dev
+	#git clone -b master https://github.com/machinekit/machinekit.git machinekit-dev
+	cd ~/machinekit-dev/
+	#git remote add linuxcnc git://git.linuxcnc.org/git/linuxcnc.git
+	git remote add machinekit https://github.com/machinekit/machinekit.git
+	cd ~/machinekit-dev/src
 	./autogen.sh
 	./configure --with-xenomai --with-platform=beaglebone --enable-emcweb --with-posix
 	make
