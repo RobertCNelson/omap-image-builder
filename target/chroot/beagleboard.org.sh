@@ -455,7 +455,7 @@ unsecure_root () {
 
 is_this_qemu
 
-install_picky_packages
+#install_picky_packages
 
 setup_system
 setup_desktop
