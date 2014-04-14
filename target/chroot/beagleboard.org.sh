@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2014.04-rc3"
+u_boot_release="v2014.04"
 cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
 
 #contains: rfs_username, release_date
