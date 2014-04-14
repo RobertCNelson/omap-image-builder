@@ -52,6 +52,9 @@ minimal_armel () {
 	saucy)
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
+	trusty)
+		export_filename="${deb_distribution}-${trusty_release}-${image_type}-${deb_arch}-${time}"
+		;;
 	*)
 		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
@@ -164,12 +167,13 @@ production () {
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
 	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
-	xz -z -7 -v ubuntu-trusty-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-14.04-${image_type}-armhf-${time}.tar
+	#xz -z -7 -v ubuntu-uxyz-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
 	tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
-	tar xf ubuntu-13.10-${image_type}-armhf-${time}.tar.xz
+	tar xf ubuntu-14.04-${image_type}-armhf-${time}.tar.xz
 
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
@@ -179,20 +183,20 @@ production () {
 	cd ..
 	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
 
-	cd ubuntu-13.10-${image_type}-armhf-${time}/
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
-	sudo ./setup_sdcard.sh --img bone-ubuntu-13.10-${time}.img --uboot bone --beagleboard.org-production
-	sudo ./setup_sdcard.sh --img bbxm-ubuntu-13.10-${time}.img --dtb omap3-beagle-xm
+	cd ubuntu-14.04-${image_type}-armhf-${time}/
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-14.04-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
+	sudo ./setup_sdcard.sh --img bone-ubuntu-14.04-${time}.img --uboot bone --beagleboard.org-production
+	sudo ./setup_sdcard.sh --img bbxm-ubuntu-14.04-${time}.img --dtb omap3-beagle-xm
 	mv *.img ../
 	cd ..
-	rm -rf ubuntu-13.10-${image_type}-armhf-${time}/ || true
+	rm -rf ubuntu-14.04-${image_type}-armhf-${time}/ || true
 
 	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
 	xz -z -7 -v bone-debian-${wheezy_release}-${time}-2gb.img
 	xz -z -7 -v bbxm-debian-${wheezy_release}-${time}-2gb.img
-	xz -z -7 -v BBB-eMMC-flasher-ubuntu-13.10-${time}-2gb.img
-	xz -z -7 -v bone-ubuntu-13.10-${time}-2gb.img
-	xz -z -7 -v bbxm-ubuntu-13.10-${time}-2gb.img
+	xz -z -7 -v BBB-eMMC-flasher-ubuntu-14.04-${time}-2gb.img
+	xz -z -7 -v bone-ubuntu-14.04-${time}-2gb.img
+	xz -z -7 -v bbxm-ubuntu-14.04-${time}-2gb.img
 
 	__EOF__
 

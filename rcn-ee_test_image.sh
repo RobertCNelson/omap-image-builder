@@ -52,6 +52,9 @@ minimal_armel () {
 	saucy)
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
+	trusty)
+		export_filename="${deb_distribution}-${trusty_release}-${image_type}-${deb_arch}-${time}"
+		;;
 	*)
 		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
