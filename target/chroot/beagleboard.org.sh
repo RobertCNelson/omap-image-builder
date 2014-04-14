@@ -281,7 +281,9 @@ install_node_pkgs () {
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
 			if [ -f /opt/cloud9/install.sh ] ; then
-				/bin/sh /opt/cloud9/install.sh
+				cd /opt/cloud9/
+				/bin/sh ./install.sh
+				cd -
 			fi
 
 			#if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
