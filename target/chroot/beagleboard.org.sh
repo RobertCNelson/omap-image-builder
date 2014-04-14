@@ -298,11 +298,6 @@ install_node_pkgs () {
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
-			#wfile="/etc/default/cloud9"
-			#echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
-			#echo "HOME=/root" >> ${wfile}
-			#echo "PORT=systemd" >> ${wfile}
-
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
 			echo "ListenStream=80" >> ${wfile}
@@ -336,26 +331,6 @@ install_node_pkgs () {
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
 			systemctl enable bonescript-autorun.service
-
-			#wfile="/lib/systemd/system/cloud9.socket"
-			#echo "[Socket]" > ${wfile}
-			#echo "ListenStream=3000" >> ${wfile}
-			#echo "" >> ${wfile}
-			#echo "[Install]" >> ${wfile}
-			#echo "WantedBy=sockets.target" >> ${wfile}
-
-			#wfile="/lib/systemd/system/cloud9.service"
-			#echo "[Unit]" > ${wfile}
-			#echo "Description=Cloud9 IDE" >> ${wfile}
-			#echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			#echo "" >> ${wfile}
-			#echo "[Service]" >> ${wfile}
-			#echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
-			#echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
-			#echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
-			#echo "SyslogIdentifier=cloud9ide" >> ${wfile}
-
-			#systemctl enable cloud9.socket
 
 			#bonescript.socket takes over port 80, so shove apache/etc to 8080:
 			if [ -f /etc/apache2/ports.conf ] ; then
