@@ -403,6 +403,14 @@ install_git_repos () {
 		cd ${git_target_dir}/
 		make
 	fi
+
+	git_repo="https://github.com/biocode3D/prufh.git"
+	git_target_dir="/opt/source/prufh"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
+	fi
 }
 
 install_build_pkgs () {
