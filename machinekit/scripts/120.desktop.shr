@@ -1,0 +1,13 @@
+########################################
+# Configure desktop
+########################################
+
+# Download additional desktop background images
+cd /opt/
+wget http://www.machinekit.net/deb/images/beagle-wallpaper_1920x1080.svg
+wget http://www.machinekit.net/deb/images/beaglebg-blue.png
+
+# Set default background image
+eval cd ~$1
+sed -i 's:^wallpaper=.*:wallpaper=/opt/beagle-wallpaper_1920x1080.svg:' .config/pcmanfm/LXDE/pcmanfm.conf
+
