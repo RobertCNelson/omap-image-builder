@@ -24,6 +24,7 @@ export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2014.04-rc3"
+cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -266,17 +267,21 @@ install_node_pkgs () {
 
 		cd /opt/
 		mkdir -p /opt/cloud9/
-		wget https://rcn-ee.net/pkgs/c9v3/c9v3-6280b336-standalonebuild-systemd.tgz
-		if [ -f /opt/c9v3-6280b336-standalonebuild-systemd.tgz ] ; then
-			tar xf c9v3-6280b336-standalonebuild-systemd.tgz -C /opt/cloud9/
-			rm -rf c9v3-6280b336-standalonebuild-systemd.tgz || true
+		wget https://rcn-ee.net/pkgs/c9v3/${cloud9_pkg}
+		if [ -f /opt/${cloud9_pkg} ] ; then
+			tar xf ${cloud9_pkg} -C /opt/cloud9/
+			rm -rf ${cloud9_pkg} || true
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
-			if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-				cd /opt/cloud9/
-				patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
-				cd /opt/
+			if [ -f /opt/cloud9/install.sh ] ; then
+				/bin/sh /opt/cloud9/install.sh
 			fi
+
+			#if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
+			#	cd /opt/cloud9/
+			#	patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
+			#	cd /opt/
+			#fi
 		fi
 
 		git_repo="https://github.com/beagleboard/bone101"
@@ -286,10 +291,10 @@ install_node_pkgs () {
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
-			wfile="/etc/default/cloud9"
-			echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
-			echo "HOME=/root" >> ${wfile}
-			echo "PORT=systemd" >> ${wfile}
+			#wfile="/etc/default/cloud9"
+			#echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
+			#echo "HOME=/root" >> ${wfile}
+			#echo "PORT=systemd" >> ${wfile}
 
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
@@ -325,25 +330,25 @@ install_node_pkgs () {
 
 			systemctl enable bonescript-autorun.service
 
-			wfile="/lib/systemd/system/cloud9.socket"
-			echo "[Socket]" > ${wfile}
-			echo "ListenStream=3000" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=sockets.target" >> ${wfile}
+			#wfile="/lib/systemd/system/cloud9.socket"
+			#echo "[Socket]" > ${wfile}
+			#echo "ListenStream=3000" >> ${wfile}
+			#echo "" >> ${wfile}
+			#echo "[Install]" >> ${wfile}
+			#echo "WantedBy=sockets.target" >> ${wfile}
 
-			wfile="/lib/systemd/system/cloud9.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Cloud9 IDE" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
-			echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
-			echo "SyslogIdentifier=cloud9ide" >> ${wfile}
+			#wfile="/lib/systemd/system/cloud9.service"
+			#echo "[Unit]" > ${wfile}
+			#echo "Description=Cloud9 IDE" >> ${wfile}
+			#echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			#echo "" >> ${wfile}
+			#echo "[Service]" >> ${wfile}
+			#echo "WorkingDirectory=/opt/cloud9" >> ${wfile}
+			#echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
+			#echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9 -p systemd" >> ${wfile}
+			#echo "SyslogIdentifier=cloud9ide" >> ${wfile}
 
-			systemctl enable cloud9.socket
+			#systemctl enable cloud9.socket
 
 			#bonescript.socket takes over port 80, so shove apache/etc to 8080:
 			if [ -f /etc/apache2/ports.conf ] ; then
