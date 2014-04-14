@@ -6,6 +6,6 @@ make setuid
 usermod -aG kmem machinekit
 
 touch /var/log/linuxcnc.log
-cp src/rtapi/rsyslogd-linuxcnc.conf /etc/rsyslog.d/linuxcnc.conf
-cp src/rtapi/shmdrv/limits.d-linuxcnc.conf /etc/security/limits.d/linuxcnc.conf
+[ -r rtapi/rsyslogd-linuxcnc.conf ] && cp rtapi/rsyslogd-linuxcnc.conf /etc/rsyslog.d/linuxcnc.conf || :
+[ -r rtapi/shmdrv/limits.d-linuxcnc.conf ] && cp rtapi/shmdrv/limits.d-linuxcnc.conf /etc/security/limits.d/linuxcnc.conf || :
 
