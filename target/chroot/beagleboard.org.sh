@@ -271,6 +271,13 @@ install_node_pkgs () {
 		if [ -f /opt/${cloud9_pkg} ] ; then
 			tar xf ${cloud9_pkg} -C /opt/cloud9/
 			rm -rf ${cloud9_pkg} || true
+
+			#Fixme: archive structure changed in c9v3-beaglebone-build-2-20140414...
+			if [ -d /opt/cloud9/c9v3-beaglebone-build-2-20140414 ] ; then
+				mv /opt/cloud9/c9v3-beaglebone-build-2-20140414/* /opt/cloud9/
+				rm -rf /opt/cloud9/c9v3-beaglebone-build-2-20140414 || true
+			fi
+
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
 			if [ -f /opt/cloud9/install.sh ] ; then
