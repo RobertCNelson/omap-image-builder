@@ -1,5 +1,22 @@
 bb.org-next
 
+bb.org-v2014.04.14
+
+Update: u-boot v2014.04
+https://github.com/beagleboard/image-builder/commit/3ee55e6d4748d9de7e1a45a9bb0e1993da2dd750
+
+Add: prufh
+https://github.com/beagleboard/image-builder/commit/d8a749bc6b88fd1cc506c5b2f73cbae2c2b62386
+
+Update: new cloud9 release
+https://github.com/beagleboard/image-builder/commit/d9bd6fa41d6c1888193f29eabf42517caf4a33cd
+
+Add: fb-test-app
+https://github.com/beagleboard/image-builder/commit/ba371e750b91f55f4adae2376f04fee9f596585e
+
+Fix: switch to debian.beagleboard.org repo
+https://github.com/beagleboard/image-builder/commit/8c529b1f58975ff8f57da4c214837805076bda24
+
 bb.org-v2014.03.31
 
 Feature: no password required for the default sudo user (root was already no password)
