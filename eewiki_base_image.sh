@@ -48,6 +48,9 @@ minimal_armel () {
 	saucy)
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
+	trusty)
+		export_filename="${deb_distribution}-${trusty_release}-${image_type}-${deb_arch}-${time}"
+		;;
 	*)
 		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
@@ -151,7 +154,7 @@ production () {
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armel-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 
-	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-14.04-${image_type}-armhf-${time}.tar
 
 	__EOF__
 
@@ -311,8 +314,7 @@ wheezy_release
 deb_arch="armhf"
 wheezy_release
 #jessie_release
-saucy_release
-#trusty_release
+trusty_release
 
 production
 
