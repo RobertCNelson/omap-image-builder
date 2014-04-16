@@ -583,6 +583,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
 		else
 			dpkg_package_missing
+			if [ "x${rfs_disable_root}" = "xenable" ] ; then
+				echo "Log: (Chroot) WARNING: sudo not installed and no root user"
+			fi
 		fi
 
 		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${rfs_password})
