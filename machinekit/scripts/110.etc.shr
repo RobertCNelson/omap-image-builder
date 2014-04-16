@@ -21,3 +21,7 @@ EOF
 
 gpasswd -d machinekit admin
 
+# Enable all users to read hidraw devices
+cat << EOF > /etc/udev/rules.d/99-hdiraw.rules
+SUBSYSTEM=="hidraw", MODE="0644"
+EOF
