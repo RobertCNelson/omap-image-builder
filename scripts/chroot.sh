@@ -592,15 +592,20 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		mkdir -p /home/${rfs_username}/bin
 		chown ${rfs_username}:${rfs_username} /home/${rfs_username}/bin
 
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
+		echo "" >> /etc/issue
+
 		case "\${deb_distribution}" in
 		Debian)
-			echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
-			echo "" >> /etc/issue
 
-			passwd <<-EOF
-			root
-			root
-			EOF
+			if [ "x${rfs_disable_root}" = "xenable" ] ; then
+				passwd -l root || true
+			else
+				passwd <<-EOF
+				root
+				root
+				EOF
+			fi
 
 			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
 			sed -i -e 's:dialout:dialout i2c spi:g' /etc/adduser.conf

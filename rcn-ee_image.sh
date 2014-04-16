@@ -92,6 +92,8 @@ minimal_armel () {
 		rfs_fullname="${rfs_fullname}"
 		rfs_password="${rfs_password}"
 
+		rfs_disable_root="${rfs_disable_root}"
+
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
 		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
@@ -270,6 +272,7 @@ is_debian () {
 	rfs_username="debian"
 	rfs_password="temppwd"
 	rfs_fullname="Demo User"
+	rfs_disable_root="enable"
 
 	deb_mirror="ftp.us.debian.org/debian/"
 
