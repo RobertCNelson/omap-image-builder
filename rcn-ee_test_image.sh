@@ -60,12 +60,6 @@ minimal_armel () {
 		;;
 	esac
 
-#	if [ -f ${DIR}/release ] ; then
-#		chroot_KERNEL_HTTP_DIR="\
-#${mirror}/${deb_codename}-${deb_arch}/v3.13.3-armv7-x10/ \
-#${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone40/"
-#	fi
-
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
 	cat > ${DIR}/.project <<-__EOF__
@@ -283,7 +277,7 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="wheezy"
@@ -293,7 +287,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="jessie"
@@ -303,7 +297,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="sid"
@@ -327,10 +321,6 @@ if [ -f ${DIR}/rcn-ee.host ] ; then
 fi
 
 mkdir -p ${DIR}/deploy/
-
-#if [ -f ${DIR}/release ] ; then
-#	chroot_ENABLE_DEB_SRC="enable"
-#fi
 
 chroot_COPY_SETUP_SDCARD="enable"
 
