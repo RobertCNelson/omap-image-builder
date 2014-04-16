@@ -313,7 +313,7 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="systemd python-dbus"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="wheezy"
@@ -323,7 +323,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="systemd python-dbus"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="jessie"
@@ -333,7 +333,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="systemd python-dbus"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="sid"
