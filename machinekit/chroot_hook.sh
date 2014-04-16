@@ -11,9 +11,9 @@ sudo rsync -va ${DIR}/machinekit/scripts/* ${tempdir}/tmp/
 
 for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]* ; do
 	case "$SCRIPT" in
-	*.shr)	sudo chroot ${tempdir} /bin/sh  ${SCRIPT#$tempdir} ${rfs_username}
+	*.shr)	time sudo chroot ${tempdir} /bin/sh  ${SCRIPT#$tempdir} ${rfs_username}
 		;;
-	*.shu)	sudo chroot ${tempdir} /bin/su  ${rfs_username} -c ${SCRIPT#$tempdir}
+	*.shu)	time sudo chroot ${tempdir} /bin/su  ${rfs_username} -c ${SCRIPT#$tempdir}
 		;;
 	*.sh)	. ${SCRIPT}
 		;;
