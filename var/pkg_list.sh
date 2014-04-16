@@ -6,7 +6,7 @@
 base_pkgs=""
 
 #Base
-base_pkgs="${base_pkgs} ca-certificates nano pastebinit"
+base_pkgs="${base_pkgs} ca-certificates nano pastebinit file lsb-release"
 
 #Tools
 base_pkgs="${base_pkgs} bsdmainutils i2c-tools fbset hexedit hdparm memtester read-edid u-boot-tools"

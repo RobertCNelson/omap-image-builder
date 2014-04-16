@@ -85,12 +85,14 @@ minimal_armel () {
 
 		apt_proxy="${apt_proxy}"
 
-		base_pkg_list="${base_pkg_list}"
+		base_pkg_list=""
 		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
 		rfs_username="${rfs_username}"
 		rfs_fullname="${rfs_fullname}"
 		rfs_password="${rfs_password}"
+
+		rfs_disable_root="${rfs_disable_root}"
 
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
@@ -233,18 +235,18 @@ select_rcn_ee_net_kernel () {
 }
 
 pkg_list () {
-	base_pkg_list=""
+	deb_include=""
 	if [ ! "x${no_pkgs}" = "xenable" ] ; then
 		. ${DIR}/var/pkg_list.sh
 
-		deb_include="git-core,initramfs-tools,locales,sudo,wget"
+		required="git-core,initramfs-tools,locales,sudo,wget"
 
 		if [ "x${include_firmware}" = "xenable" ] ; then
-			base_pkg_list="${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
+			deb_include="${required} ${base_pkgs} ${extra_pkgs} ${firmware_pkgs}"
 		else
-			base_pkg_list="${base_pkgs} ${extra_pkgs}"
+			deb_include="${required} ${base_pkgs} ${extra_pkgs}"
 		fi
-		base_pkg_list=$(echo ${base_pkg_list} | sed 's/  / /g')
+		deb_include=$(echo ${deb_include} | sed 's/  / /g')
 	fi
 }
 
@@ -270,6 +272,7 @@ is_debian () {
 	rfs_username="debian"
 	rfs_password="temppwd"
 	rfs_fullname="Demo User"
+	rfs_disable_root="enable"
 
 	deb_mirror="ftp.us.debian.org/debian/"
 
@@ -313,7 +316,7 @@ trusty_release () {
 }
 
 wheezy_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="wheezy"
@@ -323,7 +326,7 @@ wheezy_release () {
 }
 
 jessie_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="jessie"
@@ -333,7 +336,7 @@ jessie_release () {
 }
 
 sid_release () {
-	extra_pkgs="systemd"
+	extra_pkgs="consolekit systemd python-dbus"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="sid"

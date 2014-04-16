@@ -921,23 +921,28 @@ populate_rootfs () {
 		echo "# The primary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
 
 		if [ "${DISABLE_ETH}" ] ; then
-			echo "#auto eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "#allow-hotplug eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 		else
-			echo "auto eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "allow-hotplug eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 		fi
 
 		#if we have systemd & wicd-gtk, diable eth0 in /etc/network/interfaces
 		if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
 			if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
-				sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
+				sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
 				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
 			fi
 		fi
 
 		echo "# Example to keep MAC address between reboots" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${TEMPDIR}/disk/etc/network/interfaces
+
+		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "# The secondary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#allow-hotplug eth1" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#iface eth1 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 
 		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
 
@@ -952,7 +957,6 @@ populate_rootfs () {
 		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "# ... or on host side, usbnet and random hwaddr" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "# Note on some boards, usb0 is automaticly setup with an init script" >> ${TEMPDIR}/disk/etc/network/interfaces
-		echo "# in that case, to completely disable remove file [run_boot-scripts] from the boot partition" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "iface usb0 inet static" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "    address 192.168.7.2" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "    netmask 255.255.255.0" >> ${TEMPDIR}/disk/etc/network/interfaces
