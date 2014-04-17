@@ -62,7 +62,7 @@ minimal_armel () {
 
 	if [ -f ${DIR}/release ] ; then
 		chroot_KERNEL_HTTP_DIR="\
-${mirror}/${deb_codename}-${deb_arch}/v3.13.7-armv7-x11/ \
+${mirror}/${deb_codename}-${deb_arch}/v3.13.9-armv7-x11/ \
 ${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone47/"
 	fi
 
