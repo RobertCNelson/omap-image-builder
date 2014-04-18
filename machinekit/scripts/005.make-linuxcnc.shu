@@ -16,7 +16,7 @@ else
 	#git remote add machinekit https://github.com/machinekit/machinekit.git
 	cd ~/machinekit-dev/src
 	./autogen.sh
-	./configure --with-xenomai --with-platform=beaglebone --enable-emcweb --with-posix
+	./configure --with-xenomai --with-platform=beaglebone --enable-emcweb --with-posix --with-rt-preempt
 	make
 fi
 
