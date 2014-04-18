@@ -378,6 +378,13 @@ install_pip_pkgs () {
 	fi
 }
 
+install_gem_pkgs () {
+	if [ -f /usr/bin/gem ] ; then
+		echo "Installing gem packages"
+		gem install beaglebone
+	fi
+}
+
 install_git_repos () {
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
@@ -459,6 +466,7 @@ setup_desktop
 
 install_node_pkgs
 install_pip_pkgs
+install_gem_pkgs
 install_git_repos
 install_build_pkgs
 other_source_links
