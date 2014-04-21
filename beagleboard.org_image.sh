@@ -419,11 +419,11 @@ chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
 
 rfs_strip_locales="${rfs_strip_locales:-enable}"
 
-rfs_default_desktop="xfce"
-bborg_pkg_list="${bborg_pkg_list} xfce4"
+#rfs_default_desktop="xfce"
+#bborg_pkg_list="${bborg_pkg_list} xfce4"
 
-#rfs_default_desktop="LXDE"
-#bborg_pkg_list="${bborg_pkg_list} lxde-core leafpad"
+rfs_default_desktop="LXDE"
+bborg_pkg_list="${bborg_pkg_list} lxde-core leafpad"
 
 repo_external="enable"
 repo_external_arch="armhf"
