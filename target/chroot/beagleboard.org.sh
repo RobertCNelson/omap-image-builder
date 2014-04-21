@@ -114,7 +114,10 @@ setup_desktop () {
 		echo "" >> ${wfile}
 		echo "Section \"Device\"" >> ${wfile}
 		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> ${wfile}
-		echo "        Driver          \"modesetting\"" >> ${wfile}
+
+#		echo "        Driver          \"modesetting\"" >> ${wfile}
+		echo "        Driver          \"fbdev\"" >> ${wfile}
+
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "Section \"Screen\"" >> ${wfile}

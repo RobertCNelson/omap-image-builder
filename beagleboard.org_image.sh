@@ -52,7 +52,7 @@ bborg_pkg_list="${bborg_pkg_list} libc-ares-dev"
 bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev tmux"
 
 #xorg:
-bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput"
+bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg-video-fbdev xserver-xorg x11-xserver-utils xinput"
 
 #lxde:
 bborg_pkg_list="${bborg_pkg_list} lightdm alsa-utils evtest screen xrdp"
