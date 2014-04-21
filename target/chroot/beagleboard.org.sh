@@ -133,7 +133,7 @@ setup_desktop () {
 	wfile="/etc/lightdm/lightdm.conf"
 	if [ -f ${wfile} ] ; then
 		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
-		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session=LXDE:g' ${wfile}
+		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session='$rfs_default_desktop':g' ${wfile}
 		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
 			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
 		fi

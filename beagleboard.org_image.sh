@@ -55,7 +55,7 @@ bborg_pkg_list="${bborg_pkg_list} curl libssl-dev apache2-utils libxml2-dev tmux
 bborg_pkg_list="${bborg_pkg_list} xserver-xorg-video-modesetting xserver-xorg x11-xserver-utils xinput"
 
 #lxde:
-bborg_pkg_list="${bborg_pkg_list} lxde-core lightdm leafpad alsa-utils evtest screen xrdp"
+bborg_pkg_list="${bborg_pkg_list} lightdm alsa-utils evtest screen xrdp"
 
 #lxde wifi:
 bborg_pkg_list="${bborg_pkg_list} wicd-gtk wicd-cli wicd-curses"
@@ -129,6 +129,8 @@ minimal_armel () {
 		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
 
 		rfs_strip_locales="${rfs_strip_locales}"
+
+		rfs_default_desktop="${rfs_default_desktop}"
 
 		include_firmware="${include_firmware}"
 
@@ -416,6 +418,12 @@ chroot_script="${chroot_script:-beagleboard.org.sh}"
 chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
 
 rfs_strip_locales="${rfs_strip_locales:-enable}"
+
+rfs_default_desktop="xfce"
+bborg_pkg_list="${bborg_pkg_list} xfce4"
+
+#rfs_default_desktop="LXDE"
+#bborg_pkg_list="${bborg_pkg_list} lxde-core leafpad"
 
 repo_external="enable"
 repo_external_arch="armhf"
