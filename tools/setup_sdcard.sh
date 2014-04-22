@@ -981,6 +981,10 @@ populate_rootfs () {
 			fi
 		fi
 
+		if [ "x${bbb_force_eMMC_load}" = "xenable" ] ; then
+			sed -i -e 's:CAPE:CAPE=BB-BONE-eMMC1-01:g' ${TEMPDIR}/disk/etc/default/capemgr
+		fi
+
 #		wfile=var/www/AJAX_terminal.html
 #		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
 #		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
@@ -1372,6 +1376,7 @@ check_uboot_type () {
 
 		conf_board="am335x_boneblack"
 		select_kernel="${bone_dt_kernel}"
+		bbb_force_eMMC_load="enable"
 		;;
 	panda)
 		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
