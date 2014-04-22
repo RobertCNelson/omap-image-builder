@@ -3,7 +3,7 @@
 #kms_force_mode=video=HDMI-A-1:1024x768@60e
 
 ##Enable systemd
-systemd=quiet init=/lib/systemd/systemd
+systemd=init=/lib/systemd/systemd
 
 ##BeagleBone Cape Overrides
 
