@@ -1,6 +1,6 @@
 bb.org-next
 
-bb.org-v2014.04.22
+bb.org-v2014.04.23
 
 Fix: gtk2 lockups, switch to fbdev
 https://github.com/beagleboard/image-builder/commit/2d54c0095a964a931c41b63102abe569c18bdcd7
