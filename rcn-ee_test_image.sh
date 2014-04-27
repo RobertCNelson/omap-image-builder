@@ -46,9 +46,6 @@ minimal_armel () {
 		#https://www.debian.org/releases/wheezy/
 		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${deb_arch}-${time}"
 		;;
-	quantal)
-		export_filename="${deb_distribution}-${quantal_release}-${image_type}-${deb_arch}-${time}"
-		;;
 	saucy)
 		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
 		;;
@@ -246,17 +243,6 @@ is_debian () {
 #	chroot_very_small_image="enable"
 }
 
-#12.10
-quantal_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	deb_codename="quantal"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
 #13.10
 saucy_release () {
 	extra_pkgs="devmem2"
@@ -268,12 +254,23 @@ saucy_release () {
 	compression
 }
 
-#14.04
+#14.04 (lts)
 trusty_release () {
 	extra_pkgs="devmem2"
 	firmware_pkgs="linux-firmware"
 	is_ubuntu
 	deb_codename="trusty"
+	select_rcn_ee_net_kernel
+	minimal_armel
+	compression
+}
+
+#14.10
+utopic_release () {
+	extra_pkgs="devmem2"
+	firmware_pkgs="linux-firmware"
+	is_ubuntu
+	deb_codename="utopic"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
