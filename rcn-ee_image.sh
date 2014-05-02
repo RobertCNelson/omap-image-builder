@@ -387,7 +387,7 @@ rfs_strip_locales="${rfs_strip_locales:-enable}"
 #chroot_debian_backports_pkg_list=""
 
 deb_arch="armhf"
-DEFAULT_RELEASES="saucy trusty wheezy jessie"
+DEFAULT_RELEASES="trusty utopic wheezy jessie"
 for REL in ${RELEASES:-$DEFAULT_RELEASES} ; do
 	${REL}_release
 done
