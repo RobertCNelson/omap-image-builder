@@ -902,7 +902,6 @@ populate_rootfs () {
 			echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${TEMPDIR}/disk/etc/inittab
 			echo "" >> ${TEMPDIR}/disk/etc/inittab
 		fi
-		distro_network_interface="allow-hotplug"
 
 		if [ "x${distro}" = "xUbuntu" ] ; then
 			echo "start on stopped rc RUNLEVEL=[2345]" > ${TEMPDIR}/disk/etc/init/serial.conf
@@ -910,9 +909,6 @@ populate_rootfs () {
 			echo "" >> ${TEMPDIR}/disk/etc/init/serial.conf
 			echo "respawn" >> ${TEMPDIR}/disk/etc/init/serial.conf
 			echo "exec /sbin/getty 115200 ${SERIAL}" >> ${TEMPDIR}/disk/etc/init/serial.conf
-
-			#Ubuntu: "allow-hotplug" doesn't work...
-			distro_network_interface="auto"
 		fi
 
 		echo "# This file describes the network interfaces available on your system" > ${TEMPDIR}/disk/etc/network/interfaces
@@ -925,10 +921,10 @@ populate_rootfs () {
 		echo "# The primary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
 
 		if [ "${DISABLE_ETH}" ] ; then
-			echo "#${distro_network_interface} eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "#auto eth0" >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "#iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 		else
-			echo "${distro_network_interface} eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
+			echo "auto eth0"  >> ${TEMPDIR}/disk/etc/network/interfaces
 			echo "iface eth0 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 		fi
 
@@ -946,7 +942,7 @@ populate_rootfs () {
 
 		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "# The secondary network interface" >> ${TEMPDIR}/disk/etc/network/interfaces
-		echo "#${distro_network_interface} eth1" >> ${TEMPDIR}/disk/etc/network/interfaces
+		echo "#auto eth1" >> ${TEMPDIR}/disk/etc/network/interfaces
 		echo "#iface eth1 inet dhcp" >> ${TEMPDIR}/disk/etc/network/interfaces
 
 		echo "" >> ${TEMPDIR}/disk/etc/network/interfaces
