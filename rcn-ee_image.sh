@@ -57,11 +57,11 @@ minimal_armel () {
 		;;
 	esac
 
-#	if [ -f ${DIR}/release ] ; then
-#		chroot_KERNEL_HTTP_DIR="\
-#${mirror}/${deb_codename}-${deb_arch}/v3.13.10-armv7-x11/ \
-#${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone47/"
-#	fi
+	if [ -f ${DIR}/release ] ; then
+		chroot_KERNEL_HTTP_DIR="\
+${mirror}/${deb_codename}-${deb_arch}/v3.14.2-armv7-x5/ \
+${mirror}/${deb_codename}-${deb_arch}/v3.8.13-bone49/"
+	fi
 
 	tempdir=$(mktemp -d -p ${DIR}/ignore)
 
@@ -165,9 +165,8 @@ production () {
 	#!/bin/bash
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
-	xz -z -7 -v ubuntu-13.10-${image_type}-armhf-${time}.tar
 	xz -z -7 -v ubuntu-14.04-${image_type}-armhf-${time}.tar
-	#xz -z -7 -v ubuntu-uxyz-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-utopic-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
