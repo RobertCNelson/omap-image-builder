@@ -33,21 +33,19 @@ start|reload|force-reload|restart)
 		fi
 	fi
 
-	if [ ! -f /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
+	#Regenerate ssh host keys
+	if [ -f /etc/ssh/ssh.regenerate ] ; then
 		rm -rf /etc/ssh/ssh_host_* || true
 		dpkg-reconfigure openssh-server
 		sync
-	fi
-
-	#There is a chance, if user reboots to soon, these are not saved, thus a zero size...
-	if [ ! -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
-		rm -rf /etc/ssh/ssh_host_* || true
-		dpkg-reconfigure openssh-server
-		sync
+		if [ -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
+			rm -f /etc/ssh/ssh.regenerate || true
+			sync
+		fi
 	fi
 
 	if [ -f /boot/uboot/SOC.sh ] ; then
-		board=$(cat /boot/uboot/SOC.sh | grep "board" | awk -F"=" '{print $2}')
+		board=$(grep board /boot/uboot/SOC.sh | awk -F"=" '{print $2}')
 		if [ -f "/opt/scripts/boot/${board}.sh" ] ; then
 			/bin/sh /opt/scripts/boot/${board}.sh >/dev/null 2>&1 &
 		fi

@@ -848,6 +848,7 @@ sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.l
 #Fixes:
 #Remove pre-generated ssh keys, these will be regenerated on first bootup...
 sudo rm -rf ${tempdir}/etc/ssh/ssh_host_* || true
+sudo touch ${tempdir}/etc/ssh/ssh.regenerate || true
 
 #extra home, from chroot machine when running npm install xyz:
 unset extra_home
