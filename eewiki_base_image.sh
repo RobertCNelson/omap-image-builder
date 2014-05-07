@@ -151,7 +151,7 @@ production () {
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armel-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 
-	xz -z -7 -v ubuntu-14.04-${image_type}-armhf-${time}.tar
+	xz -z -7 -v ubuntu-14.10-${image_type}-armhf-${time}.tar
 
 	__EOF__
 
