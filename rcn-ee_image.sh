@@ -166,9 +166,7 @@ production () {
 	#This script's only purpose is to remember a mundane task from release to release for the release manager.
 
 	xz -z -7 -v ubuntu-14.04-${image_type}-armhf-${time}.tar
-	xz -z -7 -v ubuntu-utopic-${image_type}-armhf-${time}.tar
 	xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
-	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
 	tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz
 	tar xf ubuntu-14.04-${image_type}-armhf-${time}.tar.xz
@@ -195,6 +193,9 @@ production () {
 	xz -z -7 -v BBB-eMMC-flasher-ubuntu-14.04-${time}-2gb.img
 	xz -z -7 -v bone-ubuntu-14.04-${time}-2gb.img
 	xz -z -7 -v bbxm-ubuntu-14.04-${time}-2gb.img
+
+	xz -z -7 -v ubuntu-utopic-${image_type}-armhf-${time}.tar
+	xz -z -7 -v debian-jessie-${image_type}-armhf-${time}.tar
 
 	__EOF__
 
