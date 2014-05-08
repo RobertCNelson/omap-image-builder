@@ -7,7 +7,7 @@ select_machinekit_kernel () {
 	KERNEL_ABI="STABLE"
 	#kernel_chooser
 	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/${FTP_DIR}/"
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone47/"
+	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone49/"
 }
 
 machinekit_pkg_list () {
