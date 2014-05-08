@@ -25,3 +25,9 @@ gpasswd -d machinekit admin
 cat << EOF > /etc/udev/rules.d/99-hdiraw.rules
 SUBSYSTEM=="hidraw", MODE="0644"
 EOF
+
+# Enable PAM for ssh links
+# Fixes an issue where users cannot change ulimits when logged in via
+# ssh, which causes some Machinekit functions to fail
+sed -i 's/^UsePAM.*$/UsePam yes/' /etc/ssh/sshd_config
+
