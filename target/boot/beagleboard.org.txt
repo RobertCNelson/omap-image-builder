@@ -14,6 +14,9 @@ systemd=quiet init=/lib/systemd/systemd
 ##Disable HDMI
 #optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
 
+##Audio Cape
+#optargs=capemgr.disable_partno=BB-BONELT-HDMI
+
 ##WIP: v3.13+ capes..
 #cape=lcd4-01
 #cape=
