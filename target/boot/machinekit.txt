@@ -14,8 +14,8 @@ systemd=init=/lib/systemd/systemd
 ##Disable HDMI
 #optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
 
-## Machinekit defaults to HDMIn enabled, but eMMC and HDMI disabled
-optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONE-EMMC-2G,cape-bebopr-brdg
+## Machinekit defaults to HDMI disabled, HDMIn and eMMC enabled
+optargs=capemgr.disable_partno=BB-BONELT-HDMI
 
 ##WIP: v3.13+ capes..
 #cape=lcd4-01
