@@ -61,6 +61,6 @@ machinekit_release () {
 	#select_rcn_ee_net_kernel
 	select_machinekit_kernel
 	minimal_armel
-	compression
+	#compression
 }
 
