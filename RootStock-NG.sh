@@ -38,7 +38,15 @@ generic_git () {
 	fi
 }
 
-setup_git_trees () {
+update_git () {
+	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
+		cd ${DIR}/git/${git_project_name}/
+		git pull --rebase || true
+		cd -
+	fi
+}
+
+git_trees () {
 	if [ ! -d ${DIR}/git/ ] ; then
 		mkdir -p ${DIR}/git/
 	fi
@@ -46,10 +54,12 @@ setup_git_trees () {
 	git_project_name="linux-firmware"
 	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 	generic_git
+	update_git
 
 	git_project_name="am33x-cm3"
 	git_clone_address="https://github.com/RobertCNelson/am33x-cm3.git"
 	generic_git
+	update_git
 }
 
 run_roostock_ng () {
@@ -69,13 +79,7 @@ run_roostock_ng () {
 	sudo rm -rf ${tempdir}/ || true
 }
 
-setup_git_trees
-
-cd ${DIR}/git/linux-firmware
-git pull || true
-
-cd ${DIR}/git/am33x-cm3
-git pull || true
+git_trees
 
 cd ${DIR}/
 
