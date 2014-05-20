@@ -52,50 +52,6 @@ setup_git_trees () {
 	generic_git
 }
 
-run_project () {
-	#Mininum:
-	#linux-image*.deb
-	#Optional:
-	#3.7.6-x8-dtbs.tar.gz
-	#3.7.6-x8-firmware.tar.gz
-	chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/v3.7.6-x8/ ${mirror}/${deb_codename}-${deb_arch}/v3.2.33-psp26/ ${mirror}/${deb_codename}-${deb_arch}/v3.8.0-rc6-bone3/"
-
-	tempdir=$(mktemp -d -p ${DIR}/ignore)
-
-	cat > ${DIR}/.project <<-__EOF__
-		tempdir="${tempdir}"
-		export_filename="${export_filename}"
-
-		deb_distribution="${deb_distribution}"
-		deb_codename="${deb_codename}"
-		deb_arch="${deb_arch}"
-		deb_include="${deb_include}"
-		deb_exclude="${deb_exclude}"
-		deb_components="${deb_components}"
-
-		deb_mirror="${deb_mirror}"
-
-		apt_proxy="${apt_proxy}"
-		base_pkg_list="${base_pkg_list}"
-
-		rfs_hostname="${rfs_hostname}"
-
-		rfs_username="${rfs_username}"
-		rfs_fullname="${rfs_fullname}"
-		rfs_password="${rfs_password}"
-
-		chroot_ENABLE_DEB_SRC="${chroot_ENABLE_DEB_SRC}"
-
-		chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR}"
-
-	__EOF__
-
-	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
-	/bin/sh -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
-	/bin/sh -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
-	sudo rm -rf ${tempdir}/ || true
-}
-
 run_roostock_ng () {
 	if [ ! -f ${DIR}/.project ] ; then
 		echo "error: [.project] file not defined"
