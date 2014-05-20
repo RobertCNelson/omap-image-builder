@@ -568,9 +568,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	add_user () {
+		groupadd ${rfs_username} || true
 		groupadd admin || true
-
 		groupadd spi || true
+
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
 		default_groups="admin,adm,dialout,i2c,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
@@ -591,7 +592,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		pass_crypt=\$(perl -e 'print crypt(\$ARGV[0], "rcn-ee-salt")' ${rfs_password})
 
 		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
-		grep ${rfs_username} /etc/group
+		grep ${rfs_username} /etc/passwd
 
 		mkdir -p /home/${rfs_username}/bin
 		chown ${rfs_username}:${rfs_username} /home/${rfs_username}/bin
