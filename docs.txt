@@ -1,0 +1,4 @@
+#Use proxy to cache apt downloads
+
+export apt_proxy=apt-proxy:3142/
+
