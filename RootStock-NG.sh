@@ -79,9 +79,49 @@ run_roostock_ng () {
 	sudo rm -rf ${tempdir}/ || true
 }
 
+checkparm () {
+	if [ "$(echo $1|grep ^'\-')" ] ; then
+		echo "E: Need an argument"
+		usage
+	fi
+}
+
+check_project_config () {
+	#/config/${project_config}.conf
+	unset leading_slash
+	leading_slash=$(echo ${project_config} | grep "/" || unset leading_slash)
+	if [ "${leading_slash}" ] ; then
+		project_config=$(echo "${leading_slash##*/}")
+	fi
+
+	#${project_config}.conf
+	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
+	if [ -f "${DIR}"/config/${project_config}.conf ] ; then
+		cat "${DIR}"/config/${project_config}.conf > "${DIR}"/.project
+	else
+		echo "Invalid *.conf"
+		exit
+	fi
+}
+
 git_trees
 
 cd ${DIR}/
+
+# parse commandline options
+while [ ! -z "$1" ] ; do
+	case $1 in
+	-h|--help)
+		usage
+		;;
+	-c|--config)
+		checkparm $2
+		project_config="$2"
+		check_project_config
+		;;
+	esac
+	shift
+done
 
 run_roostock_ng
 
