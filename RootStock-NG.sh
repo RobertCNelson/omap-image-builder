@@ -66,6 +66,11 @@ run_roostock_ng () {
 	if [ ! -f ${DIR}/.project ] ; then
 		echo "error: [.project] file not defined"
 		exit 1
+	else
+		echo "Debug: .project"
+		echo "-----------------------------"
+		cat ${DIR}/.project
+		echo "-----------------------------"
 	fi
 
 	if [ ! "${tempdir}" ] ; then
@@ -105,10 +110,15 @@ check_project_config () {
 	#${project_config}.conf
 	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
 	if [ -f ${DIR}/config/${project_config}.conf ] ; then
-		echo "" > ${DIR}/.project
-		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
+		. ${DIR}/config/${project_config}.conf
+		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
+
+		echo "tempdir=\"${tempdir}\"" > ${DIR}/.project
 		echo "time=\"${time}\"" >> ${DIR}/.project
+		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
+		echo "#" >> ${DIR}/.project
 		cat ${DIR}/config/${project_config}.conf >> ${DIR}/.project
+		need_to_compress_rootfs="enable"
 	else
 		echo "Invalid *.conf"
 		exit
@@ -119,6 +129,7 @@ git_trees
 
 cd ${DIR}/
 
+unset need_to_compress_rootfs
 # parse commandline options
 while [ ! -z "$1" ] ; do
 	case $1 in
@@ -135,5 +146,14 @@ while [ ! -z "$1" ] ; do
 done
 
 run_roostock_ng
+
+if [ "x${need_to_compress_rootfs}" = "xenable" ] ; then
+	echo "Starting Compression"
+	cd ${DIR}/deploy/
+
+	tar cvf ${export_filename}.tar ./${export_filename}
+
+	cd ${DIR}/
+fi
 
 #

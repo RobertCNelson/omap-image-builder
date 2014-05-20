@@ -42,7 +42,11 @@ Master branch:
 
 Images:
 
-    ./eewiki_base_image.sh
+    ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armel
+    ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_stable_armhf
+    http://eewiki.net/display/linuxonarm/Home
+
     ./eewiki_barefs_image.sh
     http://eewiki.net/display/linuxonarm/Home
 
