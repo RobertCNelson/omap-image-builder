@@ -87,6 +87,14 @@ checkparm () {
 }
 
 check_project_config () {
+
+	if [ ! -d ${DIR}/ignore ] ; then
+		mkdir -p ${DIR}/ignore
+	fi
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
+
+	time=$(date +%Y-%m-%d)
+
 	#/config/${project_config}.conf
 	unset leading_slash
 	leading_slash=$(echo ${project_config} | grep "/" || unset leading_slash)
@@ -96,8 +104,11 @@ check_project_config () {
 
 	#${project_config}.conf
 	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
-	if [ -f "${DIR}"/config/${project_config}.conf ] ; then
-		cat "${DIR}"/config/${project_config}.conf > "${DIR}"/.project
+	if [ -f ${DIR}/config/${project_config}.conf ] ; then
+		echo "" > ${DIR}/.project
+		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
+		echo "time=\"${time}\"" >> ${DIR}/.project
+		cat ${DIR}/config/${project_config}.conf >> ${DIR}/.project
 	else
 		echo "Invalid *.conf"
 		exit
