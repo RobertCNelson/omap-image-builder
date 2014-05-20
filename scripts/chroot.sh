@@ -354,7 +354,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	dpkg_package_missing () {
-		echo "Log: (chroot) package [\${pkg}] was not installed... (add to base_pkg_list if functionality is really needed)"
+		echo "Log: (chroot) package [\${pkg}] was not installed... (add to deb_include if functionality is really needed)"
 	}
 
 	is_this_qemu () {
