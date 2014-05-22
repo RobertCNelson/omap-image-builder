@@ -792,7 +792,7 @@ if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
 	rm -rf ${DIR}/deploy/${export_filename}/ || true
 fi
 mkdir -p ${DIR}/deploy/${export_filename}/ || true
-cp -v ${DIR}/.project ${DIR}/deploy/${export_filename}/
+cp -v ${DIR}/.project ${DIR}/deploy/${export_filename}/image-builder.project
 
 if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
 	report_size
