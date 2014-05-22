@@ -47,7 +47,8 @@ Images:
     ./RootStock-NG.sh -c eewiki_minfs_ubuntu_stable_armhf
     http://eewiki.net/display/linuxonarm/Home
 
-    ./eewiki_barefs_image.sh
+    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armel
+    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
     http://eewiki.net/display/linuxonarm/Home
 
     ./rcn-ee_image.sh
