@@ -51,9 +51,13 @@ Images:
     ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
     http://eewiki.net/display/linuxonarm/Home
 
-    ./rcn-ee_image.sh
-    http://elinux.org/BeagleBoardUbuntu#Demo_Image
+    ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
     http://elinux.org/BeagleBoardDebian#Demo_Image
+
+    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
+    http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
 Release Process:
 
