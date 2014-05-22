@@ -35,7 +35,9 @@ fi
 
 image_type="lxde"
 
-. ${DIR}/lib/distro.sh
+wheezy_release="7.5"
+saucy_release="13.10"
+trusty_release="14.04"
 
 bborg_pkg_list=""
 
