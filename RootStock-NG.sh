@@ -109,15 +109,15 @@ check_project_config () {
 
 	#${project_config}.conf
 	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
-	if [ -f ${DIR}/config/${project_config}.conf ] ; then
-		. ${DIR}/config/${project_config}.conf
+	if [ -f ${DIR}/configs/${project_config}.conf ] ; then
+		. ${DIR}/configs/${project_config}.conf
 		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 
 		echo "tempdir=\"${tempdir}\"" > ${DIR}/.project
 		echo "time=\"${time}\"" >> ${DIR}/.project
 		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
 		echo "#" >> ${DIR}/.project
-		cat ${DIR}/config/${project_config}.conf >> ${DIR}/.project
+		cat ${DIR}/configs/${project_config}.conf >> ${DIR}/.project
 		need_to_compress_rootfs="enable"
 	else
 		echo "Invalid *.conf"
