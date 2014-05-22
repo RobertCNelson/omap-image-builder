@@ -5,9 +5,9 @@ cd ~
 mkdir -p ~/.local/share
 
 cat << _EOF_ >>.bashrc
-if [ -f ~/linuxcnc/scripts/rip-environment ]; then
-    . ~/linuxcnc/scripts/rip-environment
-    echo Environment set up for linuxcnc
+if [ -f ~/machinekit-dev/scripts/rip-environment ]; then
+    . ~/machinekit-dev/scripts/rip-environment
+    echo "Environment set up for running Machinekit and LinuxCNC"
 fi
 
 # Set DISPLAY to point to an open X server if necessary

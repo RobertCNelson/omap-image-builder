@@ -3,7 +3,7 @@
 eval cd ~$1/dtc
 make PREFIX=/usr/local/ install
 
-for FILE in $( eval find ~$1/linuxcnc/configs -name dtc.sh ) ; do
+for FILE in $( eval find ~$1/machinekit-dev/configs -name dtc.sh ) ; do
 
     cd $( dirname $FILE )
     ./dtc.sh

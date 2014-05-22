@@ -9,15 +9,25 @@ Path askpass /usr/bin/ssh-askpass
 
 EOF
 
-# Setup linuxcnc to not need an sudo password
-cat << EOF > /etc/sudoers.d/90-linuxcnc
-# No sudo password for linuxcnc user
-linuxcnc ALL=(ALL) NOPASSWD: ALL
+# Setup machinekit to not need an sudo password
+cat << EOF > /etc/sudoers.d/90-machinekit
+# No sudo password for machinekit user
+machinekit ALL=(ALL) NOPASSWD: ALL
 
 EOF
 
-# Remove linuxcnc from the admin group, to prevent the last line of
+# Remove machinekit from the admin group, to prevent the last line of
 # /etc/sudoers from over-riding the above NOPASSWD: setting
 
-gpasswd -d linuxcnc admin
+gpasswd -d machinekit admin
+
+# Enable all users to read hidraw devices
+cat << EOF > /etc/udev/rules.d/99-hdiraw.rules
+SUBSYSTEM=="hidraw", MODE="0644"
+EOF
+
+# Enable PAM for ssh links
+# Fixes an issue where users cannot change ulimits when logged in via
+# ssh, which causes some Machinekit functions to fail
+sed -i 's/^UsePAM.*$/UsePam yes/' /etc/ssh/sshd_config
 

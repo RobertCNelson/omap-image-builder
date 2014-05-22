@@ -719,6 +719,7 @@ populate_boot () {
 		else
 			echo "Copying Kernel image:"
 			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage-${select_kernel}
 			echo "-----------------------------"
 		fi
 	fi
@@ -728,6 +729,7 @@ populate_boot () {
 		echo "Copying Kernel initrd/uInitrd:"
 		if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
 			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img-${select_kernel}
 		else
 			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
 		fi
@@ -817,6 +819,15 @@ populate_boot () {
 
 	if [ "${bbb_flasher}" ] ; then
 		touch ${TEMPDIR}/disk/flash-eMMC.txt
+
+		echo "uEnv.txt saved as target-uEnv.txt"
+		echo "Copying eMMC-flasher.txt to uEnv.txt"
+		echo "-----------------------------"
+		mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
+		cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
+		echo "-----------------------------"
+		cat "${DIR}/uEnv.txt"
+		echo "-----------------------------"
 	fi
 
 	echo "Debug:"
