@@ -512,20 +512,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
 		fi
 
-		unset firmware_file
-		firmware_file=\$(cat /tmp/index.html | grep firmware.tar.gz | head -n 1)
-		firmware_file=\$(echo \${firmware_file} | awk -F "\"" '{print \$2}')
-
-		if [ "\${firmware_file}" ] ; then
-			wget --directory-prefix=/tmp/ \${kernel_url}\${firmware_file}
-
-			mkdir -p /tmp/cape-firmware/
-			tar xf /tmp/\${firmware_file} -C /tmp/cape-firmware/
-			cp -v /tmp/cape-firmware/*.dtbo /lib/firmware/ 2>/dev/null
-			rm -rf /tmp/cape-firmware/ || true
-			rm -f /tmp/\${firmware_file} || true
-		fi
-
 		dpkg -x /tmp/\${deb_file} /
 
 		if [ "x\${third_party_modules}" = "xenable" ] ; then
