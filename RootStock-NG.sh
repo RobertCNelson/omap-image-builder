@@ -118,7 +118,6 @@ check_project_config () {
 		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
 		echo "#" >> ${DIR}/.project
 		cat ${DIR}/configs/${project_config}.conf >> ${DIR}/.project
-		need_to_compress_rootfs="enable"
 	else
 		echo "Invalid *.conf"
 		exit
@@ -146,14 +145,5 @@ while [ ! -z "$1" ] ; do
 done
 
 run_roostock_ng
-
-if [ "x${need_to_compress_rootfs}" = "xenable" ] ; then
-	echo "Starting Compression"
-	cd ${DIR}/deploy/
-
-	tar cvf ${export_filename}.tar ./${export_filename}
-
-	cd ${DIR}/
-fi
 
 #
