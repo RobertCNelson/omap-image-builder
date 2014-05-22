@@ -817,6 +817,15 @@ populate_boot () {
 
 	if [ "${bbb_flasher}" ] ; then
 		touch ${TEMPDIR}/disk/flash-eMMC.txt
+
+		echo "uEnv.txt saved as target-uEnv.txt"
+		echo "Copying eMMC-flasher.txt to uEnv.txt"
+		echo "-----------------------------"
+		mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
+		cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
+		echo "-----------------------------"
+		cat "${DIR}/uEnv.txt"
+		echo "-----------------------------"
 	fi
 
 	echo "Debug:"
