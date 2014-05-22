@@ -124,6 +124,19 @@ check_project_config () {
 	fi
 }
 
+check_saved_config () {
+
+	if [ ! -d ${DIR}/ignore ] ; then
+		mkdir -p ${DIR}/ignore
+	fi
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
+
+	if [ ! -f ${DIR}/.project ] ; then
+		echo "Couldn't find .project"
+		exit
+	fi
+}
+
 git_trees
 
 cd ${DIR}/
@@ -139,6 +152,9 @@ while [ ! -z "$1" ] ; do
 		checkparm $2
 		project_config="$2"
 		check_project_config
+		;;
+	--saved-config)
+		check_saved_config
 		;;
 	esac
 	shift
