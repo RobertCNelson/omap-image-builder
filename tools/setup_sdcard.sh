@@ -817,7 +817,7 @@ populate_boot () {
 
 	__EOF__
 
-	if [ "${bbb_flasher}" ] ; then
+	if [ "${bbb_flasher}" ] && [ "${bbb_init_flasher}" ]; then
 		touch ${TEMPDIR}/disk/flash-eMMC.txt
 
 		echo "uEnv.txt saved as target-uEnv.txt"
@@ -1559,6 +1559,10 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-flasher)
 		bbb_flasher=1
+		;;
+	--bbb-init-flasher)
+		bbb_flasher=1
+		bbb_init_flasher=1
 		;;
 	--beagleboard.org-production)
 		bborg_production=1
