@@ -56,27 +56,16 @@ check_defines () {
 		apt_proxy=""
 	fi
 
-	if [ ! "${deb_mirror}" ] ; then
-		case "${deb_distribution}" in
-		debian)
-			deb_mirror="ftp.us.debian.org/debian/"
-			;;
-		ubuntu)
-			deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-			;;
-		esac
-	fi
-
-	if [ ! "${deb_components}" ] ; then
-		case "${deb_distribution}" in
-		debian)
-			deb_components="main contrib non-free"
-			;;
-		ubuntu)
-			deb_components="main universe multiverse"
-			;;
-		esac
-	fi
+	case "${deb_distribution}" in
+	debian)
+		deb_components=${deb_components:-"main contrib non-free"}
+		deb_mirror=${deb_mirror:-"ftp.us.debian.org/debian/"}
+		;;
+	ubuntu)
+		deb_components=${deb_components:-"main universe multiverse"}
+		deb_mirror=${deb_mirror:-"ports.ubuntu.com/ubuntu-ports/"}
+		;;
+	esac
 
 	if [ ! "${rfs_username}" ] ; then
 		##Backwards compat pre variables.txt doc
