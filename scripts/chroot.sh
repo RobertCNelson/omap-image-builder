@@ -571,6 +571,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		groupadd -r admin || true
 		groupadd -r spi || true
 
+		cat /etc/group | grep ^i2c || groupadd -r i2c || true
+		cat /etc/group | grep ^netdev || groupadd -r netdev || true
+
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
 		default_groups="admin,adm,dialout,i2c,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users"
