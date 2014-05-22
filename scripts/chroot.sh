@@ -568,9 +568,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	add_user () {
-		groupadd ${rfs_username} || true
-		groupadd admin || true
-		groupadd spi || true
+		groupadd -r admin || true
+		groupadd -r spi || true
 
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
