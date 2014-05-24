@@ -128,7 +128,7 @@ minimal_armel () {
 
 		rfs_hostname="${rfs_hostname}"
 		rfs_startup_scripts="${rfs_startup_scripts}"
-		rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee}"
+		rfs_opt_scripts="${rfs_opt_scripts}"
 
 		rfs_strip_locales="${rfs_strip_locales}"
 
@@ -415,7 +415,7 @@ chroot_COPY_SETUP_SDCARD="enable"
 
 include_firmware="${include_firmware:-enable}"
 rfs_startup_scripts="${rfs_startup_scripts:-enable}"
-rfs_startup_scripts_rcnee="${rfs_startup_scripts_rcnee:-enable}"
+rfs_opt_scripts="${rfs_opt_scripts:-https://github.com/RobertCNelson/boot-scripts}"
 chroot_script="${chroot_script:-beagleboard.org.sh}"
 chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
 

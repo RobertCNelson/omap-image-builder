@@ -641,16 +641,16 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			;;
 		esac
 
-		if [ "x${rfs_startup_scripts_rcnee}" = "xenable" ] ; then
+		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 
 			if [ -f /usr/bin/git ] ; then
 				mkdir -p /opt/scripts/ || true
-				qemu_command="git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true"
+				qemu_command="git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1 || true"
 				qemu_warning
-				git clone https://github.com/RobertCNelson/boot-scripts /opt/scripts/ --depth 1 || true
+				git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1 || true
 				sync
 				if [ -f /opt/scripts/.git/config ] ; then
-					echo "/opt/scripts/ : https://github.com/RobertCNelson/boot-scripts" >> /opt/source/list.txt
+					echo "/opt/scripts/ : ${rfs_opt_scripts}" >> /opt/source/list.txt
 					chown -R ${rfs_username}:${rfs_username} /opt/scripts/
 				fi
 			fi
@@ -764,9 +764,9 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh chroot_script.sh]"
 
-if [ "x${rfs_startup_scripts_rcnee}" = "xenable" ] ; then
+if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
-		echo "Log: ERROR: git clone of https://github.com/RobertCNelson/boot-scripts failed.."
+		echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
 		exit 1
 	fi
 fi
