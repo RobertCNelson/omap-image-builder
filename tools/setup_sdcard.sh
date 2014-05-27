@@ -819,17 +819,17 @@ populate_boot () {
 
 	if [ "${bbb_flasher}" ] ; then
 		touch ${TEMPDIR}/disk/flash-eMMC.txt
-	fi
 
-	if [ "${bbb_init_flasher}" ] ; then
-		echo "uEnv.txt saved as target-uEnv.txt"
-		echo "Copying eMMC-flasher.txt to uEnv.txt"
-		echo "-----------------------------"
-		mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
-		cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
-		echo "-----------------------------"
-		cat "${DIR}/uEnv.txt"
-		echo "-----------------------------"
+		if [ -f "${DIR}/eMMC-flasher.txt" ] ; then
+			echo "uEnv.txt saved as target-uEnv.txt"
+			echo "Copying eMMC-flasher.txt to uEnv.txt"
+			echo "-----------------------------"
+			mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
+			cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
+			echo "-----------------------------"
+			cat "${TEMPDIR}/disk/uEnv.txt"
+			echo "-----------------------------"
+		fi
 	fi
 
 	echo "Debug:"
@@ -1561,10 +1561,6 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-flasher)
 		bbb_flasher=1
-		;;
-	--bbb-init-flasher)
-		bbb_flasher=1
-		bbb_init_flasher=1
 		;;
 	--beagleboard.org-production)
 		bborg_production=1

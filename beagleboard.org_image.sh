@@ -153,6 +153,7 @@ minimal_armel () {
 		chroot_hook="${chroot_hook}"
 		chroot_script="${chroot_script}"
 		chroot_uenv_txt="${chroot_uenv_txt}"
+		chroot_flasher_uenv_txt="${chroot_flasher_uenv_txt}"
 
 		chroot_enable_debian_backports="${chroot_enable_debian_backports}"
 		chroot_debian_backports_pkg_list="${chroot_debian_backports_pkg_list}"
@@ -418,6 +419,7 @@ rfs_startup_scripts="${rfs_startup_scripts:-enable}"
 rfs_opt_scripts="${rfs_opt_scripts:-https://github.com/RobertCNelson/boot-scripts}"
 chroot_script="${chroot_script:-beagleboard.org.sh}"
 chroot_uenv_txt="${chroot_uenv_txt:-beagleboard.org.txt}"
+chroot_flasher_uenv_txt="${chroot_flasher_uenv_txt:-beagleboard.org-flasher.txt}"
 
 rfs_strip_locales="${rfs_strip_locales:-enable}"
 

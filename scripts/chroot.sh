@@ -859,8 +859,8 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 		sudo cp "${DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
 	fi
 
-	if [ -r "${DIR}/target/boot/eMMC-flasher.txt" ] ; then
-		sudo cp "${DIR}/target/boot/eMMC-flasher.txt" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
+	if [ -n "${chroot_flasher_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ] ; then
+		sudo cp "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
 	fi
 fi
 

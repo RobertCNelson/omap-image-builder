@@ -6,7 +6,7 @@
 initopts=quiet init=/lib/systemd/systemd
 
 ##init-eMMC-flasher.sh
-#initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
+initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
 
 ##BeagleBone Cape Overrides
 
