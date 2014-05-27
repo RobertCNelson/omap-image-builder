@@ -482,7 +482,9 @@ unmount_all_drive_partitions () {
 	done
 
 	echo "Zeroing out Partition Table"
-	dd if=/dev/zero of=${media} bs=1M count=16 || drive_error_ro
+	dd if=/dev/zero of=${media} bs=1M count=108 || drive_error_ro
+	sync
+	dd if=${media} of=/dev/null bs=1M count=108
 	sync
 }
 
