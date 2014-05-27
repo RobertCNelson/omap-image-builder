@@ -27,7 +27,7 @@
 #REQUIREMENTS:
 #uEnv.txt bootscript support
 
-BOOT_LABEL="boot"
+BOOT_LABEL="BOOT"
 
 unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
