@@ -1119,7 +1119,7 @@ populate_rootfs () {
 }
 
 check_mmc () {
-	FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${media}" | awk '{print $2}')
+	FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${media}:" | awk '{print $2}')
 
 	if [ "x${FDISK}" = "x${media}:" ] ; then
 		echo ""
