@@ -882,4 +882,11 @@ cd ${DIR}/
 ls -lh ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
 
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
+
+if [ "x${chroot_tarball}" = "xenable" ] ; then
+	echo "Compressing ${export_filename}"
+	cd ${DIR}/deploy/
+	tar cvf ${export_filename}.tar ./${export_filename}
+	cd ${DIR}/
+fi
 #
