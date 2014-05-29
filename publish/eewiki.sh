@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
+DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/
 
