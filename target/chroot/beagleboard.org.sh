@@ -416,7 +416,9 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		make
+		if [ -f /usr/bin/make ] ; then
+			make
+		fi
 	fi
 
 	git_repo="https://github.com/biocode3D/prufh.git"
@@ -424,7 +426,9 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
+		if [ -f /usr/bin/make ] ; then
+			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
+		fi
 	fi
 }
 
