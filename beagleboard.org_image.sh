@@ -328,64 +328,11 @@ is_debian () {
 #	chroot_very_small_image="enable"
 }
 
-#13.10
-saucy_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	deb_codename="saucy"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
-#14.04 (lts)
-trusty_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	deb_codename="trusty"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
-#14.10
-utopic_release () {
-	extra_pkgs="devmem2"
-	firmware_pkgs="linux-firmware"
-	is_ubuntu
-	deb_codename="utopic"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
 wheezy_release () {
 	extra_pkgs="systemd"
 	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
 	is_debian
 	deb_codename="wheezy"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
-jessie_release () {
-	extra_pkgs="systemd"
-	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
-	is_debian
-	deb_codename="jessie"
-	select_rcn_ee_net_kernel
-	minimal_armel
-	compression
-}
-
-sid_release () {
-	extra_pkgs="systemd"
-	firmware_pkgs="atmel-firmware firmware-ralink firmware-realtek libertas-firmware zd1211-firmware"
-	is_debian
-	deb_codename="sid"
 	select_rcn_ee_net_kernel
 	minimal_armel
 	compression
