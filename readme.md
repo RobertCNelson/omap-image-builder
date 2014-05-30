@@ -60,13 +60,13 @@ eewiki.net: Debian Stable (armhf) barefs:
 
     ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
 
-elinux.org: Debian Iamges:
+elinux.org: Debian Images:
 
     ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
     ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
-elinux.org: Ubuntu Iamges:
+elinux.org: Ubuntu Images:
 
     ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
     ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
