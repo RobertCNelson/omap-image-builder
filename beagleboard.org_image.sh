@@ -36,8 +36,6 @@ fi
 image_type="lxde"
 
 wheezy_release="7.5"
-saucy_release="13.10"
-trusty_release="14.04"
 
 bborg_pkg_list=""
 
@@ -85,15 +83,6 @@ minimal_armel () {
 	wheezy)
 		#https://www.debian.org/releases/wheezy/
 		export_filename="${deb_distribution}-${wheezy_release}-${image_type}-${deb_arch}-${time}"
-		;;
-	saucy)
-		export_filename="${deb_distribution}-${saucy_release}-${image_type}-${deb_arch}-${time}"
-		;;
-	trusty)
-		export_filename="${deb_distribution}-${trusty_release}-${image_type}-${deb_arch}-${time}"
-		;;
-	*)
-		export_filename="${deb_distribution}-${deb_codename}-${image_type}-${deb_arch}-${time}"
 		;;
 	esac
 
@@ -295,21 +284,6 @@ pkg_list () {
 		fi
 		base_pkg_list=$(echo ${base_pkg_list} | sed 's/  / /g')
 	fi
-}
-
-is_ubuntu () {
-	deb_distribution="ubuntu"
-
-	rfs_hostname="beaglebone"
-	rfs_username="ubuntu"
-	rfs_password="temppwd"
-	rfs_fullname="Demo User"
-
-	deb_mirror="ports.ubuntu.com/ubuntu-ports/"
-
-	pkg_list
-	deb_exclude=""
-	deb_components="main universe multiverse"
 }
 
 is_debian () {
