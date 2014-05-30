@@ -1,0 +1,56 @@
+##Video: Uncomment to override:
+##see: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/fb/modedb.txt
+#kms_force_mode=video=HDMI-A-1:1024x768@60e
+
+initopts=quiet
+
+##init-eMMC-flasher.sh
+#initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
+
+##BeagleBone Cape Overrides
+
+##BeagleBone Black:
+##Disable HDMI/eMMC
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
+
+##Disable HDMI
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
+
+##Audio Cape (needs HDMI Audio disabled)
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI
+#cape_enable=capemgr.enable_partno=BB-BONE-AUDI-02
+
+##Example
+#cape_disable=capemgr.disable_partno=
+#cape_enable=capemgr.enable_partno=
+
+##WIP: v3.14+ capes..
+#cape=ttyO1
+#cape=
+
+##note: the eMMC flasher script relies on the next line
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=ext4 rootwait fixrtc
+
+##These are needed to be compliant with Angstrom's 2013.06.20 u-boot.
+console=ttyO0,115200n8
+
+kernel_file=zImage
+initrd_file=initrd.img
+
+loadaddr=0x82000000
+initrd_addr=0x88080000
+fdtaddr=0x88000000
+
+initrd_high=0xffffffff
+fdt_high=0xffffffff
+
+loadkernel=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
+loadinitrd=load mmc ${mmcdev}:${mmcpart} ${initrd_addr} ${initrd_file}; setenv initrd_size ${filesize}
+loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} /dtbs/${fdtfile}
+
+loadfiles=run loadkernel; run loadinitrd; run loadfdt
+mmcargs=setenv bootargs console=tty0 console=${console} ${optargs} ${cape_disable} ${cape_enable} ${kms_force_mode} root=${mmcroot} rootfstype=${mmcrootfstype} ${initopts}
+
+uenvcmd=run loadfiles; run mmcargs; bootz ${loadaddr} ${initrd_addr}:${initrd_size} ${fdtaddr}
+#
