@@ -40,24 +40,37 @@ Master branch:
 
     git clone https://github.com/RobertCNelson/omap-image-builder
 
-Images:
+eewiki.net: Debian Stable (armel) minfs:
 
     ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armel
+
+eewiki.net: Debian Stable (armhf) minfs:
+
     ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armhf
+
+eewiki.net: Ubuntu Stable (armhf) minfs:
+
     ./RootStock-NG.sh -c eewiki_minfs_ubuntu_stable_armhf
-    http://eewiki.net/display/linuxonarm/Home
+
+eewiki.net: Debian Stable (armel) barefs:
 
     ./RootStock-NG.sh -c eewiki_bare_debian_stable_armel
-    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
-    http://eewiki.net/display/linuxonarm/Home
 
-    ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
-    ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
-    http://elinux.org/BeagleBoardDebian#Demo_Image
+eewiki.net: Debian Stable (armhf) barefs:
+
+    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
+
+elinux.org: Debian Iamges:
 
     ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
     ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
+
+elinux.org: Ubuntu Iamges:
+
+    ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
+    http://elinux.org/BeagleBoardDebian#Demo_Image
 
 Release Process:
 
