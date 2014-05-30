@@ -92,7 +92,9 @@ setup_system () {
 	#For when sed/grep/etc just gets way to complex...
 	cd /
 	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
-		patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
+		if [ -f /usr/bin/patch ] ; then
+			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
+		fi
 	fi
 
 	if [ -f /lib/systemd/system/serial-getty@.service ] ; then
@@ -452,12 +454,16 @@ unsecure_root () {
 	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
 	sed -i -e 's:'$root_password'::g' /etc/shadow
 
-	#Make ssh root@beaglebone work..
-	sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
-	sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+	if [ -f /etc/ssh/sshd_config ] ; then
+		#Make ssh root@beaglebone work..
+		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
+		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+	fi
 
-	#Don't require password for sudo access
-	echo "${rfs_username}  ALL=NOPASSWD: ALL" >>/etc/sudoers
+	if [ -f /etc/sudoers ] ; then
+		#Don't require password for sudo access
+		echo "${rfs_username}  ALL=NOPASSWD: ALL" >>/etc/sudoers
+	fi
 }
 
 is_this_qemu
