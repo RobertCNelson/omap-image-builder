@@ -196,7 +196,10 @@ setup_desktop () {
 	cat /etc/dogtag >> /etc/issue.net
 	echo "" >> /etc/issue.net
 	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue.net
-	sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
+
+	if [ -f /etc/ssh/sshd_config ] ; then
+		sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
+	fi
 
 	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
 	if [ -f /usr/bin/lxterminal ] ; then
