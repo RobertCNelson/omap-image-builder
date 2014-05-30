@@ -3,7 +3,7 @@
 #kms_force_mode=video=HDMI-A-1:1024x768@60e
 
 ##Enable systemd
-initopts=quiet init=/lib/systemd/systemd
+#initopts=quiet init=/lib/systemd/systemd
 
 ##init-eMMC-flasher.sh
 initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
