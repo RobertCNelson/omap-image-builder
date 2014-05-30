@@ -5,7 +5,7 @@ DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/
 
-./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
+./RootStock-NG.sh -c bb.org-debian-stable
 
 debian_stable="7.5"
 
