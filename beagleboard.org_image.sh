@@ -162,29 +162,12 @@ compression () {
 
 	tar cvf ${export_filename}.tar ./${export_filename}
 
-	if [ -f ${DIR}/release ] ; then
-		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
-			if [ -d /mnt/farm/testing/pending/ ] ; then
-				cp -v ${export_filename}.tar /mnt/farm/testing/pending/${export_filename}.tar
-			fi
-		fi
-	fi
 	cd ${DIR}/
 }
 
 production () {
 	echo "Starting Production Stage"
 	cd ${DIR}/deploy/
-
-	unset actual_dir
-	if [ -f ${DIR}/release ] ; then
-		if [ "x${SYST}" = "x${RELEASE_HOST}" ] ; then
-			if [ -d /mnt/farm/testing/pending/ ] ; then
-				cp -v arm*.tar /mnt/farm/images/ || true
-				actual_dir="/mnt/farm/testing/pending"
-			fi
-		fi
-	fi
 
 	cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 	#!/bin/bash
@@ -244,11 +227,6 @@ production () {
 	__EOF__
 
 	chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
-
-	if [ ! "x${actual_dir}" = "x" ] ; then
-		cp ${DIR}/deploy/gift_wrap_final_images.sh ${actual_dir}/gift_wrap_final_images.sh
-		chmod +x ${actual_dir}/gift_wrap_final_images.sh
-	fi
 
 	cd ${DIR}/
 }
@@ -321,14 +299,6 @@ if [ ! "${apt_proxy}" ] ; then
 fi
 if [ ! "${mirror}" ] ; then
 	mirror="https://rcn-ee.net/deb"
-fi
-
-#FIXME: (something simple)
-if [ -f ${DIR}/rcn-ee.host ] ; then
-	. ${DIR}/host/rcn-ee-host.sh
-fi
-if [ -f ${DIR}/circuitco.host ] ; then
-	. ${DIR}/host/circuitco-host.sh
 fi
 
 mkdir -p ${DIR}/deploy/
