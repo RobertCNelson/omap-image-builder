@@ -109,7 +109,6 @@ minimal_armel () {
 		apt_proxy="${apt_proxy}"
 
 		base_pkg_list="${base_pkg_list}"
-		chroot_multiarch_armel="${chroot_multiarch_armel}"
 
 		rfs_username="${rfs_username}"
 		rfs_fullname="${rfs_fullname}"
@@ -333,9 +332,6 @@ repo_external_key="debian.beagleboard.org-archive-keyring.asc"
 repo_external_pkg_list="beaglebone"
 
 #no_pkgs="enable"
-
-#add's /lib/ld-linux.so.3 so users who don't use a hardfp compiler atleast can run their program...
-#chroot_multiarch_armel="enable"
 
 #chroot_enable_debian_backports="enable"
 #chroot_debian_backports_pkg_list=""

@@ -381,10 +381,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			apt-key add /tmp/${repo_external_key}
 			rm -f /tmp/${repo_external_key} || true
 		fi
-		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
-			echo "Log: (chroot) multiarch enabled added: [armel]"
-			sudo dpkg --add-architecture armel
-		fi
 
 		apt-get update
 		apt-get upgrade -y --force-yes
@@ -408,12 +404,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
 			apt-get -y --force-yes install ${repo_external_pkg_list}
 		fi
-
-		if [ "x${chroot_multiarch_armel}" = "xenable" ] ; then
-			echo "Log: (chroot) Installing: libc6:armel"
-			sudo apt-get -y --force-yes install libc6:armel
-		fi
-
 	}
 
 	system_tweaks () {
