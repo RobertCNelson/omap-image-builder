@@ -205,23 +205,23 @@ production () {
 	rm -rf debian-${wheezy_release}-${image_type}-armhf-${time}/ || true
 
 	if [ ! -f debian-${wheezy_release}-${image_type}-armhf-${time}.tar.xz ] ; then
-		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
+		xz -z -8 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
 
 	if [ -f BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
 		rm BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
+	xz -z -8 -v BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
 	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
 		rm BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
+	xz -z -8 -v BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
 	if [ -f bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
 		rm bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img
+	xz -z -8 -v bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
 	__EOF__
 

@@ -19,13 +19,13 @@ ubuntu_stable="14.04"
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-xz -z -7 -v debian-${debian_stable}-bare-armel-${time}.tar
-xz -z -7 -v debian-${debian_stable}-bare-armhf-${time}.tar
+xz -z -8 -v debian-${debian_stable}-bare-armel-${time}.tar
+xz -z -8 -v debian-${debian_stable}-bare-armhf-${time}.tar
 
-xz -z -7 -v debian-${debian_stable}-minimal-armel-${time}.tar
-xz -z -7 -v debian-${debian_stable}-minimal-armhf-${time}.tar
+xz -z -8 -v debian-${debian_stable}-minimal-armel-${time}.tar
+xz -z -8 -v debian-${debian_stable}-minimal-armhf-${time}.tar
 
-xz -z -7 -v ubuntu-${ubuntu_stable}-minimal-armhf-${time}.tar
+xz -z -8 -v ubuntu-${ubuntu_stable}-minimal-armhf-${time}.tar
 
 __EOF__
 

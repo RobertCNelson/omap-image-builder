@@ -20,8 +20,8 @@ ubuntu_testing="utopic"
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-xz -z -7 -v ubuntu-${ubuntu_stable}-console-armhf-${time}.tar
-xz -z -7 -v debian-${debian_stable}-console-armhf-${time}.tar
+xz -z -8 -v ubuntu-${ubuntu_stable}-console-armhf-${time}.tar
+xz -z -8 -v debian-${debian_stable}-console-armhf-${time}.tar
 
 tar xf debian-${debian_stable}-console-armhf-${time}.tar.xz
 tar xf ubuntu-${ubuntu_stable}-console-armhf-${time}.tar.xz
@@ -42,15 +42,15 @@ mv *.img ../
 cd ..
 rm -rf ubuntu-${ubuntu_stable}-console-armhf-${time}/ || true
 
-xz -z -7 -v ubuntu-${ubuntu_testing}-console-armhf-${time}.tar
-xz -z -7 -v debian-${debian_testing}-console-armhf-${time}.tar
+xz -z -8 -v ubuntu-${ubuntu_testing}-console-armhf-${time}.tar
+xz -z -8 -v debian-${debian_testing}-console-armhf-${time}.tar
 
-xz -z -7 -v BBB-eMMC-flasher-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -7 -v bone-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -7 -v bbxm-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -7 -v BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
-xz -z -7 -v bone-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
-xz -z -7 -v bbxm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
+xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-console-${time}-2gb.img
+xz -z -8 -v bone-debian-${debian_stable}-console-${time}-2gb.img
+xz -z -8 -v bbxm-debian-${debian_stable}-console-${time}-2gb.img
+xz -z -8 -v BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
+xz -z -8 -v bone-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
+xz -z -8 -v bbxm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
 
 __EOF__
 
