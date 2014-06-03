@@ -1117,7 +1117,6 @@ populate_rootfs () {
 	fi
 	if [ "${build_img_file}" ] ; then
 		echo "Image file: ${media}"
-		echo "Compress via: xz -z -7 -v -k ${media}"
 		echo "-----------------------------"
 	fi
 }
