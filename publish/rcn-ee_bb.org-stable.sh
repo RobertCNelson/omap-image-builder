@@ -23,22 +23,22 @@ else
 	tar xf debian-${debian_stable}-lxde-armhf-${time}.tar
 fi
 
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img || true
+if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img ] ; then
+	rm BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img || true
 fi
 
-if [ -f bone-debian-${debian_stable}-${time}-2gb.img ] ; then
-	rm bone-debian-${debian_stable}-${time}-2gb.img || true
+if [ -f bone-debian-${debian_stable}-lxde-${time}-2gb.img ] ; then
+	rm bone-debian-${debian_stable}-lxde-${time}-2gb.img || true
 fi
 
 cd debian-${debian_stable}-lxde-armhf-${time}/
 
 #using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-lxde-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 mv *.img ../
 cd ..
@@ -48,20 +48,20 @@ if [ ! -f debian-${debian_stable}-lxde-armhf-${time}.tar.xz ] ; then
 	xz -z -7 -v debian-${debian_stable}-lxde-armhf-${time}.tar
 fi
 
-if [ -f BBB-blank-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img.xz ] ; then
-	rm BBB-blank-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img.xz || true
+if [ -f BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz ] ; then
+	rm BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz || true
 fi
-xz -z -7 -v BBB-blank-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img
+xz -z -7 -v BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img
 
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img.xz ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img.xz || true
+if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz ] ; then
+	rm BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz || true
 fi
-xz -z -7 -v BBB-eMMC-flasher-debian-${debian_stable}-${time}-2gb.img
+xz -z -7 -v BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img
 
-if [ -f bone-debian-${debian_stable}-${time}-2gb.img.xz ] ; then
-	rm bone-debian-${debian_stable}-${time}-2gb.img.xz || true
+if [ -f bone-debian-${debian_stable}-lxde-${time}-2gb.img.xz ] ; then
+	rm bone-debian-${debian_stable}-lxde-${time}-2gb.img.xz || true
 fi
-xz -z -7 -v bone-debian-${debian_stable}-${time}-2gb.img
+xz -z -7 -v bone-debian-${debian_stable}-lxde-${time}-2gb.img
 
 __EOF__
 

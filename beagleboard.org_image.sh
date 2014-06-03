@@ -183,22 +183,22 @@ production () {
 		tar xf debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
 
-	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img ] ; then
-		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img || true
+	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img ] ; then
+		rm BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img || true
 	fi
 
-	if [ -f bone-debian-${wheezy_release}-${time}-2gb.img ] ; then
-		rm bone-debian-${wheezy_release}-${time}-2gb.img || true
+	if [ -f bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img ] ; then
+		rm bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img || true
 	fi
 
 	cd debian-${wheezy_release}-${image_type}-armhf-${time}/
 
 	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+	sudo ./setup_sdcard.sh --img bone-debian-${wheezy_release}-${image_type}-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
 	cd ..
@@ -208,20 +208,20 @@ production () {
 		xz -z -7 -v debian-${wheezy_release}-${image_type}-armhf-${time}.tar
 	fi
 
-	if [ -f BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
-		rm BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
+	if [ -f BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
+		rm BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v BBB-blank-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
+	xz -z -7 -v BBB-blank-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
-	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
-		rm BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img.xz || true
+	if [ -f BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
+		rm BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${time}-2gb.img
+	xz -z -7 -v BBB-eMMC-flasher-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
-	if [ -f bone-debian-${wheezy_release}-${time}-2gb.img.xz ] ; then
-		rm bone-debian-${wheezy_release}-${time}-2gb.img.xz || true
+	if [ -f bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz ] ; then
+		rm bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img.xz || true
 	fi
-	xz -z -7 -v bone-debian-${wheezy_release}-${time}-2gb.img
+	xz -z -7 -v bone-debian-${wheezy_release}-${image_type}-${time}-2gb.img
 
 	__EOF__
 
