@@ -701,8 +701,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	dpkg_check
 
 	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-		if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
-			for kernel_url in ${chroot_KERNEL_HTTP_DIR} ; do dl_kernel ; done
+		if [ "${rfs_kernel}" ] ; then
+			for kernel_url in ${rfs_kernel} ; do dl_kernel ; done
 		fi
 	else
 		dpkg_package_missing
@@ -799,7 +799,7 @@ fi
 if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
 	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
 else
-	if [ "${chroot_KERNEL_HTTP_DIR}" ] ; then
+	if [ "${rfs_kernel}" ] ; then
 		echo "Log: ERROR: kernel install failure..."
 		exit 1
 	fi

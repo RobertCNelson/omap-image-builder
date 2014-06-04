@@ -6,8 +6,8 @@ select_machinekit_kernel () {
 	SUBARCH="omap-psp"
 	KERNEL_ABI="STABLE"
 	#kernel_chooser
-	#chroot_KERNEL_HTTP_DIR="${mirror}/${deb_codename}-${deb_arch}/${FTP_DIR}/"
-	chroot_KERNEL_HTTP_DIR="${chroot_KERNEL_HTTP_DIR} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone53/"
+	#rfs_kernel="${mirror}/${deb_codename}-${deb_arch}/${FTP_DIR}/"
+	rfs_kernel="${rfs_kernel} http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone53/"
 }
 
 machinekit_pkg_list () {
