@@ -609,13 +609,6 @@ create_partitions () {
 }
 
 boot_git_tools () {
-	if [ ! "${offline}" ] && [ ! "${bborg_production}" ] ; then
-		echo "Debug: Adding Useful scripts from: https://github.com/RobertCNelson/tools"
-		echo "-----------------------------"
-		mkdir -p ${TEMPDIR}/disk/tools
-		git clone https://github.com/RobertCNelson/tools.git ${TEMPDIR}/disk/tools || true
-	fi
-
 	if [ ! "${offline}" ] && [ "${bborg_production}" ] ; then
 		case "${SYSTEM}" in
 		bone|bone_dtb)
