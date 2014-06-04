@@ -735,13 +735,6 @@ populate_boot () {
 		echo "-----------------------------"
 	fi
 
-#	uInitrd_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep uInitrd- | head -n 1)
-#	if [ "x${uInitrd_FILE}" != "x" ] ; then
-#		echo "Copying Kernel uInitrd:"
-#		cp -v "${DIR}/${uInitrd_FILE}" ${TEMPDIR}/disk/uInitrd
-#		echo "-----------------------------"
-#	fi
-
 	DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
 	if [ "x${DTBS_FILE}" != "x" ] ; then
 		echo "Copying Device Tree Files:"
@@ -988,20 +981,6 @@ populate_rootfs () {
 				cp -v ${TEMPDIR}/disk/opt/scripts/images/beaglebg-eMMC.jpg ${TEMPDIR}/disk/opt/desktop-background.jpg
 			fi
 		fi
-
-#		wfile=var/www/AJAX_terminal.html
-#		echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-#		echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "" >> ${TEMPDIR}/disk/${wfile}
-#		echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "  var ipaddress = location.hostname;" >> ${TEMPDIR}/disk/${wfile}
-#		echo "  window.location = \"https://\" + ipaddress + \":4200\";" >> ${TEMPDIR}/disk/${wfile}
-#		echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "" >> ${TEMPDIR}/disk/${wfile}
-#		echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-#		echo "" >> ${TEMPDIR}/disk/${wfile}
 		sync
 
 	else
