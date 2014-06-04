@@ -27,8 +27,8 @@ if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img ] ; then
 	rm BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img || true
 fi
 
-if [ -f bone-debian-${debian_stable}-lxqt-${time}-2gb.img ] ; then
-	rm bone-debian-${debian_stable}-lxqt-${time}-2gb.img || true
+if [ -f bone-debian-${debian_stable}-lxqt-${time}-4gb.img ] ; then
+	rm bone-debian-${debian_stable}-lxqt-${time}-4gb.img || true
 fi
 
 cd debian-${debian_stable}-lxqt-armhf-${time}/
@@ -38,7 +38,7 @@ sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-lxqt
 
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-lxqt-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-lxqt-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 mv *.img ../
 cd ..
@@ -58,10 +58,10 @@ if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img.xz ] ; the
 fi
 xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img
 
-if [ -f bone-debian-${debian_stable}-lxqt-${time}-2gb.img.xz ] ; then
-	rm bone-debian-${debian_stable}-lxqt-${time}-2gb.img.xz || true
+if [ -f bone-debian-${debian_stable}-lxqt-${time}-4gb.img.xz ] ; then
+	rm bone-debian-${debian_stable}-lxqt-${time}-4gb.img.xz || true
 fi
-xz -z -8 -v bone-debian-${debian_stable}-lxqt-${time}-2gb.img
+xz -z -8 -v bone-debian-${debian_stable}-lxqt-${time}-4gb.img
 
 __EOF__
 
