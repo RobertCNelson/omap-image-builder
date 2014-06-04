@@ -1165,22 +1165,22 @@ check_mmc () {
 }
 
 kernel_detection () {
-	unset HAS_MULTI_ARMV7_KERNEL
+	unset has_multi_armv7_kernel
 	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | head -n 1)
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | awk -F'vmlinuz-' '{print $2}')
+		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
-		HAS_MULTI_ARMV7_KERNEL=1
+		has_multi_armv7_kernel="enable"
 	fi
 
-	unset HAS_BONE_DT_KERNEL
+	unset has_bone_kernel
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
-		HAS_BONE_DT_KERNEL=1
+		has_bone_kernel="enable"
 	fi
 }
 
@@ -1254,6 +1254,28 @@ process_dtb_conf () {
 			echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
 			exit
 		fi
+	fi
+
+	unset select_kernel
+	if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
+		if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+			select_kernel="${armv7_kernel}"
+		fi
+	fi
+
+	if [ "x${conf_kernel}" = "xbone" ] ; then
+		if [ "x${has_bone_kernel}" = "xenable" ] ; then
+			select_kernel="${bone_dt_kernel}"
+		else
+			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_kernel}"
+			fi
+		fi
+	fi
+
+	if [ ! "${select_kernel}" ] ; then
+		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
+		exit
 	fi
 }
 
@@ -1366,8 +1388,6 @@ check_uboot_type () {
 
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
-
-		select_kernel="${bone_dt_kernel}"
 		;;
 	boneblack_flasher)
 		SYSTEM="bone"
@@ -1385,7 +1405,6 @@ check_uboot_type () {
 		process_dtb_conf
 
 		conf_board="am335x_boneblack"
-		select_kernel="${bone_dt_kernel}"
 		;;
 	panda)
 		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
