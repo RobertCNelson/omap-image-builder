@@ -746,9 +746,9 @@ populate_boot () {
 	if [ "x${DTBS_FILE}" != "x" ] ; then
 		echo "Copying Device Tree Files:"
 		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-			tar xfvo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+			tar xfo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 		else
-			tar xfv "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+			tar xf "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 		fi
 		echo "-----------------------------"
 	fi
