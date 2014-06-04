@@ -1174,6 +1174,15 @@ kernel_detection () {
 		has_multi_armv7_kernel="enable"
 	fi
 
+	unset has_multi_armv7_lpae_kernel
+	unset check
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		armv7_lpae_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has armv7 lpae multi arch kernel support: v${armv7_lpae_kernel}"
+		has_multi_armv7_lpae_kernel="enable"
+	fi
+
 	unset has_bone_kernel
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
@@ -1260,6 +1269,16 @@ process_dtb_conf () {
 	if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
 		if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
 			select_kernel="${armv7_kernel}"
+		fi
+	fi
+
+	if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
+		if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
+			select_kernel="${armv7_lpae_kernel}"
+		else
+			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_kernel}"
+			fi
 		fi
 	fi
 
