@@ -340,14 +340,12 @@ boot_uenv_txt_template () {
 	case "${SYSTEM}" in
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			device_args=run mmcargs
 			mmcargs=setenv bootargs console=\${console} console=tty0 \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
 		;;
 	*)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			device_args=run mmcargs
 			mmcargs=setenv bootargs console=\${console} console=tty0 \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
@@ -355,7 +353,7 @@ boot_uenv_txt_template () {
 	esac
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+		${conf_entrypt}=run boot_ftd; run mmcargs; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 		#
 	__EOF__
 }
