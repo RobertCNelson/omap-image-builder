@@ -281,11 +281,25 @@ boot_uenv_txt_template () {
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			##BeagleBone Cape Overrides
-			##Note: On the BeagleBone Black, there is also an uEnv.txt in the eMMC, so if these changes do not seem to be makeing a difference...
 
 			##BeagleBone Black:
 			##Disable HDMI/eMMC
-			#optargs=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
+			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
+
+			##Disable HDMI
+			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
+
+			##Audio Cape (needs HDMI Audio disabled)
+			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI
+			#cape_enable=capemgr.enable_partno=BB-BONE-AUDI-02
+
+			##Example
+			#cape_disable=capemgr.disable_partno=
+			#cape_enable=capemgr.enable_partno=
+
+			##WIP: v3.14+ capes..
+			#cape=ttyO1
+			#cape=
 
 		__EOF__
 		;;
@@ -323,10 +337,24 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		device_args=run mmcargs
-		mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
+	case "${SYSTEM}" in
+	bone)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			device_args=run mmcargs
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
+		__EOF__
+		;;
+	*)
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			device_args=run mmcargs
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
+
+		__EOF__
+		;;
+	esac
+
+	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 		#
 	__EOF__
