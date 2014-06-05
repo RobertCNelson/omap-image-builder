@@ -351,24 +351,6 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	case "${SYSTEM}" in
-	beagle)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-		__EOF__
-		;;
-	beagle_xm)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-		__EOF__
-		;;
-	panda|mx51evk|mx53loco)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			optargs=VIDEO_CONSOLE
-		__EOF__
-		;;
-	esac
-
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 		#
@@ -386,9 +368,6 @@ tweak_boot_scripts () {
 	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
 	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		#optargs=VIDEO_CONSOLE
-		sed -i -e 's:VIDEO_CONSOLE:console=tty0:g' ${TEMPDIR}/bootscripts/${ALL}
-
 		if [ "${KMS_OVERRIDE}" ] ; then
 			sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/${ALL}
 		else
@@ -404,8 +383,8 @@ tweak_boot_scripts () {
 		fi
 		sed -i -e 's:VIDEO_DISPLAY ::g' ${TEMPDIR}/bootscripts/${ALL}
 
-		#optargs=VIDEO_CONSOLE -> optargs=
-		sed -i -e 's:VIDEO_CONSOLE::g' ${TEMPDIR}/bootscripts/${ALL}
+		#remove: console=tty0
+		sed -i -e 's:console=tty0 ::g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
 }
 
