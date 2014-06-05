@@ -30,6 +30,7 @@ cd debian-${debian_stable}-console-armhf-${time}/
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd
 sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --enable-systemd
 sudo ./setup_sdcard.sh --img bbxm-debian-${debian_stable}-console-${time} --dtb omap3-beagle-xm --enable-systemd
+sudo ./setup_sdcard.sh --img omap5-uevm-debian-${debian_stable}-console-${time} --dtb omap5-uevm --enable-systemd
 mv *.img ../
 cd ..
 rm -rf debian-${debian_stable}-console-armhf-${time}/ || true
@@ -38,6 +39,7 @@ cd ubuntu-${ubuntu_stable}-console-armhf-${time}/
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production --bbb-flasher
 sudo ./setup_sdcard.sh --img bone-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production
 sudo ./setup_sdcard.sh --img bbxm-ubuntu-${ubuntu_stable}-console-${time}.img --dtb omap3-beagle-xm
+sudo ./setup_sdcard.sh --img omap5-uevm-ubuntu-${ubuntu_stable}-console-${time}.img --dtb omap5-uevm
 mv *.img ../
 cd ..
 rm -rf ubuntu-${ubuntu_stable}-console-armhf-${time}/ || true
@@ -48,9 +50,11 @@ xz -z -8 -v debian-${debian_testing}-console-armhf-${time}.tar
 xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-console-${time}-2gb.img
 xz -z -8 -v bone-debian-${debian_stable}-console-${time}-2gb.img
 xz -z -8 -v bbxm-debian-${debian_stable}-console-${time}-2gb.img
+xz -z -8 -v omap5-uevm-debian-${debian_stable}-console-${time}-2gb.img
 xz -z -8 -v BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
 xz -z -8 -v bone-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
 xz -z -8 -v bbxm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
+xz -z -8 -v omap5-uevm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
 
 __EOF__
 
