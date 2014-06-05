@@ -309,8 +309,7 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			console=SERIAL_CONSOLE
 
-			#FIXME: define in .conf
-			mmcroot=/dev/mmcblk1p2 ro
+			mmcroot=${conf_root_device}p2 ro
 			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
 			loadkernel=${conf_fileload} mmc \${bootpart} ${conf_loadaddr} \${kernel_file}
@@ -325,7 +324,7 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			console=SERIAL_CONSOLE
 
-			mmcroot=/dev/mmcblk0p2 ro
+			mmcroot=${conf_root_device}p2 ro
 			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
 			loadkernel=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
@@ -804,9 +803,7 @@ populate_rootfs () {
 		echo "-----------------------------"
 	fi
 
-	if [ ! ${conf_root_device} ] ; then
-		conf_root_device="/dev/mmcblk0"
-	fi
+	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
