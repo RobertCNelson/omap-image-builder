@@ -799,8 +799,6 @@ populate_rootfs () {
 		echo "-----------------------------"
 	fi
 
-	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
-
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
 		. ${TEMPDIR}/disk/etc/rcn-ee.conf
@@ -1099,6 +1097,8 @@ process_dtb_conf () {
 		conf_boot_endmb="96"
 		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
 	fi
+
+	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#error checking...
 	if [ ! "${conf_boot_fstype}" ] ; then
