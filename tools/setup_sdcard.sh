@@ -87,16 +87,18 @@ find_issue () {
 	unset check
 	check=$(ls "${DIR}/" | grep initrd.img | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		echo "Debug: image has initrd.img:"
 		HAS_INITRD=1
+	else
+		echo "Debug: initrd.img missing"
 	fi
 
 	unset HAS_DTBS
 	unset check
 	check=$(ls "${DIR}/" | grep dtbs | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		echo "Debug: image has device tree:"
 		HAS_DTBS=1
+	else
+		echo "Debug: dtbs missing for device tree"
 	fi
 
 	unset has_uenvtxt
