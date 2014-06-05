@@ -226,12 +226,6 @@ boot_uenv_txt_template () {
 		initrd_file=${conf_normal_initrd_file}
 	__EOF__
 
-	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		initrd_high=0xffffffff
-		fdt_high=0xffffffff
-
-	__EOF__
-
 	if [ ! "${uboot_fdt_auto_detection}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			fdtfile=${conf_fdtfile}
