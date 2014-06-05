@@ -1301,54 +1301,7 @@ check_dtb_board () {
 	fi
 }
 
-is_omap () {
-	IS_OMAP=1
-
-	bootloader_location="fatfs_boot"
-	spl_name="MLO"
-	boot_name="u-boot.img"
-
-	SUBARCH="omap"
-
-	boot_script="uEnv.txt"
-
-	SERIAL="ttyO2"
-	SERIAL_CONSOLE="${SERIAL},115200n8"
-
-	VIDEO_CONSOLE="console=tty0"
-
-	#KMS Video Options (overrides when edid fails)
-	# From: ls /sys/class/drm/
-	KMS_VIDEO_RESOLUTION="1280x720"
-	KMS_VIDEOA="video=DVI-D-1"
-	unset KMS_VIDEOB
-}
-
 check_uboot_type () {
-	#New defines for hwpack:
-	conf_bl_http="https://rcn-ee.net/deb/tools/latest"
-	conf_bl_listfile="bootloader-ng"
-
-	unset IN_VALID_UBOOT
-	unset DISABLE_ETH
-	unset USE_UIMAGE
-	unset USE_KMS
-	unset conf_fdtfile
-
-	unset bootloader_location
-	unset spl_name
-	unset boot_name
-	unset bootloader_location
-	unset dd_spl_uboot_seek
-	unset dd_spl_uboot_bs
-	unset dd_uboot_seek
-	unset dd_uboot_bs
-
-	unset boot_scr_wrapper
-	unset usbnet_mem
-
-	unset drm_device_identifier
-
 	case "${UBOOT_TYPE}" in
 	beagle|beagle_bx|beagle_cx)
 		echo "Note: [--dtb omap3-beagle] now replaces [--uboot beagle]"
@@ -1366,35 +1319,13 @@ check_uboot_type () {
 		process_dtb_conf
 		;;
 	bone|bone_dtb)
-		SYSTEM="bone"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-		unset KMS_VIDEOA
-
-		#just to disable the omapfb stuff..
-		USE_KMS=1
-		drm_device_identifier="HDMI-A-1"
-
+		echo "Note: [--dtb beaglebone] now replaces [--uboot bone]"
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
 		;;
 	boneblack_flasher)
-		SYSTEM="bone"
-		is_omap
-		SERIAL="ttyO0"
-		SERIAL_CONSOLE="${SERIAL},115200n8"
-
-		unset KMS_VIDEOA
-
-		#just to disable the omapfb stuff..
-		USE_KMS=1
-		drm_device_identifier="HDMI-A-1"
-
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
-
 		conf_board="am335x_boneblack"
 		;;
 	panda)
