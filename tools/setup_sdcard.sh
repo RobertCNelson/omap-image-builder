@@ -302,40 +302,6 @@ boot_uenv_txt_template () {
 
 		__EOF__
 		;;
-	beagle)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#SPI: enable for userspace spi access on expansion header
-			#buddy=spidev
-
-			#LSR COM6L Adapter Board
-			#http://eewiki.net/display/linuxonarm/LSR+COM6L+Adapter+Board
-			#First production run has unprogramed eeprom:
-			#buddy=lsr-com6l-adpt
-
-			#LSR COM6L Adapter Board + TiWi5
-			#wl12xx_clk=wl12xx_26mhz
-
-		__EOF__
-		;;
-	beagle_xm)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Camera:
-			#http://shop.leopardimaging.com/product.sc?productId=17
-			#camera=li5m03
-
-			#SPI: enable for userspace spi access on expansion header
-			#buddy=spidev
-
-			#LSR COM6L Adapter Board
-			#http://eewiki.net/display/linuxonarm/LSR+COM6L+Adapter+Board
-			#First production run has unprogramed eeprom:
-			#buddy=lsr-com6l-adpt
-
-			#LSR COM6L Adapter Board + TiWi5
-			#wl12xx_clk=wl12xx_26mhz
-
-		__EOF__
-		;;
 	esac
 
 	if [ ${conf_uboot_use_bootpart} ] ; then
@@ -373,14 +339,14 @@ boot_uenv_txt_template () {
 	if [ ! "${USE_KMS}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			video_args=setenv video VIDEO_DISPLAY
-			device_args=run video_args; run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
+			device_args=run video_args; run mmcargs
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			device_args=run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
+			device_args=run mmcargs
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
 	fi
@@ -389,24 +355,16 @@ boot_uenv_txt_template () {
 	beagle)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} musb_hdrc.fifo_mode=5 wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
 	beagle_xm)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion buddy=\${buddy} buddy2=\${buddy2} camera=\${camera} wl12xx_clk=\${wl12xx_clk}
 		__EOF__
 		;;
 	panda|mx51evk|mx53loco)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			optargs=VIDEO_CONSOLE
-			expansion_args=setenv expansion
-		__EOF__
-		;;
-	bone)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			expansion_args=setenv expansion
 		__EOF__
 		;;
 	esac
