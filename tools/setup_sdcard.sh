@@ -276,6 +276,20 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
+	if [ "${bbb_flasher}" ] ; then
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##init-eMMC-flasher.sh
+			initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
+
+		__EOF__
+	else
+		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+			##init-eMMC-flasher.sh
+			#initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
+
+		__EOF__
+	fi
+
 	case "${SYSTEM}" in
 	bone|bone_dtb)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
