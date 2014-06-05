@@ -419,7 +419,7 @@ boot_uenv_txt_template () {
 		;;
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			expansion_args=setenv expansion ip=\${ip_method}
+			expansion_args=setenv expansion
 		__EOF__
 		;;
 	esac
