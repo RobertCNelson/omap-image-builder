@@ -1088,16 +1088,8 @@ process_dtb_conf () {
 	echo "-----------------------------"
 
 	#defaults, if not set...
-	if [ ! "${conf_boot_startmb}" ] ; then
-		conf_boot_startmb="1"
-		echo "info: [conf_boot_startmb] undefined using default value: ${conf_boot_startmb}"
-	fi
-
-	if [ ! "${conf_boot_endmb}" ] ; then
-		conf_boot_endmb="96"
-		echo "info: [conf_boot_endmb] undefined using default value: ${conf_boot_endmb}"
-	fi
-
+	conf_boot_startmb=${conf_boot_startmb:-"1"}
+	conf_boot_endmb=${conf_boot_endmb:-"96"}
 	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#error checking...
