@@ -341,14 +341,14 @@ boot_uenv_txt_template () {
 	bone)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
+			mmcargs=setenv bootargs console=\${console} console=tty0 \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
 		;;
 	*)
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
+			mmcargs=setenv bootargs console=\${console} console=tty0 \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
 
 		__EOF__
 		;;
