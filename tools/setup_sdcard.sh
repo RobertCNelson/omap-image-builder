@@ -381,13 +381,13 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			video_args=setenv video VIDEO_DISPLAY
 			device_args=run video_args; run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
 
 		__EOF__
 	else
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			device_args=run expansion_args; run mmcargs
-			mmcargs=setenv bootargs console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
+			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${expansion} \${initopts}
 
 		__EOF__
 	fi
