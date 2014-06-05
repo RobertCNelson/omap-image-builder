@@ -317,7 +317,7 @@ boot_uenv_txt_template () {
 			loadinitrd=${conf_fileload} mmc \${bootpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
 			loadfdt=${conf_fileload} mmc \${bootpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
 
-			boot_ftd=run loadkernel; run loadinitrd; run loadfdt
+			loadfiles=run loadkernel; run loadinitrd; run loadfdt
 
 		__EOF__
 
@@ -332,7 +332,7 @@ boot_uenv_txt_template () {
 			loadinitrd=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
 			loadfdt=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
 
-			boot_ftd=run loadkernel; run loadinitrd; run loadfdt
+			loadfiles=run loadkernel; run loadinitrd; run loadfdt
 
 		__EOF__
 	fi
@@ -353,7 +353,7 @@ boot_uenv_txt_template () {
 	esac
 
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		${conf_entrypt}=run boot_ftd; run mmcargs; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
+		${conf_entrypt}=run loadfiles; run mmcargs; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 		#
 	__EOF__
 }
