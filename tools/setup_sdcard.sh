@@ -1303,21 +1303,6 @@ check_dtb_board () {
 
 check_uboot_type () {
 	case "${UBOOT_TYPE}" in
-	beagle|beagle_bx|beagle_cx)
-		echo "Note: [--dtb omap3-beagle] now replaces [--uboot beagle]"
-		. "${DIR}"/hwpack/omap3-beagle.conf
-		process_dtb_conf
-		;;
-	beagle_xm)
-		echo "Note: [--dtb omap3-beagle-xm] now replaces [--uboot beagle_xm]"
-		. "${DIR}"/hwpack/omap3-beagle-xm.conf
-		process_dtb_conf
-		;;
-	dt-beagle-xm)
-		echo "Note: [--dtb dt-beagle-xm] now replaces [--uboot dt-beagle-xm]"
-		. "${DIR}"/hwpack/dt-beagle-xm.conf
-		process_dtb_conf
-		;;
 	bone|bone_dtb)
 		echo "Note: [--dtb beaglebone] now replaces [--uboot bone]"
 		. "${DIR}"/hwpack/beaglebone.conf
@@ -1327,26 +1312,6 @@ check_uboot_type () {
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
 		conf_board="am335x_boneblack"
-		;;
-	panda)
-		echo "Note: [--dtb omap4-panda] now replaces [--uboot panda]"
-		. "${DIR}"/hwpack/omap4-panda.conf
-		process_dtb_conf
-		;;
-	panda_es)
-		echo "Note: [--dtb omap4-panda-es] now replaces [--uboot panda_es]"
-		. "${DIR}"/hwpack/omap4-panda-es.conf
-		process_dtb_conf
-		;;
-	mx51evk)
-		echo "Note: [--dtb imx51-babbage] now replaces [--uboot mx51evk]"
-		. "${DIR}"/hwpack/imx51-babbage.conf
-		process_dtb_conf
-		;;
-	mx53loco)
-		echo "Note: [--dtb imx53-qsb] now replaces [--uboot mx53loco]"
-		. "${DIR}"/hwpack/imx53-qsb.conf
-		process_dtb_conf
 		;;
 	*)
 		IN_VALID_UBOOT=1
