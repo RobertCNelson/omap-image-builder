@@ -27,16 +27,16 @@ tar xf debian-${debian_stable}-console-armhf-${time}.tar.xz
 tar xf ubuntu-${ubuntu_stable}-console-armhf-${time}.tar.xz
 
 cd debian-${debian_stable}-console-armhf-${time}/
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-console-${time} --uboot bone --beagleboard.org-production --bbb-flasher --enable-systemd
-sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-console-${time} --uboot bone --beagleboard.org-production --enable-systemd
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd
+sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --enable-systemd
 sudo ./setup_sdcard.sh --img bbxm-debian-${debian_stable}-console-${time} --dtb omap3-beagle-xm --enable-systemd
 mv *.img ../
 cd ..
 rm -rf debian-${debian_stable}-console-armhf-${time}/ || true
 
 cd ubuntu-${ubuntu_stable}-console-armhf-${time}/
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}.img --uboot bone --beagleboard.org-production --bbb-flasher
-sudo ./setup_sdcard.sh --img bone-ubuntu-${ubuntu_stable}-console-${time}.img --uboot bone --beagleboard.org-production
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production --bbb-flasher
+sudo ./setup_sdcard.sh --img bone-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production
 sudo ./setup_sdcard.sh --img bbxm-ubuntu-${ubuntu_stable}-console-${time}.img --dtb omap3-beagle-xm
 mv *.img ../
 cd ..

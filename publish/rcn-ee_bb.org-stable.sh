@@ -36,9 +36,9 @@ cd debian-${debian_stable}-lxde-armhf-${time}/
 #using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
 sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time} --uboot bone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-lxde-${time} --uboot bone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-lxde-${time} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 mv *.img ../
 cd ..
