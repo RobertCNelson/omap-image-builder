@@ -239,15 +239,6 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	if [ ! "${USE_KMS}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			#Video: Uncomment to override U-Boots value:
-			UENV_FB
-			UENV_TIMING
-
-		__EOF__
-	fi
-
 	if [ "${drm_device_identifier}" ] ; then
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			##Video: [ls /sys/class/drm/]
@@ -336,30 +327,16 @@ boot_uenv_txt_template () {
 		__EOF__
 	fi
 
-	if [ ! "${USE_KMS}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			video_args=setenv video VIDEO_DISPLAY
-			device_args=run video_args; run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${video} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
-
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			device_args=run mmcargs
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
-
-		__EOF__
-	fi
-
 	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
+		device_args=run mmcargs
+		mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
+
 		${conf_entrypt}=run boot_ftd; run device_args; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
 		#
 	__EOF__
 }
 
 tweak_boot_scripts () {
-	unset KMS_OVERRIDE
-
 	ALL="*.cmd"
 	#Set the Serial Console
 	sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/${ALL}
@@ -367,22 +344,7 @@ tweak_boot_scripts () {
 	#Set filesystem type
 	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
 
-	if [ "${USE_KMS}" ] && [ ! "${SERIAL_MODE}" ] ; then
-		if [ "${KMS_OVERRIDE}" ] ; then
-			sed -i -e 's/VIDEO_DISPLAY/'${KMS_VIDEOA}:${KMS_VIDEO_RESOLUTION}'/g' ${TEMPDIR}/bootscripts/${ALL}
-		else
-			sed -i -e 's:VIDEO_DISPLAY::g' ${TEMPDIR}/bootscripts/${ALL}
-		fi
-	fi
-
 	if [ "${SERIAL_MODE}" ] ; then
-		#In pure serial mode, remove all traces of VIDEO
-		if [ ! "${USE_KMS}" ] ; then
-			sed -i -e 's:UENV_FB::g' ${TEMPDIR}/bootscripts/${ALL}
-			sed -i -e 's:UENV_TIMING::g' ${TEMPDIR}/bootscripts/${ALL}
-		fi
-		sed -i -e 's:VIDEO_DISPLAY ::g' ${TEMPDIR}/bootscripts/${ALL}
-
 		#remove: console=tty0
 		sed -i -e 's:console=tty0 ::g' ${TEMPDIR}/bootscripts/${ALL}
 	fi
