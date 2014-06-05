@@ -226,6 +226,7 @@ boot_uenv_txt_template () {
 	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 		kernel_file=${conf_normal_kernel_file}
 		initrd_file=${conf_normal_initrd_file}
+
 	__EOF__
 
 	if [ ! "${uboot_fdt_auto_detection}" ] ; then
