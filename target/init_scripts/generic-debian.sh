@@ -29,7 +29,7 @@ start|reload|force-reload|restart)
 
 			#/bin/date --utc -s "10/08/2008 11:37:23"
 			/bin/date --utc -s "${month}/${day}/${year} ${hour}:${min}:00"
-			/sbin/hwclock --systohc
+			/sbin/hwclock --systohc || true
 		fi
 	fi
 
