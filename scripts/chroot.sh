@@ -327,6 +327,7 @@ ubuntu)
 	echo "deb_distribution=Ubuntu" >> /tmp/rcn-ee.conf
 	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
+	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 	;;
