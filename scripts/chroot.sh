@@ -281,7 +281,7 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${deb_distribution}" in
 debian)
-	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/boot_scripts.sh
+	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/generic-boot-script.sh
 	sudo cp ${DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
 	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
@@ -295,7 +295,7 @@ debian)
 
 	;;
 ubuntu)
-	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/boot_scripts.conf
+	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/generic-boot-script.conf
 	sudo cp ${DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
 	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
@@ -593,10 +593,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	debian_startup_script () {
 		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
-			if [ -f /etc/init.d/boot_scripts.sh ] ; then
-				chown root:root /etc/init.d/boot_scripts.sh
-				chmod +x /etc/init.d/boot_scripts.sh
-				insserv boot_scripts.sh || true
+			if [ -f /etc/init.d/generic-boot-script.sh ] ; then
+				chown root:root /etc/init.d/generic-boot-script.sh
+				chmod +x /etc/init.d/generic-boot-script.sh
+				insserv generic-boot-script.sh || true
 			fi
 
 			if [ -f /etc/init.d/capemgr.sh ] ; then
@@ -610,8 +610,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	ubuntu_startup_script () {
 		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
-			if [ -f /etc/init/boot_scripts.conf ] ; then
-				chown root:root /etc/init/boot_scripts.conf
+			if [ -f /etc/init/generic-boot-script.conf ] ; then
+				chown root:root /etc/init/generic-boot-script.conf
 			fi
 		fi
 
