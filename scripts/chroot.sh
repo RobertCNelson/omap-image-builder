@@ -106,6 +106,16 @@ check_defines () {
 			echo "rfs_hostname: undefined using: [${rfs_hostname}]"
 		fi
 	fi
+
+	if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
+		##Backwards compat pre configs
+		if [ "x${base_pkg_list}" = "x" ] ; then
+			deb_additional_pkgs="$(echo ${deb_include} | sed 's/,/ /g')"
+		fi
+	else
+		temp="$(echo ${deb_additional_pkgs} | sed 's/,/ /g')"
+		deb_additional_pkgs="${temp}"
+	fi
 }
 
 report_size () {
@@ -388,10 +398,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkgs () {
-		if [ ! "x${base_pkg_list}" = "x" ] ; then
+		if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${base_pkg_list}"
-			apt-get -y --force-yes install ${base_pkg_list}
+			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
+			apt-get -y --force-yes install ${deb_additional_pkgs}
 		fi
 
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
