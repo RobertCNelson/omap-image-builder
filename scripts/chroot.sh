@@ -431,19 +431,23 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 
-			case "\${deb_distribution}" in
-			Debian)
-				echo "Log: (chroot) Debian: setting up locales: [en_US.UTF-8]"
-				sed -i -e 's:# en_US.UTF-8 UTF-8:en_US.UTF-8 UTF-8:g' /etc/locale.gen
-				locale-gen
-				;;
-			Ubuntu)
-				echo "Log: (chroot) Ubuntu: setting up locales: [en_US.UTF-8]"
-				locale-gen en_US.UTF-8
-				;;
-			esac
+			if [ ! "x${rfs_default_locale}" = "x" ] ; then
 
-			echo "LANG=en_US.UTF-8" > /etc/default/locale
+				case "\${deb_distribution}" in
+				Debian)
+					echo "Log: (chroot) Debian: setting up locales: [${rfs_default_locale}]"
+					sed -i -e 's:# ${rfs_default_locale} UTF-8:${rfs_default_locale} UTF-8:g' /etc/locale.gen
+					locale-gen
+					;;
+				Ubuntu)
+					echo "Log: (chroot) Ubuntu: setting up locales: [${rfs_default_locale}]"
+					locale-gen ${rfs_default_locale}
+					;;
+				esac
+
+				echo "LANG=${rfs_default_locale}" > /etc/default/locale
+
+			fi
 		else
 			dpkg_package_missing
 		fi
