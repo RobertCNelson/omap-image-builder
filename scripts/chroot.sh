@@ -175,15 +175,21 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
 	echo "# Delete locales" > /tmp/01_nodoc
 	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-	echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+
+	if [ "x${rfs_default_locale}" = "xen_US.UTF-8" ] ; then
+		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+	fi
 	echo ""  >> /tmp/01_nodoc
+
 	echo "# Delete man pages" >> /tmp/01_nodoc
 	echo "path-exclude=/usr/share/man/*" >> /tmp/01_nodoc
 	echo "" >> /tmp/01_nodoc
+
 	echo "# Delete docs" >> /tmp/01_nodoc
 	echo "path-exclude=/usr/share/doc/*" >> /tmp/01_nodoc
 	echo "path-include=/usr/share/doc/*/copyright" >> /tmp/01_nodoc
 	echo "" >> /tmp/01_nodoc
+
 	sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
 
 	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
@@ -203,7 +209,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	report_size
 fi
 
-if [ "x${rfs_strip_locales}" = "xenable" ] ; then
+if [ "x${rfs_strip_locales}" = "xenable" ] && [ "x${rfs_default_locale}" = "xen_US.UTF-8" ] ; then
 	#dpkg: strip some files
 	if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
 		sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
