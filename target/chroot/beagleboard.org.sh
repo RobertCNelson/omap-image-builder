@@ -450,7 +450,7 @@ install_build_pkgs () {
 other_source_links () {
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
 	cd /opt/source/u-boot_${u_boot_release}/
-	wget https://raw.github.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
+	wget https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
 	cd /
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 
