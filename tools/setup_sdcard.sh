@@ -1055,7 +1055,7 @@ kernel_detection () {
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | awk -F'vmlinuz-' '{print $2}')
+		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
 		has_multi_armv7_kernel="enable"
 	fi
@@ -1064,7 +1064,7 @@ kernel_detection () {
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		armv7_lpae_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | awk -F'vmlinuz-' '{print $2}')
+		armv7_lpae_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has armv7 lpae multi arch kernel support: v${armv7_lpae_kernel}"
 		has_multi_armv7_lpae_kernel="enable"
 	fi
@@ -1073,7 +1073,7 @@ kernel_detection () {
 	unset check
 	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
 	if [ "x${check}" != "x" ] ; then
-		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | awk -F'vmlinuz-' '{print $2}')
+		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1 | awk -F'vmlinuz-' '{print $2}')
 		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
 		has_bone_kernel="enable"
 	fi
