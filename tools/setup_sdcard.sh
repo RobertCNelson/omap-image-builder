@@ -1215,11 +1215,13 @@ check_uboot_type () {
 		echo "Note: [--dtb beaglebone] now replaces [--uboot bone]"
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
+		unset error_invalid_dtb
 		;;
 	boneblack_flasher)
 		. "${DIR}"/hwpack/beaglebone.conf
 		process_dtb_conf
 		conf_board="am335x_boneblack"
+		unset error_invalid_dtb
 		;;
 	*)
 		IN_VALID_UBOOT=1
