@@ -211,12 +211,12 @@ fi
 
 if [ "x${rfs_locale_purge}" = "xenable" ] ; then
 	if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
-		mv ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/ ${tempdir}/
-		rm -rf ${tempdir}/usr/share/locale/*
-		mv ${tempdir}/${rfs_locale_save_dir}/ ${tempdir}/usr/share/locale/
+		sudo mv ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/ ${tempdir}/
+		sudo rm -rf ${tempdir}/usr/share/locale/*
+		sudo mv ${tempdir}/${rfs_locale_save_dir}/ ${tempdir}/usr/share/locale/
 		ls -lh ${tempdir}/usr/share/locale/
 	else
-		rm -rf ${tempdir}/usr/share/locale/*
+		sudo rm -rf ${tempdir}/usr/share/locale/*
 	fi
 
 	if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
