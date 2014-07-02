@@ -177,7 +177,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
 
 	if [ "x${rfs_default_locale}" = "xen_US.UTF-8" ] ; then
-		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+		echo "path-include=/usr/share/locale/en_US/*" >> /tmp/01_nodoc
 	fi
 	echo ""  >> /tmp/01_nodoc
 
@@ -211,7 +211,9 @@ fi
 
 if [ "x${rfs_locale_purge}" = "xenable" ] ; then
 	if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
-		#rm -rf ${tempdir}/usr/share/locale/* !(${rfs_locale_save_dir}*)
+		mv ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/* ${tempdir}/${rfs_locale_save_dir}/
+		rm -rf ${tempdir}/usr/share/locale/*
+		mv ${tempdir}/${rfs_locale_save_dir}/* ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/
 		ls -lh ${tempdir}/usr/share/locale/
 	else
 		rm -rf ${tempdir}/usr/share/locale/*
@@ -223,7 +225,7 @@ if [ "x${rfs_locale_purge}" = "xenable" ] ; then
 		echo "# Delete locales" > /tmp/01_nodoc
 		echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
 		if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
-			echo "path-include=/usr/share/locale/${rfs_locale_save_dir}*" >> /tmp/01_nodoc
+			echo "path-include=/usr/share/locale/${rfs_locale_save_dir}" >> /tmp/01_nodoc
 		fi
 		sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
 	fi
@@ -236,7 +238,7 @@ if [ "x${rfs_strip_locales}" = "xenable" ] && [ "x${rfs_default_locale}" = "xen_
 		#FIXME: en only, ping me for enabling other locales by default
 		echo "# Delete locales" > /tmp/01_nodoc
 		echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
+		echo "path-include=/usr/share/locale/en_US/*" >> /tmp/01_nodoc
 		sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
 	fi
 fi
