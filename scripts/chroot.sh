@@ -211,6 +211,7 @@ fi
 
 if [ "x${rfs_locale_purge}" = "xenable" ] ; then
 	if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
+		ls -lh ${tempdir}/usr/share/locale/
 		sudo mv ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/ ${tempdir}/
 		sudo rm -rf ${tempdir}/usr/share/locale/*
 		sudo mv ${tempdir}/${rfs_locale_save_dir}/ ${tempdir}/usr/share/locale/
