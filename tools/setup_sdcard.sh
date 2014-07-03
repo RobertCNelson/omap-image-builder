@@ -608,9 +608,6 @@ populate_boot () {
 		exit
 	fi
 
-	mkdir -p ${TEMPDIR}/disk/debug || true
-	mkdir -p ${TEMPDIR}/disk/dtbs || true
-
 	if [ ! "${bootloader_installed}" ] ; then
 		if [ "${spl_name}" ] ; then
 			if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
@@ -627,127 +624,137 @@ populate_boot () {
 		fi
 	fi
 
-	VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
-	if [ "x${VMLINUZ_FILE}" != "x" ] ; then
-		if [ "${USE_UIMAGE}" ] ; then
-			echo "Using mkimage to create uImage"
-			mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
-			echo "-----------------------------"
-		else
-			echo "Copying Kernel image:"
-			cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
-			if [ ! "${bborg_production}" ] ; then
-				cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage-${select_kernel}
+	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
+
+		mkdir -p ${TEMPDIR}/disk/debug || true
+		mkdir -p ${TEMPDIR}/disk/dtbs || true
+
+		VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
+		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
+			if [ "${USE_UIMAGE}" ] ; then
+				echo "Using mkimage to create uImage"
+				mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
+				echo "-----------------------------"
+			else
+				echo "Copying Kernel image:"
+				cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
+				if [ ! "${bborg_production}" ] ; then
+					cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage-${select_kernel}
+				fi
+				echo "-----------------------------"
+			fi
+		fi
+
+		INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
+		if [ "x${INITRD_FILE}" != "x" ] ; then
+			echo "Copying Kernel initrd/uInitrd:"
+			if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
+				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
+				if [ ! "${bborg_production}" ] ; then
+					cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img-${select_kernel}
+				fi
+			else
+				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
 			fi
 			echo "-----------------------------"
 		fi
-	fi
 
-	INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
-	if [ "x${INITRD_FILE}" != "x" ] ; then
-		echo "Copying Kernel initrd/uInitrd:"
-		if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
-			cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-			if [ ! "${bborg_production}" ] ; then
-				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img-${select_kernel}
+		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
+		if [ "x${DTBS_FILE}" != "x" ] ; then
+			echo "Copying Device Tree Files:"
+			if [ "x${conf_boot_fstype}" = "xfat" ] ; then
+				tar xfo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
+			else
+				tar xf "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
 			fi
+			echo "-----------------------------"
+		fi
+
+		if [ "${boot_scr_wrapper}" ] ; then
+			cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
+				echo "boot.scr -> uEnv.txt wrapper..."
+				setenv conf_boot_fstype ${conf_boot_fstype}
+				\${conf_boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
+				env import -t \${loadaddr} \${filesize}
+				run loaduimage
+			__EOF__
+			mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
+		fi
+
+		echo "Copying uEnv.txt based boot scripts to Boot Partition"
+		echo "-----------------------------"
+		if [ ${has_uenvtxt} ] ; then
+			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
+			echo "-----------------------------"
+			cat "${DIR}/uEnv.txt"
 		else
-			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
+			cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
+			echo "-----------------------------"
+			cat ${TEMPDIR}/bootscripts/normal.cmd
 		fi
 		echo "-----------------------------"
-	fi
 
-	DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
-	if [ "x${DTBS_FILE}" != "x" ] ; then
-		echo "Copying Device Tree Files:"
-		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-			tar xfo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-		else
-			tar xf "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-		fi
-		echo "-----------------------------"
 	fi
-
-	if [ "${boot_scr_wrapper}" ] ; then
-		cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
-			echo "boot.scr -> uEnv.txt wrapper..."
-			setenv conf_boot_fstype ${conf_boot_fstype}
-			\${conf_boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
-			env import -t \${loadaddr} \${filesize}
-			run loaduimage
-		__EOF__
-		mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
-	fi
-
-	echo "Copying uEnv.txt based boot scripts to Boot Partition"
-	echo "-----------------------------"
-	if [ ${has_uenvtxt} ] ; then
-		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
-		echo "-----------------------------"
-		cat "${DIR}/uEnv.txt"
-	else
-		cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
-		echo "-----------------------------"
-		cat ${TEMPDIR}/bootscripts/normal.cmd
-	fi
-	echo "-----------------------------"
 
 	if [ -f "${DIR}/ID.txt" ] ; then
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
-	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
-	if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
-		board="am335x_evm"
-	else
-		board=${conf_board}
-	fi
+	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
 
-	#This should be compatible with hwpacks variable names..
-	#https://code.launchpad.net/~linaro-maintainers/linaro-images/
-	cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
-		#!/bin/sh
-		format=1.0
-		board=${board}
-
-		bootloader_location=${bootloader_location}
-		dd_spl_uboot_seek=${dd_spl_uboot_seek}
-		dd_spl_uboot_bs=${dd_spl_uboot_bs}
-		dd_uboot_seek=${dd_uboot_seek}
-		dd_uboot_bs=${dd_uboot_bs}
-
-		conf_bootcmd=${conf_bootcmd}
-		boot_script=${boot_script}
-		boot_fstype=${conf_boot_fstype}
-
-		serial_tty=${SERIAL}
-		loadaddr=${conf_loadaddr}
-		initrdaddr=${conf_initrdaddr}
-		zreladdr=${conf_zreladdr}
-		fdtaddr=${conf_fdtaddr}
-		fdtfile=${conf_fdtfile}
-
-		usbnet_mem=${usbnet_mem}
-
-	__EOF__
-
-	if [ "${bbb_flasher}" ] ; then
-		touch ${TEMPDIR}/disk/flash-eMMC.txt
-
-		if [ -f "${DIR}/eMMC-flasher.txt" ] ; then
-			echo "uEnv.txt saved as target-uEnv.txt"
-			echo "Copying eMMC-flasher.txt to uEnv.txt"
-			echo "-----------------------------"
-			mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
-			cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
-			echo "-----------------------------"
-			cat "${TEMPDIR}/disk/uEnv.txt"
-			echo "-----------------------------"
+		#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
+		if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
+			board="am335x_evm"
+		else
+			board=${conf_board}
 		fi
-	fi
 
-	echo "Debug:"
-	cat ${TEMPDIR}/disk/SOC.sh
+		#This should be compatible with hwpacks variable names..
+		#https://code.launchpad.net/~linaro-maintainers/linaro-images/
+		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
+			#!/bin/sh
+			format=1.0
+			board=${board}
+
+			bootloader_location=${bootloader_location}
+			dd_spl_uboot_seek=${dd_spl_uboot_seek}
+			dd_spl_uboot_bs=${dd_spl_uboot_bs}
+			dd_uboot_seek=${dd_uboot_seek}
+			dd_uboot_bs=${dd_uboot_bs}
+
+			conf_bootcmd=${conf_bootcmd}
+			boot_script=${boot_script}
+			boot_fstype=${conf_boot_fstype}
+
+			serial_tty=${SERIAL}
+			loadaddr=${conf_loadaddr}
+			initrdaddr=${conf_initrdaddr}
+			zreladdr=${conf_zreladdr}
+			fdtaddr=${conf_fdtaddr}
+			fdtfile=${conf_fdtfile}
+
+			usbnet_mem=${usbnet_mem}
+
+		__EOF__
+
+		if [ "${bbb_flasher}" ] ; then
+			touch ${TEMPDIR}/disk/flash-eMMC.txt
+
+			if [ -f "${DIR}/eMMC-flasher.txt" ] ; then
+				echo "uEnv.txt saved as target-uEnv.txt"
+				echo "Copying eMMC-flasher.txt to uEnv.txt"
+				echo "-----------------------------"
+				mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
+				cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
+				echo "-----------------------------"
+				cat "${TEMPDIR}/disk/uEnv.txt"
+				echo "-----------------------------"
+			fi
+		fi
+
+		echo "Debug:"
+		cat ${TEMPDIR}/disk/SOC.sh
+	fi
 
 	boot_git_tools
 
@@ -812,7 +819,9 @@ populate_rootfs () {
 		else
 			echo "${conf_root_device}p2  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
 		fi
-		echo "${conf_root_device}p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
+		if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
+			echo "${conf_root_device}p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
+		fi
 		echo "debugfs         /sys/kernel/debug  debugfs  defaults          0  0" >> ${TEMPDIR}/disk/etc/fstab
 
 		if [ "x${distro}" = "xDebian" ] ; then
@@ -1110,71 +1119,75 @@ process_dtb_conf () {
 		esac
 	fi
 
-	if [ "${conf_uboot_CONFIG_CMD_BOOTZ}" ] ; then
-		conf_bootcmd="bootz"
-		conf_normal_kernel_file=zImage
-	else
-		conf_bootcmd="bootm"
-		conf_normal_kernel_file=uImage
-	fi
+	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
 
-	if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
-		conf_normal_initrd_file=initrd.img
-	else
-		conf_normal_initrd_file=uInitrd
-	fi
-
-	if [ "${conf_uboot_CONFIG_CMD_FS_GENERIC}" ] ; then
-		conf_fileload="load"
-	else
-		if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-			conf_fileload="fatload"
+		if [ "${conf_uboot_CONFIG_CMD_BOOTZ}" ] ; then
+			conf_bootcmd="bootz"
+			conf_normal_kernel_file=zImage
 		else
-			conf_fileload="ext2load"
+			conf_bootcmd="bootm"
+			conf_normal_kernel_file=uImage
 		fi
-	fi
 
-	if [ "${conf_uboot_use_uenvcmd}" ] ; then
-		conf_entrypt="uenvcmd"
-	else
-		if [ ! "x${conf_uboot_no_uenvcmd}" = "x" ] ; then
-			conf_entrypt="${conf_uboot_no_uenvcmd}"
+		if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
+			conf_normal_initrd_file=initrd.img
 		else
-			echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
+			conf_normal_initrd_file=uInitrd
+		fi
+
+		if [ "${conf_uboot_CONFIG_CMD_FS_GENERIC}" ] ; then
+			conf_fileload="load"
+		else
+			if [ "x${conf_boot_fstype}" = "xfat" ] ; then
+				conf_fileload="fatload"
+			else
+				conf_fileload="ext2load"
+			fi
+		fi
+
+		if [ "${conf_uboot_use_uenvcmd}" ] ; then
+			conf_entrypt="uenvcmd"
+		else
+			if [ ! "x${conf_uboot_no_uenvcmd}" = "x" ] ; then
+				conf_entrypt="${conf_uboot_no_uenvcmd}"
+			else
+				echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
+				exit
+			fi
+		fi
+
+		unset select_kernel
+		if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
+			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_kernel}"
+			fi
+		fi
+
+		if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
+			if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_lpae_kernel}"
+			else
+				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+					select_kernel="${armv7_kernel}"
+				fi
+			fi
+		fi
+
+		if [ "x${conf_kernel}" = "xbone" ] ; then
+			if [ "x${has_bone_kernel}" = "xenable" ] ; then
+				select_kernel="${bone_dt_kernel}"
+			else
+				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+					select_kernel="${armv7_kernel}"
+				fi
+			fi
+		fi
+
+		if [ ! "${select_kernel}" ] ; then
+			echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
 			exit
 		fi
-	fi
 
-	unset select_kernel
-	if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
-		if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-			select_kernel="${armv7_kernel}"
-		fi
-	fi
-
-	if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
-		if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
-			select_kernel="${armv7_lpae_kernel}"
-		else
-			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_kernel}"
-			fi
-		fi
-	fi
-
-	if [ "x${conf_kernel}" = "xbone" ] ; then
-		if [ "x${has_bone_kernel}" = "xenable" ] ; then
-			select_kernel="${bone_dt_kernel}"
-		else
-			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_kernel}"
-			fi
-		fi
-	fi
-
-	if [ ! "${select_kernel}" ] ; then
-		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
-		exit
 	fi
 }
 
