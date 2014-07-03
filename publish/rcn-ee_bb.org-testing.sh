@@ -5,63 +5,45 @@ DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/
 
-./RootStock-NG.sh -c bb.org-debian-testing
+./RootStock-NG.sh -c bb.org-console-debian-testing
 
 debian_stable="jessie"
+image="console"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-if [ -d ./debian-${debian_stable}-lxqt-armhf-${time} ] ; then
-	rm -rf debian-${debian_stable}-lxqt-armhf-${time} || true
+if [ -d ./debian-${debian_stable}-${image}-armhf-${time} ] ; then
+	rm -rf debian-${debian_stable}-${image}-armhf-${time} || true
 fi
 
 #user may run ./ship.sh twice...
-if [ -f debian-${debian_stable}-lxqt-armhf-${time}.tar.xz ] ; then
-	tar xf debian-${debian_stable}-lxqt-armhf-${time}.tar.xz
+if [ -f debian-${debian_stable}-${image}-armhf-${time}.tar.xz ] ; then
+	tar xf debian-${debian_stable}-${image}-armhf-${time}.tar.xz
 else
-	tar xf debian-${debian_stable}-lxqt-armhf-${time}.tar
+	tar xf debian-${debian_stable}-${image}-armhf-${time}.tar
 fi
 
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img || true
+if [ -f bone-debian-${debian_stable}-${image}-${time}-4gb.img ] ; then
+	rm bone-debian-${debian_stable}-${image}-${time}-4gb.img || true
 fi
 
-if [ -f bone-debian-${debian_stable}-lxqt-${time}-4gb.img ] ; then
-	rm bone-debian-${debian_stable}-lxqt-${time}-4gb.img || true
-fi
+cd debian-${debian_stable}-${image}-armhf-${time}/
 
-cd debian-${debian_stable}-lxqt-armhf-${time}/
-
-#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-lxqt-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
-
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
-
-sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-lxqt-${time} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-${image}-${time} --dtb beaglebone-microsdx --beagleboard.org-production --boot_label BEAGLE_BONE 
 
 mv *.img ../
 cd ..
-rm -rf debian-${debian_stable}-lxqt-armhf-${time}/ || true
+rm -rf debian-${debian_stable}-${image}-armhf-${time}/ || true
 
-if [ ! -f debian-${debian_stable}-lxqt-armhf-${time}.tar.xz ] ; then
-	xz -z -8 -v debian-${debian_stable}-lxqt-armhf-${time}.tar
+if [ ! -f debian-${debian_stable}-${image}-armhf-${time}.tar.xz ] ; then
+	xz -z -8 -v debian-${debian_stable}-${image}-armhf-${time}.tar
 fi
 
-if [ -f BBB-blank-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img.xz ] ; then
-	rm BBB-blank-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img.xz || true
+if [ -f bone-debian-${debian_stable}-${image}-${time}-4gb.img.xz ] ; then
+	rm bone-debian-${debian_stable}-${image}-${time}-4gb.img.xz || true
 fi
-xz -z -8 -v BBB-blank-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img
-
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img.xz ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img.xz || true
-fi
-xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-lxqt-${time}-2gb.img
-
-if [ -f bone-debian-${debian_stable}-lxqt-${time}-4gb.img.xz ] ; then
-	rm bone-debian-${debian_stable}-lxqt-${time}-4gb.img.xz || true
-fi
-xz -z -8 -v bone-debian-${debian_stable}-lxqt-${time}-4gb.img
+xz -z -8 -v bone-debian-${debian_stable}-${image}-${time}-4gb.img
 
 __EOF__
 
