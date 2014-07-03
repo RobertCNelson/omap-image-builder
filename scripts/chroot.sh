@@ -840,21 +840,23 @@ if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
 fi
 
-if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
-else
-	if [ "${rfs_kernel}" ] ; then
-		echo "Log: ERROR: kernel install failure..."
-		exit 1
+if [ "${rfs_kernel}" ] ; then
+	if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
+		sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
+	else
+		if [ "${rfs_kernel}" ] ; then
+			echo "Log: ERROR: kernel install failure..."
+			exit 1
+		fi
 	fi
-fi
 
-if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
-fi
+	if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
+		sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
+	fi
 
-if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
-	sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
+	if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
+		sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
+	fi
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
