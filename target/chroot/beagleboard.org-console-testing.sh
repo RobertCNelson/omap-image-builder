@@ -47,13 +47,6 @@ qemu_warning () {
 
 is_this_qemu
 
-cd /
-wget http://repos.rcn-ee.net/testing/conf/testing.gpg.key
-apt-key add testing.gpg.key
-rm testing.gpg.key
-
-echo "deb http://repos.rcn-ee.net/testing/ jessie main" >> /etc/apt/sources.list
-
 apt-get update
 apt-get -y install linux-image-3.8.13-bone58
 

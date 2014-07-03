@@ -273,18 +273,35 @@ wheezy)
 		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	fi
+	if [ "x${repo_rcnee}" = "xenable" ] ; then
+		echo "" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
+	fi
 	if [ "x${repo_external}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
 		echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
 		echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
 	fi
 	;;
-precise|quantal|raring|saucy|trusty)
+precise|quantal|raring|saucy)
 	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	;;
+trusty|utopic)
+	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
+	echo "" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	if [ "x${repo_rcnee}" = "xenable" ] ; then
+		echo "" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "deb [arch=armhf] http://repos.rcn-ee.net/ubuntu/ ${deb_codename} main" >> /tmp/sources.list
+	fi
 	;;
 jessie|sid)
 	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
@@ -292,8 +309,17 @@ jessie|sid)
 	echo "" >> /tmp/sources.list
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	if [ "x${repo_rcnee}" = "xenable" ] ; then
+		echo "" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
+	fi
 	;;
 esac
+
+if [ "x${repo_rcnee}" = "xenable" ] ; then
+	sudo cp -v ${DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
+fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	if [ ! "x${repo_external_key}" = "x" ] ; then
@@ -416,6 +442,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	install_pkg_updates () {
+		if [ "x${repo_rcnee}" = "xenable" ] ; then
+			apt-key add /tmp/repos.rcn-ee.net-archive-keyring.asc
+			rm -f /tmp/repos.rcn-ee.net-archive-keyring.asc || true
+		fi
 		if [ "x${repo_external}" = "xenable" ] ; then
 			apt-key add /tmp/${repo_external_key}
 			rm -f /tmp/${repo_external_key} || true
