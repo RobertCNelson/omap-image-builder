@@ -777,6 +777,35 @@ populate_boot () {
 	echo "-----------------------------"
 }
 
+kernel_detection () {
+	unset has_multi_armv7_kernel
+	unset check
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
+		has_multi_armv7_kernel="enable"
+	fi
+
+	unset has_multi_armv7_lpae_kernel
+	unset check
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		armv7_lpae_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has armv7 lpae multi arch kernel support: v${armv7_lpae_kernel}"
+		has_multi_armv7_lpae_kernel="enable"
+	fi
+
+	unset has_bone_kernel
+	unset check
+	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
+		has_bone_kernel="enable"
+	fi
+}
+
 populate_rootfs () {
 	echo "Populating rootfs Partition"
 	echo "Please be patient, this may take a few minutes, as its transfering a lot of data.."
@@ -810,6 +839,9 @@ populate_rootfs () {
 	fi
 
 	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
+
+		dir_check="${TEMPDIR}/disk/boot/"
+		kernel_detection
 
 		#FIXME: just a hack right now..
 		echo "#repos.rcn-ee.net" > ${TEMPDIR}/disk/boot/uEnv.txt
@@ -1132,35 +1164,6 @@ check_mmc () {
 	fi
 }
 
-kernel_detection () {
-	unset has_multi_armv7_kernel
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		armv7_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has armv7 multi arch kernel support: v${armv7_kernel}"
-		has_multi_armv7_kernel="enable"
-	fi
-
-	unset has_multi_armv7_lpae_kernel
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		armv7_lpae_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has armv7 lpae multi arch kernel support: v${armv7_lpae_kernel}"
-		has_multi_armv7_lpae_kernel="enable"
-	fi
-
-	unset has_bone_kernel
-	unset check
-	check=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		bone_dt_kernel=$(ls "${DIR}/" | grep vmlinuz- | grep bone | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has bone device tree kernel support: v${bone_dt_kernel}"
-		has_bone_kernel="enable"
-	fi
-}
-
 process_dtb_conf () {
 	if [ "${conf_warning}" ] ; then
 		show_board_warning
@@ -1427,6 +1430,7 @@ while [ ! -z "$1" ] ; do
 	--uboot)
 		checkparm $2
 		UBOOT_TYPE="$2"
+		dir_check="${DIR}/"
 		kernel_detection
 		check_uboot_type
 		;;
