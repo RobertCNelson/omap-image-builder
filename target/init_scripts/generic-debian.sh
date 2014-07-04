@@ -44,13 +44,6 @@ start|reload|force-reload|restart)
 		fi
 	fi
 
-	if [ -f /boot/uboot/SOC.sh ] ; then
-		board=$(grep board /boot/uboot/SOC.sh | awk -F"=" '{print $2}')
-		if [ -f "/opt/scripts/boot/${board}.sh" ] ; then
-			/bin/sh /opt/scripts/boot/${board}.sh >/dev/null 2>&1 &
-		fi
-	fi
-
 	if [ -f /boot/SOC.sh ] ; then
 		board=$(grep board /boot/SOC.sh | awk -F"=" '{print $2}')
 		if [ -f "/opt/scripts/boot/${board}.sh" ] ; then
