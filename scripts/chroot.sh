@@ -115,6 +115,12 @@ check_defines () {
 	else
 		deb_additional_pkgs="$(echo ${deb_additional_pkgs} | sed 's/,/ /g')"
 	fi
+
+	if [ "x${repo_rcnee}" = "xenable" ] ; then
+		if [ ! "x${repo_rcnee_pkg_list}" = "x" ] ; then
+			deb_additional_pkgs="${deb_additional_pkgs} ${repo_rcnee_pkg_list}"
+		fi
+	fi
 }
 
 report_size () {
