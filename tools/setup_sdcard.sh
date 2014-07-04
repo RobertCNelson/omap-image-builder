@@ -1437,6 +1437,7 @@ while [ ! -z "$1" ] ; do
 	--dtb)
 		checkparm $2
 		dtb_board="$2"
+		dir_check="${DIR}/"
 		kernel_detection
 		check_dtb_board
 		;;
