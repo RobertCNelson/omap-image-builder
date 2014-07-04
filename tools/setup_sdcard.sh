@@ -88,8 +88,6 @@ find_issue () {
 	check=$(ls "${DIR}/" | grep initrd.img | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		HAS_INITRD=1
-	else
-		echo "Debug: initrd.img missing"
 	fi
 
 	unset HAS_DTBS
@@ -97,8 +95,6 @@ find_issue () {
 	check=$(ls "${DIR}/" | grep dtbs | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		HAS_DTBS=1
-	else
-		echo "Debug: dtbs missing for device tree"
 	fi
 
 	unset has_uenvtxt
@@ -866,10 +862,6 @@ populate_rootfs () {
 		echo "#mmcroot=/dev/mmcblk0p2 ro fixrtc" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#mmcrootUUID=(actual uuid) (needs initrd.img-$(uname -r) in most cases)" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#rootfstype=ext4" >> ${TEMPDIR}/disk/boot/uEnv.txt
-
-		echo "Debug:"
-		cat ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "-----------------------------"
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
@@ -905,10 +897,6 @@ populate_rootfs () {
 		usbnet_mem=${usbnet_mem}
 
 	__EOF__
-
-	echo "Debug:"
-	cat ${TEMPDIR}/disk/boot/SOC.sh
-	echo "-----------------------------"
 
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
