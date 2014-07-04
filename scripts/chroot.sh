@@ -872,7 +872,7 @@ fi
 
 if [ "${rfs_kernel}" ] ; then
 	if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-		sudo mv -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
+		sudo cp -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
 	else
 		if [ "${rfs_kernel}" ] ; then
 			echo "Log: ERROR: kernel install failure..."
@@ -881,11 +881,11 @@ if [ "${rfs_kernel}" ] ; then
 	fi
 
 	if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
-		sudo mv -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
+		sudo cp -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
 	fi
 
 	if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
-		sudo mv -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
+		sudo cp -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
 	fi
 fi
 
