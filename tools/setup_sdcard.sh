@@ -808,53 +808,56 @@ populate_rootfs () {
 	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
 
 		#FIXME: just a hack right now..
-		echo "#rcn-ee:" > ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#repos.rcn-ee.net" > ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "uname_r=3.8.13-bone58" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#debian: sudo apt-get install linux-image-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#uname_r=3.14-1-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#optargs=" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#cape=" >> ${TEMPDIR}/disk/boot/uEnv.txt
 
-
-		#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
-		if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
-			board="am335x_evm"
-		else
-			board=${conf_board}
-		fi
-
-		#This should be compatible with hwpacks variable names..
-		#https://code.launchpad.net/~linaro-maintainers/linaro-images/
-		cat > ${TEMPDIR}/disk/boot/SOC.sh <<-__EOF__
-			#!/bin/sh
-			format=1.0
-			board=${board}
-
-			bootloader_location=${bootloader_location}
-			dd_spl_uboot_seek=${dd_spl_uboot_seek}
-			dd_spl_uboot_bs=${dd_spl_uboot_bs}
-			dd_uboot_seek=${dd_uboot_seek}
-			dd_uboot_bs=${dd_uboot_bs}
-
-			conf_bootcmd=${conf_bootcmd}
-			boot_script=${boot_script}
-			boot_fstype=${conf_boot_fstype}
-
-			serial_tty=${SERIAL}
-			loadaddr=${conf_loadaddr}
-			initrdaddr=${conf_initrdaddr}
-			zreladdr=${conf_zreladdr}
-			fdtaddr=${conf_fdtaddr}
-			fdtfile=${conf_fdtfile}
-
-			usbnet_mem=${usbnet_mem}
-
-		__EOF__
-
+		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "##All options" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#uname_r=$(uname -r)" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#dtb= force other *.dtb file" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#cmdline= stuff passed to command line "quiet"" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#optargs= default(blank)" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#mmcroot=/dev/mmcblk0p2 ro fixrtc" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#mmcrootUUID=(actual uuid) (needs initrd.img-$(uname -r) in most cases)" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "#rootfstype=ext4" >> ${TEMPDIR}/disk/boot/uEnv.txt
 	fi
+
+	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
+	if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
+		board="am335x_evm"
+	else
+		board=${conf_board}
+	fi
+
+	#This should be compatible with hwpacks variable names..
+	#https://code.launchpad.net/~linaro-maintainers/linaro-images/
+	cat > ${TEMPDIR}/disk/boot/SOC.sh <<-__EOF__
+		#!/bin/sh
+		format=1.0
+		board=${board}
+
+		bootloader_location=${bootloader_location}
+		dd_spl_uboot_seek=${dd_spl_uboot_seek}
+		dd_spl_uboot_bs=${dd_spl_uboot_bs}
+		dd_uboot_seek=${dd_uboot_seek}
+		dd_uboot_bs=${dd_uboot_bs}
+
+		conf_bootcmd=${conf_bootcmd}
+		boot_script=${boot_script}
+		boot_fstype=${conf_boot_fstype}
+
+		serial_tty=${SERIAL}
+		fdtfile=${conf_fdtfile}
+
+		usbnet_mem=${usbnet_mem}
+
+	__EOF__
 
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
