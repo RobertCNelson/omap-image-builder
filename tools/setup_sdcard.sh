@@ -816,6 +816,10 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
 
+		if [ ! "x${conf_fdtfile}" = "x" ] ; then
+			echo "dtb=${conf_fdtfile}" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		fi
+
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "##All options" >> ${TEMPDIR}/disk/boot/uEnv.txt
