@@ -725,6 +725,9 @@ populate_boot () {
 			conf_bootcmd=${conf_bootcmd}
 			boot_script=${boot_script}
 			boot_fstype=${conf_boot_fstype}
+			conf_boot_startmb=${conf_boot_startmb}
+			conf_boot_endmb=${conf_boot_endmb}
+			sfdisk_fstype=${sfdisk_fstype}
 
 			serial_tty=${SERIAL}
 			loadaddr=${conf_loadaddr}
@@ -754,6 +757,7 @@ populate_boot () {
 
 		echo "Debug:"
 		cat ${TEMPDIR}/disk/SOC.sh
+		echo "-----------------------------"
 	fi
 
 	boot_git_tools
@@ -830,6 +834,10 @@ populate_rootfs () {
 		echo "#mmcroot=/dev/mmcblk0p2 ro fixrtc" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#mmcrootUUID=(actual uuid) (needs initrd.img-$(uname -r) in most cases)" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#rootfstype=ext4" >> ${TEMPDIR}/disk/boot/uEnv.txt
+
+		echo "Debug:"
+		cat ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "-----------------------------"
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
@@ -855,6 +863,9 @@ populate_rootfs () {
 		conf_bootcmd=${conf_bootcmd}
 		boot_script=${boot_script}
 		boot_fstype=${conf_boot_fstype}
+		conf_boot_startmb=${conf_boot_startmb}
+		conf_boot_endmb=${conf_boot_endmb}
+		sfdisk_fstype=${sfdisk_fstype}
 
 		serial_tty=${SERIAL}
 		fdtfile=${conf_fdtfile}
@@ -862,6 +873,10 @@ populate_rootfs () {
 		usbnet_mem=${usbnet_mem}
 
 	__EOF__
+
+	echo "Debug:"
+	cat ${TEMPDIR}/disk/boot/SOC.sh
+	echo "-----------------------------"
 
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
