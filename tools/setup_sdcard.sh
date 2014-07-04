@@ -802,6 +802,42 @@ kernel_detection () {
 	fi
 }
 
+kernel_select () {
+	unset select_kernel
+	if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
+		if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+			select_kernel="${armv7_kernel}"
+		fi
+	fi
+
+	if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
+		if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
+			select_kernel="${armv7_lpae_kernel}"
+		else
+			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_kernel}"
+			fi
+		fi
+	fi
+
+	if [ "x${conf_kernel}" = "xbone" ] ; then
+		if [ "x${has_bone_kernel}" = "xenable" ] ; then
+			select_kernel="${bone_dt_kernel}"
+		else
+			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+				select_kernel="${armv7_kernel}"
+			fi
+		fi
+	fi
+
+	if [ "${select_kernel}" ] ; then
+		echo "Debug: using: v${select_kernel}"
+	else
+		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
+		exit
+	fi
+}
+
 populate_rootfs () {
 	echo "Populating rootfs Partition"
 	echo "Please be patient, this may take a few minutes, as its transfering a lot of data.."
@@ -838,10 +874,10 @@ populate_rootfs () {
 
 		dir_check="${TEMPDIR}/disk/boot/"
 		kernel_detection
+		kernel_select
 
-		#FIXME: just a hack right now..
-		echo "#repos.rcn-ee.net" > ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "uname_r=3.8.13-bone58" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		echo "uname_r=${select_kernel}" > ${TEMPDIR}/disk/boot/uEnv.txt
+
 		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#debian: sudo apt-get install linux-image-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "#uname_r=3.14-1-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
@@ -1220,38 +1256,7 @@ process_dtb_conf () {
 			fi
 		fi
 
-		unset select_kernel
-		if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
-			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_kernel}"
-			fi
-		fi
-
-		if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
-			if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_lpae_kernel}"
-			else
-				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-					select_kernel="${armv7_kernel}"
-				fi
-			fi
-		fi
-
-		if [ "x${conf_kernel}" = "xbone" ] ; then
-			if [ "x${has_bone_kernel}" = "xenable" ] ; then
-				select_kernel="${bone_dt_kernel}"
-			else
-				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-					select_kernel="${armv7_kernel}"
-				fi
-			fi
-		fi
-
-		if [ ! "${select_kernel}" ] ; then
-			echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
-			exit
-		fi
-
+		kernel_select
 	fi
 }
 
