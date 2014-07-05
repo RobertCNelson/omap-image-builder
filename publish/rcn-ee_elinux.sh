@@ -29,9 +29,9 @@ tar xf ${ubuntu_stable}.tar.xz
 
 cd ${debian_stable}/
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd
-sudo ./setup_sdcard.sh --img bone-${debian_stable} --dtb beaglebone-microsdx --beagleboard.org-production --enable-systemd
-sudo ./setup_sdcard.sh --img bbxm-${debian_stable} --dtb omap3-beagle-xm-microsdx --enable-systemd
-sudo ./setup_sdcard.sh --img omap5-uevm-${debian_stable} --dtb omap5-uevm-microsdx --enable-systemd
+sudo ./setup_sdcard.sh --img bone-${debian_stable} --dtb beaglebone --beagleboard.org-production --enable-systemd
+sudo ./setup_sdcard.sh --img bbxm-${debian_stable} --dtb omap3-beagle-xm --enable-systemd
+sudo ./setup_sdcard.sh --img omap5-uevm-${debian_stable} --dtb omap5-uevm --enable-systemd
 mv *.img ../
 cd ..
 rm -rf ${debian_stable}/ || true

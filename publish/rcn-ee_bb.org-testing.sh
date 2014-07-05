@@ -30,7 +30,7 @@ fi
 
 cd ${debian_testing}/
 
-sudo ./setup_sdcard.sh --img-4gb bone-${debian_testing} --dtb beaglebone-microsdx --beagleboard.org-production --boot_label BEAGLE_BONE
+sudo ./setup_sdcard.sh --img-4gb bone-${debian_testing} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE
 
 mv *.img ../
 cd ..
