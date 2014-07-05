@@ -876,28 +876,28 @@ populate_rootfs () {
 		kernel_detection
 		kernel_select
 
+		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${TEMPDIR}/disk/boot/uEnv.txt
 		echo "uname_r=${select_kernel}" > ${TEMPDIR}/disk/boot/uEnv.txt
-
-		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#debian: sudo apt-get install linux-image-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#uname_r=3.14-1-armmp" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
 
 		if [ ! "x${conf_fdtfile}" = "x" ] ; then
 			echo "dtb=${conf_fdtfile}" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		else
+			echo "#dtb=" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		fi
 
-		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "##All options" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#uname_r=$(uname -r)" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#dtb= force other *.dtb file" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#cmdline= stuff passed to command line "quiet"" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#optargs= default(blank)" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#mmcroot=/dev/mmcblk0p2 ro fixrtc" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#mmcrootUUID=(actual uuid) (needs initrd.img-$(uname -r) in most cases)" >> ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "#rootfstype=ext4" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		if [ "x${enable_systemd}" = "xenabled" ] ; then
+			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		else
+			echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		fi
+
+
+		if [ "${bbb_flasher}" ] ; then
+			echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "#enable bbb_flasher:"
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		fi
+
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
