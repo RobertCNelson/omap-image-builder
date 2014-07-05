@@ -11,50 +11,51 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
 
-debian_stable="7.5"
-debian_testing="jessie"
+debian_stable="debian-7.5-console-armhf-${time}"
+debian_testing="debian-jessie-console-armhf-${time}"
 
-ubuntu_stable="14.04"
-ubuntu_testing="utopic"
+ubuntu_stable="ubuntu-14.04-console-armhf-${time}"
+ubuntu_testing="ubuntu-utopic-console-armhf-${time}"
+archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-xz -z -8 -v ubuntu-${ubuntu_stable}-console-armhf-${time}.tar
-xz -z -8 -v debian-${debian_stable}-console-armhf-${time}.tar
+${archive} ${ubuntu_stable}.tar
+${archive} ${debian_stable}.tar
 
-tar xf debian-${debian_stable}-console-armhf-${time}.tar.xz
-tar xf ubuntu-${ubuntu_stable}-console-armhf-${time}.tar.xz
+tar xf ${debian_stable}.tar.xz
+tar xf ${ubuntu_stable}.tar.xz
 
-cd debian-${debian_stable}-console-armhf-${time}/
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd
-sudo ./setup_sdcard.sh --img bone-debian-${debian_stable}-console-${time} --dtb beaglebone --beagleboard.org-production --enable-systemd
-sudo ./setup_sdcard.sh --img bbxm-debian-${debian_stable}-console-${time} --dtb omap3-beagle-xm --enable-systemd
-sudo ./setup_sdcard.sh --img omap5-uevm-debian-${debian_stable}-console-${time} --dtb omap5-uevm --enable-systemd
+cd ${debian_stable}/
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd
+sudo ./setup_sdcard.sh --img bone-${debian_stable} --dtb beaglebone-microsdx --beagleboard.org-production --enable-systemd
+sudo ./setup_sdcard.sh --img bbxm-${debian_stable} --dtb omap3-beagle-xm-microsdx --enable-systemd
+sudo ./setup_sdcard.sh --img omap5-uevm-${debian_stable} --dtb omap5-uevm-microsdx --enable-systemd
 mv *.img ../
 cd ..
-rm -rf debian-${debian_stable}-console-armhf-${time}/ || true
+rm -rf ${debian_stable}/ || true
 
-cd ubuntu-${ubuntu_stable}-console-armhf-${time}/
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production --bbb-flasher
-sudo ./setup_sdcard.sh --img bone-ubuntu-${ubuntu_stable}-console-${time}.img --dtb beaglebone --beagleboard.org-production
-sudo ./setup_sdcard.sh --img bbxm-ubuntu-${ubuntu_stable}-console-${time}.img --dtb omap3-beagle-xm
-sudo ./setup_sdcard.sh --img omap5-uevm-ubuntu-${ubuntu_stable}-console-${time}.img --dtb omap5-uevm
+cd ${ubuntu_stable}/
+sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${ubuntu_stable}.img --dtb beaglebone --beagleboard.org-production --bbb-flasher
+sudo ./setup_sdcard.sh --img bone-${ubuntu_stable}.img --dtb beaglebone --beagleboard.org-production
+sudo ./setup_sdcard.sh --img bbxm-${ubuntu_stable}.img --dtb omap3-beagle-xm
+sudo ./setup_sdcard.sh --img omap5-uevm-${ubuntu_stable}.img --dtb omap5-uevm
 mv *.img ../
 cd ..
-rm -rf ubuntu-${ubuntu_stable}-console-armhf-${time}/ || true
+rm -rf ${ubuntu_stable}/ || true
 
-xz -z -8 -v ubuntu-${ubuntu_testing}-console-armhf-${time}.tar
-xz -z -8 -v debian-${debian_testing}-console-armhf-${time}.tar
+${archive} ${ubuntu_testing}.tar
+${archive} ${debian_testing}.tar
 
-xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -8 -v bone-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -8 -v bbxm-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -8 -v omap5-uevm-debian-${debian_stable}-console-${time}-2gb.img
-xz -z -8 -v BBB-eMMC-flasher-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
-xz -z -8 -v bone-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
-xz -z -8 -v bbxm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
-xz -z -8 -v omap5-uevm-ubuntu-${ubuntu_stable}-console-${time}-2gb.img
+${archive} BBB-eMMC-flasher-${debian_stable}-2gb.img
+${archive} bone-${debian_stable}-2gb.img
+${archive} bbxm-${debian_stable}-2gb.img
+${archive} omap5-uevm-${debian_stable}-2gb.img
+${archive} BBB-eMMC-flasher-${ubuntu_stable}-2gb.img
+${archive} bone-${ubuntu_stable}-2gb.img
+${archive} bbxm-${ubuntu_stable}-2gb.img
+${archive} omap5-uevm-${ubuntu_stable}-2gb.img
 
 __EOF__
 
