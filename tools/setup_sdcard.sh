@@ -894,7 +894,7 @@ populate_rootfs () {
 
 		if [ "${bbb_flasher}" ] ; then
 			echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-			echo "#enable bbb_flasher:"
+			echo "#enable bbb_flasher:" >> ${TEMPDIR}/disk/boot/uEnv.txt
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		fi
 
