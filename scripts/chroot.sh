@@ -493,16 +493,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get clean
 	}
 
-	dl_pkg_src () {
-		sed -i -e 's:#deb-src:deb-src:g' /etc/apt/sources.list
-		apt-get update
-		mkdir -p /tmp/pkg_src/
-		cd /tmp/pkg_src/
-		dpkg -l | tail -n+6 | awk '{print \$2}' | sed "s/:armel//g" | sed "s/:armhf//g" > /tmp/pkg_src/pkg_list
-		apt-get source --download-only \`cat /tmp/pkg_src/pkg_list\`
-		cd -
-	}
-
 	dl_kernel () {
 		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
 
@@ -738,10 +728,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	startup_script
 
-	if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-		dl_pkg_src
-	fi
-
 	pkg="wget"
 	dpkg_check
 
@@ -906,16 +892,6 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	if [ -n "${chroot_flasher_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ] ; then
 		sudo cp "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
 	fi
-fi
-
-if [ "x${chroot_ENABLE_DEB_SRC}" = "xenable" ] ; then
-	echo "Log: packaging src files: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar]"
-	cd ${tempdir}/tmp/pkg_src/
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar .
-	cd ${tempdir}
-	ls -lh ${DIR}/deploy/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}-${time}-src.tar
-	sudo rm -rf ${tempdir}/tmp/pkg_src/ || true
-	report_size
 fi
 
 cd ${tempdir}
