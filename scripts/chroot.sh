@@ -215,41 +215,6 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	report_size
 fi
 
-if [ "x${rfs_locale_purge}" = "xenable" ] ; then
-	if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
-		ls -lh ${tempdir}/usr/share/locale/
-		sudo mv ${tempdir}/usr/share/locale/${rfs_locale_save_dir}/ ${tempdir}/
-		sudo rm -rf ${tempdir}/usr/share/locale/*
-		sudo mv ${tempdir}/${rfs_locale_save_dir}/ ${tempdir}/usr/share/locale/
-		ls -lh ${tempdir}/usr/share/locale/
-	else
-		sudo rm -rf ${tempdir}/usr/share/locale/*
-	fi
-
-	if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
-		sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
-		#FIXME: en only, ping me for enabling other locales by default
-		echo "# Delete locales" > /tmp/01_nodoc
-		echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-		if [ ! "x${rfs_locale_save_dir}" = "x" ] ; then
-			echo "path-include=/usr/share/locale/${rfs_locale_save_dir}" >> /tmp/01_nodoc
-		fi
-		sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
-	fi
-fi
-
-if [ "x${rfs_strip_locales}" = "xenable" ] && [ "x${rfs_default_locale}" = "xen_US.UTF-8" ] ; then
-	#dpkg: strip some files
-	if [ ! -f ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc ] ; then
-		sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
-		#FIXME: en only, ping me for enabling other locales by default
-		echo "# Delete locales" > /tmp/01_nodoc
-		echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
-		sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
-	fi
-fi
-
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
 
