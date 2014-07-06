@@ -83,20 +83,6 @@ find_issue () {
 		exit
 	fi
 
-	unset HAS_INITRD
-	unset check
-	check=$(ls "${DIR}/" | grep initrd.img | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		HAS_INITRD=1
-	fi
-
-	unset HAS_DTBS
-	unset check
-	check=$(ls "${DIR}/" | grep dtbs | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		HAS_DTBS=1
-	fi
-
 	unset has_uenvtxt
 	unset check
 	check=$(ls "${DIR}/" | grep uEnv.txt | head -n 1)
