@@ -35,7 +35,7 @@ fi
 cd ${debian_stable}/
 
 #using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-${debian_stable} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-${debian_stable} --dtb bbb-blank-eeprom --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 

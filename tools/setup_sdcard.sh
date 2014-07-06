@@ -1286,9 +1286,9 @@ check_uboot_type () {
 		unset error_invalid_dtb
 		;;
 	boneblack_flasher)
-		. "${DIR}"/hwpack/beaglebone.conf
+		echo "Note: [--dtb bbb-blank-eeprom] now replaces [--uboot boneblack_flasher]"
+		. "${DIR}"/hwpack/bbb-blank-eeprom.conf
 		process_dtb_conf
-		conf_board="am335x_boneblack"
 		unset error_invalid_dtb
 		;;
 	*)
