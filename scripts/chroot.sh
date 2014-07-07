@@ -181,10 +181,6 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
 	echo "# Delete locales" > /tmp/01_nodoc
 	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-
-	if [ "x${rfs_default_locale}" = "xen_US.UTF-8" ] ; then
-		echo "path-include=/usr/share/locale/en*" >> /tmp/01_nodoc
-	fi
 	echo ""  >> /tmp/01_nodoc
 
 	echo "# Delete man pages" >> /tmp/01_nodoc
