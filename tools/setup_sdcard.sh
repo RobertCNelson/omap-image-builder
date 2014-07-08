@@ -1010,15 +1010,6 @@ populate_rootfs () {
 		if [ ! "${bborg_production}" ] ; then
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
 		fi
-
-		if [ "${bbb_flasher}" ] ; then
-			if [ -f ${TEMPDIR}/disk/opt/scripts/images/beaglebg-eMMC.jpg ] ; then
-				if [ -f ${TEMPDIR}/disk/opt/desktop-background.jpg ] ; then
-					rm -f ${TEMPDIR}/disk/opt/desktop-background.jpg || true
-				fi
-				cp -v ${TEMPDIR}/disk/opt/scripts/images/beaglebg-eMMC.jpg ${TEMPDIR}/disk/opt/desktop-background.jpg
-			fi
-		fi
 		sync
 
 	else

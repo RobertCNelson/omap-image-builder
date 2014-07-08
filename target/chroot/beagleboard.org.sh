@@ -144,14 +144,16 @@ setup_desktop () {
 		fi
 	fi
 
-	cp /opt/scripts/images/beaglebg.jpg /opt/desktop-background.jpg
+	if [ "x${rfs_desktop_background}" = "x" ] ; then
+		cp ${rfs_desktop_background} /opt/desktop-background.jpg
 
-	mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
-	wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
-	echo "[desktop]" > ${wfile}
-	echo "wallpaper_mode=1" >> ${wfile}
-	echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-	chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
+		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
+		echo "[desktop]" > ${wfile}
+		echo "wallpaper_mode=1" >> ${wfile}
+		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+	fi
 
 	#Disable dpms mode and screen blanking
 	#Better fix for missing cursor
