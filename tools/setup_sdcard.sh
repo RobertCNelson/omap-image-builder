@@ -90,6 +90,14 @@ find_issue () {
 		echo "Debug: image has pre-generated uEnv.txt file"
 		has_uenvtxt=1
 	fi
+
+	unset has_post_uenvtxt
+	unset check
+	check=$(ls "${DIR}/" | grep post-uEnv.txt | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		echo "Debug: image has post-uEnv.txt file"
+		has_post_uenvtxt="enable"
+	fi
 }
 
 check_for_command () {
@@ -682,6 +690,16 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
+	if [ "${bbb_flasher}" ] ; then
+		if [ "x${conf_microsd2_0}" = "xenable" ] ; then
+			#Just for compatibility sake...
+			if [ ${has_uenvtxt} ] ; then
+				cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
+				echo "-----------------------------"
+			fi
+		fi
+	fi
+
 	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
 
 		#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
@@ -881,6 +899,9 @@ populate_rootfs () {
 			echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
 		fi
 
+		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
+			cat "${DIR}/post-uEnv.txt" >> ${TEMPDIR}/disk/boot/uEnv.txt
+		fi
 
 		if [ "${bbb_flasher}" ] ; then
 			echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
