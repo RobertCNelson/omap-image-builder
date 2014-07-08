@@ -31,8 +31,8 @@ if [ -f /etc/rcn-ee.conf ] ; then
 	. /etc/rcn-ee.conf
 fi
 
-if [ -f .project ] ; then
-	. .project
+if [ -f /etc/oib.project ] ; then
+	. /etc/oib.project
 fi
 
 is_this_qemu () {
