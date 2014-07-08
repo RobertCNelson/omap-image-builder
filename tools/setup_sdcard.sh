@@ -863,7 +863,11 @@ populate_rootfs () {
 		kernel_select
 
 		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${TEMPDIR}/disk/boot/uEnv.txt
-		echo "uname_r=${select_kernel}" > ${TEMPDIR}/disk/boot/uEnv.txt
+		if [ "x${kernel_override}" = "x" ] ; then
+			echo "uname_r=${select_kernel}" > ${TEMPDIR}/disk/boot/uEnv.txt
+		else
+			echo "uname_r=${kernel_override}" > ${TEMPDIR}/disk/boot/uEnv.txt
+		fi
 
 		if [ ! "x${conf_fdtfile}" = "x" ] ; then
 			echo "dtb=${conf_fdtfile}" >> ${TEMPDIR}/disk/boot/uEnv.txt
@@ -1453,6 +1457,10 @@ while [ ! -z "$1" ] ; do
 		;;
 	--offline)
 		offline=1
+		;;
+	--kernel)
+		checkparm $2
+		kernel_override="$2"
 		;;
 	esac
 	shift
