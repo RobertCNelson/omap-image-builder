@@ -31,6 +31,10 @@ if [ -f /etc/rcn-ee.conf ] ; then
 	. /etc/rcn-ee.conf
 fi
 
+if [ -f .project ] ; then
+	. .project
+fi
+
 is_this_qemu () {
 	unset warn_qemu_will_fail
 	if [ -f /usr/bin/qemu-arm-static ] ; then
