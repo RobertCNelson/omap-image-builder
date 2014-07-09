@@ -616,30 +616,34 @@ populate_boot () {
 
 	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
 
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		if [ "${bbb_flasher}" ] ; then
 
-			wfile="${TEMPDIR}/disk/uEnv.txt"
-			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
-			echo "" >> ${wfile}
-			echo "loadaddr=0x82000000" >> ${wfile}
-			echo "fdtaddr=0x88000000" >> ${wfile}
-			echo "rdaddr=0x88080000" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "initrd_high=0xffffffff" >> ${wfile}
-			echo "fdt_high=0xffffffff" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
-			echo "" >> ${wfile}
-			echo "loadximage=load mmc 0:2 \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
-			echo "loadxfdt=load mmc 0:2 \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
-			echo "loadxrd=load mmc 0:2 \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
-			echo "loaduEnvtxt=load mmc 0:2 \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
-			echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
-			echo "" >> ${TEMPDIR}/disk/uEnv.txt
-			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${TEMPDIR}/disk/uEnv.txt
-			echo "" >> ${TEMPDIR}/disk/uEnv.txt
-			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
-			echo "" >> ${TEMPDIR}/disk/uEnv.txt
+			if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+
+				wfile="${TEMPDIR}/disk/uEnv.txt"
+				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
+				echo "" >> ${wfile}
+				echo "loadaddr=0x82000000" >> ${wfile}
+				echo "fdtaddr=0x88000000" >> ${wfile}
+				echo "rdaddr=0x88080000" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "initrd_high=0xffffffff" >> ${wfile}
+				echo "fdt_high=0xffffffff" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
+				echo "" >> ${wfile}
+				echo "loadximage=load mmc 0:2 \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
+				echo "loadxfdt=load mmc 0:2 \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
+				echo "loadxrd=load mmc 0:2 \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
+				echo "loaduEnvtxt=load mmc 0:2 \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
+				echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
+				echo "" >> ${TEMPDIR}/disk/uEnv.txt
+				echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${TEMPDIR}/disk/uEnv.txt
+				echo "" >> ${TEMPDIR}/disk/uEnv.txt
+				echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+				echo "" >> ${TEMPDIR}/disk/uEnv.txt
+
+			fi
 
 		fi
 
