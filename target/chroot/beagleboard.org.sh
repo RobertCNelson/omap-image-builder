@@ -148,8 +148,8 @@ setup_desktop () {
 		fi
 	fi
 
-	if [ "x${rfs_desktop_background}" = "x" ] ; then
-		cp ${rfs_desktop_background} /opt/desktop-background.jpg
+	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
+		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
 
 		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
 		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
