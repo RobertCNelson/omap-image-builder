@@ -27,14 +27,6 @@ generic_image () {
 		tar xf ${debian_image}.tar
 	fi
 
-	if [ -f BBB-eMMC-flasher-${debian_image}-2gb.img ] ; then
-		rm BBB-eMMC-flasher-${debian_image}-2gb.img || true
-	fi
-
-	if [ -f bone-${debian_image}-4gb.img ] ; then
-		rm bone-${debian_image}-4gb.img || true
-	fi
-
 	cd ${debian_image}/
 
 	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
@@ -42,7 +34,7 @@ generic_image () {
 
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_image} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img-4gb bone-${debian_image} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+	sudo ./setup_sdcard.sh ${bone_image} bone-${debian_image} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
 	cd ..
@@ -52,26 +44,30 @@ generic_image () {
 		${archive} ${debian_image}.tar
 	fi
 
-	if [ -f BBB-blank-eMMC-flasher-${debian_image}-2gb.img.xz ] ; then
-		rm BBB-blank-eMMC-flasher-${debian_image}-2gb.img.xz || true
+	if [ -f BBB-blank-eMMC-flasher-${debian_image}-2gb.img ] ; then
+		${archive} BBB-blank-eMMC-flasher-${debian_image}-2gb.img
 	fi
-	${archive} BBB-blank-eMMC-flasher-${debian_image}-2gb.img
 
-	if [ -f BBB-eMMC-flasher-${debian_image}-2gb.img.xz ] ; then
-		rm BBB-eMMC-flasher-${debian_image}-2gb.img.xz || true
+	if [ -f BBB-eMMC-flasher-${debian_image}-2gb.img ] ; then
+		${archive} BBB-eMMC-flasher-${debian_image}-2gb.img
 	fi
-	${archive} BBB-eMMC-flasher-${debian_image}-2gb.img
 
-	if [ -f bone-${debian_image}-4gb.img.xz ] ; then
-		rm bone-${debian_image}-4gb.img.xz || true
+	if [ -f bone-${debian_image}-2gb.img ] ; then
+		${archive} bone-${debian_image}-2gb.img
 	fi
-	${archive} bone-${debian_image}-4gb.img
+
+	if [ -f bone-${debian_image}-4gb.img ] ; then
+		${archive} bone-${debian_image}-4gb.img
+	fi
+
 }
 
 image="${debian_lxde_stable}"
+bone_image="--img-4gb"
 generic_image
 
 image="${debian_console_stable}"
+bone_image="--img"
 generic_image
 
 __EOF__
