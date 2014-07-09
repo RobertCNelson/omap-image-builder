@@ -23,12 +23,16 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2014.07-rc3"
+u_boot_release="v2014.07-rc4"
 cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
 	. /etc/rcn-ee.conf
+fi
+
+if [ -f /etc/oib.project ] ; then
+	. /etc/oib.project
 fi
 
 is_this_qemu () {
@@ -144,14 +148,16 @@ setup_desktop () {
 		fi
 	fi
 
-	cp /opt/scripts/images/beaglebg.jpg /opt/desktop-background.jpg
+	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
+		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
 
-	mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
-	wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
-	echo "[desktop]" > ${wfile}
-	echo "wallpaper_mode=1" >> ${wfile}
-	echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-	chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
+		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
+		echo "[desktop]" > ${wfile}
+		echo "wallpaper_mode=1" >> ${wfile}
+		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+	fi
 
 	#Disable dpms mode and screen blanking
 	#Better fix for missing cursor
