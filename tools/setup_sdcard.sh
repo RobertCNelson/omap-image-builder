@@ -953,9 +953,14 @@ populate_rootfs () {
 			echo "" >> ${wfile}
 		fi
 
-		if [ "${bbb_flasher}" ] ; then
-			echo "#enable bbb_flasher:" >> ${wfile}
-			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+			if [ "${bbb_flasher}" ] ; then
+				echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+			else
+				echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+			fi
 			echo "" >> ${wfile}
 		fi
 
