@@ -34,7 +34,7 @@ generic_image () {
 
 	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_image} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
 
-	sudo ./setup_sdcard.sh ${bone_image} bone-${debian_image} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd --bbb-old-bootloader-in-emmc
+	sudo ./setup_sdcard.sh ${bone_image} bone-${debian_image} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
 	cd ..
