@@ -85,7 +85,7 @@ find_issue () {
 
 	unset has_uenvtxt
 	unset check
-	check=$(ls "${DIR}/" | grep uEnv.txt | head -n 1)
+	check=$(ls "${DIR}/" | grep uEnv.txt | grep -v post-uEnv.txt | head -n 1)
 	if [ "x${check}" != "x" ] ; then
 		echo "Debug: image has pre-generated uEnv.txt file"
 		has_uenvtxt=1
