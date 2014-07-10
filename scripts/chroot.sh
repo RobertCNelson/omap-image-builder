@@ -242,7 +242,7 @@ wheezy)
 	fi
 	if [ "x${repo_rcnee}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
 		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
 	fi
 	if [ "x${repo_external}" = "xenable" ] ; then
@@ -266,7 +266,7 @@ trusty|utopic)
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	if [ "x${repo_rcnee}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
 		echo "deb [arch=armhf] http://repos.rcn-ee.net/ubuntu/ ${deb_codename} main" >> /tmp/sources.list
 	fi
 	;;
@@ -278,7 +278,7 @@ jessie|sid)
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	if [ "x${repo_rcnee}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson" >> /tmp/sources.list
+		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
 		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
 	fi
 	;;
