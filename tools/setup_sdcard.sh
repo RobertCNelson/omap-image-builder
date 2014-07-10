@@ -940,7 +940,7 @@ populate_rootfs () {
 			echo "" >> ${wfile}
 			echo "##Example" >> ${wfile}
 			echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
-			echo "#cape_enable=capemgr.enable_par" >> ${wfile}
+			echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
 			echo "" >> ${wfile}
 		fi
 

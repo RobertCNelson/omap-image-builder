@@ -1,0 +1,12 @@
+##BeagleBone Cape Overrides
+
+##BeagleBone Black:
+##Disable HDMI/eMMC
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
+
+##Disable HDMI
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
+
+##Audio Cape (needs HDMI Audio disabled)
+#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI
+#cape_enable=capemgr.enable_partno=BB-BONE-AUDI-02
