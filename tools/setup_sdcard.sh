@@ -922,22 +922,24 @@ populate_rootfs () {
 			echo "uname_r=${select_kernel}" > ${wfile}
 		else
 			echo "uname_r=${kernel_override}" > ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 		if [ ! "x${conf_fdtfile}" = "x" ] ; then
 			echo "dtb=${conf_fdtfile}" >> ${wfile}
 		else
 			echo "#dtb=" >> ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 		if [ "x${enable_systemd}" = "xenabled" ] ; then
 			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
 		else
 			echo "cmdline=quiet" >> ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-			echo "" >> ${wfile}
 			echo "##Example" >> ${wfile}
 			echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
 			echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
@@ -946,12 +948,13 @@ populate_rootfs () {
 
 		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
 			cat "${DIR}/post-uEnv.txt" >> ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 		if [ "${bbb_flasher}" ] ; then
-			echo "" >> ${wfile}
 			echo "#enable bbb_flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 	fi
