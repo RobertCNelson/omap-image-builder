@@ -30,11 +30,11 @@ generic_image () {
 	cd \${debian_image}/
 
 	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
 
-	sudo ./setup_sdcard.sh \${bone_image} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLE_BONE --enable-systemd
+	sudo ./setup_sdcard.sh \${bone_image} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLEBONE --enable-systemd
 
 	mv *.img ../
 	cd ..
