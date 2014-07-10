@@ -641,7 +641,7 @@ populate_boot () {
 			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 			echo "" >> ${wfile}
 
-			if [ ! "${bbb_flasher}" ] ; then
+			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 				mv "${TEMPDIR}/disk/uEnv.txt" "${TEMPDIR}/disk/bbb-uEnv.txt"
 				echo "For bbb, with an old bootloader installed in eMMC, rename: bbb-uEnv.txt -> uEnv.txt" > "${TEMPDIR}/disk/readme.txt"
 			fi
@@ -1509,6 +1509,9 @@ while [ ! -z "$1" ] ; do
 	--beagleboard.org-production)
 		bborg_production=1
 		conf_boot_endmb="96"
+		;;
+	--bbb-old-bootloader-in-emmc)
+		bbb_old_bootloader_in_emmc="enable"
 		;;
 	--enable-systemd)
 		enable_systemd="enabled"
