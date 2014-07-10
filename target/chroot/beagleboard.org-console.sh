@@ -457,44 +457,48 @@ install_kernel_modules () {
 	dist=$(lsb_release -cs)
 	arch=$(dpkg --print-architecture)
 	mirror="https://rcn-ee.net/deb"
-	latest_kernel=$(ls /boot/ | grep vmlinuz | grep bone | head -n 1 | awk -F "vmlinuz-" '{print $2}')
+	latest_kernel=$(ls /boot/ | grep vmlinuz | grep bone | head -n 1 | awk -F "vmlinuz-" '{print $2}' || true)
 
-	if [ -f /etc/rcn-ee.conf ] ; then
-		. /etc/rcn-ee.conf
+	if [ ! "x${latest_kernel}" = "x" ] ; then
 
-		if [ "x${third_party_modules}" = "xenable" ] ; then
-			echo "Debug: third_party_modules enabled in /etc/rcn-ee.conf"
+		if [ -f /etc/rcn-ee.conf ] ; then
+			. /etc/rcn-ee.conf
 
-			cd /tmp/
-			if [ -f /tmp/index.html ] ; then
+			if [ "x${third_party_modules}" = "xenable" ] ; then
+				echo "Debug: third_party_modules enabled in /etc/rcn-ee.conf"
+
+				cd /tmp/
+				if [ -f /tmp/index.html ] ; then
+					rm -f /tmp/index.html || true
+				fi
+
+				wget ${mirror}/${dist}-${arch}/v${latest_kernel}/
+				unset thirdparty_file
+				thirdparty_file=$(cat /tmp/index.html | grep thirdparty | head -n 1)
+				thirdparty_file=$(echo ${thirdparty_file} | awk -F "\"" '{print $2}')
 				rm -f /tmp/index.html || true
-			fi
 
-			wget ${mirror}/${dist}-${arch}/v${latest_kernel}/
-			unset thirdparty_file
-			thirdparty_file=$(cat /tmp/index.html | grep thirdparty | head -n 1)
-			thirdparty_file=$(echo ${thirdparty_file} | awk -F "\"" '{print $2}')
-			rm -f /tmp/index.html || true
+				if [ "x${thirdparty_file}" = "xthirdparty" ] ; then
 
-			if [ "x${thirdparty_file}" = "xthirdparty" ] ; then
+					if [ -f /tmp/thirdparty ] ; then
+						rm -rf /tmp/thirdparty || true
+					fi
 
-				if [ -f /tmp/thirdparty ] ; then
-					rm -rf /tmp/thirdparty || true
+					wget ${mirror}/${dist}-${arch}/v${latest_kernel}/thirdparty
+
+					if [ -f /tmp/thirdparty ] ; then
+						/bin/sh /tmp/thirdparty
+						depmod ${latest_kernel} -a
+						update-initramfs -uk ${latest_kernel}
+						rm -rf /tmp/thirdparty || true
+						echo "Debug: third party kernel modules now installed."
+					fi
+
 				fi
-
-				wget ${mirror}/${dist}-${arch}/v${latest_kernel}/thirdparty
-
-				if [ -f /tmp/thirdparty ] ; then
-					/bin/sh /tmp/thirdparty
-					depmod ${latest_kernel} -a
-					update-initramfs -uk ${latest_kernel}
-					rm -rf /tmp/thirdparty || true
-					echo "Debug: third party kernel modules now installed."
-				fi
-
+				cd /
 			fi
-			cd /
 		fi
+
 	fi
 }
 
