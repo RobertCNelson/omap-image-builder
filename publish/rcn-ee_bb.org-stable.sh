@@ -62,12 +62,12 @@ generic_image () {
 
 }
 
-image="\${debian_lxde_stable}"
+debian_image="${debian_lxde_stable}"
 bone_image="--img-4gb"
 image_opts="--beagleboard.org-production"
 generic_image
 
-image="\${debian_console_stable}"
+debian_image="${debian_console_stable}"
 bone_image="--img"
 image_opts=""
 generic_image
