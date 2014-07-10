@@ -636,7 +636,7 @@ populate_boot () {
 			echo "loaduEnvtxt=load mmc 0:2 \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
 			echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
 			echo "" >> ${wfile}
-			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
+			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 			echo "" >> ${wfile}
@@ -916,33 +916,42 @@ populate_rootfs () {
 		kernel_detection
 		kernel_select
 
-		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${TEMPDIR}/disk/boot/uEnv.txt
+		wfile="${TEMPDIR}/disk/boot/uEnv.txt"
+		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
 		if [ "x${kernel_override}" = "x" ] ; then
-			echo "uname_r=${select_kernel}" > ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "uname_r=${select_kernel}" > ${wfile}
 		else
-			echo "uname_r=${kernel_override}" > ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "uname_r=${kernel_override}" > ${wfile}
 		fi
 
 		if [ ! "x${conf_fdtfile}" = "x" ] ; then
-			echo "dtb=${conf_fdtfile}" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "dtb=${conf_fdtfile}" >> ${wfile}
 		else
-			echo "#dtb=" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "#dtb=" >> ${wfile}
 		fi
 
 		if [ "x${enable_systemd}" = "xenabled" ] ; then
-			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
 		else
-			echo "cmdline=quiet" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "cmdline=quiet" >> ${wfile}
+		fi
+
+		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+			echo "" >> ${wfile}
+			echo "##Example" >> ${wfile}
+			echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
+			echo "#cape_enable=capemgr.enable_par" >> ${wfile}
+			echo "" >> ${wfile}
 		fi
 
 		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
-			cat "${DIR}/post-uEnv.txt" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			cat "${DIR}/post-uEnv.txt" >> ${wfile}
 		fi
 
 		if [ "${bbb_flasher}" ] ; then
-			echo "" >> ${TEMPDIR}/disk/boot/uEnv.txt
-			echo "#enable bbb_flasher:" >> ${TEMPDIR}/disk/boot/uEnv.txt
-			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${TEMPDIR}/disk/boot/uEnv.txt
+			echo "" >> ${wfile}
+			echo "#enable bbb_flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 		fi
 
 	fi
