@@ -918,26 +918,28 @@ populate_rootfs () {
 
 		wfile="${TEMPDIR}/disk/boot/uEnv.txt"
 		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
+		echo "" >> ${wfile}
+
 		if [ "x${kernel_override}" = "x" ] ; then
-			echo "uname_r=${select_kernel}" > ${wfile}
+			echo "uname_r=${select_kernel}" >> ${wfile}
 		else
-			echo "uname_r=${kernel_override}" > ${wfile}
-			echo "" >> ${wfile}
+			echo "uname_r=${kernel_override}" >> ${wfile}
 		fi
+		echo "" >> ${wfile}
 
 		if [ ! "x${conf_fdtfile}" = "x" ] ; then
 			echo "dtb=${conf_fdtfile}" >> ${wfile}
 		else
 			echo "#dtb=" >> ${wfile}
-			echo "" >> ${wfile}
 		fi
+		echo "" >> ${wfile}
 
 		if [ "x${enable_systemd}" = "xenabled" ] ; then
 			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
 		else
 			echo "cmdline=quiet" >> ${wfile}
-			echo "" >> ${wfile}
 		fi
+		echo "" >> ${wfile}
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 			echo "##Example" >> ${wfile}
