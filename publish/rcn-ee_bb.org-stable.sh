@@ -16,58 +16,58 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 generic_image () {
-	if [ -d ./${debian_image} ] ; then
-		rm -rf ${debian_image} || true
+	if [ -d ./\${debian_image} ] ; then
+		rm -rf \${debian_image} || true
 	fi
 
 	#user may run ./ship.sh twice...
-	if [ -f ${debian_image}.tar.xz ] ; then
-		tar xf ${debian_image}.tar.xz
+	if [ -f \${debian_image}.tar.xz ] ; then
+		tar xf \${debian_image}.tar.xz
 	else
-		tar xf ${debian_image}.tar
+		tar xf \${debian_image}.tar
 	fi
 
-	cd ${debian_image}/
+	cd \${debian_image}/
 
 	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-${debian_image} --dtb bbb-blank-eeprom ${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_image} --dtb beaglebone ${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
+	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
 
-	sudo ./setup_sdcard.sh ${bone_image} bone-${debian_image} --dtb beaglebone ${image_opts} --boot_label BEAGLE_BONE --enable-systemd
+	sudo ./setup_sdcard.sh \${bone_image} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLE_BONE --enable-systemd
 
 	mv *.img ../
 	cd ..
-	rm -rf ${debian_image}/ || true
+	rm -rf \${debian_image}/ || true
 
-	if [ ! -f ${debian_image}.tar.xz ] ; then
-		${archive} ${debian_image}.tar
+	if [ ! -f \${debian_image}.tar.xz ] ; then
+		\${archive} \${debian_image}.tar
 	fi
 
-	if [ -f BBB-blank-eMMC-flasher-${debian_image}-2gb.img ] ; then
-		${archive} BBB-blank-eMMC-flasher-${debian_image}-2gb.img
+	if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+		\${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
 	fi
 
-	if [ -f BBB-eMMC-flasher-${debian_image}-2gb.img ] ; then
-		${archive} BBB-eMMC-flasher-${debian_image}-2gb.img
+	if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+		\${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
 	fi
 
-	if [ -f bone-${debian_image}-2gb.img ] ; then
-		${archive} bone-${debian_image}-2gb.img
+	if [ -f bone-\${debian_image}-2gb.img ] ; then
+		\${archive} bone-\${debian_image}-2gb.img
 	fi
 
-	if [ -f bone-${debian_image}-4gb.img ] ; then
-		${archive} bone-${debian_image}-4gb.img
+	if [ -f bone-\${debian_image}-4gb.img ] ; then
+		\${archive} bone-\${debian_image}-4gb.img
 	fi
 
 }
 
-image="${debian_lxde_stable}"
+image="\${debian_lxde_stable}"
 bone_image="--img-4gb"
 image_opts="--beagleboard.org-production"
 generic_image
 
-image="${debian_console_stable}"
+image="\${debian_console_stable}"
 bone_image="--img"
 image_opts=""
 generic_image
