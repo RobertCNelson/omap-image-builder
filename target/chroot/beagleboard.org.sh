@@ -453,6 +453,51 @@ install_build_pkgs () {
 	#fi
 }
 
+install_kernel_modules () {
+	dist=$(lsb_release -cs)
+	arch=$(dpkg --print-architecture)
+	mirror="https://rcn-ee.net/deb"
+	latest_kernel=$(ls /boot/ | grep vmlinuz | grep bone | head -n 1 | awk -F "vmlinuz-" '{print $2}')
+
+	if [ -f /etc/rcn-ee.conf ] ; then
+		. /etc/rcn-ee.conf
+
+		if [ "x${third_party_modules}" = "xenable" ] ; then
+			echo "Debug: third_party_modules enabled in /etc/rcn-ee.conf"
+
+			cd /tmp/
+			if [ -f /tmp/index.html ] ; then
+				rm -f /tmp/index.html || true
+			fi
+
+			wget ${mirror}/${dist}-${arch}/v${latest_kernel}/
+			unset thirdparty_file
+			thirdparty_file=$(cat /tmp/index.html | grep thirdparty | head -n 1)
+			thirdparty_file=$(echo ${thirdparty_file} | awk -F "\"" '{print $2}')
+			rm -f /tmp/index.html || true
+
+			if [ "x${thirdparty_file}" = "xthirdparty" ] ; then
+
+				if [ -f /tmp/thirdparty ] ; then
+					rm -rf /tmp/thirdparty || true
+				fi
+
+				wget ${mirror}/${dist}-${arch}/v${latest_kernel}/thirdparty
+
+				if [ -f /tmp/thirdparty ] ; then
+					/bin/sh /tmp/thirdparty
+					depmod ${latest_kernel} -a
+					update-initramfs -uk ${latest_kernel}
+					rm -rf /tmp/thirdparty || true
+					echo "Debug: third party kernel modules now installed."
+				fi
+
+			fi
+			cd /
+		fi
+	fi
+}
+
 other_source_links () {
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
 	cd /opt/source/u-boot_${u_boot_release}/
@@ -493,6 +538,7 @@ install_pip_pkgs
 install_gem_pkgs
 install_git_repos
 install_build_pkgs
+install_kernel_modules
 other_source_links
 unsecure_root
 #
