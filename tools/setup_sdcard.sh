@@ -1508,6 +1508,7 @@ while [ ! -z "$1" ] ; do
 		;;
 	--beagleboard.org-production)
 		bborg_production=1
+		conf_boot_endmb="96"
 		;;
 	--enable-systemd)
 		enable_systemd="enabled"
