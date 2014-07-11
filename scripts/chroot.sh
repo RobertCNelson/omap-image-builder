@@ -686,11 +686,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ -f /etc/apt/apt.conf ] ; then
 			rm -rf /etc/apt/apt.conf || true
 		fi
-		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
-			#if your flash is already small, the apt cache might overfill it so drop src...
-			sed -i -e 's:deb-src:#deb-src:g' /etc/apt/sources.list
-			apt-get update
-		fi
 		apt-get clean
 
 		rm -f /usr/sbin/policy-rc.d
