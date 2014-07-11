@@ -29,10 +29,12 @@ generic_image () {
 
 	cd \${debian_image}/
 
-	#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-	sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd
+	if [ "x\${flasher}" = "xenable" ] ; then
+		#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
+		sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd
 
-	sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
+		sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
+	fi
 
 	sudo ./setup_sdcard.sh \${bone_image} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLEBONE --enable-systemd
 
@@ -44,12 +46,14 @@ generic_image () {
 		${archive} \${debian_image}.tar
 	fi
 
-	if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-		${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
-	fi
+	if [ "x\${flasher}" = "xenable" ] ; then
+		if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+			${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
+		fi
 
-	if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-		${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
+		if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+			${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
+		fi
 	fi
 
 	if [ -f bone-\${debian_image}-2gb.img ] ; then
@@ -65,11 +69,13 @@ generic_image () {
 debian_image="${debian_lxde_stable}"
 bone_image="--img-4gb"
 image_opts="--beagleboard.org-production"
+flasher="enable"
 generic_image
 
 debian_image="${debian_console_stable}"
 bone_image="--img"
 image_opts=""
+flasher=""
 generic_image
 
 __EOF__

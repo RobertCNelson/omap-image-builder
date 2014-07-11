@@ -959,6 +959,7 @@ populate_rootfs () {
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 			else
 				echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+				echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
 				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 			fi
 			echo "" >> ${wfile}
