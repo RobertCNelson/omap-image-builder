@@ -454,8 +454,8 @@ install_build_pkgs () {
 }
 
 install_kernel_modules () {
-	dist=$(lsb_release -cs)
-	arch=$(dpkg --print-architecture)
+	dist=${deb_codename}
+	arch=${deb_arch}
 	mirror="https://rcn-ee.net/deb"
 	latest_kernel=$(ls /boot/ | grep vmlinuz | grep bone | head -n 1 | awk -F "vmlinuz-" '{print $2}' || true)
 
