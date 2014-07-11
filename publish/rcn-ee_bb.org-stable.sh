@@ -41,23 +41,23 @@ generic_image () {
 	rm -rf \${debian_image}/ || true
 
 	if [ ! -f \${debian_image}.tar.xz ] ; then
-		\${archive} \${debian_image}.tar
+		${archive} \${debian_image}.tar
 	fi
 
 	if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-		\${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
+		${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
 	fi
 
 	if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-		\${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
+		${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
 	fi
 
 	if [ -f bone-\${debian_image}-2gb.img ] ; then
-		\${archive} bone-\${debian_image}-2gb.img
+		${archive} bone-\${debian_image}-2gb.img
 	fi
 
 	if [ -f bone-\${debian_image}-4gb.img ] ; then
-		\${archive} bone-\${debian_image}-4gb.img
+		${archive} bone-\${debian_image}-4gb.img
 	fi
 
 }
