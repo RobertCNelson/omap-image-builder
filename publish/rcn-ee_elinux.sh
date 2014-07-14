@@ -11,7 +11,7 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
 
-debian_stable="debian-7.5-console-armhf-${time}"
+debian_stable="debian-7.6-console-armhf-${time}"
 debian_testing="debian-jessie-console-armhf-${time}"
 
 ubuntu_stable="ubuntu-14.04-console-armhf-${time}"

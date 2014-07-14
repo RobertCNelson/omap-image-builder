@@ -5,7 +5,7 @@ DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-stable
 
-debian_stable="7.5"
+debian_stable="7.6"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash

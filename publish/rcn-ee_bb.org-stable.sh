@@ -8,8 +8,8 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c bb.org-debian-stable
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 
-debian_lxde_stable="debian-7.5-lxde-armhf-${time}"
-debian_console_stable="debian-7.5-console-armhf-${time}"
+debian_lxde_stable="debian-7.6-lxde-armhf-${time}"
+debian_console_stable="debian-7.6-console-armhf-${time}"
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
