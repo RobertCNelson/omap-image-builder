@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+version="$1"
+
+if [ -f /boot/uEnv.txt ] ; then
+
+	# passing the kernel version is required
+	if [ -z "${version}" ]; then
+		echo >&2 "W: zz-uenv_txt: ${DPKG_MAINTSCRIPT_PACKAGE:-kernel package} did not pass a version number"
+		exit 2
+	fi
+
+	echo "zz-uenv_txt: Updating /boot/uEnv.txt with ${version}"
+	older_kernel=$(grep uname_r /boot/uEnv.txt | awk -F"=" '{print $2}')
+	sudo sed -i -e 's:'${older_kernel}':'${version}':g' /boot/uEnv.txt
+fi
+
