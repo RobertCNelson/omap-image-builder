@@ -817,11 +817,7 @@ fi
 #add /boot/uEnv.txt update script
 if [ -d ${tempdir}/etc/kernel/postinst.d/ ] ; then
 	sudo cp -v ${DIR}/target/other/zz-uenv_txt ${tempdir}/etc/kernel/postinst.d/
-	echo "debug:"
-	ls -lh ${tempdir}/etc/kernel/postinst.d/
-	echo "debug: should be"
-	echo "#-rwxr-xr-x 1 root root 858 Sep  2  2012 initramfs-tools"
-	echo "#-rwxr-xr-x 1 root root 453 Jul 16 15:56 zz-uenv_txt"
+	sudo chmod +x ${tempdir}/etc/kernel/postinst.d/zz-uenv_txt
 fi
 
 if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
