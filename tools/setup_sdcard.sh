@@ -618,8 +618,6 @@ populate_boot () {
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
-			wfile="${TEMPDIR}/disk/uEnv.txt"
-
 			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 				wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
 				echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
@@ -648,6 +646,28 @@ populate_boot () {
 			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+			echo "" >> ${wfile}
+
+
+			wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
+			echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
+			echo "" >> ${wfile}
+			echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
+			echo "client_ip=192.168.1.101" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "#u-boot defaults: uncomment and override where needed" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "#server_ip=192.168.1.100" >> ${wfile}
+			echo "#gw_ip=192.168.1.1" >> ${wfile}
+			echo "#netmask=255.255.255.0" >> ${wfile}
+			echo "#hostname=" >> ${wfile}
+			echo "#device=eth0" >> ${wfile}
+			echo "#autoconf=off" >> ${wfile}
+			echo "#root_dir=/home/userid/targetNFS" >> ${wfile}
+			echo "#nfs_options=,vers=3" >> ${wfile}
+			echo "#nfsrootfstype=ext4 rootwait fixrtc" >> ${wfile}
 			echo "" >> ${wfile}
 
 		fi
