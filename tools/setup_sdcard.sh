@@ -654,7 +654,14 @@ populate_boot () {
 			echo "" >> ${wfile}
 			echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
 			echo "" >> ${wfile}
+			echo "##SERVER: sudo apt-get install tftpd-hpa" >> ${wfile}
+			echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
+			echo "##SERVER: zImage/*.dtb need to be located here:" >> ${wfile}
+			echo "##SERVER: TFTP_DIRECTORY/zImage" >> ${wfile}
+			echo "##SERVER: TFTP_DIRECTORY/dtbs/*.dtb" >> ${wfile}
+			echo "" >> ${wfile}
 			echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
+			echo "" >> ${wfile}
 			echo "client_ip=192.168.1.101" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "#u-boot defaults: uncomment and override where needed" >> ${wfile}
