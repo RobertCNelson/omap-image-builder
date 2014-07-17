@@ -619,7 +619,16 @@ populate_boot () {
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
 			wfile="${TEMPDIR}/disk/uEnv.txt"
-			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
+
+			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
+				wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
+				echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
+				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
+			else
+				wfile="${TEMPDIR}/disk/uEnv.txt"
+				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
+			fi
+
 			echo "" >> ${wfile}
 			echo "loadaddr=0x82000000" >> ${wfile}
 			echo "fdtaddr=0x88000000" >> ${wfile}
@@ -640,11 +649,6 @@ populate_boot () {
 			echo "" >> ${wfile}
 			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 			echo "" >> ${wfile}
-
-			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-				mv "${TEMPDIR}/disk/uEnv.txt" "${TEMPDIR}/disk/bbb-uEnv.txt"
-				echo "For bbb, with an old bootloader installed in eMMC, rename: bbb-uEnv.txt -> uEnv.txt" > "${TEMPDIR}/disk/readme.txt"
-			fi
 
 		fi
 
