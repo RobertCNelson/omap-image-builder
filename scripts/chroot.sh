@@ -251,7 +251,7 @@ wheezy)
 		echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
 	fi
 	;;
-precise|quantal|raring|saucy)
+precise|saucy)
 	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list

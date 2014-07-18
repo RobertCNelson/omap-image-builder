@@ -1,7 +1,7 @@
 # Space separated list of releases to build, one or more of:
-#   quantal raring saucy wheezy jessie
+#   saucy wheezy jessie
 #   plus anything added to releases.sh
-RELEASES="quantal raring wheezy jessie"
+RELEASES="wheezy jessie"
 
 # Using an apt proxy (like apt-cacher-ng) is HIGHLY recommended, as the
 # image build scripts cannot be (easily) pointed to a local repository
