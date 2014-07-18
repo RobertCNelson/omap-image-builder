@@ -1203,28 +1203,6 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "${CREATE_SWAP}" ] ; then
-		echo "-----------------------------"
-		echo "Extra: Creating SWAP File"
-		echo "-----------------------------"
-		echo "SWAP BUG creation note:"
-		echo "IF this takes a long time(>= 5mins) open another terminal and run dmesg"
-		echo "if theres a nasty error, ctrl-c/reboot and try again... its an annoying bug.."
-		echo "Background: usually occured in days before Ubuntu Lucid.."
-		echo "-----------------------------"
-
-		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${media_prefix}${media_rootfs_partition} | awk '{print $4}')
-		let SIZE=${SWAP_SIZE}*1024
-
-		if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
-			dd if=/dev/zero of=${TEMPDIR}/disk/mnt/SWAP.swap bs=1M count=${SWAP_SIZE}
-			mkswap ${TEMPDIR}/disk/mnt/SWAP.swap
-			echo "/mnt/SWAP.swap  none  swap  sw  0 0" >> ${TEMPDIR}/disk/etc/fstab
-		else
-			echo "FIXME Recovery after user selects SWAP file bigger then whats left not implemented"
-		fi
-	fi
-
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
@@ -1554,11 +1532,6 @@ while [ ! -z "$1" ] ; do
 	--rootfs_label)
 		checkparm $2
 		ROOTFS_LABEL="$2"
-		;;
-	--swap_file)
-		checkparm $2
-		SWAP_SIZE="$2"
-		CREATE_SWAP=1
 		;;
 	--spl)
 		checkparm $2
