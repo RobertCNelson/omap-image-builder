@@ -300,7 +300,7 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			console=SERIAL_CONSOLE
 
-			mmcroot=${conf_root_device}p2 ro
+			mmcroot=${conf_root_device}p${media_rootfs_partition} ro
 			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
 			loadkernel=${conf_fileload} mmc \${bootpart} ${conf_loadaddr} \${kernel_file}
@@ -315,7 +315,7 @@ boot_uenv_txt_template () {
 		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
 			console=SERIAL_CONSOLE
 
-			mmcroot=${conf_root_device}p2 ro
+			mmcroot=${conf_root_device}p${media_rootfs_partition} ro
 			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
 
 			loadkernel=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
@@ -401,7 +401,6 @@ unmount_all_drive_partitions () {
 }
 
 sfdisk_partition_layout () {
-	#Generic boot partition created by sfdisk
 	echo ""
 	echo "Using sfdisk to create partition layout"
 	echo "-----------------------------"
@@ -409,6 +408,18 @@ sfdisk_partition_layout () {
 	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
 		${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
 		,,,-
+	__EOF__
+
+	sync
+}
+
+sfdisk_single_partition_layout () {
+	echo ""
+	echo "Using sfdisk to create partition layout"
+	echo "-----------------------------"
+
+	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
+		${conf_boot_startmb},,${sfdisk_fstype},-
 	__EOF__
 
 	sync
@@ -433,8 +444,8 @@ dd_spl_uboot_boot () {
 }
 
 format_partition_error () {
-	echo "LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label}"
-	echo "LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 ${ROOTFS_LABEL}"
+	echo "LC_ALL=C ${mkfs} ${media_prefix}${media_boot_partition} ${mkfs_label}"
+	echo "LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${ROOTFS_LABEL}"
 	echo "Failure: formating partition"
 	exit
 }
@@ -442,14 +453,14 @@ format_partition_error () {
 format_boot_partition () {
 	echo "Formating Boot Partition"
 	echo "-----------------------------"
-	LC_ALL=C ${mkfs} ${media_prefix}1 ${mkfs_label} || format_partition_error
+	LC_ALL=C ${mkfs} ${media_prefix}${media_boot_partition} ${mkfs_label} || format_partition_error
 	sync
 }
 
 format_rootfs_partition () {
 	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
 	echo "-----------------------------"
-	LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}2 -L ${ROOTFS_LABEL} || format_partition_error
+	LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} -L ${ROOTFS_LABEL} || format_partition_error
 	sync
 }
 
@@ -466,13 +477,21 @@ create_partitions () {
 		mkfs_label="-L ${BOOT_LABEL}"
 	fi
 
+	media_boot_partition=1
+	media_rootfs_partition=2
+
 	case "${bootloader_location}" in
 	fatfs_boot)
 		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
+	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
 		sfdisk_partition_layout
+	else
+		sfdisk_single_partition_layout
+		media_rootfs_partition=1
+	fi
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
@@ -505,7 +524,7 @@ create_partitions () {
 		sleep 1
 		sync
 		test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
-		if [ -e /dev/mapper/${test_loop}p1 ] && [ -e /dev/mapper/${test_loop}p2 ] ; then
+		if [ -e /dev/mapper/${test_loop}p${media_boot_partition} ] && [ -e /dev/mapper/${test_loop}p${media_rootfs_partition} ] ; then
 			media_prefix="/dev/mapper/${test_loop}p"
 		else
 			ls -lh /dev/mapper/
@@ -590,9 +609,9 @@ populate_boot () {
 	fi
 
 	partprobe ${media}
-	if ! mount -t ${mount_partition_format} ${media_prefix}1 ${TEMPDIR}/disk; then
+	if ! mount -t ${mount_partition_format} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
 		echo "-----------------------------"
-		echo "Unable to mount ${media_prefix}1 at ${TEMPDIR}/disk to complete populating Boot Partition"
+		echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk to complete populating Boot Partition"
 		echo "Please retry running the script, sometimes rebooting your system helps."
 		echo "-----------------------------"
 		exit
@@ -637,10 +656,10 @@ populate_boot () {
 			echo "" >> ${wfile}
 			echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
 			echo "" >> ${wfile}
-			echo "loadximage=load mmc 0:2 \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
-			echo "loadxfdt=load mmc 0:2 \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
-			echo "loadxrd=load mmc 0:2 \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
-			echo "loaduEnvtxt=load mmc 0:2 \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
+			echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
+			echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
+			echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
+			echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
 			echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
@@ -919,9 +938,9 @@ populate_rootfs () {
 	fi
 
 	partprobe ${media}
-	if ! mount -t ${ROOTFS_TYPE} ${media_prefix}2 ${TEMPDIR}/disk; then
+	if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
 		echo "-----------------------------"
-		echo "Unable to mount ${media_prefix}2 at ${TEMPDIR}/disk to complete populating rootfs Partition"
+		echo "Unable to mount ${media_prefix}${media_rootfs_partition} at ${TEMPDIR}/disk to complete populating rootfs Partition"
 		echo "Please retry running the script, sometimes rebooting your system helps."
 		echo "-----------------------------"
 		exit
@@ -1042,12 +1061,12 @@ populate_rootfs () {
 		echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${TEMPDIR}/disk/etc/fstab
 		echo "#" >> ${TEMPDIR}/disk/etc/fstab
 		if [ "${BTRFS_FSTAB}" ] ; then
-			echo "${conf_root_device}p2  /            btrfs  defaults  0  1" >> ${TEMPDIR}/disk/etc/fstab
+			echo "${conf_root_device}p${media_rootfs_partition}  /            btrfs  defaults  0  1" >> ${TEMPDIR}/disk/etc/fstab
 		else
-			echo "${conf_root_device}p2  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
+			echo "${conf_root_device}p${media_rootfs_partition}  /            ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${TEMPDIR}/disk/etc/fstab
 		fi
 		if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-			echo "${conf_root_device}p1  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
+			echo "${conf_root_device}p${media_boot_partition}  /boot/uboot  auto  defaults                   0  0" >> ${TEMPDIR}/disk/etc/fstab
 		fi
 		echo "debugfs         /sys/kernel/debug  debugfs  defaults          0  0" >> ${TEMPDIR}/disk/etc/fstab
 
@@ -1194,7 +1213,7 @@ populate_rootfs () {
 		echo "Background: usually occured in days before Ubuntu Lucid.."
 		echo "-----------------------------"
 
-		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${media_prefix}2 | awk '{print $4}')
+		SPACE_LEFT=$(df ${TEMPDIR}/disk/ | grep ${media_prefix}${media_rootfs_partition} | awk '{print $4}')
 		let SIZE=${SWAP_SIZE}*1024
 
 		if [ ${SPACE_LEFT} -ge ${SIZE} ] ; then
