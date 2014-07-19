@@ -444,28 +444,20 @@ dd_spl_uboot_boot () {
 }
 
 format_partition_error () {
-	echo "LC_ALL=C ${mkfs} ${media_prefix}${media_boot_partition} ${mkfs_label}"
-	echo "LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${ROOTFS_LABEL}"
+	echo "LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label}"
 	echo "Failure: formating partition"
 	exit
 }
 
+format_partition () {
+	echo "Formating: ${mkfs_partition}"
+	echo "-----------------------------"
+	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_error
+	sync
+}
+
 format_boot_partition () {
-	echo "Formating Boot Partition"
-	echo "-----------------------------"
-	LC_ALL=C ${mkfs} ${media_prefix}${media_boot_partition} ${mkfs_label} || format_partition_error
-	sync
-}
-
-format_rootfs_partition () {
-	echo "Formating rootfs Partition as ${ROOTFS_TYPE}"
-	echo "-----------------------------"
-	LC_ALL=C mkfs.${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} -L ${ROOTFS_LABEL} || format_partition_error
-	sync
-}
-
-create_partitions () {
-	unset bootloader_installed
+	mkfs_partition="${media_prefix}${media_boot_partition}"
 
 	if [ "x${conf_boot_fstype}" = "xfat" ] ; then
 		mount_partition_format="vfat"
@@ -476,6 +468,20 @@ create_partitions () {
 		mkfs="mkfs.${conf_boot_fstype}"
 		mkfs_label="-L ${BOOT_LABEL}"
 	fi
+
+	format_partition
+}
+
+format_rootfs_partition () {
+	mkfs="mkfs.${ROOTFS_TYPE}"
+	mkfs_partition="${media_prefix}${media_rootfs_partition}"
+	mkfs_label="-L ${ROOTFS_LABEL}"
+
+	format_partition
+}
+
+create_partitions () {
+	unset bootloader_installed
 
 	media_boot_partition=1
 	media_rootfs_partition=2
@@ -536,6 +542,7 @@ create_partitions () {
 	fi
 
 	if [ "x${media_boot_partition}" = "x${media_rootfs_partition}" ] ; then
+		mount_partition_format="${ROOTFS_TYPE}"
 		format_rootfs_partition
 	else
 		format_boot_partition
@@ -1577,7 +1584,7 @@ fi
 if [ "${error_invalid_dtb}" ] ; then
 	if [ "${IN_VALID_UBOOT}" ] ; then
 		echo "-----------------------------"
-		echo "ERROR: --uboot/--dtb undefined"
+		echo "ERROR: --dtb undefined"
 		echo "-----------------------------"
 		usage
 	fi
