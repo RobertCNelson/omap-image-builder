@@ -1384,32 +1384,6 @@ check_dtb_board () {
 	fi
 }
 
-check_uboot_type () {
-	case "${UBOOT_TYPE}" in
-	bone)
-		echo "Note: [--dtb beaglebone] now replaces [--uboot bone]"
-		. "${DIR}"/hwpack/beaglebone.conf
-		process_dtb_conf
-		unset error_invalid_dtb
-		;;
-	boneblack_flasher)
-		echo "Note: [--dtb bbb-blank-eeprom] now replaces [--uboot boneblack_flasher]"
-		. "${DIR}"/hwpack/bbb-blank-eeprom.conf
-		process_dtb_conf
-		unset error_invalid_dtb
-		;;
-	*)
-		IN_VALID_UBOOT=1
-		cat <<-__EOF__
-			-----------------------------
-			ERROR: This script does not currently recognize the selected: [--uboot ${UBOOT_TYPE}] option..
-			-----------------------------
-		__EOF__
-		exit
-		;;
-	esac
-}
-
 usage () {
 	echo "usage: sudo $(basename $0) --mmc /dev/sdX --dtb <dev board>"
 	#tabed to match 
@@ -1439,7 +1413,6 @@ checkparm () {
 	fi
 }
 
-IN_VALID_UBOOT=1
 error_invalid_dtb=1
 
 # parse commandline options
@@ -1513,13 +1486,6 @@ while [ ! -z "$1" ] ; do
 		#FIXME: (should fit most 4Gb microSD cards)
 		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3700]
 		;;
-	--uboot)
-		checkparm $2
-		UBOOT_TYPE="$2"
-		dir_check="${DIR}/"
-		kernel_detection
-		check_uboot_type
-		;;
 	--dtb)
 		checkparm $2
 		dtb_board="$2"
@@ -1582,12 +1548,10 @@ if [ ! "${media}" ] ; then
 fi
 
 if [ "${error_invalid_dtb}" ] ; then
-	if [ "${IN_VALID_UBOOT}" ] ; then
-		echo "-----------------------------"
-		echo "ERROR: --dtb undefined"
-		echo "-----------------------------"
-		usage
-	fi
+	echo "-----------------------------"
+	echo "ERROR: --dtb undefined"
+	echo "-----------------------------"
+	usage
 fi
 
 if ! is_valid_rootfs_type ${ROOTFS_TYPE} ; then
