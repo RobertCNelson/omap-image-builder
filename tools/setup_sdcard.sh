@@ -535,8 +535,12 @@ create_partitions () {
 		partprobe ${media}
 	fi
 
-	format_boot_partition
-	format_rootfs_partition
+	if [ "x${media_boot_partition}" = "x${media_rootfs_partition}" ] ; then
+		format_rootfs_partition
+	else
+		format_boot_partition
+		format_rootfs_partition
+	fi
 }
 
 boot_git_tools () {
