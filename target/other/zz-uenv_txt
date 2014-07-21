@@ -10,8 +10,14 @@ if [ -f /boot/uEnv.txt ] ; then
 		exit 2
 	fi
 
-	echo "zz-uenv_txt: Updating /boot/uEnv.txt [uname_r=${version}]"
+	unset older_kernel
 	older_kernel=$(grep uname_r /boot/uEnv.txt | awk -F"=" '{print $2}')
-	sed -i -e 's:'${older_kernel}':'${version}':g' /boot/uEnv.txt
+
+	if [ ! "x${older_kernel" = "x" ] ; then
+		if [ ! "x${older_kernel" = "x${version}" ] ; then
+			echo "zz-uenv_txt: Updating /boot/uEnv.txt [uname_r=${version}]"
+			sed -i -e 's:uname_r='${older_kernel}':uname_r='${version}':g' /boot/uEnv.txt
+		fi
+	fi
 fi
 
