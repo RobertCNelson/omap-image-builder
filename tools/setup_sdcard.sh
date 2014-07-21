@@ -153,8 +153,8 @@ local_bootloader () {
 
 	if [ "${spl_name}" ] ; then
 		cp ${LOCAL_SPL} ${TEMPDIR}/dl/
-		MLO=${LOCAL_SPL##*/}
-		echo "SPL Bootloader: ${MLO}"
+		SPL=${LOCAL_SPL##*/}
+		echo "SPL Bootloader: ${SPL}"
 	fi
 
 	if [ "${boot_name}" ] ; then
@@ -194,12 +194,12 @@ dl_bootloader () {
 	fi
 
 	if [ "${spl_name}" ] ; then
-		MLO=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
-		wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${MLO}
-		MLO=${MLO##*/}
-		echo "SPL Bootloader: ${MLO}"
+		SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
+		wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${SPL}
+		SPL=${SPL##*/}
+		echo "SPL Bootloader: ${SPL}"
 	else
-		unset MLO
+		unset SPL
 	fi
 
 	if [ "${boot_name}" ] ; then
@@ -631,8 +631,8 @@ populate_boot () {
 
 	if [ ! "${bootloader_installed}" ] ; then
 		if [ "${spl_name}" ] ; then
-			if [ -f ${TEMPDIR}/dl/${MLO} ] ; then
-				cp -v ${TEMPDIR}/dl/${MLO} ${TEMPDIR}/disk/${spl_name}
+			if [ -f ${TEMPDIR}/dl/${SPL} ] ; then
+				cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/${spl_name}
 				echo "-----------------------------"
 			fi
 		fi
