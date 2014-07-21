@@ -560,9 +560,8 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
-	if [ "${bbb_flasher}" ] ; then
-		#Just for compatibility sake...
-		if [ ${has_uenvtxt} ] ; then
+	if [ ${has_uenvtxt} ] ; then
+		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
 			echo "-----------------------------"
 		fi
