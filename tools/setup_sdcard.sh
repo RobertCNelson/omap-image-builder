@@ -501,12 +501,8 @@ create_partitions () {
 		;;
 	dd_uboot_boot)
 		dd_uboot_boot
-	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-		sfdisk_partition_layout
-	else
 		sfdisk_single_partition_layout
 		media_rootfs_partition=1
-	fi
 		;;
 	dd_spl_uboot_boot)
 		dd_spl_uboot_boot
@@ -653,142 +649,66 @@ populate_boot () {
 		fi
 	fi
 
-	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-
-			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-				wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
-				echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
-				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
-			else
-				wfile="${TEMPDIR}/disk/uEnv.txt"
-				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
-			fi
-
-			echo "" >> ${wfile}
-			echo "loadaddr=0x82000000" >> ${wfile}
-			echo "fdtaddr=0x88000000" >> ${wfile}
-			echo "rdaddr=0x88080000" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "initrd_high=0xffffffff" >> ${wfile}
-			echo "fdt_high=0xffffffff" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
-			echo "" >> ${wfile}
-			echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
-			echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
-			echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
-			echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
-			echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
-			echo "" >> ${wfile}
-
-
-			wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
-			echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
-			echo "" >> ${wfile}
-			echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "##SERVER: sudo apt-get install tftpd-hpa" >> ${wfile}
-			echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
-			echo "##SERVER: zImage/*.dtb need to be located here:" >> ${wfile}
-			echo "##SERVER: TFTP_DIRECTORY/zImage" >> ${wfile}
-			echo "##SERVER: TFTP_DIRECTORY/dtbs/*.dtb" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "client_ip=192.168.1.101" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "#u-boot defaults: uncomment and override where needed" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "#server_ip=192.168.1.100" >> ${wfile}
-			echo "#gw_ip=192.168.1.1" >> ${wfile}
-			echo "#netmask=255.255.255.0" >> ${wfile}
-			echo "#hostname=" >> ${wfile}
-			echo "#device=eth0" >> ${wfile}
-			echo "#autoconf=off" >> ${wfile}
-			echo "#root_dir=/home/userid/targetNFS" >> ${wfile}
-			echo "#nfs_options=,vers=3" >> ${wfile}
-			echo "#nfsrootfstype=ext4 rootwait fixrtc" >> ${wfile}
-			echo "" >> ${wfile}
-
-		fi
-
-	fi
-
-	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-
-		mkdir -p ${TEMPDIR}/disk/debug || true
-		mkdir -p ${TEMPDIR}/disk/dtbs || true
-
-		VMLINUZ_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep vmlinuz- | head -n 1)
-		if [ "x${VMLINUZ_FILE}" != "x" ] ; then
-			if [ "${USE_UIMAGE}" ] ; then
-				echo "Using mkimage to create uImage"
-				mkimage -A arm -O linux -T kernel -C none -a ${conf_zreladdr} -e ${conf_zreladdr} -n ${select_kernel} -d "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/uImage
-				echo "-----------------------------"
-			else
-				echo "Copying Kernel image:"
-				cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage
-				if [ ! "${bborg_production}" ] ; then
-					cp -v "${DIR}/${VMLINUZ_FILE}" ${TEMPDIR}/disk/zImage-${select_kernel}
-				fi
-				echo "-----------------------------"
-			fi
-		fi
-
-		INITRD_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep initrd.img- | head -n 1)
-		if [ "x${INITRD_FILE}" != "x" ] ; then
-			echo "Copying Kernel initrd/uInitrd:"
-			if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
-				cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img
-				if [ ! "${bborg_production}" ] ; then
-					cp -v "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/initrd.img-${select_kernel}
-				fi
-			else
-				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d "${DIR}/${INITRD_FILE}" ${TEMPDIR}/disk/uInitrd
-			fi
-			echo "-----------------------------"
-		fi
-
-		DTBS_FILE=$(ls "${DIR}/" | grep "${select_kernel}" | grep dtbs | head -n 1)
-		if [ "x${DTBS_FILE}" != "x" ] ; then
-			echo "Copying Device Tree Files:"
-			if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-				tar xfo "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-			else
-				tar xf "${DIR}/${DTBS_FILE}" -C ${TEMPDIR}/disk/dtbs
-			fi
-			echo "-----------------------------"
-		fi
-
-		if [ "${boot_scr_wrapper}" ] ; then
-			cat > ${TEMPDIR}/bootscripts/loader.cmd <<-__EOF__
-				echo "boot.scr -> uEnv.txt wrapper..."
-				setenv conf_boot_fstype ${conf_boot_fstype}
-				\${conf_boot_fstype}load mmc \${mmcdev}:\${mmcpart} \${loadaddr} uEnv.txt
-				env import -t \${loadaddr} \${filesize}
-				run loaduimage
-			__EOF__
-			mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "wrapper" -d ${TEMPDIR}/bootscripts/loader.cmd ${TEMPDIR}/disk/boot.scr
-		fi
-
-		echo "Copying uEnv.txt based boot scripts to Boot Partition"
-		echo "-----------------------------"
-		if [ ${has_uenvtxt} ] ; then
-			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
-			echo "-----------------------------"
-			cat "${DIR}/uEnv.txt"
+		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
+			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
+			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
+			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
 		else
-			cp -v ${TEMPDIR}/bootscripts/normal.cmd ${TEMPDIR}/disk/uEnv.txt
-			echo "-----------------------------"
-			cat ${TEMPDIR}/bootscripts/normal.cmd
+			wfile="${TEMPDIR}/disk/uEnv.txt"
+			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
 		fi
-		echo "-----------------------------"
+
+		echo "" >> ${wfile}
+		echo "loadaddr=0x82000000" >> ${wfile}
+		echo "fdtaddr=0x88000000" >> ${wfile}
+		echo "rdaddr=0x88080000" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "initrd_high=0xffffffff" >> ${wfile}
+		echo "fdt_high=0xffffffff" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
+		echo "" >> ${wfile}
+		echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
+		echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
+		echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
+		echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
+		echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+		echo "" >> ${wfile}
+
+
+		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
+		echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
+		echo "" >> ${wfile}
+		echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "##SERVER: sudo apt-get install tftpd-hpa" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
+		echo "##SERVER: zImage/*.dtb need to be located here:" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY/zImage" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY/dtbs/*.dtb" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "client_ip=192.168.1.101" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "#u-boot defaults: uncomment and override where needed" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "#server_ip=192.168.1.100" >> ${wfile}
+		echo "#gw_ip=192.168.1.1" >> ${wfile}
+		echo "#netmask=255.255.255.0" >> ${wfile}
+		echo "#hostname=" >> ${wfile}
+		echo "#device=eth0" >> ${wfile}
+		echo "#autoconf=off" >> ${wfile}
+		echo "#root_dir=/home/userid/targetNFS" >> ${wfile}
+		echo "#nfs_options=,vers=3" >> ${wfile}
+		echo "#nfsrootfstype=ext4 rootwait fixrtc" >> ${wfile}
+		echo "" >> ${wfile}
 
 	fi
 
@@ -797,73 +717,11 @@ populate_boot () {
 	fi
 
 	if [ "${bbb_flasher}" ] ; then
-		if [ "x${conf_microsd2_0}" = "xenable" ] ; then
-			#Just for compatibility sake...
-			if [ ${has_uenvtxt} ] ; then
-				cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
-				echo "-----------------------------"
-			fi
+		#Just for compatibility sake...
+		if [ ${has_uenvtxt} ] ; then
+			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
+			echo "-----------------------------"
 		fi
-	fi
-
-	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-
-		#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
-		if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
-			board="am335x_evm"
-		else
-			board=${conf_board}
-		fi
-
-		#This should be compatible with hwpacks variable names..
-		#https://code.launchpad.net/~linaro-maintainers/linaro-images/
-		cat > ${TEMPDIR}/disk/SOC.sh <<-__EOF__
-			#!/bin/sh
-			format=1.0
-			board=${board}
-
-			bootloader_location=${bootloader_location}
-			dd_spl_uboot_seek=${dd_spl_uboot_seek}
-			dd_spl_uboot_bs=${dd_spl_uboot_bs}
-			dd_uboot_seek=${dd_uboot_seek}
-			dd_uboot_bs=${dd_uboot_bs}
-
-			conf_bootcmd=${conf_bootcmd}
-			boot_script=${boot_script}
-			boot_fstype=${conf_boot_fstype}
-			conf_boot_startmb=${conf_boot_startmb}
-			conf_boot_endmb=${conf_boot_endmb}
-			sfdisk_fstype=${sfdisk_fstype}
-
-			serial_tty=${SERIAL}
-			loadaddr=${conf_loadaddr}
-			initrdaddr=${conf_initrdaddr}
-			zreladdr=${conf_zreladdr}
-			fdtaddr=${conf_fdtaddr}
-			fdtfile=${conf_fdtfile}
-
-			usbnet_mem=${usbnet_mem}
-
-		__EOF__
-
-		if [ "${bbb_flasher}" ] ; then
-			touch ${TEMPDIR}/disk/flash-eMMC.txt
-
-			if [ -f "${DIR}/eMMC-flasher.txt" ] ; then
-				echo "uEnv.txt saved as target-uEnv.txt"
-				echo "Copying eMMC-flasher.txt to uEnv.txt"
-				echo "-----------------------------"
-				mv ${TEMPDIR}/disk/uEnv.txt ${TEMPDIR}/disk/target-uEnv.txt
-				cp -v "${DIR}/eMMC-flasher.txt" ${TEMPDIR}/disk/uEnv.txt
-				echo "-----------------------------"
-				cat "${TEMPDIR}/disk/uEnv.txt"
-				echo "-----------------------------"
-			fi
-		fi
-
-		echo "Debug:"
-		cat ${TEMPDIR}/disk/SOC.sh
-		echo "-----------------------------"
 	fi
 
 	boot_git_tools
@@ -980,66 +838,62 @@ populate_rootfs () {
 		echo "-----------------------------"
 	fi
 
-	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
+	dir_check="${TEMPDIR}/disk/boot/"
+	kernel_detection
+	kernel_select
 
-		dir_check="${TEMPDIR}/disk/boot/"
-		kernel_detection
-		kernel_select
+	wfile="${TEMPDIR}/disk/boot/uEnv.txt"
+	echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
+	echo "" >> ${wfile}
 
-		wfile="${TEMPDIR}/disk/boot/uEnv.txt"
-		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
+	if [ "x${kernel_override}" = "x" ] ; then
+		echo "uname_r=${select_kernel}" >> ${wfile}
+	else
+		echo "uname_r=${kernel_override}" >> ${wfile}
+	fi
+	echo "" >> ${wfile}
+
+	if [ ! "x${conf_fdtfile}" = "x" ] ; then
+		echo "dtb=${conf_fdtfile}" >> ${wfile}
+	else
+		echo "#dtb=" >> ${wfile}
+	fi
+	echo "" >> ${wfile}
+
+	if [ ! "x${rootfs_uuid}" = "x" ] ; then
+		echo "uuid=${rootfs_uuid}" >> ${wfile}
 		echo "" >> ${wfile}
+	fi
 
-		if [ "x${kernel_override}" = "x" ] ; then
-			echo "uname_r=${select_kernel}" >> ${wfile}
+	if [ "x${enable_systemd}" = "xenabled" ] ; then
+		echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
+	else
+		echo "cmdline=quiet" >> ${wfile}
+	fi
+	echo "" >> ${wfile}
+
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		echo "##Example" >> ${wfile}
+		echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
+		echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+
+	if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
+		cat "${DIR}/post-uEnv.txt" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		if [ "${bbb_flasher}" ] ; then
+			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 		else
-			echo "uname_r=${kernel_override}" >> ${wfile}
+			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+			echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
+			echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 		fi
 		echo "" >> ${wfile}
-
-		if [ ! "x${conf_fdtfile}" = "x" ] ; then
-			echo "dtb=${conf_fdtfile}" >> ${wfile}
-		else
-			echo "#dtb=" >> ${wfile}
-		fi
-		echo "" >> ${wfile}
-
-		if [ ! "x${rootfs_uuid}" = "x" ] ; then
-			echo "uuid=${rootfs_uuid}" >> ${wfile}
-			echo "" >> ${wfile}
-		fi
-
-		if [ "x${enable_systemd}" = "xenabled" ] ; then
-			echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
-		else
-			echo "cmdline=quiet" >> ${wfile}
-		fi
-		echo "" >> ${wfile}
-
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-			echo "##Example" >> ${wfile}
-			echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
-			echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
-			echo "" >> ${wfile}
-		fi
-
-		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
-			cat "${DIR}/post-uEnv.txt" >> ${wfile}
-			echo "" >> ${wfile}
-		fi
-
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-			if [ "${bbb_flasher}" ] ; then
-				echo "##enable BBB: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
-			else
-				echo "##enable BBB: eMMC Flasher:" >> ${wfile}
-				echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
-				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
-			fi
-			echo "" >> ${wfile}
-		fi
-
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
@@ -1088,10 +942,6 @@ populate_rootfs () {
 		echo "# Auto generated by RootStock-NG: setup_sdcard.sh" >> ${wfile}
 		echo "#" >> ${wfile}
 		echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
-
-		if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-			echo "${conf_root_device}p${media_boot_partition}  /boot/uboot  auto  defaults  0  0" >> ${wfile}
-		fi
 
 		echo "debugfs  /sys/kernel/debug  debugfs  defaults  0  0" >> ${wfile}
 
@@ -1311,69 +1161,22 @@ process_dtb_conf () {
 
 	#error checking...
 
-	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
-		if [ ! "${conf_boot_fstype}" ] ; then
-			conf_boot_fstype="${ROOTFS_TYPE}"
-		fi
-	fi
-
 	if [ ! "${conf_boot_fstype}" ] ; then
-		echo "Error: [conf_boot_fstype] not defined, stopping..."
+		conf_boot_fstype="${ROOTFS_TYPE}"
+	fi
+
+	case "${conf_boot_fstype}" in
+	fat)
+		sfdisk_fstype="0xE"
+		;;
+	ext2|ext3|ext4)
+		sfdisk_fstype="0x83"
+		;;
+	*)
+		echo "Error: [conf_boot_fstype] not recognized, stopping..."
 		exit
-	else
-		case "${conf_boot_fstype}" in
-		fat)
-			sfdisk_fstype="0xE"
-			;;
-		ext2|ext3|ext4)
-			sfdisk_fstype="0x83"
-			;;
-		*)
-			echo "Error: [conf_boot_fstype] not recognized, stopping..."
-			exit
-			;;
-		esac
-	fi
-
-	if [ ! "x${conf_microsd2_0}" = "xenable" ] ; then
-
-		if [ "${conf_uboot_CONFIG_CMD_BOOTZ}" ] ; then
-			conf_bootcmd="bootz"
-			conf_normal_kernel_file=zImage
-		else
-			conf_bootcmd="bootm"
-			conf_normal_kernel_file=uImage
-		fi
-
-		if [ "${conf_uboot_CONFIG_SUPPORT_RAW_INITRD}" ] ; then
-			conf_normal_initrd_file=initrd.img
-		else
-			conf_normal_initrd_file=uInitrd
-		fi
-
-		if [ "${conf_uboot_CONFIG_CMD_FS_GENERIC}" ] ; then
-			conf_fileload="load"
-		else
-			if [ "x${conf_boot_fstype}" = "xfat" ] ; then
-				conf_fileload="fatload"
-			else
-				conf_fileload="ext2load"
-			fi
-		fi
-
-		if [ "${conf_uboot_use_uenvcmd}" ] ; then
-			conf_entrypt="uenvcmd"
-		else
-			if [ ! "x${conf_uboot_no_uenvcmd}" = "x" ] ; then
-				conf_entrypt="${conf_uboot_no_uenvcmd}"
-			else
-				echo "Error: [conf_uboot_no_uenvcmd] not defined, stopping..."
-				exit
-			fi
-		fi
-
-		kernel_select
-	fi
+		;;
+	esac
 }
 
 check_dtb_board () {
