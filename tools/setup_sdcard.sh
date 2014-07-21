@@ -451,7 +451,7 @@ format_partition_error () {
 }
 
 format_partition () {
-	echo "Formating: ${mkfs_partition}"
+	echo "Formating with: [${mkfs} ${mkfs_partition} ${mkfs_label}]"
 	echo "-----------------------------"
 	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_error
 	sync
