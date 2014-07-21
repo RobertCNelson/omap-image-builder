@@ -212,162 +212,6 @@ dl_bootloader () {
 	fi
 }
 
-boot_uenv_txt_template () {
-	cat > ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		kernel_file=${conf_normal_kernel_file}
-		initrd_file=${conf_normal_initrd_file}
-
-	__EOF__
-
-	if [ ! "${uboot_fdt_auto_detection}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			fdtfile=${conf_fdtfile}
-
-		__EOF__
-	fi
-
-	if [ "${drm_device_identifier}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##Video: [ls /sys/class/drm/]
-			##Docs: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/fb/modedb.txt
-			##Uncomment to override:
-			#kms_force_mode=video=${drm_device_identifier}:1024x768@60e
-
-		__EOF__
-	fi
-
-	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
-		sed -i -e 's:#kms_force_mode:kms_force_mode:g' ${TEMPDIR}/bootscripts/normal.cmd
-	fi
-
-	if [ "x${enable_systemd}" = "xenabled" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##Enable systemd
-			initopts=quiet init=/lib/systemd/systemd
-
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##Enable systemd
-			#initopts=quiet init=/lib/systemd/systemd
-
-		__EOF__
-	fi
-
-	if [ "${bbb_flasher}" ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##init-eMMC-flasher.sh
-			initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
-
-		__EOF__
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##init-eMMC-flasher.sh
-			#initopts=init=/opt/scripts/tools/init-eMMC-flasher.sh
-
-		__EOF__
-	fi
-
-	case "${SYSTEM}" in
-	bone)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			##BeagleBone Cape Overrides
-
-			##BeagleBone Black:
-			##Disable HDMI/eMMC
-			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
-
-			##Disable HDMI
-			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
-
-			##Audio Cape (needs HDMI Audio disabled)
-			#cape_disable=capemgr.disable_partno=BB-BONELT-HDMI
-			#cape_enable=capemgr.enable_partno=BB-BONE-AUDI-02
-
-			##Example
-			#cape_disable=capemgr.disable_partno=
-			#cape_enable=capemgr.enable_partno=
-
-			##WIP: v3.14+ capes..
-			#cape=ttyO1
-			#cape=
-
-		__EOF__
-		;;
-	esac
-
-	if [ ${conf_uboot_use_bootpart} ] ; then
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			console=SERIAL_CONSOLE
-
-			mmcroot=${conf_root_device}p${media_rootfs_partition} ro
-			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
-
-			loadkernel=${conf_fileload} mmc \${bootpart} ${conf_loadaddr} \${kernel_file}
-			loadinitrd=${conf_fileload} mmc \${bootpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-			loadfdt=${conf_fileload} mmc \${bootpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
-
-			loadfiles=run loadkernel; run loadinitrd; run loadfdt
-
-		__EOF__
-
-	else
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			console=SERIAL_CONSOLE
-
-			mmcroot=${conf_root_device}p${media_rootfs_partition} ro
-			mmcrootfstype=FINAL_FSTYPE rootwait fixrtc
-
-			loadkernel=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_loadaddr} \${kernel_file}
-			loadinitrd=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_initrdaddr} \${initrd_file}; setenv initrd_size \${filesize}
-			loadfdt=${conf_fileload} mmc \${mmcdev}:\${mmcpart} ${conf_fdtaddr} /dtbs/\${fdtfile}
-
-			loadfiles=run loadkernel; run loadinitrd; run loadfdt
-
-		__EOF__
-	fi
-
-	case "${SYSTEM}" in
-	bone)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
-
-		__EOF__
-		;;
-	*)
-		cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-			mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${kms_force_mode} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${initopts}
-
-		__EOF__
-		;;
-	esac
-
-	cat >> ${TEMPDIR}/bootscripts/normal.cmd <<-__EOF__
-		${conf_entrypt}=run loadfiles; run mmcargs; ${conf_bootcmd} ${conf_loadaddr} ${conf_initrdaddr}:\${initrd_size} ${conf_fdtaddr}
-		#
-	__EOF__
-}
-
-tweak_boot_scripts () {
-	ALL="*.cmd"
-	#Set the Serial Console
-	sed -i -e 's:SERIAL_CONSOLE:'$SERIAL_CONSOLE':g' ${TEMPDIR}/bootscripts/${ALL}
-
-	#Set filesystem type
-	sed -i -e 's:FINAL_FSTYPE:'$ROOTFS_TYPE':g' ${TEMPDIR}/bootscripts/${ALL}
-
-	if [ "${SERIAL_MODE}" ] ; then
-		#remove: console=tty0
-		sed -i -e 's:console=tty0 ::g' ${TEMPDIR}/bootscripts/${ALL}
-	fi
-}
-
-setup_bootscripts () {
-	mkdir -p ${TEMPDIR}/bootscripts/
-	boot_uenv_txt_template
-	tweak_boot_scripts
-}
-
 drive_error_ro () {
 	echo "-----------------------------"
 	echo "Error: for some reason your SD card is not writable..."
@@ -1397,10 +1241,10 @@ if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 	fi
 fi
 
-setup_bootscripts
 if [ ! "${build_img_file}" ] ; then
 	unmount_all_drive_partitions
 fi
 create_partitions
 populate_boot
 populate_rootfs
+#
