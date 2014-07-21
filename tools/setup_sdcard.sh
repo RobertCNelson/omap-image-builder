@@ -1310,6 +1310,13 @@ process_dtb_conf () {
 	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#error checking...
+
+	if [ "x${conf_microsd2_0}" = "xenable" ] ; then
+		if [ ! "${conf_boot_fstype}" ] ; then
+			conf_boot_fstype="${ROOTFS_TYPE}"
+		fi
+	fi
+
 	if [ ! "${conf_boot_fstype}" ] ; then
 		echo "Error: [conf_boot_fstype] not defined, stopping..."
 		exit
