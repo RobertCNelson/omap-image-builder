@@ -120,7 +120,7 @@ detect_software () {
 	check_for_command partprobe parted
 	check_for_command mkimage u-boot-tools
 
-	if [ "${build_img_file}" ] ; then
+	if [ "x${build_img_file}" = "xenable" ] ; then
 		check_for_command kpartx kpartx
 	fi
 
@@ -324,12 +324,16 @@ format_rootfs_partition () {
 
 	format_partition
 
-	unset rootfs_uuid
-	rootfs_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
-	if [ ! "x${rootfs_uuid}" = "x" ] ; then
-		rootfs_drive="UUID=${rootfs_uuid}"
-	else
+	if [ "x${build_img_file}" = "xenable" ] ; then
 		rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
+	else
+		unset rootfs_uuid
+		rootfs_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
+		if [ ! "x${rootfs_uuid}" = "x" ] ; then
+			rootfs_drive="UUID=${rootfs_uuid}"
+		else
+			rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
+		fi
 	fi
 }
 
@@ -362,7 +366,7 @@ create_partitions () {
 	LC_ALL=C fdisk -l "${media}"
 	echo "-----------------------------"
 
-	if [ "${build_img_file}" ] ; then
+	if [ "x${build_img_file}" = "xenable" ] ; then
 		media_loop=$(losetup -f || true)
 		if [ ! "${media_loop}" ] ; then
 			echo "losetup -f failed"
@@ -924,7 +928,7 @@ populate_rootfs () {
 	cd "${DIR}/"
 
 	umount ${TEMPDIR}/disk || true
-	if [ "${build_img_file}" ] ; then
+	if [ "x${build_img_file}" = "xenable" ] ; then
 		sync
 		kpartx -d ${media_loop} || true
 		losetup -d ${media_loop} || true
@@ -940,7 +944,7 @@ populate_rootfs () {
 		cat "${DIR}/user_password.list"
 		echo "-----------------------------"
 	fi
-	if [ "${build_img_file}" ] ; then
+	if [ "x${build_img_file}" = "xenable" ] ; then
 		echo "Image file: ${media}"
 		echo "-----------------------------"
 	fi
@@ -1103,7 +1107,7 @@ while [ ! -z "$1" ] ; do
 		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
 		imagename="${name}-1gb.img"
 		media="${DIR}/${imagename}"
-		build_img_file=1
+		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1120,7 +1124,7 @@ while [ ! -z "$1" ] ; do
 		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
 		imagename="${name}-2gb.img"
 		media="${DIR}/${imagename}"
-		build_img_file=1
+		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1137,7 +1141,7 @@ while [ ! -z "$1" ] ; do
 		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
 		imagename="${name}-4gb.img"
 		media="${DIR}/${imagename}"
-		build_img_file=1
+		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1230,7 +1234,7 @@ if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 	fi
 fi
 
-if [ ! "${build_img_file}" ] ; then
+if [ ! "x${build_img_file}" = "xenable" ] ; then
 	unmount_all_drive_partitions
 fi
 create_partitions
