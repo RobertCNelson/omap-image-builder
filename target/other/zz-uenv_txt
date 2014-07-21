@@ -11,7 +11,7 @@ if [ -f /boot/uEnv.txt ] ; then
 	fi
 
 	unset older_kernel
-	older_kernel=$(grep uname_r /boot/uEnv.txt | grep -v '#' |awk -F"=" '{print $2}' || true)
+	older_kernel=$(grep uname_r /boot/uEnv.txt | grep -v '#' | awk -F"=" '{print $2}' || true)
 
 	if [ ! "x${older_kernel" = "x" ] ; then
 		if [ ! "x${older_kernel" = "x${version}" ] ; then
