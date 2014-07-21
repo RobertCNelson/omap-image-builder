@@ -878,7 +878,6 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 
 	if [ "x${rfs_kernel}" = "x" ] ; then
 		#Not supported yet with microSD 2.0
-		sudo rm -f ${DIR}/deploy/${export_filename}/hwpack/wandboard-*.conf
 		sudo rm -f ${DIR}/deploy/${export_filename}/hwpack/imx*.conf
 	fi
 
