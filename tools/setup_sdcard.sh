@@ -431,6 +431,7 @@ dd_uboot_boot () {
 	echo "Using dd to place bootloader on drive"
 	echo "-----------------------------"
 	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
+	bootloader_installed=1
 }
 
 dd_spl_uboot_boot () {
