@@ -876,11 +876,6 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 
-	if [ "x${rfs_kernel}" = "x" ] ; then
-		#Not supported yet with microSD 2.0
-		sudo rm -f ${DIR}/deploy/${export_filename}/hwpack/imx*.conf
-	fi
-
 	if [ -n "${chroot_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_uenv_txt}" ] ; then
 		sudo cp "${DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
 	fi
