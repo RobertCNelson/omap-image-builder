@@ -118,7 +118,6 @@ detect_software () {
 	check_for_command wget wget
 	check_for_command git git
 	check_for_command partprobe parted
-	check_for_command mkimage u-boot-tools
 
 	if [ "x${build_img_file}" = "xenable" ] ; then
 		check_for_command kpartx kpartx
@@ -127,9 +126,9 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx u-boot-tools wget parted"
-		echo "Fedora: yum install dosfstools dosfstools git-core uboot-tools wget"
-		echo "Gentoo: emerge dosfstools git u-boot-tools wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx wget parted"
+		echo "Fedora: yum install dosfstools dosfstools git-core wget"
+		echo "Gentoo: emerge dosfstools git wget"
 		echo ""
 		exit
 	fi
