@@ -567,13 +567,15 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		groupadd -r spi || true
 
 		cat /etc/group | grep ^i2c || groupadd -r i2c || true
+		cat /etc/group | grep ^kmem || groupadd -r kmem || true
 		cat /etc/group | grep ^netdev || groupadd -r netdev || true
 		cat /etc/group | grep ^systemd-journal || groupadd -r systemd-journal || true
 		cat /etc/group | grep ^weston-launch || groupadd -r weston-launch || true
+		cat /etc/group | grep ^xenomai || groupadd -r xenomai || true
 
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
-		default_groups="admin,adm,dialout,i2c,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users,systemd-journal,weston-launch"
+		default_groups="admin,adm,dialout,i2c,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,users,systemd-journal,weston-launch,xenomai"
 
 		pkg="sudo"
 		dpkg_check
