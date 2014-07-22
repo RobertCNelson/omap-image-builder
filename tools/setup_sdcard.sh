@@ -912,13 +912,9 @@ populate_rootfs () {
 	fi
 
 	if [ "${need_wandboard_firmware}" ] ; then
-		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" https://rcn-ee.net/firmware/wandboard/brcmfmac-sdio.txt || true
-		if [ -f "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac-sdio.txt" ] ; then
-			cp -v "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac-sdio.txt" "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329-sdio.txt"
-		fi
-		if [ -f "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329-sdio.bin" ] ; then
-			cp -v "${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac4329-sdio.bin" ${TEMPDIR}/disk/lib/firmware/brcm/brcmfmac-sdio.bin
-		fi
+		http_brcm="https://raw.githubusercontent.com/Freescale/meta-fsl-arm-extra/master/recipes-bsp/broadcom-nvram-config/files/wandboard"
+		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4329-sdio.txt
+		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
 	fi
 
 	cd ${TEMPDIR}/disk/
