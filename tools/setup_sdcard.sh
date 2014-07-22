@@ -917,6 +917,17 @@ populate_rootfs () {
 		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
 	fi
 
+	if [ "x${build_img_file}" = "xenable" ] ; then
+		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master"
+
+		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
+			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
+			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/tools/grow_partition.sh
+			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
+		fi
+
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
