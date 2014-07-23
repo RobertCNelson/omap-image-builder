@@ -728,6 +728,7 @@ populate_rootfs () {
 	if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
 		cat "${DIR}/post-uEnv.txt" >> ${wfile}
 		echo "" >> ${wfile}
+		echo "" >> ${wfile}
 	fi
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
