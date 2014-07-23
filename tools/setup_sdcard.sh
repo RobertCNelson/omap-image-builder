@@ -868,30 +868,6 @@ populate_rootfs () {
 		fi
 		sync
 
-	else
-
-	if [ "${DISABLE_ETH}" ] ; then
-		echo "Board Tweak: There is no guarantee eth0 is connected or even exists, modifing /etc/network/interfaces..."
-		sed -i 's/auto eth0/#auto eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-		sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${TEMPDIR}/disk/etc/network/interfaces
-		sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${TEMPDIR}/disk/etc/network/interfaces
-		echo "-----------------------------"
-	fi
-
-	#So most of the Published Demostration images use ttyO2 by default, but devices like the BeagleBone, mx53loco do not..
-	if [ "x${SERIAL}" != "xttyO2" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/init/ttyO2.conf ] ; then
-			echo "Ubuntu: Serial Login: fixing /etc/init/ttyO2.conf to use ${SERIAL}"
-			echo "-----------------------------"
-			mv ${TEMPDIR}/disk/etc/init/ttyO2.conf ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
-			sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/init/${SERIAL}.conf
-		elif [ -f ${TEMPDIR}/disk/etc/inittab ] ; then
-			echo "Debian: Serial Login: fixing /etc/inittab to use ${SERIAL}"
-			echo "-----------------------------"
-			sed -i -e 's:ttyO2:'$SERIAL':g' ${TEMPDIR}/disk/etc/inittab
-		fi
-	fi
-
 	fi #RootStock-NG
 
 	case "${SYSTEM}" in
