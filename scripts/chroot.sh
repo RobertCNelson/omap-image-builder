@@ -482,7 +482,13 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	run_deborphan () {
 		apt-get -y --force-yes install deborphan
 
+		# Prevent deborphan from removing explicitly required packages
+		deborphan -A ${deb_additional_pkgs} ${repo_external_pkg_list} ${deb_include}
+
 		deborphan | xargs apt-get -y remove --purge
+
+		# Purge keep file
+		deborphan -Z
 
 		#FIXME, only tested on wheezy...
 		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
