@@ -885,7 +885,6 @@ populate_rootfs () {
 		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
 
-		;;
 	fi
 
 	if [ "${usbnet_mem}" ] ; then
