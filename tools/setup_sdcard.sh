@@ -939,8 +939,6 @@ check_mmc () {
 	if [ "x${FDISK}" = "x${media}:" ] ; then
 		echo ""
 		echo "I see..."
-		echo "fdisk -l:"
-		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
 		echo "lsblk:"
 		lsblk | grep -v sr0
@@ -955,9 +953,6 @@ check_mmc () {
 	else
 		echo ""
 		echo "Are you sure? I Don't see [${media}], here is what I do see..."
-		echo ""
-		echo "fdisk -l:"
-		LC_ALL=C fdisk -l 2>/dev/null | grep "Disk /dev/" --color=never
 		echo ""
 		echo "lsblk:"
 		lsblk | grep -v sr0
