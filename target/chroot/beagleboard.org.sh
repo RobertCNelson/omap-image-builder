@@ -503,9 +503,19 @@ install_kernel_modules () {
 }
 
 other_source_links () {
+	rcn_https="https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches"
+
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
 	cd /opt/source/u-boot_${u_boot_release}/
-	wget https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
+
+	wget ${rcn_https}/v2014.07/upstream/0001-Add-option-r-to-env-import-to-allow-import-of-text-f.patch
+	wget ${rcn_https}/v2014.07/upstream/0002-am335x_evm-handle-import-of-environments-in-files-wi.patch
+	wget ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
+
+	echo "0001-Add-option-r-to-env-import-to-allow-import-of-text-f.patch" > patch.order
+	echo "0002-am335x_evm-handle-import-of-environments-in-files-wi.patch" >> patch.order
+	echo "0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch" >> patch.order
+
 	cd /
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 
