@@ -527,7 +527,7 @@ populate_boot () {
 		echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
 		echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
 		echo "" >> ${wfile}
-		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} \root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
+		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 		echo "" >> ${wfile}
