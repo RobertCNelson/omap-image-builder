@@ -909,7 +909,7 @@ populate_rootfs () {
 	fi
 
 	if [ "x${bbb_flasher}" = "xenable" ] ; then
-		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master"
+		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
 
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
 			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
