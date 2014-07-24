@@ -75,7 +75,7 @@ generic_image
 debian_image="${debian_console_stable}"
 bone_image="--img"
 image_opts=""
-flasher=""
+flasher="enable"
 generic_image
 
 __EOF__

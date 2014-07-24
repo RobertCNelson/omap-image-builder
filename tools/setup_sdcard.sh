@@ -736,7 +736,7 @@ populate_rootfs () {
 	fi
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-		if [ "${bbb_flasher}" ] ; then
+		if [ "x${bbb_flasher}" = "xenable" ] ; then
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
 		else
@@ -898,12 +898,23 @@ populate_rootfs () {
 	fi
 
 	if [ "x${build_img_file}" = "xenable" ] ; then
-		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master"
+		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
 
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
 			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
-			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/tools/grow_partition.sh
+			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
 			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
+		fi
+
+	fi
+
+	if [ "x${bbb_flasher}" = "xenable" ] ; then
+		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master"
+
+		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
+			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
+			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
+			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh
 		fi
 
 	fi
@@ -1163,7 +1174,7 @@ while [ ! -z "$1" ] ; do
 		USE_BETA_BOOTLOADER=1
 		;;
 	--bbb-flasher)
-		bbb_flasher=1
+		bbb_flasher="enable"
 		;;
 	--beagleboard.org-production)
 		bborg_production=1
