@@ -1,6 +1,6 @@
 #!/bin/sh -e
 ### BEGIN INIT INFO
-# Provides:          boot_scripts.sh
+# Provides:          generic-boot-script.sh
 # Required-Start:    $local_fs
 # Required-Stop:     $local_fs
 # Default-Start:     2 3 4 5
@@ -65,7 +65,7 @@ stop)
 	exit 0
 	;;
 *)
-	echo "Usage: /etc/init.d/boot_scripts.sh {start|stop|reload|restart|force-reload}"
+	echo "Usage: /etc/init.d/generic-boot-script.sh {start|stop|reload|restart|force-reload}"
 	exit 1
 	;;
 esac
