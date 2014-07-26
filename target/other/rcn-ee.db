@@ -1,0 +1,69 @@
+# somewhat RFC2822 based, but case sensitive, not tolerant to spaces etc.
+
+Machine: Freescale i.MX51 Babbage Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Freescale i.MX53 Quick Start Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Freescale i.MX53 Quick Start-R Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Freescale i.MX6 Quad Nitrogen6x Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Freescale i.MX6 Quad SABRE Lite Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Freescale i.MX6 Quad SABRE Smart Device Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: NVIDIA Tegra124 Jetson TK1
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Olimex A10-OLinuXino-LIME
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI AM335x BeagleBone
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI OMAP3 BeagleBoard
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI OMAP3 BeagleBoard xM
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI OMAP4 PandaBoard
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI OMAP5 uEVM board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Udoo i.MX6 Dual Lite Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Udoo i.MX6 Quad Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Wandboard i.MX6 Dual Lite Board
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Wandboard i.MX6 Quad Board
+Method: generic
+Bootloader-sets-root: yes

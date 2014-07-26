@@ -211,6 +211,21 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	report_size
 fi
 
+
+sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
+
+echo "# neuter flash-kernel" > /tmp/01_noflash_kernel
+echo "path-exclude=/usr/share/flash-kernel/db/all.db" >> /tmp/01_noflash_kernel
+echo "path-exclude=/etc/initramfs/post-update.d/flash-kernel" >> /tmp/01_noflash_kernel
+echo "path-exclude=/etc/kernel/postinst.d/zz-flash-kernel" >> /tmp/01_noflash_kernel
+echo "path-exclude=/etc/kernel/postrm.d/zz-flash-kernel" >> /tmp/01_noflash_kernel
+echo ""  >> /tmp/01_noflash_kernel
+
+sudo mv /tmp/01_noflash_kernel ${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel
+
+sudo mkdir -p ${tempdir}/usr/share/flash-kernel/db/ || true
+sudo cp -v ${DIR}/target/other/rcn-ee.db ${tempdir}/usr/share/flash-kernel/db/
+
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
 
@@ -329,22 +344,6 @@ ubuntu)
 	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/generic-boot-script.conf
 	sudo cp ${DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
 	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-
-	wfile="flash-kernel.conf"
-	cat > /tmp/${wfile} <<-__EOF__
-		#!/bin/sh -e
-		UBOOT_PART=/dev/mmcblk0p1
-
-		echo "flash-kernel stopped by: /etc/${wfile}"
-		USE_CUSTOM_KERNEL=1
-
-		if [ "\${USE_CUSTOM_KERNEL}" ] ; then
-		        FLASH_KERNEL_SKIP=yes
-		fi
-
-	__EOF__
-
-	sudo mv /tmp/${wfile} ${tempdir}/etc/${wfile}
 
 	if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
 		#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
