@@ -791,6 +791,13 @@ if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	fi
 fi
 
+if [ -n "${chroot_before_hook}" -a -r "${DIR}/${chroot_before_hook}" ] ; then
+	report_size
+	echo "Calling chroot_before_hook script: ${chroot_before_hook}"
+	. "${DIR}/${chroot_before_hook}"
+	chroot_before_hook=""
+fi
+
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
@@ -814,11 +821,11 @@ fi
 mkdir -p ${DIR}/deploy/${export_filename}/ || true
 cp -v ${DIR}/.project ${DIR}/deploy/${export_filename}/image-builder.project
 
-if [ -n "${chroot_hook}" -a -r "${DIR}/${chroot_hook}" ] ; then
+if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
 	report_size
-	echo "Calling chroot_hook script: ${chroot_hook}"
-	. "${DIR}/${chroot_hook}"
-	chroot_hook=""
+	echo "Calling chroot_after_hook script: ${chroot_after_hook}"
+	. "${DIR}/${chroot_after_hook}"
+	chroot_after_hook=""
 fi
 
 #add /boot/uEnv.txt update script

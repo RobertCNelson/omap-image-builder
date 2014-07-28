@@ -48,7 +48,8 @@ machinekit_release () {
 	rfs_username="machinekit"
 	rfs_password="machinekit"
 	rfs_fullname="Kit Ex Machina"
-	chroot_hook="machinekit/chroot_hook.sh"
+	chroot_before_hook=""
+	chroot_after_hook="machinekit/chroot_hook.sh"
 
 	deb_mirror="ftp.us.debian.org/debian/"
 
