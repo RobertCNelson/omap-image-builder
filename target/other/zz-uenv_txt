@@ -33,20 +33,19 @@ if [ -f ${udir}/uEnv.txt ] ; then
 		if [ -f ${udir}/vmlinuz-current ] ; then
 			rm -f ${udir}/vmlinuz-current || true
 			cp /boot/vmlinuz-${version} ${udir}/vmlinuz-current
-			if [ "${zreladdr}" ] ; then
-				if [ -f ${udir}/uImage ] ; then
-					rm -rf ${udir}/uImage || true
-					mkimage -A arm -O linux -T kernel -C none -a ${zreladdr} -e ${zreladdr} -n ${version} -d ${udir}/vmlinuz-current ${udir}/uImage
-				fi
+		fi
+		if [ "${zreladdr}" ] ; then
+			if [ -f ${udir}/uImage ] ; then
+				rm -rf ${udir}/uImage || true
+				mkimage -A arm -O linux -T kernel -C none -a ${zreladdr} -e ${zreladdr} -n ${version} -d ${udir}/vmlinuz-current ${udir}/uImage
 			fi
 		fi
 		if [ -f ${udir}/initrd.img-current ] ; then
-			rm -f ${udir}/ || true
+			rm -f ${udir}/initrd.img-current || true
 			cp /boot/initrd.img-${version} ${udir}/initrd.img-current
-			if [ -f ${udir}/uInitrd ] ; then
-				rm -rf ${udir}/uInitrd || true
-				mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${udir}/initrd.img-current ${udir}/uInitrd
-			fi
+		if [ -f ${udir}/uInitrd ] ; then
+			rm -rf ${udir}/uInitrd || true
+			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${udir}/initrd.img-current ${udir}/uInitrd
 		fi
 		if [ -d ${udir}/dtbs/current/ ] ; then
 			rm -rf ${udir}/dtbs/current/ || true
