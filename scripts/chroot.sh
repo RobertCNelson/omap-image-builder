@@ -904,11 +904,17 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 
 fi
 
-cd ${tempdir}
-echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
-sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
-cd ${DIR}/
-ls -lh ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
+if [ "x${chroot_directory}" = "xenable" ]; then
+	echo "Log: moving rootfs to directory: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}]"
+	sudo mv -v ${tempdir} ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}
+	du -h --max-depth=0 ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}
+else
+	cd ${tempdir}
+	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
+	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
+	cd ${DIR}/
+	ls -lh ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
+fi
 
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 
