@@ -861,7 +861,7 @@ echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
 sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.list
 
 #Fixes:
-if [ -d ${tempdir}/etc/ssh/ ] ; then
+if [ -d ${tempdir}/etc/ssh/ -a "x${keep_ssh_keys}" = "x" ] ; then
 	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
 	sudo rm -rf ${tempdir}/etc/ssh/ssh_host_* || true
 	sudo touch ${tempdir}/etc/ssh/ssh.regenerate || true
