@@ -23,6 +23,7 @@
 DIR=$PWD
 host_arch="$(uname -m)"
 time=$(date +%Y-%m-%d)
+OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
 
 . ${DIR}/.project
 
@@ -224,7 +225,7 @@ echo ""  >> /tmp/01_noflash_kernel
 sudo mv /tmp/01_noflash_kernel ${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel
 
 sudo mkdir -p ${tempdir}/usr/share/flash-kernel/db/ || true
-sudo cp -v ${DIR}/target/other/rcn-ee.db ${tempdir}/usr/share/flash-kernel/db/
+sudo cp -v ${OIB_DIR}/target/other/rcn-ee.db ${tempdir}/usr/share/flash-kernel/db/
 
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
@@ -300,12 +301,12 @@ jessie|sid)
 esac
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
-	sudo cp -v ${DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
+	sudo cp -v ${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	if [ ! "x${repo_external_key}" = "x" ] ; then
-		sudo cp -v ${DIR}/target/keyring/${repo_external_key} ${tempdir}/tmp/${repo_external_key}
+		sudo cp -v ${OIB_DIR}/target/keyring/${repo_external_key} ${tempdir}/tmp/${repo_external_key}
 	fi
 fi
 
@@ -327,9 +328,9 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${deb_distribution}" in
 debian)
-	sudo cp ${DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/generic-boot-script.sh
-	sudo cp ${DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
-	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+	sudo cp ${OIB_DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/generic-boot-script.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
@@ -341,9 +342,9 @@ debian)
 
 	;;
 ubuntu)
-	sudo cp ${DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/generic-boot-script.conf
-	sudo cp ${DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
-	sudo cp ${DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+	sudo cp ${OIB_DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/generic-boot-script.conf
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 
 	if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
 		#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
@@ -830,7 +831,7 @@ fi
 
 #add /boot/uEnv.txt update script
 if [ -d ${tempdir}/etc/kernel/postinst.d/ ] ; then
-	sudo cp -v ${DIR}/target/other/zz-uenv_txt ${tempdir}/etc/kernel/postinst.d/
+	sudo cp -v ${OIB_DIR}/target/other/zz-uenv_txt ${tempdir}/etc/kernel/postinst.d/
 	sudo chmod +x ${tempdir}/etc/kernel/postinst.d/zz-uenv_txt
 fi
 
@@ -890,16 +891,16 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
 	sudo cp ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
 
-	if [ -n "${chroot_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_uenv_txt}" ] ; then
-		sudo cp "${DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
+	if [ -n "${chroot_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_uenv_txt}" ] ; then
+		sudo cp "${OIB_DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
 	fi
 
-	if [ -n "${chroot_flasher_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ] ; then
-		sudo cp "${DIR}/target/boot/${chroot_flasher_uenv_txt}" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
+	if [ -n "${chroot_flasher_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_flasher_uenv_txt}" ] ; then
+		sudo cp "${OIB_DIR}/target/boot/${chroot_flasher_uenv_txt}" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
 	fi
 
-	if [ -n "${chroot_post_uenv_txt}" -a -r "${DIR}/target/boot/${chroot_post_uenv_txt}" ] ; then
-		sudo cp "${DIR}/target/boot/${chroot_post_uenv_txt}" ${DIR}/deploy/${export_filename}/post-uEnv.txt
+	if [ -n "${chroot_post_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_post_uenv_txt}" ] ; then
+		sudo cp "${OIB_DIR}/target/boot/${chroot_post_uenv_txt}" ${DIR}/deploy/${export_filename}/post-uEnv.txt
 	fi
 
 fi

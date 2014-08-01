@@ -24,6 +24,7 @@ system=$(uname -n)
 HOST_ARCH=$(uname -m)
 TIME=$(date +%Y-%m-%d)
 
+OIB_DIR="$( cd "$(dirname "$0")" ; pwd -P )" 
 DIR="$PWD"
 mkdir -p ${DIR}/ignore
 
@@ -78,9 +79,9 @@ run_roostock_ng () {
 		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
 	fi
 
-	/bin/bash -e "${DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
-	/bin/sh -e "${DIR}/scripts/debootstrap.sh" || { exit 1 ; }
-	/bin/sh -e "${DIR}/scripts/chroot.sh" || { exit 1 ; }
+	/bin/bash -e "${OIB_DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
+	/bin/sh -e "${OIB_DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	/bin/sh -e "${OIB_DIR}/scripts/chroot.sh" || { exit 1 ; }
 	sudo rm -rf ${tempdir}/ || true
 }
 
