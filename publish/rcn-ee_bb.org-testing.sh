@@ -49,9 +49,9 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
-if [ -d /mnt/farm/testing/pending/ ] ; then
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/testing/pending/gift_wrap_final_images.sh
-	chmod +x /mnt/farm/testing/pending/gift_wrap_final_images.sh
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/testing/pending/
+if [ -d /mnt/farm/images/ ] ; then
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/gift_wrap_final_images.sh
+	chmod +x /mnt/farm/images/gift_wrap_final_images.sh
+	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/
 fi
 
