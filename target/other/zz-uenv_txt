@@ -3,7 +3,7 @@
 version="$1"
 
 # passing the kernel version is required
-if [ -z "${version}" ]; then
+if [ -z "${version}" ] ; then
 	echo >&2 "W: zz-uenv_txt: ${DPKG_MAINTSCRIPT_PACKAGE:-kernel package} did not pass a version number"
 	exit 2
 fi
@@ -29,24 +29,30 @@ if [ -f ${udir}/uEnv.txt ] ; then
 	unset zreladdr
 	zreladdr=$(grep zreladdr ${udir}/uEnv.txt | grep -v '#' | awk -F"=" '{print $2}' || true)
 
-	if [ ! "x${older_kernel}" = "xcurrent" ] ; then
+	if [ "x${older_kernel}" = "xcurrent" ] ; then
+
 		if [ -f ${udir}/vmlinuz-current ] ; then
 			rm -f ${udir}/vmlinuz-current || true
 			cp /boot/vmlinuz-${version} ${udir}/vmlinuz-current
 		fi
+
 		if [ "${zreladdr}" ] ; then
 			if [ -f ${udir}/uImage ] ; then
 				rm -rf ${udir}/uImage || true
 				mkimage -A arm -O linux -T kernel -C none -a ${zreladdr} -e ${zreladdr} -n ${version} -d ${udir}/vmlinuz-current ${udir}/uImage
 			fi
 		fi
+
 		if [ -f ${udir}/initrd.img-current ] ; then
 			rm -f ${udir}/initrd.img-current || true
 			cp /boot/initrd.img-${version} ${udir}/initrd.img-current
+		fi
+
 		if [ -f ${udir}/uInitrd ] ; then
 			rm -rf ${udir}/uInitrd || true
 			mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n initramfs -d ${udir}/initrd.img-current ${udir}/uInitrd
 		fi
+
 		if [ -d ${udir}/dtbs/current/ ] ; then
 			rm -rf ${udir}/dtbs/current/ || true
 			mkdir -p ${udir}/dtbs/current/
@@ -62,8 +68,7 @@ if [ -f ${udir}/uEnv.txt ] ; then
 					fi
 				fi
 			fi
-		if
+		fi
 		echo "zz-uenv_txt: Updating boot drive for: [${version}]"
 	fi
 fi
-
