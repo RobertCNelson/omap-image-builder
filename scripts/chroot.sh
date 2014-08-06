@@ -328,22 +328,16 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${deb_distribution}" in
 debian)
-	sudo cp ${OIB_DIR}/target/init_scripts/generic-debian.sh ${tempdir}/etc/init.d/generic-boot-script.sh
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-debian.sh ${tempdir}/etc/init.d/capemgr.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
 	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-
-	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
-	echo "distro=Debian" > /tmp/rcn-ee.conf
-	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
-	echo "release_date=${time}" >> /tmp/rcn-ee.conf
-	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
-	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
-
+	distro="Debian"
 	;;
 ubuntu)
-	sudo cp ${OIB_DIR}/target/init_scripts/generic-ubuntu.conf ${tempdir}/etc/init/generic-boot-script.conf
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-ubuntu.sh ${tempdir}/etc/init/capemgr.sh
+	sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf ${tempdir}/etc/init/generic-boot-script.conf
+	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init/capemgr.sh
 	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+	distro="Ubuntu"
 
 	if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
 		#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
@@ -351,16 +345,15 @@ ubuntu)
 		sudo sed -i -e 's:sleep 40:#sleep 40:g' ${tempdir}/etc/init/failsafe.conf
 		sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
 	fi
-
-	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
-	echo "distro=Ubuntu" > /tmp/rcn-ee.conf
-	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
-	echo "release_date=${time}" >> /tmp/rcn-ee.conf
-	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
-	sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
-
 	;;
 esac
+
+#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
+echo "distro=${distro}" > /tmp/rcn-ee.conf
+echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
+echo "release_date=${time}" >> /tmp/rcn-ee.conf
+echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
+sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
