@@ -243,9 +243,18 @@ echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/s
 echo "" >> /tmp/sources.list
 
 case "${deb_codename}" in
-wheezy)
+jessie|sid)
+	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	;;
+*)
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	;;
+esac
+
+case "${deb_codename}" in
+wheezy)
 	echo "" >> /tmp/sources.list
 	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
@@ -257,14 +266,6 @@ wheezy)
 		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	fi
-	;;
-precise|saucy|trusty|utopic)
-	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	;;
-jessie|sid)
-	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 esac
 
