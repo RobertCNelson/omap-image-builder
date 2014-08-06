@@ -238,11 +238,12 @@ sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
+echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
+echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
+echo "" >> /tmp/sources.list
+
 case "${deb_codename}" in
 wheezy)
-	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
-	echo "" >> /tmp/sources.list
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "" >> /tmp/sources.list
@@ -258,16 +259,10 @@ wheezy)
 	fi
 	;;
 precise|saucy|trusty|utopic)
-	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
-	echo "" >> /tmp/sources.list
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 jessie|sid)
-	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
-	echo "" >> /tmp/sources.list
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
