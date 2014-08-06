@@ -30,6 +30,7 @@ tar xf ${ubuntu_stable}.tar.xz
 cd ${debian_stable}/
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --beagleboard.org-production --bbb-flasher --enable-systemd  --bbb-old-bootloader-in-emmc
 sudo ./setup_sdcard.sh --img bone-${debian_stable} --dtb beaglebone --beagleboard.org-production --enable-systemd --bbb-old-bootloader-in-emmc
+sudo ./setup_sdcard.sh --img bb-${debian_stable} --dtb omap3-beagle --enable-systemd
 sudo ./setup_sdcard.sh --img bbxm-${debian_stable} --dtb omap3-beagle-xm --enable-systemd
 sudo ./setup_sdcard.sh --img omap5-uevm-${debian_stable} --dtb omap5-uevm --enable-systemd
 mv *.img ../
@@ -39,6 +40,7 @@ rm -rf ${debian_stable}/ || true
 cd ${ubuntu_stable}/
 sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-${ubuntu_stable}.img --dtb beaglebone --beagleboard.org-production --bbb-flasher  --bbb-old-bootloader-in-emmc
 sudo ./setup_sdcard.sh --img bone-${ubuntu_stable}.img --dtb beaglebone --beagleboard.org-production --bbb-old-bootloader-in-emmc
+sudo ./setup_sdcard.sh --img bb-${ubuntu_stable}.img --dtb omap3-beagle
 sudo ./setup_sdcard.sh --img bbxm-${ubuntu_stable}.img --dtb omap3-beagle-xm
 sudo ./setup_sdcard.sh --img omap5-uevm-${ubuntu_stable}.img --dtb omap5-uevm
 mv *.img ../
@@ -50,10 +52,12 @@ ${archive} ${debian_testing}.tar
 
 ${archive} BBB-eMMC-flasher-${debian_stable}-2gb.img
 ${archive} bone-${debian_stable}-2gb.img
+${archive} bb-${debian_stable}-2gb.img
 ${archive} bbxm-${debian_stable}-2gb.img
 ${archive} omap5-uevm-${debian_stable}-2gb.img
 ${archive} BBB-eMMC-flasher-${ubuntu_stable}-2gb.img
 ${archive} bone-${ubuntu_stable}-2gb.img
+${archive} bb-${ubuntu_stable}-2gb.img
 ${archive} bbxm-${ubuntu_stable}-2gb.img
 ${archive} omap5-uevm-${ubuntu_stable}-2gb.img
 
