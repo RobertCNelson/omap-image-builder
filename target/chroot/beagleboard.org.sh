@@ -436,6 +436,15 @@ install_git_repos () {
 			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
 		fi
 	fi
+
+	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
+	git_target_dir="/opt/source/PyBBIO"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
+		python setup.py install
+	fi
 }
 
 install_build_pkgs () {
