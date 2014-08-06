@@ -256,11 +256,6 @@ wheezy)
 		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	fi
-	if [ "x${repo_rcnee}" = "xenable" ] ; then
-		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
-		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
-	fi
 	if [ "x${repo_external}" = "xenable" ] ; then
 		echo "" >> /tmp/sources.list
 		echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
@@ -280,11 +275,6 @@ trusty|utopic)
 	echo "" >> /tmp/sources.list
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	if [ "x${repo_rcnee}" = "xenable" ] ; then
-		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
-		echo "deb [arch=armhf] http://repos.rcn-ee.net/ubuntu/ ${deb_codename} main" >> /tmp/sources.list
-	fi
 	;;
 jessie|sid)
 	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
@@ -292,15 +282,15 @@ jessie|sid)
 	echo "" >> /tmp/sources.list
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	if [ "x${repo_rcnee}" = "xenable" ] ; then
-		echo "" >> /tmp/sources.list
-		echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
-		echo "deb [arch=armhf] http://repos.rcn-ee.net/debian/ ${deb_codename} main" >> /tmp/sources.list
-	fi
 	;;
 esac
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
+	#no: precise|saucy
+	echo "" >> /tmp/sources.list
+	echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
+	echo "deb [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> /tmp/sources.list
+
 	sudo cp -v ${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
 fi
 
