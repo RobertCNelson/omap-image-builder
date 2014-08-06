@@ -715,10 +715,16 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	fi
 
+	unset kms_video
+	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
+		drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
+		kms_video="video=${drm_device_identifier}:1024x768@60e"
+	fi
+
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
-		echo "cmdline=quiet init=/lib/systemd/systemd" >> ${wfile}
+		echo "cmdline=quiet init=/lib/systemd/systemd ${kms_video}" >> ${wfile}
 	else
-		echo "cmdline=quiet" >> ${wfile}
+		echo "cmdline=quiet ${kms_video}" >> ${wfile}
 	fi
 	echo "" >> ${wfile}
 
