@@ -334,7 +334,6 @@ debian)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Debian" > /tmp/rcn-ee.conf
-	echo "deb_distribution=Debian" >> /tmp/rcn-ee.conf
 	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
@@ -355,7 +354,6 @@ ubuntu)
 
 	#Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 	echo "distro=Ubuntu" > /tmp/rcn-ee.conf
-	echo "deb_distribution=Ubuntu" >> /tmp/rcn-ee.conf
 	echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 	echo "release_date=${time}" >> /tmp/rcn-ee.conf
 	echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
