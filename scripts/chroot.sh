@@ -256,11 +256,6 @@ wheezy)
 		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
 	fi
-	if [ "x${repo_external}" = "xenable" ] ; then
-		echo "" >> /tmp/sources.list
-		echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
-		echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
-	fi
 	;;
 precise|saucy|trusty|utopic)
 	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
@@ -277,6 +272,12 @@ jessie|sid)
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
 	;;
 esac
+
+if [ "x${repo_external}" = "xenable" ] ; then
+	echo "" >> /tmp/sources.list
+	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
+	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
+fi
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	#no: precise|saucy
