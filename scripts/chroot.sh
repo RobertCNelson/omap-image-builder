@@ -390,10 +390,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		EOF
 		chmod +x /usr/sbin/policy-rc.d
 
-		#set deb_distribution:
+		#set distro:
 		. /etc/rcn-ee.conf
 
-		if [ "x\${deb_distribution}" = "xUbuntu" ] ; then
+		if [ "x\${distro}" = "xUbuntu" ] ; then
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
 		fi
@@ -450,7 +450,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 			if [ ! "x${rfs_default_locale}" = "x" ] ; then
 
-				case "\${deb_distribution}" in
+				case "\${distro}" in
 				Debian)
 					echo "Log: (chroot) Debian: setting up locales: [${rfs_default_locale}]"
 					sed -i -e 's:# ${rfs_default_locale} UTF-8:${rfs_default_locale} UTF-8:g' /etc/locale.gen
@@ -598,7 +598,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
 		echo "" >> /etc/issue
 
-		case "\${deb_distribution}" in
+		case "\${distro}" in
 		Debian)
 
 			if [ "x${rfs_disable_root}" = "xenable" ] ; then
@@ -653,7 +653,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	startup_script () {
-		case "\${deb_distribution}" in
+		case "\${distro}" in
 		Debian)
 			debian_startup_script
 			;;
@@ -689,7 +689,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		rm -f /usr/sbin/policy-rc.d
 
-		if [ "x\${deb_distribution}" = "xUbuntu" ] ; then
+		if [ "x\${distro}" = "xUbuntu" ] ; then
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
