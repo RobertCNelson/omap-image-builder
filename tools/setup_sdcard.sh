@@ -142,6 +142,24 @@ detect_software () {
 		echo ""
 		exit
 	fi
+
+	unset wget_version
+	wget_version=$(LC_ALL=C wget --version | grep "GNU Wget" | awk '{print $3}' | awk -F '.' '{print $2}' || true)
+	case "${wget_version}" in
+	12|13)
+		#wget before 1.14 in debian does not support sni
+		echo "wget: [`LC_ALL=C wget --version | grep \"GNU Wget\" | awk '{print $3}' || true`]"
+		echo "wget: [this version of wget does not support sni, using --no-check-certificate]"
+		echo "wget: [http://en.wikipedia.org/wiki/Server_Name_Indication]"
+		dl="wget --no-check-certificate"
+		;;
+	*)
+		dl="wget"
+		;;
+	esac
+
+	dl_continue="${dl} -c"
+	dl_quiet="${dl} --no-verbose"
 }
 
 local_bootloader () {
@@ -172,7 +190,7 @@ dl_bootloader () {
 	mkdir -p ${TEMPDIR}/dl/${DIST}
 	mkdir -p "${DIR}/dl/${DIST}"
 
-	wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${conf_bl_http}/${conf_bl_listfile}
+	${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" ${conf_bl_http}/${conf_bl_listfile}
 
 	if [ ! -f ${TEMPDIR}/dl/${conf_bl_listfile} ] ; then
 		echo "error: can't connect to rcn-ee.net, retry in a few minutes..."
@@ -194,7 +212,7 @@ dl_bootloader () {
 
 	if [ "${spl_name}" ] ; then
 		SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
-		wget --no-verbose --directory-prefix="${TEMPDIR}/dl/" ${SPL}
+		${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" ${SPL}
 		SPL=${SPL##*/}
 		echo "SPL Bootloader: ${SPL}"
 	else
@@ -203,7 +221,7 @@ dl_bootloader () {
 
 	if [ "${boot_name}" ] ; then
 		UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
-		wget --directory-prefix="${TEMPDIR}/dl/" ${UBOOT}
+		${dl} --directory-prefix="${TEMPDIR}/dl/" ${UBOOT}
 		UBOOT=${UBOOT##*/}
 		echo "UBOOT Bootloader: ${UBOOT}"
 	else
@@ -899,8 +917,8 @@ populate_rootfs () {
 
 	if [ "${need_wandboard_firmware}" ] ; then
 		http_brcm="https://raw.githubusercontent.com/Freescale/meta-fsl-arm-extra/master/recipes-bsp/broadcom-nvram-config/files/wandboard"
-		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4329-sdio.txt
-		wget --no-verbose --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
+		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4329-sdio.txt
+		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
 	fi
 
 	if [ "x${build_img_file}" = "xenable" ] ; then
@@ -908,7 +926,7 @@ populate_rootfs () {
 
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
 			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
-			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
+			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
 			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
 		fi
 
@@ -919,7 +937,7 @@ populate_rootfs () {
 
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
 			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
-			wget --no-verbose --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
+			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
 			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh
 		fi
 
