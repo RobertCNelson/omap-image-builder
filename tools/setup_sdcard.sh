@@ -601,6 +601,7 @@ populate_boot () {
 	echo "Debug: Contents of Boot Partition"
 	echo "-----------------------------"
 	ls -lh ${TEMPDIR}/disk/
+	du -sh ${TEMPDIR}/disk/
 	echo "-----------------------------"
 
 	umount ${TEMPDIR}/disk || true
