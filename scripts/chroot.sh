@@ -276,7 +276,7 @@ if [ "x${repo_external}" = "xenable" ] ; then
 fi
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
-	#no: precise|saucy
+	#no: precise
 	echo "" >> /tmp/sources.list
 	echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
 	echo "deb [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> /tmp/sources.list

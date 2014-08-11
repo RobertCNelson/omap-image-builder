@@ -1,5 +1,5 @@
 # Space separated list of releases to build, one or more of:
-#   saucy wheezy jessie
+#   wheezy jessie
 #   plus anything added to releases.sh
 RELEASES="wheezy jessie"
 

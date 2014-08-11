@@ -1,5 +1,5 @@
 # Space separated list of releases to build, one or more of:
-#   saucy wheezy jessie
+#   wheezy jessie
 RELEASES="machinekit"
 
 # Using an apt proxy (like apt-cacher-ng) is HIGHLY recommended, as the
