@@ -746,10 +746,6 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.ti-connectivity ${tempdir}/lib/firmware/
 		sudo cp -v ${DIR}/git/linux-firmware/ti-connectivity/* ${tempdir}/lib/firmware/ti-connectivity
 	fi
-
-	if [ -f ${DIR}/git/am33x-cm3/bin/am335x-pm-firmware.bin ] ; then
-		sudo cp -v ${DIR}/git/am33x-cm3/bin/am335x-pm-firmware.bin ${tempdir}/lib/firmware/am335x-pm-firmware.bin
-	fi
 fi
 
 chroot_mount
