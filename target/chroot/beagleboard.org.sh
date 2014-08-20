@@ -445,6 +445,16 @@ install_git_repos () {
 		sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
 		python setup.py install
 	fi
+
+	git_repo="https://github.com/omapconf/omapconf.git"
+	git_target_dir="/opt/source/omapconf"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			make CROSS_COMPILE= DESTDIR=/usr/local/bin/ install
+		fi
+	fi
 }
 
 install_build_pkgs () {
