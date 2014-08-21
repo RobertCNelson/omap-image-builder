@@ -58,6 +58,15 @@ git_clone () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+git_clone_branch () {
+	mkdir -p ${git_target_dir} || true
+	qemu_command="git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true"
+	qemu_warning
+	git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true
+	sync
+	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
+}
+
 git_clone_full () {
 	mkdir -p ${git_target_dir} || true
 	qemu_command="git clone ${git_repo} ${git_target_dir} || true"
@@ -436,6 +445,30 @@ install_git_repos () {
 			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
 		fi
 	fi
+
+	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
+	git_target_dir="/opt/source/PyBBIO"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
+		python setup.py install
+	fi
+
+	git_repo="https://github.com/omapconf/omapconf.git"
+	git_target_dir="/opt/source/omapconf"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			make CROSS_COMPILE= DESTDIR=/usr/local/bin/ install
+		fi
+	fi
+
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_branch="3.14-ti"
+	git_target_dir="/opt/source/dtb-${git_branch}"
+	git_clone_branch
 }
 
 install_build_pkgs () {
@@ -550,7 +583,9 @@ setup_desktop
 #install_node_pkgs
 #install_pip_pkgs
 #install_gem_pkgs
-#install_git_repos
+if [ -f /usr/bin/git ] ; then
+	install_git_repos
+fi
 #install_build_pkgs
 install_kernel_modules
 other_source_links
