@@ -238,60 +238,67 @@ sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
-echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > /tmp/sources.list
-echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> /tmp/sources.list
-echo "" >> /tmp/sources.list
+wfile="/tmp/sources.list"
+echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
+echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
+echo "" >> ${wfile}
 
 case "${deb_codename}" in
 jessie|sid)
-	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	;;
 *)
-	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> /tmp/sources.list
+	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	;;
 esac
 
 case "${deb_codename}" in
 wheezy)
-	echo "" >> /tmp/sources.list
-	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
-	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> /tmp/sources.list
-	echo "" >> /tmp/sources.list
+	echo "" >> ${wfile}
+	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
 	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
-		echo "#deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
+		echo "deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	else
-		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
-		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> /tmp/sources.list
+		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	fi
 	;;
 esac
 
 if [ "x${repo_external}" = "xenable" ] ; then
-	echo "" >> /tmp/sources.list
-	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
-	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> /tmp/sources.list
+	echo "" >> ${wfile}
+	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
+	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
 fi
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	#no: precise
-	echo "" >> /tmp/sources.list
-	echo "#Kernel source: https://github.com/RobertCNelson/linux-stable-rcn-ee" >> /tmp/sources.list
-	echo "deb [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> /tmp/sources.list
+	echo "" >> ${wfile}
+	echo "#Kernel source (repos.rcn-ee.net) : https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
+	echo "#" >> ${wfile}
+	echo "#git clone https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
+	echo "#cd ./linux-stable-rcn-ee" >> ${wfile}
+	echo "#git fetch --tags" >> ${wfile}
+	echo "#git checkout \`uname -r\` -b tmp" >> ${wfile}
+	echo "#" >> ${wfile}
+	echo "deb [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
 
 	sudo cp -v ${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
+fi
+
+if [ -f /tmp/sources.list ] ; then
+	sudo mv /tmp/sources.list ${tempdir}/etc/apt/sources.list
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	if [ ! "x${repo_external_key}" = "x" ] ; then
 		sudo cp -v ${OIB_DIR}/target/keyring/${repo_external_key} ${tempdir}/tmp/${repo_external_key}
 	fi
-fi
-
-if [ -f /tmp/sources.list ] ; then
-	sudo mv /tmp/sources.list ${tempdir}/etc/apt/sources.list
 fi
 
 if [ "${apt_proxy}" ] ; then
