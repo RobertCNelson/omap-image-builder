@@ -82,7 +82,7 @@ flasher="enable"
 generic_image
 
 debian_image="${debian_lxde_4gb_stable}"
-flasher_size="--img-2gb"
+flasher_size="--img-4gb"
 bone_size="--img-4gb"
 image_opts="--beagleboard.org-production"
 flasher="enable"
