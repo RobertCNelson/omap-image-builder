@@ -586,7 +586,7 @@ install_gem_pkgs
 if [ -f /usr/bin/git ] ; then
 	install_git_repos
 fi
-#install_build_pkgs
+install_build_pkgs
 install_kernel_modules
 other_source_links
 unsecure_root
