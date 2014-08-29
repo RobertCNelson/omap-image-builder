@@ -1,65 +1,72 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-stable
 
-debian_stable="7.6"
+debian_lxde_stable="debian-7.6-lxde-armhf-${time}"
+archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-if [ -d ./debian-${debian_stable}-lxde-armhf-${time} ] ; then
-	rm -rf debian-${debian_stable}-lxde-armhf-${time} || true
-fi
+generic_image () {
+	if [ -d ./\${debian_image} ] ; then
+		rm -rf \${debian_image} || true
+	fi
 
-#user may run ./ship.sh twice...
-if [ -f debian-${debian_stable}-lxde-armhf-${time}.tar.xz ] ; then
-	tar xf debian-${debian_stable}-lxde-armhf-${time}.tar.xz
-else
-	tar xf debian-${debian_stable}-lxde-armhf-${time}.tar
-fi
+	#user may run ./ship.sh twice...
+	if [ -f \${debian_image}.tar.xz ] ; then
+		tar xf \${debian_image}.tar.xz
+	else
+		tar xf \${debian_image}.tar
+	fi
 
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img || true
-fi
+	cd \${debian_image}/
 
-if [ -f bone-debian-${debian_stable}-lxde-${time}-4gb.img ] ; then
-	rm bone-debian-${debian_stable}-lxde-${time}-4gb.img || true
-fi
+	if [ "x\${flasher}" = "xenable" ] ; then
+		#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
+		sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd
 
-cd debian-${debian_stable}-lxde-armhf-${time}/
+		sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
+	fi
 
-#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-sudo ./setup_sdcard.sh --img BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time} --uboot boneblack_flasher --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	sudo ./setup_sdcard.sh \${bone_image} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLEBONE --enable-systemd
 
-sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time} --dtb beaglebone --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE --rootfs_label eMMC-Flasher --enable-systemd
+	mv *.img ../
+	cd ..
+	rm -rf \${debian_image}/ || true
 
-sudo ./setup_sdcard.sh --img-4gb bone-debian-${debian_stable}-lxde-${time} --dtb beaglebone --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+	if [ ! -f \${debian_image}.tar.xz ] ; then
+		${archive} \${debian_image}.tar
+	fi
 
-mv *.img ../
-cd ..
-rm -rf debian-${debian_stable}-lxde-armhf-${time}/ || true
+	if [ "x\${flasher}" = "xenable" ] ; then
+		if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+			${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
+		fi
 
-if [ ! -f debian-${debian_stable}-lxde-armhf-${time}.tar.xz ] ; then
-	xz -z -8 -v debian-${debian_stable}-lxde-armhf-${time}.tar
-fi
+		if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
+			${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
+		fi
+	fi
 
-if [ -f BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz ] ; then
-	rm BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz || true
-fi
-xz -z -8 -v BBB-blank-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img
+	if [ -f bone-\${debian_image}-2gb.img ] ; then
+		${archive} bone-\${debian_image}-2gb.img
+	fi
 
-if [ -f BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz ] ; then
-	rm BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img.xz || true
-fi
-xz -z -8 -v BBB-eMMC-flasher-debian-${debian_stable}-lxde-${time}-2gb.img
+	if [ -f bone-\${debian_image}-4gb.img ] ; then
+		${archive} bone-\${debian_image}-4gb.img
+	fi
 
-if [ -f bone-debian-${debian_stable}-lxde-${time}-4gb.img.xz ] ; then
-	rm bone-debian-${debian_stable}-lxde-${time}-4gb.img.xz || true
-fi
-xz -z -8 -v bone-debian-${debian_stable}-lxde-${time}-4gb.img
+}
+
+debian_image="${debian_lxde_stable}"
+bone_image="--img-4gb"
+image_opts="--beagleboard.org-production"
+flasher="enable"
+generic_image
 
 __EOF__
 
