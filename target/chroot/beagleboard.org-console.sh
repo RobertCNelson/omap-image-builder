@@ -110,13 +110,15 @@ setup_system () {
 		fi
 	fi
 
-	if [ -f /lib/systemd/system/serial-getty@.service ] ; then
-		cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
-		ln -s /etc/systemd/system/serial-getty@ttyGS0.service /etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
+	if [ -f /opt/scripts/boot/am335x_evm.sh ] ; then
+		if [ -f /lib/systemd/system/serial-getty@.service ] ; then
+			cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
+			ln -s /etc/systemd/system/serial-getty@ttyGS0.service /etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
 
-		echo "" >> /etc/securetty
-		echo "#USB Gadget Serial Port" >> /etc/securetty
-		echo "ttyGS0" >> /etc/securetty
+			echo "" >> /etc/securetty
+			echo "#USB Gadget Serial Port" >> /etc/securetty
+			echo "ttyGS0" >> /etc/securetty
+		fi
 	fi
 }
 
@@ -473,17 +475,17 @@ install_git_repos () {
 
 install_build_pkgs () {
 	cd /opt/
-	#if [ -f /usr/bin/xz ] ; then
-	#	wget https://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
-	#	if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
-	#		tar xf ${chromium_release}-armhf.tar.xz -C /
-	#		rm -rf ${chromium_release}-armhf.tar.xz || true
-	#		echo "${chromium_release} : https://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
+	if [ -f /usr/bin/xz ] ; then
+		wget https://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
+		if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
+			tar xf ${chromium_release}-armhf.tar.xz -C /
+			rm -rf ${chromium_release}-armhf.tar.xz || true
+			echo "${chromium_release} : https://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
 
-	#		#link Chromium to /usr/bin/x-www-browser
-	#		update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
-	#	fi
-	#fi
+			#link Chromium to /usr/bin/x-www-browser
+			update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
+		fi
+	fi
 }
 
 install_kernel_modules () {
