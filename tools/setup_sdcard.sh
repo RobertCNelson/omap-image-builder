@@ -295,6 +295,7 @@ unmount_all_drive_partitions () {
 	done
 
 	echo "Zeroing out Partition Table"
+	echo "-----------------------------"
 	dd if=/dev/zero of=${media} bs=1M count=100 || drive_error_ro
 	sync
 	dd if=${media} of=/dev/null bs=1M count=100
@@ -302,10 +303,6 @@ unmount_all_drive_partitions () {
 }
 
 sfdisk_partition_layout () {
-	echo ""
-	echo "Using sfdisk to create partition layout"
-	echo "-----------------------------"
-
 	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
 		${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
 		,,,-
@@ -315,34 +312,59 @@ sfdisk_partition_layout () {
 }
 
 sfdisk_single_partition_layout () {
-	echo ""
-	echo "Using sfdisk to create partition layout"
-	echo "-----------------------------"
-
 	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
-		${conf_boot_startmb},,${sfdisk_fstype},-
+		${conf_boot_startmb},,${sfdisk_fstype},*
 	__EOF__
 
 	sync
 }
 
 dd_uboot_boot () {
-	#For: Freescale: i.mx5/6 Devices
-	echo ""
-	echo "Using dd to place bootloader on drive"
+	unset dd_uboot
+	if [ ! "x${dd_uboot_count}" = "x" ] ; then
+		dd_uboot="${dd_uboot}count=${dd_uboot_count} "
+	fi
+
+	if [ ! "x${dd_uboot_seek}" = "x" ] ; then
+		dd_uboot="${dd_uboot}seek=${dd_uboot_seek} "
+	fi
+
+	if [ ! "x${dd_uboot_conf}" = "x" ] ; then
+		dd_uboot="${dd_uboot}conv=${dd_uboot_conf} "
+	fi
+
+	if [ ! "x${dd_uboot_bs}" = "x" ] ; then
+		dd_uboot="${dd_uboot}bs=${dd_uboot_bs}"
+	fi
+
+	echo "${uboot_name}: dd if=${uboot_name} of=${media} ${dd_uboot}"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
-	bootloader_installed=1
+	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} ${dd_uboot}
+	echo "-----------------------------"
 }
 
 dd_spl_uboot_boot () {
-	#For: Samsung: Exynos 4 Devices
-	echo ""
-	echo "Using dd to place bootloader on drive"
+	unset dd_spl_uboot
+	if [ ! "x${dd_spl_uboot_count}" = "x" ] ; then
+		dd_spl_uboot="${dd_spl_uboot}count=${dd_spl_uboot_count} "
+	fi
+
+	if [ ! "x${dd_spl_uboot_seek}" = "x" ] ; then
+		dd_spl_uboot="${dd_spl_uboot}seek=${dd_spl_uboot_seek} "
+	fi
+
+	if [ ! "x${dd_spl_uboot_conf}" = "x" ] ; then
+		dd_spl_uboot="${dd_spl_uboot}conv=${dd_spl_uboot_conf} "
+	fi
+
+	if [ ! "x${dd_spl_uboot_bs}" = "x" ] ; then
+		dd_spl_uboot="${dd_spl_uboot}bs=${dd_spl_uboot_bs}"
+	fi
+
+	echo "${spl_uboot_name}: dd if=${spl_uboot_name} of=${media} ${dd_spl_uboot}"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_spl_uboot_seek} bs=${dd_spl_uboot_bs}
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} seek=${dd_uboot_seek} bs=${dd_uboot_bs}
-	bootloader_installed=1
+	dd if=${TEMPDIR}/dl/${SPL} of=${media} ${dd_spl_uboot}
+	echo "-----------------------------"
 }
 
 format_partition_error () {
@@ -400,20 +422,35 @@ create_partitions () {
 	media_boot_partition=1
 	media_rootfs_partition=2
 
+	echo ""
 	case "${bootloader_location}" in
 	fatfs_boot)
+		echo "Using sfdisk to create partition layout"
+		echo "Version: `LC_ALL=C sfdisk --version`"
+		echo "-----------------------------"
 		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
+		echo "Using dd to place bootloader on drive"
+		echo "-----------------------------"
 		dd_uboot_boot
+		bootloader_installed=1
 		sfdisk_single_partition_layout
 		media_rootfs_partition=1
 		;;
 	dd_spl_uboot_boot)
+		echo "Using dd to place bootloader on drive"
+		echo "-----------------------------"
 		dd_spl_uboot_boot
-		sfdisk_partition_layout
+		dd_uboot_boot
+		bootloader_installed=1
+		sfdisk_single_partition_layout
+		media_rootfs_partition=1
 		;;
 	*)
+		echo "Using sfdisk to create partition layout"
+		echo "Version: `LC_ALL=C sfdisk --version`"
+		echo "-----------------------------"
 		sfdisk_partition_layout
 		;;
 	esac
