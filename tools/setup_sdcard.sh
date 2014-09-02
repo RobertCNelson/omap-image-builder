@@ -765,8 +765,8 @@ populate_rootfs () {
 	fi
 	echo "" >> ${wfile}
 
-	if [ ! "x${conf_fdtfile}" = "x" ] ; then
-		echo "dtb=${conf_fdtfile}" >> ${wfile}
+	if [ ! "x${dtb}" = "x" ] ; then
+		echo "dtb=${dtb}" >> ${wfile}
 	else
 		echo "#dtb=" >> ${wfile}
 	fi
