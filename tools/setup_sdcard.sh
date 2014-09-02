@@ -502,16 +502,19 @@ populate_boot () {
 		exit
 	fi
 
-	if [ ! "${bootloader_installed}" ] ; then
-		if [ "${spl_name}" ] ; then
-			if [ -f ${TEMPDIR}/dl/${SPL} ] ; then
+	if [ "${spl_name}" ] ; then
+		if [ -f ${TEMPDIR}/dl/${SPL} ] ; then
+			if [ ! "${bootloader_installed}" ] ; then
 				cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/${spl_name}
 				echo "-----------------------------"
 			fi
 		fi
+	fi
 
-		if [ "${boot_name}" ] ; then
-			if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
+
+	if [ "${boot_name}" ] ; then
+		if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
+			if [ ! "${bootloader_installed}" ] ; then
 				cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/${boot_name}
 				echo "-----------------------------"
 			fi
