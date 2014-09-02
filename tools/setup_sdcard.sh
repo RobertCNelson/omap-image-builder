@@ -229,6 +229,46 @@ dl_bootloader () {
 	fi
 }
 
+generate_soc () {
+	echo "#!/bin/sh" > ${wfile}
+	echo "format=1.0" >> ${wfile}
+	echo "" >> ${wfile}
+	if [ ! "x${conf_bootloader_in_flash}" = "xenable" ] ; then
+		echo "board=${board}" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "bootloader_location=${bootloader_location}" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "dd_spl_uboot_count=${dd_spl_uboot_count}" >> ${wfile}
+		echo "dd_spl_uboot_seek=${dd_spl_uboot_seek}" >> ${wfile}
+		echo "dd_spl_uboot_conf=${dd_spl_uboot_conf}" >> ${wfile}
+		echo "dd_spl_uboot_bs=${dd_spl_uboot_bs}" >> ${wfile}
+		echo "dd_spl_uboot_backup=${dd_spl_uboot_backup}" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "dd_uboot_count=${dd_uboot_count}" >> ${wfile}
+		echo "dd_uboot_seek=${dd_uboot_seek}" >> ${wfile}
+		echo "dd_uboot_conf=${dd_uboot_conf}" >> ${wfile}
+		echo "dd_uboot_bs=${dd_uboot_bs}" >> ${wfile}
+		echo "dd_uboot_backup=${dd_uboot_backup}" >> ${wfile}
+	else
+		echo "uboot_CONFIG_CMD_BOOTZ=${uboot_CONFIG_CMD_BOOTZ}" >> ${wfile}
+		echo "uboot_CONFIG_SUPPORT_RAW_INITRD=${uboot_CONFIG_SUPPORT_RAW_INITRD}" >> ${wfile}
+		echo "uboot_CONFIG_CMD_FS_GENERIC=${uboot_CONFIG_CMD_FS_GENERIC}" >> ${wfile}
+		echo "zreladdr=${conf_zreladdr}" >> ${wfile}
+	fi
+	echo "" >> ${wfile}
+	echo "boot_fstype=${conf_boot_fstype}" >> ${wfile}
+	echo "conf_boot_startmb=${conf_boot_startmb}" >> ${wfile}
+	echo "conf_boot_endmb=${conf_boot_endmb}" >> ${wfile}
+	echo "sfdisk_fstype=${sfdisk_fstype}" >> ${wfile}
+	echo "" >> ${wfile}
+	echo "#Kernel" >> ${wfile}
+	echo "dtb=${dtb}" >> ${wfile}
+	echo "serial_tty=${SERIAL}" >> ${wfile}
+	echo "usbnet_mem=${usbnet_mem}" >> ${wfile}
+
+	echo "" >> ${wfile}
+}
+
 drive_error_ro () {
 	echo "-----------------------------"
 	echo "Error: for some reason your SD card is not writable..."
@@ -782,32 +822,8 @@ populate_rootfs () {
 		board=${conf_board}
 	fi
 
-	#This should be compatible with hwpacks variable names..
-	#https://code.launchpad.net/~linaro-maintainers/linaro-images/
-	cat > ${TEMPDIR}/disk/boot/SOC.sh <<-__EOF__
-		#!/bin/sh
-		format=1.0
-		board=${board}
-
-		bootloader_location=${bootloader_location}
-		dd_spl_uboot_seek=${dd_spl_uboot_seek}
-		dd_spl_uboot_bs=${dd_spl_uboot_bs}
-		dd_uboot_seek=${dd_uboot_seek}
-		dd_uboot_bs=${dd_uboot_bs}
-
-		conf_bootcmd=${conf_bootcmd}
-		boot_script=${boot_script}
-		boot_fstype=${conf_boot_fstype}
-		conf_boot_startmb=${conf_boot_startmb}
-		conf_boot_endmb=${conf_boot_endmb}
-		sfdisk_fstype=${sfdisk_fstype}
-
-		serial_tty=${SERIAL}
-		fdtfile=${conf_fdtfile}
-
-		usbnet_mem=${usbnet_mem}
-
-	__EOF__
+	wfile="${TEMPDIR}/disk/boot/SOC.sh"
+	generate_soc
 
 	#RootStock-NG
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
@@ -1017,7 +1033,6 @@ process_dtb_conf () {
 	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#error checking...
-
 	if [ ! "${conf_boot_fstype}" ] ; then
 		conf_boot_fstype="${ROOTFS_TYPE}"
 	fi
