@@ -80,9 +80,9 @@ pre_generic_img
 
 options="--img-2gb BBB-blank-eMMC-flasher-${debian_console_stable} --dtb bbb-blank-eeprom --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
 generic_img
-options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher --bbb-old-bootloader-in-emmc"
+options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
 generic_img
-options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
+options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd"
 generic_img
 
 ###archive *.tar
