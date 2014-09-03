@@ -18,40 +18,38 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 pre_generic_img () {
-	if [ -d ./\${base_rootfs} ] ; then
-		rm -rf \${base_rootfs} || true
-	fi
+        if [ -d ./\${base_rootfs} ] ; then
+                rm -rf \${base_rootfs} || true
+        fi
 
-	if [ -f \${base_rootfs}.tar.xz ] ; then
-		tar xf \${base_rootfs}.tar.xz
-	else
-		tar xf \${base_rootfs}.tar
-	fi
+        if [ -f \${base_rootfs}.tar.xz ] ; then
+                tar xf \${base_rootfs}.tar.xz
+        else
+                tar xf \${base_rootfs}.tar
+        fi
 }
 
 generic_img () {
-
-	cd \${base_rootfs}/
-	sudo ./setup_sdcard.sh \${options}
-	mv *.img ../
-	cd ..
-
+        cd \${base_rootfs}/
+        sudo ./setup_sdcard.sh \${options}
+        mv *.img ../
+        cd ..
 }
 
 post_generic_img () {
-	if [ -d ./\${base_rootfs} ] ; then
-		rm -rf \${base_rootfs} || true
-	fi
+        if [ -d ./\${base_rootfs} ] ; then
+                rm -rf \${base_rootfs} || true
+        fi
 
-	if [ ! -f \${base_rootfs}.tar.xz ] ; then
-		${archive} \${base_rootfs}.tar
-	fi
+        if [ ! -f \${base_rootfs}.tar.xz ] ; then
+                ${archive} \${base_rootfs}.tar
+        fi
 }
 
 compress_img () {
-	if [ -f \${wfile} ] ; then
-		${archive} \${wfile}
-	fi
+        if [ -f \${wfile} ] ; then
+                ${archive} \${wfile}
+        fi
 }
 
 #Production lxde images: (BBB: 4GB eMMC)
