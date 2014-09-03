@@ -42,6 +42,9 @@ start|reload|force-reload|restart)
 			rm -f /etc/ssh/ssh.regenerate || true
 			sync
 		fi
+		if [ -f /etc/init.d/ssh ] ; then
+			/etc/init.d/ssh restart
+		fi
 	fi
 
 	#Resize drive when requested
