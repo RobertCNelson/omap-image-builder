@@ -60,7 +60,7 @@ options="--img-4gb BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable} --dtb bbb-bl
 generic_img
 options="--img-4gb BBB-eMMC-flasher-${debian_lxde_4gb_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
-options="--img-4gb bone-${debian_lxde_4gb_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
+options="--img-4gb bone-${debian_lxde_4gb_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
 generic_img
 
 ###lxde images: (BBB: 2GB eMMC)
@@ -71,7 +71,7 @@ options="--img-2gb BBB-blank-eMMC-flasher-${debian_lxde_stable} --dtb bbb-blank-
 generic_img
 options="--img-2gb BBB-eMMC-flasher-${debian_lxde_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
-options="--img-4gb bone-${debian_lxde_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
+options="--img-4gb bone-${debian_lxde_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
 generic_img
 
 ###console images: (also single partition)
@@ -80,9 +80,9 @@ pre_generic_img
 
 options="--img-2gb BBB-blank-eMMC-flasher-${debian_console_stable} --dtb bbb-blank-eeprom --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
 generic_img
-options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
+options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher --bbb-old-bootloader-in-emmc"
 generic_img
-options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd"
+options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
 generic_img
 
 ###archive *.tar
