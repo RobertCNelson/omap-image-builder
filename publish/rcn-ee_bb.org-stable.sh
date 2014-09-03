@@ -17,85 +17,99 @@ archive="xz -z -8 -v"
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-generic_image () {
-	if [ -d ./\${debian_image} ] ; then
-		rm -rf \${debian_image} || true
+pre_generic_img () {
+	if [ -d ./\${base_rootfs} ] ; then
+		rm -rf \${base_rootfs} || true
 	fi
 
-	#user may run ./ship.sh twice...
-	if [ -f \${debian_image}.tar.xz ] ; then
-		tar xf \${debian_image}.tar.xz
+	if [ -f \${base_rootfs}.tar.xz ] ; then
+		tar xf \${base_rootfs}.tar.xz
 	else
-		tar xf \${debian_image}.tar
+		tar xf \${base_rootfs}.tar
 	fi
+}
 
-	cd \${debian_image}/
+generic_img () {
 
-	if [ "x\${flasher}" = "xenable" ] ; then
-		#using [boneblack_flasher] over [bone] for flasher, as this u-boot ignores the factory eeprom for production purposes...
-		sudo ./setup_sdcard.sh \${flasher_size} BBB-blank-eMMC-flasher-\${debian_image} --dtb bbb-blank-eeprom \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd
-
-		sudo ./setup_sdcard.sh \${flasher_size} BBB-eMMC-flasher-\${debian_image} --dtb beaglebone \${image_opts} --bbb-flasher --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --enable-systemd --bbb-old-bootloader-in-emmc
-	fi
-
-	sudo ./setup_sdcard.sh \${bone_size} bone-\${debian_image} --dtb beaglebone \${image_opts} --boot_label BEAGLEBONE --enable-systemd
-
+	cd \${base_rootfs}/
+	sudo ./setup_sdcard.sh \${options}
 	mv *.img ../
 	cd ..
-	rm -rf \${debian_image}/ || true
-
-	if [ ! -f \${debian_image}.tar.xz ] ; then
-		${archive} \${debian_image}.tar
-	fi
-
-	if [ "x\${flasher}" = "xenable" ] ; then
-		if [ -f BBB-blank-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-			${archive} BBB-blank-eMMC-flasher-\${debian_image}-2gb.img
-		fi
-
-		if [ -f BBB-blank-eMMC-flasher-\${debian_image}-4gb.img ] ; then
-			${archive} BBB-blank-eMMC-flasher-\${debian_image}-4gb.img
-		fi
-
-		if [ -f BBB-eMMC-flasher-\${debian_image}-2gb.img ] ; then
-			${archive} BBB-eMMC-flasher-\${debian_image}-2gb.img
-		fi
-
-		if [ -f BBB-eMMC-flasher-\${debian_image}-4gb.img ] ; then
-			${archive} BBB-eMMC-flasher-\${debian_image}-4gb.img
-		fi
-	fi
-
-	if [ -f bone-\${debian_image}-2gb.img ] ; then
-		${archive} bone-\${debian_image}-2gb.img
-	fi
-
-	if [ -f bone-\${debian_image}-4gb.img ] ; then
-		${archive} bone-\${debian_image}-4gb.img
-	fi
 
 }
 
-debian_image="${debian_lxde_stable}"
-flasher_size="--img-2gb"
-bone_size="--img-4gb"
-image_opts="--beagleboard.org-production"
-flasher="enable"
-generic_image
+post_generic_img () {
+	if [ -d ./\${base_rootfs} ] ; then
+		rm -rf \${base_rootfs} || true
+	fi
 
-debian_image="${debian_lxde_4gb_stable}"
-flasher_size="--img-4gb"
-bone_size="--img-4gb"
-image_opts="--beagleboard.org-production"
-flasher="enable"
-generic_image
+	if [ ! -f \${base_rootfs}.tar.xz ] ; then
+		${archive} \${base_rootfs}.tar
+	fi
+}
 
-debian_image="${debian_console_stable}"
-flasher_size="--img"
-bone_size="--img"
-image_opts=""
-flasher="enable"
-generic_image
+compress_img () {
+	if [ -f \${wfile} ] ; then
+		${archive} \${wfile}
+	fi
+}
+
+#Production lxde images: (BBB: 4GB eMMC)
+base_rootfs="${debian_lxde_4gb_stable}"
+pre_generic_img
+
+options="--img-4gb BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher"
+generic_img
+options="--img-4gb BBB-eMMC-flasher-${debian_lxde_4gb_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+generic_img
+options="--img-4gb bone-${debian_lxde_4gb_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
+generic_img
+post_generic_img
+
+#lxde images: (BBB: 2GB eMMC)
+base_rootfs="${debian_lxde_stable}"
+pre_generic_img
+
+options="--img-2gb BBB-blank-eMMC-flasher-${debian_lxde_stable} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher"
+generic_img
+options="--img-2gb BBB-eMMC-flasher-${debian_lxde_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+generic_img
+options="--img-4gb bone-${debian_lxde_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
+generic_img
+post_generic_img
+
+#console images: (also single partition)
+base_rootfs="${debian_console_stable}"
+pre_generic_img
+
+options="--img-2gb BBB-blank-eMMC-flasher-${debian_console_stable} --dtb bbb-blank-eeprom --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
+generic_img
+options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
+generic_img
+options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd"
+generic_img
+post_generic_img
+
+wfile="BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
+compress_img
+wfile="BBB-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
+compress_img
+wfile="bone-${debian_lxde_4gb_stable}-4gb.img"
+compress_img
+
+wfile="BBB-blank-eMMC-flasher-${debian_lxde_stable}-2gb.img"
+compress_img
+wfile="BBB-eMMC-flasher-${debian_lxde_stable}-2gb.img"
+compress_img
+wfile="bone-${debian_lxde_stable}-4gb.img"
+compress_img
+
+wfile="BBB-blank-eMMC-flasher-${debian_console_stable}-2gb.img"
+compress_img
+wfile="BBB-eMMC-flasher-${debian_console_stable}-2gb.img"
+compress_img
+wfile="bone-${debian_console_stable}-2gb.img"
+compress_img
 
 __EOF__
 
