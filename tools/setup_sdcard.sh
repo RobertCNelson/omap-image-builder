@@ -992,12 +992,6 @@ populate_rootfs () {
 			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
 		fi
 
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
-			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
-			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
-			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh
-		fi
-
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh ] ; then
 			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
 			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v3.sh
