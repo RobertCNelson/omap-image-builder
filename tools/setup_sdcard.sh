@@ -425,6 +425,7 @@ create_partitions () {
 	echo ""
 	case "${bootloader_location}" in
 	fatfs_boot)
+		conf_boot_endmb=${conf_boot_endmb:-"12"}
 		echo "Using sfdisk to create partition layout"
 		echo "Version: `LC_ALL=C sfdisk --version`"
 		echo "-----------------------------"
@@ -1075,7 +1076,6 @@ process_dtb_conf () {
 	#defaults, if not set...
 	conf_boot_startmb=${conf_boot_startmb:-"1"}
 	#https://wiki.linaro.org/WorkingGroups/KernelArchived/Projects/FlashCardSurvey
-	conf_boot_endmb=${conf_boot_endmb:-"12"}
 	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
 	#error checking...
