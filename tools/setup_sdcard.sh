@@ -970,6 +970,25 @@ populate_rootfs () {
 		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
 
+		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
+
+		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
+			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
+			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
+			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
+		fi
+
+		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
+			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
+			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
+			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh
+		fi
+
+		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh ] ; then
+			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
+			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v3.sh
+			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh
+		fi
 	fi
 
 	if [ "${usbnet_mem}" ] ; then
@@ -980,28 +999,6 @@ populate_rootfs () {
 		http_brcm="https://raw.githubusercontent.com/Freescale/meta-fsl-arm-extra/master/recipes-bsp/broadcom-nvram-config/files/wandboard"
 		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4329-sdio.txt
 		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
-	fi
-
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
-
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
-			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
-			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
-			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
-		fi
-
-	fi
-
-	if [ "x${bbb_flasher}" = "xenable" ] ; then
-		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
-
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh ] ; then
-			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
-			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v2.sh
-			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh
-		fi
-
 	fi
 
 	cd ${TEMPDIR}/disk/
