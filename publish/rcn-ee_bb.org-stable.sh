@@ -52,7 +52,7 @@ compress_img () {
         fi
 }
 
-#Production lxde images: (BBB: 4GB eMMC)
+###Production lxde images: (BBB: 4GB eMMC)
 base_rootfs="${debian_lxde_4gb_stable}"
 pre_generic_img
 
@@ -62,9 +62,8 @@ options="--img-4gb BBB-eMMC-flasher-${debian_lxde_4gb_stable}       --dtb beagle
 generic_img
 options="--img-4gb bone-${debian_lxde_4gb_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
 generic_img
-post_generic_img
 
-#lxde images: (BBB: 2GB eMMC)
+###lxde images: (BBB: 2GB eMMC)
 base_rootfs="${debian_lxde_stable}"
 pre_generic_img
 
@@ -74,9 +73,8 @@ options="--img-2gb BBB-eMMC-flasher-${debian_lxde_stable}       --dtb beaglebone
 generic_img
 options="--img-4gb bone-${debian_lxde_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd"
 generic_img
-post_generic_img
 
-#console images: (also single partition)
+###console images: (also single partition)
 base_rootfs="${debian_console_stable}"
 pre_generic_img
 
@@ -86,8 +84,18 @@ options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beagleb
 generic_img
 options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd"
 generic_img
+
+###archive *.tar
+base_rootfs="${debian_lxde_4gb_stable}"
 post_generic_img
 
+base_rootfs="${debian_lxde_stable}"
+post_generic_img
+
+base_rootfs="${debian_console_stable}"
+post_generic_img
+
+###archive *.img
 wfile="BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
 compress_img
 wfile="BBB-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
