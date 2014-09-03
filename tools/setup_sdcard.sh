@@ -444,8 +444,12 @@ create_partitions () {
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
-		sfdisk_single_partition_layout
-		media_rootfs_partition=1
+		if [ "x${bborg_production}" = "xenable" ] ; then
+			sfdisk_partition_layout
+		else
+			sfdisk_single_partition_layout
+			media_rootfs_partition=1
+		fi
 		;;
 	*)
 		echo "Using sfdisk to create partition layout"
@@ -498,7 +502,7 @@ create_partitions () {
 }
 
 boot_git_tools () {
-	if [ ! "${offline}" ] && [ "${bborg_production}" ] ; then
+	if [ ! "${offline}" ] && [ "x${bborg_production}" = "xenable" ] ; then
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
@@ -948,7 +952,7 @@ populate_rootfs () {
 		echo "    network 192.168.7.0" >> ${wfile}
 		echo "    gateway 192.168.7.1" >> ${wfile}
 
-		if [ ! "${bborg_production}" ] ; then
+		if [ ! "x${bborg_production}" = "xenable" ] ; then
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
 		fi
 		sync
@@ -1257,7 +1261,7 @@ while [ ! -z "$1" ] ; do
 		bbb_flasher="enable"
 		;;
 	--beagleboard.org-production)
-		bborg_production=1
+		bborg_production="enable"
 		conf_boot_endmb="96"
 		;;
 	--bbb-old-bootloader-in-emmc)
