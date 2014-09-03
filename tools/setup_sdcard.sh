@@ -850,11 +850,11 @@ populate_rootfs () {
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 		if [ "x${bbb_flasher}" = "xenable" ] ; then
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
-			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		else
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
 			echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
-			echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v2.sh" >> ${wfile}
+			echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		fi
 		echo "" >> ${wfile}
 	fi
