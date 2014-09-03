@@ -608,39 +608,35 @@ populate_boot () {
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
-		if [ "x${bborg_production}" = "xenable" ] ; then
-
-			if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-				wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
-				echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
-				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
-			else
-				wfile="${TEMPDIR}/disk/uEnv.txt"
-				echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
-			fi
-
-			echo "" >> ${wfile}
-			echo "loadaddr=0x82000000" >> ${wfile}
-			echo "fdtaddr=0x88000000" >> ${wfile}
-			echo "rdaddr=0x88080000" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "initrd_high=0xffffffff" >> ${wfile}
-			echo "fdt_high=0xffffffff" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
-			echo "" >> ${wfile}
-			echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
-			echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
-			echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
-			echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
-			echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=\${mmcroot} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
-			echo "" >> ${wfile}
-
+		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
+			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
+			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
+			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
+		else
+			wfile="${TEMPDIR}/disk/uEnv.txt"
+			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
 		fi
+
+		echo "" >> ${wfile}
+		echo "loadaddr=0x82000000" >> ${wfile}
+		echo "fdtaddr=0x88000000" >> ${wfile}
+		echo "rdaddr=0x88080000" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "initrd_high=0xffffffff" >> ${wfile}
+		echo "fdt_high=0xffffffff" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
+		echo "" >> ${wfile}
+		echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
+		echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
+		echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
+		echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
+		echo "loadall=run loaduEnvtxt; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=/dev/mmcblk0p${media_rootfs_partition} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+		echo "" >> ${wfile}
 
 		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
 		echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
