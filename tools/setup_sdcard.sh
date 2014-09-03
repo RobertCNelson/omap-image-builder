@@ -242,13 +242,13 @@ generate_soc () {
 		echo "dd_spl_uboot_seek=${dd_spl_uboot_seek}" >> ${wfile}
 		echo "dd_spl_uboot_conf=${dd_spl_uboot_conf}" >> ${wfile}
 		echo "dd_spl_uboot_bs=${dd_spl_uboot_bs}" >> ${wfile}
-		echo "dd_spl_uboot_backup=${dd_spl_uboot_backup}" >> ${wfile}
+		echo "dd_spl_uboot_backup=/opt/backup/uboot/${spl_uboot_name}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "dd_uboot_count=${dd_uboot_count}" >> ${wfile}
 		echo "dd_uboot_seek=${dd_uboot_seek}" >> ${wfile}
 		echo "dd_uboot_conf=${dd_uboot_conf}" >> ${wfile}
 		echo "dd_uboot_bs=${dd_uboot_bs}" >> ${wfile}
-		echo "dd_uboot_backup=${dd_uboot_backup}" >> ${wfile}
+		echo "dd_uboot_backup=/opt/backup/uboot/${uboot_name}" >> ${wfile}
 	else
 		echo "uboot_CONFIG_CMD_BOOTZ=${uboot_CONFIG_CMD_BOOTZ}" >> ${wfile}
 		echo "uboot_CONFIG_SUPPORT_RAW_INITRD=${uboot_CONFIG_SUPPORT_RAW_INITRD}" >> ${wfile}
@@ -445,6 +445,9 @@ create_partitions () {
 		dd_uboot_boot
 		bootloader_installed=1
 		if [ "x${bborg_production}" = "xenable" ] ; then
+			conf_boot_endmb="96"
+			conf_boot_fstype="fat"
+			sfdisk_fstype="0xE"
 			sfdisk_partition_layout
 		else
 			sfdisk_single_partition_layout
@@ -959,6 +962,17 @@ populate_rootfs () {
 
 	fi #RootStock-NG
 
+	if [ ! "x${uboot_name}" = "x" ] ; then
+		echo "Backup version of u-boot: /opt/backup/uboot/"
+		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
+		cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
+	fi
+
+	if [ ! "x${spl_uboot_name}" = "x" ] ; then
+		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
+		cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
+	fi
+
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
 		file="/etc/udev/rules.d/70-persistent-net.rules"
@@ -1259,7 +1273,6 @@ while [ ! -z "$1" ] ; do
 		;;
 	--beagleboard.org-production)
 		bborg_production="enable"
-		conf_boot_endmb="96"
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"
