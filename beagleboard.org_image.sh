@@ -65,19 +65,13 @@ generic_img
 base_rootfs="${debian_lxde_stable}"
 pre_generic_img
 
-options="--img-2gb BBB-blank-eMMC-flasher-${debian_lxde_stable} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher"
-generic_img
 options="--img-2gb BBB-eMMC-flasher-${debian_lxde_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
-generic_img
-options="--img-4gb bone-${debian_lxde_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
 generic_img
 
 ###console images: (also single partition)
 base_rootfs="${debian_console_stable}"
 pre_generic_img
 
-options="--img-2gb BBB-blank-eMMC-flasher-${debian_console_stable} --dtb bbb-blank-eeprom --boot_label BEAGLEBONE --enable-systemd --bbb-flasher"
-generic_img
 options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher --bbb-old-bootloader-in-emmc"
 generic_img
 options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
@@ -101,15 +95,9 @@ compress_img
 wfile="bone-${debian_lxde_4gb_stable}-4gb.img"
 compress_img
 
-wfile="BBB-blank-eMMC-flasher-${debian_lxde_stable}-2gb.img"
-compress_img
 wfile="BBB-eMMC-flasher-${debian_lxde_stable}-2gb.img"
 compress_img
-wfile="bone-${debian_lxde_stable}-4gb.img"
-compress_img
 
-wfile="BBB-blank-eMMC-flasher-${debian_console_stable}-2gb.img"
-compress_img
 wfile="BBB-eMMC-flasher-${debian_console_stable}-2gb.img"
 compress_img
 wfile="bone-${debian_console_stable}-2gb.img"
