@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2014.07"
+u_boot_release="v2014.10-rc2"
 cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
 
 #contains: rfs_username, release_date
@@ -541,17 +541,8 @@ other_source_links () {
 	rcn_https="https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches"
 
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
-	cd /opt/source/u-boot_${u_boot_release}/
+	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
 
-	wget ${rcn_https}/v2014.07/upstream/0001-Add-option-r-to-env-import-to-allow-import-of-text-f.patch
-	wget ${rcn_https}/v2014.07/upstream/0002-am335x_evm-handle-import-of-environments-in-files-wi.patch
-	wget ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
-
-	echo "0001-Add-option-r-to-env-import-to-allow-import-of-text-f.patch" > patch.order
-	echo "0002-am335x_evm-handle-import-of-environments-in-files-wi.patch" >> patch.order
-	echo "0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch" >> patch.order
-
-	cd /
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 
 	echo "MT7601: /etc/Wireless/RT2870/RT2870STA.dat" >> /opt/source/list.txt

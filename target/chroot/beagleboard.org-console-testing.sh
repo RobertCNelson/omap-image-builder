@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2014.07"
+u_boot_release="v2014.10-rc2"
 cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
 
 #contains: rfs_username, release_date
@@ -47,7 +47,7 @@ qemu_warning () {
 
 is_this_qemu
 
-apt-get update
-apt-get -y install linux-image-3.8.13-bone58
+#apt-get update
+#apt-get -y install linux-image-3.8.13-bone58
 
 #
