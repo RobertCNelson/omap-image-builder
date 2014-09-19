@@ -724,6 +724,15 @@ kernel_detection () {
 		echo "Debug: image has: v${bone_dt_kernel}"
 		has_bone_kernel="enable"
 	fi
+
+	unset has_ti_kernel
+	unset check
+	check=$(ls "${dir_check}" | grep vmlinuz- | grep ti | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		ti_dt_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep ti | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has: v${ti_dt_kernel}"
+		has_ti_kernel="enable"
+	fi
 }
 
 kernel_select () {
@@ -745,8 +754,22 @@ kernel_select () {
 	fi
 
 	if [ "x${conf_kernel}" = "xbone" ] ; then
-		if [ "x${has_bone_kernel}" = "xenable" ] ; then
-			select_kernel="${bone_dt_kernel}"
+		if [ "x${has_ti_kernel}" = "xenable" ] ; then
+			select_kernel="${ti_dt_kernel}"
+		else
+			if [ "x${has_bone_kernel}" = "xenable" ] ; then
+				select_kernel="${bone_dt_kernel}"
+			else
+				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
+					select_kernel="${armv7_kernel}"
+				fi
+			fi
+		fi
+	fi
+
+	if [ "x${conf_kernel}" = "xti" ] ; then
+		if [ "x${has_ti_kernel}" = "xenable" ] ; then
+			select_kernel="${ti_dt_kernel}"
 		else
 			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
 				select_kernel="${armv7_kernel}"
@@ -757,7 +780,7 @@ kernel_select () {
 	if [ "${select_kernel}" ] ; then
 		echo "Debug: using: v${select_kernel}"
 	else
-		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone]..."
+		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone,ti]..."
 		exit
 	fi
 }
