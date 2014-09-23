@@ -227,13 +227,16 @@ sudo mv /tmp/01_noflash_kernel ${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel
 sudo mkdir -p ${tempdir}/usr/share/flash-kernel/db/ || true
 sudo cp -v ${OIB_DIR}/target/other/rcn-ee.db ${tempdir}/usr/share/flash-kernel/db/
 
-#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
-sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
 
-#apt: /var/lib/apt/lists/, store compressed only
-echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
-echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
-sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
+if [ "x${deb_distribution}" = "xdebian" ] ; then
+	#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
+	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
+
+	#apt: /var/lib/apt/lists/, store compressed only
+	echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
+	echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
+	sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
+fi
 
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
