@@ -12,18 +12,20 @@ Images:
 
 Flasher:
 
-    sudo ./setup_sdcard.sh --img BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD --uboot bone \
-    --beagleboard.org-production --bbb-flasher --boot_label BEAGLE_BONE \
-    --rootfs_label eMMC-Flasher --enable-systemd
+    sudo ./setup_sdcard.sh --img-4gb BBB-eMMC-flasher-debian-7.X-201Y-MM-DD \
+    --dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
+    --rootfs_label eMMC-Flasher --enable-systemd --bbb-flasher \
+    --bbb-old-bootloader-in-emmc
 
-    xz -z -7 -v BBB-eMMC-flasher-debian-7.X-YYYY-MM-DD-2gb.img
+    xz -z -8 -v BBB-eMMC-flasher-debian-7.X-201Y-MM-DD-4gb.img
 
 2GB, microSD:
 
-    sudo ./setup_sdcard.sh --img bone-debian-7.X-YYYY-MM-DD --uboot bone \
-    --beagleboard.org-production --boot_label BEAGLE_BONE --enable-systemd
+    sudo ./setup_sdcard.sh --img-2gb bone-debian-7.X-201Y-MM-DD --dtb beaglebone \
+    --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
+    --bbb-old-bootloader-in-emmc
 
-    xz -z -7 -v bone-debian-7.X-YYYY-MM-DD-2gb.img
+    xz -z -8 -v bone-debian-7.X-201Y-MM-DD-2gb.img
 
 Bug Tracker:
 
@@ -31,8 +33,8 @@ Bug Tracker:
 
 Release Process:
 
-    bb.org-vYYYY.MM.DD
-    git tag -a bb.org-vYYYY.MM.DD -m 'bb.org-vYYYY.MM.DD'
+    bb.org-v201Y.MM.DD
+    git tag -a bb.org-v201Y.MM.DD -m 'bb.org-v201Y.MM.DD'
     git push origin --tags
 
 Master branch:
@@ -75,7 +77,7 @@ elinux.org: Ubuntu Images:
 Release Process:
 
     vYEAR.MONTH
-    git tag -a v2014.01 -m 'v2014.01'
+    git tag -a v201y.mm -m 'v201y.mm'
     git push origin --tags
 
 MachineKit:
