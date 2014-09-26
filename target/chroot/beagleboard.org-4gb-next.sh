@@ -255,15 +255,19 @@ install_node_pkgs () {
 		#npm config ls -l
 		#echo "--------------------------------"
 
-		echo "Installing bonescript"
-		TERM=dumb npm install -g bonescript --arch=armhf
-		if [ -f /usr/local/lib/node_modules/bonescript/server.js ] ; then
-			sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
+		if [ -f /usr/bin/make ] ; then
+			echo "Installing bonescript"
+			TERM=dumb npm install -g bonescript --arch=armhf
+			if [ -f /usr/local/lib/node_modules/bonescript/server.js ] ; then
+				sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
+			fi
 		fi
 
 		#Cloud9:
-		echo "Installing winston"
-		TERM=dumb npm install -g winston --arch=armhf
+		if [ -f /usr/bin/make ] ; then
+			echo "Installing winston"
+			TERM=dumb npm install -g winston --arch=armhf
+		fi
 
 		cleanup_npm_cache
 		sync
@@ -406,8 +410,10 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
-		python setup.py install
+		if [ -f /usr/bin/dtc ] ; then
+			sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
+			python setup.py install
+		fi
 	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
