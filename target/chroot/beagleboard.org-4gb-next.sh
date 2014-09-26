@@ -150,42 +150,42 @@ setup_desktop () {
 		echo "EndSection" >> ${wfile}
 	fi
 
-	wfile="/etc/lightdm/lightdm.conf"
-	if [ -f ${wfile} ] ; then
-		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
-		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session='$rfs_default_desktop':g' ${wfile}
-		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
-			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
-		fi
-	fi
+#	wfile="/etc/lightdm/lightdm.conf"
+#	if [ -f ${wfile} ] ; then
+#		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
+#		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session='$rfs_default_desktop':g' ${wfile}
+#		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
+#			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
+#		fi
+#	fi
 
-	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
+#	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
+#		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
+#
+#		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
+#		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
+#		echo "[desktop]" > ${wfile}
+#		echo "wallpaper_mode=1" >> ${wfile}
+#		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+#		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+#	fi
 
-		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
-		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
-		echo "[desktop]" > ${wfile}
-		echo "wallpaper_mode=1" >> ${wfile}
-		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
-	fi
+#	#Disable dpms mode and screen blanking
+#	#Better fix for missing cursor
+#	wfile="/home/${rfs_username}/.xsessionrc"
+#	echo "#!/bin/sh" > ${wfile}
+#	echo "" >> ${wfile}
+#	echo "xset -dpms" >> ${wfile}
+#	echo "xset s off" >> ${wfile}
+#	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
+#	chown -R ${rfs_username}:${rfs_username} ${wfile}
 
-	#Disable dpms mode and screen blanking
-	#Better fix for missing cursor
-	wfile="/home/${rfs_username}/.xsessionrc"
-	echo "#!/bin/sh" > ${wfile}
-	echo "" >> ${wfile}
-	echo "xset -dpms" >> ${wfile}
-	echo "xset s off" >> ${wfile}
-	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
-	chown -R ${rfs_username}:${rfs_username} ${wfile}
-
-	#Disable LXDE's screensaver on autostart
-	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
-		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
-		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
-		rm -rf /tmp/autostart || true
-	fi
+#	#Disable LXDE's screensaver on autostart
+#	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
+#		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
+#		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
+#		rm -rf /tmp/autostart || true
+#	fi
 
 	wfile="/etc/udev/rules.d/70-persistent-net.rules"
 	echo "" > ${wfile}
@@ -200,10 +200,10 @@ setup_desktop () {
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 
-	#root password is blank, so remove useless application as it requires a password.
-	if [ -f /usr/share/applications/gksu.desktop ] ; then
-		rm -f /usr/share/applications/gksu.desktop || true
-	fi
+#	#root password is blank, so remove useless application as it requires a password.
+#	if [ -f /usr/share/applications/gksu.desktop ] ; then
+#		rm -f /usr/share/applications/gksu.desktop || true
+#	fi
 
 	#Add Website for Help:
 	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue
@@ -218,13 +218,13 @@ setup_desktop () {
 		sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
 	fi
 
-	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
-	if [ -f /usr/bin/lxterminal ] ; then
-		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
-			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
-			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
-		fi
-	fi
+#	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
+#	if [ -f /usr/bin/lxterminal ] ; then
+#		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
+#			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
+#			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
+#		fi
+#	fi
 }
 
 cleanup_npm_cache () {
@@ -560,8 +560,8 @@ is_this_qemu
 
 #install_picky_packages
 
-#setup_system
-#setup_desktop
+setup_system
+setup_desktop
 
 #install_node_pkgs
 #install_pip_pkgs
