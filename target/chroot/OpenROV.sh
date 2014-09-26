@@ -50,6 +50,15 @@ git_clone () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+git_clone_branch () {
+	mkdir -p ${git_target_dir} || true
+	qemu_command="git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true"
+	qemu_warning
+	git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true
+	sync
+	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
+}
+
 git_clone_full () {
 	mkdir -p ${git_target_dir} || true
 	qemu_command="git clone ${git_repo} ${git_target_dir} || true"
