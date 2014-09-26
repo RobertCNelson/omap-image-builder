@@ -303,7 +303,6 @@ install_node_pkgs () {
 		git_target_dir="/var/lib/cloud9"
 		git_clone
 		if [ -f ${git_target_dir}/.git/config ] ; then
-			echo "port: 80" >> ${git_target_dir}/_config.yml
 			echo "jekyll pre-building bone101"
 			/usr/local/bin/jekyll build
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
@@ -325,14 +324,7 @@ install_node_pkgs () {
 			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
-			#systemctl enable bonescript.socket
-
-			wfile="/lib/systemd/system/jekyll.socket"
-			echo "[Socket]" > ${wfile}
-			echo "ListenStream=80" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=sockets.target" >> ${wfile}
+			systemctl enable bonescript.socket
 
 			wfile="/lib/systemd/system/jekyll.service"
 			echo "[Unit]" > ${wfile}
@@ -343,7 +335,7 @@ install_node_pkgs () {
 			echo "ExecStart=/usr/local/bin/jekyll serve" >> ${wfile}
 			echo "SyslogIdentifier=jekyll" >> ${wfile}
 
-			systemctl enable jekyll.socket
+			systemctl enable jekyll.service
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
