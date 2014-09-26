@@ -304,6 +304,8 @@ install_node_pkgs () {
 		git_clone
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			echo "port: 80" >> ${git_target_dir}/_config.yml
+			echo "jekyll pre-building bone101"
+			/usr/local/bin/jekyll build
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
