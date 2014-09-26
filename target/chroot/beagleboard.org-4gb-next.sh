@@ -76,31 +76,6 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
-install_picky_packages () {
-	#Setting up trousers (0.3.9-3+wheezy1) ...
-	#dpkg: error processing trousers (--configure):
-	# subprocess installed post-installation script returned error exit status 2
-	#dpkg: dependency problems prevent configuration of tpm-tools:
-	# tpm-tools depends on trousers; however:
-	#  Package trousers is not configured yet.
-	#
-	#dpkg: error processing tpm-tools (--configure):
-	# dependency problems - leaving unconfigured
-	#Errors were encountered while processing:
-	# trousers
-	# tpm-tools
-
-	pkg="trousers"
-	echo "Installing picky package: ${pkg}"
-	apt-get -y --force-yes install ${pkg}
-	apt-get clean
-
-	pkg="tpm-tools"
-	echo "Installing picky package: ${pkg}"
-	apt-get -y --force-yes install ${pkg}
-	apt-get clean
-}
-
 setup_system () {
 	#For when sed/grep/etc just gets way to complex...
 	cd /
@@ -273,7 +248,7 @@ install_node_pkgs () {
 
 		#http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
 		#The cause: npm no longer supports its self-signed certificates.
-		npm config set ca ""
+		#npm config set ca ""
 
 		#echo "debug: npm config ls -l (after)"
 		#echo "--------------------------------"
@@ -313,12 +288,6 @@ install_node_pkgs () {
 				/bin/sh ./install.sh
 				cd -
 			fi
-
-			#if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-			#	cd /opt/cloud9/
-			#	patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
-			#	cd /opt/
-			#fi
 		fi
 
 		git_repo="https://github.com/beagleboard/bone101"
@@ -362,15 +331,17 @@ install_node_pkgs () {
 
 			systemctl enable bonescript-autorun.service
 
-			#bonescript.socket takes over port 80, so shove apache/etc to 8080:
-			if [ -f /etc/apache2/ports.conf ] ; then
-				sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
-			fi
-			if [ -f /etc/apache2/sites-enabled/000-default ] ; then
-				sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
-			fi
-			if [ -f /var/www/index.html ] ; then
-				rm -rf /var/www/index.html || true
+			if [ -d /etc/apache2/ ] ; then
+				#bonescript.socket takes over port 80, so shove apache/etc to 8080:
+				if [ -f /etc/apache2/ports.conf ] ; then
+					sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+				fi
+				if [ -f /etc/apache2/sites-enabled/000-default ] ; then
+					sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+				fi
+				if [ -f /var/www/html/index.html ] ; then
+					rm -rf /var/www/html/index.html || true
+				fi
 			fi
 		fi
 	fi
@@ -379,30 +350,9 @@ install_node_pkgs () {
 install_pip_pkgs () {
 	if [ -f /usr/bin/pip ] ; then
 		echo "Installing pip packages"
-
-		#debian@beaglebone:~$ pip install Adafruit_BBIO
-		#Downloading/unpacking Adafruit-BBIO
-		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
-		#  Running setup.py egg_info for package Adafruit-BBIO
-		#    The required version of distribute (>=0.6.45) is not available,
-		#    and can't be installed while this script is running. Please
-		#    install a more recent version first, using
-		#    'easy_install -U distribute'.
-		#
-		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-		#    Complete output from command python setup.py egg_info:
-		#    The required version of distribute (>=0.6.45) is not available,
-		#
-		#and can't be installed while this script is running. Please
-		#
-		#install a more recent version first, using
-		#
-		#'easy_install -U distribute'.
-		#
-		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-
-		easy_install -U distribute
-		pip install Adafruit_BBIO
+		#broken with gcc-4.9 and needs:
+		#libpython2.7-dev
+		#pip install Adafruit_BBIO
 	fi
 }
 
@@ -481,55 +431,6 @@ install_build_pkgs () {
 	fi
 }
 
-install_kernel_modules () {
-	dist=${deb_codename}
-	arch=${deb_arch}
-	mirror="https://rcn-ee.net/deb"
-	latest_kernel=$(ls /boot/ | grep vmlinuz | grep bone | head -n 1 | awk -F "vmlinuz-" '{print $2}' || true)
-
-	if [ ! "x${latest_kernel}" = "x" ] ; then
-
-		if [ -f /etc/rcn-ee.conf ] ; then
-			. /etc/rcn-ee.conf
-
-			if [ "x${third_party_modules}" = "xenable" ] ; then
-				echo "Debug: third_party_modules enabled in /etc/rcn-ee.conf"
-
-				cd /tmp/
-				if [ -f /tmp/index.html ] ; then
-					rm -f /tmp/index.html || true
-				fi
-
-				wget ${mirror}/${dist}-${arch}/v${latest_kernel}/
-				unset thirdparty_file
-				thirdparty_file=$(cat /tmp/index.html | grep thirdparty | head -n 1)
-				thirdparty_file=$(echo ${thirdparty_file} | awk -F "\"" '{print $2}')
-				rm -f /tmp/index.html || true
-
-				if [ "x${thirdparty_file}" = "xthirdparty" ] ; then
-
-					if [ -f /tmp/thirdparty ] ; then
-						rm -rf /tmp/thirdparty || true
-					fi
-
-					wget ${mirror}/${dist}-${arch}/v${latest_kernel}/thirdparty
-
-					if [ -f /tmp/thirdparty ] ; then
-						/bin/sh /tmp/thirdparty
-						depmod ${latest_kernel} -a
-						update-initramfs -uk ${latest_kernel}
-						rm -rf /tmp/thirdparty || true
-						echo "Debug: third party kernel modules now installed."
-					fi
-
-				fi
-				cd /
-			fi
-		fi
-
-	fi
-}
-
 other_source_links () {
 	rcn_https="https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches"
 
@@ -537,10 +438,6 @@ other_source_links () {
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
 
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
-
-	echo "MT7601: /etc/Wireless/RT2870/RT2870STA.dat" >> /opt/source/list.txt
-	echo "MT7601: MODULES/kernel/drivers/net/wireless/mt7601Usta.ko" >> /opt/source/list.txt
-	echo "MT7601: https://rcn-ee.net/deb/thirdparty/MT7601/DPO_MT7601U_LinuxSTA_3.0.0.4_20130913.tar.bz2" >> /opt/source/list.txt
 }
 
 unsecure_root () {
@@ -561,19 +458,16 @@ unsecure_root () {
 
 is_this_qemu
 
-#install_picky_packages
-
 setup_system
 setup_desktop
 
-#install_node_pkgs
-#install_pip_pkgs
-#install_gem_pkgs
-#if [ -f /usr/bin/git ] ; then
-#	install_git_repos
-#fi
+install_node_pkgs
+install_pip_pkgs
+install_gem_pkgs
+if [ -f /usr/bin/git ] ; then
+	install_git_repos
+fi
 #install_build_pkgs
-#install_kernel_modules
-#other_source_links
-#unsecure_root
+other_source_links
+unsecure_root
 #
