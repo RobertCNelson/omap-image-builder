@@ -191,6 +191,9 @@ setup_desktop () {
 	cat /etc/dogtag >> /etc/issue.net
 	echo "" >> /etc/issue.net
 	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue.net
+	echo "" >> /etc/issue.net
+	echo "password for: [$rfs_username] = [$rfs_password]" >> /etc/issue.net
+	echo "" >> /etc/issue.net
 
 	if [ -f /etc/ssh/sshd_config ] ; then
 		sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
@@ -290,6 +293,8 @@ install_node_pkgs () {
 			if [ -f /opt/cloud9/install.sh ] ; then
 				cd /opt/cloud9/
 				/bin/sh ./install.sh
+				echo "cloud9: jessie"
+				systemctl enable cloud9.socket
 				cd -
 			fi
 		fi
@@ -298,6 +303,7 @@ install_node_pkgs () {
 		git_target_dir="/var/lib/cloud9"
 		git_clone
 		if [ -f ${git_target_dir}/.git/config ] ; then
+			echo "port: 80" >> ${git_target_dir}/_config.yml
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
@@ -317,7 +323,25 @@ install_node_pkgs () {
 			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
-			systemctl enable bonescript.socket
+			#systemctl enable bonescript.socket
+
+			wfile="/lib/systemd/system/jekyll.socket"
+			echo "[Socket]" > ${wfile}
+			echo "ListenStream=80" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=sockets.target" >> ${wfile}
+
+			wfile="/lib/systemd/system/jekyll.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=jekyll server" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll serve" >> ${wfile}
+			echo "SyslogIdentifier=jekyll" >> ${wfile}
+
+			systemctl enable jekyll.socket
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
@@ -336,7 +360,7 @@ install_node_pkgs () {
 			systemctl enable bonescript-autorun.service
 
 			if [ -d /etc/apache2/ ] ; then
-				#bonescript.socket takes over port 80, so shove apache/etc to 8080:
+				#bone101 takes over port 80, so shove apache/etc to 8080:
 				if [ -f /etc/apache2/ports.conf ] ; then
 					sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
 				fi
@@ -363,7 +387,10 @@ install_pip_pkgs () {
 install_gem_pkgs () {
 	if [ -f /usr/bin/gem ] ; then
 		echo "Installing gem packages"
+		echo "gem: [beaglebone]"
 		gem install beaglebone
+		echo "gem: [jekyll --no-document]"
+		gem install jekyll --no-document
 	fi
 }
 
@@ -454,6 +481,8 @@ unsecure_root () {
 		#Make ssh root@beaglebone work..
 		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+		#Starting with Jessie:
+		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
 	fi
 
 	if [ -f /etc/sudoers ] ; then
@@ -467,9 +496,9 @@ is_this_qemu
 setup_system
 setup_desktop
 
+install_gem_pkgs
 install_node_pkgs
 install_pip_pkgs
-install_gem_pkgs
 if [ -f /usr/bin/git ] ; then
 	install_git_repos
 fi
