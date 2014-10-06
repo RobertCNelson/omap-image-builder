@@ -301,12 +301,6 @@ install_node_pkgs () {
 				/bin/sh ./install.sh
 				cd -
 			fi
-
-			#if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-			#	cd /opt/cloud9/
-			#	patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
-			#	cd /opt/
-			#fi
 		fi
 
 		git_repo="https://github.com/beagleboard/bone101"
