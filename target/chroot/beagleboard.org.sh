@@ -397,11 +397,13 @@ install_gem_pkgs () {
 		gem_wheezy="--no-rdoc --no-ri"
 		gem_jessie="--no-document"
 
-		echo "gem: [beaglebone --no-user-install]"
-		gem install beaglebone --no-user-install
+		echo "env: [`env`]"
 
-		echo "gem: [jekyll --no-user-install ${gem_wheezy}]"
-		gem install jekyll --no-user-install ${gem_wheezy}
+		echo "gem: [beaglebone]"
+		gem install beaglebone
+
+		echo "gem: [jekyll ${gem_wheezy}]"
+		gem install jekyll ${gem_wheezy}
 	fi
 }
 
