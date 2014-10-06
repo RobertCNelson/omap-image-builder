@@ -393,10 +393,15 @@ install_pip_pkgs () {
 install_gem_pkgs () {
 	if [ -f /usr/bin/gem ] ; then
 		echo "Installing gem packages"
-		echo "gem: [beaglebone]"
-		gem install beaglebone
-		echo "gem: [jekyll --no-document]"
-		gem install jekyll --no-document
+		echo "debug: gem: [`gem --version`]"
+		gem_wheezy="--no-rdoc --no-ri"
+		gem_jessie="--no-document"
+
+		echo "gem: [beaglebone --no-user-install]"
+		gem install beaglebone --no-user-install
+
+		echo "gem: [jekyll --no-user-install ${gem_wheezy}]"
+		gem install jekyll --no-user-install ${gem_wheezy}
 	fi
 }
 
