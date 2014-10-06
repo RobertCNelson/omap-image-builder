@@ -35,6 +35,12 @@ if [ -f /etc/oib.project ] ; then
 	. /etc/oib.project
 fi
 
+export HOME=/home/${rfs_username}
+export USER=${rfs_username}
+export USERNAME=${rfs_username}
+
+echo "env: [`env`]"
+
 is_this_qemu () {
 	unset warn_qemu_will_fail
 	if [ -f /usr/bin/qemu-arm-static ] ; then
