@@ -332,7 +332,7 @@ install_node_pkgs () {
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
 			systemctl enable bonescript.socket
-			
+
 			wfile="/lib/systemd/system/jekyll-autorun.service"
 			echo "[Unit]" > ${wfile}
 			echo "Description=jekyll autorun" >> ${wfile}

@@ -310,6 +310,9 @@ install_node_pkgs () {
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
+			echo "jekyll pre-building bone101"
+			/usr/local/bin/jekyll build
+
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
 			echo "ListenStream=80" >> ${wfile}
@@ -327,6 +330,21 @@ install_node_pkgs () {
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
 			systemctl enable bonescript.socket
+
+			wfile="/lib/systemd/system/jekyll-autorun.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=jekyll autorun" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --watch" >> ${wfile}
+			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=multi-user.target" >> ${wfile}
+
+			systemctl enable jekyll-autorun.service
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
