@@ -309,10 +309,11 @@ install_node_pkgs () {
 		git_target_dir="/var/lib/cloud9"
 		git_clone
 		if [ -f ${git_target_dir}/.git/config ] ; then
-			echo "jekyll pre-building bone101"
-			/usr/local/bin/jekyll build
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
+
+			echo "jekyll pre-building bone101"
+			/usr/local/bin/jekyll build
 
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
