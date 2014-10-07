@@ -332,17 +332,21 @@ install_node_pkgs () {
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
 			systemctl enable bonescript.socket
-
-			wfile="/lib/systemd/system/jekyll.service"
+			
+			wfile="/lib/systemd/system/jekyll-autorun.service"
 			echo "[Unit]" > ${wfile}
-			echo "Description=jekyll server" >> ${wfile}
+			echo "Description=jekyll autorun" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll serve" >> ${wfile}
-			echo "SyslogIdentifier=jekyll" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --watch" >> ${wfile}
+			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=multi-user.target" >> ${wfile}
 
-			systemctl enable jekyll.service
+			systemctl enable jekyll-autorun.service
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
