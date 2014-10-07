@@ -35,6 +35,12 @@ if [ -f /etc/oib.project ] ; then
 	. /etc/oib.project
 fi
 
+export HOME=/home/${rfs_username}
+export USER=${rfs_username}
+export USERNAME=${rfs_username}
+
+echo "env: [`env`]"
+
 is_this_qemu () {
 	unset warn_qemu_will_fail
 	if [ -f /usr/bin/qemu-arm-static ] ; then
@@ -295,12 +301,6 @@ install_node_pkgs () {
 				/bin/sh ./install.sh
 				cd -
 			fi
-
-			#if [ -f /opt/scripts/mods/cloud9-systemd-fix.diff ] ; then
-			#	cd /opt/cloud9/
-			#	patch -p1 < /opt/scripts/mods/cloud9-systemd-fix.diff
-			#	cd /opt/
-			#fi
 		fi
 
 		git_repo="https://github.com/beagleboard/bone101"
@@ -393,10 +393,15 @@ install_pip_pkgs () {
 install_gem_pkgs () {
 	if [ -f /usr/bin/gem ] ; then
 		echo "Installing gem packages"
+		echo "debug: gem: [`gem --version`]"
+		gem_wheezy="--no-rdoc --no-ri"
+		gem_jessie="--no-document"
+
 		echo "gem: [beaglebone]"
 		gem install beaglebone
-		echo "gem: [jekyll --no-document]"
-		gem install jekyll --no-document
+
+		echo "gem: [jekyll ${gem_wheezy}]"
+		gem install jekyll ${gem_wheezy}
 	fi
 }
 

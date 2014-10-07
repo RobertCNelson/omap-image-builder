@@ -391,8 +391,6 @@ install_gem_pkgs () {
 		gem_wheezy="--no-rdoc --no-ri"
 		gem_jessie="--no-document"
 
-		echo "env: [`env`]"
-
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
