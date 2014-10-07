@@ -943,13 +943,20 @@ populate_rootfs () {
 			echo "iface eth0 inet dhcp" >> ${wfile}
 		fi
 
-		#if we have systemd & wicd-gtk, diable eth0 in /etc/network/interfaces
+		#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
 		if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
 			if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
 				sed -i 's/auto eth0/#auto eth0/g' ${wfile}
 				sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
 				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
 			fi
+		fi
+
+		#if we have connman, disable eth0 in /etc/network/interfaces
+		if [ -f ${TEMPDIR}/disk/etc/init.d/connman ] ; then
+			sed -i 's/auto eth0/#auto eth0/g' ${wfile}
+			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
+			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
 		fi
 
 		echo "# Example to keep MAC address between reboots" >> ${wfile}
