@@ -305,13 +305,22 @@ install_node_pkgs () {
 
 		git_repo="https://github.com/beagleboard/bone101"
 		git_target_dir="/var/lib/cloud9"
+
+	if [ -f /usr/local/bin/jekyll ] ; then
 		git_clone
+	else
+		git_clone_full
+	fi
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
 
+		if [ -f /usr/local/bin/jekyll ] ; then
 			echo "jekyll pre-building bone101"
 			/usr/local/bin/jekyll build
+		else
+			git checkout 15ad28c7e8a5d57e133f1ac8dce63a237313f6ad -b tmp
+		fi
 
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
@@ -331,6 +340,7 @@ install_node_pkgs () {
 
 			systemctl enable bonescript.socket
 
+		if [ -f /usr/local/bin/jekyll ] ; then
 			wfile="/lib/systemd/system/jekyll-autorun.service"
 			echo "[Unit]" > ${wfile}
 			echo "Description=jekyll autorun" >> ${wfile}
@@ -345,6 +355,7 @@ install_node_pkgs () {
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
 			systemctl enable jekyll-autorun.service
+		fi
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
@@ -418,8 +429,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
-		echo "gem: [jekyll ${gem_wheezy}]"
-		gem install jekyll ${gem_wheezy}
+#		echo "gem: [jekyll ${gem_wheezy}]"
+#		gem install jekyll ${gem_wheezy}
 	fi
 }
 
