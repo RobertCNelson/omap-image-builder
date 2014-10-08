@@ -307,13 +307,15 @@ install_node_pkgs () {
 
 		git_repo="https://github.com/beagleboard/bone101"
 		git_target_dir="/var/lib/cloud9"
-		git_clone
+		#git_clone
+		git_clone_full
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 			cd ${git_target_dir}/
+			git checkout 15ad28c7e8a5d57e133f1ac8dce63a237313f6ad -b tmp
 
-			echo "jekyll pre-building bone101"
-			/usr/local/bin/jekyll build
+#			echo "jekyll pre-building bone101"
+#			/usr/local/bin/jekyll build
 
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
@@ -333,20 +335,20 @@ install_node_pkgs () {
 
 			systemctl enable bonescript.socket
 
-			wfile="/lib/systemd/system/jekyll-autorun.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=jekyll autorun" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --watch" >> ${wfile}
-			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=multi-user.target" >> ${wfile}
-
-			systemctl enable jekyll-autorun.service
+#			wfile="/lib/systemd/system/jekyll-autorun.service"
+#			echo "[Unit]" > ${wfile}
+#			echo "Description=jekyll autorun" >> ${wfile}
+#			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+#			echo "" >> ${wfile}
+#			echo "[Service]" >> ${wfile}
+#			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
+#			echo "ExecStart=/usr/local/bin/jekyll build --watch" >> ${wfile}
+#			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+#			echo "" >> ${wfile}
+#			echo "[Install]" >> ${wfile}
+#			echo "WantedBy=multi-user.target" >> ${wfile}
+#
+#			systemctl enable jekyll-autorun.service
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
@@ -399,8 +401,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
-		echo "gem: [jekyll ${gem_jessie}]"
-		gem install jekyll ${gem_jessie}
+#		echo "gem: [jekyll ${gem_jessie}]"
+#		gem install jekyll ${gem_jessie}
 	fi
 }
 
