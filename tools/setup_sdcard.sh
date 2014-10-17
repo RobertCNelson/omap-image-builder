@@ -373,10 +373,24 @@ format_partition_error () {
 	exit
 }
 
-format_partition () {
+format_partition_try2 () {
+	echo "-----------------------------"
+	echo "BUG: [${mkfs_partition}] was not available so trying [${mkfs}] again in 5 seconds..."
+	partprobe ${media}
+	sync
+	sleep 5
+	echo "-----------------------------"
+
 	echo "Formating with: [${mkfs} ${mkfs_partition} ${mkfs_label}]"
 	echo "-----------------------------"
 	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_error
+	sync
+}
+
+format_partition () {
+	echo "Formating with: [${mkfs} ${mkfs_partition} ${mkfs_label}]"
+	echo "-----------------------------"
+	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_try2
 	sync
 }
 
@@ -580,11 +594,21 @@ populate_boot () {
 
 	partprobe ${media}
 	if ! mount -t ${mount_partition_format} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
+
 		echo "-----------------------------"
-		echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk to complete populating Boot Partition"
-		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "BUG: [${media_prefix}${media_boot_partition}] was not available so trying to mount again in 5 seconds..."
+		partprobe ${media}
+		sync
+		sleep 5
 		echo "-----------------------------"
-		exit
+
+		if ! mount -t ${mount_partition_format} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
+			echo "-----------------------------"
+			echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk to complete populating Boot Partition"
+			echo "Please retry running the script, sometimes rebooting your system helps."
+			echo "-----------------------------"
+			exit
+		fi
 	fi
 
 	if [ "${spl_name}" ] ; then
@@ -797,11 +821,21 @@ populate_rootfs () {
 
 	partprobe ${media}
 	if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
+
 		echo "-----------------------------"
-		echo "Unable to mount ${media_prefix}${media_rootfs_partition} at ${TEMPDIR}/disk to complete populating rootfs Partition"
-		echo "Please retry running the script, sometimes rebooting your system helps."
+		echo "BUG: [${media_prefix}${media_rootfs_partition}] was not available so trying to mount again in 5 seconds..."
+		partprobe ${media}
+		sync
+		sleep 5
 		echo "-----------------------------"
-		exit
+
+		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
+			echo "-----------------------------"
+			echo "Unable to mount ${media_prefix}${media_rootfs_partition} at ${TEMPDIR}/disk to complete populating rootfs Partition"
+			echo "Please retry running the script, sometimes rebooting your system helps."
+			echo "-----------------------------"
+			exit
+		fi
 	fi
 
 	if [ -f "${DIR}/${ROOTFS}" ] ; then
