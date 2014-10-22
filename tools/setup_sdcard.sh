@@ -861,7 +861,8 @@ populate_rootfs () {
 	unset kms_video
 	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
 		drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
-		kms_video="video=${drm_device_identifier}:1024x768@60e"
+		drm_device_timing=${drm_device_timing:-"1024x768@60e"}
+		kms_video="video=${drm_device_identifier}:${drm_device_timing}"
 	fi
 
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
