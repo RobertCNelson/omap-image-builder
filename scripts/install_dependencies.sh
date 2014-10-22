@@ -22,7 +22,7 @@
 
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="63"
+minimal_debootstrap="64"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
@@ -56,12 +56,5 @@ if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
 
-#added in: 1.0.55
-#if [ ! -f /usr/share/debootstrap/scripts/trusty ] ; then
-#	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/trusty
-#fi
-
-#added in: 1.0.60
-#if [ ! -f /usr/share/debootstrap/scripts/utopic ] ; then
-#	sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/utopic
-#fi
+#1.0.64:
+#added vivid
