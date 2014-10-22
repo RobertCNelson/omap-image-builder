@@ -522,61 +522,40 @@ create_partitions () {
 boot_git_tools () {
 	if [ ! "${offline}" ] && [ "x${bborg_production}" = "xenable" ] ; then
 
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-
-			echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
-			#Not planning to change these too often, once pulled, remove .git stuff...
-			mkdir -p ${TEMPDIR}/drivers/
-			git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-			if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
-				rm -rf ${TEMPDIR}/drivers/.git/ || true
-			fi
-
-			if [ -d ${TEMPDIR}/drivers/App ] ; then
-				mv ${TEMPDIR}/drivers/App ${TEMPDIR}/disk/
-			fi
-			if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
-				mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
-			fi
-			if [ -d ${TEMPDIR}/drivers/Docs ] ; then
-				mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
-			fi
-			if [ -d ${TEMPDIR}/drivers/scripts ] ; then
-				mv ${TEMPDIR}/drivers/scripts ${TEMPDIR}/disk/
-			fi
-			if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
-				mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
-			fi
-			if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
-				mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
-			fi
-			if [ -f ${TEMPDIR}/drivers/README.htm ] ; then
-				mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
-			fi
-			if [ -f ${TEMPDIR}/drivers/README.md ] ; then
-				mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
-			fi
-			if [ -f ${TEMPDIR}/drivers/START.htm ] ; then
-				mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
-			fi
-
+		echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
+		#Not planning to change these too often, once pulled, remove .git stuff...
+		mkdir -p ${TEMPDIR}/drivers/
+		git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
+		if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
+			rm -rf ${TEMPDIR}/drivers/.git/ || true
 		fi
 
-		if [ ! -f ${TEMPDIR}/disk/START.htm ] ; then
-
-			wfile=START.htm
-			echo "<!DOCTYPE html>" > ${TEMPDIR}/disk/${wfile}
-			echo "<html>" >> ${TEMPDIR}/disk/${wfile}
-			echo "<body>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-			echo "<script>" >> ${TEMPDIR}/disk/${wfile}
-			echo "  window.location = \"http://192.168.7.2\";" >> ${TEMPDIR}/disk/${wfile}
-			echo "</script>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-			echo "</body>" >> ${TEMPDIR}/disk/${wfile}
-			echo "</html>" >> ${TEMPDIR}/disk/${wfile}
-			echo "" >> ${TEMPDIR}/disk/${wfile}
-
+		if [ -d ${TEMPDIR}/drivers/App ] ; then
+			mv ${TEMPDIR}/drivers/App ${TEMPDIR}/disk/
+		fi
+		if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
+			mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
+		fi
+		if [ -d ${TEMPDIR}/drivers/Docs ] ; then
+			mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
+		fi
+		if [ -d ${TEMPDIR}/drivers/scripts ] ; then
+			mv ${TEMPDIR}/drivers/scripts ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
+			mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
+			mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/drivers/README.htm ] ; then
+			mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/drivers/README.md ] ; then
+			mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
+		fi
+		if [ -f ${TEMPDIR}/drivers/START.htm ] ; then
+			mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
 		fi
 
 		sync
