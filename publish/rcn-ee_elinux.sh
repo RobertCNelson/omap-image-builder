@@ -9,13 +9,11 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
 
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
-./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
 
 debian_stable="debian-7.7-console-armhf-${time}"
 debian_testing="debian-jessie-console-armhf-${time}"
 
-ubuntu_stable="ubuntu-14.04-console-armhf-${time}"
-ubuntu_testing="ubuntu-utopic-console-armhf-${time}"
+ubuntu_stable="ubuntu-14.04.1-console-armhf-${time}"
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
@@ -47,7 +45,6 @@ mv *.img ../
 cd ..
 rm -rf ${ubuntu_stable}/ || true
 
-${archive} ${ubuntu_testing}.tar
 ${archive} ${debian_testing}.tar
 
 ${archive} BBB-eMMC-flasher-${debian_stable}-2gb.img
