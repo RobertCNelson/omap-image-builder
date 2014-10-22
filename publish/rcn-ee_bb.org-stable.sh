@@ -87,7 +87,7 @@ pre_generic_img
 
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
-options="--img-2gb omap5-uevm-\${base_rootfs}             --dtb omap5-uevm"
+options="--img-2gb omap5-uevm-\${base_rootfs}             --dtb omap5-uevm       --beagleboard.org-production"
 generic_img
 
 ###archive *.tar
