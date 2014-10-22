@@ -1064,6 +1064,15 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ "x${conf_board}" = "xomap5_uevm" ] ; then
+		wfile="/etc/X11/xorg.conf"
+		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
+			sudo sed -i -e 's:modesetting:omap:g' ${TEMPDIR}/disk${wfile}
+			sudo sed -i -e 's:fbdev:omap:g' ${TEMPDIR}/disk${wfile}
+			sudo sed -i -e 's:16:24:g' ${TEMPDIR}/disk${wfile}
+		fi
+	fi
+
 	if [ "${usbnet_mem}" ] ; then
 		echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 	fi
