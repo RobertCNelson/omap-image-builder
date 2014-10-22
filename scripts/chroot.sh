@@ -413,7 +413,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
 			apt-get -y --force-yes install mt7601u-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y --force-yes install ti-sgx-es8-modules-${repo_rcnee_pkg_version} || true
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
