@@ -242,7 +242,7 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 
 	#apt: drop translations
 	echo 'Acquire::Languages "none";' > /tmp/02-no-languages
-	sudo mv /etc/apt/apt.conf.d/02-no-languages /tmp/02-no-languages
+	sudo mv /tmp/02-no-languages ${tempdir}/etc/apt/apt.conf.d/02-no-languages
 
 	#apt: /var/lib/apt/lists/, store compressed only
 	echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
