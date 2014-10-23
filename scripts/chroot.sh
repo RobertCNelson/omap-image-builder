@@ -232,9 +232,20 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
 
+	#apt: emulate apt-get clean:
+	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
+	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /tmp/02apt-get-clean
+	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /tmp/02apt-get-clean
+	echo 'Dir::Cache::pkgcache ""; Dir::Cache::srcpkgcache "";' >> /tmp/02apt-get-clean
+
+	sudo mv /tmp/02apt-get-clean ${tempdir}/etc/apt/apt.conf.d/02apt-get-clean
+
+	#apt: drop translations
+	echo 'Acquire::Languages "none";' > /tmp/02-no-languages
+	sudo mv /etc/apt/apt.conf.d/02-no-languages /tmp/02-no-languages
+
 	#apt: /var/lib/apt/lists/, store compressed only
-	echo "Acquire::GzipIndexes \"true\";" > /tmp/02compress-indexes
-	echo "Acquire::CompressionTypes::Order:: \"gz\";" >> /tmp/02compress-indexes
+	echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
 	sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
 fi
 
@@ -683,6 +694,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			rm -rf /etc/apt/apt.conf || true
 		fi
 		apt-get clean
+		rm -rf /var/lib/apt/lists/*
 
 		rm -f /usr/sbin/policy-rc.d
 
