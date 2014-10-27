@@ -142,6 +142,7 @@ setup_desktop () {
 #		fi
 	fi
 
+	##FIXME: these get cleared out and regenerated on first bootup, might need to copy them from git...
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
 
 		mkdir -p /home/${rfs_username}/.config/lxqt/ || true
