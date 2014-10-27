@@ -142,16 +142,22 @@ setup_desktop () {
 #		fi
 	fi
 
-#	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-#		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
-#
-#		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
-#		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
-#		echo "[desktop]" > ${wfile}
-#		echo "wallpaper_mode=1" >> ${wfile}
-#		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-#		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
-#	fi
+	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
+
+		mkdir -p /home/${rfs_username}/.config/lxqt/ || true
+		wfile="/home/${rfs_username}/.config/lxqt/lxqt.conf"
+		echo "[General]" > ${wfile}
+		echo "__userfile__=true" >> ${wfile}
+		echo "icon_theme=Adwaita" >> ${wfile}
+		echo "theme=flat-dark-alpha" >> ${wfile}
+
+		wfile="/home/${rfs_username}/.config/pcmanfm-qt/lxqt/settings.conf"
+		echo "[desktop]" > ${wfile}
+		echo "Wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+		echo "WallpaperMode=stretch" >> ${wfile}
+
+		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+	fi
 
 	#Disable dpms mode and screen blanking
 	#Better fix for missing cursor
