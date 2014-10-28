@@ -142,21 +142,11 @@ setup_desktop () {
 #		fi
 	fi
 
-	##FIXME: these get cleared out and regenerated on first bootup, might need to copy them from git...
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-
-		mkdir -p /home/${rfs_username}/.config/lxqt/ || true
-		wfile="/home/${rfs_username}/.config/lxqt/lxqt.conf"
-		echo "[General]" > ${wfile}
-		echo "__userfile__=true" >> ${wfile}
-		echo "icon_theme=Adwaita" >> ${wfile}
-		echo "theme=flat-dark-alpha" >> ${wfile}
-
-		wfile="/home/${rfs_username}/.config/pcmanfm-qt/lxqt/settings.conf"
-		echo "[desktop]" > ${wfile}
-		echo "Wallpaper=/opt/desktop-background.jpg" >> ${wfile}
-		echo "WallpaperMode=stretch" >> ${wfile}
-
+		mkdir -p /home/${rfs_username}/.config/ || true
+		if [ -d /opt/scripts/desktop-defaults/jessie/lxqt/ ] ; then
+			cp -rv /opt/scripts/desktop-defaults/jessie/lxqt/* /home/${rfs_username}/.config
+		fi
 		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 	fi
 
