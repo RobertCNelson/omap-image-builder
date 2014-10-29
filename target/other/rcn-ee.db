@@ -64,6 +64,10 @@ Machine: TI OMAP4 PandaBoard
 Method: generic
 Bootloader-sets-root: yes
 
+Machine: TI OMAP4 PandaBoard-ES
+Method: generic
+Bootloader-sets-root: yes
+
 Machine: TI OMAP5 uEVM board
 Method: generic
 Bootloader-sets-root: yes
