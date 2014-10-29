@@ -87,7 +87,15 @@ setup_system () {
 	cd /
 	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
 		if [ -f /usr/bin/patch ] ; then
+			echo "Patching: /etc/profile"
 			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
+		fi
+	fi
+
+	if [ -f /opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
+		if [ -f /usr/bin/patch ] ; then
+			echo "Patching: /lib/udev/rules.d/70-power-switch.rules"
+			patch -p1 < /opt/scripts/mods/jessie-systemd-poweroff.diff
 		fi
 	fi
 
