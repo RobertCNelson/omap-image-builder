@@ -1,5 +1,17 @@
 # somewhat RFC2822 based, but case sensitive, not tolerant to spaces etc.
 
+Machine: Olimex A10-OLinuXino-LIME
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Olimex A20-OLinuXino-LIME
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: Olimex A20-OLinuXino-LIME2
+Method: generic
+Bootloader-sets-root: yes
+
 Machine: Freescale i.MX51 Babbage Board
 Method: generic
 Bootloader-sets-root: yes
@@ -33,6 +45,10 @@ Method: generic
 Bootloader-sets-root: yes
 
 Machine: TI AM335x BeagleBone
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI AM335x BeagleBone Black
 Method: generic
 Bootloader-sets-root: yes
 
