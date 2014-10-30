@@ -64,15 +64,14 @@ eewiki.net: Debian Stable (armhf) barefs:
 
 elinux.org: Debian Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
-    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_testing_armhf
-    http://elinux.org/BeagleBoardUbuntu#Demo_Image
-
-elinux.org: Ubuntu Images:
-
     ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
     ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
     http://elinux.org/BeagleBoardDebian#Demo_Image
+
+elinux.org: Ubuntu Images:
+
+    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
+    http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
 Release Process:
 
