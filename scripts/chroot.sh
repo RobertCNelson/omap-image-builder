@@ -247,6 +247,10 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#apt: /var/lib/apt/lists/, store compressed only
 	echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
 	sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
+
+	#apt: make sure apt-cacher-ng doesn't break oracle-java8-installer
+	echo 'Acquire::http::Proxy::download.oracle.com "DIRECT";' > /tmp/03-proxy-oracle
+	sudo mv /tmp/03-proxy-oracle ${tempdir}/etc/apt/apt.conf.d/03-proxy-oracle
 fi
 
 #set initial 'seed' time...
