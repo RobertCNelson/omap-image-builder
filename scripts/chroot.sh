@@ -301,10 +301,10 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	echo "#" >> ${wfile}
 	echo "#git clone https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
 	echo "#cd ./linux-stable-rcn-ee" >> ${wfile}
-	echo "#git fetch --tags" >> ${wfile}
 	echo "#git checkout \`uname -r\` -b tmp" >> ${wfile}
 	echo "#" >> ${wfile}
 	echo "deb [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
+	echo "#deb-src [arch=armhf] http://repos.rcn-ee.net/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
 
 	sudo cp -v ${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
 fi
