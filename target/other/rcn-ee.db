@@ -12,6 +12,10 @@ Machine: Olimex A20-OLinuXino-LIME2
 Method: generic
 Bootloader-sets-root: yes
 
+Machine: Olimex A20-Olinuxino Micro
+Method: generic
+Bootloader-sets-root: yes
+
 Machine: Freescale i.MX51 Babbage Board
 Method: generic
 Bootloader-sets-root: yes
@@ -49,6 +53,10 @@ Method: generic
 Bootloader-sets-root: yes
 
 Machine: TI AM335x BeagleBone Black
+Method: generic
+Bootloader-sets-root: yes
+
+Machine: TI AM5728 BeagleBoard-X15
 Method: generic
 Bootloader-sets-root: yes
 
