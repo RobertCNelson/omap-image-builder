@@ -519,6 +519,21 @@ unsecure_root () {
 	fi
 }
 
+todo () {
+	#stuff i need to package in repos.rcn-ee.net
+	#
+	cd /
+	if [ ! -f /etc/Wireless/RT2870STA/RT2870STA.dat ] ; then
+		mkdir -p /etc/Wireless/RT2870STA/
+		cd /etc/Wireless/RT2870STA/
+		wget https://raw.githubusercontent.com/rcn-ee/mt7601u/master/src/RT2870STA.dat
+		cd /
+	fi
+	if [ ! -f /etc/modules-load.d/mt7601.conf ] ; then
+		echo "mt7601Usta" > /etc/modules-load.d/mt7601.conf
+	fi
+}
+
 is_this_qemu
 
 setup_system
@@ -533,4 +548,5 @@ fi
 #install_build_pkgs
 other_source_links
 unsecure_root
+todo
 #
