@@ -207,6 +207,16 @@ setup_desktop () {
 #			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
 #		fi
 #	fi
+
+	if [ -f /usr/bin/pastebinit ] ; then
+		wfile="/home/${rfs_username}/.pastebinit.xml"
+		echo "<pastebinit>" > ${wfile}
+		echo "    <pastebin>http://paste.debian.net</pastebin>" > ${wfile}
+		echo "    <author>anonymous</author>" > ${wfile}
+		echo "    <jabberid>author@example.net</jabberid>" > ${wfile}
+		echo "    <format>text</format>" > ${wfile}
+		echo "</pastebinit>" > ${wfile}
+	fi
 }
 
 cleanup_npm_cache () {
