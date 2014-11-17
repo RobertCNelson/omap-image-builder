@@ -261,6 +261,9 @@ generate_soc () {
 	echo "conf_boot_endmb=${conf_boot_endmb}" >> ${wfile}
 	echo "sfdisk_fstype=${sfdisk_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
+	echo "boot_label=${BOOT_LABEL}" >> ${wfile}
+	echo "rootfs_label=${ROOTFS_LABEL}" >> ${wfile}
+	echo "" >> ${wfile}
 	echo "#Kernel" >> ${wfile}
 	echo "dtb=${dtb}" >> ${wfile}
 	echo "serial_tty=${SERIAL}" >> ${wfile}
