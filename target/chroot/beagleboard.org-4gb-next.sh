@@ -208,6 +208,7 @@ setup_desktop () {
 #		fi
 #	fi
 
+	#ti: firewall blocks pastebin.com
 	if [ -f /usr/bin/pastebinit ] ; then
 		wfile="/home/${rfs_username}/.pastebinit.xml"
 		echo "<pastebinit>" > ${wfile}
@@ -216,6 +217,12 @@ setup_desktop () {
 		echo "    <jabberid>author@example.net</jabberid>" > ${wfile}
 		echo "    <format>text</format>" > ${wfile}
 		echo "</pastebinit>" > ${wfile}
+	fi
+
+	#fix Ping:
+	#ping: icmp open socket: Operation not permitted
+	if [ -f /bin/ping ] ; then
+		chmod u+x /bin/ping
 	fi
 }
 
