@@ -212,11 +212,11 @@ setup_desktop () {
 	if [ -f /usr/bin/pastebinit ] ; then
 		wfile="/home/${rfs_username}/.pastebinit.xml"
 		echo "<pastebinit>" > ${wfile}
-		echo "    <pastebin>http://paste.debian.net</pastebin>" > ${wfile}
-		echo "    <author>anonymous</author>" > ${wfile}
-		echo "    <jabberid>author@example.net</jabberid>" > ${wfile}
-		echo "    <format>text</format>" > ${wfile}
-		echo "</pastebinit>" > ${wfile}
+		echo "    <pastebin>http://paste.debian.net</pastebin>" >> ${wfile}
+		echo "    <author>anonymous</author>" >> ${wfile}
+		echo "    <jabberid>author@example.net</jabberid>" >> ${wfile}
+		echo "    <format>text</format>" >> ${wfile}
+		echo "</pastebinit>" >> ${wfile}
 	fi
 
 	#fix Ping:
