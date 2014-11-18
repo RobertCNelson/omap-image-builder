@@ -25,6 +25,8 @@ host_arch="$(uname -m)"
 time=$(date +%Y-%m-%d)
 OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
 
+abi=aa
+
 . ${DIR}/.project
 
 check_defines () {
@@ -358,6 +360,7 @@ echo "distro=${distro}" > /tmp/rcn-ee.conf
 echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 echo "release_date=${time}" >> /tmp/rcn-ee.conf
 echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
+echo "abi=${abi}" >> /tmp/rcn-ee.conf
 sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 cat > ${DIR}/chroot_script.sh <<-__EOF__
