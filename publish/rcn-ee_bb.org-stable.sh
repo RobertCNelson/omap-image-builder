@@ -58,9 +58,9 @@ compress_img () {
 base_rootfs="${debian_lxde_4gb_stable}"
 pre_generic_img
 
-options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher"
+options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher"
 generic_img
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
 options="--img-4gb bone-\${base_rootfs}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
 generic_img
@@ -69,7 +69,7 @@ generic_img
 base_rootfs="${debian_lxde_stable}"
 pre_generic_img
 
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
 
 ###console images: (also single partition)
@@ -85,7 +85,7 @@ generic_img
 base_rootfs="${debian_lxqt_next}"
 pre_generic_img
 
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc"
 generic_img
 options="--img-2gb omap5-uevm-\${base_rootfs}             --dtb omap5-uevm       --beagleboard.org-production"
 generic_img
