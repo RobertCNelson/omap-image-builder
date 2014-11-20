@@ -364,7 +364,7 @@ install_node_pkgs () {
 			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
-			systemctl enable bonescript.socket
+			systemctl enable bonescript.socket || true
 
 		if [ -f /usr/local/bin/jekyll ] ; then
 			wfile="/lib/systemd/system/jekyll-autorun.service"
@@ -380,7 +380,7 @@ install_node_pkgs () {
 			echo "[Install]" >> ${wfile}
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
-			systemctl enable jekyll-autorun.service
+			systemctl enable jekyll-autorun.service || true
 		fi
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
@@ -397,7 +397,7 @@ install_node_pkgs () {
 			echo "[Install]" >> ${wfile}
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
-			systemctl enable bonescript-autorun.service
+			systemctl enable bonescript-autorun.service || true
 
 			if [ -d /etc/apache2/ ] ; then
 				#bone101 takes over port 80, so shove apache/etc to 8080:
