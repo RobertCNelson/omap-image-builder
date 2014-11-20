@@ -322,7 +322,7 @@ install_node_pkgs () {
 
 			if [ -f /opt/cloud9/install.sh ] ; then
 				cd /opt/cloud9/
-				/bin/sh ./install.sh
+				/bin/sh ./install.sh || true
 				echo "cloud9: jessie"
 				systemctl enable cloud9.socket
 				cd -
