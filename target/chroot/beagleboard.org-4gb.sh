@@ -87,6 +87,7 @@ setup_system () {
 	cd /
 	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
 		if [ -f /usr/bin/patch ] ; then
+			echo "Patching: /etc/profile"
 			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
 		fi
 	fi
@@ -203,6 +204,7 @@ setup_desktop () {
 		fi
 	fi
 
+	#ti: firewall blocks pastebin.com
 	if [ -f /usr/bin/pastebinit ] ; then
 		wfile="/home/${rfs_username}/.pastebinit.xml"
 		echo "<pastebinit>" > ${wfile}
@@ -487,6 +489,10 @@ install_git_repos () {
 	git_branch="3.14-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+
+	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
+	git_target_dir="/opt/source/pru-software-support-package"
+	git_clone
 }
 
 install_build_pkgs () {

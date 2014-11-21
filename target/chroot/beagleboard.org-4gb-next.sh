@@ -324,7 +324,7 @@ install_node_pkgs () {
 				cd /opt/cloud9/
 				/bin/sh ./install.sh || true
 				echo "cloud9: jessie"
-				systemctl enable cloud9.socket
+				systemctl enable cloud9.socket || true
 				cd -
 			fi
 		fi
@@ -500,6 +500,10 @@ install_git_repos () {
 	git_branch="3.14-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+
+	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
+	git_target_dir="/opt/source/pru-software-support-package"
+	git_clone
 }
 
 install_build_pkgs () {
