@@ -318,11 +318,6 @@ install_node_pkgs () {
 				rm -rf /opt/cloud9/c9v3-beaglebone-build-2-20140414 || true
 			fi
 
-			#cd /opt/cloud9/build/standalonebuild/node_modules/
-			#pkg_list="heapdump connect-flash ua-parser-js engine.io-client simplefunc nak pty.js"
-			#TERM=dumb npm install ${pkg_list} --arch=armhf
-			#cd /opt/
-
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
 			if [ -f /opt/cloud9/install.sh ] ; then
