@@ -1235,56 +1235,21 @@ while [ ! -z "$1" ] ; do
 		check_root
 		check_mmc
 		;;
-	--img-1gb)
+	--img|--img-[1248]gb)
 		checkparm $2
-		imagename="$2"
-		if [ "x${imagename}" = "x" ] ; then
-			imagename=image.img
-		fi
-		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
-		imagename="${name}-1gb.img"
+		name=${2:-image}
+		gsize=$(echo "$1" | sed -ne 's/^--img-\([[:digit:]]\+\)gb$/\1/p')
+		# --img defaults to --img-2gb
+		gsize=${gsize:-2}
+		imagename=${name%.img}-${gsize}gb.img
 		media="${DIR}/${imagename}"
 		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
 		fi
-		#FIXME: 700Mb initial size... (should fit most 1Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*700]
-		;;
-	--img|--img-2gb)
-		checkparm $2
-		imagename="$2"
-		if [ "x${imagename}" = "x" ] ; then
-			imagename=image.img
-		fi
-		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
-		imagename="${name}-2gb.img"
-		media="${DIR}/${imagename}"
-		build_img_file="enable"
-		check_root
-		if [ -f "${media}" ] ; then
-			rm -rf "${media}" || true
-		fi
-		#FIXME: 1,700Mb initial size... (should fit most 2Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*1700]
-		;;
-	--img-4gb)
-		checkparm $2
-		imagename="$2"
-		if [ "x${imagename}" = "x" ] ; then
-			imagename=image.img
-		fi
-		name=$(echo ${imagename} | awk -F '.img' '{print $1}')
-		imagename="${name}-4gb.img"
-		media="${DIR}/${imagename}"
-		build_img_file="enable"
-		check_root
-		if [ -f "${media}" ] ; then
-			rm -rf "${media}" || true
-		fi
-		#FIXME: (should fit most 4Gb microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$[1024*3700]
+		#FIXME: (should fit most microSD cards)
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (700 + (gsize - 1) * 1000)))
 		;;
 	--dtb)
 		checkparm $2
