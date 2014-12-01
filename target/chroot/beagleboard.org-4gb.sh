@@ -298,11 +298,30 @@ install_node_pkgs () {
 
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
-			if [ -f /opt/cloud9/install.sh ] ; then
-				cd /opt/cloud9/
-				/bin/sh ./install.sh || true
-				cd /opt/
-			fi
+			wfile="/etc/default/cloud9"
+			echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
+			echo "HOME=/root" >> ${wfile}
+			echo "PORT=3000" >> ${wfile}
+
+			wfile="/lib/systemd/system/cloud9.socket"
+			echo "[Socket]" > ${wfile}
+			echo "ListenStream=3000" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=sockets.target" >> ${wfile}
+
+			wfile="/lib/systemd/system/cloud9.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=Cloud9 IDE" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/opt/cloud9/build/standalonebuild" >> ${wfile}
+			echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
+			echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9" >> ${wfile}
+			echo "SyslogIdentifier=cloud9ide" >> ${wfile}
+
+			systemctl enable cloud9.socket || true
 		fi
 
 		git_repo="https://github.com/beagleboard/bone101"
