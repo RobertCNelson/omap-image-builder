@@ -274,11 +274,11 @@ install_node_pkgs () {
 			fi
 		fi
 
-		#Cloud9:
-		if [ -f /usr/bin/make ] ; then
-			echo "Installing winston"
-			TERM=dumb npm install -g winston --arch=armhf
-		fi
+#		#Cloud9:
+#		if [ -f /usr/bin/make ] ; then
+#			echo "Installing winston"
+#			TERM=dumb npm install -g winston --arch=armhf
+#		fi
 
 		cleanup_npm_cache
 		sync
