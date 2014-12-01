@@ -24,7 +24,7 @@ export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2014.10"
-cloud9_pkg="c9v3-beaglebone-build-2-20140414.tar.gz"
+cloud9_pkg="c9v3_3.0.1-git20140211-build.tar.xz"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -274,27 +274,21 @@ install_node_pkgs () {
 			fi
 		fi
 
-#		#Cloud9:
-#		if [ -f /usr/bin/make ] ; then
-#			echo "Installing winston"
-#			TERM=dumb npm install -g winston --arch=armhf
-#		fi
+		#Cloud9:
+		if [ -f /usr/bin/make ] ; then
+			echo "Installing winston"
+			TERM=dumb npm install -g winston --arch=armhf
+		fi
 
 		cleanup_npm_cache
 		sync
 
 		cd /opt/
-		mkdir -p /opt/cloud9/
+		mkdir -p /opt/cloud9/build/ || true
 		wget https://rcn-ee.net/pkgs/c9v3/${cloud9_pkg}
 		if [ -f /opt/${cloud9_pkg} ] ; then
-			tar xf ${cloud9_pkg} -C /opt/cloud9/
+			tar xf ${cloud9_pkg} -C /opt/cloud9/build/
 			rm -rf ${cloud9_pkg} || true
-
-			#Fixme: archive structure changed in c9v3-beaglebone-build-2-20140414...
-			if [ -d /opt/cloud9/c9v3-beaglebone-build-2-20140414 ] ; then
-				mv /opt/cloud9/c9v3-beaglebone-build-2-20140414/* /opt/cloud9/
-				rm -rf /opt/cloud9/c9v3-beaglebone-build-2-20140414 || true
-			fi
 
 			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
 
