@@ -797,6 +797,13 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 	fi
 fi
 
+if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
+	report_size
+	echo "Calling early_chroot_script script: ${early_chroot_script}"
+	sudo /bin/sh -e ${DIR}/target/chroot/${early_chroot_script} ${tempdir}
+	early_chroot_script=""
+fi
+
 chroot_mount
 sudo chroot ${tempdir} /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
