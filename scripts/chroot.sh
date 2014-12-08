@@ -369,6 +369,12 @@ echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 echo "abi=${abi}" >> /tmp/rcn-ee.conf
 sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
+#use /etc/dogtag for all:
+if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+	echo "${rts_etc_dogtag} ${release_date}" > /tmp/dogtag
+	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
+fi
+
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C

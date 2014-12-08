@@ -175,8 +175,6 @@ setup_desktop () {
 #		rm -rf /tmp/autostart || true
 #	fi
 
-	echo "BeagleBoard.org BeagleBone Debian Image ${release_date}" > /etc/dogtag
-
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 
 #	#root password is blank, so remove useless application as it requires a password.
