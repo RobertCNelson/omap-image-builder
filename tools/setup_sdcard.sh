@@ -1047,7 +1047,7 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${conf_board}" = "xomap5_uevm" ] ; then
+	if [ "x${conf_board}" = "xomap5_uevm" ] || [ "x${conf_board}" = "xbeagle_x15" ] ; then
 		wfile="/etc/X11/xorg.conf"
 		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
 			sudo sed -i -e 's:modesetting:omap:g' ${TEMPDIR}/disk${wfile}
