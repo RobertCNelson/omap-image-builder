@@ -338,24 +338,32 @@ install_node_pkgs () {
 			systemctl enable cloud9.socket || true
 		fi
 
-		git_repo="https://github.com/beagleboard/bone101"
-		git_target_dir="/var/lib/cloud9"
-
-	if [ -f /usr/local/bin/jekyll ] ; then
-		git_clone
-	else
-		git_clone_full
-	fi
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
-			cd ${git_target_dir}/
-
 		if [ -f /usr/local/bin/jekyll ] ; then
-			echo "jekyll pre-building bone101"
-			/usr/local/bin/jekyll build --destination bone101
-		else
-			git checkout 15ad28c7e8a5d57e133f1ac8dce63a237313f6ad -b tmp
-		fi
+			git_repo="https://github.com/beagleboard/bone101"
+			git_target_dir="/var/lib/cloud9"
+			git_clone
+
+			if [ -f ${git_target_dir}/.git/config ] ; then
+				chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
+				cd ${git_target_dir}/
+				echo "jekyll pre-building bone101"
+				/usr/local/bin/jekyll build --destination bone101
+			fi
+
+			wfile="/lib/systemd/system/jekyll-autorun.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=jekyll autorun" >> ${wfile}
+			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
+			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=multi-user.target" >> ${wfile}
+
+			systemctl enable jekyll-autorun.service || true
 
 			wfile="/lib/systemd/system/bonescript.socket"
 			echo "[Socket]" > ${wfile}
@@ -374,23 +382,6 @@ install_node_pkgs () {
 			echo "SyslogIdentifier=bonescript" >> ${wfile}
 
 			systemctl enable bonescript.socket || true
-
-		if [ -f /usr/local/bin/jekyll ] ; then
-			wfile="/lib/systemd/system/jekyll-autorun.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=jekyll autorun" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
-			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=multi-user.target" >> ${wfile}
-
-			systemctl enable jekyll-autorun.service || true
-		fi
 
 			wfile="/lib/systemd/system/bonescript-autorun.service"
 			echo "[Unit]" > ${wfile}
