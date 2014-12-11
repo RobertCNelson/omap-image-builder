@@ -330,7 +330,7 @@ install_node_pkgs () {
 
 		if [ -f /usr/local/bin/jekyll ] ; then
 			echo "jekyll pre-building bone101"
-			/usr/local/bin/jekyll build
+			/usr/local/bin/jekyll build --destination bone101
 		else
 			git checkout 15ad28c7e8a5d57e133f1ac8dce63a237313f6ad -b tmp
 		fi
@@ -361,7 +361,7 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --watch" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Install]" >> ${wfile}
