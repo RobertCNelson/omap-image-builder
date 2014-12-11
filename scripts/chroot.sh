@@ -371,7 +371,7 @@ sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 #use /etc/dogtag for all:
 if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
-	echo "${rts_etc_dogtag} ${release_date}" > /tmp/dogtag
+	echo "${rts_etc_dogtag} ${time}" > /tmp/dogtag
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
