@@ -442,8 +442,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
-#		echo "gem: [jekyll ${gem_wheezy}]"
-#		gem install jekyll ${gem_wheezy}
+		echo "gem: [jekyll ${gem_wheezy}]"
+		gem install jekyll ${gem_wheezy}
 	fi
 }
 

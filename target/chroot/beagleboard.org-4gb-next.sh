@@ -451,8 +451,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
-#		echo "gem: [jekyll ${gem_jessie}]"
-#		gem install jekyll ${gem_jessie}
+		echo "gem: [jekyll ${gem_jessie}]"
+		gem install jekyll ${gem_jessie}
 	fi
 }
 
