@@ -806,8 +806,10 @@ fi
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
 	report_size
 	echo "Calling early_chroot_script script: ${early_chroot_script}"
+	sudo cp -v ${DIR}/.project ${tempdir}/etc/oib.project
 	sudo /bin/sh -e ${DIR}/target/chroot/${early_chroot_script} ${tempdir}
 	early_chroot_script=""
+	sudo rm -f ${tempdir}/etc/oib.project || true
 fi
 
 chroot_mount
