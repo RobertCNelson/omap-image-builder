@@ -237,7 +237,7 @@ setup_desktop () {
 
 	#systemd replaces ntpdate:
 	#systemd 216 enables systemd-timesyncd by default...
-	systemctl enable systemd-timesyncd
+	systemctl enable systemd-timesyncd || true
 	timedatectl set-timezone America/North_Dakota/Center
 }
 
