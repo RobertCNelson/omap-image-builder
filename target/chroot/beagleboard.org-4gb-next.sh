@@ -243,7 +243,7 @@ setup_desktop () {
 	chown systemd-timesync:systemd-timesync /var/lib/systemd/clock
 
 	#timedatectl set-timezone America/North_Dakota/Center
-	echo "America/North_Dakota/Center" > /etc/timezone
+	#echo "America/North_Dakota/Center" > /etc/timezone
 }
 
 cleanup_npm_cache () {
