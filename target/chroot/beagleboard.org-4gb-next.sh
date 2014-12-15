@@ -237,8 +237,9 @@ setup_desktop () {
 
 	#systemd replaces ntpdate:
 	#systemd 216 enables systemd-timesyncd by default...
-	systemctl enable systemd-timesyncd || true
-	timedatectl set-timezone America/North_Dakota/Center
+	systemctl enable systemd-timesyncd.service || true
+
+	#timedatectl set-timezone America/North_Dakota/Center
 }
 
 cleanup_npm_cache () {
