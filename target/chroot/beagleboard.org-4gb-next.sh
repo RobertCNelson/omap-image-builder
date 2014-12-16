@@ -234,16 +234,6 @@ setup_desktop () {
 		echo "" >> ${wfile}
 		echo "dhcp-option=3" >> ${wfile}
 	fi
-
-	#systemd replaces ntpdate:
-	#systemd 216 enables systemd-timesyncd by default...
-	systemctl enable systemd-timesyncd.service || true
-
-	touch /var/lib/systemd/clock
-	chown systemd-timesync:systemd-timesync /var/lib/systemd/clock
-
-	#timedatectl set-timezone America/North_Dakota/Center
-	#echo "America/North_Dakota/Center" > /etc/timezone
 }
 
 cleanup_npm_cache () {

@@ -706,6 +706,25 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	}
 
+	systemd_tweaks () {
+		#We have systemd, so lets use it..
+
+		#systemd v215: systemd-timesyncd.service replaces ntpdate
+		#enabled by default in v216 (not in jessie)
+		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
+			systemctl enable systemd-timesyncd.service || true
+
+			#set our own initial date stamp, otherwise we get July 2014
+			touch /var/lib/systemd/clock
+			chown systemd-timesync:systemd-timesync /var/lib/systemd/clock
+
+			#Remove ntpdate
+			if [ -f /usr/sbin/ntpdate ] ; then
+				apt-get remove -y --force-yes ntpdate --purge || true
+			fi
+		fi
+	}
+
 	cleanup () {
 		mkdir -p /boot/uboot/
 
@@ -762,6 +781,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		fi
 	else
 		dpkg_package_missing
+	fi
+
+	if [ -f /lib/systemd/systemd ] ; then
+		systemd_tweaks
 	fi
 
 	cleanup
