@@ -712,6 +712,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
+			echo "Log: (chroot): enabling: systemd-timesyncd.service"
 			systemctl enable systemd-timesyncd.service || true
 
 			#set our own initial date stamp, otherwise we get July 2014
