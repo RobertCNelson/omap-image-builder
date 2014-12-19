@@ -24,7 +24,6 @@ export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2015.01-rc3"
-cloud9_pkg="c9v3_3.0.1-git20140211-build.tar.xz"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -268,49 +267,20 @@ install_node_pkgs () {
 			fi
 		fi
 
-		#Cloud9:
-		if [ -f /usr/bin/make ] ; then
-			echo "Installing winston"
-			TERM=dumb npm install -g winston --arch=armhf
+		cd /opt/
+
+		#cloud9 installed by cloud9-installer
+		if [ -d /opt/cloud9/build/standalonebuild ] ; then
+			if [ -f /usr/bin/make ] ; then
+				echo "Installing winston"
+				TERM=dumb npm install -g winston --arch=armhf
+			fi
+
+			systemctl enable cloud9.socket || true
 		fi
 
 		cleanup_npm_cache
 		sync
-
-		cd /opt/
-		mkdir -p /opt/cloud9/build/ || true
-		wget https://rcn-ee.net/pkgs/c9v3/${cloud9_pkg}
-		if [ -f /opt/${cloud9_pkg} ] ; then
-			tar xf ${cloud9_pkg} -C /opt/cloud9/build/
-			rm -rf ${cloud9_pkg} || true
-
-			chown -R ${rfs_username}:${rfs_username} /opt/cloud9/
-
-			wfile="/etc/default/cloud9"
-			echo "NODE_PATH=/usr/local/lib/node_modules" > ${wfile}
-			echo "HOME=/root" >> ${wfile}
-			echo "PORT=3000" >> ${wfile}
-
-			wfile="/lib/systemd/system/cloud9.socket"
-			echo "[Socket]" > ${wfile}
-			echo "ListenStream=3000" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=sockets.target" >> ${wfile}
-
-			wfile="/lib/systemd/system/cloud9.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Cloud9 IDE" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/opt/cloud9/build/standalonebuild" >> ${wfile}
-			echo "EnvironmentFile=/etc/default/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/bin/node server.js --packed -w /var/lib/cloud9" >> ${wfile}
-			echo "SyslogIdentifier=cloud9ide" >> ${wfile}
-
-			systemctl enable cloud9.socket || true
-		fi
 
 		if [ -f /usr/local/bin/jekyll ] ; then
 			git_repo="https://github.com/beagleboard/bone101"
