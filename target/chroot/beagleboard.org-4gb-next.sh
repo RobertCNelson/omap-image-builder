@@ -312,6 +312,10 @@ install_node_pkgs () {
 			if [ -f ${git_target_dir}/.git/config ] ; then
 				chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
 				cd ${git_target_dir}/
+
+				#patch around jekyll always regenerating from cloud9 changes..
+				sed -i "s/include: [.c9]//g" _config.yml
+
 				echo "jekyll pre-building bone101"
 				/usr/local/bin/jekyll build --destination bone101
 			fi
