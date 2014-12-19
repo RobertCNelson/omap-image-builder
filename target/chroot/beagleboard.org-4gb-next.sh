@@ -314,7 +314,8 @@ install_node_pkgs () {
 				cd ${git_target_dir}/
 
 				#patch around jekyll always regenerating from cloud9 changes..
-				sed -i "s/include: [.c9]//g" _config.yml
+				echo "baseurl: /bone101" > /var/lib/cloud9/_config.yml
+				echo "timezone: America/New_York" >>  /var/lib/cloud9/_config.yml
 
 				echo "jekyll pre-building bone101"
 				/usr/local/bin/jekyll build --destination bone101
