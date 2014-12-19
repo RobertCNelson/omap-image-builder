@@ -277,10 +277,6 @@ install_node_pkgs () {
 		npm config set user 0
 		npm config set userconfig /root/.npmrc
 
-		#http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
-		#The cause: npm no longer supports its self-signed certificates.
-		#npm config set ca ""
-
 		#echo "debug: npm config ls -l (after)"
 		#echo "--------------------------------"
 		#npm config ls -l
