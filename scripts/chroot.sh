@@ -735,6 +735,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get clean
 		rm -rf /var/lib/apt/lists/*
 
+		if [ -d /var/cache/cloud9-installer/ ] ; then
+			rm -rf /var/cache/cloud9-installer/ || true
+		fi
 		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
 			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
 		fi
