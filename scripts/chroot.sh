@@ -401,7 +401,7 @@ if [ ! "x${rts_ssh_banner}" = "x" ] ; then
 	echo "${rts_ssh_banner}" >> /tmp/issue.net
 	echo "" >> /tmp/issue.net
 	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
-		echo "password for: [$rfs_username] = [$rfs_password]" >> /tmp/issue.net
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /tmp/issue.net
 		echo "" >> /tmp/issue.net
 	fi
 	sudo mv /tmp/issue.net ${tempdir}/etc/issue.net
