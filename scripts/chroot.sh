@@ -380,6 +380,33 @@ if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
+if [ ! "x${rts_console_banner}" = "x" ] ; then
+	cat ${tempdir}/etc/issue > /tmp/issue
+	echo "${rts_console_banner}" >> /tmp/issue
+	echo "" >> /tmp/issue
+	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /tmp/issue
+		echo "" >> /tmp/issue
+	fi
+	sudo mv /tmp/issue ${tempdir}/etc/issue
+fi
+
+if [ ! "x${rts_ssh_banner}" = "x" ] ; then
+	cat ${tempdir}/etc/issue.net > /tmp/issue.net
+	echo "" >> /tmp/issue.net
+	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+		cat ${tempdir}/etc/dogtag >> /tmp/issue.net
+		echo "" >> /tmp/issue.net
+	fi
+	echo "${rts_ssh_banner}" >> /tmp/issue.net
+	echo "" >> /tmp/issue.net
+	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
+		echo "password for: [$rfs_username] = [$rfs_password]" >> /tmp/issue.net
+		echo "" >> /tmp/issue.net
+	fi
+	sudo mv /tmp/issue.net ${tempdir}/etc/issue.net
+fi
+
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
@@ -626,9 +653,6 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		mkdir -p /home/${rfs_username}/bin
 		chown ${rfs_username}:${rfs_username} /home/${rfs_username}/bin
-
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /etc/issue
-		echo "" >> /etc/issue
 
 		case "\${distro}" in
 		Debian)

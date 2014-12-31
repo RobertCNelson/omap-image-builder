@@ -177,18 +177,6 @@ setup_desktop () {
 		rm -f /usr/share/applications/gksu.desktop || true
 	fi
 
-	#Add Website for Help:
-	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue
-	echo "" >> /etc/issue
-
-	echo "" >> /etc/issue.net
-	cat /etc/dogtag >> /etc/issue.net
-	echo "" >> /etc/issue.net
-	echo "Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian" >> /etc/issue.net
-	echo "" >> /etc/issue.net
-	echo "password for: [$rfs_username] = [$rfs_password]" >> /etc/issue.net
-	echo "" >> /etc/issue.net
-
 	if [ -f /etc/ssh/sshd_config ] ; then
 		sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
 	fi
