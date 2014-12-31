@@ -496,6 +496,7 @@ other_source_links () {
 	rcn_https="https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches"
 
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
+	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-spl-mmc-Fix-raw-boot-mode-related-to-commit-4c5bbc23.patch
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
 
