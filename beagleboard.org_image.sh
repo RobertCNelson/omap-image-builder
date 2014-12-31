@@ -54,27 +54,27 @@ compress_img () {
 base_rootfs="${debian_lxde_4gb_stable}"
 pre_generic_img
 
-options="--img-4gb BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher"
+options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} --dtb bbb-blank-eeprom --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher --hostname beaglebone"
 generic_img
-options="--img-4gb BBB-eMMC-flasher-${debian_lxde_4gb_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
-options="--img-4gb bone-${debian_lxde_4gb_stable}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
+options="--img-4gb bone-\${base_rootfs}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
 
 ###lxde images: (BBB: 2GB eMMC)
 base_rootfs="${debian_lxde_stable}"
 pre_generic_img
 
-options="--img-2gb BBB-eMMC-flasher-${debian_lxde_stable}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label eMMC-Flasher --bbb-flasher  --bbb-old-bootloader-in-emmc"
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
 
 ###console images: (also single partition)
 base_rootfs="${debian_console_stable}"
 pre_generic_img
 
-options="--img-2gb BBB-eMMC-flasher-${debian_console_stable}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher --bbb-old-bootloader-in-emmc"
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs}       --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-flasher --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
-options="--img-2gb bone-${debian_console_stable}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc"
+options="--img-2gb bone-\${base_rootfs}                   --dtb beaglebone       --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
 
 ###archive *.tar
