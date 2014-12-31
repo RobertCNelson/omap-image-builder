@@ -1071,6 +1071,22 @@ populate_rootfs () {
 		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
 	fi
 
+	if [ ! "x${new_hostname}" = "x" ] ; then
+		echo "Updating Image hostname too: [${new_hostname}]"
+
+		wfile="/etc/hosts"
+		echo "127.0.0.1	localhost" > ${TEMPDIR}/disk${wfile}
+		echo "127.0.1.1	${new_hostname}.localdomain	${new_hostname}" >> ${TEMPDIR}/disk${wfile}
+		echo "" >> ${TEMPDIR}/disk${wfile}
+		echo "# The following lines are desirable for IPv6 capable hosts" >> ${TEMPDIR}/disk${wfile}
+		echo "::1     localhost ip6-localhost ip6-loopback" >> ${TEMPDIR}/disk${wfile}
+		echo "ff02::1 ip6-allnodes" >> ${TEMPDIR}/disk${wfile}
+		echo "ff02::2 ip6-allrouters" >> ${TEMPDIR}/disk${wfile}
+
+		wfile="/etc/hostname"
+		echo "${new_hostname}" > ${TEMPDIR}/disk${wfile}
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
@@ -1226,6 +1242,10 @@ while [ ! -z "$1" ] ; do
 	-h|--help)
 		usage
 		media=1
+		;;
+	--hostname)
+		checkparm $2
+		new_hostname="$2"
 		;;
 	--probe-mmc)
 		media="/dev/idontknow"
