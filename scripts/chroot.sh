@@ -380,31 +380,42 @@ if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
-if [ ! "x${rts_console_banner}" = "x" ] ; then
-	cat ${tempdir}/etc/issue > /tmp/issue
-	echo "${rts_console_banner}" >> /tmp/issue
-	echo "" >> /tmp/issue
-	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /tmp/issue
-		echo "" >> /tmp/issue
+if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
+	wfile="/tmp/issue"
+	cat ${tempdir}${wfile} > ${wfile}
+	echo "" >> ${wfile}
+	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+		cat ${tempdir}/etc/dogtag >> ${wfile}
+		echo "" >> ${wfile}
 	fi
-	sudo mv /tmp/issue ${tempdir}/etc/issue
+	if [ ! "x${rts_console_banner}" = "x" ] ; then
+		echo "${rts_console_banner}" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	sudo mv ${wfile} ${tempdir}${wfile}
 fi
 
-if [ ! "x${rts_ssh_banner}" = "x" ] ; then
-	cat ${tempdir}/etc/issue.net > /tmp/issue.net
-	echo "" >> /tmp/issue.net
+if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+	wfile="/tmp/issue.net"
+	cat ${tempdir}${wfile} > ${wfile}
+	echo "" >> ${wfile}
 	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
-		cat ${tempdir}/etc/dogtag >> /tmp/issue.net
-		echo "" >> /tmp/issue.net
+		cat ${tempdir}/etc/dogtag >> ${wfile}
+		echo "" >> ${wfile}
 	fi
-	echo "${rts_ssh_banner}" >> /tmp/issue.net
-	echo "" >> /tmp/issue.net
-	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> /tmp/issue.net
-		echo "" >> /tmp/issue.net
+	if [ ! "x${rts_ssh_banner}" = "x" ] ; then
+		echo "${rts_ssh_banner}" >> ${wfile}
+		echo "" >> ${wfile}
 	fi
-	sudo mv /tmp/issue.net ${tempdir}/etc/issue.net
+	if [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	sudo mv ${wfile} ${tempdir}${wfile}
 fi
 
 cat > ${DIR}/chroot_script.sh <<-__EOF__
