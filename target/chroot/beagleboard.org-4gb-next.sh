@@ -522,22 +522,6 @@ todo () {
 	if [ ! -f /etc/modules-load.d/mt7601.conf ] ; then
 		echo "mt7601Usta" > /etc/modules-load.d/mt7601.conf
 	fi
-
-	if [ ! -f /opt/source/x15/ducati_full_jacinto6evm.tgz ] ; then
-		mkdir -p /opt/source/x15/
-		cd /opt/source/x15/
-		wget https://raw.githubusercontent.com/rcn-ee/ti-proprietary-open/d-lollipop-release/jacinto6/ducati_full_jacinto6evm.tgz
-
-		#v3.14.x: sadly:
-		#[   24.965781] omap-rproc 55020000.ipu: omap rproc 55020000.ipu crashed
-		#[   24.972528]  remoteproc1: crash detected in 55020000.ipu: type device exception
-		#[   24.980372]  remoteproc1: handling crash #13 in 55020000.ipu
-		#[   24.986338]  remoteproc1: recovering 55020000.ipu
-
-		#tar xf ducati_full_jacinto6evm.tgz
-		#cp -v dra7-ipu2-fw.xem4 /lib/firmware/
-		cd /
-	fi
 }
 
 is_this_qemu
