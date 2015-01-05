@@ -177,10 +177,6 @@ setup_desktop () {
 		rm -f /usr/share/applications/gksu.desktop || true
 	fi
 
-	if [ -f /etc/ssh/sshd_config ] ; then
-		sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
-	fi
-
 	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
 	if [ -f /usr/bin/lxterminal ] ; then
 		if [ -f /usr/share/applications/lxterminal.desktop ] ; then

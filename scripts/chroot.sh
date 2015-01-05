@@ -469,8 +469,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "[options]" > /etc/e2fsck.conf
 		echo "broken_system_clock = true" >> /etc/e2fsck.conf
 
-		if [ -f /etc/systemd/systemd-journald.conf ] ; then
-			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
+		if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+			if [ -f /etc/ssh/sshd_config ] ; then
+				sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
+			fi
 		fi
 	}
 
@@ -710,6 +712,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 	systemd_tweaks () {
 		#We have systemd, so lets use it..
+
+		if [ -f /etc/systemd/systemd-journald.conf ] ; then
+			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
+		fi
 
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
