@@ -382,7 +382,7 @@ fi
 
 if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
 	wfile="/tmp/issue"
-	cat ${tempdir}${wfile} > ${wfile}
+	cat ${tempdir}/etc/issue > ${wfile}
 	echo "" >> ${wfile}
 	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 		cat ${tempdir}/etc/dogtag >> ${wfile}
@@ -396,12 +396,12 @@ if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x"
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	sudo mv ${wfile} ${tempdir}${wfile}
+	sudo mv ${wfile} ${tempdir}/etc/issue
 fi
 
 if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
 	wfile="/tmp/issue.net"
-	cat ${tempdir}${wfile} > ${wfile}
+	cat ${tempdir}/etc/issue.net > ${wfile}
 	echo "" >> ${wfile}
 	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 		cat ${tempdir}/etc/dogtag >> ${wfile}
@@ -415,7 +415,7 @@ if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; the
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	sudo mv ${wfile} ${tempdir}${wfile}
+	sudo mv ${wfile} ${tempdir}/etc/issue.net
 fi
 
 cat > ${DIR}/chroot_script.sh <<-__EOF__
