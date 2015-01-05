@@ -864,7 +864,6 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
 	wfile="/tmp/issue"
 	cat ${tempdir}/etc/issue > ${wfile}
-	echo "" >> ${wfile}
 	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 		cat ${tempdir}/etc/dogtag >> ${wfile}
 		echo "" >> ${wfile}
