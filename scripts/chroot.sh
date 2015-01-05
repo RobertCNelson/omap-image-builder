@@ -380,44 +380,6 @@ if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
-if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
-	wfile="/tmp/issue"
-	cat ${tempdir}/etc/issue > ${wfile}
-	echo "" >> ${wfile}
-	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
-		cat ${tempdir}/etc/dogtag >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	if [ ! "x${rts_console_banner}" = "x" ] ; then
-		echo "${rts_console_banner}" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	sudo mv ${wfile} ${tempdir}/etc/issue
-fi
-
-if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
-	wfile="/tmp/issue.net"
-	cat ${tempdir}/etc/issue.net > ${wfile}
-	echo "" >> ${wfile}
-	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
-		cat ${tempdir}/etc/dogtag >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	if [ ! "x${rts_ssh_banner}" = "x" ] ; then
-		echo "${rts_ssh_banner}" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	if [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-	sudo mv ${wfile} ${tempdir}/etc/issue.net
-fi
-
 cat > ${DIR}/chroot_script.sh <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
@@ -883,6 +845,61 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
+#Do /etc/issue & /etc/issue.net after chroot_script:
+#
+#Unpacking base-files (7.2ubuntu5.1) over (7.2ubuntu5) ...
+#Setting up base-files (7.2ubuntu5.1) ...
+#
+#Configuration file '/etc/issue'
+# ==> Modified (by you or by a script) since installation.
+# ==> Package distributor has shipped an updated version.
+#   What would you like to do about it ?  Your options are:
+#    Y or I  : install the package maintainer's version
+#    N or O  : keep your currently-installed version
+#      D     : show the differences between the versions
+#      Z     : start a shell to examine the situation
+# The default action is to keep your current version.
+#*** issue (Y/I/N/O/D/Z) [default=N] ? n
+
+if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
+	wfile="/tmp/issue"
+	cat ${tempdir}/etc/issue > ${wfile}
+	echo "" >> ${wfile}
+	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+		cat ${tempdir}/etc/dogtag >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	if [ ! "x${rts_console_banner}" = "x" ] ; then
+		echo "${rts_console_banner}" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	sudo mv ${wfile} ${tempdir}/etc/issue
+fi
+
+if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+	wfile="/tmp/issue.net"
+	cat ${tempdir}/etc/issue.net > ${wfile}
+	echo "" >> ${wfile}
+	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+		cat ${tempdir}/etc/dogtag >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	if [ ! "x${rts_ssh_banner}" = "x" ] ; then
+		echo "${rts_ssh_banner}" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	if [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+	sudo mv ${wfile} ${tempdir}/etc/issue.net
+fi
+
+#usually a qemu failure...
 if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
 		echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
