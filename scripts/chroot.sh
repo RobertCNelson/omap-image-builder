@@ -275,7 +275,7 @@ stretch|buster|sid)
 esac
 
 case "${deb_codename}" in
-wheezy)
+wheezy|jessie)
 	echo "" >> ${wfile}
 	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
@@ -288,7 +288,7 @@ wheezy)
 		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	fi
 	;;
-jessie)
+stretch)
 	echo "" >> ${wfile}
 	echo "#deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
