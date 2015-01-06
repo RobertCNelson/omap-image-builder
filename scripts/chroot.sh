@@ -375,8 +375,8 @@ echo "abi=${abi}" >> /tmp/rcn-ee.conf
 sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
 
 #use /etc/dogtag for all:
-if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
-	echo "${rts_etc_dogtag} ${time}" > /tmp/dogtag
+if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
+	echo "${rfs_etc_dogtag} ${time}" > /tmp/dogtag
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
@@ -469,7 +469,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		echo "[options]" > /etc/e2fsck.conf
 		echo "broken_system_clock = true" >> /etc/e2fsck.conf
 
-		if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+		if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 			if [ -f /etc/ssh/sshd_config ] ; then
 				sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
 			fi
@@ -870,37 +870,37 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 # The default action is to keep your current version.
 #*** issue (Y/I/N/O/D/Z) [default=N] ? n
 
-if [ ! "x${rts_console_banner}" = "x" ] || [ ! "x${rts_console_user_pass}" = "x" ] ; then
+if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 	wfile="/tmp/issue"
 	cat ${tempdir}/etc/issue > ${wfile}
-	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 		cat ${tempdir}/etc/dogtag >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	if [ ! "x${rts_console_banner}" = "x" ] ; then
-		echo "${rts_console_banner}" >> ${wfile}
+	if [ ! "x${rfs_console_banner}" = "x" ] ; then
+		echo "${rfs_console_banner}" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	if [ ! "x${rts_console_user_pass}" = "x" ] ; then
+	if [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
 	sudo mv ${wfile} ${tempdir}/etc/issue
 fi
 
-if [ ! "x${rts_ssh_banner}" = "x" ] || [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 	wfile="/tmp/issue.net"
 	cat ${tempdir}/etc/issue.net > ${wfile}
 	echo "" >> ${wfile}
-	if [ ! "x${rts_etc_dogtag}" = "x" ] ; then
+	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 		cat ${tempdir}/etc/dogtag >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	if [ ! "x${rts_ssh_banner}" = "x" ] ; then
-		echo "${rts_ssh_banner}" >> ${wfile}
+	if [ ! "x${rfs_ssh_banner}" = "x" ] ; then
+		echo "${rfs_ssh_banner}" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	if [ ! "x${rts_ssh_user_pass}" = "x" ] ; then
+	if [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
