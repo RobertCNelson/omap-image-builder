@@ -46,6 +46,8 @@ post_generic_img () {
 
 compress_img () {
         if [ -f \${wfile} ] ; then
+                #prevent xz warning for 'Cannot set the file group: Operation not permitted'
+                sudo chown \${UID}:\${GROUPS} \${wfile}
                 ${archive} \${wfile}
         fi
 }
