@@ -10,9 +10,9 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 ./RootStock-NG.sh -c bb.org-debian-next-4gb-v3.14
 
-debian_lxde_stable="debian-7.7-lxde-armhf-${time}"
-debian_lxde_4gb_stable="debian-7.7-lxde-4gb-armhf-${time}"
-debian_console_stable="debian-7.7-console-armhf-${time}"
+debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
+debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
+debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_lxqt_next="debian-jessie-lxqt-armhf-${time}"
 archive="xz -z -8 -v"
 

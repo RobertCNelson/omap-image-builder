@@ -7,9 +7,9 @@ DIR="$PWD"
 ./RootStock-NG.sh -c bb.org-debian-stable-4gb
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 
-debian_lxde_stable="debian-7.7-lxde-armhf-${time}"
-debian_lxde_4gb_stable="debian-7.7-lxde-4gb-armhf-${time}"
-debian_console_stable="debian-7.7-console-armhf-${time}"
+debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
+debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
+debian_console_stable="debian-7.8-console-armhf-${time}"
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
