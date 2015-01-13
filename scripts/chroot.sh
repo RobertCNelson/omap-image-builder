@@ -544,28 +544,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		deb_file="linux-image-\${deb_file}.deb"
 		wget --directory-prefix=/tmp/ \${kernel_url}\${deb_file}
 
-		unset dtb_file
-		dtb_file=\$(cat /tmp/index.html | grep dtbs.tar.gz | head -n 1)
-		dtb_file=\$(echo \${dtb_file} | awk -F "\"" '{print \$2}')
-
-		if [ "\${dtb_file}" ] ; then
-			wget --directory-prefix=/boot/ \${kernel_url}\${dtb_file}
-		fi
-
 		dpkg -x /tmp/\${deb_file} /
-
-		if [ "x\${third_party_modules}" = "xenable" ] ; then
-			unset thirdparty_file
-			thirdparty_file=\$(cat /tmp/index.html | grep thirdparty)
-			thirdparty_file=\$(echo \${thirdparty_file} | awk -F "\"" '{print \$2}')
-			if [ "\${thirdparty_file}" ] ; then
-				wget --directory-prefix=/tmp/ \${kernel_url}\${thirdparty_file}
-
-				if [ -f /tmp/thirdparty ] ; then
-					/bin/sh /tmp/thirdparty
-				fi
-			fi
-		fi
 
 		pkg="initramfs-tools"
 		dpkg_check
@@ -960,25 +939,6 @@ fi
 
 if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
-fi
-
-if [ "${rfs_kernel}" ] ; then
-	if ls ${tempdir}/boot/vmlinuz-* >/dev/null 2>&1 ; then
-		sudo cp -v ${tempdir}/boot/vmlinuz-* ${DIR}/deploy/${export_filename}/
-	else
-		if [ "${rfs_kernel}" ] ; then
-			echo "Log: ERROR: kernel install failure..."
-			exit 1
-		fi
-	fi
-
-	if ls ${tempdir}/boot/initrd.img-* >/dev/null 2>&1 ; then
-		sudo cp -v ${tempdir}/boot/initrd.img-* ${DIR}/deploy/${export_filename}/
-	fi
-
-	if ls ${tempdir}/boot/*dtbs.tar.gz >/dev/null 2>&1 ; then
-		sudo cp -v ${tempdir}/boot/*dtbs.tar.gz ${DIR}/deploy/${export_filename}/
-	fi
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
