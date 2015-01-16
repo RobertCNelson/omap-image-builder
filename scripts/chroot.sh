@@ -455,7 +455,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
 				echo "Log: (chroot) Installing (from backports): ${chroot_debian_backports_pkg_list}"
-				sudo apt-get -y --force-yes install ${chroot_debian_backports_pkg_list}
+				sudo apt-get -y --force-yes -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
 			fi
 		fi
 
