@@ -150,14 +150,17 @@ chroot_mount () {
 
 chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
+		echo "Log: umount: [${tempdir}/dev/pts]"
 		sudo umount -f ${tempdir}/dev/pts
 	fi
 
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
+		echo "Log: umount: [${tempdir}/proc]"
 		sudo umount -f ${tempdir}/proc
 	fi
 
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
+		echo "Log: umount: [${tempdir}/sys]"
 		sudo umount -f ${tempdir}/sys
 	fi
 }
