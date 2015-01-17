@@ -1,8 +1,3 @@
-# Space separated list of releases to build, one or more of:
-#   wheezy jessie
-#   plus anything added to releases.sh
-RELEASES="wheezy jessie"
-
 # Using an apt proxy (like apt-cacher-ng) is HIGHLY recommended, as the
 # image build scripts cannot be (easily) pointed to a local repository
 apt_proxy=""
