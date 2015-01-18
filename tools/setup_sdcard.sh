@@ -745,6 +745,15 @@ kernel_detection () {
 		echo "Debug: image has: v${ti_dt_kernel}"
 		has_ti_kernel="enable"
 	fi
+
+	unset has_xenomai_kernel
+	unset check
+	check=$(ls "${dir_check}" | grep vmlinuz- | grep xenomai | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		xenomai_dt_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep xenomai | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "Debug: image has: v${xenomai_dt_kernel}"
+		has_xenomai_kernel="enable"
+	fi
 }
 
 kernel_select () {
@@ -774,6 +783,10 @@ kernel_select () {
 			else
 				if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
 					select_kernel="${armv7_kernel}"
+				else
+					if [ "x${has_xenomai_kernel}" = "xenable" ] ; then
+						select_kernel="${xenomai_dt_kernel}"
+					fi
 				fi
 			fi
 		fi
