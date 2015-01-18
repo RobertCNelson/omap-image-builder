@@ -101,6 +101,17 @@ setup_system () {
 			echo "ttyGS0" >> /etc/securetty
 		fi
 	fi
+
+	# Enable all users to read hidraw devices
+	cat <<- EOF > /etc/udev/rules.d/99-hdiraw.rules
+		SUBSYSTEM=="hidraw", MODE="0644"
+	EOF
+
+	# Enable PAM for ssh links
+	# Fixes an issue where users cannot change ulimits when logged in via
+	# ssh, which causes some Machinekit functions to fail
+	sed -i 's/^UsePAM.*$/UsePam yes/' /etc/ssh/sshd_config
+
 }
 
 setup_desktop () {
@@ -143,13 +154,14 @@ setup_desktop () {
 	fi
 
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
+		ext="${rfs_desktop_background##*.}"
+		cp -v "${rfs_desktop_background}" /opt/desktop-background.${ext}
 
 		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
 		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
 		echo "[desktop]" > ${wfile}
 		echo "wallpaper_mode=1" >> ${wfile}
-		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+		echo "wallpaper=/opt/desktop-background.${ext}" >> ${wfile}
 		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 	fi
 
@@ -393,6 +405,12 @@ install_gem_pkgs () {
 	fi
 }
 
+early_git_repos () {
+	git_repo="https://github.com/cdsteinkuehler/machinekit-beaglebone-extras"
+	git_target_dir="opt/source/machinekit-extras"
+	git_clone
+}
+
 install_git_repos () {
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
@@ -510,6 +528,7 @@ todo () {
 
 is_this_qemu
 
+early_git_repos
 setup_system
 setup_desktop
 
