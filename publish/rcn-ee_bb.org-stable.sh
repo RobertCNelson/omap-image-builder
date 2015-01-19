@@ -9,11 +9,14 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c bb.org-debian-stable-4gb
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 ./RootStock-NG.sh -c bb.org-debian-next-4gb-v3.14
+./RootStock-NG.sh -c machinekit-wheezy
 
 debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_lxqt_next="debian-jessie-lxqt-armhf-${time}"
+debian_machinekit_wheezy="debian-7.8-machinekit-armhf-${time}"
+
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
@@ -93,6 +96,13 @@ generic_img
 options="--img-2gb omap5-uevm-\${base_rootfs}       --dtb omap5-uevm        --hostname omap5-uevm"
 generic_img
 
+###machinekit:
+base_rootfs="${debian_machinekit_wheezy}"
+pre_generic_img
+
+options="--img-4gb bone-\${base_rootfs}                   --dtb beaglebone       --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
+generic_img
+
 ###archive *.tar
 base_rootfs="${debian_lxde_4gb_stable}"
 post_generic_img
@@ -129,6 +139,9 @@ wfile="bbx15-${debian_lxqt_next}-2gb.img"
 compress_img
 
 wfile="omap5-uevm-${debian_lxqt_next}-2gb.img"
+compress_img
+
+wfile="bone-${debian_machinekit_wheezy}-4gb.img"
 compress_img
 
 __EOF__
