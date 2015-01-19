@@ -9,7 +9,7 @@ export apt_proxy=apt-proxy:3142/
 ./RootStock-NG.sh -c bb.org-debian-stable-4gb
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 ./RootStock-NG.sh -c bb.org-debian-next-4gb-v3.14
-./RootStock-NG.sh -c machinekit-wheezy
+./RootStock-NG.sh -c machinekit-debian-wheezy
 
 debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
