@@ -1047,7 +1047,7 @@ populate_rootfs () {
 		echo "# udevadm info -q all -p /sys/class/net/eth0 --attribute-walk" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
 		echo "# BeagleBone: net device ()" >> ${TEMPDIR}/disk${file}
-		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
+		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"cpsw\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
 
 		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
