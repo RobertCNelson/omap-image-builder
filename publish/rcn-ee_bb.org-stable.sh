@@ -89,6 +89,7 @@ base_rootfs="${debian_lxqt_next}"
 pre_generic_img
 
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc --hostname beaglebone"
+options="--img-2gb bone-\${base_rootfs}             --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 generic_img
 options="--img-2gb bbx15-\${base_rootfs}            --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
 generic_img
@@ -136,6 +137,9 @@ wfile="bone-${debian_console_stable}-2gb.img"
 compress_img
 
 wfile="BBB-eMMC-flasher-${debian_lxqt_next}-2gb.img"
+compress_img
+
+wfile="bone-${debian_lxqt_next}-2gb.img"
 compress_img
 
 wfile="bbx15-${debian_lxqt_next}-2gb.img"
