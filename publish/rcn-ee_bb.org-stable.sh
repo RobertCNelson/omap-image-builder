@@ -116,6 +116,9 @@ post_generic_img
 base_rootfs="${debian_lxqt_next}"
 post_generic_img
 
+base_rootfs="${debian_machinekit_wheezy}"
+post_generic_img
+
 ###archive *.img
 wfile="BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
 compress_img
