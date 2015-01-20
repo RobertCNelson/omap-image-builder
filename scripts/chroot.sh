@@ -508,6 +508,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	run_deborphan () {
+		echo "Log: (chroot): deborphan is not reliable, run manual and add pkg list to: [chroot_manual_deborphan_list]"
 		apt-get -y --force-yes install deborphan
 
 		# Prevent deborphan from removing explicitly required packages
@@ -521,6 +522,14 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		#FIXME, only tested on wheezy...
 		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
 		apt-get clean
+	}
+
+	manual_deborphan () {
+		if [ ! "x${chroot_manual_deborphan_list}" = "x" ] ; then
+			echo "Log: (chroot): cleanup: [${chroot_manual_deborphan_list}]"
+			apt-get -y remove ${chroot_manual_deborphan_list} --purge
+			apt-get clean
+		fi
 	}
 
 	dl_kernel () {
@@ -759,9 +768,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	install_pkgs
 	system_tweaks
 	set_locale
-	if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+	if [ "x${chroot_not_reliable_deborphan}" = "xenable" ] ; then
 		run_deborphan
 	fi
+	manual_deborphan
 	add_user
 
 	mkdir -p /opt/source || true
