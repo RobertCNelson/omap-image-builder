@@ -102,10 +102,11 @@ setup_system () {
 		fi
 	fi
 
-	# Enable all users to read hidraw devices
-	cat <<- EOF > /etc/udev/rules.d/99-hdiraw.rules
-		SUBSYSTEM=="hidraw", MODE="0644"
-	EOF
+#	this is now done in the choot, need to double check the mode..
+#	# Enable all users to read hidraw devices
+#	cat <<- EOF > /etc/udev/rules.d/99-hdiraw.rules
+#		SUBSYSTEM=="hidraw", MODE="0644"
+#	EOF
 
 	# Enable PAM for ssh links
 	# Fixes an issue where users cannot change ulimits when logged in via
