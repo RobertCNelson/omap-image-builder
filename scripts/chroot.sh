@@ -35,6 +35,15 @@ check_defines () {
 		exit 1
 	fi
 
+	cd ${tempdir}/
+	test_tempdir=$(pwd -P)
+	cd -
+
+	if [ ! "x${tempdir}" = "x${test_tempdir}" ] ; then
+		tempdir="${test_tempdir}"
+		echo "tempdir: is really: [${test_tempdir}]"
+	fi
+
 	if [ ! "${export_filename}" ] ; then
 		echo "scripts/deboostrap_first_stage.sh: Error: export_filename undefined"
 		exit 1
@@ -151,13 +160,8 @@ chroot_mount () {
 chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 		echo "Log: umount: [${tempdir}/dev/pts]"
+		sync
 		sudo umount -fl ${tempdir}/dev/pts
-		if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
-			echo "Log: umount: [${tempdir}/dev/pts] 2nd try..."
-			sleep 5
-			sudo umount -fl ${tempdir}/dev/pts
-			sync
-			sync
 			if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 				echo "Log: ERROR: umount [${tempdir}/dev/pts] failed..."
 				exit 1
@@ -167,6 +171,7 @@ chroot_umount () {
 
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 		echo "Log: umount: [${tempdir}/proc]"
+		sync
 		sudo umount -fl ${tempdir}/proc
 
 		if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
@@ -177,6 +182,7 @@ chroot_umount () {
 
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 		echo "Log: umount: [${tempdir}/sys]"
+		sync
 		sudo umount -fl ${tempdir}/sys
 		if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 			echo "Log: ERROR: umount [${tempdir}/sys] failed..."
