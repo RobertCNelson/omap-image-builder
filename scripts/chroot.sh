@@ -162,10 +162,10 @@ chroot_umount () {
 		echo "Log: umount: [${tempdir}/dev/pts]"
 		sync
 		sudo umount -fl ${tempdir}/dev/pts
-			if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
-				echo "Log: ERROR: umount [${tempdir}/dev/pts] failed..."
-				exit 1
-			fi
+
+		if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
+			echo "Log: ERROR: umount [${tempdir}/dev/pts] failed..."
+			exit 1
 		fi
 	fi
 
@@ -184,6 +184,7 @@ chroot_umount () {
 		echo "Log: umount: [${tempdir}/sys]"
 		sync
 		sudo umount -fl ${tempdir}/sys
+
 		if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 			echo "Log: ERROR: umount [${tempdir}/sys] failed..."
 			exit 1
