@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2012-2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2015 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -151,17 +151,17 @@ chroot_mount () {
 chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 		echo "Log: umount: [${tempdir}/dev/pts]"
-		sudo umount -f ${tempdir}/dev/pts
+		sudo umount -fl ${tempdir}/dev/pts
 	fi
 
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 		echo "Log: umount: [${tempdir}/proc]"
-		sudo umount -f ${tempdir}/proc
+		sudo umount -fl ${tempdir}/proc
 	fi
 
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 		echo "Log: umount: [${tempdir}/sys]"
-		sudo umount -f ${tempdir}/sys
+		sudo umount -fl ${tempdir}/sys
 	fi
 }
 
