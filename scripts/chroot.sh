@@ -37,11 +37,11 @@ check_defines () {
 
 	cd ${tempdir}/
 	test_tempdir=$(pwd -P)
-	cd -
+	cd ${DIR}/
 
 	if [ ! "x${tempdir}" = "x${test_tempdir}" ] ; then
 		tempdir="${test_tempdir}"
-		echo "tempdir: is really: [${test_tempdir}]"
+		echo "Log: tempdir is really: [${test_tempdir}]"
 	fi
 
 	if [ ! "${export_filename}" ] ; then
