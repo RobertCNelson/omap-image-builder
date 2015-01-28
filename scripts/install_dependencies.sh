@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2012-2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2015 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="66"
+minimal_debootstrap="67"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
