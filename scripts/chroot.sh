@@ -152,16 +152,36 @@ chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 		echo "Log: umount: [${tempdir}/dev/pts]"
 		sudo umount -fl ${tempdir}/dev/pts
+		if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
+			echo "Log: umount: [${tempdir}/dev/pts] 2nd try..."
+			sleep 5
+			sudo umount -fl ${tempdir}/dev/pts
+			sync
+			sync
+			if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
+				echo "Log: ERROR: umount [${tempdir}/dev/pts] failed..."
+				exit 1
+			fi
+		fi
 	fi
 
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 		echo "Log: umount: [${tempdir}/proc]"
 		sudo umount -fl ${tempdir}/proc
+
+		if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
+			echo "Log: ERROR: umount [${tempdir}/proc] failed..."
+			exit 1
+		fi
 	fi
 
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 		echo "Log: umount: [${tempdir}/sys]"
 		sudo umount -fl ${tempdir}/sys
+		if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
+			echo "Log: ERROR: umount [${tempdir}/sys] failed..."
+			exit 1
+		fi
 	fi
 }
 
