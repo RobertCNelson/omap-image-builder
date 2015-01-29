@@ -3,6 +3,8 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
+git pull --no-edit https://github.com/beagleboard/image-builder master
+
 export apt_proxy=apt-proxy:3142/
 
 ./RootStock-NG.sh -c bb.org-debian-stable
