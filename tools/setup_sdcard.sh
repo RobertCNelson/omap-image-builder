@@ -636,7 +636,7 @@ populate_boot () {
 		echo "initrd_high=0xffffffff" >> ${wfile}
 		echo "fdt_high=0xffffffff" >> ${wfile}
 		echo "" >> ${wfile}
-		echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." > ${wfile}
+		echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." >> ${wfile}
 		echo "" >> ${wfile}
 		echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
 		echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
