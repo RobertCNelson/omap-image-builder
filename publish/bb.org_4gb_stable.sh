@@ -3,7 +3,7 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-export apt_proxy=apt-proxy:3142/
+export apt_proxy=localhost:3142/
 
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 
