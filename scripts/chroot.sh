@@ -722,9 +722,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		esac
 
 		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
+			mkdir -p /opt/scripts/ || true
 
 			if [ -f /usr/bin/git ] ; then
-				mkdir -p /opt/scripts/ || true
 				qemu_command="git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1"
 				qemu_warning
 				git clone -v ${rfs_opt_scripts} /opt/scripts/ --depth 1
@@ -943,7 +943,7 @@ fi
 #usually a qemu failure...
 if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	#we might not have read permissions:
-	if [ -r ${tempdir}/ ] ; then
+	if [ -r ${tempdir}/opt/scripts/ ] ; then
 		if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
 			echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
 			exit 1
