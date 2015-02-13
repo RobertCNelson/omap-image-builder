@@ -716,9 +716,9 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 			if [ -f /usr/bin/git ] ; then
 				mkdir -p /opt/scripts/ || true
-				qemu_command="git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1 || true"
+				qemu_command="git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1"
 				qemu_warning
-				git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1 || true
+				git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1
 				sync
 				if [ -f /opt/scripts/.git/config ] ; then
 					echo "/opt/scripts/ : ${rfs_opt_scripts}" >> /opt/source/list.txt
