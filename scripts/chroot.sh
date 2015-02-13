@@ -945,7 +945,6 @@ if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	#we might not have read permissions:
 	if [ -r ${tempdir}/ ] ; then
 		if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
-			if [ -r ${tempdir}/opt/scripts/.git/config ] ; then
 			echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
 			exit 1
 		fi
