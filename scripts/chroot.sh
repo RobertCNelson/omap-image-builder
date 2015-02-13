@@ -439,6 +439,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	stop_init () {
+		echo "Log: (chroot): setting up: /usr/sbin/policy-rc.d"
 		cat > /usr/sbin/policy-rc.d <<EOF
 		#!/bin/sh
 		exit 101
@@ -496,6 +497,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	system_tweaks () {
+		echo "Log: (chroot): system_tweaks"
 		echo "[options]" > /etc/e2fsck.conf
 		echo "broken_system_clock = true" >> /etc/e2fsck.conf
 
@@ -507,6 +509,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	set_locale () {
+		echo "Log: (chroot): set_locale"
 		pkg="locales"
 		dpkg_check
 
@@ -552,6 +555,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	manual_deborphan () {
+		echo "Log: (chroot): manual_deborphan"
 		if [ ! "x${chroot_manual_deborphan_list}" = "x" ] ; then
 			echo "Log: (chroot): cleanup: [${chroot_manual_deborphan_list}]"
 			apt-get -y remove ${chroot_manual_deborphan_list} --purge
@@ -560,6 +564,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	dl_kernel () {
+		echo "Log: (chroot): dl_kernel"
 		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
 
 		#This should create a list of files on the server
@@ -612,6 +617,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	add_user () {
+		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
 		groupadd -r spi || true
 
@@ -672,6 +678,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	debian_startup_script () {
+		echo "Log: (chroot): debian_startup_script"
 		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init.d/generic-boot-script.sh ] ; then
 				chown root:root /etc/init.d/generic-boot-script.sh
@@ -689,6 +696,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	ubuntu_startup_script () {
+		echo "Log: (chroot): ubuntu_startup_script"
 		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 			if [ -f /etc/init/generic-boot-script.conf ] ; then
 				chown root:root /etc/init/generic-boot-script.conf
@@ -703,6 +711,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	startup_script () {
+		echo "Log: (chroot): startup_script"
 		case "\${distro}" in
 		Debian)
 			debian_startup_script
@@ -730,6 +739,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	systemd_tweaks () {
+		echo "Log: (chroot): systemd_tweaks"
 		#We have systemd, so lets use it..
 
 		if [ -f /etc/systemd/systemd-journald.conf ] ; then
@@ -754,6 +764,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	}
 
 	cleanup () {
+		echo "Log: (chroot): cleanup"
 		mkdir -p /boot/uboot/
 
 		if [ -f /etc/apt/apt.conf ] ; then
@@ -891,6 +902,7 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 #*** issue (Y/I/N/O/D/Z) [default=N] ? n
 
 if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x" ] ; then
+	echo "Log: setting up: /etc/issue"
 	wfile="/tmp/issue"
 	cat ${tempdir}/etc/issue > ${wfile}
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
@@ -909,6 +921,7 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 fi
 
 if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
+	echo "Log: setting up: /etc/issue.net"
 	wfile="/tmp/issue.net"
 	cat ${tempdir}/etc/issue.net > ${wfile}
 	echo "" >> ${wfile}
