@@ -24,7 +24,7 @@ if [ -d ./deploy/${image_name} ] ; then
 
 	if [ -f bone-${image_name}-4gb.img ] ; then
 		sudo chown buildbot.buildbot bone-${image_name}-4gb.img
-		xz -z -3 -v bone-${image_name}-4gb.img
+		xz -z -3 -v -v bone-${image_name}-4gb.img
 
 		#upload:
 		#rsync -e ssh -av ./bone-${image_name}-4gb.img ${ssh_user}:${server_dir}/
