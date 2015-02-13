@@ -16,6 +16,13 @@ options="--img-4gb bone-${debian_lxde_4gb_stable} --dtb beaglebone \
 if [ -d ./deploy/${debian_lxde_4gb_stable} ] ; then
 	cd ./deploy/${debian_lxde_4gb_stable}/
 	sudo ./setup_sdcard.sh ${options}
-	mv *.img ../
+
+	if [ -f bone-${debian_lxde_4gb_stable}-4gb.img ] ; then
+		mv bone-${debian_lxde_4gb_stable}-4gb.img ../
+		cd ./deploy/
+		xz -z -1 -v bone-${debian_lxde_4gb_stable}-4gb.img
+
+		rm -rf ./deploy/${debian_lxde_4gb_stable}/ || true
+	fi
 fi
 
