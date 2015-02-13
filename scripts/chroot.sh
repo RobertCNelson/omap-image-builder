@@ -942,11 +942,15 @@ fi
 
 #usually a qemu failure...
 if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
-	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
-		pwd
-		ls -lh ${tempdir}/opt/scripts/
-		echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
-		exit 1
+	#we might not have read permissions:
+	if [ -r ${tempdir}/ ] ; then
+		if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
+			if [ -r ${tempdir}/opt/scripts/.git/config ] ; then
+			echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
+			exit 1
+		fi
+	else
+		echo "Log: unable to test /opt/scripts/.git/config no read permissions, assuming git clone success"
 	fi
 fi
 
