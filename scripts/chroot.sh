@@ -943,6 +943,8 @@ fi
 #usually a qemu failure...
 if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
+		pwd
+		ls -lh ${tempdir}/opt/scripts/
 		echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
 		exit 1
 	fi
