@@ -8,15 +8,15 @@ server_dir="/home/robertcnelson/rcn-ee.net"
 
 export apt_proxy=localhost:3142/
 
-#image_name="debian-7.8-lxde-4gb-armhf-${time}"
-image_name="debian-7.8-console-armhf-${time}"
+image_name="debian-7.8-lxde-4gb-armhf-${time}"
+#image_name="debian-7.8-console-armhf-${time}"
 
 options="--img-4gb bone-${image_name} --dtb beaglebone \
 --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-#./RootStock-NG.sh -c bb.org-debian-stable-4gb
-./RootStock-NG.sh -c bb.org-console-debian-stable
+./RootStock-NG.sh -c bb.org-debian-stable-4gb
+#./RootStock-NG.sh -c bb.org-console-debian-stable
 
 if [ -d ./deploy/${image_name} ] ; then
 	cd ./deploy/${image_name}/
