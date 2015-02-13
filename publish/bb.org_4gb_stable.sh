@@ -12,6 +12,12 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
+#dump env, do we have a build number?
+env
+
+#just a one time...
+sudo apt-get install pv
+
 #./RootStock-NG.sh -c bb.org-debian-stable-4gb
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 
@@ -21,10 +27,12 @@ if [ -d ./deploy/${image_name} ] ; then
 
 	if [ -f bone-${image_name}-4gb.img ] ; then
 		sudo chown buildbot.buildbot bone-${image_name}-4gb.img
-		mv bone-${image_name}-4gb.img ../
-		cd ../
 		xz -z -3 -v bone-${image_name}-4gb.img
 
+		#upload:
+
+		#cleanup:
+		cd ../../
 		rm -rf ./deploy/${image_name}/ || true
 	fi
 fi
