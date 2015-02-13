@@ -22,7 +22,7 @@ debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_machinekit_wheezy="debian-7.8-machinekit-armhf-${time}"
-#debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
+debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -130,18 +130,18 @@ options="--img-4gb bone-\${base_rootfs}                   --dtb beaglebone      
 generic_img
 
 ###lxqt image
-#base_rootfs="${debian_lxqt_4gb_next}"
-#stage_blend="lxqt-4gb"
-#pre_generic_img
+base_rootfs="${debian_lxqt_4gb_next}"
+stage_blend="lxqt-4gb"
+pre_generic_img
 
-#options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc --hostname beaglebone"
-#generic_img
-#options="--img-4gb bone-\${base_rootfs}             --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
-#generic_img
-#options="--img-4gb bbx15-\${base_rootfs}            --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
-#generic_img
-#options="--img-4gb omap5-uevm-\${base_rootfs}       --dtb omap5-uevm        --hostname omap5-uevm"
-#generic_img
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-flasher  --bbb-old-bootloader-in-emmc --hostname beaglebone"
+generic_img
+options="--img-4gb bone-\${base_rootfs}             --dtb beaglebone        --beagleboard.org-production --boot_label BEAGLEBONE --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+generic_img
+options="--img-4gb bbx15-\${base_rootfs}            --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
+generic_img
+options="--img-4gb omap5-uevm-\${base_rootfs}       --dtb omap5-uevm        --hostname omap5-uevm"
+generic_img
 
 ###archive *.tar
 base_rootfs="${debian_lxde_4gb_stable}"
@@ -160,9 +160,9 @@ base_rootfs="${debian_machinekit_wheezy}"
 stage_blend="machinekit"
 post_generic_img
 
-#base_rootfs="${debian_lxqt_4gb_next}"
-#stage_blend="lxqt-4gb"
-#post_generic_img
+base_rootfs="${debian_lxqt_4gb_next}"
+stage_blend="lxqt-4gb"
+post_generic_img
 
 ###archive *.img
 stage_blend="lxde-4gb"
@@ -188,17 +188,17 @@ wfile="bone-${debian_machinekit_wheezy}-4gb.img"
 compress_img
 
 stage_blend="lxqt-4gb"
-#wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img"
-#compress_img
+wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img"
+compress_img
 
-#wfile="bone-${debian_lxqt_4gb_next}-4gb.img"
-#compress_img
+wfile="bone-${debian_lxqt_4gb_next}-4gb.img"
+compress_img
 
-#wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img"
-#compress_img
+wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img"
+compress_img
 
-#wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img"
-#compress_img
+wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img"
+compress_img
 
 __EOF__
 
