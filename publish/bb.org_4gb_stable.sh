@@ -20,6 +20,7 @@ if [ -d ./deploy/${image_name} ] ; then
 	sudo ./setup_sdcard.sh ${options}
 
 	if [ -f bone-${image_name}-4gb.img ] ; then
+		sudo chown buildbot.buildbot bone-${image_name}-4gb.img
 		mv bone-${image_name}-4gb.img ../
 		cd ../
 		xz -z -3 -v bone-${image_name}-4gb.img
