@@ -20,7 +20,7 @@ if [ -d ./deploy/${debian_lxde_4gb_stable} ] ; then
 	if [ -f bone-${debian_lxde_4gb_stable}-4gb.img ] ; then
 		mv bone-${debian_lxde_4gb_stable}-4gb.img ../
 		cd ../
-		xz -z -1 -v bone-${debian_lxde_4gb_stable}-4gb.img
+		xz -z -3 -v bone-${debian_lxde_4gb_stable}-4gb.img
 
 		rm -rf ./deploy/${debian_lxde_4gb_stable}/ || true
 	fi
