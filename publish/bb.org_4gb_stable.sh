@@ -30,7 +30,7 @@ if [ -d ./deploy/${image_name} ] ; then
 
 		#upload:
 		ssh ${ssh_user} mkdir -p ${server_dir}
-		rsync -e ssh -av ./bone-${image_name}-4gb.img ${ssh_user}:${server_dir}/
+		rsync -e ssh -av ./bone-${image_name}-4gb.img.xz ${ssh_user}:${server_dir}/
 
 		#cleanup:
 		cd ../../
