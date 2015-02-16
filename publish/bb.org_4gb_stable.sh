@@ -3,8 +3,10 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-ssh_user="robertcnelson@rcn-ee.net"
-server_dir="/home/robertcnelson/rcn-ee.net"
+ssh_user="buildbot@beagleboard.org"
+rev=$(git rev-parse HEAD)
+branch=$(git describe --contains --all HEAD)
+server_dir="/var/lib/buildbot/masters/kernel-buildbot/public_html/images/${branch}/${rev}"
 
 export apt_proxy=localhost:3142/
 
@@ -27,7 +29,8 @@ if [ -d ./deploy/${image_name} ] ; then
 		xz -z -3 -v -v bone-${image_name}-4gb.img
 
 		#upload:
-		#rsync -e ssh -av ./bone-${image_name}-4gb.img ${ssh_user}:${server_dir}/
+		ssh ${ssh_user} mkdir -p ${server_dir}
+		rsync -e ssh -av ./bone-${image_name}-4gb.img ${ssh_user}:${server_dir}/
 
 		#cleanup:
 		cd ../../
