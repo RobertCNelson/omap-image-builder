@@ -865,14 +865,12 @@ populate_rootfs () {
 	else
 		echo "uname_r=${kernel_override}" >> ${wfile}
 	fi
-	echo "" >> ${wfile}
 
 	if [ ! "x${dtb}" = "x" ] ; then
 		echo "dtb=${dtb}" >> ${wfile}
 	else
 		echo "#dtb=" >> ${wfile}
 	fi
-	echo "" >> ${wfile}
 
 	if [ ! "x${rootfs_uuid}" = "x" ] ; then
 		echo "uuid=${rootfs_uuid}" >> ${wfile}
@@ -902,7 +900,6 @@ populate_rootfs () {
 
 	if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
 		cat "${DIR}/post-uEnv.txt" >> ${wfile}
-		echo "" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
 
@@ -1052,20 +1049,10 @@ populate_rootfs () {
 		echo "# BeagleBone: net device ()" >> ${TEMPDIR}/disk${file}
 		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"cpsw\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
+	fi
 
-		git_rcn_boot="https://raw.githubusercontent.com/RobertCNelson/boot-scripts/master/tools"
-
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh ] ; then
-			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/
-			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/" ${git_rcn_boot}/grow_partition.sh
-			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/grow_partition.sh
-		fi
-
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh ] ; then
-			mkdir -p ${TEMPDIR}/disk/opt/scripts/tools/eMMC/
-			${dl_quiet} --directory-prefix="${TEMPDIR}/disk/opt/scripts/tools/eMMC/" ${git_rcn_boot}/eMMC/init-eMMC-flasher-v3.sh
-			sudo chmod +x ${TEMPDIR}/disk/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh
-		fi
+	if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
+		git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
 	fi
 
 	if [ "x${conf_board}" = "xomap5_uevm" ] || [ "x${conf_board}" = "xbeagle_x15" ] ; then
