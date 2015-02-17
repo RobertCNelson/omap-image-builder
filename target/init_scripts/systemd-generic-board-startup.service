@@ -1,0 +1,10 @@
+[Unit]
+Description=Generic Board Startup
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /opt/scripts/boot/generic-startup.sh
+
+[Install]
+WantedBy=multi-user.target

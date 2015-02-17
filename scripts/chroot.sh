@@ -376,10 +376,21 @@ sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
 case "${deb_distribution}" in
 debian)
-	sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-	distro="Debian"
+	case "${deb_codename}" in
+	wheezy)
+		sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
+		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
+		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+		distro="Debian"
+		;;
+	jessie|stretch)
+		sudo cp ${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service ${tempdir}/lib/systemd/system/generic-board-startup.service
+
+		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
+		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+		distro="Debian"
+		;;
+	esac
 	;;
 ubuntu)
 	sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf ${tempdir}/etc/init/generic-boot-script.conf
@@ -720,6 +731,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 			ubuntu_startup_script
 			;;
 		esac
+
+		if [ -f /lib/systemd/system/generic-board-startup.service ] ; then
+			systemctl enable generic-board-startup.service || true
+		fi
 
 		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 			mkdir -p /opt/scripts/ || true
