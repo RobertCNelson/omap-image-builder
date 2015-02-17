@@ -91,13 +91,6 @@ setup_system () {
 		fi
 	fi
 
-	if [ -f /opt/scripts/mods/wheezy-systemd-poweroff.diff ] ; then
-		if [ -f /usr/bin/patch ] ; then
-			echo "Patching: /lib/udev/rules.d/70-power-switch.rules"
-			patch -p1 < /opt/scripts/mods/wheezy-systemd-poweroff.diff
-		fi
-	fi
-
 	if [ -f /opt/scripts/boot/am335x_evm.sh ] ; then
 		if [ -f /lib/systemd/system/serial-getty@.service ] ; then
 			cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
