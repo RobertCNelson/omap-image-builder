@@ -385,8 +385,7 @@ debian)
 		;;
 	jessie|stretch)
 		sudo cp ${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service ${tempdir}/lib/systemd/system/generic-board-startup.service
-
-		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
+		sudo cp ${OIB_DIR}/target/init_scripts/systemd-capemgr.service ${tempdir}/lib/systemd/system/capemgr.service
 		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
 		distro="Debian"
 		;;
@@ -734,6 +733,10 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		if [ -f /lib/systemd/system/generic-board-startup.service ] ; then
 			systemctl enable generic-board-startup.service || true
+		fi
+
+		if [ -f /lib/systemd/system/capemgr.service ] ; then
+			systemctl enable capemgr.service || true
 		fi
 
 		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then

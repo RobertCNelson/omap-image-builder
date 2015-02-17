@@ -1,0 +1,10 @@
+[Unit]
+Description=Cape Manager Service
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /opt/scripts/boot/capemgr.sh
+
+[Install]
+WantedBy=multi-user.target
