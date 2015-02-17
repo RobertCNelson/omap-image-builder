@@ -205,18 +205,6 @@ setup_desktop () {
 	if [ -f /bin/ping ] ; then
 		chmod u+x /bin/ping
 	fi
-
-	if [ -f /etc/dnsmasq.conf ] ; then
-		wfile="/etc/dnsmasq.d/usb0-dhcp"
-		echo "#disable DNS by setting port to 0" > ${wfile}
-		echo "port=0" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "interface=usb0" >> ${wfile}
-		echo "#one address range" >> ${wfile}
-		echo "dhcp-range=192.168.7.1,192.168.7.1" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "dhcp-option=3" >> ${wfile}
-	fi
 }
 
 cleanup_npm_cache () {

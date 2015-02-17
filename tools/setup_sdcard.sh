@@ -1051,6 +1051,18 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk${file}
 	fi
 
+	if [ -f ${TEMPDIR}/disk/etc/dnsmasq.conf ] ; then
+		wfile="/etc/dnsmasq.d/usb0-dhcp"
+		echo "#disable DNS by setting port to 0" > ${TEMPDIR}/disk${wfile}
+		echo "port=0" >> ${TEMPDIR}/disk${wfile}
+		echo "" >> ${TEMPDIR}/disk${wfile}
+		echo "interface=usb0" >> ${TEMPDIR}/disk${wfile}
+		echo "#one address range" >> ${TEMPDIR}/disk${wfile}
+		echo "dhcp-range=192.168.7.1,192.168.7.1" >> ${TEMPDIR}/disk${wfile}
+		echo "" >> ${TEMPDIR}/disk${wfile}
+		echo "dhcp-option=3" >> ${TEMPDIR}/disk${wfile}
+	fi
+
 	if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
 		git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
 	fi
