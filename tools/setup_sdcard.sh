@@ -907,6 +907,9 @@ populate_rootfs () {
 		if [ "x${bbb_flasher}" = "xenable" ] ; then
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+		elif [ "x${bbg_flasher}" = "xenable" ] ; then
+			echo "##enable BBG: eMMC Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbg.sh" >> ${wfile}
 		else
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
 			echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
@@ -1325,6 +1328,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-flasher)
 		bbb_flasher="enable"
+		;;
+	--bbg-flasher)
+		bbg_flasher="enable"
 		;;
 	--beagleboard.org-production)
 		bborg_production="enable"
