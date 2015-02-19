@@ -108,118 +108,68 @@ generate_img () {
 }
 
 ###Production lxde images: (BBB: 4GB eMMC)
-base_rootfs="${debian_lxde_4gb_stable}"
-blend="lxde-4gb"
-extract_base_rootfs
+base_rootfs="${debian_lxde_4gb_stable}" ; blend="lxde-4gb" ; extract_base_rootfs
 
-options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbb-flasher"
-generate_img
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} --enable-systemd --bbb-flasher"
-generate_img
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd"
-generate_img
+options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
 ###lxde images: (BBB: 2GB eMMC)
-base_rootfs="${debian_lxde_stable}"
-blend="lxde"
-extract_base_rootfs
+base_rootfs="${debian_lxde_stable}" ; blend="lxde" ; extract_base_rootfs
 
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher"
-generate_img
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher" ; generate_img
 
 ###console images: (also single partition)
-base_rootfs="${debian_console_stable}"
-blend="console"
-extract_base_rootfs
+base_rootfs="${debian_console_stable}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbg-flasher"
-options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbb-flasher"
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --enable-systemd --bbb-flasher"
-generate_img
-options="--img-2gb bone-\${base_rootfs} ${beaglebone_console} --enable-systemd"
-generate_img
+options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbg-flasher" ; generate_img
+options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs} ${beaglebone_console} --enable-systemd" ; generate_img
 
 ###machinekit:
-base_rootfs="${debian_machinekit_wheezy}"
-blend="machinekit"
-extract_base_rootfs
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd"
-generate_img
+base_rootfs="${debian_machinekit_wheezy}" ; blend="machinekit" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
 ###lxqt image
-base_rootfs="${debian_lxqt_4gb_next}"
-blend="lxqt-4gb"
-extract_base_rootfs
+base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher"
-generate_img
-options="--img-4gb bone-\${base_rootfs} ${beaglebone}"
-generate_img
-options="--img-4gb bbx15-\${base_rootfs} ${am57xx-beagle-x15}"
-generate_img
-options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5-uevm}"
-generate_img
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs} ${am57xx-beagle-x15}" ; generate_img
+options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5-uevm}" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_lxde_4gb_stable}"
-blend="lxde-4gb"
-archive_base_rootfs
-
-base_rootfs="${debian_lxde_stable}"
-blend="lxde"
-archive_base_rootfs
-
-base_rootfs="${debian_console_stable}"
-blend="console"
-archive_base_rootfs
-
-base_rootfs="${debian_machinekit_wheezy}"
-blend="machinekit"
-archive_base_rootfs
-
-base_rootfs="${debian_lxqt_4gb_next}"
-blend="lxqt-4gb"
-archive_base_rootfs
+base_rootfs="${debian_lxde_4gb_stable}" ; blend="lxde-4gb" ; archive_base_rootfs
+base_rootfs="${debian_lxde_stable}" ; blend="lxde" ; archive_base_rootfs
+base_rootfs="${debian_console_stable}" ; blend="console" ; archive_base_rootfs
+base_rootfs="${debian_machinekit_wheezy}" ; blend="machinekit" ; archive_base_rootfs
+base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; archive_base_rootfs
 
 ###archive *.img
 blend="lxde-4gb"
-wfile="BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
-archive_img
-wfile="BBB-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img"
-archive_img
-wfile="bone-${debian_lxde_4gb_stable}-4gb.img"
-archive_img
+wfile="BBB-blank-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_lxde_4gb_stable}-4gb.img" ; archive_img
+wfile="bone-${debian_lxde_4gb_stable}-4gb.img" ; archive_img
 
 blend="lxde"
-wfile="BBB-eMMC-flasher-${debian_lxde_stable}-2gb.img"
-archive_img
+wfile="BBB-eMMC-flasher-${debian_lxde_stable}-2gb.img" ; archive_img
 
 blend="console"
-wfile="BBB-blank-eMMC-flasher-${debian_console_stable}-2gb.img"
-archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_console_stable}-2gb.img"
-archive_img
-wfile="BBB-eMMC-flasher-${debian_console_stable}-2gb.img"
-archive_img
-wfile="bone-${debian_console_stable}-2gb.img"
-archive_img
+wfile="BBB-blank-eMMC-flasher-${debian_console_stable}-2gb.img" ;archive_img
+wfile="BBG-blank-eMMC-flasher-${debian_console_stable}-2gb.img" ;archive_img
+wfile="BBB-eMMC-flasher-${debian_console_stable}-2gb.img" ; archive_img
+wfile="bone-${debian_console_stable}-2gb.img" ; archive_img
 
 blend="machinekit"
-wfile="bone-${debian_machinekit_wheezy}-4gb.img"
-archive_img
+wfile="bone-${debian_machinekit_wheezy}-4gb.img" ; archive_img
 
 blend="lxqt-4gb"
-wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img"
-archive_img
-
-wfile="bone-${debian_lxqt_4gb_next}-4gb.img"
-archive_img
-
-wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img"
-archive_img
-
-wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img"
-archive_img
+wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+wfile="bone-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 
 __EOF__
 
