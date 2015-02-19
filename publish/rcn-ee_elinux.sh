@@ -5,6 +5,10 @@ DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/
 
+if [ -d ./deploy ] ; then
+	sudo rm -rf ./deploy || true
+fi
+
 ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
 
@@ -66,9 +70,14 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
+if [ ! -d /mnt/farm/images/ ] ; then
+	#nfs mount...
+	sudo mount -a
+fi
+
 if [ -d /mnt/farm/images/ ] ; then
+	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/gift_wrap_final_images.sh
 	chmod +x /mnt/farm/images/gift_wrap_final_images.sh
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/
 fi
 
