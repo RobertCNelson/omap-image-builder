@@ -16,7 +16,7 @@ fi
 
 debian_stable="debian-7.8-console-armhf-${time}"
 debian_testing="debian-jessie-console-armhf-${time}"
-ubuntu_stable="ubuntu-14.04.1-console-armhf-${time}"
+ubuntu_stable="ubuntu-14.04.2-console-armhf-${time}"
 
 archive="xz -z -8 -v"
 
