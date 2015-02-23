@@ -38,8 +38,8 @@ beaglebone_console="--dtb beaglebone --boot_label BEAGLEBONE \
 bb_blank_flasher_console="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-omap5-uevm="--dtb omap5-uevm --hostname omap5-uevm"
-am57xx-beagle-x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
+omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
+am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -137,8 +137,8 @@ base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
-options="--img-4gb bbx15-\${base_rootfs} ${am57xx-beagle-x15}" ; generate_img
-options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5-uevm}" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
+options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_lxde_4gb_stable}" ; blend="lxde-4gb" ; archive_base_rootfs
