@@ -111,7 +111,7 @@ generate_img () {
 base_rootfs="${debian_lxde_4gb_stable}" ; blend="lxde-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbb-flasher" ; generate_img
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
 ###lxde images: (BBB: 2GB eMMC)
