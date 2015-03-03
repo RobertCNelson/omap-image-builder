@@ -24,7 +24,7 @@ debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_machinekit_wheezy="debian-7.8-machinekit-armhf-${time}"
 debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
-debian_lxqt_2gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
+debian_lxqt_2gb_next="debian-jessie-lxqt-2gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
