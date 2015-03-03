@@ -17,12 +17,14 @@ fi
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 ./RootStock-NG.sh -c machinekit-debian-wheezy
 ./RootStock-NG.sh -c bb.org-debian-next-4gb-v3.14
+./RootStock-NG.sh -c bb.org-debian-next-2gb-v3.14
 
 debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_machinekit_wheezy="debian-7.8-machinekit-armhf-${time}"
 debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
+debian_lxqt_2gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -132,13 +134,18 @@ base_rootfs="${debian_machinekit_wheezy}" ; blend="machinekit" ; extract_base_ro
 
 options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
-###lxqt image
+###lxqt-4gb image
 base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
+
+###lxqt-2gb image
+base_rootfs="${debian_lxqt_2gb_next}" ; blend="lxqt-2gb" ; extract_base_rootfs
+
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_lxde_4gb_stable}" ; blend="lxde-4gb" ; archive_base_rootfs
@@ -170,6 +177,9 @@ wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 wfile="bone-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+
+blend="lxqt-2gb"
+wfile="BBB-eMMC-flasher-${debian_lxqt_2gb_next}-2gb.img" ; archive_img
 
 __EOF__
 
