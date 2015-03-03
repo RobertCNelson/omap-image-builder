@@ -137,19 +137,16 @@ setup_desktop () {
 		echo "Patching: ${wfile}"
 		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
 		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session='$rfs_default_desktop':g' ${wfile}
-		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
-			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
-		fi
+#		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
+#			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
+#		fi
 	fi
 
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-		cp -v "${rfs_desktop_background}" /opt/desktop-background.jpg
-
-		mkdir -p /home/${rfs_username}/.config/pcmanfm/LXDE/ || true
-		wfile="/home/${rfs_username}/.config/pcmanfm/LXDE/pcmanfm.conf"
-		echo "[desktop]" > ${wfile}
-		echo "wallpaper_mode=1" >> ${wfile}
-		echo "wallpaper=/opt/desktop-background.jpg" >> ${wfile}
+		mkdir -p /home/${rfs_username}/.config/ || true
+		if [ -d /opt/scripts/desktop-defaults/jessie/lxqt/ ] ; then
+			cp -rv /opt/scripts/desktop-defaults/jessie/lxqt/* /home/${rfs_username}/.config
+		fi
 		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 	fi
 
@@ -163,27 +160,27 @@ setup_desktop () {
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
 
-	#Disable LXDE's screensaver on autostart
-	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
-		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
-		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
-		rm -rf /tmp/autostart || true
-	fi
+#	#Disable LXDE's screensaver on autostart
+#	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
+#		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
+#		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
+#		rm -rf /tmp/autostart || true
+#	fi
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 
-	#root password is blank, so remove useless application as it requires a password.
-	if [ -f /usr/share/applications/gksu.desktop ] ; then
-		rm -f /usr/share/applications/gksu.desktop || true
-	fi
+#	#root password is blank, so remove useless application as it requires a password.
+#	if [ -f /usr/share/applications/gksu.desktop ] ; then
+#		rm -f /usr/share/applications/gksu.desktop || true
+#	fi
 
-	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
-	if [ -f /usr/bin/lxterminal ] ; then
-		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
-			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
-			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
-		fi
-	fi
+#	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
+#	if [ -f /usr/bin/lxterminal ] ; then
+#		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
+#			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
+#			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
+#		fi
+#	fi
 
 	#ti: firewall blocks pastebin.com
 	if [ -f /usr/bin/pastebinit ] ; then
@@ -194,6 +191,12 @@ setup_desktop () {
 		echo "    <jabberid>author@example.net</jabberid>" >> ${wfile}
 		echo "    <format>text</format>" >> ${wfile}
 		echo "</pastebinit>" >> ${wfile}
+	fi
+
+	#fix Ping:
+	#ping: icmp open socket: Operation not permitted
+	if [ -f /bin/ping ] ; then
+		chmod u+x /bin/ping
 	fi
 }
 
@@ -336,8 +339,8 @@ install_node_pkgs () {
 				if [ -f /etc/apache2/sites-enabled/000-default ] ; then
 					sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
 				fi
-				if [ -f /var/www/index.html ] ; then
-					rm -rf /var/www/index.html || true
+				if [ -f /var/www/html/index.html ] ; then
+					rm -rf /var/www/html/index.html || true
 				fi
 			fi
 		fi
@@ -347,30 +350,17 @@ install_node_pkgs () {
 install_pip_pkgs () {
 	if [ -f /usr/bin/pip ] ; then
 		echo "Installing pip packages"
+		#Fixed in git, however not pushed to pip yet...(use git and install)
+		#libpython2.7-dev
+		#pip install Adafruit_BBIO
 
-		#debian@beaglebone:~$ pip install Adafruit_BBIO
-		#Downloading/unpacking Adafruit-BBIO
-		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
-		#  Running setup.py egg_info for package Adafruit-BBIO
-		#    The required version of distribute (>=0.6.45) is not available,
-		#    and can't be installed while this script is running. Please
-		#    install a more recent version first, using
-		#    'easy_install -U distribute'.
-		#
-		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-		#    Complete output from command python setup.py egg_info:
-		#    The required version of distribute (>=0.6.45) is not available,
-		#
-		#and can't be installed while this script is running. Please
-		#
-		#install a more recent version first, using
-		#
-		#'easy_install -U distribute'.
-		#
-		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-
-		easy_install -U distribute
-		pip install Adafruit_BBIO
+		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+		git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			python setup.py install
+		fi
 	fi
 }
 
@@ -384,8 +374,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone
 
-		echo "gem: [jekyll ${gem_wheezy}]"
-		gem install jekyll ${gem_wheezy}
+		echo "gem: [jekyll ${gem_jessie}]"
+		gem install jekyll ${gem_jessie}
 	fi
 }
 
@@ -481,6 +471,8 @@ unsecure_root () {
 		#Make ssh root@beaglebone work..
 		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+		#Starting with Jessie:
+		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
 	fi
 
 	if [ -f /etc/sudoers ] ; then
@@ -509,9 +501,9 @@ is_this_qemu
 setup_system
 setup_desktop
 
+#install_gem_pkgs
 #install_node_pkgs
 #install_pip_pkgs
-#install_gem_pkgs
 if [ -f /usr/bin/git ] ; then
 	install_git_repos
 fi
