@@ -44,7 +44,7 @@ omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
-#!/bin/bash
+#!/bin/bash -x
 
 copy_base_rootfs_to_mirror () {
         if [ -d ${mirror_dir} ] ; then
