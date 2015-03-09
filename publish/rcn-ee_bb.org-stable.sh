@@ -153,6 +153,7 @@ base_rootfs="${debian_lxde_stable}" ; blend="lxde" ; archive_base_rootfs
 base_rootfs="${debian_console_stable}" ; blend="console" ; archive_base_rootfs
 base_rootfs="${debian_machinekit_wheezy}" ; blend="machinekit" ; archive_base_rootfs
 base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; archive_base_rootfs
+base_rootfs="${debian_lxqt_2gb_next}" ; blend="lxqt-2gb" ; archive_base_rootfs
 
 ###archive *.img
 blend="lxde-4gb"
