@@ -40,6 +40,7 @@ beaglebone_console="--dtb beaglebone --boot_label BEAGLEBONE \
 bb_blank_flasher_console="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
+omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
 omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
 
@@ -138,8 +139,9 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; genera
 base_rootfs="${debian_lxqt_4gb_next}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img-4gb bb-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
 ###lxqt-2gb image
@@ -175,8 +177,9 @@ wfile="bone-${debian_machinekit_wheezy}-4gb.img" ; archive_img
 
 blend="lxqt-4gb"
 wfile="BBB-eMMC-flasher-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
-wfile="bone-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+wfile="bb-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 wfile="bbx15-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
+wfile="bone-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 wfile="omap5-uevm-${debian_lxqt_4gb_next}-4gb.img" ; archive_img
 
 blend="lxqt-2gb"
