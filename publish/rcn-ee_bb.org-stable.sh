@@ -16,15 +16,15 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-stable-4gb
 ./RootStock-NG.sh -c bb.org-console-debian-stable
 ./RootStock-NG.sh -c machinekit-debian-wheezy
-./RootStock-NG.sh -c bb.org-debian-next-4gb-v3.14
-./RootStock-NG.sh -c bb.org-debian-next-2gb-v3.14
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v3.14
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14
 
 debian_lxde_stable="debian-7.8-lxde-armhf-${time}"
 debian_lxde_4gb_stable="debian-7.8-lxde-4gb-armhf-${time}"
 debian_console_stable="debian-7.8-console-armhf-${time}"
 debian_machinekit_wheezy="debian-7.8-machinekit-armhf-${time}"
-debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
 debian_lxqt_2gb_next="debian-jessie-lxqt-2gb-armhf-${time}"
+debian_lxqt_4gb_next="debian-jessie-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
