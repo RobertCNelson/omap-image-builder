@@ -12,9 +12,9 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-./RootStock-NG.sh -c bb.org-debian-stable
-./RootStock-NG.sh -c bb.org-debian-stable-4gb
-./RootStock-NG.sh -c bb.org-console-debian-stable
+./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-2gb
+./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
+./RootStock-NG.sh -c bb.org-debian-wheezy-console
 ./RootStock-NG.sh -c machinekit-debian-wheezy
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v3.14
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14

@@ -17,8 +17,8 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-./RootStock-NG.sh -c bb.org-debian-stable-4gb
-#./RootStock-NG.sh -c bb.org-console-debian-stable
+./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
+#./RootStock-NG.sh -c bb.org-debian-wheezy-console
 
 if [ -d ./deploy/${image_name} ] ; then
 	cd ./deploy/${image_name}/
