@@ -117,6 +117,8 @@ setup_desktop () {
 #		echo "        Driver          \"modesetting\"" >> ${wfile}
 		echo "        Driver          \"fbdev\"" >> ${wfile}
 
+		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
+
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "Section \"Screen\"" >> ${wfile}
