@@ -877,33 +877,39 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	fi
 
-	unset kms_video
-	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
-		drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
-		drm_device_timing=${drm_device_timing:-"1024x768@60e"}
-		kms_video="video=${drm_device_identifier}:${drm_device_timing}"
+	cmdline="quiet"
+	if [ "x${enable_systemd}" = "xenabled" ] ; then
+		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
 
-	if [ "x${enable_systemd}" = "xenabled" ] ; then
-		echo "cmdline=quiet init=/lib/systemd/systemd ${kms_video}" >> ${wfile}
+	unset kms_video
+
+	drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
+	drm_device_timing=${drm_device_timing:-"1024x768@60e"}
+	if [ "x${drm_read_edid_broken}" = "xenable" ] ; then
+		cmdline="${cmdline} video=${drm_device_identifier}:${drm_device_timing}"
+		echo "cmdline=${cmdline}" >> ${wfile}
+		echo "" >> ${wfile}
 	else
-		echo "cmdline=quiet ${kms_video}" >> ${wfile}
+		echo "cmdline=${cmdline}" >> ${wfile}
+		echo "" >> ${wfile}
+
+		echo "#In the event of edid real failures, uncomment this next line:" >> ${wfile}
+		echo "#cmdline=${cmdline} video=${drm_device_identifier}:${drm_device_timing}" >> ${wfile}
+		echo "" >> ${wfile}
 	fi
-	echo "" >> ${wfile}
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 		echo "##Example" >> ${wfile}
 		echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
 		echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
 		echo "" >> ${wfile}
-	fi
 
-	if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
-		cat "${DIR}/post-uEnv.txt" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
+		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
+			cat "${DIR}/post-uEnv.txt" >> ${wfile}
+			echo "" >> ${wfile}
+		fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 		if [ "x${bbb_flasher}" = "xenable" ] ; then
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
