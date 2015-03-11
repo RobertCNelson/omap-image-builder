@@ -82,14 +82,5 @@ Release Process:
 MachineKit:
 ------------
 
-Branch:
-
-    git clone -b config-hooks https://github.com/cdsteinkuehler/omap-image-builder
-
-Images:
-
-    http://bb-lcnc.blogspot.com/p/machinekit_16.html
-
-Maintainer hints (aka me):
-
-    git pull --no-edit https://github.com/cdsteinkuehler/omap-image-builder MachineKit
+    ./RootStock-NG.sh -c machinekit-debian-wheezy
+    http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#BBW.2FBBB_.28All_Revs.29_Machinekit
