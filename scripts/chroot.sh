@@ -804,8 +804,8 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ -d /var/cache/bbx15-ducati-firmware-installer/ ] ; then
 			rm -rf /var/cache/bbx15-ducati-firmware-installer/ || true
 		fi
-		if [ -d /var/cache/cloud9-installer/ ] ; then
-			rm -rf /var/cache/cloud9-installer/ || true
+		if [ -d /var/cache/c9-core-installer/ ] ; then
+			rm -rf /var/cache/c9-core-installer/ || true
 		fi
 		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
 			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
