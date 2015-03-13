@@ -509,7 +509,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	system_tweaks () {
 		echo "Log: (chroot): system_tweaks"
 		echo "[options]" > /etc/e2fsck.conf
-		echo "broken_system_clock = true" >> /etc/e2fsck.conf
+		echo "broken_system_clock = 1" >> /etc/e2fsck.conf
 
 		if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 			if [ -f /etc/ssh/sshd_config ] ; then
