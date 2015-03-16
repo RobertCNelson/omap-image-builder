@@ -470,11 +470,11 @@ install_git_repos () {
 install_build_pkgs () {
 	cd /opt/
 	if [ -f /usr/bin/xz ] ; then
-		wget https://rcn-ee.net/pkgs/chromium/${chromium_release}-armhf.tar.xz
+		wget https://rcn-ee.com/pkgs/chromium/${chromium_release}-armhf.tar.xz
 		if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
 			tar xf ${chromium_release}-armhf.tar.xz -C /
 			rm -rf ${chromium_release}-armhf.tar.xz || true
-			echo "${chromium_release} : https://rcn-ee.net/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
+			echo "${chromium_release} : https://rcn-ee.com/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
 
 			#link Chromium to /usr/bin/x-www-browser
 			update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
@@ -509,7 +509,7 @@ unsecure_root () {
 }
 
 todo () {
-	#stuff i need to package in repos.rcn-ee.net
+	#stuff i need to package in repos.rcn-ee.com
 	#
 	cd /
 	if [ ! -f /etc/Wireless/RT2870STA/RT2870STA.dat ] ; then
