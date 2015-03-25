@@ -192,6 +192,8 @@ chroot_umount () {
 	fi
 }
 
+trap chroot_umount EXIT
+
 check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] ; then
