@@ -10,8 +10,8 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
-./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
+./RootStock-NG.sh -c rcn-ee_console_debian_wheezy_armhf
+./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 
 debian_stable="debian-7.8-console-armhf-${time}"

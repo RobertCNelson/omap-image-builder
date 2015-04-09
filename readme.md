@@ -64,8 +64,8 @@ eewiki.net: Debian Stable (armhf) barefs:
 
 elinux.org: Debian Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_debian_stable_armhf
-    ./RootStock-NG.sh -c rcn-ee_console_debian_testing_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_debian_wheezy_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
     http://elinux.org/BeagleBoardDebian#Demo_Image
 
 elinux.org: Ubuntu Images:
