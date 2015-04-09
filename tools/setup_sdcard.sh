@@ -314,7 +314,16 @@ unmount_all_drive_partitions () {
 }
 
 sfdisk_partition_layout () {
-	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
+	sfdisk_options="--force --in-order --Linux --unit M"
+	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
+	if [ "x${test_sfdisk}" = "x" ] ; then
+		echo "log: sfdisk: 2.26.x or greater detected"
+		sfdisk_options="--force"
+		conf_boot_startmb="${conf_boot_startmb}M"
+		conf_boot_endmb="${conf_boot_endmb}M"
+	fi
+
+	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 		${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
 		,,,-
 	__EOF__
@@ -323,7 +332,16 @@ sfdisk_partition_layout () {
 }
 
 sfdisk_single_partition_layout () {
-	LC_ALL=C sfdisk --force --in-order --Linux --unit M "${media}" <<-__EOF__
+	sfdisk_options="--force --in-order --Linux --unit M"
+	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
+	if [ "x${test_sfdisk}" = "x" ] ; then
+		echo "log: sfdisk: 2.26.x or greater detected"
+		sfdisk_options="--force"
+		conf_boot_startmb="${conf_boot_startmb}M"
+	fi
+
+
+	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 		${conf_boot_startmb},,${sfdisk_fstype},*
 	__EOF__
 
