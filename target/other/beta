@@ -6,6 +6,25 @@
  </head>
  <body>
 
+<h3>BeagleBone and BeagleBone Black via microSD card</h3>
+<ul class="arrow">
+    <li itemscope itemtype="http://schema.org/SoftwareApplication">
+        <a itemprop="downloadURL"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-03-15/machinekit/bone-debian-7.8-machinekit-armhf-2015-03-15-4gb.img.xz"
+        >
+            <span itemprop="name">MachineKit</span>
+            (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
+            <span itemprop="memoryRequirements">4GB SD</span>)
+            <span itemprop="datePublished">2015-03-15</span>
+        </a>
+        -
+        <a itemprop="url" href="http://beagleboard.org/project/debian">
+            more info
+        </a>
+        -
+        md5: <span itemprop="md5sum">d2be498aee13ae5fd50466b5c5fdfd4a</span>
+    </li>
+</ul>
 
 <h3>BeagleBone and BeagleBone Black via microSD card</h3>
 <ul class="arrow">
@@ -24,7 +43,7 @@
         </a>
         -
         md5: <span itemprop="md5sum">108a6bb8693b6ff8dd6a1f03746cdb64</span>
-    </li>    
+    </li>
 </ul>
 
 <h3>BeagleBone Black (eMMC flasher)</h3>
@@ -35,7 +54,7 @@
         >
             <span itemprop="name">(BETA) Debian Jessie eMMC Flasher</span>
             (<span itemprop="device">BeagleBone Black</span> -
-            <span itemprop="memoryRequirements">4GB SD</span>)
+            <span itemprop="memoryRequirements">4GB eMMC</span>)
             <span itemprop="datePublished">2015-03-15</span>
         </a>
         -
