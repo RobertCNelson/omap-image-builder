@@ -10,12 +10,12 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-./RootStock-NG.sh -c rcn-ee_console_debian_wheezy_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
+#./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 
-debian_stable="debian-7.8-console-armhf-${time}"
-debian_testing="debian-jessie-console-armhf-${time}"
+debian_stable="debian-jessie-console-armhf-${time}"
+#debian_testing="debian-stretch-console-armhf-${time}"
 ubuntu_stable="ubuntu-14.04.2-console-armhf-${time}"
 
 archive="xz -z -8 -v"
@@ -89,12 +89,12 @@ generate_img () {
 #Debian Stable
 base_rootfs="${debian_stable}" ; extract_base_rootfs
 
-options="--img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --bbb-flasher --enable-systemd  --bbb-old-bootloader-in-emmc" ; generate_img
-options="--img bone-${debian_stable} --dtb beaglebone --enable-systemd --bbb-old-bootloader-in-emmc" ; generate_img
-options="--img bb-${debian_stable} --dtb omap3-beagle --enable-systemd" ; generate_img
-options="--img bbxm-${debian_stable} --dtb omap3-beagle-xm --enable-systemd" ; generate_img
-options="--img omap5-uevm-${debian_stable} --dtb omap5-uevm --enable-systemd" ; generate_img
-options="--img bbx15-${debian_stable} --dtb am57xx-beagle-x15 --enable-systemd" ; generate_img
+options="--img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --bbb-flasher --bbb-old-bootloader-in-emmc" ; generate_img
+options="--img bone-${debian_stable} --dtb beaglebone --bbb-old-bootloader-in-emmc" ; generate_img
+options="--img bb-${debian_stable} --dtb omap3-beagle" ; generate_img
+options="--img bbxm-${debian_stable} --dtb omap3-beagle-xm" ; generate_img
+options="--img omap5-uevm-${debian_stable} --dtb omap5-uevm" ; generate_img
+options="--img bbx15-${debian_stable} --dtb am57xx-beagle-x15" ; generate_img
 
 #Ubuntu Stable
 base_rootfs="${ubuntu_stable}" ; extract_base_rootfs
@@ -109,7 +109,7 @@ options="--img bbx15-${ubuntu_stable} --dtb am57xx-beagle-x15" ; generate_img
 #Archive tar:
 base_rootfs="${debian_stable}" ; archive_base_rootfs
 base_rootfs="${ubuntu_stable}" ; archive_base_rootfs
-base_rootfs="${debian_testing}" ; archive_base_rootfs
+#base_rootfs="${debian_testing}" ; archive_base_rootfs
 
 #Archive img:
 blend="microsd"
