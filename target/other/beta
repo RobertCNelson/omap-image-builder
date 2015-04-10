@@ -32,7 +32,7 @@
         <a itemprop="downloadURL"
          href="https://rcn-ee.com/rootfs/bb.org/testing/2015-03-15/machinekit/bone-debian-7.8-machinekit-armhf-2015-03-15-4gb.img.xz"
         >
-            <span itemprop="name">MachineKit</span>
+            <span itemprop="name">(machinekit.io) Machinekit</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">4GB SD</span>)
             <span itemprop="datePublished">2015-03-15</span>
@@ -112,7 +112,7 @@
         <a itemprop="downloadURL"
          href="https://rcn-ee.com/rootfs/2015-04-09/microsd/bone-debian-jessie-console-armhf-2015-04-09-2gb.img.xz"
         >
-            <span itemprop="name">(http://elinux.org/BeagleBoardDebian) Debian 8.0</span>
+            <span itemprop="name">(elinux.org/BeagleBoardDebian) Debian 8.0</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">2GB SD</span>)
             <span itemprop="datePublished">2015-04-09</span>
@@ -132,13 +132,13 @@
         <a itemprop="downloadURL"
          href="https://rcn-ee.com/rootfs/2015-04-09/microsd/bone-ubuntu-14.04.2-console-armhf-2015-04-09-2gb.img.xz"
         >
-            <span itemprop="name">(http://elinux.org/BeagleBoardUbuntu) Ubuntu 14.04.2</span>
+            <span itemprop="name">(elinux.org/BeagleBoardUbuntu) Ubuntu 14.04.2</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">2GB SD</span>)
             <span itemprop="datePublished">2015-04-09</span>
         </a>
         -
-        <a itemprop="url" href="http://beagleboard.org/project/debian">
+        <a itemprop="url" href="http://beagleboard.org/project/ubuntu">
             more info
         </a>
         -
