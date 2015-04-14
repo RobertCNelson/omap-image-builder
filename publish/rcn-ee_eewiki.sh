@@ -5,28 +5,25 @@ DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/
 
-./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armel
-./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armhf
+./RootStock-NG.sh -c eewiki_bare_debian_jessie_armel
+./RootStock-NG.sh -c eewiki_bare_debian_jessie_armhf
 
-./RootStock-NG.sh -c eewiki_minfs_debian_wheezy_armel
-./RootStock-NG.sh -c eewiki_minfs_debian_wheezy_armhf
+./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armhf
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_trusty_armhf
 
-debian_stable="debian-7.8"
-debian_testing="debian-jessie"
+debian_jessie="debian-8.0"
 ubuntu_stable="ubuntu-14.04.2"
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-${archive} ${debian_stable}-bare-armel-${time}.tar
-${archive} ${debian_stable}-bare-armhf-${time}.tar
+${archive} ${debian_jessie}-bare-armel-${time}.tar
+${archive} ${debian_jessie}-bare-armhf-${time}.tar
 
-${archive} ${debian_stable}-minimal-armel-${time}.tar
-${archive} ${debian_stable}-minimal-armhf-${time}.tar
-${archive} ${debian_testing}-minimal-armhf-${time}.tar
+${archive} ${debian_jessie}-minimal-armel-${time}.tar
+${archive} ${debian_jessie}-minimal-armhf-${time}.tar
 
 ${archive} ${ubuntu_stable}-minimal-armhf-${time}.tar
 

@@ -479,6 +479,23 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 
 		apt-get update
 		apt-get upgrade -y --force-yes
+
+		if [ -f /bin/busybox ] ; then
+			echo "Log: (chroot): Setting up BusyBox"
+
+			busybox --install -s /usr/local/bin/
+
+			#conflicts with systemd reboot...
+			if [ -f /usr/local/bin/reboot ] ; then
+				rm -f /usr/local/bin/reboot
+			fi
+
+			#tar: unrecognized option '--warning=no-timestamp'
+			#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
+			if [ -f /usr/local/bin/tar ] ; then
+				rm -f /usr/local/bin/tar
+			fi
+		fi
 	}
 
 	install_pkgs () {
@@ -561,7 +578,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		# Purge keep file
 		deborphan -Z
 
-		#FIXME, only tested on wheezy...
+		#FIXME, only tested on wheezy/jessie...
 		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
 		apt-get clean
 	}
