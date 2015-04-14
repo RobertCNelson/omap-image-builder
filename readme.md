@@ -44,15 +44,15 @@ Master branch:
 
 eewiki.net: Debian Stable (armel) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armel
+    ./RootStock-NG.sh -c eewiki_minfs_debian_wheezy_armel
 
 eewiki.net: Debian Stable (armhf) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_debian_wheezy_armhf
 
 eewiki.net: Ubuntu Stable (armhf) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_stable_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_trusty_armhf
 
 eewiki.net: Debian Stable (armel) barefs:
 
