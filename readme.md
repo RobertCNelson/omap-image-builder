@@ -56,7 +56,7 @@ eewiki.net: Ubuntu Stable (armhf) minfs:
 
 eewiki.net: Debian Stable (armel) barefs:
 
-    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armel
+    ./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armel
 
 eewiki.net: Debian Stable (armhf) barefs:
 
