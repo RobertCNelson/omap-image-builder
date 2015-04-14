@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2015.01"
+u_boot_release="v2015.04"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -454,9 +454,10 @@ install_build_pkgs () {
 }
 
 other_source_links () {
-	rcn_https="https://raw.githubusercontent.com/RobertCNelson/Bootloader-Builder/master/patches"
+	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
 
 	mkdir -p /opt/source/u-boot_${u_boot_release}/
+	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-omap3_beagle-uEnv.txt-bootz-n-fixes.patch
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
 
