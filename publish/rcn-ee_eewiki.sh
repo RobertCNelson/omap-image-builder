@@ -6,7 +6,7 @@ DIR="$PWD"
 export apt_proxy=apt-proxy:3142/
 
 ./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armel
-./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
+./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armhf
 
 ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_stable_armhf

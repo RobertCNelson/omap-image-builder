@@ -60,7 +60,7 @@ eewiki.net: Debian Stable (armel) barefs:
 
 eewiki.net: Debian Stable (armhf) barefs:
 
-    ./RootStock-NG.sh -c eewiki_bare_debian_stable_armhf
+    ./RootStock-NG.sh -c eewiki_bare_debian_wheezy_armhf
 
 elinux.org: Debian Images:
 
