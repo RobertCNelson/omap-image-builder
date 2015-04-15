@@ -480,20 +480,22 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		apt-get update
 		apt-get upgrade -y --force-yes
 
-		if [ -f /bin/busybox ] ; then
-			echo "Log: (chroot): Setting up BusyBox"
+		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+			if [ -f /bin/busybox ] ; then
+				echo "Log: (chroot): Setting up BusyBox"
 
-			busybox --install -s /usr/local/bin/
+				busybox --install -s /usr/local/bin/
 
-			#conflicts with systemd reboot...
-			if [ -f /usr/local/bin/reboot ] ; then
-				rm -f /usr/local/bin/reboot
-			fi
+				#conflicts with systemd reboot...
+				if [ -f /usr/local/bin/reboot ] ; then
+					rm -f /usr/local/bin/reboot
+				fi
 
-			#tar: unrecognized option '--warning=no-timestamp'
-			#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-			if [ -f /usr/local/bin/tar ] ; then
-				rm -f /usr/local/bin/tar
+				#tar: unrecognized option '--warning=no-timestamp'
+				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
+				if [ -f /usr/local/bin/tar ] ; then
+					rm -f /usr/local/bin/tar
+				fi
 			fi
 		fi
 	}
