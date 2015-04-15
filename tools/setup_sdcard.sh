@@ -1065,7 +1065,10 @@ populate_rootfs () {
 		echo "    gateway 192.168.7.1" >> ${wfile}
 
 		if [ ! "x${bborg_production}" = "xenable" ] ; then
+			#wheezy
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
+			#jessie
+			rm -f ${TEMPDIR}/disk/var/www/html/index.html || true
 		fi
 		sync
 
