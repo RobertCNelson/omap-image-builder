@@ -408,6 +408,11 @@ ubuntu)
 	;;
 esac
 
+if [ -d ${tempdir}/usr/share/initramfs-tools/hooks/ ] ; then
+	echo "log: adding: [initramfs-tools hook: dtbo]"
+	sudo cp ${OIB_DIR}/target/other/dtbo ${tempdir}/usr/share/initramfs-tools/hooks/
+fi
+
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 echo "distro=${distro}" > /tmp/rcn-ee.conf
 echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
