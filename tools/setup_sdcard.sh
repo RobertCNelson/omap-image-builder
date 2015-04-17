@@ -1115,6 +1115,9 @@ populate_rootfs () {
 		echo "dhcp-range=192.168.7.1,192.168.7.1" >> ${TEMPDIR}/disk${wfile}
 		echo "" >> ${TEMPDIR}/disk${wfile}
 		echo "dhcp-option=3" >> ${TEMPDIR}/disk${wfile}
+		echo "except-interface=lo" >> ${TEMPDIR}/disk${wfile}
+		echo "listen-address=192.168.7.2" >> ${TEMPDIR}/disk${wfile}
+		echo "bind-interfaces" >> ${TEMPDIR}/disk${wfile}
 	fi
 
 	if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
