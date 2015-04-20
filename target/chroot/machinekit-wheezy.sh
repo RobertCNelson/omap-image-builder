@@ -178,9 +178,7 @@ setup_desktop () {
 
 	#Disable LXDE's screensaver on autostart
 	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
-		cat /etc/xdg/lxsession/LXDE/autostart | grep -v xscreensaver > /tmp/autostart
-		mv /tmp/autostart /etc/xdg/lxsession/LXDE/autostart
-		rm -rf /tmp/autostart || true
+		sed -i '/xscreensaver/s/^/#/' /etc/xdg/lxsession/LXDE/autostart
 	fi
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
