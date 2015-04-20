@@ -1,3 +1,7 @@
+##Video: Uncomment to override:
+##see: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/fb/modedb.txt
+#kms_force_mode=video=HDMI-A-1:1024x768@60e
+
 ##Disable HDMI/eMMC
 #cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
 
