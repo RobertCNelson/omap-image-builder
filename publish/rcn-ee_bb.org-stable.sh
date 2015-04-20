@@ -163,7 +163,7 @@ wfile="BBB-eMMC-flasher-${debian_jessie_console}-2gb.img" ; archive_img
 wfile="bb-${debian_jessie_console}-2gb.img" ; archive_img
 wfile="bbx15-${debian_jessie_console}-2gb.img" ; archive_img
 wfile="bone-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="omap5-uevm-${debian_console}-2gb.img" ; archive_img
+wfile="omap5-uevm-${debian_jessie_console}-2gb.img" ; archive_img
 
 __EOF__
 
