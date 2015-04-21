@@ -183,11 +183,6 @@ setup_desktop () {
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 
-	#root password is blank, so remove useless application as it requires a password.
-	if [ -f /usr/share/applications/gksu.desktop ] ; then
-		rm -f /usr/share/applications/gksu.desktop || true
-	fi
-
 	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
 	if [ -f /usr/bin/lxterminal ] ; then
 		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
@@ -492,12 +487,8 @@ other_source_links () {
 }
 
 unsecure_root () {
-	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
-	sed -i -e 's:'$root_password'::g' /etc/shadow
-
 	if [ -f /etc/ssh/sshd_config ] ; then
 		#Make ssh root@beaglebone work..
-		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
 	fi
 
