@@ -14,7 +14,7 @@ fi
 #./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 
-debian_stable="debian-jessie-console-armhf-${time}"
+debian_stable="debian-8.0-console-armhf-${time}"
 #debian_testing="debian-stretch-console-armhf-${time}"
 ubuntu_stable="ubuntu-14.04.2-console-armhf-${time}"
 
