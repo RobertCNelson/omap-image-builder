@@ -942,6 +942,13 @@ chroot_mount
 sudo chroot ${tempdir} /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
+#With the console images, git isn't installed, so we need to patch systemd for shutdown here: (fixed in stretch - udev)
+if [ "x${deb_codename}" = "xwheezy" ] || [ "x${deb_codename}" = "xjessie" ] ; then
+	if [ ! -f ${tempdir}/opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
+		sudo cp ${DIR}/target/other/systemd-power-switch.rules ${tempdir}/lib/udev/rules.d/70-power-switch.rules
+	fi
+fi
+
 #Do /etc/issue & /etc/issue.net after chroot_script:
 #
 #Unpacking base-files (7.2ubuntu5.1) over (7.2ubuntu5) ...
