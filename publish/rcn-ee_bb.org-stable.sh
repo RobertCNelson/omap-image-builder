@@ -133,7 +133,7 @@ options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_con
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --bbb-flasher" ; generate_img
 options="--img-2gb bb-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
-options="--img-2gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img-2gb bone-\${base_rootfs} ${beaglebone_console}" ; generate_img
 options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
 ###archive *.tar
