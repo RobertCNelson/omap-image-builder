@@ -376,36 +376,38 @@ sudo mv /tmp/hosts ${tempdir}/etc/hosts
 echo "${rfs_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname ${tempdir}/etc/hostname
 
-case "${deb_distribution}" in
-debian)
-	case "${deb_codename}" in
-	wheezy)
-		sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
-		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
-		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-		distro="Debian"
+if [ "x${deb_arch}" = "xarmhf" ] ; then
+	case "${deb_distribution}" in
+	debian)
+		case "${deb_codename}" in
+		wheezy)
+			sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
+			sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
+			sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+			distro="Debian"
+			;;
+		jessie|stretch)
+			sudo cp ${OIB_DIR}/target/init_scripts/systemd-capemgr.service ${tempdir}/lib/systemd/system/capemgr.service
+			sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+			distro="Debian"
+			;;
+		esac
 		;;
-	jessie|stretch)
-		sudo cp ${OIB_DIR}/target/init_scripts/systemd-capemgr.service ${tempdir}/lib/systemd/system/capemgr.service
+	ubuntu)
+		sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf ${tempdir}/etc/init/generic-boot-script.conf
+		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init/capemgr.sh
 		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-		distro="Debian"
+		distro="Ubuntu"
+
+		if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
+			#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
+			sudo sed -i -e 's:sleep 20:#sleep 20:g' ${tempdir}/etc/init/failsafe.conf
+			sudo sed -i -e 's:sleep 40:#sleep 40:g' ${tempdir}/etc/init/failsafe.conf
+			sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
+		fi
 		;;
 	esac
-	;;
-ubuntu)
-	sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf ${tempdir}/etc/init/generic-boot-script.conf
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init/capemgr.sh
-	sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
-	distro="Ubuntu"
-
-	if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
-		#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-		sudo sed -i -e 's:sleep 20:#sleep 20:g' ${tempdir}/etc/init/failsafe.conf
-		sudo sed -i -e 's:sleep 40:#sleep 40:g' ${tempdir}/etc/init/failsafe.conf
-		sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
-	fi
-	;;
-esac
+fi
 
 if [ -d ${tempdir}/usr/share/initramfs-tools/hooks/ ] ; then
 	if [ ! -f ${tempdir}/usr/share/initramfs-tools/hooks/dtbo ] ; then
