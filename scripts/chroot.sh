@@ -1077,15 +1077,6 @@ if [ -d ${tempdir}/etc/ssh/ -a "x${keep_ssh_keys}" = "x" ] ; then
 	sudo touch ${tempdir}/etc/ssh/ssh.regenerate || true
 fi
 
-#extra home, from chroot machine when running npm install xyz:
-unset extra_home
-extra_home=$(ls -lh ${tempdir}/home/ | grep -v ${rfs_username} | awk '{print $9}' | tail -1 || true)
-if [ ! "x${extra_home}" = "x" ] ; then
-	if [ -d ${tempdir}/home/${extra_home}/ ] ; then
-		sudo rm -rf ${tempdir}/home/${extra_home}/ || true
-	fi
-fi
-
 #ID.txt:
 if [ -f ${tempdir}/etc/dogtag ] ; then
 	sudo cp ${tempdir}/etc/dogtag ${DIR}/deploy/${export_filename}/ID.txt
