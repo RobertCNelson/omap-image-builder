@@ -41,7 +41,7 @@ omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
-#!/bin/bash -x
+#!/bin/bash
 
 copy_base_rootfs_to_mirror () {
         if [ -d ${mirror_dir} ] ; then
@@ -175,8 +175,9 @@ if [ ! -d /mnt/farm/images/ ] ; then
 fi
 
 if [ -d /mnt/farm/images/ ] ; then
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/gift_wrap_final_images.sh
-	chmod +x /mnt/farm/images/gift_wrap_final_images.sh
+	mkdir /mnt/farm/images/${time}/
+	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${time}/
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${time}/gift_wrap_final_images.sh
+	chmod +x /mnt/farm/images/${time}/gift_wrap_final_images.sh
 fi
 
