@@ -911,7 +911,7 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	fi
 
-	cmdline="quiet"
+	cmdline="coherent_pool=1M quiet"
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
 		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
