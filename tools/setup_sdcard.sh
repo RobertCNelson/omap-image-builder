@@ -1067,7 +1067,7 @@ populate_rootfs () {
 			echo "#With read only rootfs, we need to boot once as rw..." >> ${wfile}
 			echo "${rootfs_drive}  /  ext2  noatime,errors=remount-ro  0  1" >> ${wfile}
 			echo "#" >> ${wfile}
-			echo "#Swith to read only rootfs:" >> ${wfile}
+			echo "#Switch to read only rootfs:" >> ${wfile}
 			echo "#${rootfs_drive}  /  ext2  noatime,ro,errors=remount-ro  0  1" >> ${wfile}
 			echo "#" >> ${wfile}
 			echo "${rootfs_var_drive}  /var  ${ROOTFS_TYPE}  noatime  0  2" >> ${wfile}
