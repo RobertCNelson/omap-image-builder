@@ -812,7 +812,7 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 		if [ -f /opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
 			if [ -f /usr/bin/patch ] ; then
 				if [ -f /lib/udev/rules.d/70-power-switch.rules ] ; then
-					patch -p1 < /opt/scripts/mods/jessie-systemd-poweroff.diff
+					patch -p1 < /opt/scripts/mods/jessie-systemd-poweroff.diff || true
 				else
 					patch -p1 < /opt/scripts/mods/wheezy-systemd-poweroff.diff
 				fi

@@ -11,11 +11,11 @@ if [ -d ./deploy ] ; then
 fi
 
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
-#./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
+./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
 
 debian_stable="debian-8.0-console-armhf-${time}"
-#debian_testing="debian-stretch-console-armhf-${time}"
+debian_testing="debian-stretch-console-armhf-${time}"
 ubuntu_stable="ubuntu-14.04.2-console-armhf-${time}"
 
 archive="xz -z -8 -v"
@@ -109,7 +109,7 @@ options="--img bbx15-${ubuntu_stable} --dtb am57xx-beagle-x15" ; generate_img
 #Archive tar:
 base_rootfs="${debian_stable}" ; archive_base_rootfs
 base_rootfs="${ubuntu_stable}" ; archive_base_rootfs
-#base_rootfs="${debian_testing}" ; archive_base_rootfs
+base_rootfs="${debian_testing}" ; archive_base_rootfs
 
 #Archive img:
 blend="microsd"
