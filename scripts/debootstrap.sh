@@ -50,6 +50,12 @@ check_defines () {
 		options="${options} --components=${components}"
 	fi
 
+	#http://linux.die.net/man/8/debootstrap
+	if [ "${deb_variant}" ] ; then
+		#--variant=minbase|buildd|fakechroot|scratchbox
+		options="${options} --variant=${deb_variant}"
+	fi
+
 	options="${options} --foreign"
 
 	unset suite
