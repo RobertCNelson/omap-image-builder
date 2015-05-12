@@ -144,7 +144,7 @@ while [ ! -z "$1" ] ; do
 	-h|--help)
 		usage
 		;;
-	-c|--config)
+	-c|-C|--config)
 		checkparm $2
 		project_config="$2"
 		check_project_config
