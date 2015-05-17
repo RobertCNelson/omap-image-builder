@@ -374,10 +374,10 @@ install_gem_pkgs () {
 		gem_jessie="--no-document"
 
 		echo "gem: [beaglebone]"
-		gem install beaglebone
+		gem install beaglebone || true
 
 		echo "gem: [jekyll ${gem_jessie}]"
-		gem install jekyll ${gem_jessie}
+		gem install jekyll ${gem_jessie} || true
 	fi
 }
 
