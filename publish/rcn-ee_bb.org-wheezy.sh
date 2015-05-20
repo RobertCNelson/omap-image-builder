@@ -104,6 +104,7 @@ generate_img () {
 base_rootfs="${debian_wheezy_lxde_4gb}" ; blend="lxde-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-4gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbg-flasher" ; generate_img
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
@@ -115,7 +116,6 @@ options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-syste
 ###console images: (also single partition)
 base_rootfs="${debian_wheezy_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbg-flasher" ; generate_img
 options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbb-flasher" ; generate_img
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --enable-systemd --bbb-flasher" ; generate_img
 options="--img-2gb bone-\${base_rootfs} ${beaglebone_console} --enable-systemd" ; generate_img
@@ -128,6 +128,7 @@ base_rootfs="${debian_wheezy_console}" ; blend="console" ; archive_base_rootfs
 ###archive *.img
 blend="lxde-4gb"
 wfile="BBB-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
+wfile="BBG-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
 wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
 wfile="bone-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
 
@@ -136,7 +137,6 @@ wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_2gb}-2gb.img" ; archive_img
 
 blend="console"
 wfile="BBB-blank-eMMC-flasher-${debian_wheezy_console}-2gb.img" ;archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_wheezy_console}-2gb.img" ;archive_img
 wfile="BBB-eMMC-flasher-${debian_wheezy_console}-2gb.img" ; archive_img
 wfile="bone-${debian_wheezy_console}-2gb.img" ; archive_img
 
