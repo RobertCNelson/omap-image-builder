@@ -531,6 +531,9 @@ create_partitions () {
 		echo "Using sfdisk to create partition layout"
 		echo "Version: `LC_ALL=C sfdisk --version`"
 		echo "-----------------------------"
+		if [ "x${bborg_production}" = "xenable" ] ; then
+			conf_boot_endmb="96"
+		fi
 		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
@@ -718,7 +721,6 @@ populate_boot () {
 
 		if [ "x${conf_board}" = "xarduino-tre" ] ; then
 			wfile="${TEMPDIR}/disk/uEnv.txt"
-			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
 		fi
 
 		echo "" >> ${wfile}
@@ -1200,7 +1202,7 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk${file}
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] ; then
 
 		file="/etc/udev/rules.d/70-persistent-net.rules"
 		echo "" > ${TEMPDIR}/disk${file}
