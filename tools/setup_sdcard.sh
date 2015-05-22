@@ -705,13 +705,18 @@ populate_boot () {
 		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] ; then
 
 		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
 			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
 			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
 		else
+			wfile="${TEMPDIR}/disk/uEnv.txt"
+			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
+		fi
+
+		if [ "x${conf_board}" = "xarduino-tre" ] ; then
 			wfile="${TEMPDIR}/disk/uEnv.txt"
 			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
 		fi
@@ -735,7 +740,13 @@ populate_boot () {
 		echo "" >> ${wfile}
 		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=/dev/mmcblk0p${media_rootfs_partition} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 		echo "" >> ${wfile}
-		echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} - \${fdtaddr}] ... ; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+
+		if [ "x${conf_board}" = "xarduino-tre" ] ; then
+			echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} - \${fdtaddr}] ... ; bootz \${loadaddr} - \${fdtaddr};" >> ${wfile}
+		else
+			echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr}] ... ; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+		fi
+
 		echo "" >> ${wfile}
 
 		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
