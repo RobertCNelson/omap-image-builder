@@ -726,16 +726,16 @@ populate_boot () {
 		echo "" >> ${wfile}
 		echo "##These are needed to be compliant with Debian 2014-05-14 u-boot." >> ${wfile}
 		echo "" >> ${wfile}
-		echo "loadximage=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
-		echo "loadxfdt=load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
-		echo "loadxrd=load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
+		echo "loadximage=echo debug: [/boot/vmlinuz-\${uname_r}] ... ; load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/vmlinuz-\${uname_r}" >> ${wfile}
+		echo "loadxfdt=echo debug: [/boot/dtbs/\${uname_r}/\${fdtfile}] ... ;load mmc 0:${media_rootfs_partition} \${fdtaddr} /boot/dtbs/\${uname_r}/\${fdtfile}" >> ${wfile}
+		echo "loadxrd=echo debug: [/boot/initrd.img-\${uname_r}] ... ; load mmc 0:${media_rootfs_partition} \${rdaddr} /boot/initrd.img-\${uname_r}; setenv rdsize \${filesize}" >> ${wfile}
 		echo "loaduEnvtxt=load mmc 0:${media_rootfs_partition} \${loadaddr} /boot/uEnv.txt ; env import -t \${loadaddr} \${filesize};" >> ${wfile}
 		echo "check_dtb=if test -n \${dtb}; then setenv fdtfile \${dtb};fi;" >> ${wfile}
 		echo "loadall=run loaduEnvtxt; run check_dtb; run loadximage; run loadxrd; run loadxfdt;" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=/dev/mmcblk0p${media_rootfs_partition} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 		echo "" >> ${wfile}
-		echo "uenvcmd=run loadall; run mmcargs; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
+		echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} - \${fdtaddr}] ... ; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 		echo "" >> ${wfile}
 
 		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
