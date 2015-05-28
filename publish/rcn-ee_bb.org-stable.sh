@@ -88,16 +88,22 @@ copy_img_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${wfile}.xz ] ; then
-                                cp -v \${wfile}.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ -f \${wfile}.bmap ] ; then
+                                cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
+                        fi
+                        if [ -f \${wfile}.img.xz ] ; then
+                                cp -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
 }
 
 archive_img () {
-        if [ -f \${wfile} ] ; then
-                ${archive} \${wfile}
+        if [ -f \${wfile}.img ] ; then
+                if [ -f /usr/bin/bmaptool ] ; then
+                        bmaptool create -o \${wfile}.bmap \${wfile}.img
+                fi
+                ${archive} \${wfile}.img
                 copy_img_to_mirror
         fi
 }
@@ -148,27 +154,27 @@ base_rootfs="${debian_jessie_console}" ; blend="console" ; archive_base_rootfs
 
 ###archive *.img
 blend="machinekit"
-wfile="bone-${debian_wheezy_machinekit}-4gb.img" ; archive_img
+wfile="bone-${debian_wheezy_machinekit}-4gb" ; archive_img
 
 blend="lxqt-4gb"
-wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
-wfile="bb-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
-wfile="bbx15-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
-wfile="bone-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
-wfile="omap5-uevm-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
-wfile="tre-${debian_jessie_lxqt_4gb}-4gb.img" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="bb-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="bbx15-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="bone-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="omap5-uevm-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="tre-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 
 blend="lxqt-2gb"
-wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_2gb}-2gb.img" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_2gb}-2gb" ; archive_img
 
 blend="console"
-wfile="BBB-blank-eMMC-flasher-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="BBB-eMMC-flasher-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="bb-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="bbx15-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="bone-${debian_jessie_console}-2gb.img" ; archive_img
-wfile="omap5-uevm-${debian_jessie_console}-2gb.img" ; archive_img
+wfile="BBB-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
+wfile="BBG-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
+wfile="bb-${debian_jessie_console}-2gb" ; archive_img
+wfile="bbx15-${debian_jessie_console}-2gb" ; archive_img
+wfile="bone-${debian_jessie_console}-2gb" ; archive_img
+wfile="omap5-uevm-${debian_jessie_console}-2gb" ; archive_img
 
 __EOF__
 
