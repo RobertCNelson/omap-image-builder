@@ -24,7 +24,7 @@ export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2015.04"
-bone101_git_sha="631050798ab70fcb6f0c48f766df82c147aaa8c0"
+bone101_git_sha="53fde450735a331963d337576239bae4c81c32fb"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -281,7 +281,6 @@ install_node_pkgs () {
 
 				if [ ! "x${bone101_git_sha}" = "x" ] ; then
 					git checkout ${bone101_git_sha} -b tmp-production
-					git pull --no-edit https://github.com/RobertCNelson/bone101 bone101-fix-site.baseurl-local
 				fi
 
 				echo "jekyll pre-building bone101"
