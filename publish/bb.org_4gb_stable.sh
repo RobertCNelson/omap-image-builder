@@ -26,8 +26,14 @@ if [ -d ./deploy/${image_name} ] ; then
 
 	if [ -f bone-${image_name}-4gb.img ] ; then
 		sudo chown buildbot.buildbot bone-${image_name}-4gb.img
-		#xz -z -3 -v -v --verbose bone-${image_name}-4gb.img
-		gzip bone-${image_name}-4gb.img
+
+		echo "env"
+		env
+		echo "ls -lh"
+		ls -lh
+		echo "df -h"
+		df -h
+		xz -z -3 -v -v --verbose bone-${image_name}-4gb.img
 
 		#upload:
 		ssh ${ssh_user} mkdir -p ${server_dir}
