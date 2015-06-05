@@ -20,6 +20,11 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 ./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 #./RootStock-NG.sh -c bb.org-debian-wheezy-console
 
+keep_net_alive () {
+	sleep 15
+	echo "size [`ls -lh ./bone-${image_name}-4gb.img*`]"
+}
+
 if [ -d ./deploy/${image_name} ] ; then
 	cd ./deploy/${image_name}/
 	sudo ./setup_sdcard.sh ${options}
@@ -27,17 +32,15 @@ if [ -d ./deploy/${image_name} ] ; then
 	if [ -f bone-${image_name}-4gb.img ] ; then
 		sudo chown buildbot.buildbot bone-${image_name}-4gb.img
 
-		echo "env"
-		env
-		echo "ls -lh"
-		ls -lh
-		echo "df -h"
-		df -h
+		keep_net_alive & KEEP_NET_ALIVE_PID=$!
+
 		xz -z -3 -v -v --verbose bone-${image_name}-4gb.img
 
 		#upload:
 		ssh ${ssh_user} mkdir -p ${server_dir}
 		rsync -e ssh -av ./bone-${image_name}-4gb.img.xz ${ssh_user}:${server_dir}/
+
+		[ -e /proc/$KEEP_NET_ALIVE_PID ] && kill $KEEP_NET_ALIVE_PID
 
 		#cleanup:
 		cd ../../
