@@ -40,7 +40,7 @@ if [ -d ./deploy/${image_name} ] ; then
 		ssh ${ssh_user} mkdir -p ${server_dir}
 		rsync -e ssh -av ./bone-${image_name}-4gb.img.xz ${ssh_user}:${server_dir}/
 
-		[ -e /proc/$KEEP_NET_ALIVE_PID ] && kill $KEEP_NET_ALIVE_PID
+		[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
 
 		#cleanup:
 		cd ../../
