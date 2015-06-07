@@ -1125,12 +1125,14 @@ fi
 sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 
 keep_alive () {
-	sleep 20
-	echo "Compressing: ${export_filename}.tar"
+	while : ; do
+		sleep 15
+		echo "tar'ing: ${export_filename}.tar"
+	done
 }
 
 if [ "x${chroot_tarball}" = "xenable" ] ; then
-	echo "Compressing ${export_filename}"
+	echo "Creating: ${export_filename}.tar"
 	cd ${DIR}/deploy/
 	keep_alive & KEEP_ALIVE_PID=$!
 	tar cvf ${export_filename}.tar ./${export_filename}

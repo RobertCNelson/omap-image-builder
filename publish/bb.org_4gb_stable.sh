@@ -21,8 +21,10 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 #./RootStock-NG.sh -c bb.org-debian-wheezy-console
 
 keep_net_alive () {
-	sleep 15
-	echo "size [`ls -lh ./bone-${image_name}-4gb.img*`]"
+	while : ; do
+		sleep 15
+		echo "size: [`ls -lh ./bone-${image_name}-4gb.img.xz`]"
+	done
 }
 
 if [ -d ./deploy/${image_name} ] ; then
