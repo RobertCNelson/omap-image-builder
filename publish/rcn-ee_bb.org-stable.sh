@@ -18,9 +18,9 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-jessie-console
 
 debian_wheezy_machinekit="debian-7.8-machinekit-armhf-${time}"
-debian_jessie_lxqt_2gb="debian-8.0-lxqt-2gb-armhf-${time}"
-debian_jessie_lxqt_4gb="debian-8.0-lxqt-4gb-armhf-${time}"
-debian_jessie_console="debian-8.0-console-armhf-${time}"
+debian_jessie_lxqt_2gb="debian-8.1-lxqt-2gb-armhf-${time}"
+debian_jessie_lxqt_4gb="debian-8.1-lxqt-4gb-armhf-${time}"
+debian_jessie_console="debian-8.1-console-armhf-${time}"
 
 archive="xz -z -8 -v"
 
