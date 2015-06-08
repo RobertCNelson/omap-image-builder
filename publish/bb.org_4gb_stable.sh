@@ -36,7 +36,7 @@ if [ -d ./deploy/${image_name} ] ; then
 
 		keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
-		xz -z -3 -v -v --verbose bone-${image_name}-4gb.img
+		time xz -z -3 -v -v --verbose bone-${image_name}-4gb.img
 
 		#upload:
 		ssh ${ssh_user} mkdir -p ${server_dir}

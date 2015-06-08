@@ -1127,7 +1127,13 @@ sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
 keep_alive () {
 	while : ; do
 		sleep 15
-		echo "tar'ing: ${export_filename}.tar"
+		echo "Log: [x---]: Creating: ${export_filename}.tar"
+		sleep 15
+		echo "Log: [-x--]: Creating: ${export_filename}.tar"
+		sleep 15
+		echo "Log: [--x-]: Creating: ${export_filename}.tar"
+		sleep 15
+		echo "Log: [---x]: Creating: ${export_filename}.tar"
 	done
 }
 
