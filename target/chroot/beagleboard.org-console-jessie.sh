@@ -22,7 +22,6 @@
 
 export LC_ALL=C
 
-chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2015.07-rc2"
 bone101_git_sha="53fde450735a331963d337576239bae4c81c32fb"
 
@@ -448,17 +447,6 @@ install_git_repos () {
 
 install_build_pkgs () {
 	cd /opt/
-	if [ -f /usr/bin/xz ] ; then
-		wget https://rcn-ee.com/pkgs/chromium/${chromium_release}-armhf.tar.xz
-		if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
-			tar xf ${chromium_release}-armhf.tar.xz -C /
-			rm -rf ${chromium_release}-armhf.tar.xz || true
-			echo "${chromium_release} : https://rcn-ee.com/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
-
-			#link Chromium to /usr/bin/x-www-browser
-			update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
-		fi
-	fi
 }
 
 other_source_links () {
