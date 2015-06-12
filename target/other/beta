@@ -30,19 +30,19 @@
 <ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
         <a itemprop="downloadURL"
-         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-05-17/machinekit/bone-debian-7.8-machinekit-armhf-2015-05-17-4gb.img.xz"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/machinekit/bone-debian-7.8-machinekit-armhf-2015-06-08-4gb.img.xz"
         >
             <span itemprop="name">(machinekit.io) Machinekit</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">4GB SD</span>)
-            <span itemprop="datePublished">2015-05-17</span>
+            <span itemprop="datePublished">2015-06-08</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/debian">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">bd364c46b279805737be88a2222390a2</span>
+        md5: <span itemprop="md5sum">31f889ed66418456bff4caa153481ba9</span>
     </li>
 </ul>
 
@@ -50,59 +50,99 @@
 <ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
         <a itemprop="downloadURL"
-         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-05-17/lxqt-4gb/bb-debian-8.0-lxqt-4gb-armhf-2015-05-17-4gb.img.xz"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/console/bone-debian-8.1-console-armhf-2015-06-08-4gb.img.xz"
         >
-            <span itemprop="name">(BETA) Debian Jessie lxqt</span>
+            <span itemprop="name">(BETA) Debian 8.1 Console</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">4GB SD</span>)
-            <span itemprop="datePublished">2015-05-17</span>
+            <span itemprop="datePublished">2015-06-08</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/debian">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">daf3660fd4b6776838fa3eb86f2d0a65</span>
+        md5: <span itemprop="md5sum">e47c5c883b46d8e72b99657aa0105db0</span>
+    </li>
+</ul>
+
+<h3>BeagleBone and BeagleBone Black via microSD card</h3>
+<ul class="arrow">
+    <li itemscope itemtype="http://schema.org/SoftwareApplication">
+        <a itemprop="downloadURL"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/lxqt-4gb/bone-debian-8.1-lxqt-4gb-armhf-2015-06-08-4gb.img.xz"
+        >
+            <span itemprop="name">(BETA) Debian 8.1 LXQt</span>
+            (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
+            <span itemprop="memoryRequirements">4GB SD</span>)
+            <span itemprop="datePublished">2015-06-08</span>
+        </a>
+        -
+        <a itemprop="url" href="http://beagleboard.org/project/debian">
+            more info
+        </a>
+        -
+        md5: <span itemprop="md5sum">e92433f52084296dc21d24fae1b70c3d</span>
     </li>
 </ul>
 
 <h3>BeagleBone Black (eMMC flasher)</h3>
 <ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
-        <a itemprop="downloadURL" 
-         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-05-17/lxqt-2gb/BBB-eMMC-flasher-debian-8.0-lxqt-armhf-2015-05-17-2gb.img.xz"
+        <a itemprop="downloadURL"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/console/BBB-eMMC-flasher-debian-8.1-console-armhf-2015-06-08-2gb.img.xz"
         >
-            <span itemprop="name">(BETA) Debian Jessie lxqt (eMMC Flasher)</span>
+            <span itemprop="name">(BETA) Debian 8.1 Console (eMMC Flasher)</span>
             (<span itemprop="device">BeagleBone Black</span> -
             <span itemprop="memoryRequirements">2GB eMMC</span>)
-            <span itemprop="datePublished">2015-05-17</span>
+            <span itemprop="datePublished">2015-06-08</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/debian">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">c7b2583d958a214fd8534dcdc7775c32</span>
+        md5: <span itemprop="md5sum">301bcf37e866b22fa8b1ff8b0ece4877</span>
     </li>
 </ul>
 
 <h3>BeagleBone Black (eMMC flasher)</h3>
-<ul class="arrow">    
+<ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
         <a itemprop="downloadURL"
-         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-05-17/lxqt-4gb/BBB-eMMC-flasher-debian-8.0-lxqt-4gb-armhf-2015-05-17-4gb.img.xz"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/lxqt-2gb/BBB-eMMC-flasher-debian-8.1-lxqt-2gb-armhf-2015-06-08-2gb.img.xz"
         >
-            <span itemprop="name">(BETA) Debian Jessie lxqt (eMMC Flasher)</span>
+            <span itemprop="name">(BETA) Debian 8.1 LXQt (eMMC Flasher)</span>
+            (<span itemprop="device">BeagleBone Black</span> -
+            <span itemprop="memoryRequirements">2GB eMMC</span>)
+            <span itemprop="datePublished">2015-06-08</span>
+        </a>
+        -
+        <a itemprop="url" href="http://beagleboard.org/project/debian">
+            more info
+        </a>
+        -
+        md5: <span itemprop="md5sum">c9b85cfd18d2271027c855073db35328</span>
+    </li>
+</ul>
+
+<h3>BeagleBone Black (eMMC flasher)</h3>
+<ul class="arrow">
+    <li itemscope itemtype="http://schema.org/SoftwareApplication">
+        <a itemprop="downloadURL"
+         href="https://rcn-ee.com/rootfs/bb.org/testing/2015-06-08/lxqt-4gb/BBB-eMMC-flasher-debian-8.1-lxqt-4gb-armhf-2015-06-08-4gb.img.xz"
+        >
+            <span itemprop="name">(BETA) Debian 8.1 LXQt (eMMC Flasher)</span>
             (<span itemprop="device">BeagleBone Black</span> -
             <span itemprop="memoryRequirements">4GB eMMC</span>)
-            <span itemprop="datePublished">2015-05-17</span>
+            <span itemprop="datePublished">2015-06-08</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/debian">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">0cf9edf3869ea7ce11cd5d8b74e820f0</span>
+        md5: <span itemprop="md5sum">3e74f5e0ebc1ccccfcc8eb9bbb7f3814</span>
     </li>
 </ul>
 
@@ -110,19 +150,19 @@
 <ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
         <a itemprop="downloadURL"
-         href="https://rcn-ee.com/rootfs/2015-05-08/microsd/bone-debian-8.0-console-armhf-2015-05-08-2gb.img.xz"
+         href="https://rcn-ee.com/rootfs/2015-06-11/microsd/bone-debian-8.1-console-armhf-2015-06-11-2gb.img.xz"
         >
-            <span itemprop="name">(elinux.org/BeagleBoardDebian) Debian 8.0</span>
+            <span itemprop="name">(elinux.org/BeagleBoardDebian) Debian 8.1</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">2GB SD</span>)
-            <span itemprop="datePublished">2015-05-08</span>
+            <span itemprop="datePublished">2015-06-11</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/debian">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">7cbb8e62761baea58b42c4f601cef97c</span>
+        md5: <span itemprop="md5sum">5699c2923e3eca666a8152034bbd4dbb</span>
     </li>
 </ul>
 
@@ -130,19 +170,19 @@
 <ul class="arrow">
     <li itemscope itemtype="http://schema.org/SoftwareApplication">
         <a itemprop="downloadURL"
-         href="https://rcn-ee.com/rootfs/2015-05-08/microsd/bone-ubuntu-14.04.2-console-armhf-2015-05-08-2gb.img.xz"
+         href="https://rcn-ee.com/rootfs/2015-06-11/microsd/bone-ubuntu-14.04.2-console-armhf-2015-06-11-2gb.img.xz"
         >
             <span itemprop="name">(elinux.org/BeagleBoardUbuntu) Ubuntu 14.04.2</span>
             (<span itemprop="device">BeagleBone, BeagleBone Black</span> -
             <span itemprop="memoryRequirements">2GB SD</span>)
-            <span itemprop="datePublished">2015-05-08</span>
+            <span itemprop="datePublished">2015-06-11</span>
         </a>
         -
         <a itemprop="url" href="http://beagleboard.org/project/ubuntu">
             more info
         </a>
         -
-        md5: <span itemprop="md5sum">4a6a1addbcd0e9eea41756947963eccc</span>
+        md5: <span itemprop="md5sum">4981f58f351af887346dc4d05417a42a</span>
     </li>
 </ul>
 
