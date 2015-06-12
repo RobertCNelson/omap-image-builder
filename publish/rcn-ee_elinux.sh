@@ -25,12 +25,12 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 
 copy_base_rootfs_to_mirror () {
         if [ -d ${mirror_dir} ] ; then
-                if [ ! -d ${mirror_dir}/${time}/ ] ; then
-                        mkdir -p ${mirror_dir}/${time}/ || true
+                if [ ! -d ${mirror_dir}/${time}/\${blend}/ ] ; then
+                        mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
-                if [ -d ${mirror_dir}/${time}/ ] ; then
+                if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         if [ -f \${base_rootfs}.tar.xz ] ; then
-                                cp -v \${base_rootfs}.tar.xz ${mirror_dir}/${time}/
+                                cp -v \${base_rootfs}.tar.xz ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
@@ -65,16 +65,22 @@ copy_img_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${wfile}.xz ] ; then
-                                cp -v \${wfile}.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ -f \${wfile}.bmap ] ; then
+                                cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
+                        fi
+                        if [ -f \${wfile}.img.xz ] ; then
+                                cp -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
 }
 
 archive_img () {
-        if [ -f \${wfile} ] ; then
-                ${archive} \${wfile}
+        if [ -f \${wfile}.img ] ; then
+                if [ -f /usr/bin/bmaptool ] ; then
+                        bmaptool create -o \${wfile}.bmap \${wfile}.img
+                fi
+                ${archive} \${wfile}.img
                 copy_img_to_mirror
         fi
 }
@@ -87,7 +93,7 @@ generate_img () {
 }
 
 #Debian Stable
-base_rootfs="${debian_stable}" ; extract_base_rootfs
+base_rootfs="${debian_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --bbb-flasher --bbb-old-bootloader-in-emmc" ; generate_img
 options="--img bone-${debian_stable} --dtb beaglebone --bbb-old-bootloader-in-emmc" ; generate_img
@@ -97,7 +103,7 @@ options="--img omap5-uevm-${debian_stable} --dtb omap5-uevm" ; generate_img
 options="--img bbx15-${debian_stable} --dtb am57xx-beagle-x15" ; generate_img
 
 #Ubuntu Stable
-base_rootfs="${ubuntu_stable}" ; extract_base_rootfs
+base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-${ubuntu_stable} --dtb beaglebone --bbb-flasher  --bbb-old-bootloader-in-emmc" ; generate_img
 options="--img bone-${ubuntu_stable} --dtb beaglebone --bbb-old-bootloader-in-emmc" ; generate_img
@@ -107,27 +113,27 @@ options="--img omap5-uevm-${ubuntu_stable} --dtb omap5-uevm" ; generate_img
 options="--img bbx15-${ubuntu_stable} --dtb am57xx-beagle-x15" ; generate_img
 
 #Archive tar:
-base_rootfs="${debian_stable}" ; archive_base_rootfs
-base_rootfs="${ubuntu_stable}" ; archive_base_rootfs
-base_rootfs="${debian_testing}" ; archive_base_rootfs
+base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
+base_rootfs="${ubuntu_stable}" ; blend="elinux" ; archive_base_rootfs
+base_rootfs="${debian_testing}" ; blend="elinux" ; archive_base_rootfs
 
 #Archive img:
 blend="microsd"
-wfile="bone-${debian_stable}-2gb.img" ; archive_img
-wfile="bb-${debian_stable}-2gb.img" ; archive_img
-wfile="bbxm-${debian_stable}-2gb.img" ; archive_img
-wfile="omap5-uevm-${debian_stable}-2gb.img" ; archive_img
-wfile="bbx15-${debian_stable}-2gb.img" ; archive_img
+wfile="bone-${debian_stable}-2gb" ; archive_img
+wfile="bb-${debian_stable}-2gb" ; archive_img
+wfile="bbxm-${debian_stable}-2gb" ; archive_img
+wfile="omap5-uevm-${debian_stable}-2gb" ; archive_img
+wfile="bbx15-${debian_stable}-2gb" ; archive_img
 
-wfile="bone-${ubuntu_stable}-2gb.img" ; archive_img
-wfile="bb-${ubuntu_stable}-2gb.img" ; archive_img
-wfile="bbxm-${ubuntu_stable}-2gb.img" ; archive_img
-wfile="omap5-uevm-${ubuntu_stable}-2gb.img" ; archive_img
-wfile="bbx15-${ubuntu_stable}-2gb.img" ; archive_img
+wfile="bone-${ubuntu_stable}-2gb" ; archive_img
+wfile="bb-${ubuntu_stable}-2gb" ; archive_img
+wfile="bbxm-${ubuntu_stable}-2gb" ; archive_img
+wfile="omap5-uevm-${ubuntu_stable}-2gb" ; archive_img
+wfile="bbx15-${ubuntu_stable}-2gb" ; archive_img
 
 blend="flasher"
-wfile="BBB-eMMC-flasher-${debian_stable}-2gb.img" ; archive_img
-wfile="BBB-eMMC-flasher-${ubuntu_stable}-2gb.img" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_stable}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-${ubuntu_stable}-2gb" ; archive_img
 
 __EOF__
 
