@@ -1168,11 +1168,10 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 
 		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
-		echo "# ... or on host side, usbnet and random hwaddr" >> ${wfile}
-		echo "# Note on some boards, usb0 is automaticly setup with an init script" >> ${wfile}
+		echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh"
 		echo "iface usb0 inet static" >> ${wfile}
 		echo "    address 192.168.7.2" >> ${wfile}
-		echo "    netmask 255.255.255.0" >> ${wfile}
+		echo "    netmask 255.255.255.252" >> ${wfile}
 		echo "    network 192.168.7.0" >> ${wfile}
 		echo "    gateway 192.168.7.1" >> ${wfile}
 
