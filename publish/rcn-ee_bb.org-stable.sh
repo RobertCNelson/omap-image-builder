@@ -13,9 +13,9 @@ if [ -d ./deploy ] ; then
 fi
 
 ./RootStock-NG.sh -c machinekit-debian-wheezy
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v3.14
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14
-./RootStock-NG.sh -c bb.org-debian-jessie-console
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
+./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
 
 debian_wheezy_machinekit="debian-7.8-machinekit-armhf-${time}"
 debian_jessie_lxqt_2gb="debian-8.1-lxqt-2gb-armhf-${time}"
