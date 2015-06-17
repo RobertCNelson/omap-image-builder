@@ -527,7 +527,11 @@ install_gem_pkgs
 install_node_pkgs
 install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
+	git config --global user.email "${rfs_username}@example.com"
+	git config --global user.name "${rfs_username}"
 	install_git_repos
+	git config --global --unset-all user.email
+	git config --global --unset-all user.name
 fi
 #install_build_pkgs
 other_source_links
