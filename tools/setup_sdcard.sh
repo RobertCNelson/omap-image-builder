@@ -1000,6 +1000,27 @@ populate_rootfs () {
 		echo "dtb=${dtb}" >> ${wfile}
 	else
 		echo "#dtb=" >> ${wfile}
+
+		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+			echo "" >> ${wfile}
+			echo "##BeagleBone Black dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##HDMI/eMMC disabled:" >> ${wfile}
+			echo "#dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##cape-universal" >> ${wfile}
+			echo "#dtb=am335x-boneblack-universal.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##wl1835" >> ${wfile}
+			echo "#dtb=am335x-boneblack-wl1835mod.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##replicape" >> ${wfile}
+			echo "#dtb=am335x-boneblack-replicape.dtb" >> ${wfile}
+		fi
 	fi
 
 	if [ ! "x${rootfs_uuid}" = "x" ] ; then
@@ -1216,23 +1237,6 @@ populate_rootfs () {
 		echo "# BeagleBone: net device ()" >> ${TEMPDIR}/disk${file}
 		echo "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"cpsw\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\"" >> ${TEMPDIR}/disk${file}
 		echo "" >> ${TEMPDIR}/disk${file}
-	fi
-
-	if [ -f ${TEMPDIR}/disk/etc/dnsmasq.conf ] ; then
-		if [ ! -f ${TEMPDIR}/etc/dnsmasq.d/usb0-dhcp ] ; then
-			wfile="/etc/dnsmasq.d/usb0-dhcp"
-			echo "#disable DNS by setting port to 0" > ${TEMPDIR}/disk${wfile}
-			echo "port=0" >> ${TEMPDIR}/disk${wfile}
-			echo "" >> ${TEMPDIR}/disk${wfile}
-			echo "interface=usb0" >> ${TEMPDIR}/disk${wfile}
-			echo "#one address range" >> ${TEMPDIR}/disk${wfile}
-			echo "dhcp-range=192.168.7.1,192.168.7.1" >> ${TEMPDIR}/disk${wfile}
-			echo "" >> ${TEMPDIR}/disk${wfile}
-			echo "dhcp-option=3" >> ${TEMPDIR}/disk${wfile}
-			echo "except-interface=lo" >> ${TEMPDIR}/disk${wfile}
-			echo "listen-address=192.168.7.2" >> ${TEMPDIR}/disk${wfile}
-			echo "bind-interfaces" >> ${TEMPDIR}/disk${wfile}
-		fi
 	fi
 
 	if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
