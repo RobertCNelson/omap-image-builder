@@ -442,6 +442,29 @@ install_git_repos () {
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_branch="4.1.x"
+	git_target_dir="/opt/source/dtb-${git_branch}"
+	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/bb.org-overlays"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ ! "x${repo_rcnee_pkg_version}" "x" ] ; then
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
+			if [ ! "x${is_kernel}" = "x" ] ; then
+				if [ -f /usr/bin/make ] ; then
+					./dtc-overlay.sh
+					make
+					make install
+					sudo update-initramfs -u -k ${repo_rcnee_pkg_version}
+				fi
+			fi
+		fi
+	fi
+
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
 	git_clone
