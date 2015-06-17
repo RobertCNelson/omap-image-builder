@@ -452,14 +452,14 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		if [ ! "x${repo_rcnee_pkg_version}" "x" ] ; then
+		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
 			if [ ! "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
 					./dtc-overlay.sh
 					make
 					make install
-					sudo update-initramfs -u -k ${repo_rcnee_pkg_version}
+					update-initramfs -u -k ${repo_rcnee_pkg_version}
 				fi
 			fi
 		fi
