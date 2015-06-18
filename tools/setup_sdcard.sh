@@ -1189,7 +1189,7 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 
 		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
-		echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh"
+		echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh" >> ${wfile}
 		echo "iface usb0 inet static" >> ${wfile}
 		echo "    address 192.168.7.2" >> ${wfile}
 		echo "    netmask 255.255.255.252" >> ${wfile}
