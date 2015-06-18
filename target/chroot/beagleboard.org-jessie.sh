@@ -465,6 +465,18 @@ install_git_repos () {
 		fi
 	fi
 
+	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
+	git_target_dir="/opt/source/BBBlfs"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			./autogen.sh
+			./configure
+			make
+		fi
+	fi
+
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
 	git_clone
