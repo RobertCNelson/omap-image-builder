@@ -21,14 +21,24 @@ export apt_proxy=localhost:3142/
 #./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 
 ##Debian 8:
-image_name="debian-8.1-lxqt-2gb-armhf-${time}"
+#image_name="debian-8.1-lxqt-2gb-armhf-${time}"
+#size="2gb"
+
+#options="--img-2gb bone-${image_name} --dtb beaglebone \
+#--beagleboard.org-production --boot_label BEAGLEBONE \
+#--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+
+##Debian 8:
+image_name="debian-8.1-tester-2gb-armhf-${time}"
 size="2gb"
 
 options="--img-2gb bone-${image_name} --dtb beaglebone \
 --beagleboard.org-production --boot_label BEAGLEBONE \
 --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
 
 keep_net_alive () {
 	while : ; do
