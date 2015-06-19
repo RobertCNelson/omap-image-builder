@@ -46,10 +46,13 @@ if [ -d ./deploy/${image_name} ] ; then
 
 		keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
+		bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
+
 		xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
 
 		#upload:
 		ssh ${ssh_user} mkdir -p ${server_dir}
+		rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
 		rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
 
 		[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
