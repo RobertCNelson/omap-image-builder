@@ -441,11 +441,17 @@ install_git_repos () {
 	git_branch="3.14-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
+	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
 	git_branch="4.1.x"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
+	fi
 
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
@@ -463,6 +469,7 @@ install_git_repos () {
 				fi
 			fi
 		fi
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
 	fi
 
 	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
@@ -475,6 +482,7 @@ install_git_repos () {
 			./configure
 			make
 		fi
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
 	fi
 
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"

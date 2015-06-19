@@ -439,6 +439,9 @@ install_git_repos () {
 	git_branch="3.14-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
+	fi
 
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
