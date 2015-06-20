@@ -450,9 +450,6 @@ install_git_repos () {
 	git_branch="3.14-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		chown -R ${rfs_username}:${rfs_username} ${git_target_dir}/
-	fi
 
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
@@ -483,6 +480,8 @@ other_source_links () {
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
 
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
+
+	chown -R ${rfs_username}:${rfs_username} /opt/source/
 }
 
 unsecure_root () {
@@ -525,7 +524,11 @@ install_gem_pkgs
 install_node_pkgs
 install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
+	git config --global user.email "${rfs_username}@example.com"
+	git config --global user.name "${rfs_username}"
 	install_git_repos
+	git config --global --unset-all user.email
+	git config --global --unset-all user.name
 fi
 install_build_pkgs
 other_source_links
