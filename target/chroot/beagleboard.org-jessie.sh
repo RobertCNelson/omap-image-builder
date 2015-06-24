@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 u_boot_release="v2015.07-rc2"
-bone101_git_sha="53fde450735a331963d337576239bae4c81c32fb"
+bone101_git_sha="e358699cb7d0a6f7722313d78b02cc426bae6749"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
