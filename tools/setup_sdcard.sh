@@ -315,20 +315,24 @@ unmount_all_drive_partitions () {
 
 sfdisk_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
+	sfdisk_boot_startmb="${conf_boot_startmb}"
+	sfdisk_boot_endmb="${conf_boot_endmb}"
+	sfdisk_var_startmb="${conf_var_startmb}"
+
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force"
-		conf_boot_startmb="${conf_boot_startmb}M"
-		conf_boot_endmb="${conf_boot_endmb}M"
-		conf_var_startmb="${conf_var_startmb}M"
+		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
+		sfdisk_boot_endmb="${sfdisk_boot_endmb}M"
+		sfdisk_var_startmb="${sfdisk_var_startmb}M"
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
-			,${conf_var_startmb},,-
+			${sfdisk_boot_startmb},${sfdisk_boot_endmb},${sfdisk_fstype},*
+			,${sfdisk_var_startmb},,-
 			,,,-
 		__EOF__
 
@@ -336,7 +340,7 @@ sfdisk_partition_layout () {
 	else
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${conf_boot_startmb},${conf_boot_endmb},${sfdisk_fstype},*
+			${sfdisk_boot_startmb},${sfdisk_boot_endmb},${sfdisk_fstype},*
 			,,,-
 		__EOF__
 
@@ -347,18 +351,21 @@ sfdisk_partition_layout () {
 
 sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
+	sfdisk_boot_startmb="${conf_boot_startmb}"
+	sfdisk_var_startmb="${conf_var_startmb}"
+
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force"
-		conf_boot_startmb="${conf_boot_startmb}M"
-		conf_var_startmb="${conf_var_startmb}M"
+		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
+		sfdisk_var_startmb="${sfdisk_var_startmb}M"
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${conf_boot_startmb},${conf_var_startmb},${sfdisk_fstype},*
+			${sfdisk_boot_startmb},${sfdisk_var_startmb},${sfdisk_fstype},*
 			,,,-
 		__EOF__
 
@@ -366,7 +373,7 @@ sfdisk_single_partition_layout () {
 	else
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${conf_boot_startmb},,${sfdisk_fstype},*
+			${sfdisk_boot_startmb},,${sfdisk_fstype},*
 		__EOF__
 
 	fi
