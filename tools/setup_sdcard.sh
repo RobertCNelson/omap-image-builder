@@ -1003,6 +1003,11 @@ populate_rootfs () {
 		echo "uname_r=${kernel_override}" >> ${wfile}
 	fi
 
+	if [ ! "x${rootfs_uuid}" = "x" ] ; then
+		echo "uuid=${rootfs_uuid}" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+
 	if [ ! "x${dtb}" = "x" ] ; then
 		echo "dtb=${dtb}" >> ${wfile}
 	else
@@ -1030,11 +1035,6 @@ populate_rootfs () {
 
 			echo "" >> ${wfile}
 		fi
-	fi
-
-	if [ ! "x${rootfs_uuid}" = "x" ] ; then
-		echo "uuid=${rootfs_uuid}" >> ${wfile}
-		echo "" >> ${wfile}
 	fi
 
 	cmdline="coherent_pool=1M quiet"
