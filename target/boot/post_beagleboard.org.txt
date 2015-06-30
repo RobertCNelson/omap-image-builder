@@ -1,13 +1,13 @@
-##Disable HDMI/eMMC
+##Disable HDMI/eMMC (v3.8.x)
 #cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN,BB-BONE-EMMC-2G
 
-##Disable HDMI
+##Disable HDMI (v3.8.x)
 #cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
 
-##Disable eMMC
+##Disable eMMC (v3.8.x)
 #cape_disable=capemgr.disable_partno=BB-BONE-EMMC-2G
 
-##Audio Cape (needs HDMI Audio disabled)
+##Audio Cape (needs HDMI Audio disabled) (v3.8.x)
 #cape_disable=capemgr.disable_partno=BB-BONELT-HDMI
 #cape_enable=capemgr.enable_partno=BB-BONE-AUDI-02
 

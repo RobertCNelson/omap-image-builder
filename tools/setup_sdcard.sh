@@ -1027,6 +1027,8 @@ populate_rootfs () {
 			echo "" >> ${wfile}
 			echo "##replicape" >> ${wfile}
 			echo "#dtb=am335x-boneblack-replicape.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
 		fi
 	fi
 
