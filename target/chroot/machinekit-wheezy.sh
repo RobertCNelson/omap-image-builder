@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 chromium_release="chromium-33.0.1750.117"
-u_boot_release="v2015.07-rc2"
+u_boot_release="v2015.07-rc3"
 bone101_git_sha="94de2fa47aa833b854c708a81b3129e540ccabbb"
 
 #contains: rfs_username, release_date
