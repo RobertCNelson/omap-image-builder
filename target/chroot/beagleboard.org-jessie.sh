@@ -460,6 +460,7 @@ install_git_repos () {
 					make
 					make install
 					update-initramfs -u -k ${repo_rcnee_pkg_version}
+					rm -rf /home/${rfs_username}/git/ || true
 				fi
 			fi
 		fi
