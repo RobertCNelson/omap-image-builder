@@ -30,8 +30,10 @@ debootstrap_is_installed () {
 	dpkg -l | grep debootstrap >/dev/null || deb_pkgs="${deb_pkgs}debootstrap "
 
 	if [ "x${host_arch}" != "xarmv7l" ] ; then
-		dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
-		dpkg -l | grep `dpkg --print-architecture` | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs="${deb_pkgs}qemu "
+		if [ "x${host_arch}" != "xaarch64" ] ; then
+			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
+			dpkg -l | grep `dpkg --print-architecture` | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs="${deb_pkgs}qemu "
+		fi
 	fi
 
 	if [ "${deb_pkgs}" ] ; then
