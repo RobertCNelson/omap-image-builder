@@ -109,6 +109,9 @@ check_project_config () {
 		. ${DIR}/configs/${project_config}.conf
 		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 
+		# for automation
+		echo "${export_filename}" > ${DIR}/latest_version
+
 		echo "tempdir=\"${tempdir}\"" > ${DIR}/.project
 		echo "time=\"${time}\"" >> ${DIR}/.project
 		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
