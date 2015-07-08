@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 u_boot_release="v2015.07-rc3"
-bone101_git_sha="50e01966e438ddc43b9177ad4e119e5274a0130d"
+#bone101_git_sha="50e01966e438ddc43b9177ad4e119e5274a0130d"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -438,12 +438,7 @@ install_git_repos () {
 	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="3.14-ti"
-	git_target_dir="/opt/source/dtb-${git_branch}"
-	git_clone_branch
-
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="4.1.x"
+	git_branch="4.1-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
@@ -461,6 +456,7 @@ install_git_repos () {
 					make install
 					update-initramfs -u -k ${repo_rcnee_pkg_version}
 					rm -rf /home/${rfs_username}/git/ || true
+					make clean
 				fi
 			fi
 		fi

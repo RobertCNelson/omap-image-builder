@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 u_boot_release="v2015.07-rc3"
-bone101_git_sha="50e01966e438ddc43b9177ad4e119e5274a0130d"
+#bone101_git_sha="50e01966e438ddc43b9177ad4e119e5274a0130d"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
@@ -114,6 +114,8 @@ setup_desktop () {
 
 #		echo "        Driver          \"modesetting\"" >> ${wfile}
 		echo "        Driver          \"fbdev\"" >> ${wfile}
+
+		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
 
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
@@ -436,9 +438,29 @@ install_git_repos () {
 	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="3.14-ti"
+	git_branch="4.1-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/bb.org-overlays"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
+			if [ ! "x${is_kernel}" = "x" ] ; then
+				if [ -f /usr/bin/make ] ; then
+					./dtc-overlay.sh
+					make
+					make install
+					update-initramfs -u -k ${repo_rcnee_pkg_version}
+					rm -rf /home/${rfs_username}/git/ || true
+					make clean
+				fi
+			fi
+		fi
+	fi
 
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
@@ -504,7 +526,11 @@ setup_desktop
 #install_node_pkgs
 #install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
+	git config --global user.email "${rfs_username}@example.com"
+	git config --global user.name "${rfs_username}"
 	install_git_repos
+	git config --global --unset-all user.email
+	git config --global --unset-all user.name
 fi
 #install_build_pkgs
 other_source_links
