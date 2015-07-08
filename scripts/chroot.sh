@@ -201,7 +201,7 @@ trap chroot_umount EXIT
 
 check_defines
 
-if [ "x${host_arch}" != "xarmv7l" ] ; then
+if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
 fi
 
