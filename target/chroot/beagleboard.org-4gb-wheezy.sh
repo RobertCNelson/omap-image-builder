@@ -196,6 +196,51 @@ setup_desktop () {
 	fi
 }
 
+install_gem_pkgs () {
+	if [ -f /usr/bin/gem ] ; then
+		echo "Installing gem packages"
+		echo "debug: gem: [`gem --version`]"
+		gem_wheezy="--no-rdoc --no-ri"
+		gem_jessie="--no-document"
+
+		echo "gem: [beaglebone]"
+		gem install beaglebone || true
+
+		echo "gem: [jekyll ${gem_wheezy}]"
+		gem install jekyll ${gem_wheezy} || true
+	fi
+}
+
+install_pip_pkgs () {
+	if [ -f /usr/bin/pip ] ; then
+		echo "Installing pip packages"
+
+		#debian@beaglebone:~$ pip install Adafruit_BBIO
+		#Downloading/unpacking Adafruit-BBIO
+		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
+		#  Running setup.py egg_info for package Adafruit-BBIO
+		#    The required version of distribute (>=0.6.45) is not available,
+		#    and can't be installed while this script is running. Please
+		#    install a more recent version first, using
+		#    'easy_install -U distribute'.
+		#
+		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+		#    Complete output from command python setup.py egg_info:
+		#    The required version of distribute (>=0.6.45) is not available,
+		#
+		#and can't be installed while this script is running. Please
+		#
+		#install a more recent version first, using
+		#
+		#'easy_install -U distribute'.
+		#
+		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+
+		easy_install -U distribute
+		pip install Adafruit_BBIO
+	fi
+}
+
 cleanup_npm_cache () {
 	if [ -d /root/tmp/ ] ; then
 		rm -rf /root/tmp/ || true
@@ -257,6 +302,16 @@ install_node_pkgs () {
 			if [ -f /usr/bin/make ] ; then
 				echo "Installing winston"
 				TERM=dumb npm install -g winston --arch=armhf
+			fi
+
+			git_repo="https://github.com/rcn-ee/install"
+			git_target_dir="/opt/source/c9-install"
+			git_clone
+			if [ -f ${git_target_dir}/.git/config ] ; then
+				cd ${git_target_dir}/
+				./install
+				cd /opt/
+				rm -rf ${git_target_dir}/ || true
 			fi
 
 			systemctl enable cloud9.socket || true
@@ -349,51 +404,6 @@ install_node_pkgs () {
 				fi
 			fi
 		fi
-	fi
-}
-
-install_pip_pkgs () {
-	if [ -f /usr/bin/pip ] ; then
-		echo "Installing pip packages"
-
-		#debian@beaglebone:~$ pip install Adafruit_BBIO
-		#Downloading/unpacking Adafruit-BBIO
-		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
-		#  Running setup.py egg_info for package Adafruit-BBIO
-		#    The required version of distribute (>=0.6.45) is not available,
-		#    and can't be installed while this script is running. Please
-		#    install a more recent version first, using
-		#    'easy_install -U distribute'.
-		#
-		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-		#    Complete output from command python setup.py egg_info:
-		#    The required version of distribute (>=0.6.45) is not available,
-		#
-		#and can't be installed while this script is running. Please
-		#
-		#install a more recent version first, using
-		#
-		#'easy_install -U distribute'.
-		#
-		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-
-		easy_install -U distribute
-		pip install Adafruit_BBIO
-	fi
-}
-
-install_gem_pkgs () {
-	if [ -f /usr/bin/gem ] ; then
-		echo "Installing gem packages"
-		echo "debug: gem: [`gem --version`]"
-		gem_wheezy="--no-rdoc --no-ri"
-		gem_jessie="--no-document"
-
-		echo "gem: [beaglebone]"
-		gem install beaglebone || true
-
-		echo "gem: [jekyll ${gem_wheezy}]"
-		gem install jekyll ${gem_wheezy} || true
 	fi
 }
 
@@ -521,8 +531,8 @@ setup_system
 setup_desktop
 
 install_gem_pkgs
-install_node_pkgs
 install_pip_pkgs
+install_node_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
