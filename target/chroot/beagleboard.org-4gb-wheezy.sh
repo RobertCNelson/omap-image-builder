@@ -309,7 +309,7 @@ install_node_pkgs () {
 			git_clone
 			if [ -f ${git_target_dir}/.git/config ] ; then
 				cd ${git_target_dir}/
-				./install
+				./install.sh
 				cd /opt/
 				rm -rf ${git_target_dir}/ || true
 			fi
