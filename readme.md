@@ -70,7 +70,7 @@ elinux.org: Debian Images:
 
 elinux.org: Ubuntu Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_trusty_armhf
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
 Release Process:

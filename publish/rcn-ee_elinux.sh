@@ -12,7 +12,7 @@ fi
 
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
-./RootStock-NG.sh -c rcn-ee_console_ubuntu_stable_armhf
+./RootStock-NG.sh -c rcn-ee_console_ubuntu_trusty_armhf
 
 debian_stable="debian-8.1-console-armhf-${time}"
 debian_testing="debian-stretch-console-armhf-${time}"
