@@ -253,10 +253,10 @@ install_node_pkgs () {
 		chmod 755 /etc/profile.d/node.sh
 
 		#debug
-		#echo "debug: npm config ls -l (before)"
-		#echo "--------------------------------"
-		#npm config ls -l
-		#echo "--------------------------------"
+		echo "debug: npm config ls -l (before)"
+		echo "--------------------------------"
+		npm config ls -l
+		echo "--------------------------------"
 
 		#fix npm in chroot.. (did i mention i hate npm...)
 		if [ ! -d /root/.npm ] ; then
@@ -273,10 +273,10 @@ install_node_pkgs () {
 		npm config set user 0
 		npm config set userconfig /root/.npmrc
 
-		#echo "debug: npm config ls -l (after)"
-		#echo "--------------------------------"
-		#npm config ls -l
-		#echo "--------------------------------"
+		echo "debug: npm config ls -l (after)"
+		echo "--------------------------------"
+		npm config ls -l
+		echo "--------------------------------"
 
 		if [ -f /usr/bin/make ] ; then
 			echo "Installing bonescript"
