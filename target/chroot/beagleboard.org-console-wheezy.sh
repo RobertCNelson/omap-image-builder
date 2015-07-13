@@ -222,6 +222,11 @@ install_node_pkgs () {
 		#npm config ls -l
 		#echo "--------------------------------"
 
+		#c9-core-installer...
+		npm config delete cache
+		npm config delete tmp
+		npm config delete python
+
 		#fix npm in chroot.. (did i mention i hate npm...)
 		if [ ! -d /root/.npm ] ; then
 			mkdir -p /root/.npm

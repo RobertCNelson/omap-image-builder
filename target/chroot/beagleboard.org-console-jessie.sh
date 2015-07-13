@@ -200,6 +200,38 @@ setup_desktop () {
 	fi
 }
 
+install_gem_pkgs () {
+	if [ -f /usr/bin/gem ] ; then
+		echo "Installing gem packages"
+		echo "debug: gem: [`gem --version`]"
+		gem_wheezy="--no-rdoc --no-ri"
+		gem_jessie="--no-document"
+
+		echo "gem: [beaglebone]"
+		gem install beaglebone || true
+
+		echo "gem: [jekyll ${gem_jessie}]"
+		gem install jekyll ${gem_jessie} || true
+	fi
+}
+
+install_pip_pkgs () {
+	if [ -f /usr/bin/pip ] ; then
+		echo "Installing pip packages"
+		#Fixed in git, however not pushed to pip yet...(use git and install)
+		#libpython2.7-dev
+		#pip install Adafruit_BBIO
+
+		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+		git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			python setup.py install
+		fi
+	fi
+}
+
 cleanup_npm_cache () {
 	if [ -d /root/tmp/ ] ; then
 		rm -rf /root/tmp/ || true
@@ -225,6 +257,11 @@ install_node_pkgs () {
 		#echo "--------------------------------"
 		#npm config ls -l
 		#echo "--------------------------------"
+
+		#c9-core-installer...
+		npm config delete cache
+		npm config delete tmp
+		npm config delete python
 
 		#fix npm in chroot.. (did i mention i hate npm...)
 		if [ ! -d /root/.npm ] ; then
@@ -261,6 +298,16 @@ install_node_pkgs () {
 			if [ -f /usr/bin/make ] ; then
 				echo "Installing winston"
 				TERM=dumb npm install -g winston --arch=armhf
+			fi
+
+			git_repo="https://github.com/rcn-ee/install"
+			git_target_dir="/opt/source/c9-install"
+			git_clone
+			if [ -f ${git_target_dir}/.git/config ] ; then
+				cd ${git_target_dir}/
+				./install.sh
+				cd /opt/
+				rm -rf ${git_target_dir}/ || true
 			fi
 
 			systemctl enable cloud9.socket || true
@@ -353,38 +400,6 @@ install_node_pkgs () {
 				fi
 			fi
 		fi
-	fi
-}
-
-install_pip_pkgs () {
-	if [ -f /usr/bin/pip ] ; then
-		echo "Installing pip packages"
-		#Fixed in git, however not pushed to pip yet...(use git and install)
-		#libpython2.7-dev
-		#pip install Adafruit_BBIO
-
-		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			python setup.py install
-		fi
-	fi
-}
-
-install_gem_pkgs () {
-	if [ -f /usr/bin/gem ] ; then
-		echo "Installing gem packages"
-		echo "debug: gem: [`gem --version`]"
-		gem_wheezy="--no-rdoc --no-ri"
-		gem_jessie="--no-document"
-
-		echo "gem: [beaglebone]"
-		gem install beaglebone || true
-
-		echo "gem: [jekyll ${gem_jessie}]"
-		gem install jekyll ${gem_jessie} || true
 	fi
 }
 
@@ -523,8 +538,8 @@ setup_system
 setup_desktop
 
 #install_gem_pkgs
-#install_node_pkgs
 #install_pip_pkgs
+#install_node_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
