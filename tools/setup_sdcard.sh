@@ -1018,7 +1018,19 @@ populate_rootfs () {
 			echo "##BeagleBone Black dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##HDMI/eMMC disabled:" >> ${wfile}
+			echo "##HDMI (Audio/Video) disabled:" >> ${wfile}
+			echo "#am335x-boneblack-emmc-overlay.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##eMMC disabled:" >> ${wfile}
+			echo "#am335x-boneblack-hdmi-overlay.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##HDMI Audio/eMMC disabled:" >> ${wfile}
+			echo "#am335x-boneblack-nhdmi-overlay.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##HDMI (Audio/Video)/eMMC disabled:" >> ${wfile}
 			echo "#dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
