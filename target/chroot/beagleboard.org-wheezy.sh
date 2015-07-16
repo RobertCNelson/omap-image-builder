@@ -309,16 +309,6 @@ install_node_pkgs () {
 				TERM=dumb npm install -g winston --arch=armhf
 			fi
 
-			git_repo="https://github.com/rcn-ee/install"
-			git_target_dir="/opt/source/c9-install"
-			git_clone
-			if [ -f ${git_target_dir}/.git/config ] ; then
-				cd ${git_target_dir}/
-				./install.sh
-				cd /opt/
-				rm -rf ${git_target_dir}/ || true
-			fi
-
 			systemctl enable cloud9.socket || true
 		fi
 
