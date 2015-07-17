@@ -1171,11 +1171,9 @@ populate_rootfs () {
 		if [ "${DISABLE_ETH}" ] ; then
 			echo "#auto eth0" >> ${wfile}
 			echo "#iface eth0 inet dhcp" >> ${wfile}
-			echo "#    dns-nameservers 8.8.8.8 8.8.4.4" >> ${wfile}
 		else
 			echo "auto eth0"  >> ${wfile}
 			echo "iface eth0 inet dhcp" >> ${wfile}
-			echo "    dns-nameservers 8.8.8.8 8.8.4.4" >> ${wfile}
 		fi
 
 		#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
@@ -1184,7 +1182,6 @@ populate_rootfs () {
 				sed -i 's/auto eth0/#auto eth0/g' ${wfile}
 				sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
 				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
-				sed -i 's/dns-nameservers 8.8.8.8 8.8.4.4/#dns-nameservers 8.8.8.8 8.8.4.4/g' ${wfile}
 			fi
 		fi
 
@@ -1193,7 +1190,6 @@ populate_rootfs () {
 			sed -i 's/auto eth0/#auto eth0/g' ${wfile}
 			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
 			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
-			sed -i 's/dns-nameservers 8.8.8.8 8.8.4.4/#dns-nameservers 8.8.8.8 8.8.4.4/g' ${wfile}
 		fi
 
 		echo "# Example to keep MAC address between reboots" >> ${wfile}
