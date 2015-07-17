@@ -1005,7 +1005,8 @@ populate_rootfs () {
 
 	if [ ! "x${rootfs_uuid}" = "x" ] ; then
 		echo "uuid=${rootfs_uuid}" >> ${wfile}
-		echo "" >> ${wfile}
+	else
+		echo "#uuid=" >> ${wfile}
 	fi
 
 	if [ ! "x${dtb}" = "x" ] ; then
