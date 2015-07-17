@@ -16,11 +16,13 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
+./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
 
 debian_wheezy_machinekit="debian-7.8-machinekit-armhf-${time}"
 debian_jessie_lxqt_2gb="debian-8.1-lxqt-2gb-armhf-${time}"
 debian_jessie_lxqt_4gb="debian-8.1-lxqt-4gb-armhf-${time}"
 debian_jessie_console="debian-8.1-console-armhf-${time}"
+debian_jessie_usbflasher="debian-8.1-usbflasher-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -146,11 +148,16 @@ options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img-2gb bone-\${base_rootfs} ${beaglebone_console}" ; generate_img
 options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
+###console images: (also single partition)
+base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
+options="--img-2gb bone-usbflasher-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone" ; generate_img
+
 ###archive *.tar
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}" ; blend="console" ; archive_base_rootfs
+base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_rootfs
 
 ###archive *.img
 blend="machinekit"
@@ -175,6 +182,9 @@ wfile="bb-${debian_jessie_console}-2gb" ; archive_img
 wfile="bbx15-${debian_jessie_console}-2gb" ; archive_img
 wfile="bone-${debian_jessie_console}-2gb" ; archive_img
 wfile="omap5-uevm-${debian_jessie_console}-2gb" ; archive_img
+
+blend="usbflasher"
+wfile="bone-usbflasher-${debian_jessie_usbflasher}-2gb" ; archive_img
 
 __EOF__
 
