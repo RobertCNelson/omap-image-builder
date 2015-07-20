@@ -77,10 +77,14 @@ copy_img_to_mirror () {
 
 archive_img () {
         if [ -f \${wfile}.img ] ; then
-                if [ -f /usr/bin/bmaptool ] ; then
-                        bmaptool create -o \${wfile}.bmap \${wfile}.img
+                if [ ! -f \${wfile}.bmap ] ; then
+                        if [ -f /usr/bin/bmaptool ] ; then
+                                bmaptool create -o \${wfile}.bmap \${wfile}.img
+                        fi
                 fi
-                ${archive} \${wfile}.img
+                if [ ! -f \${wfile}.img.xz ] ; then
+                        ${archive} \${wfile}.img
+                fi
                 copy_img_to_mirror
         fi
 }

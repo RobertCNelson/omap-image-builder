@@ -79,16 +79,26 @@ copy_img_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${wfile}.xz ] ; then
-                                cp -v \${wfile}.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ -f \${wfile}.bmap ] ; then
+                                cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
+                        fi
+                        if [ -f \${wfile}.img.xz ] ; then
+                                cp -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
 }
 
 archive_img () {
-        if [ -f \${wfile} ] ; then
-                ${archive} \${wfile}
+        if [ -f \${wfile}.img ] ; then
+                if [ ! -f \${wfile}.bmap ] ; then
+                        if [ -f /usr/bin/bmaptool ] ; then
+                                bmaptool create -o \${wfile}.bmap \${wfile}.img
+                        fi
+                fi
+                if [ ! -f \${wfile}.img.xz ] ; then
+                        ${archive} \${wfile}.img
+                fi
                 copy_img_to_mirror
         fi
 }
