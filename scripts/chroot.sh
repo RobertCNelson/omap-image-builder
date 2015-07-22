@@ -932,6 +932,10 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.ti-connectivity ${tempdir}/lib/firmware/
 		sudo cp -v ${DIR}/git/linux-firmware/ti-connectivity/* ${tempdir}/lib/firmware/ti-connectivity
 	fi
+
+	if [ -f ${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin ] ; then
+		sudo cp -v ${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin ${tempdir}/lib/firmware/mt7601u.bin
+	fi
 fi
 
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
