@@ -522,15 +522,18 @@ unsecure_root () {
 todo () {
 	#stuff i need to package in repos.rcn-ee.com
 	#
-	cd /
-	if [ ! -f /etc/Wireless/RT2870STA/RT2870STA.dat ] ; then
-		mkdir -p /etc/Wireless/RT2870STA/
-		cd /etc/Wireless/RT2870STA/
-		wget https://raw.githubusercontent.com/rcn-ee/mt7601u/master/src/RT2870STA.dat
+	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
+	if [ ! "x${is_kernel}" = "x" ] ; then
 		cd /
-	fi
-	if [ ! -f /etc/modules-load.d/mt7601.conf ] ; then
-		echo "mt7601Usta" > /etc/modules-load.d/mt7601.conf
+		if [ ! -f /etc/Wireless/RT2870STA/RT2870STA.dat ] ; then
+			mkdir -p /etc/Wireless/RT2870STA/
+			cd /etc/Wireless/RT2870STA/
+			wget https://raw.githubusercontent.com/rcn-ee/mt7601u/master/src/RT2870STA.dat
+			cd /
+		fi
+		if [ ! -f /etc/modules-load.d/mt7601.conf ] ; then
+			echo "mt7601Usta" > /etc/modules-load.d/mt7601.conf
+		fi
 	fi
 }
 
