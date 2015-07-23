@@ -1277,6 +1277,7 @@ populate_rootfs () {
 			if [ "x${conf_board}" = "xomap3_beagle" ] ; then
 				sudo sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
 			else
+				sudo sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
 				sudo sed -i -e 's:16:24:g' ${TEMPDIR}/disk${wfile}
 			fi
 		fi
