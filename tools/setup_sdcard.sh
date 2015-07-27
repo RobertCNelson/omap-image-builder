@@ -1500,7 +1500,12 @@ while [ ! -z "$1" ] ; do
 			rm -rf "${media}" || true
 		fi
 		#FIXME: (should fit most microSD cards)
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (700 + (gsize - 1) * 1000)))
+		#eMMC: (sudo dd if=/dev/mmcblk1 of=/dev/null bs=1M)
+		#Micron: 3925868544 bytes -> 3925.86 eMegabyte
+		#Kingston: 3867148288 bytes -> 3867.15 Megabyte
+		#
+		#drop "10" per (gsize -1) 4GB = 30MB
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (700 + (gsize - 1) * 990)))
 		;;
 	--dtb)
 		checkparm $2
