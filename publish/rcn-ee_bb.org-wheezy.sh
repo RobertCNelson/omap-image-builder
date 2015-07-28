@@ -137,18 +137,18 @@ base_rootfs="${debian_wheezy_console}" ; blend="console" ; archive_base_rootfs
 
 ###archive *.img
 blend="lxde-4gb"
-wfile="BBB-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
-wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
-wfile="bone-${debian_wheezy_lxde_4gb}-4gb.img" ; archive_img
+wfile="BBB-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
+wfile="BBG-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
+wfile="bone-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
 
 blend="lxde"
-wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_2gb}-2gb.img" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_2gb}-2gb" ; archive_img
 
 blend="console"
-wfile="BBB-blank-eMMC-flasher-${debian_wheezy_console}-2gb.img" ;archive_img
-wfile="BBB-eMMC-flasher-${debian_wheezy_console}-2gb.img" ; archive_img
-wfile="bone-${debian_wheezy_console}-2gb.img" ; archive_img
+wfile="BBB-blank-eMMC-flasher-${debian_wheezy_console}-2gb" ;archive_img
+wfile="BBB-eMMC-flasher-${debian_wheezy_console}-2gb" ; archive_img
+wfile="bone-${debian_wheezy_console}-2gb" ; archive_img
 
 __EOF__
 
