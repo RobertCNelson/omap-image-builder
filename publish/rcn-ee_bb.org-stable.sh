@@ -144,8 +144,8 @@ options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher"
 ###console images: (also single partition)
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --bbg-flasher" ; generate_img
-options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --bbb-flasher" ; generate_img
+#options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --bbg-flasher" ; generate_img
+#options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --bbb-flasher" ; generate_img
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --bbb-flasher" ; generate_img
 options="--img-2gb bb-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
@@ -179,8 +179,8 @@ blend="lxqt-2gb"
 wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_2gb}-2gb" ; archive_img
 
 blend="console"
-wfile="BBB-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
+#wfile="BBB-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
+#wfile="BBG-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
 wfile="BBB-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
 wfile="bb-${debian_jessie_console}-2gb" ; archive_img
 wfile="bbx15-${debian_jessie_console}-2gb" ; archive_img
