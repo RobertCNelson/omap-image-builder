@@ -203,8 +203,8 @@ install_gem_pkgs () {
 		gem_wheezy="--no-rdoc --no-ri"
 		gem_jessie="--no-document"
 
-		echo "gem: [beaglebone]"
-		gem install beaglebone || true
+#		echo "gem: [beaglebone]"
+#		gem install beaglebone || true
 
 		echo "gem: [jekyll ${gem_wheezy}]"
 		gem install jekyll ${gem_wheezy} || true
@@ -403,9 +403,9 @@ install_node_pkgs () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/prpplague/Userspace-Arduino"
-	git_target_dir="/opt/source/Userspace-Arduino"
-	git_clone
+#	git_repo="https://github.com/prpplague/Userspace-Arduino"
+#	git_target_dir="/opt/source/Userspace-Arduino"
+#	git_clone
 
 	git_repo="https://github.com/cdsteinkuehler/beaglebone-universal-io.git"
 	git_target_dir="/opt/source/beaglebone-universal-io"
@@ -416,49 +416,49 @@ install_git_repos () {
 		fi
 	fi
 
-	git_repo="https://github.com/strahlex/BBIOConfig.git"
-	git_target_dir="/opt/source/BBIOConfig"
-	git_clone
+#	git_repo="https://github.com/strahlex/BBIOConfig.git"
+#	git_target_dir="/opt/source/BBIOConfig"
+#	git_clone
 
-	git_repo="https://github.com/prpplague/fb-test-app.git"
-	git_target_dir="/opt/source/fb-test-app"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			make
-		fi
-	fi
+#	git_repo="https://github.com/prpplague/fb-test-app.git"
+#	git_target_dir="/opt/source/fb-test-app"
+#	git_clone
+#	if [ -f ${git_target_dir}/.git/config ] ; then
+#		cd ${git_target_dir}/
+#		if [ -f /usr/bin/make ] ; then
+#			make
+#		fi
+#	fi
 
-	git_repo="https://github.com/biocode3D/prufh.git"
-	git_target_dir="/opt/source/prufh"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
-		fi
-	fi
+#	git_repo="https://github.com/biocode3D/prufh.git"
+#	git_target_dir="/opt/source/prufh"
+#	git_clone
+#	if [ -f ${git_target_dir}/.git/config ] ; then
+#		cd ${git_target_dir}/
+#		if [ -f /usr/bin/make ] ; then
+#			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
+#		fi
+#	fi
 
-	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
-	git_target_dir="/opt/source/PyBBIO"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/dtc ] ; then
-			sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
-			python setup.py install
-		fi
-	fi
+#	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
+#	git_target_dir="/opt/source/PyBBIO"
+#	git_clone
+#	if [ -f ${git_target_dir}/.git/config ] ; then
+#		cd ${git_target_dir}/
+#		if [ -f /usr/bin/dtc ] ; then
+#			sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
+#			python setup.py install
+#		fi
+#	fi
 
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="3.14-ti"
-	git_target_dir="/opt/source/dtb-${git_branch}"
-	git_clone_branch
+#	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+#	git_branch="3.14-ti"
+#	git_target_dir="/opt/source/dtb-${git_branch}"
+#	git_clone_branch
 
-	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
-	git_target_dir="/opt/source/pru-software-support-package"
-	git_clone
+#	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
+#	git_target_dir="/opt/source/pru-software-support-package"
+#	git_clone
 }
 
 install_build_pkgs () {
