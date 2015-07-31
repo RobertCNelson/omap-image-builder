@@ -155,6 +155,7 @@ options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 ###usbflasher images: (also single partition)
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
 options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --bbb-usb-flasher" ; generate_img
+options="--img-2gb bbx15-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --bbb-usb-flasher" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
@@ -189,6 +190,7 @@ wfile="omap5-uevm-${debian_jessie_console}-2gb" ; archive_img
 
 blend="usbflasher"
 wfile="BBB-blank-${debian_jessie_usbflasher}-2gb" ; archive_img
+wfile="bbx15-${debian_jessie_usbflasher}-2gb" ; archive_img
 
 __EOF__
 
