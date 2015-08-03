@@ -56,6 +56,8 @@ if [ -d ./deploy/${image_name} ] ; then
 
 		keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
+		sync ; sync ; sleep 5
+
 		bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
 
 		xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
