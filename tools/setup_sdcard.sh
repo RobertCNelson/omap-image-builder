@@ -1088,7 +1088,7 @@ populate_rootfs () {
 			echo "" >> ${wfile}
 		fi
 
-		if [ "x${bbb_usb_flasher}" = "xenable" ] ; then
+		if [ "x${usb_flasher}" = "xenable" ] ; then
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
 		elif [ "x${bbb_flasher}" = "xenable" ] ; then
 			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
@@ -1102,6 +1102,10 @@ populate_rootfs () {
 			echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		fi
 		echo "" >> ${wfile}
+	else
+		if [ "x${usb_flasher}" = "xenable" ] ; then
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+		fi
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
@@ -1549,8 +1553,8 @@ while [ ! -z "$1" ] ; do
 	--bbg-flasher)
 		bbg_flasher="enable"
 		;;
-	--bbb-usb-flasher)
-		bbb_usb_flasher="enable"
+	--bbb-usb-flasher|--usb-flasher)
+		usb_flasher="enable"
 		;;
 	--beagleboard.org-production)
 		bborg_production="enable"
