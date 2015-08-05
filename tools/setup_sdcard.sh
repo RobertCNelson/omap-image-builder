@@ -1504,12 +1504,19 @@ while [ ! -z "$1" ] ; do
 			rm -rf "${media}" || true
 		fi
 		#FIXME: (should fit most microSD cards)
-		#eMMC: (sudo dd if=/dev/mmcblk1 of=/dev/null bs=1M)
-		#Micron: 3925868544 bytes -> 3925.86 eMegabyte
-		#Kingston: 3867148288 bytes -> 3867.15 Megabyte
+		#eMMC: (dd if=/dev/mmcblk1 of=/dev/null bs=1M #MB)
+		#Micron   3744MB (bbb): 3925868544 bytes -> 3925.86 Megabyte
+		#Kingston 3688MB (bbb): 3867148288 bytes -> 3867.15 Megabyte
+		#Kingston 3648MB (x15): 3825205248 bytes -> 3825.21 Megabyte (3648)
 		#
-		#drop "10" per (gsize -1) 4GB = 30MB
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (700 + (gsize - 1) * 990)))
+		### seek=$((1024 * (700 + (gsize - 1) * 1000)))
+		## 1000 1GB = 700 #2GB = 1700 #4GB = 3700
+		##  990 1GB = 700 #2GB = 1690 #4GB = 3670
+		#
+		### seek=$((1024 * (gsize * 850)))
+		## x 850 (85%) #1GB = 850 #2GB = 1700 #4GB = 3400
+		#
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 850)))
 		;;
 	--dtb)
 		checkparm $2
