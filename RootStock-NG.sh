@@ -35,7 +35,7 @@ fi
 
 generic_git () {
 	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
-		git clone ${git_clone_address} ${DIR}/git/${git_project_name}
+		git clone ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
 	fi
 }
 
