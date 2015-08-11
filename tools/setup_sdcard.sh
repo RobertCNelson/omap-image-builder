@@ -1016,35 +1016,35 @@ populate_rootfs () {
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 			echo "" >> ${wfile}
-			echo "##BeagleBone Black dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
+			echo "##BeagleBone Black/Green dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##HDMI (Audio/Video) disabled:" >> ${wfile}
+			echo "##BeagleBone Black: HDMI (Audio/Video) disabled:" >> ${wfile}
 			echo "#am335x-boneblack-emmc-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##eMMC disabled:" >> ${wfile}
+			echo "##BeagleBone Black: eMMC disabled:" >> ${wfile}
 			echo "#am335x-boneblack-hdmi-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##HDMI Audio/eMMC disabled:" >> ${wfile}
+			echo "##BeagleBone Black: HDMI Audio/eMMC disabled:" >> ${wfile}
 			echo "#am335x-boneblack-nhdmi-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##HDMI (Audio/Video)/eMMC disabled:" >> ${wfile}
+			echo "##BeagleBone Black: HDMI (Audio/Video)/eMMC disabled:" >> ${wfile}
 			echo "#dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##cape-universal" >> ${wfile}
-			echo "#dtb=am335x-boneblack-universal.dtb" >> ${wfile}
-
-			echo "" >> ${wfile}
-			echo "##wl1835" >> ${wfile}
+			echo "##BeagleBone Black: wl1835" >> ${wfile}
 			echo "#dtb=am335x-boneblack-wl1835mod.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##replicape" >> ${wfile}
+			echo "##BeagleBone Black: replicape" >> ${wfile}
 			echo "#dtb=am335x-boneblack-replicape.dtb" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "##BeagleBone Green: eMMC disabled" >> ${wfile}
+			echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
 		fi
