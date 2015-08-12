@@ -1020,15 +1020,15 @@ populate_rootfs () {
 
 			echo "" >> ${wfile}
 			echo "##BeagleBone Black: HDMI (Audio/Video) disabled:" >> ${wfile}
-			echo "#am335x-boneblack-emmc-overlay.dtb" >> ${wfile}
+			echo "#dtb=am335x-boneblack-emmc-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
 			echo "##BeagleBone Black: eMMC disabled:" >> ${wfile}
-			echo "#am335x-boneblack-hdmi-overlay.dtb" >> ${wfile}
+			echo "#dtb=am335x-boneblack-hdmi-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
 			echo "##BeagleBone Black: HDMI Audio/eMMC disabled:" >> ${wfile}
-			echo "#am335x-boneblack-nhdmi-overlay.dtb" >> ${wfile}
+			echo "#dtb=am335x-boneblack-nhdmi-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
 			echo "##BeagleBone Black: HDMI (Audio/Video)/eMMC disabled:" >> ${wfile}
