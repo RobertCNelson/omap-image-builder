@@ -250,10 +250,7 @@ install_node_pkgs () {
 
 		if [ -f /usr/bin/make ] ; then
 			echo "Installing bonescript"
-			TERM=dumb npm install -g bonescript --arch=armhf
-			if [ -f /usr/local/lib/node_modules/bonescript/server.js ] ; then
-				sed -i -e 's:/usr/share/bone101:/var/lib/cloud9:g' /usr/local/lib/node_modules/bonescript/server.js
-			fi
+			TERM=dumb npm install -g bonescript@0.2.5
 		fi
 
 		cd /opt/
