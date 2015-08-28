@@ -12,7 +12,7 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14
 ./RootStock-NG.sh -c bb.org-debian-jessie-console
 
 debian_jessie_lxqt_4gb="debian-8.1-lxqt-4gb-armhf-${time}"
@@ -116,9 +116,9 @@ generate_img () {
 }
 
 ###lxqt-4gb image
-#base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
-#
-#options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###console images: (also single partition)
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
@@ -126,12 +126,12 @@ base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 options="--img-2gb bone-\${base_rootfs} ${beaglebone_console}" ; generate_img
 
 ###archive *.tar
-#base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
+base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}" ; blend="console" ; archive_base_rootfs
 
 ###archive *.img
-#blend="lxqt-4gb"
-#wfile="bone-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+blend="lxqt-4gb"
+wfile="bone-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 
 blend="console"
 wfile="bone-${debian_jessie_console}-2gb" ; archive_img
