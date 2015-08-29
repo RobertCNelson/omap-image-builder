@@ -287,8 +287,10 @@ install_node_pkgs () {
 			echo "Installing: [npm install -g npm]"
 			TERM=dump npm install -g npm
 
+			echo "debug: npm: [`/usr/local/bin/npm --version`]"
+
 			echo "Installing: [npm install -g bonescript@0.2.5]"
-			TERM=dumb npm install -g bonescript@0.2.5
+			TERM=dumb /usr/local/bin/npm install -g bonescript@0.2.5
 		fi
 
 		cd /opt/
