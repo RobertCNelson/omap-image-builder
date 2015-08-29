@@ -284,8 +284,8 @@ install_node_pkgs () {
 		#echo "--------------------------------"
 
 		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g ref@1.0.2]"
-			TERM=dump npm install -g ref@1.0.2
+			echo "Installing: [npm install -g npm]"
+			TERM=dump npm install -g npm
 
 			echo "Installing: [npm install -g bonescript@0.2.5]"
 			TERM=dumb npm install -g bonescript@0.2.5
