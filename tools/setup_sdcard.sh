@@ -1090,14 +1090,14 @@ populate_rootfs () {
 
 		if [ "x${usb_flasher}" = "xenable" ] ; then
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
-		elif [ "x${bbb_flasher}" = "xenable" ] ; then
-			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+		elif [ "x${emmc_flasher}" = "xenable" ] ; then
+			echo "##enable Generic eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		elif [ "x${bbg_flasher}" = "xenable" ] ; then
 			echo "##enable BBG: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbg.sh" >> ${wfile}
 		else
-			echo "##enable BBB: eMMC Flasher:" >> ${wfile}
+			echo "##enable Generic eMMC Flasher:" >> ${wfile}
 			echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
 			echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		fi
@@ -1554,14 +1554,14 @@ while [ ! -z "$1" ] ; do
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
 		;;
-	--bbb-flasher)
-		bbb_flasher="enable"
-		;;
 	--bbg-flasher)
 		bbg_flasher="enable"
 		;;
 	--bbb-usb-flasher|--usb-flasher)
 		usb_flasher="enable"
+		;;
+	--bbb-flasher|--emmc-flasher)
+		emmc_flasher="enable"
 		;;
 	--beagleboard.org-production)
 		bborg_production="enable"
