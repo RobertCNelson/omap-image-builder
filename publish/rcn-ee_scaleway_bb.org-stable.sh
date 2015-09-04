@@ -6,7 +6,9 @@ DIR="$PWD"
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
 
-export apt_proxy=armv7-image-builder.local:3142/
+hostip=$(sudo ip addr list eth0 |grep "inet " |cut -d' ' -f6|cut -d/ -f1 2>/dev/null || true)
+
+export apt_proxy=${hostip}:3142/
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
