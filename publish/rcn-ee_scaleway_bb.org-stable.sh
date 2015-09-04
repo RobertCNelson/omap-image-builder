@@ -3,12 +3,16 @@
 time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.net/rootfs/bb.org/testing"
 DIR="$PWD"
+host=$(uname -n)
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
 
-hostip=$(sudo ip addr list eth0 |grep "inet " |cut -d' ' -f6|cut -d/ -f1 2>/dev/null || true)
-
-export apt_proxy=${hostip}:3142/
+if [ "x${host}" = "xscw-69d6d5" ] ; then
+	hostip=$(sudo ip addr list eth0 |grep "inet " |cut -d' ' -f6|cut -d/ -f1 2>/dev/null || true)
+	export apt_proxy=${hostip}:3142/
+else
+	export apt_proxy=apt-proxy:3142/
+fi
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
