@@ -20,13 +20,13 @@ archive="xz -z -8"
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-copy_rootfs_to_mirror () {
+copy_base_rootfs_to_mirror () {
         if [ -d ${mirror_dir} ] ; then
                 if [ ! -d ${mirror_dir}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/\${blend}/ ] ; then
-                        if [ -f \${base_rootfs}.tar ] ; then
+                        if [ ! -f ${mirror_dir}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/\${blend}/
                                 cd ${mirror_dir}/\${blend}/
                                 ${archive} \${base_rootfs}.tar &
@@ -37,15 +37,15 @@ copy_rootfs_to_mirror () {
 }
 
 blend=barefs
-base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_rootfs_to_mirror
-base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_rootfs_to_mirror
-base_rootfs="${debian_stable}-bare-armhf-${time}" ; copy_rootfs_to_mirror
+base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_stable}-bare-armhf-${time}" ; copy_base_rootfs_to_mirror
 
 blend=minfs
-base_rootfs="${debian_stable}-minimal-armel-${time}" ; copy_rootfs_to_mirror
-base_rootfs="${debian_stable}-minimal-armhf-${time}" ; copy_rootfs_to_mirror
+base_rootfs="${debian_stable}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_stable}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
 
-base_rootfs="${ubuntu_stable}-minimal-armhf-${time}" ; copy_rootfs_to_mirror
+base_rootfs="${ubuntu_stable}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
 
 __EOF__
 
