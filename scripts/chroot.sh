@@ -511,6 +511,12 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 				if [ -f /usr/local/bin/tar ] ; then
 					rm -f /usr/local/bin/tar
 				fi
+
+				#run-parts: unrecognized option '--list'
+				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
+				if [ -f /usr/local/bin/run-parts ] ; then
+					rm -f /usr/local/bin/run-parts
+				fi
 			fi
 		fi
 	}
