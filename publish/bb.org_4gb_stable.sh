@@ -11,7 +11,7 @@ server_dir="/var/lib/buildbot/masters/kernel-buildbot/public_html/images/${branc
 export apt_proxy=localhost:3142/
 
 ##Debian 7:
-#image_name="debian-7.8-lxde-4gb-armhf-${time}"
+#image_name="debian-7.9-lxde-4gb-armhf-${time}"
 #size="4gb"
 
 #options="--img-4gb bone-${image_name} --dtb beaglebone \
@@ -21,7 +21,7 @@ export apt_proxy=localhost:3142/
 #./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 
 ##Debian 8:
-#image_name="debian-8.1-lxqt-2gb-armhf-${time}"
+#image_name="debian-8.2-lxqt-2gb-armhf-${time}"
 #size="2gb"
 
 #options="--img-2gb bone-${image_name} --dtb beaglebone \
@@ -31,7 +31,7 @@ export apt_proxy=localhost:3142/
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 
 ##Debian 8:
-image_name="debian-8.1-tester-2gb-armhf-${time}"
+image_name="debian-8.2-tester-2gb-armhf-${time}"
 size="2gb"
 
 options="--img-2gb bone-${image_name} --dtb beaglebone \

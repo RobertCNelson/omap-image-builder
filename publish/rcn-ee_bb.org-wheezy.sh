@@ -16,9 +16,9 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 ./RootStock-NG.sh -c bb.org-debian-wheezy-console
 
-debian_wheezy_lxde_2gb="debian-7.8-lxde-armhf-${time}"
-debian_wheezy_lxde_4gb="debian-7.8-lxde-4gb-armhf-${time}"
-debian_wheezy_console="debian-7.8-console-armhf-${time}"
+debian_wheezy_lxde_2gb="debian-7.9-lxde-armhf-${time}"
+debian_wheezy_lxde_4gb="debian-7.9-lxde-4gb-armhf-${time}"
+debian_wheezy_console="debian-7.9-console-armhf-${time}"
 
 archive="xz -z -8 -v"
 

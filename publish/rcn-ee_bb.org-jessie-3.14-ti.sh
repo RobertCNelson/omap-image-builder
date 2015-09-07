@@ -15,8 +15,8 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v3.14
 ./RootStock-NG.sh -c bb.org-debian-jessie-console
 
-debian_jessie_lxqt_4gb="debian-8.1-lxqt-4gb-armhf-${time}"
-debian_jessie_console="debian-8.1-console-armhf-${time}"
+debian_jessie_lxqt_4gb="debian-8.2-lxqt-4gb-armhf-${time}"
+debian_jessie_console="debian-8.2-console-armhf-${time}"
 
 archive="xz -z -8 -v"
 
