@@ -102,20 +102,18 @@ base_rootfs="${debian_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-${debian_stable} --dtb beaglebone --bbb-flasher --bbb-old-bootloader-in-emmc" ; generate_img
 options="--img bone-${debian_stable} --dtb beaglebone --bbb-old-bootloader-in-emmc" ; generate_img
-options="--img bb-${debian_stable} --dtb omap3-beagle" ; generate_img
 options="--img bbxm-${debian_stable} --dtb omap3-beagle-xm" ; generate_img
-options="--img omap5-uevm-${debian_stable} --dtb omap5-uevm" ; generate_img
 options="--img bbx15-${debian_stable} --dtb am57xx-beagle-x15" ; generate_img
+options="--img omap5-uevm-${debian_stable} --dtb omap5-uevm" ; generate_img
 
 #Ubuntu Stable
 base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-${ubuntu_stable} --dtb beaglebone --bbb-flasher  --bbb-old-bootloader-in-emmc" ; generate_img
 options="--img bone-${ubuntu_stable} --dtb beaglebone --bbb-old-bootloader-in-emmc" ; generate_img
-options="--img bb-${ubuntu_stable} --dtb omap3-beagle" ; generate_img
 options="--img bbxm-${ubuntu_stable} --dtb omap3-beagle-xm" ; generate_img
-options="--img omap5-uevm-${ubuntu_stable} --dtb omap5-uevm" ; generate_img
 options="--img bbx15-${ubuntu_stable} --dtb am57xx-beagle-x15" ; generate_img
+options="--img omap5-uevm-${ubuntu_stable} --dtb omap5-uevm" ; generate_img
 
 #Archive tar:
 base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
@@ -125,16 +123,14 @@ base_rootfs="${debian_testing}" ; blend="elinux" ; archive_base_rootfs
 #Archive img:
 blend="microsd"
 wfile="bone-${debian_stable}-2gb" ; archive_img
-wfile="bb-${debian_stable}-2gb" ; archive_img
 wfile="bbxm-${debian_stable}-2gb" ; archive_img
-wfile="omap5-uevm-${debian_stable}-2gb" ; archive_img
 wfile="bbx15-${debian_stable}-2gb" ; archive_img
+wfile="omap5-uevm-${debian_stable}-2gb" ; archive_img
 
 wfile="bone-${ubuntu_stable}-2gb" ; archive_img
-wfile="bb-${ubuntu_stable}-2gb" ; archive_img
 wfile="bbxm-${ubuntu_stable}-2gb" ; archive_img
-wfile="omap5-uevm-${ubuntu_stable}-2gb" ; archive_img
 wfile="bbx15-${ubuntu_stable}-2gb" ; archive_img
+wfile="omap5-uevm-${ubuntu_stable}-2gb" ; archive_img
 
 blend="flasher"
 wfile="BBB-eMMC-flasher-${debian_stable}-2gb" ; archive_img
