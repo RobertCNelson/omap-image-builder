@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
-mirror_dir="/var/www/html/rcn-ee.net/rootfs/eewiki/"
+mirror_dir="/var/www/html/rcn-ee.net/rootfs/eewiki"
 DIR="$PWD"
 host=$(uname -n)
 
@@ -27,7 +27,7 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 copy_base_rootfs_to_mirror () {
-        if [ -d ${mirror_dir} ] ; then
+        if [ -d ${mirror_dir}/ ] ; then
                 if [ ! -d ${mirror_dir}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/\${blend}/ || true
                 fi
@@ -43,7 +43,6 @@ copy_base_rootfs_to_mirror () {
 }
 
 blend=barefs
-base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_base_rootfs_to_mirror
 base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_base_rootfs_to_mirror
 base_rootfs="${debian_stable}-bare-armhf-${time}" ; copy_base_rootfs_to_mirror
 

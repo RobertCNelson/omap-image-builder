@@ -136,9 +136,9 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; genera
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
-options="--img-4gb bb-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
+options="--img-4gb bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 options="--img-4gb tre-\${base_rootfs} ${arduino_tre}" ; generate_img
@@ -154,9 +154,9 @@ base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 #options="--img-2gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --bbg-flasher" ; generate_img
 #options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --emmc-flasher" ; generate_img
 options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --emmc-flasher" ; generate_img
-options="--img-2gb bb-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-2gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
+options="--img-2gb bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img-2gb bone-\${base_rootfs} ${beaglebone_console}" ; generate_img
 options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
@@ -178,9 +178,9 @@ wfile="bone-${debian_wheezy_machinekit}-4gb" ; archive_img
 
 blend="lxqt-4gb"
 wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
-wfile="bb-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 wfile="bbx15-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 wfile="bbx15-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="bbxm-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 wfile="bone-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 wfile="omap5-uevm-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
 wfile="tre-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
@@ -192,9 +192,9 @@ blend="console"
 #wfile="BBB-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
 #wfile="BBG-blank-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
 wfile="BBB-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
-wfile="bb-${debian_jessie_console}-2gb" ; archive_img
 wfile="bbx15-eMMC-flasher-${debian_jessie_console}-2gb" ; archive_img
 wfile="bbx15-${debian_jessie_console}-2gb" ; archive_img
+wfile="bbxm-${debian_jessie_console}-2gb" ; archive_img
 wfile="bone-${debian_jessie_console}-2gb" ; archive_img
 wfile="omap5-uevm-${debian_jessie_console}-2gb" ; archive_img
 
