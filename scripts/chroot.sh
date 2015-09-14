@@ -197,7 +197,12 @@ chroot_umount () {
 	fi
 }
 
-trap chroot_umount EXIT
+chroot_umount_failure () {
+	chroot_umount
+	exit 1
+}
+
+trap chroot_umount_failure EXIT
 
 check_defines
 
