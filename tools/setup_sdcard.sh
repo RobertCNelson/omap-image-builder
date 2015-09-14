@@ -1105,6 +1105,9 @@ populate_rootfs () {
 	else
 		if [ "x${usb_flasher}" = "xenable" ] ; then
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+		elif [ "x${emmc_flasher}" = "xenable" ] ; then
+			echo "##enable Generic eMMC Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 		fi
 	fi
 
