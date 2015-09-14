@@ -18,7 +18,7 @@ fi
 debian_jessie_lxqt_4gb="debian-8.2-lxqt-4gb-armhf-${time}"
 debian_jessie_console="debian-8.2-console-armhf-${time}"
 
-archive="xz -z -8 -v"
+archive="xz -z -8"
 
 beaglebone="--dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
 --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
@@ -48,8 +48,11 @@ copy_base_rootfs_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${base_rootfs}.tar.xz ] ; then
-                                cp -v \${base_rootfs}.tar.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
+                                cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
+                                cd ${mirror_dir}/${time}/\${blend}/
+                                ${archive} \${base_rootfs}.tar &
+                                cd -
                         fi
                 fi
         fi
@@ -59,11 +62,9 @@ archive_base_rootfs () {
         if [ -d ./\${base_rootfs} ] ; then
                 rm -rf \${base_rootfs} || true
         fi
-
-        if [ ! -f \${base_rootfs}.tar.xz ] ; then
-                ${archive} \${base_rootfs}.tar
+        if [ -f \${base_rootfs}.tar ] ; then
+                copy_base_rootfs_to_mirror
         fi
-        copy_base_rootfs_to_mirror
 }
 
 extract_base_rootfs () {
@@ -87,8 +88,11 @@ copy_img_to_mirror () {
                         if [ -f \${wfile}.bmap ] ; then
                                 cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
                         fi
-                        if [ -f \${wfile}.img.xz ] ; then
-                                cp -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
+                                cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                cd ${mirror_dir}/${time}/\${blend}/
+                                ${archive} \${wfile}.img &
+                                cd -
                         fi
                 fi
         fi
@@ -100,9 +104,6 @@ archive_img () {
                         if [ -f /usr/bin/bmaptool ] ; then
                                 bmaptool create -o \${wfile}.bmap \${wfile}.img
                         fi
-                fi
-                if [ ! -f \${wfile}.img.xz ] ; then
-                        ${archive} \${wfile}.img
                 fi
                 copy_img_to_mirror
         fi
