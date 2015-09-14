@@ -260,6 +260,7 @@ cleanup_npm_cache () {
 
 install_node_pkgs () {
 	if [ -f /usr/bin/npm ] ; then
+		cd /
 		echo "Installing npm packages"
 		echo "debug: node: [`node --version`]"
 		echo "debug: npm: [`npm --version`]"
@@ -438,6 +439,7 @@ install_git_repos () {
 		if [ -f /usr/bin/make ] ; then
 			make
 		fi
+		cd /
 	fi
 
 	git_repo="https://github.com/biocode3D/prufh.git"
@@ -448,6 +450,7 @@ install_git_repos () {
 		if [ -f /usr/bin/make ] ; then
 			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
 		fi
+		cd /
 	fi
 
 	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
@@ -459,12 +462,13 @@ install_git_repos () {
 			sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
 			python setup.py install
 		fi
+		cd /
 	fi
 
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="3.14-ti"
-	git_target_dir="/opt/source/dtb-${git_branch}"
-	git_clone_branch
+#	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+#	git_branch="3.14-ti"
+#	git_target_dir="/opt/source/dtb-${git_branch}"
+#	git_clone_branch
 
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
@@ -484,6 +488,7 @@ install_build_pkgs () {
 			update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
 		fi
 	fi
+	cd /
 }
 
 other_source_links () {
