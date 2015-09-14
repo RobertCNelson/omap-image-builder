@@ -53,31 +53,31 @@ keep_net_alive () {
 }
 
 upload_image () {
-if [ -d ./deploy/${image_name} ] ; then
-	cd ./deploy/${image_name}/
-	sudo ./setup_sdcard.sh ${options}
+	if [ -d ./deploy/${image_name} ] ; then
+		cd ./deploy/${image_name}/
+		sudo ./setup_sdcard.sh ${options}
 
-	if [ -f bone-${image_name}-${size}.img ] ; then
-		sudo chown buildbot.buildbot bone-${image_name}-${size}.img
+		if [ -f bone-${image_name}-${size}.img ] ; then
+			sudo chown buildbot.buildbot bone-${image_name}-${size}.img
 
-		keep_net_alive & KEEP_NET_ALIVE_PID=$!
+			keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
-		sync ; sync ; sleep 5
+			sync ; sync ; sleep 5
 
-		bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
+			bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
 
-		xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
+			xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
 
-		#upload:
-		ssh ${ssh_user} mkdir -p ${server_dir}
-		rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
-		rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
+			#upload:
+			ssh ${ssh_user} mkdir -p ${server_dir}
+			rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
+			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
 
-		[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
+			[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
 
-		#cleanup:
-		cd ../../
-		rm -rf ./deploy/ || true
+			#cleanup:
+			cd ../../
+			rm -rf ./deploy/ || true
+		fi
 	fi
-fi
 }
