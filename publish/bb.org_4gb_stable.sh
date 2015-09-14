@@ -10,15 +10,17 @@ server_dir="/var/lib/buildbot/masters/kernel-buildbot/public_html/images/${branc
 
 export apt_proxy=localhost:3142/
 
+## Stable/shipping
 ##Debian 7:
-#image_name="debian-7.9-lxde-4gb-armhf-${time}"
-#size="4gb"
+image_name="debian-7.9-lxde-4gb-armhf-${time}"
+size="4gb"
 
-#options="--img-4gb bone-${image_name} --dtb beaglebone \
-#--beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
-#--bbb-old-bootloader-in-emmc --hostname beaglebone"
+options="--img-4gb bone-${image_name} --dtb beaglebone \
+--beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
+--bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-#./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
+./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
+upload_image
 
 ##Debian 8:
 #image_name="debian-8.2-lxqt-2gb-armhf-${time}"
@@ -29,7 +31,9 @@ export apt_proxy=localhost:3142/
 #--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+#upload_image
 
+# Next/cape-tester image
 ##Debian 8:
 image_name="debian-8.2-tester-2gb-armhf-${time}"
 size="2gb"
@@ -39,6 +43,7 @@ options="--img-2gb bone-${image_name} --dtb beaglebone \
 --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
+upload_image
 
 keep_net_alive () {
 	while : ; do
@@ -47,31 +52,32 @@ keep_net_alive () {
 	done
 }
 
-if [ -d ./deploy/${image_name} ] ; then
-	cd ./deploy/${image_name}/
-	sudo ./setup_sdcard.sh ${options}
+upload_image () {
+	if [ -d ./deploy/${image_name} ] ; then
+		cd ./deploy/${image_name}/
+		sudo ./setup_sdcard.sh ${options}
 
-	if [ -f bone-${image_name}-${size}.img ] ; then
-		sudo chown buildbot.buildbot bone-${image_name}-${size}.img
+		if [ -f bone-${image_name}-${size}.img ] ; then
+			sudo chown buildbot.buildbot bone-${image_name}-${size}.img
 
-		keep_net_alive & KEEP_NET_ALIVE_PID=$!
+			keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
-		sync ; sync ; sleep 5
+			sync ; sync ; sleep 5
 
-		bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
+			bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
 
-		xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
+			xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
 
-		#upload:
-		ssh ${ssh_user} mkdir -p ${server_dir}
-		rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
-		rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
+			#upload:
+			ssh ${ssh_user} mkdir -p ${server_dir}
+			rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
+			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
 
-		[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
+			[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
 
-		#cleanup:
-		cd ../../
-		rm -rf ./deploy/ || true
+			#cleanup:
+			cd ../../
+			rm -rf ./deploy/ || true
+		fi
 	fi
-fi
-
+}
