@@ -59,7 +59,7 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 ./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
-upload_image
+build_and_upload_image
 
 ##Debian 8:
 #image_name="debian-8.2-lxqt-2gb-armhf-${time}"
@@ -70,7 +70,7 @@ upload_image
 #--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
-#upload_image
+#build_and_upload_image
 
 # Next/cape-tester image
 ##Debian 8:
@@ -82,5 +82,5 @@ options="--img-2gb bone-${image_name} --dtb beaglebone \
 --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
-upload_image
+build_and_upload_image
 
