@@ -40,6 +40,17 @@ ROOTFS_LABEL=rootfs
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
 
+keep_net_alive () {
+	while : ; do
+		echo "running: $*"
+		sleep 300
+	done
+}
+keep_net_alive & KEEP_NET_ALIVE_PID=$!
+cleanup_keep_net_alive () {
+	[ -e /proc/$KEEP_NET_ALIVE_PID ] && kill $KEEP_NET_ALIVE_PID
+}
+
 is_element_of () {
 	testelt=$1
 	for validelt in $2 ; do
