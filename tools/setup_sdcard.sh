@@ -50,6 +50,7 @@ keep_net_alive & KEEP_NET_ALIVE_PID=$!
 cleanup_keep_net_alive () {
 	[ -e /proc/$KEEP_NET_ALIVE_PID ] && kill $KEEP_NET_ALIVE_PID
 }
+trap cleanup_keep_net_alive EXIT
 
 is_element_of () {
 	testelt=$1
@@ -1632,4 +1633,5 @@ fi
 create_partitions
 populate_boot
 populate_rootfs
+exit 0
 #
