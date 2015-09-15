@@ -10,41 +10,6 @@ server_dir="/var/lib/buildbot/masters/kernel-buildbot/public_html/images/${branc
 
 export apt_proxy=localhost:3142/
 
-## Stable/shipping
-##Debian 7:
-image_name="debian-7.9-lxde-4gb-armhf-${time}"
-size="4gb"
-
-options="--img-4gb bone-${image_name} --dtb beaglebone \
---beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
-upload_image
-
-##Debian 8:
-#image_name="debian-8.2-lxqt-2gb-armhf-${time}"
-#size="2gb"
-
-#options="--img-2gb bone-${image_name} --dtb beaglebone \
-#--beagleboard.org-production --boot_label BEAGLEBONE \
-#--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
-#upload_image
-
-# Next/cape-tester image
-##Debian 8:
-image_name="debian-8.2-tester-2gb-armhf-${time}"
-size="2gb"
-
-options="--img-2gb bone-${image_name} --dtb beaglebone \
---beagleboard.org-production --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
-upload_image
-
 keep_net_alive () {
 	while : ; do
 		sleep 15
@@ -81,3 +46,39 @@ upload_image () {
 		fi
 	fi
 }
+
+## Stable/shipping
+##Debian 7:
+image_name="debian-7.9-lxde-4gb-armhf-${time}"
+size="4gb"
+
+options="--img-4gb bone-${image_name} --dtb beaglebone \
+--beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
+--bbb-old-bootloader-in-emmc --hostname beaglebone"
+
+./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
+upload_image
+
+##Debian 8:
+#image_name="debian-8.2-lxqt-2gb-armhf-${time}"
+#size="2gb"
+
+#options="--img-2gb bone-${image_name} --dtb beaglebone \
+#--beagleboard.org-production --boot_label BEAGLEBONE \
+#--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+#upload_image
+
+# Next/cape-tester image
+##Debian 8:
+image_name="debian-8.2-tester-2gb-armhf-${time}"
+size="2gb"
+
+options="--img-2gb bone-${image_name} --dtb beaglebone \
+--beagleboard.org-production --boot_label BEAGLEBONE \
+--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+
+./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
+upload_image
+
