@@ -17,7 +17,9 @@ keep_net_alive () {
 	done
 }
 
-upload_image () {
+build_and_upload_image () {
+	echo "building: bone-${image_name}-${size}.img"
+
 	if [ -d ./deploy/${image_name} ] ; then
 		cd ./deploy/${image_name}/
 		sudo ./setup_sdcard.sh ${options}
