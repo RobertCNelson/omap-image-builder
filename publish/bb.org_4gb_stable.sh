@@ -34,11 +34,13 @@ build_and_upload_image () {
 			bmaptool create -o bone-${image_name}-${size}.bmap bone-${image_name}-${size}.img
 
 			xz -z -3 -v -v --verbose bone-${image_name}-${size}.img
+			sha256sum bone-${image_name}-${size}.img.zx > bone-${image_name}-${size}.img.zx.sha256sum
 
 			#upload:
 			ssh ${ssh_user} mkdir -p ${server_dir}
 			rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
 			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
+			rsync -e ssh -av ./bone-${image_name}-${size}.img.zx.sha256sum ${ssh_user}:${server_dir}/
 
 			[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
 
