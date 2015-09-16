@@ -38,7 +38,7 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 copy_base_rootfs_to_mirror () {
-        if [ -d ${mirror_dir} ] ; then
+        if [ -d ${mirror_dir}/ ] ; then
                 if [ ! -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
@@ -46,7 +46,7 @@ copy_base_rootfs_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${base_rootfs}.tar &
+                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.zx > \${base_rootfs}.tar.zx.sha256sum &
                                 cd -
                         fi
                 fi
@@ -86,7 +86,7 @@ copy_img_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${wfile}.img &
+                                ${archive} \${wfile}.img && sha256sum \${wfile}.img.zx > \${wfile}.img.zx.sha256sum &
                                 cd -
                         fi
                 fi
