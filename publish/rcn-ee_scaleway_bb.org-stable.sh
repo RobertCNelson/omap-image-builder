@@ -30,7 +30,7 @@ debian_jessie_lxqt_4gb="debian-8.2-lxqt-4gb-armhf-${time}"
 debian_jessie_console="debian-8.2-console-armhf-${time}"
 debian_jessie_usbflasher="debian-8.2-usbflasher-armhf-${time}"
 
-archive="xz -z -8 -v"
+archive="xz -z -8"
 
 beaglebone="--dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
 --rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
@@ -55,13 +55,16 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 copy_base_rootfs_to_mirror () {
-        if [ -d ${mirror_dir} ] ; then
+        if [ -d ${mirror_dir}/ ] ; then
                 if [ ! -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${base_rootfs}.tar.xz ] ; then
-                                cp -v \${base_rootfs}.tar.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
+                                cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
+                                cd ${mirror_dir}/${time}/\${blend}/
+                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.zx > \${base_rootfs}.tar.zx.sha256sum &
+                                cd -
                         fi
                 fi
         fi
@@ -71,11 +74,9 @@ archive_base_rootfs () {
         if [ -d ./\${base_rootfs} ] ; then
                 rm -rf \${base_rootfs} || true
         fi
-
-        if [ ! -f \${base_rootfs}.tar.xz ] ; then
-                ${archive} \${base_rootfs}.tar
+        if [ -f \${base_rootfs}.tar ] ; then
+                copy_base_rootfs_to_mirror
         fi
-        copy_base_rootfs_to_mirror
 }
 
 extract_base_rootfs () {
@@ -99,8 +100,14 @@ copy_img_to_mirror () {
                         if [ -f \${wfile}.bmap ] ; then
                                 cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
                         fi
-                        if [ -f \${wfile}.img.xz ] ; then
-                                cp -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
+                        if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
+                                cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                if [ -f \${wfile}.img.xz.job.txt ] ; then
+                                        cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
+                                fi
+                                cd ${mirror_dir}/${time}/\${blend}/
+                                ${archive} \${wfile}.img && sha256sum \${wfile}.img.zx > \${wfile}.img.zx.sha256sum &
+                                cd -
                         fi
                 fi
         fi
@@ -113,9 +120,6 @@ archive_img () {
                                 bmaptool create -o \${wfile}.bmap \${wfile}.img
                         fi
                 fi
-                if [ ! -f \${wfile}.img.xz ] ; then
-                        ${archive} \${wfile}.img
-                fi
                 copy_img_to_mirror
         fi
 }
@@ -124,6 +128,7 @@ generate_img () {
         cd \${base_rootfs}/
         sudo ./setup_sdcard.sh \${options}
         mv *.img ../
+        mv *.job.txt ../
         cd ..
 }
 

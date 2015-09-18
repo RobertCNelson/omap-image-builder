@@ -26,6 +26,7 @@ build_and_upload_image () {
 
 		if [ -f bone-${image_name}-${size}.img ] ; then
 			sudo chown buildbot.buildbot bone-${image_name}-${size}.img
+			sudo chown buildbot.buildbot bone-${image_name}-${size}.img.xz.job.txt
 
 			keep_net_alive & KEEP_NET_ALIVE_PID=$!
 
@@ -40,6 +41,7 @@ build_and_upload_image () {
 			ssh ${ssh_user} mkdir -p ${server_dir}
 			rsync -e ssh -av ./bone-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
 			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
+			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz.job.txt ${ssh_user}:${server_dir}/
 			rsync -e ssh -av ./bone-${image_name}-${size}.img.xz.sha256sum ${ssh_user}:${server_dir}/
 
 			[ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
