@@ -200,6 +200,7 @@ setup_desktop () {
 		echo "    <jabberid>author@example.net</jabberid>" >> ${wfile}
 		echo "    <format>text</format>" >> ${wfile}
 		echo "</pastebinit>" >> ${wfile}
+		chown ${rfs_username}:${rfs_username} ${wfile}
 	fi
 }
 
