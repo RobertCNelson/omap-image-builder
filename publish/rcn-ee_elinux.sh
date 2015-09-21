@@ -32,7 +32,7 @@ copy_base_rootfs_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.zx > \${base_rootfs}.tar.zx.sha256sum &
+                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
                                 cd -
                         fi
                 fi
@@ -75,7 +75,7 @@ copy_img_to_mirror () {
                                         cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
                                 fi
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${wfile}.img && sha256sum \${wfile}.img.zx > \${wfile}.img.zx.sha256sum &
+                                ${archive} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
                                 cd -
                         fi
                 fi
