@@ -199,7 +199,9 @@ chroot_umount () {
 
 chroot_umount_failure () {
 	chroot_umount
-	exit 1
+	if [ ! -f ${DIR}/jenkins.build ] ; then
+		exit 1
+	fi
 }
 
 trap chroot_umount_failure EXIT
