@@ -10,6 +10,13 @@ server_dir="/var/lib/buildbot/masters/kernel-buildbot/public_html/images/${branc
 
 export apt_proxy=localhost:3142/
 
+refresh_keep_net_alive () {
+	while : ; do
+		sleep 15
+		echo "log: [Running: ./publish/bb.org_4gb_stable.sh]"
+	done
+}
+
 keep_net_alive () {
 	while : ; do
 		sleep 15
@@ -53,6 +60,8 @@ build_and_upload_image () {
 	fi
 }
 
+refresh_keep_net_alive & REFRESH_KEEP_NET_ALIVE_PID=$!
+
 ## Stable/shipping
 ##Debian 7:
 image_name="debian-7.9-lxde-4gb-armhf-${time}"
@@ -87,4 +96,6 @@ options="--img-2gb bone-${image_name} --dtb beaglebone \
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
 build_and_upload_image
+
+[ -e /proc/$REFRESH_KEEP_NET_ALIVE_PID ] && sudo kill $REFRESH_KEEP_NET_ALIVE_PID
 
