@@ -35,7 +35,7 @@ copy_base_rootfs_to_mirror () {
                         if [ ! -f ${mirror_dir}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/\${blend}/
                                 cd ${mirror_dir}/\${blend}/
-                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.zx > \${base_rootfs}.tar.zx.sha256sum &
+                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
                                 cd -
                         fi
                 fi
