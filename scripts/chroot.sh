@@ -200,9 +200,7 @@ chroot_umount () {
 
 chroot_stopped () {
 	chroot_umount
-	if [ "x${chroot_completed}" = "xtrue" ] ; then
-		exit 0
-	else
+	if [ ! "x${chroot_completed}" = "xtrue" ] ; then
 		exit 1
 	fi
 }
