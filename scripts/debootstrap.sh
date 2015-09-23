@@ -22,7 +22,7 @@
 
 DIR=$PWD
 
-. ${DIR}/.project
+. "${DIR}/.project"
 
 check_defines () {
 	#http://linux.die.net/man/8/debootstrap
@@ -97,7 +97,7 @@ check_defines () {
 }
 
 report_size () {
-	echo "Log: Size of: [${tempdir}]: `du -sh ${tempdir} 2>/dev/null | awk '{print $1}'`"
+	echo "Log: Size of: [${tempdir}]: $(du -sh ${tempdir} 2>/dev/null | awk '{print $1}')"
 }
 
 check_defines
@@ -110,6 +110,6 @@ fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
 echo "Log: [sudo debootstrap ${options} ${suite} ${target} ${mirror}]"
-sudo debootstrap ${options} ${suite} ${target} ${mirror}
+sudo debootstrap ${options} ${suite} "${target}" ${mirror}
 report_size
 #
