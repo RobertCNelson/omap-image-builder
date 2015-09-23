@@ -35,7 +35,7 @@ check_defines () {
 		exit 1
 	fi
 
-	cd ${tempdir}/
+	cd "${tempdir}/" || true
 	test_tempdir=$(pwd -P)
 	cd "${DIR}/" || true
 
@@ -141,24 +141,24 @@ check_defines () {
 }
 
 report_size () {
-	echo "Log: Size of: [${tempdir}]: `du -sh ${tempdir} 2>/dev/null | awk '{print $1}'`"
+	echo "Log: Size of: [${tempdir}]: $(du -sh ${tempdir} 2>/dev/null | awk '{print $1}')"
 }
 
 chroot_mount () {
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" != "${tempdir}/sys" ] ; then
-		sudo mount -t sysfs sysfs ${tempdir}/sys
+		sudo mount -t sysfs sysfs "${tempdir}/sys"
 	fi
 
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" != "${tempdir}/proc" ] ; then
-		sudo mount -t proc proc ${tempdir}/proc
+		sudo mount -t proc proc "${tempdir}/proc"
 	fi
 
-	if [ ! -d ${tempdir}/dev/pts ] ; then
+	if [ ! -d "${tempdir}/dev/pts" ] ; then
 		sudo mkdir -p ${tempdir}/dev/pts || true
 	fi
 
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" != "${tempdir}/dev/pts" ] ; then
-		sudo mount -t devpts devpts ${tempdir}/dev/pts
+		sudo mount -t devpts devpts "${tempdir}/dev/pts"
 	fi
 }
 
@@ -166,7 +166,7 @@ chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 		echo "Log: umount: [${tempdir}/dev/pts]"
 		sync
-		sudo umount -fl ${tempdir}/dev/pts
+		sudo umount -fl "${tempdir}/dev/pts"
 
 		if [ "$(mount | grep ${tempdir}/dev/pts | awk '{print $3}')" = "${tempdir}/dev/pts" ] ; then
 			echo "Log: ERROR: umount [${tempdir}/dev/pts] failed..."
@@ -177,7 +177,7 @@ chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 		echo "Log: umount: [${tempdir}/proc]"
 		sync
-		sudo umount -fl ${tempdir}/proc
+		sudo umount -fl "${tempdir}/proc"
 
 		if [ "$(mount | grep ${tempdir}/proc | awk '{print $3}')" = "${tempdir}/proc" ] ; then
 			echo "Log: ERROR: umount [${tempdir}/proc] failed..."
@@ -188,7 +188,7 @@ chroot_umount () {
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 		echo "Log: umount: [${tempdir}/sys]"
 		sync
-		sudo umount -fl ${tempdir}/sys
+		sudo umount -fl "${tempdir}/sys"
 
 		if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" = "${tempdir}/sys" ] ; then
 			echo "Log: ERROR: umount [${tempdir}/sys] failed..."
@@ -209,23 +209,23 @@ trap chroot_umount_failure EXIT
 check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
-	sudo cp $(which qemu-arm-static) ${tempdir}/usr/bin/
+	sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
 fi
 
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
-sudo chroot ${tempdir} debootstrap/debootstrap --second-stage
+sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage
 echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
 report_size
 
 if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	#so debootstrap just extracts the *.deb's, so lets clean this up hackish now,
 	#but then allow dpkg to delete these extra files when installed later..
-	sudo rm -rf ${tempdir}/usr/share/locale/* || true
-	sudo rm -rf ${tempdir}/usr/share/man/* || true
-	sudo rm -rf ${tempdir}/usr/share/doc/* || true
+	sudo rm -rf "${tempdir}/usr/share/locale/*" || true
+	sudo rm -rf "${tempdir}/usr/share/man/*" || true
+	sudo rm -rf "${tempdir}/usr/share/doc/*" || true
 
 	#dpkg 1.15.8++, No Docs...
-	sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
+	sudo mkdir -p "${tempdir}/etc/dpkg/dpkg.cfg.d/" || true
 	echo "# Delete locales" > /tmp/01_nodoc
 	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
 	echo ""  >> /tmp/01_nodoc
@@ -239,27 +239,27 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	echo "path-include=/usr/share/doc/*/copyright" >> /tmp/01_nodoc
 	echo "" >> /tmp/01_nodoc
 
-	sudo mv /tmp/01_nodoc ${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc
+	sudo mv /tmp/01_nodoc "${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc"
 
-	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
+	sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
 	#apt: no local cache
 	echo "Dir::Cache {" > /tmp/02nocache
 	echo "  srcpkgcache \"\";" >> /tmp/02nocache
 	echo "  pkgcache \"\";" >> /tmp/02nocache
 	echo "}" >> /tmp/02nocache
-	sudo mv  /tmp/02nocache ${tempdir}/etc/apt/apt.conf.d/02nocache
+	sudo mv  /tmp/02nocache "${tempdir}/etc/apt/apt.conf.d/02nocache"
 
 	#apt: drop translations...
 	echo "Acquire::Languages \"none\";" > /tmp/02translations
-	sudo mv /tmp/02translations ${tempdir}/etc/apt/apt.conf.d/02translations
+	sudo mv /tmp/02translations "${tempdir}/etc/apt/apt.conf.d/02translations"
 
 	echo "Log: after locale/man purge"
 	report_size
 fi
 
 
-sudo mkdir -p ${tempdir}/etc/dpkg/dpkg.cfg.d/ || true
+sudo mkdir -p "${tempdir}/etc/dpkg/dpkg.cfg.d/" || true
 
 echo "# neuter flash-kernel" > /tmp/01_noflash_kernel
 echo "path-exclude=/usr/share/flash-kernel/db/all.db" >> /tmp/01_noflash_kernel
@@ -268,15 +268,15 @@ echo "path-exclude=/etc/kernel/postinst.d/zz-flash-kernel" >> /tmp/01_noflash_ke
 echo "path-exclude=/etc/kernel/postrm.d/zz-flash-kernel" >> /tmp/01_noflash_kernel
 echo ""  >> /tmp/01_noflash_kernel
 
-sudo mv /tmp/01_noflash_kernel ${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel
+sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 
-sudo mkdir -p ${tempdir}/usr/share/flash-kernel/db/ || true
-sudo cp -v ${OIB_DIR}/target/other/rcn-ee.db ${tempdir}/usr/share/flash-kernel/db/
+sudo mkdir -p "${tempdir}/usr/share/flash-kernel/db/" || true
+sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kernel/db/"
 
 
 if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
-	sudo mkdir -p ${tempdir}/etc/apt/apt.conf.d/ || true
+	sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
 	#apt: emulate apt-get clean:
 	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
@@ -284,19 +284,19 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /tmp/02apt-get-clean
 	echo 'Dir::Cache::pkgcache ""; Dir::Cache::srcpkgcache "";' >> /tmp/02apt-get-clean
 
-	sudo mv /tmp/02apt-get-clean ${tempdir}/etc/apt/apt.conf.d/02apt-get-clean
+	sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
 
 	#apt: drop translations
 	echo 'Acquire::Languages "none";' > /tmp/02-no-languages
-	sudo mv /tmp/02-no-languages ${tempdir}/etc/apt/apt.conf.d/02-no-languages
+	sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
 	#apt: /var/lib/apt/lists/, store compressed only
 	echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
-	sudo mv /tmp/02compress-indexes ${tempdir}/etc/apt/apt.conf.d/02compress-indexes
+	sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 
 	#apt: make sure apt-cacher-ng doesn't break oracle-java8-installer
 	echo 'Acquire::http::Proxy::download.oracle.com "DIRECT";' > /tmp/03-proxy-oracle
-	sudo mv /tmp/03-proxy-oracle ${tempdir}/etc/apt/apt.conf.d/03-proxy-oracle
+	sudo mv /tmp/03-proxy-oracle "${tempdir}/etc/apt/apt.conf.d/03-proxy-oracle"
 fi
 
 #set initial 'seed' time...
@@ -358,22 +358,22 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	echo "deb [arch=armhf] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
 	echo "#deb-src [arch=armhf] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
 
-	sudo cp -v ${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc ${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc
+	sudo cp -v "${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc" "${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc"
 fi
 
 if [ -f /tmp/sources.list ] ; then
-	sudo mv /tmp/sources.list ${tempdir}/etc/apt/sources.list
+	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	if [ ! "x${repo_external_key}" = "x" ] ; then
-		sudo cp -v ${OIB_DIR}/target/keyring/${repo_external_key} ${tempdir}/tmp/${repo_external_key}
+		sudo cp -v "${OIB_DIR}/target/keyring/${repo_external_key}" "${tempdir}/tmp/${repo_external_key}"
 	fi
 fi
 
 if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" > /tmp/apt.conf
-	sudo mv /tmp/apt.conf ${tempdir}/etc/apt/apt.conf
+	sudo mv /tmp/apt.conf "${tempdir}/etc/apt/apt.conf"
 fi
 
 echo "127.0.0.1	localhost" > /tmp/hosts
@@ -383,50 +383,50 @@ echo "# The following lines are desirable for IPv6 capable hosts" >> /tmp/hosts
 echo "::1     localhost ip6-localhost ip6-loopback" >> /tmp/hosts
 echo "ff02::1 ip6-allnodes" >> /tmp/hosts
 echo "ff02::2 ip6-allrouters" >> /tmp/hosts
-sudo mv /tmp/hosts ${tempdir}/etc/hosts
+sudo mv /tmp/hosts "${tempdir}/etc/hosts"
 
 echo "${rfs_hostname}" > /tmp/hostname
-sudo mv /tmp/hostname ${tempdir}/etc/hostname
+sudo mv /tmp/hostname "${tempdir}/etc/hostname"
 
 if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
 		wheezy)
-			sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh ${tempdir}/etc/init.d/generic-boot-script.sh
-			sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init.d/capemgr.sh
-			sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh" "${tempdir}/etc/init.d/generic-boot-script.sh"
+			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init.d/capemgr.sh"
+			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
 			distro="Debian"
 			;;
 		jessie|stretch)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
-			sudo cp ${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service ${tempdir}/lib/systemd/system/generic-board-startup.service
-			sudo cp ${OIB_DIR}/target/init_scripts/systemd-capemgr.service ${tempdir}/lib/systemd/system/capemgr.service
-			sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
+			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
 			distro="Debian"
 			;;
 		esac
 		;;
 	ubuntu)
-		sudo cp ${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf ${tempdir}/etc/init/generic-boot-script.conf
-		sudo cp ${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh ${tempdir}/etc/init/capemgr.sh
-		sudo cp ${OIB_DIR}/target/init_scripts/capemgr ${tempdir}/etc/default/
+		sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf" "${tempdir}/etc/init/generic-boot-script.conf"
+		sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init/capemgr.sh"
+		sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
 		distro="Ubuntu"
 
-		if [ -f ${tempdir}/etc/init/failsafe.conf ] ; then
+		if [ -f "${tempdir}/etc/init/failsafe.conf" ] ; then
 			#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-			sudo sed -i -e 's:sleep 20:#sleep 20:g' ${tempdir}/etc/init/failsafe.conf
-			sudo sed -i -e 's:sleep 40:#sleep 40:g' ${tempdir}/etc/init/failsafe.conf
-			sudo sed -i -e 's:sleep 59:#sleep 59:g' ${tempdir}/etc/init/failsafe.conf
+			sudo sed -i -e 's:sleep 20:#sleep 20:g' "${tempdir}/etc/init/failsafe.conf"
+			sudo sed -i -e 's:sleep 40:#sleep 40:g' "${tempdir}/etc/init/failsafe.conf"
+			sudo sed -i -e 's:sleep 59:#sleep 59:g' "${tempdir}/etc/init/failsafe.conf"
 		fi
 		;;
 	esac
 fi
 
-if [ -d ${tempdir}/usr/share/initramfs-tools/hooks/ ] ; then
-	if [ ! -f ${tempdir}/usr/share/initramfs-tools/hooks/dtbo ] ; then
+if [ -d "${tempdir}/usr/share/initramfs-tools/hooks/" ] ; then
+	if [ ! -f "${tempdir}/usr/share/initramfs-tools/hooks/dtbo" ] ; then
 		echo "log: adding: [initramfs-tools hook: dtbo]"
-		sudo cp ${OIB_DIR}/target/other/dtbo ${tempdir}/usr/share/initramfs-tools/hooks/
+		sudo cp "${OIB_DIR}/target/other/dtbo" "${tempdir}/usr/share/initramfs-tools/hooks/"
 	fi
 fi
 
@@ -436,12 +436,12 @@ echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 echo "release_date=${time}" >> /tmp/rcn-ee.conf
 echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 echo "abi=${abi}" >> /tmp/rcn-ee.conf
-sudo mv /tmp/rcn-ee.conf ${tempdir}/etc/rcn-ee.conf
+sudo mv /tmp/rcn-ee.conf "${tempdir}/etc/rcn-ee.conf"
 
 #use /etc/dogtag for all:
 if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 	echo "${rfs_etc_dogtag} ${time}" > /tmp/dogtag
-	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
+	sudo mv /tmp/dogtag "${tempdir}/etc/dogtag"
 fi
 
 cat > "${DIR}/chroot_script.sh" <<-__EOF__
@@ -916,63 +916,63 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	rm -f /chroot_script.sh || true
 __EOF__
 
-sudo mv "${DIR}/chroot_script.sh" ${tempdir}/chroot_script.sh
+sudo mv "${DIR}/chroot_script.sh" "${tempdir}/chroot_script.sh"
 
 if [ "x${include_firmware}" = "xenable" ] ; then
-	if [ ! -d ${tempdir}/lib/firmware/ ] ; then
-		sudo mkdir -p ${tempdir}/lib/firmware/ || true
+	if [ ! -d "${tempdir}/lib/firmware/" ] ; then
+		sudo mkdir -p "${tempdir}/lib/firmware/" || true
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/brcm/" ] ; then
-		sudo mkdir -p ${tempdir}/lib/firmware/brcm
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" ${tempdir}/lib/firmware/
-		sudo cp -v "${DIR}/git/linux-firmware/brcm/*" ${tempdir}/lib/firmware/brcm
+		sudo mkdir -p "${tempdir}/lib/firmware/brcm"
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" "${tempdir}/lib/firmware/"
+		sudo cp -v "${DIR}/git/linux-firmware/brcm/*" "${tempdir}/lib/firmware/brcm"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/carl9170-1.fw" ] ; then
-		sudo cp -v "${DIR}/git/linux-firmware/carl9170-1.fw" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/carl9170-1.fw" "${tempdir}/lib/firmware/"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/htc_9271.fw" ] ; then
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.atheros_firmware" ${tempdir}/lib/firmware/
-		sudo cp -v "${DIR}/git/linux-firmware/htc_9271.fw" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.atheros_firmware" "${tempdir}/lib/firmware/"
+		sudo cp -v "${DIR}/git/linux-firmware/htc_9271.fw" "${tempdir}/lib/firmware/"
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/rtlwifi/" ] ; then
-		sudo mkdir -p ${tempdir}/lib/firmware/rtlwifi
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" ${tempdir}/lib/firmware/
-		sudo cp -v "${DIR}/git/linux-firmware/rtlwifi/*" ${tempdir}/lib/firmware/rtlwifi
+		sudo mkdir -p "${tempdir}/lib/firmware/rtlwifi"
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" "${tempdir}/lib/firmware/"
+		sudo cp -v "${DIR}/git/linux-firmware/rtlwifi/*" "${tempdir}/lib/firmware/rtlwifi"
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/ti-connectivity/" ] ; then
-		sudo mkdir -p ${tempdir}/lib/firmware/ti-connectivity
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" ${tempdir}/lib/firmware/
-		sudo cp -v "${DIR}/git/linux-firmware/ti-connectivity/*" ${tempdir}/lib/firmware/ti-connectivity
+		sudo mkdir -p "${tempdir}/lib/firmware/ti-connectivity"
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" "${tempdir}/lib/firmware/"
+		sudo cp -v "${DIR}/git/linux-firmware/ti-connectivity/*" "${tempdir}/lib/firmware/ti-connectivity"
 	fi
 
 	if [ -f "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ] ; then
-		sudo cp -v "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ${tempdir}/lib/firmware/mt7601u.bin
+		sudo cp -v "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" "${tempdir}/lib/firmware/mt7601u.bin"
 	fi
 fi
 
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
 	report_size
 	echo "Calling early_chroot_script script: ${early_chroot_script}"
-	sudo cp -v "${DIR}/.project" ${tempdir}/etc/oib.project
-	sudo /bin/sh -e "${DIR}/target/chroot/${early_chroot_script}" ${tempdir}
+	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
+	sudo /bin/sh -e "${DIR}/target/chroot/${early_chroot_script}" "${tempdir}"
 	early_chroot_script=""
-	sudo rm -f ${tempdir}/etc/oib.project || true
+	sudo rm -f "${tempdir}/etc/oib.project" || true
 fi
 
 chroot_mount
-sudo chroot ${tempdir} /bin/sh -e chroot_script.sh
+sudo chroot "${tempdir}" /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
 #With the console images, git isn't installed, so we need to patch systemd for shutdown here: (fixed in stretch - udev)
 if [ "x${deb_codename}" = "xwheezy" ] || [ "x${deb_codename}" = "xjessie" ] ; then
-	if [ ! -f ${tempdir}/opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
+	if [ ! -f "${tempdir}/opt/scripts/mods/jessie-systemd-poweroff.diff" ] ; then
 		echo "Log: patching: /lib/udev/rules.d/70-power-switch.rules"
-		sudo cp -v "${DIR}/target/other/systemd-power-switch.rules" ${tempdir}/lib/udev/rules.d/70-power-switch.rules
+		sudo cp -v "${DIR}/target/other/systemd-power-switch.rules" "${tempdir}/lib/udev/rules.d/70-power-switch.rules"
 	fi
 fi
 
@@ -995,9 +995,9 @@ fi
 if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 	echo "Log: setting up: /etc/issue"
 	wfile="/tmp/issue"
-	cat ${tempdir}/etc/issue > ${wfile}
+	cat "${tempdir}/etc/issue" > ${wfile}
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
-		cat ${tempdir}/etc/dogtag >> ${wfile}
+		cat "${tempdir}/etc/dogtag" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
 	if [ ! "x${rfs_console_banner}" = "x" ] ; then
@@ -1008,16 +1008,16 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	sudo mv ${wfile} ${tempdir}/etc/issue
+	sudo mv ${wfile} "${tempdir}/etc/issue"
 fi
 
 if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 	echo "Log: setting up: /etc/issue.net"
 	wfile="/tmp/issue.net"
-	cat ${tempdir}/etc/issue.net > ${wfile}
+	cat "${tempdir}/etc/issue.net" > ${wfile}
 	echo "" >> ${wfile}
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
-		cat ${tempdir}/etc/dogtag >> ${wfile}
+		cat "${tempdir}/etc/dogtag" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
 	if [ ! "x${rfs_ssh_banner}" = "x" ] ; then
@@ -1028,14 +1028,14 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
-	sudo mv ${wfile} ${tempdir}/etc/issue.net
+	sudo mv ${wfile} "${tempdir}/etc/issue.net"
 fi
 
 #usually a qemu failure...
 if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
 	#we might not have read permissions:
-	if [ -r ${tempdir}/opt/scripts/ ] ; then
-		if [ ! -f ${tempdir}/opt/scripts/.git/config ] ; then
+	if [ -r "${tempdir}/opt/scripts/" ] ; then
+		if [ ! -f "${tempdir}/opt/scripts/.git/config" ] ; then
 			echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
 			exit 1
 		fi
@@ -1054,13 +1054,13 @@ fi
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
-	sudo cp -v "${DIR}/.projec" ${tempdir}/etc/oib.project
-	sudo cp -v "${DIR}/target/chroot/${chroot_script}" ${tempdir}/final.sh
-	sudo chroot ${tempdir} /bin/sh -e final.sh
-	sudo rm -f ${tempdir}/final.sh || true
-	sudo rm -f ${tempdir}/etc/oib.project || true
+	sudo cp -v "${DIR}/.projec" "${tempdir}/etc/oib.project"
+	sudo cp -v "${DIR}/target/chroot/${chroot_script}" "${tempdir}/final.sh"
+	sudo chroot "${tempdir} /bin/sh" -e final.sh
+	sudo rm -f "${tempdir}/final.sh" || true
+	sudo rm -f "${tempdir}/etc/oib.project" || true
 	chroot_script=""
-	if [ -f ${tempdir}/npm-debug.log ] ; then
+	if [ -f "${tempdir}/npm-debug.log" ] ; then
 		echo "Log: ERROR: npm error in script, review log [cat ${tempdir}/npm-debug.log]..."
 		exit 1
 	fi
@@ -1072,7 +1072,7 @@ if [ -d "${DIR}/deploy/${export_filename}/" ] ; then
 	rm -rf "${DIR}/deploy/${export_filename}/" || true
 fi
 mkdir -p "${DIR}/deploy/${export_filename}/" || true
-cp -v "${DIR}/.project" ${DIR}/deploy/${export_filename}/image-builder.project
+cp -v "${DIR}/.project" "${DIR}/deploy/${export_filename}/image-builder.project"
 
 if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
 	report_size
@@ -1082,30 +1082,30 @@ if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
 fi
 
 #add /boot/uEnv.txt update script
-if [ -d ${tempdir}/etc/kernel/postinst.d/ ] ; then
-	if [ ! -f ${tempdir}/etc/kernel/postinst.d/zz-uenv_txt ] ; then
-		sudo cp -v ${OIB_DIR}/target/other/zz-uenv_txt ${tempdir}/etc/kernel/postinst.d/
-		sudo chmod +x ${tempdir}/etc/kernel/postinst.d/zz-uenv_txt
+if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
+	if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
+		sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
+		sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
 	fi
 fi
 
-if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
-	sudo rm -f ${tempdir}/usr/bin/qemu-arm-static || true
+if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
 sudo mv /tmp/user_password.list "${DIR}/deploy/${export_filename}/user_password.list"
 
 #Fixes:
-if [ -d ${tempdir}/etc/ssh/ -a "x${keep_ssh_keys}" = "x" ] ; then
+if [ -d "${tempdir}/etc/ssh/" -a "x${keep_ssh_keys}" = "x" ] ; then
 	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
-	sudo rm -rf ${tempdir}/etc/ssh/ssh_host_* || true
-	sudo touch ${tempdir}/etc/ssh/ssh.regenerate || true
+	sudo rm -rf "${tempdir}/etc/ssh/ssh_host_* "|| true
+	sudo touch "${tempdir}/etc/ssh/ssh.regenerate" || true
 fi
 
 #ID.txt:
-if [ -f ${tempdir}/etc/dogtag ] ; then
-	sudo cp ${tempdir}/etc/dogtag "${DIR}/deploy/${export_filename}/ID.txt"
+if [ -f "${tempdir}/etc/dogtag" ] ; then
+	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
 fi
 
 report_size
@@ -1146,10 +1146,10 @@ packaging_keep_alive () {
 
 if [ "x${chroot_directory}" = "xenable" ]; then
 	echo "Log: moving rootfs to directory: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}]"
-	sudo mv -v ${tempdir} "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
+	sudo mv -v "${tempdir}" "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
 	du -h --max-depth=0 "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
 else
-	cd ${tempdir}
+	cd "${tempdir}" || true
 	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		packaging_keep_alive & PKG_KEEP_ALIVE_PID=$!
 	fi
