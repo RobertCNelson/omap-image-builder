@@ -61,6 +61,7 @@ build_and_upload_image () {
 }
 
 refresh_keep_net_alive & REFRESH_KEEP_NET_ALIVE_PID=$!
+echo "pid: [${REFRESH_KEEP_NET_ALIVE_PID}]"
 
 ## Stable/shipping
 ##Debian 7:
