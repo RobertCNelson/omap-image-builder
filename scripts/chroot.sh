@@ -27,7 +27,7 @@ OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
 
 abi=aa
 
-. ${DIR}/.project
+. "${DIR}/.project"
 
 check_defines () {
 	if [ ! "${tempdir}" ] ; then
@@ -37,7 +37,7 @@ check_defines () {
 
 	cd ${tempdir}/
 	test_tempdir=$(pwd -P)
-	cd ${DIR}/
+	cd "${DIR}/" || true
 
 	if [ ! "x${tempdir}" = "x${test_tempdir}" ] ; then
 		tempdir="${test_tempdir}"
@@ -199,7 +199,7 @@ chroot_umount () {
 
 chroot_umount_failure () {
 	chroot_umount
-	if [ ! -f ${DIR}/jenkins.build ] ; then
+	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		exit 1
 	fi
 }
@@ -444,7 +444,7 @@ if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 	sudo mv /tmp/dogtag ${tempdir}/etc/dogtag
 fi
 
-cat > ${DIR}/chroot_script.sh <<-__EOF__
+cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
 	export DEBIAN_FRONTEND=noninteractive
@@ -916,50 +916,50 @@ cat > ${DIR}/chroot_script.sh <<-__EOF__
 	rm -f /chroot_script.sh || true
 __EOF__
 
-sudo mv ${DIR}/chroot_script.sh ${tempdir}/chroot_script.sh
+sudo mv "${DIR}/chroot_script.sh" ${tempdir}/chroot_script.sh
 
 if [ "x${include_firmware}" = "xenable" ] ; then
 	if [ ! -d ${tempdir}/lib/firmware/ ] ; then
 		sudo mkdir -p ${tempdir}/lib/firmware/ || true
 	fi
 
-	if [ -d ${DIR}/git/linux-firmware/brcm/ ] ; then
+	if [ -d "${DIR}/git/linux-firmware/brcm/" ] ; then
 		sudo mkdir -p ${tempdir}/lib/firmware/brcm
-		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx ${tempdir}/lib/firmware/
-		sudo cp -v ${DIR}/git/linux-firmware/brcm/* ${tempdir}/lib/firmware/brcm
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/brcm/*" ${tempdir}/lib/firmware/brcm
 	fi
 
-	if [ -f ${DIR}/git/linux-firmware/carl9170-1.fw ] ; then
-		sudo cp -v ${DIR}/git/linux-firmware/carl9170-1.fw ${tempdir}/lib/firmware/
+	if [ -f "${DIR}/git/linux-firmware/carl9170-1.fw" ] ; then
+		sudo cp -v "${DIR}/git/linux-firmware/carl9170-1.fw" ${tempdir}/lib/firmware/
 	fi
 
-	if [ -f ${DIR}/git/linux-firmware/htc_9271.fw ] ; then
-		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.atheros_firmware ${tempdir}/lib/firmware/
-		sudo cp -v ${DIR}/git/linux-firmware/htc_9271.fw ${tempdir}/lib/firmware/
+	if [ -f "${DIR}/git/linux-firmware/htc_9271.fw" ] ; then
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.atheros_firmware" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/htc_9271.fw" ${tempdir}/lib/firmware/
 	fi
 
-	if [ -d ${DIR}/git/linux-firmware/rtlwifi/ ] ; then
+	if [ -d "${DIR}/git/linux-firmware/rtlwifi/" ] ; then
 		sudo mkdir -p ${tempdir}/lib/firmware/rtlwifi
-		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt ${tempdir}/lib/firmware/
-		sudo cp -v ${DIR}/git/linux-firmware/rtlwifi/* ${tempdir}/lib/firmware/rtlwifi
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/rtlwifi/*" ${tempdir}/lib/firmware/rtlwifi
 	fi
 
-	if [ -d ${DIR}/git/linux-firmware/ti-connectivity/ ] ; then
+	if [ -d "${DIR}/git/linux-firmware/ti-connectivity/" ] ; then
 		sudo mkdir -p ${tempdir}/lib/firmware/ti-connectivity
-		sudo cp -v ${DIR}/git/linux-firmware/LICENCE.ti-connectivity ${tempdir}/lib/firmware/
-		sudo cp -v ${DIR}/git/linux-firmware/ti-connectivity/* ${tempdir}/lib/firmware/ti-connectivity
+		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" ${tempdir}/lib/firmware/
+		sudo cp -v "${DIR}/git/linux-firmware/ti-connectivity/*" ${tempdir}/lib/firmware/ti-connectivity
 	fi
 
-	if [ -f ${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin ] ; then
-		sudo cp -v ${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin ${tempdir}/lib/firmware/mt7601u.bin
+	if [ -f "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ] ; then
+		sudo cp -v "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ${tempdir}/lib/firmware/mt7601u.bin
 	fi
 fi
 
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
 	report_size
 	echo "Calling early_chroot_script script: ${early_chroot_script}"
-	sudo cp -v ${DIR}/.project ${tempdir}/etc/oib.project
-	sudo /bin/sh -e ${DIR}/target/chroot/${early_chroot_script} ${tempdir}
+	sudo cp -v "${DIR}/.project" ${tempdir}/etc/oib.project
+	sudo /bin/sh -e "${DIR}/target/chroot/${early_chroot_script}" ${tempdir}
 	early_chroot_script=""
 	sudo rm -f ${tempdir}/etc/oib.project || true
 fi
@@ -972,7 +972,7 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 if [ "x${deb_codename}" = "xwheezy" ] || [ "x${deb_codename}" = "xjessie" ] ; then
 	if [ ! -f ${tempdir}/opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
 		echo "Log: patching: /lib/udev/rules.d/70-power-switch.rules"
-		sudo cp -v ${DIR}/target/other/systemd-power-switch.rules ${tempdir}/lib/udev/rules.d/70-power-switch.rules
+		sudo cp -v "${DIR}/target/other/systemd-power-switch.rules" ${tempdir}/lib/udev/rules.d/70-power-switch.rules
 	fi
 fi
 
@@ -1054,8 +1054,8 @@ fi
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
-	sudo cp -v ${DIR}/.project ${tempdir}/etc/oib.project
-	sudo cp -v ${DIR}/target/chroot/${chroot_script} ${tempdir}/final.sh
+	sudo cp -v "${DIR}/.projec" ${tempdir}/etc/oib.project
+	sudo cp -v "${DIR}/target/chroot/${chroot_script}" ${tempdir}/final.sh
 	sudo chroot ${tempdir} /bin/sh -e final.sh
 	sudo rm -f ${tempdir}/final.sh || true
 	sudo rm -f ${tempdir}/etc/oib.project || true
@@ -1068,11 +1068,11 @@ fi
 
 ##Building final tar file...
 
-if [ -d ${DIR}/deploy/${export_filename}/ ] ; then
-	rm -rf ${DIR}/deploy/${export_filename}/ || true
+if [ -d "${DIR}/deploy/${export_filename}/" ] ; then
+	rm -rf "${DIR}/deploy/${export_filename}/" || true
 fi
-mkdir -p ${DIR}/deploy/${export_filename}/ || true
-cp -v ${DIR}/.project ${DIR}/deploy/${export_filename}/image-builder.project
+mkdir -p "${DIR}/deploy/${export_filename}/" || true
+cp -v "${DIR}/.project" ${DIR}/deploy/${export_filename}/image-builder.project
 
 if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
 	report_size
@@ -1094,7 +1094,7 @@ if [ -f ${tempdir}/usr/bin/qemu-arm-static ] ; then
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
-sudo mv /tmp/user_password.list ${DIR}/deploy/${export_filename}/user_password.list
+sudo mv /tmp/user_password.list "${DIR}/deploy/${export_filename}/user_password.list"
 
 #Fixes:
 if [ -d ${tempdir}/etc/ssh/ -a "x${keep_ssh_keys}" = "x" ] ; then
@@ -1105,7 +1105,7 @@ fi
 
 #ID.txt:
 if [ -f ${tempdir}/etc/dogtag ] ; then
-	sudo cp ${tempdir}/etc/dogtag ${DIR}/deploy/${export_filename}/ID.txt
+	sudo cp ${tempdir}/etc/dogtag "${DIR}/deploy/${export_filename}/ID.txt"
 fi
 
 report_size
@@ -1113,20 +1113,20 @@ chroot_umount
 
 if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	echo "Log: copying setup_sdcard.sh related files"
-	sudo cp ${DIR}/tools/setup_sdcard.sh ${DIR}/deploy/${export_filename}/
-	sudo mkdir -p ${DIR}/deploy/${export_filename}/hwpack/
-	sudo cp ${DIR}/tools/hwpack/*.conf ${DIR}/deploy/${export_filename}/hwpack/
+	sudo cp "${DIR}/tools/setup_sdcard.sh" "${DIR}/deploy/${export_filename}/"
+	sudo mkdir -p "${DIR}/deploy/${export_filename}/hwpack/"
+	sudo cp "${DIR}/tools/hwpack/*.conf" "${DIR}/deploy/${export_filename}/hwpack/"
 
 	if [ -n "${chroot_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_uenv_txt}" ] ; then
-		sudo cp "${OIB_DIR}/target/boot/${chroot_uenv_txt}" ${DIR}/deploy/${export_filename}/uEnv.txt
+		sudo cp "${OIB_DIR}/target/boot/${chroot_uenv_txt}" "${DIR}/deploy/${export_filename}/uEnv.txt"
 	fi
 
 	if [ -n "${chroot_flasher_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_flasher_uenv_txt}" ] ; then
-		sudo cp "${OIB_DIR}/target/boot/${chroot_flasher_uenv_txt}" ${DIR}/deploy/${export_filename}/eMMC-flasher.txt
+		sudo cp "${OIB_DIR}/target/boot/${chroot_flasher_uenv_txt}" "${DIR}/deploy/${export_filename}/eMMC-flasher.txt"
 	fi
 
 	if [ -n "${chroot_post_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_post_uenv_txt}" ] ; then
-		sudo cp "${OIB_DIR}/target/boot/${chroot_post_uenv_txt}" ${DIR}/deploy/${export_filename}/post-uEnv.txt
+		sudo cp "${OIB_DIR}/target/boot/${chroot_post_uenv_txt}" "${DIR}/deploy/${export_filename}/post-uEnv.txt"
 	fi
 
 fi
@@ -1146,23 +1146,23 @@ packaging_keep_alive () {
 
 if [ "x${chroot_directory}" = "xenable" ]; then
 	echo "Log: moving rootfs to directory: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}]"
-	sudo mv -v ${tempdir} ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}
-	du -h --max-depth=0 ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}
+	sudo mv -v ${tempdir} "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
+	du -h --max-depth=0 "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
 else
 	cd ${tempdir}
-	if [ ! -f ${DIR}/jenkins.build ] ; then
+	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		packaging_keep_alive & PKG_KEEP_ALIVE_PID=$!
 	fi
 	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
-	sudo LANG=C tar --numeric-owner -cf ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar .
-	cd ${DIR}/
-	ls -lh ${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar
-	if [ ! -f ${DIR}/jenkins.build ] ; then
+	sudo LANG=C tar --numeric-owner -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
+	cd "${DIR}/" || true
+	ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
+	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		[ -e /proc/$PKG_KEEP_ALIVE_PID ] && sudo kill $PKG_KEEP_ALIVE_PID
 	fi
 fi
 
-sudo chown -R ${USER}:${USER} ${DIR}/deploy/${export_filename}/
+sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
 
 keep_alive () {
 	while : ; do
@@ -1179,14 +1179,14 @@ keep_alive () {
 
 if [ "x${chroot_tarball}" = "xenable" ] ; then
 	echo "Creating: ${export_filename}.tar"
-	cd ${DIR}/deploy/
-	if [ ! -f ${DIR}/jenkins.build ] ; then
+	cd "${DIR}/deploy/" || true
+	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		keep_alive & KEEP_ALIVE_PID=$!
 	fi
 	tar cvf ${export_filename}.tar ./${export_filename}
-	if [ ! -f ${DIR}/jenkins.build ] ; then
+	if [ ! -f "${DIR}/jenkins.build" ] ; then
 		[ -e /proc/$KEEP_ALIVE_PID ] && sudo kill $KEEP_ALIVE_PID
 	fi
-	cd ${DIR}/
+	cd "${DIR}/" || true
 fi
 #
