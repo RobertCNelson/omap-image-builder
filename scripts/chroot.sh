@@ -223,9 +223,9 @@ report_size
 if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	#so debootstrap just extracts the *.deb's, so lets clean this up hackish now,
 	#but then allow dpkg to delete these extra files when installed later..
-	sudo rm -rf "${tempdir}/usr/share/locale/*" || true
-	sudo rm -rf "${tempdir}/usr/share/man/*" || true
-	sudo rm -rf "${tempdir}/usr/share/doc/*" || true
+	sudo rm -rf "${tempdir}"/usr/share/locale/* || true
+	sudo rm -rf "${tempdir}"/usr/share/man/* || true
+	sudo rm -rf "${tempdir}"/usr/share/doc/* || true
 
 	#dpkg 1.15.8++, No Docs...
 	sudo mkdir -p "${tempdir}/etc/dpkg/dpkg.cfg.d/" || true
@@ -929,7 +929,7 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 	if [ -d "${DIR}/git/linux-firmware/brcm/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/brcm"
 		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}/git/linux-firmware/brcm/*" "${tempdir}/lib/firmware/brcm"
+		sudo cp -v "${DIR}"/git/linux-firmware/brcm/* "${tempdir}/lib/firmware/brcm"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/carl9170-1.fw" ] ; then
@@ -944,13 +944,13 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 	if [ -d "${DIR}/git/linux-firmware/rtlwifi/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/rtlwifi"
 		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}/git/linux-firmware/rtlwifi/*" "${tempdir}/lib/firmware/rtlwifi"
+		sudo cp -v "${DIR}"/git/linux-firmware/rtlwifi/* "${tempdir}/lib/firmware/rtlwifi"
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/ti-connectivity/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/ti-connectivity"
 		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}/git/linux-firmware/ti-connectivity/*" "${tempdir}/lib/firmware/ti-connectivity"
+		sudo cp -v "${DIR}"/git/linux-firmware/ti-connectivity/* "${tempdir}/lib/firmware/ti-connectivity"
 	fi
 
 	if [ -f "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ] ; then
@@ -1102,7 +1102,7 @@ sudo mv /tmp/user_password.list "${DIR}/deploy/${export_filename}/user_password.
 #Fixes:
 if [ -d "${tempdir}/etc/ssh/" -a "x${keep_ssh_keys}" = "x" ] ; then
 	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
-	sudo rm -rf "${tempdir}/etc/ssh/ssh_host_* "|| true
+	sudo rm -rf "${tempdir}"/etc/ssh/ssh_host_* || true
 	sudo touch "${tempdir}/etc/ssh/ssh.regenerate" || true
 fi
 
@@ -1118,7 +1118,7 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	echo "Log: copying setup_sdcard.sh related files"
 	sudo cp "${DIR}/tools/setup_sdcard.sh" "${DIR}/deploy/${export_filename}/"
 	sudo mkdir -p "${DIR}/deploy/${export_filename}/hwpack/"
-	sudo cp "${DIR}/tools/hwpack/*.conf" "${DIR}/deploy/${export_filename}/hwpack/"
+	sudo cp "${DIR}"/tools/hwpack/*.conf "${DIR}/deploy/${export_filename}/hwpack/"
 
 	if [ -n "${chroot_uenv_txt}" -a -r "${OIB_DIR}/target/boot/${chroot_uenv_txt}" ] ; then
 		sudo cp "${OIB_DIR}/target/boot/${chroot_uenv_txt}" "${DIR}/deploy/${export_filename}/uEnv.txt"
