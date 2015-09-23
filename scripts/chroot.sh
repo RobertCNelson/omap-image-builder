@@ -24,6 +24,7 @@ DIR=$PWD
 host_arch="$(uname -m)"
 time=$(date +%Y-%m-%d)
 OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
+chroot_completed="false"
 
 abi=aa
 
@@ -197,14 +198,16 @@ chroot_umount () {
 	fi
 }
 
-chroot_umount_failure () {
+chroot_stopped () {
 	chroot_umount
-	if [ ! -f "${DIR}/jenkins.build" ] ; then
+	if [ "x${chroot_completed}" = "xtrue" ] ; then
+		exit 0
+	else
 		exit 1
 	fi
 }
 
-trap chroot_umount_failure EXIT
+trap chroot_stopped EXIT
 
 check_defines
 
@@ -1152,4 +1155,7 @@ if [ "x${chroot_tarball}" = "xenable" ] ; then
 	tar cvf ${export_filename}.tar ./${export_filename}
 	cd "${DIR}/" || true
 fi
+
+chroot_completed="true"
+#
 #
