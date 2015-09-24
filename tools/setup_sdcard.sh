@@ -823,6 +823,9 @@ populate_boot () {
 	du -sh ${TEMPDIR}/disk/
 	echo "-----------------------------"
 
+	sync
+	sync
+
 	umount ${TEMPDIR}/disk || true
 
 	echo "Finished populating Boot Partition"
