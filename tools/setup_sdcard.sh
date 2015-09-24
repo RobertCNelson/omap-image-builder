@@ -776,10 +776,18 @@ populate_boot () {
 		echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "##SERVER: sudo apt-get install tftpd-hpa" >> ${wfile}
+		echo "##SERVER:" >> ${wfile}
+		echo "##SERVER: zImage boot:" >> ${wfile}
 		echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
 		echo "##SERVER: zImage/*.dtb need to be located here:" >> ${wfile}
 		echo "##SERVER: TFTP_DIRECTORY/zImage" >> ${wfile}
 		echo "##SERVER: TFTP_DIRECTORY/dtbs/*.dtb" >> ${wfile}
+		echo "##SERVER:" >> ${wfile}
+		echo "##SERVER: uname_r boot:" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
+		echo "##SERVER: Change TFTP_DIRECTORY to /NFSEXPORT/boot" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY/vmlinuz-\${uname_r}" >> ${wfile}
+		echo "##SERVER: TFTP_DIRECTORY/dtbs/\${uname_r}/*.dtb" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
 		echo "" >> ${wfile}
@@ -796,6 +804,9 @@ populate_boot () {
 		echo "#root_dir=/home/userid/targetNFS" >> ${wfile}
 		echo "#nfs_options=,vers=3" >> ${wfile}
 		echo "#nfsrootfstype=ext4 rootwait fixrtc" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "##use uname_r= only if TFTP SERVER is setup for uname_r boot:" >> ${wfile}
+		echo "#uname_r=" >> ${wfile}
 		echo "" >> ${wfile}
 
 	fi
