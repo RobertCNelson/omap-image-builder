@@ -1144,13 +1144,14 @@ else
 	ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
 fi
 
+echo "Log: USER:${USER}"
 sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
-
 
 if [ "x${chroot_tarball}" = "xenable" ] ; then
 	echo "Creating: ${export_filename}.tar"
 	cd "${DIR}/deploy/" || true
-	tar cvf ${export_filename}.tar ./${export_filename}
+	sudo tar cvf ${export_filename}.tar ./${export_filename}
+	sudo chown -R ${USER}:${USER} "${export_filename}.tar"
 	cd "${DIR}/" || true
 fi
 
