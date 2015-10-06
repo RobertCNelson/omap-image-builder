@@ -341,6 +341,7 @@ sfdisk_partition_layout () {
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
+		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_endmb},${sfdisk_fstype},*]"
 		echo "sfdisk: [,${sfdisk_var_startmb},,-]"
@@ -354,6 +355,7 @@ sfdisk_partition_layout () {
 
 		media_rootfs_var_partition=3
 	else
+		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_endmb},${sfdisk_fstype},*]"
 		echo "sfdisk: [,,,-]"
@@ -382,6 +384,7 @@ sfdisk_single_partition_layout () {
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
+		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_endmb},${sfdisk_fstype},*]"
 		echo "sfdisk: [,,,-]"
@@ -393,6 +396,7 @@ sfdisk_single_partition_layout () {
 
 		media_rootfs_var_partition=2
 	else
+		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},,${sfdisk_fstype},*]"
 
