@@ -1461,7 +1461,7 @@ process_dtb_conf () {
 		sfdisk_fstype="0xE"
 		;;
 	ext2|ext3|ext4)
-		sfdisk_fstype="0x83"
+		sfdisk_fstype="L"
 		;;
 	*)
 		echo "Error: [conf_boot_fstype] not recognized, stopping..."
