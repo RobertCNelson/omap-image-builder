@@ -249,6 +249,7 @@ generate_soc () {
 		echo "board=${board}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "bootloader_location=${bootloader_location}" >> ${wfile}
+		echo "bootrom_gpt=${bootrom_gpt}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "dd_spl_uboot_count=${dd_spl_uboot_count}" >> ${wfile}
 		echo "dd_spl_uboot_seek=${dd_spl_uboot_seek}" >> ${wfile}
