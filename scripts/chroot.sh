@@ -829,16 +829,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get remove -y --force-yes ntpdate --purge || true
 			fi
 		fi
-
-		if [ -f /opt/scripts/mods/jessie-systemd-poweroff.diff ] ; then
-			if [ -f /usr/bin/patch ] ; then
-				if [ -f /lib/udev/rules.d/70-power-switch.rules ] ; then
-					patch -p1 < /opt/scripts/mods/jessie-systemd-poweroff.diff || true
-				else
-					patch -p1 < /opt/scripts/mods/wheezy-systemd-poweroff.diff
-				fi
-			fi
-		fi
 	}
 
 	cleanup () {
@@ -968,14 +958,6 @@ fi
 chroot_mount
 sudo chroot "${tempdir}" /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
-
-#With the console images, git isn't installed, so we need to patch systemd for shutdown here: (fixed in stretch - udev)
-if [ "x${deb_codename}" = "xwheezy" ] || [ "x${deb_codename}" = "xjessie" ] ; then
-	if [ ! -f "${tempdir}/opt/scripts/mods/jessie-systemd-poweroff.diff" ] ; then
-		echo "Log: patching: /lib/udev/rules.d/70-power-switch.rules"
-		sudo cp -v "${DIR}/target/other/systemd-power-switch.rules" "${tempdir}/lib/udev/rules.d/70-power-switch.rules"
-	fi
-fi
 
 #Do /etc/issue & /etc/issue.net after chroot_script:
 #
