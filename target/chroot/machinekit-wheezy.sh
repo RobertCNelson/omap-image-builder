@@ -466,11 +466,6 @@ install_git_repos () {
 		cd /
 	fi
 
-#	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-#	git_branch="3.14-ti"
-#	git_target_dir="/opt/source/dtb-${git_branch}"
-#	git_clone_branch
-
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
 	git_clone

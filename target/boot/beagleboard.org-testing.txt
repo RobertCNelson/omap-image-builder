@@ -24,10 +24,6 @@ initopts=quiet
 #cape_disable=capemgr.disable_partno=
 #cape_enable=capemgr.enable_partno=
 
-##WIP: v3.14+ capes..
-#cape=ttyO1
-#cape=
-
 ##note: the eMMC flasher script relies on the next line
 mmcroot=/dev/mmcblk0p2 ro
 mmcrootfstype=ext4 rootwait fixrtc
