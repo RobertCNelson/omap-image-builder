@@ -10,12 +10,11 @@ fi
 
 if [ -f /boot/uEnv.txt ] ; then
 	unset older_kernel
-	older_kernel=$(grep uname_r /boot/uEnv.txt | grep -v '#' | awk -F"=" '{print $2}' || true)
+	older_kernel=$(cat /boot/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
 
 	if [ ! "x${older_kernel}" = "x" ] ; then
 		if [ ! "x${older_kernel}" = "x${version}" ] ; then
 			echo "zz-uenv_txt: Updating /boot/uEnv.txt [uname_r=${version}]"
-			#tested on: wheezy, jessie, trusty, utopic with default sed
 			sed -i -e "s:uname_r=$older_kernel:uname_r=$version:g" /boot/uEnv.txt
 		fi
 	else
@@ -26,9 +25,9 @@ fi
 udir="/boot/uboot/boot"
 if [ -f ${udir}/uEnv.txt ] ; then
 	unset older_kernel
-	older_kernel=$(grep uname_r ${udir}/uEnv.txt | grep -v '#' | awk -F"=" '{print $2}' || true)
+	older_kernel=$(cat ${udir}/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
 	unset zreladdr
-	zreladdr=$(grep zreladdr ${udir}/uEnv.txt | grep -v '#' | awk -F"=" '{print $2}' || true)
+	zreladdr=$(cat ${udir}/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'zreladdr=' | awk -F"=" '{print $2}' || true)
 
 	if [ "x${older_kernel}" = "xcurrent" ] ; then
 
