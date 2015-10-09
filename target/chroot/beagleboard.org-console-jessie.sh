@@ -187,9 +187,9 @@ setup_desktop () {
 	if [ -f /usr/bin/pastebinit ] ; then
 		wfile="/home/${rfs_username}/.pastebinit.xml"
 		echo "<pastebinit>" > ${wfile}
-		echo "    <pastebin>http://paste.debian.net</pastebin>" >> ${wfile}
-		echo "    <author>anonymous</author>" >> ${wfile}
-		echo "    <jabberid>author@example.net</jabberid>" >> ${wfile}
+		echo "    <pastebin>https://paste.debian.net</pastebin>" >> ${wfile}
+		echo "    <author>A pastebinit user</author>" >> ${wfile}
+		echo "    <jabberid>nobody@nowhere.org</jabberid>" >> ${wfile}
 		echo "    <format>text</format>" >> ${wfile}
 		echo "</pastebinit>" >> ${wfile}
 		chown ${rfs_username}:${rfs_username} ${wfile}
