@@ -514,11 +514,6 @@ unsecure_root () {
 	fi
 }
 
-todo () {
-	#stuff i need to package in repos.rcn-ee.com
-	#
-}
-
 is_this_qemu
 
 setup_system
@@ -537,5 +532,4 @@ fi
 #install_build_pkgs
 other_source_links
 unsecure_root
-todo
 #
