@@ -1105,6 +1105,10 @@ populate_rootfs () {
 		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
 
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		cmdline="${cmdline} cape_universal=enable"
+	fi
+
 	unset kms_video
 
 	drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
