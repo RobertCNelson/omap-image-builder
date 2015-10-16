@@ -281,10 +281,8 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 
 	#apt: emulate apt-get clean:
 	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
-	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /tmp/02apt-get-clean
-	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /tmp/02apt-get-clean
-	echo 'Dir::Cache::pkgcache ""; Dir::Cache::srcpkgcache "";' >> /tmp/02apt-get-clean
-
+	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
+	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
 	sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
 
 	#apt: drop translations
