@@ -12,7 +12,7 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-./RootStock-NG.sh -c machinekit-debian-wheezy
+#./RootStock-NG.sh -c machinekit-debian-wheezy
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
@@ -127,9 +127,9 @@ generate_img () {
 }
 
 ###machinekit:
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
+#base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
+#options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
 ###lxqt-4gb image
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
@@ -165,15 +165,15 @@ options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bo
 options="--img-2gb bbx15-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --usb-flasher" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
+#base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}" ; blend="console" ; archive_base_rootfs
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_rootfs
 
 ###archive *.img
-blend="machinekit"
-wfile="bone-${debian_wheezy_machinekit}-4gb" ; archive_img
+#blend="machinekit"
+#wfile="bone-${debian_wheezy_machinekit}-4gb" ; archive_img
 
 blend="lxqt-4gb"
 wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
