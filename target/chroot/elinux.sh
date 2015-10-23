@@ -58,7 +58,7 @@ git_clone () {
 	mkdir -p ${git_target_dir} || true
 	qemu_command="git clone ${git_repo} ${git_target_dir} --depth 1 || true"
 	qemu_warning
-	git clone ${git_repo} ${git_target_dir} --depth 1 || git clone ${git_repo_backup} ${git_target_dir} --depth 1 || true
+	git clone ${git_repo} ${git_target_dir} --depth 1 || true
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
@@ -67,7 +67,7 @@ git_clone_branch () {
 	mkdir -p ${git_target_dir} || true
 	qemu_command="git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true"
 	qemu_warning
-	git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || git clone -b ${git_branch} ${git_repo_backup} ${git_target_dir} --depth 1 || true
+	git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
@@ -76,7 +76,7 @@ git_clone_full () {
 	mkdir -p ${git_target_dir} || true
 	qemu_command="git clone ${git_repo} ${git_target_dir} || true"
 	qemu_warning
-	git clone ${git_repo} ${git_target_dir} || git clone ${git_repo_backup} ${git_target_dir} || true
+	git clone ${git_repo} ${git_target_dir} || true
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
@@ -84,13 +84,11 @@ git_clone_full () {
 
 install_git_repos () {
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_repo_backup="git://github.com/RobertCNelson/dtb-rebuilder"
 	git_branch="4.1-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
-	git_repo_backup="git://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
