@@ -1055,7 +1055,11 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
-	sudo cp -v /etc/resolv.conf "${tempdir}/etc/resolv.conf"
+
+	#ubuntu: 16.04 lts
+	#cp: not writing through dangling symlink ‘/var/www/html/ssd/git/omap-image-builder/ignore/tmp.GqTcv6YtYy/etc/resolv.conf’
+	sudo cp -v --remove-destination /etc/resolv.conf "${tempdir}/etc/resolv.conf"
+
 	sudo cp -v "${DIR}/target/chroot/${chroot_script}" "${tempdir}/final.sh"
 	sudo chroot "${tempdir}" /bin/sh -e final.sh
 	sudo rm -f "${tempdir}/final.sh" || true
