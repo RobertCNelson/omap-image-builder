@@ -162,9 +162,9 @@ chroot_mount () {
 		sudo mount -t devpts devpts "${tempdir}/dev/pts"
 	fi
 
-	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
-		sudo mount -t tmpfs run "${tempdir}/run"
-	fi
+#	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
+#		sudo mount -t tmpfs run "${tempdir}/run"
+#	fi
 }
 
 chroot_umount () {
@@ -201,16 +201,16 @@ chroot_umount () {
 		fi
 	fi
 
-	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
-		echo "Log: umount: [${tempdir}/run]"
-		sync
-		sudo umount -fl "${tempdir}/run"
+#	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+#		echo "Log: umount: [${tempdir}/run]"
+#		sync
+#		sudo umount -fl "${tempdir}/run"
 
-		if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
-			echo "Log: ERROR: umount [${tempdir}/run] failed..."
-			exit 1
-		fi
-	fi
+#		if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+#			echo "Log: ERROR: umount [${tempdir}/run] failed..."
+#			exit 1
+#		fi
+#	fi
 }
 
 chroot_stopped () {
@@ -972,6 +972,7 @@ if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_scri
 fi
 
 chroot_mount
+sudo cp -v /etc/resolv.conf "${tempdir}/etc/resolv.conf"
 sudo chroot "${tempdir}" /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
@@ -1054,6 +1055,7 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
+	sudo cp -v /etc/resolv.conf "${tempdir}/etc/resolv.conf"
 	sudo cp -v "${DIR}/target/chroot/${chroot_script}" "${tempdir}/final.sh"
 	sudo chroot "${tempdir}" /bin/sh -e final.sh
 	sudo rm -f "${tempdir}/final.sh" || true
