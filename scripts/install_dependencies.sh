@@ -58,5 +58,3 @@ if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 	rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
 fi
 
-#1.0.64:
-#added vivid

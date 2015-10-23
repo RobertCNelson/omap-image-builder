@@ -61,11 +61,25 @@ check_defines () {
 		exit 1
 	fi
 
+	unset suite
+	if [ ! "${deb_codename}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
+		exit 1
+	else
+		suite="${deb_codename}"
+	fi
+
 	case "${deb_distribution}" in
 	debian)
+		if [ ! -f /usr/share/debootstrap/scripts/${suite} ] ; then
+			sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/${suite}
+		fi
 		keyring="${DIR}/scripts/keyrings/debian-archive-keyring.gpg"
 		;;
 	ubuntu)
+		if [ ! -f /usr/share/debootstrap/scripts/${release} ] ; then
+			sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/${release}
+		fi
 		keyring="${DIR}/scripts/keyrings/ubuntu-archive-keyring.gpg"
 		;;
 	esac
@@ -79,14 +93,6 @@ check_defines () {
 	options="${options} --no-check-gpg"
 
 	options="${options} --foreign"
-
-	unset suite
-	if [ ! "${deb_codename}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: deb_codename undefined"
-		exit 1
-	else
-		suite="${deb_codename}"
-	fi
 
 	unset target
 	if [ ! "${tempdir}" ] ; then
