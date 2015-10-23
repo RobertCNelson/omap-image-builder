@@ -83,8 +83,8 @@ git_clone_full () {
 
 
 install_git_repos () {
-	mkdir -p /run/resolvconf/
-	echo nameserver 8.8.8.8 > /run/resolvconf/resolv.conf
+#	mkdir -p /run/resolvconf/
+#	echo nameserver 8.8.8.8 > /etc/resolv.conf
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
 	git_branch="4.1-ti"
