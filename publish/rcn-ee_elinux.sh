@@ -13,10 +13,12 @@ fi
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_trusty_armhf
+./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 
 debian_stable="debian-8.2-console-armhf-${time}"
 debian_testing="debian-stretch-console-armhf-${time}"
 ubuntu_stable="ubuntu-14.04.3-console-armhf-${time}"
+ubuntu_testing="ubuntu-xenial-console-armhf-${time}"
 
 archive="xz -z -8"
 
@@ -123,6 +125,7 @@ options="--img omap5-uevm-${ubuntu_stable} --dtb omap5-uevm" ; generate_img
 base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
 base_rootfs="${ubuntu_stable}" ; blend="elinux" ; archive_base_rootfs
 base_rootfs="${debian_testing}" ; blend="elinux" ; archive_base_rootfs
+base_rootfs="${ubuntu_testing}" ; blend="elinux" ; archive_base_rootfs
 
 #Archive img:
 blend="microsd"
