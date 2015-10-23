@@ -56,6 +56,24 @@ check_defines () {
 		options="${options} --variant=${deb_variant}"
 	fi
 
+	if [ ! "${deb_distribution}" ] ; then
+		echo "scripts/deboostrap_first_stage.sh: Error: deb_distribution undefined"
+		exit 1
+	fi
+
+	case "${deb_distribution}" in
+	debian)
+		keyring="/usr/share/keyrings/debian-archive-keyring.gpg"
+		;;
+	ubuntu)
+		keyring="/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+		;;
+	esac
+
+	if [ -f ${keyring} ] ; then
+		options="${options} --keyring=${keyring}"
+	fi
+
 	options="${options} --foreign"
 
 	unset suite
@@ -72,11 +90,6 @@ check_defines () {
 		exit 1
 	else
 		target="${tempdir}"
-	fi
-
-	if [ ! "${deb_distribution}" ] ; then
-		echo "scripts/deboostrap_first_stage.sh: Error: deb_distribution undefined"
-		exit 1
 	fi
 
 	unset mirror
