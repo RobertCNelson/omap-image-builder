@@ -162,9 +162,9 @@ chroot_mount () {
 		sudo mount -t devpts devpts "${tempdir}/dev/pts"
 	fi
 
-#	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
-#		sudo mount -t tmpfs run "${tempdir}/run"
-#	fi
+	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
+		sudo mount -t tmpfs run "${tempdir}/run"
+	fi
 }
 
 chroot_umount () {
@@ -201,16 +201,16 @@ chroot_umount () {
 		fi
 	fi
 
-#	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
-#		echo "Log: umount: [${tempdir}/run]"
-#		sync
-#		sudo umount -fl "${tempdir}/run"
+	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+		echo "Log: umount: [${tempdir}/run]"
+		sync
+		sudo umount -fl "${tempdir}/run"
 
-#		if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
-#			echo "Log: ERROR: umount [${tempdir}/run] failed..."
-#			exit 1
-#		fi
-#	fi
+		if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+			echo "Log: ERROR: umount [${tempdir}/run] failed..."
+			exit 1
+		fi
+	fi
 }
 
 chroot_stopped () {
