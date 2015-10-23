@@ -847,44 +847,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	cleanup () {
-		echo "Log: (chroot): cleanup"
-		mkdir -p /boot/uboot/
-
-		if [ -f /etc/apt/apt.conf ] ; then
-			rm -rf /etc/apt/apt.conf || true
-		fi
-		apt-get clean
-		rm -rf /var/lib/apt/lists/*
-
-		if [ -d /var/cache/c9-core-installer/ ] ; then
-			rm -rf /var/cache/c9-core-installer/ || true
-		fi
-		if [ -d /var/cache/ipumm-dra7xx-installer/ ] ; then
-			rm -rf /var/cache/ipumm-dra7xx-installer/ || true
-		fi
-		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
-			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
-		fi
-		if [ -d /var/cache/ti-pru-cgt-installer/ ] ; then
-			rm -rf /var/cache/ti-pru-cgt-installer/ || true
-		fi
-		if [ -d /var/cache/vpdma-dra7xx-installer/ ] ; then
-			rm -rf /var/cache/vpdma-dra7xx-installer/ || true
-		fi
-		rm -f /usr/sbin/policy-rc.d
-
-		if [ "x\${distro}" = "xUbuntu" ] ; then
-			rm -f /sbin/initctl || true
-			dpkg-divert --local --rename --remove /sbin/initctl
-		fi
-
-		#left over from init/upstart scripts running in chroot...
-		if [ -d /var/run/ ] ; then
-			rm -rf /var/run/* || true
-		fi
-	}
-
 	#cat /chroot_script.sh
 	is_this_qemu
 	stop_init
@@ -919,7 +881,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		systemd_tweaks
 	fi
 
-	cleanup
 	rm -f /chroot_script.sh || true
 __EOF__
 
@@ -972,7 +933,6 @@ if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_scri
 fi
 
 chroot_mount
-sudo cp -v /etc/resolv.conf "${tempdir}/etc/resolv.conf"
 sudo chroot "${tempdir}" /bin/sh -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
@@ -1055,11 +1015,6 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	report_size
 	echo "Calling chroot_script script: ${chroot_script}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
-
-	#ubuntu: 16.04 lts
-	#cp: not writing through dangling symlink ‘/var/www/html/ssd/git/omap-image-builder/ignore/tmp.GqTcv6YtYy/etc/resolv.conf’
-	sudo cp -v --remove-destination /etc/resolv.conf "${tempdir}/etc/resolv.conf"
-
 	sudo cp -v "${DIR}/target/chroot/${chroot_script}" "${tempdir}/final.sh"
 	sudo chroot "${tempdir}" /bin/sh -e final.sh
 	sudo rm -f "${tempdir}/final.sh" || true
@@ -1112,6 +1067,56 @@ fi
 if [ -f "${tempdir}/etc/dogtag" ] ; then
 	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
 fi
+
+cat > "${DIR}/cleanup_script.sh" <<-__EOF__
+	#!/bin/sh -e
+	export LC_ALL=C
+	export DEBIAN_FRONTEND=noninteractive
+
+	#set distro:
+	. /etc/rcn-ee.conf
+
+	cleanup () {
+		echo "Log: (chroot): cleanup"
+		mkdir -p /boot/uboot/
+
+		if [ -f /etc/apt/apt.conf ] ; then
+			rm -rf /etc/apt/apt.conf || true
+		fi
+		apt-get clean
+		rm -rf /var/lib/apt/lists/*
+
+		if [ -d /var/cache/c9-core-installer/ ] ; then
+			rm -rf /var/cache/c9-core-installer/ || true
+		fi
+		if [ -d /var/cache/ipumm-dra7xx-installer/ ] ; then
+			rm -rf /var/cache/ipumm-dra7xx-installer/ || true
+		fi
+		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
+			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
+		fi
+		if [ -d /var/cache/ti-pru-cgt-installer/ ] ; then
+			rm -rf /var/cache/ti-pru-cgt-installer/ || true
+		fi
+		if [ -d /var/cache/vpdma-dra7xx-installer/ ] ; then
+			rm -rf /var/cache/vpdma-dra7xx-installer/ || true
+		fi
+		rm -f /usr/sbin/policy-rc.d
+
+		if [ "x\${distro}" = "xUbuntu" ] ; then
+			rm -f /sbin/initctl || true
+			dpkg-divert --local --rename --remove /sbin/initctl
+		fi
+	}
+
+	cleanup
+	rm -f /cleanup_script.sh || true
+__EOF__
+
+###MUST BE LAST...
+sudo mv "${DIR}/cleanup_script.sh" "${tempdir}/cleanup_script.sh"
+sudo chroot "${tempdir}" /bin/sh -e cleanup_script.sh
+echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e cleanup_script.sh]"
 
 report_size
 chroot_umount
