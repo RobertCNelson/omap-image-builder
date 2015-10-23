@@ -63,16 +63,20 @@ check_defines () {
 
 	case "${deb_distribution}" in
 	debian)
-		keyring="/usr/share/keyrings/debian-archive-keyring.gpg"
+		keyring="${DIR}/scripts/keyrings/debian-archive-keyring.gpg"
 		;;
 	ubuntu)
-		keyring="/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+		keyring="${DIR}/scripts/keyrings/ubuntu-archive-keyring.gpg"
 		;;
 	esac
-
-	if [ -f ${keyring} ] ; then
-		options="${options} --keyring=${keyring}"
-	fi
+	#options="${options} --keyring=\"${keyring}\""
+	#Still failing...
+	#I: Retrieving Release 
+	#I: Retrieving Release.gpg 
+	#I: Checking Release signature
+	#E: Release signed by unknown key (key id 3B4FE6ACC0B21F32)
+	#so disable...
+	options="${options} --no-check-gpg"
 
 	options="${options} --foreign"
 
