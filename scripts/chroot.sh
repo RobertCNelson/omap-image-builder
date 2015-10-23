@@ -1092,6 +1092,11 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
+
+		#This is tmpfs, clear out any left overs...
+		if [ -d /run/ ] ; then
+			rm -rf /run/* || true
+		fi
 	}
 
 	cleanup
