@@ -436,14 +436,14 @@ install_git_repos () {
 	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
 	git_target_dir="/opt/source/PyBBIO"
 	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
+	#if [ -f ${git_target_dir}/.git/config ] ; then
 		#cd ${git_target_dir}/
 		#if [ -f /usr/bin/dtc ] ; then
 		#	sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
 		#	python setup.py install
 		#fi
 		#cd /
-	fi
+	#fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
 	git_branch="4.1-ti"
