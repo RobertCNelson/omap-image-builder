@@ -145,6 +145,16 @@ report_size () {
 	echo "Log: Size of: [${tempdir}]: $(du -sh ${tempdir} 2>/dev/null | awk '{print $1}')"
 }
 
+chroot_mount_run () {
+	if [ ! -d "${tempdir}/run" ] ; then
+		sudo mkdir -p ${tempdir}/run || true
+	fi
+
+	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
+		sudo mount -t tmpfs run "${tempdir}/run"
+	fi
+}
+
 chroot_mount () {
 	if [ "$(mount | grep ${tempdir}/sys | awk '{print $3}')" != "${tempdir}/sys" ] ; then
 		sudo mount -t sysfs sysfs "${tempdir}/sys"
@@ -196,6 +206,17 @@ chroot_umount () {
 			exit 1
 		fi
 	fi
+
+	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+		echo "Log: umount: [${tempdir}/run]"
+		sync
+		sudo umount -fl "${tempdir}/run"
+
+		if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" = "${tempdir}/run" ] ; then
+			echo "Log: ERROR: umount [${tempdir}/run] failed..."
+			exit 1
+		fi
+	fi
 }
 
 chroot_stopped () {
@@ -213,6 +234,7 @@ if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
 fi
 
+chroot_mount_run
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
 sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage
 echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
