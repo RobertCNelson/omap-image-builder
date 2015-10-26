@@ -148,6 +148,7 @@ report_size () {
 chroot_mount_run () {
 	if [ ! -d "${tempdir}/run" ] ; then
 		sudo mkdir -p ${tempdir}/run || true
+		sudo chmod -R 755 ${tempdir}/run
 	fi
 
 	if [ "$(mount | grep ${tempdir}/run | awk '{print $3}')" != "${tempdir}/run" ] ; then
