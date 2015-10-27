@@ -1054,33 +1054,6 @@ if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
 	chroot_after_hook=""
 fi
 
-#add /boot/uEnv.txt update script
-if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
-	if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
-		sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
-		sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
-	fi
-fi
-
-if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
-	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
-fi
-
-echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
-sudo mv /tmp/user_password.list "${DIR}/deploy/${export_filename}/user_password.list"
-
-#Fixes:
-if [ -d "${tempdir}/etc/ssh/" -a "x${keep_ssh_keys}" = "x" ] ; then
-	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
-	sudo rm -rf "${tempdir}"/etc/ssh/ssh_host_* || true
-	sudo touch "${tempdir}/etc/ssh/ssh.regenerate" || true
-fi
-
-#ID.txt:
-if [ -f "${tempdir}/etc/dogtag" ] ; then
-	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
-fi
-
 cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
@@ -1135,6 +1108,33 @@ __EOF__
 sudo mv "${DIR}/cleanup_script.sh" "${tempdir}/cleanup_script.sh"
 sudo chroot "${tempdir}" /bin/sh -e cleanup_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e cleanup_script.sh]"
+
+#add /boot/uEnv.txt update script
+if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
+	if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
+		sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
+		sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
+	fi
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
+fi
+
+echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
+sudo mv /tmp/user_password.list "${DIR}/deploy/${export_filename}/user_password.list"
+
+#Fixes:
+if [ -d "${tempdir}/etc/ssh/" -a "x${keep_ssh_keys}" = "x" ] ; then
+	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
+	sudo rm -rf "${tempdir}"/etc/ssh/ssh_host_* || true
+	sudo touch "${tempdir}/etc/ssh/ssh.regenerate" || true
+fi
+
+#ID.txt:
+if [ -f "${tempdir}/etc/dogtag" ] ; then
+	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
+fi
 
 report_size
 chroot_umount
