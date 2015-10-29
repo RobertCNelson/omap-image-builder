@@ -240,6 +240,7 @@ install_pip_pkgs () {
 
 		easy_install -U distribute
 		pip install Adafruit_BBIO
+		pip install --upgrade PyBBIO
 	fi
 }
 
@@ -438,18 +439,6 @@ install_git_repos () {
 		cd ${git_target_dir}/
 		if [ -f /usr/bin/make ] ; then
 			make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
-		fi
-		cd /
-	fi
-
-	git_repo="https://github.com/alexanderhiam/PyBBIO.git"
-	git_target_dir="/opt/source/PyBBIO"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/dtc ] ; then
-			sed -i "s/PLATFORM = ''/PLATFORM = 'BeagleBone >=3.8'/g" setup.py
-			python setup.py install
 		fi
 		cd /
 	fi
