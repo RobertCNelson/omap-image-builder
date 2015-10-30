@@ -52,24 +52,8 @@ start|reload|force-reload|restart)
 		fi
 	fi
 
-	#Resize drive when requested
-	if [ -f /resizerootfs ] ; then
-		drive=$(cat /resizerootfs)
-		if [ ! "x${drive}" = "x" ] ; then
-			if [ "x${drive}" = "x/dev/mmcblk0" ] || [ "x${drive}" = "x/dev/mmcblk1" ] ; then
-				resize2fs ${drive}p2 >/var/log/resize.log 2>&1 || true
-			else
-				resize2fs ${drive} >/var/log/resize.log 2>&1 || true
-			fi
-		fi
-		rm -rf /resizerootfs || true
-	fi
-
-	if [ -f /boot/SOC.sh ] ; then
-		board=$(grep board /boot/SOC.sh | awk -F"=" '{print $2}')
-		if [ -f "/opt/scripts/boot/${board}.sh" ] ; then
-			/bin/sh /opt/scripts/boot/${board}.sh >/dev/null 2>&1 &
-		fi
+	if [ -f /opt/scripts/boot/generic-startup.sh ] ; then
+		/bin/sh /opt/scripts/boot/generic-startup.sh >/dev/null 2>&1 &
 	fi
 
 	;;
