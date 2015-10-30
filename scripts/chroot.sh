@@ -414,7 +414,13 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
-		wheezy|jessie|stretch)
+		wheezy)
+			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh" "${tempdir}/etc/init.d/generic-boot-script.sh"
+			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init.d/capemgr.sh"
+			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
+			distro="Debian"
+			;;
+		jessie|stretch)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
