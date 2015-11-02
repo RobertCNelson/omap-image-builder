@@ -74,24 +74,19 @@ check_defines () {
 		if [ ! -f /usr/share/debootstrap/scripts/${suite} ] ; then
 			sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/${suite}
 		fi
-		keyring="${DIR}/scripts/keyrings/debian-archive-keyring.gpg"
+		if [ ! -f /usr/share/keyrings/debian-archive-keyring.gpg ] ; then
+			options="${options} --no-check-gpg"
+		fi
 		;;
 	ubuntu)
 		if [ ! -f /usr/share/debootstrap/scripts/${release} ] ; then
 			sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/${release}
 		fi
-		keyring="${DIR}/scripts/keyrings/ubuntu-archive-keyring.gpg"
+		if [ ! -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ] ; then
+			options="${options} --no-check-gpg"
+		fi
 		;;
 	esac
-	#options="${options} --keyring=\"${keyring}\""
-	#Still failing...
-	#I: Retrieving Release 
-	#I: Retrieving Release.gpg 
-	#I: Checking Release signature
-	#E: Release signed by unknown key (key id 3B4FE6ACC0B21F32)
-	#so disable...
-	options="${options} --no-check-gpg"
-
 	options="${options} --foreign"
 
 	unset target
