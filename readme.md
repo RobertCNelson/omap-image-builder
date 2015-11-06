@@ -13,6 +13,10 @@ SeeedStudio BeagleBone Green:
 
      1A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 1a 00 00 00 |.U3.A335BNLT....|]
 
+Arrow BeagleBone Black Industrial:
+
+   AIA0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 41 49 41 30 |.U3.A335BNLTAIA0|]
+
 Scripts to support customized image generation for many arm systems
 
 BeagleBoard branch:
