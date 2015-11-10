@@ -12,11 +12,11 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c machinekit-debian-wheezy
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+./RootStock-NG.sh -c machinekit-debian-wheezy
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
-#./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
-#./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
+./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
 
 debian_wheezy_machinekit="debian-7.9-machinekit-armhf-${time}"
 debian_jessie_lxqt_2gb="debian-8.2-lxqt-2gb-armhf-${time}"
@@ -119,13 +119,11 @@ archive_img () {
 }
 
 generate_img () {
-        if [ -d \${base_rootfs}/ ] ; then
-                cd \${base_rootfs}/
-                sudo ./setup_sdcard.sh \${options}
-                mv *.img ../
-                mv *.job.txt ../
-                cd ..
-        fi
+        cd \${base_rootfs}/
+        sudo ./setup_sdcard.sh \${options}
+        mv *.img ../
+        mv *.job.txt ../
+        cd ..
 }
 
 ###machinekit:
@@ -138,10 +136,10 @@ base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
-#options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
-#options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
-#options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
-#options="--img-4gb tre-\${base_rootfs} ${arduino_tre}" ; generate_img
+options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
+options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
+options="--img-4gb tre-\${base_rootfs} ${arduino_tre}" ; generate_img
 
 ###lxqt-2gb image
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
