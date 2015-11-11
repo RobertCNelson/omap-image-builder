@@ -435,7 +435,12 @@ install_git_repos () {
 	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="4.1-ti"
+	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
+	if [ ! "x${is_kernel}" = "x" ] ; then
+		git_branch="4.1-ti"
+	else
+		git_branch="3.14-ti"
+	fi
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
@@ -445,7 +450,7 @@ install_git_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
-			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
 			if [ ! "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
 					./dtc-overlay.sh
