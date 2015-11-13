@@ -79,8 +79,8 @@ check_defines () {
 		fi
 		;;
 	ubuntu)
-		if [ ! -f /usr/share/debootstrap/scripts/${release} ] ; then
-			sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/${release}
+		if [ ! -f /usr/share/debootstrap/scripts/${suite} ] ; then
+			sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/${suite}
 		fi
 		if [ ! -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ] ; then
 			options="${options} --no-check-gpg"
