@@ -21,6 +21,10 @@ Element14 BeagleBone Black Industrial:
 
       A0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 45 49 41 30 |.U3.A335BNLTEIA0|]
 
+SanCloud BeagleBone Enhanced:
+
+       A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 53 45 30 41 |.U3.A335BNLTSE0A|]
+
 Scripts to support customized image generation for many arm systems
 
 BeagleBoard branch:
