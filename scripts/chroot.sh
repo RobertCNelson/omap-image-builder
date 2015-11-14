@@ -232,7 +232,12 @@ trap chroot_stopped EXIT
 check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
-	sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
+	if [ "x${deb_arch}" == "xarmel" ] || [ "x${deb_arch}" == "xarmhf" ] ; then
+		sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
+	fi
+	if [ "x${deb_arch}" == "xarm64" ] ; then
+		sudo cp $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
+	fi
 fi
 
 chroot_mount_run
@@ -494,6 +499,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	is_this_qemu () {
 		unset warn_qemu_will_fail
 		if [ -f /usr/bin/qemu-arm-static ] ; then
+			warn_qemu_will_fail=1
+		fi
+		if [ -f /usr/bin/qemu-aarch64-static ] ; then
 			warn_qemu_will_fail=1
 		fi
 	}
@@ -1125,6 +1133,10 @@ fi
 
 if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
 	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-aarch64-static" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-aarch64-static" || true
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
