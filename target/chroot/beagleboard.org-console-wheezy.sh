@@ -184,18 +184,6 @@ setup_desktop () {
 			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
 		fi
 	fi
-
-	#ti: firewall blocks pastebin.com
-	if [ -f /usr/bin/pastebinit ] ; then
-		wfile="/home/${rfs_username}/.pastebinit.xml"
-		echo "<pastebinit>" > ${wfile}
-		echo "    <pastebin>https://paste.debian.net</pastebin>" >> ${wfile}
-		echo "    <author>A pastebinit user</author>" >> ${wfile}
-		echo "    <jabberid>nobody@nowhere.org</jabberid>" >> ${wfile}
-		echo "    <format>text</format>" >> ${wfile}
-		echo "</pastebinit>" >> ${wfile}
-		chown ${rfs_username}:${rfs_username} ${wfile}
-	fi
 }
 
 install_gem_pkgs () {
