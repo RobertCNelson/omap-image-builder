@@ -232,10 +232,10 @@ trap chroot_stopped EXIT
 check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
-	if [ "x${deb_arch}" == "xarmel" ] || [ "x${deb_arch}" == "xarmhf" ] ; then
+	if [ "x${deb_arch}" = "xarmel" ] || [ "x${deb_arch}" = "xarmhf" ] ; then
 		sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
 	fi
-	if [ "x${deb_arch}" == "xarm64" ] ; then
+	if [ "x${deb_arch}" = "xarm64" ] ; then
 		sudo cp $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
 	fi
 fi
