@@ -465,6 +465,7 @@ if [ -d "${tempdir}/usr/share/initramfs-tools/hooks/" ] ; then
 	if [ ! -f "${tempdir}/usr/share/initramfs-tools/hooks/dtbo" ] ; then
 		echo "log: adding: [initramfs-tools hook: dtbo]"
 		sudo cp "${OIB_DIR}/target/other/dtbo" "${tempdir}/usr/share/initramfs-tools/hooks/"
+		sudo chmod +x "${tempdir}/usr/share/initramfs-tools/hooks/dtbo"
 	fi
 fi
 
