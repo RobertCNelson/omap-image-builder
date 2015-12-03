@@ -1150,6 +1150,9 @@ populate_rootfs () {
 		elif [ "x${bbg_flasher}" = "xenable" ] ; then
 			echo "##enable BBG: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbg.sh" >> ${wfile}
+		elif [ "x${a335_flasher}" = "xenable" ] ; then
+			echo "##enable a335: eeprom Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 		else
 			echo "##enable Generic eMMC Flasher:" >> ${wfile}
 			echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
@@ -1162,6 +1165,9 @@ populate_rootfs () {
 		elif [ "x${emmc_flasher}" = "xenable" ] ; then
 			echo "##enable Generic eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+		elif [ "x${a335_flasher}" = "xenable" ] ; then
+			echo "##enable a335: eeprom Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 		fi
 	fi
 
@@ -1635,6 +1641,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--use-beta-bootloader)
 		USE_BETA_BOOTLOADER=1
+		;;
+	--a335-flasher)
+		a335_flasher="enable"
 		;;
 	--bbg-flasher)
 		bbg_flasher="enable"
