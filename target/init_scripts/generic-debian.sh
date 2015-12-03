@@ -41,8 +41,15 @@ start|reload|force-reload|restart)
 	#Regenerate ssh host keys
 	if [ -f /etc/ssh/ssh.regenerate ] ; then
 		rm -rf /etc/ssh/ssh_host_* || true
-		# Mix in the output of the HWRNG to the kernel before generating ssh keys
-		dd if=/dev/hwrng of=/dev/urandom count=1 bs=4096 2>/dev/null
+
+		if [ -e /dev/hwrng ] ; then
+			# Mix in the output of the HWRNG to the kernel before generating ssh keys
+			dd if=/dev/hwrng of=/dev/urandom count=1 bs=4096 2>/dev/null
+			echo "generic-board-startup: if=/dev/hwrng of=/dev/urandom count=1 bs=4096"
+		else
+			echo "generic-board-startup: WARNING /dev/hwrng wasn't available"
+		fi
+
 		dpkg-reconfigure openssh-server
 		sync
 		if [ -s /etc/ssh/ssh_host_ecdsa_key.pub ] ; then
