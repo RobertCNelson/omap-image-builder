@@ -568,9 +568,6 @@ create_partitions () {
 		echo "Using sfdisk to create partition layout"
 		echo "Version: `LC_ALL=C sfdisk --version`"
 		echo "-----------------------------"
-		if [ "x${bborg_production}" = "xenable" ] ; then
-			conf_boot_endmb="96"
-		fi
 		sfdisk_partition_layout
 		;;
 	dd_uboot_boot)
@@ -593,15 +590,8 @@ create_partitions () {
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
-		if [ "x${bborg_production}" = "xenable" ] ; then
-			conf_boot_endmb="96"
-			conf_boot_fstype="fat"
-			sfdisk_fstype="0xE"
-			sfdisk_partition_layout
-		else
-			sfdisk_single_partition_layout
-			media_rootfs_partition=1
-		fi
+		sfdisk_single_partition_layout
+		media_rootfs_partition=1
 		;;
 	*)
 		echo "Using sfdisk to create partition layout"
@@ -650,50 +640,6 @@ create_partitions () {
 	else
 		format_boot_partition
 		format_rootfs_partition
-	fi
-}
-
-boot_git_tools () {
-	if [ ! "${offline}" ] && [ "x${bborg_production}" = "xenable" ] ; then
-
-		echo "Debug: Adding BeagleBone drivers from: https://github.com/beagleboard/beaglebone-getting-started"
-		#Not planning to change these too often, once pulled, remove .git stuff...
-		mkdir -p ${TEMPDIR}/drivers/
-		git clone https://github.com/beagleboard/beaglebone-getting-started.git ${TEMPDIR}/drivers/ --depth 1
-		if [ -f ${TEMPDIR}/drivers/.git/config ] ; then
-			rm -rf ${TEMPDIR}/drivers/.git/ || true
-		fi
-
-		if [ -d ${TEMPDIR}/drivers/App ] ; then
-			mv ${TEMPDIR}/drivers/App ${TEMPDIR}/disk/
-		fi
-		if [ -d ${TEMPDIR}/drivers/Drivers ] ; then
-			mv ${TEMPDIR}/drivers/Drivers ${TEMPDIR}/disk/
-		fi
-		if [ -d ${TEMPDIR}/drivers/Docs ] ; then
-			mv ${TEMPDIR}/drivers/Docs ${TEMPDIR}/disk/
-		fi
-		if [ -d ${TEMPDIR}/drivers/scripts ] ; then
-			mv ${TEMPDIR}/drivers/scripts ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/autorun.inf ] ; then
-			mv ${TEMPDIR}/drivers/autorun.inf ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/LICENSE.txt ] ; then
-			mv ${TEMPDIR}/drivers/LICENSE.txt ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/README.htm ] ; then
-			mv ${TEMPDIR}/drivers/README.htm ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/README.md ] ; then
-			mv ${TEMPDIR}/drivers/README.md ${TEMPDIR}/disk/
-		fi
-		if [ -f ${TEMPDIR}/drivers/START.htm ] ; then
-			mv ${TEMPDIR}/drivers/START.htm ${TEMPDIR}/disk/
-		fi
-
-		sync
-		echo "-----------------------------"
 	fi
 }
 
@@ -845,8 +791,6 @@ populate_boot () {
 			echo "-----------------------------"
 		fi
 	fi
-
-	boot_git_tools
 
 	cd ${TEMPDIR}/disk
 	sync
@@ -1287,10 +1231,11 @@ populate_rootfs () {
 		echo "    network 192.168.7.0" >> ${wfile}
 		echo "    gateway 192.168.7.1" >> ${wfile}
 
-		if [ ! "x${bborg_production}" = "xenable" ] ; then
-			#wheezy
+		if [ -f ${TEMPDIR}/disk/var/www/index.html ; then
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
-			#jessie
+		fi
+
+		if [ -f ${TEMPDIR}/disk/var/www/html/index.html ; then
 			rm -f ${TEMPDIR}/disk/var/www/html/index.html || true
 		fi
 		sync
@@ -1653,9 +1598,6 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-flasher|--emmc-flasher)
 		emmc_flasher="enable"
-		;;
-	--beagleboard.org-production)
-		bborg_production="enable"
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"

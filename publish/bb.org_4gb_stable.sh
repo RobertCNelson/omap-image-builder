@@ -58,8 +58,7 @@ image_name="debian-7.9-lxde-4gb-armhf-${time}"
 size="4gb"
 
 options="--img-4gb bone-${image_name} --dtb beaglebone \
---beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+--enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 ./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 build_and_upload_image
@@ -69,8 +68,7 @@ build_and_upload_image
 #size="2gb"
 
 #options="--img-2gb bone-${image_name} --dtb beaglebone \
-#--beagleboard.org-production --boot_label BEAGLEBONE \
-#--rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+#--bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 #build_and_upload_image
@@ -81,8 +79,7 @@ image_name="debian-8.2-tester-2gb-armhf-${time}"
 size="2gb"
 
 options="--img-2gb bone-${image_name} --dtb beaglebone \
---beagleboard.org-production --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+--bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
 build_and_upload_image

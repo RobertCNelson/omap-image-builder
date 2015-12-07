@@ -32,19 +32,18 @@ debian_jessie_usbflasher="debian-8.2-usbflasher-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-bb_blank_flasher="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
-beaglebone_console="--dtb beaglebone --boot_label BEAGLEBONE \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
-arduino_tre="--dtb am335x-arduino-tre --beagleboard.org-production --boot_label ARDUINO-TRE \
+arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"

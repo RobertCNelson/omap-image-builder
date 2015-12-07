@@ -40,8 +40,7 @@ Images:
 Flasher:
 
     sudo ./setup_sdcard.sh --img-4gb BBB-eMMC-flasher-debian-7.X-201Y-MM-DD \
-    --dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
-    --rootfs_label eMMC-Flasher --enable-systemd --bbb-flasher \
+    --dtb beaglebone --enable-systemd --bbb-flasher \
     --bbb-old-bootloader-in-emmc
 
     xz -z -8 -v BBB-eMMC-flasher-debian-7.X-201Y-MM-DD-4gb.img
@@ -49,8 +48,7 @@ Flasher:
 2GB, microSD:
 
     sudo ./setup_sdcard.sh --img-2gb bone-debian-7.X-201Y-MM-DD --dtb beaglebone \
-    --beagleboard.org-production --boot_label BEAGLEBONE --enable-systemd \
-    --bbb-old-bootloader-in-emmc
+    --enable-systemd --bbb-old-bootloader-in-emmc
 
     xz -z -8 -v bone-debian-7.X-201Y-MM-DD-2gb.img
 

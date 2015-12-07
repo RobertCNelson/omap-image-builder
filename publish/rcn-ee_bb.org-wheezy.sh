@@ -22,17 +22,16 @@ debian_wheezy_console="debian-7.9-console-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --beagleboard.org-production --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
-bb_blank_flasher="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
---rootfs_label rootfs --bbb-old-bootloader-in-emmc --hostname beaglebone"
+bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
-beaglebone_console="--dtb beaglebone --boot_label BEAGLEBONE \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --boot_label BEAGLEBONE \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+--hostname beaglebone"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
