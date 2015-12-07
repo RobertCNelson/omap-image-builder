@@ -411,9 +411,11 @@ echo "::1     localhost ip6-localhost ip6-loopback" >> /tmp/hosts
 echo "ff02::1 ip6-allnodes" >> /tmp/hosts
 echo "ff02::2 ip6-allrouters" >> /tmp/hosts
 sudo mv /tmp/hosts "${tempdir}/etc/hosts"
+sudo chown root:root "${tempdir}/etc/hosts"
 
 echo "${rfs_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname "${tempdir}/etc/hostname"
+sudo chown root:root "${tempdir}/etc/hostname"
 
 if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
@@ -421,15 +423,21 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		case "${deb_codename}" in
 		wheezy)
 			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh" "${tempdir}/etc/init.d/generic-boot-script.sh"
+			sudo chown root:root "${tempdir}/etc/init.d/generic-boot-script.sh"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init.d/capemgr.sh"
+			sudo chown root:root "${tempdir}/etc/init.d/capemgr.sh"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
+			sudo chown root:root "${tempdir}/etc/default/capemgr"
 			distro="Debian"
 			;;
 		jessie|stretch)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/capemgr.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
+			sudo chown root:root "${tempdir}/etc/default/capemgr"
 			distro="Debian"
 			;;
 		esac
@@ -438,8 +446,11 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		case "${deb_codename}" in
 		trusty)
 			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf" "${tempdir}/etc/init/generic-boot-script.conf"
+			sudo chown root:root "${tempdir}/etc/init/generic-boot-script.conf"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init/capemgr.sh"
+			sudo chown root:root "${tempdir}/etc/init/capemgr.sh"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
+			sudo chown root:root "${tempdir}/etc/default/capemgr"
 			distro="Ubuntu"
 
 			if [ -f "${tempdir}/etc/init/failsafe.conf" ] ; then
@@ -452,8 +463,11 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		vivid|wily|xenial)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
+			sudo chown root:root "${tempdir}/etc/default/capemgr"
 			distro="Ubuntu"
 			;;
 		esac
@@ -466,6 +480,7 @@ if [ -d "${tempdir}/usr/share/initramfs-tools/hooks/" ] ; then
 		echo "log: adding: [initramfs-tools hook: dtbo]"
 		sudo cp "${OIB_DIR}/target/other/dtbo" "${tempdir}/usr/share/initramfs-tools/hooks/"
 		sudo chmod +x "${tempdir}/usr/share/initramfs-tools/hooks/dtbo"
+		sudo chown root:root "${tempdir}/usr/share/initramfs-tools/hooks/dtbo"
 	fi
 fi
 
@@ -476,11 +491,13 @@ echo "release_date=${time}" >> /tmp/rcn-ee.conf
 echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 echo "abi=${abi}" >> /tmp/rcn-ee.conf
 sudo mv /tmp/rcn-ee.conf "${tempdir}/etc/rcn-ee.conf"
+sudo chown root:root "${tempdir}/etc/rcn-ee.conf"
 
 #use /etc/dogtag for all:
 if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 	echo "${rfs_etc_dogtag} ${time}" > /tmp/dogtag
 	sudo mv /tmp/dogtag "${tempdir}/etc/dogtag"
+	sudo chown root:root "${tempdir}/etc/dogtag"
 fi
 
 cat > "${DIR}/chroot_script.sh" <<-__EOF__
@@ -997,6 +1014,7 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 		echo "" >> ${wfile}
 	fi
 	sudo mv ${wfile} "${tempdir}/etc/issue"
+	sudo chown root:root "${tempdir}/etc/issue"
 fi
 
 if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
@@ -1017,6 +1035,7 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 		echo "" >> ${wfile}
 	fi
 	sudo mv ${wfile} "${tempdir}/etc/issue.net"
+	sudo chown root:root "${tempdir}/etc/issue.net"
 fi
 
 #usually a qemu failure...
@@ -1129,6 +1148,7 @@ if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
 	if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
 		sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
 		sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
+		sudo chown root:root "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
 	fi
 fi
 
@@ -1153,6 +1173,7 @@ fi
 #ID.txt:
 if [ -f "${tempdir}/etc/dogtag" ] ; then
 	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
+	sudo chown root:root "${DIR}/deploy/${export_filename}/ID.txt"
 fi
 
 report_size
