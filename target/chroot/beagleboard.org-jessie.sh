@@ -231,6 +231,10 @@ cleanup_npm_cache () {
 	if [ -d /root/.npm ] ; then
 		rm -rf /root/.npm || true
 	fi
+
+	if [ -f /home/${rfs_username}/.npmrc ] ; then
+		rm -f /home/${rfs_username}/.npmrc || true
+	fi
 }
 
 install_node_pkgs () {
