@@ -176,38 +176,38 @@ base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_ro
 ###archive *.img
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
 
-wfile="bone-${base_rootfs}-4gb" ; archive_img
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
 
-wfile="BBB-eMMC-flasher-${base_rootfs}-4gb" ; archive_img
-wfile="bone-${base_rootfs}-4gb" ; archive_img
-wfile="bbx15-eMMC-flasher-${base_rootfs}-4gb" ; archive_img
-wfile="bbx15-${base_rootfs}-4gb" ; archive_img
-wfile="omap5-uevm-${base_rootfs}-4gb" ; archive_img
-wfile="tre-${base_rootfs}-4gb" ; archive_img
+wfile="BBB-eMMC-flasher-\${base_rootfs}-4gb" ; archive_img
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
+wfile="bbx15-eMMC-flasher-\${base_rootfs}-4gb" ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb" ; archive_img
+wfile="omap5-uevm-\${base_rootfs}-4gb" ; archive_img
+wfile="tre-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb"
 
-wfile="BBB-eMMC-flasher-${base_rootfs}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_console}" ; blend="console"
 
 wfile="a335-eeprom-\${base_rootfs}-2gb" ; archive_img
-wfile="BBB-eMMC-flasher-${base_rootfs}-2gb" ; archive_img
-wfile="bone-${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-eMMC-flasher-${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-${base_rootfs}-2gb" ; archive_img
-wfile="omap5-uevm-${base_rootfs}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
+wfile="bone-\${base_rootfs}-2gb" ; archive_img
+wfile="bbx15-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
+wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
+wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
 
-wfile="BBB-blank-${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-${base_rootfs}-2gb" ; archive_img
+wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
+wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
 
 __EOF__
 
