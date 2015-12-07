@@ -234,7 +234,6 @@ install_pip_pkgs () {
 
 		easy_install -U distribute
 		pip install Adafruit_BBIO
-		pip install --upgrade PyBBIO
 	fi
 }
 
