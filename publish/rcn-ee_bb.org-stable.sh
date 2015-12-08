@@ -26,7 +26,7 @@ debian_jessie_usbflasher="debian-8.2-usbflasher-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone ---bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
 
 bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
 --hostname beaglebone"
