@@ -1231,11 +1231,11 @@ populate_rootfs () {
 		echo "    network 192.168.7.0" >> ${wfile}
 		echo "    gateway 192.168.7.1" >> ${wfile}
 
-		if [ -f ${TEMPDIR}/disk/var/www/index.html ; then
+		if [ -f ${TEMPDIR}/disk/var/www/index.html ] ; then
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
 		fi
 
-		if [ -f ${TEMPDIR}/disk/var/www/html/index.html ; then
+		if [ -f ${TEMPDIR}/disk/var/www/html/index.html ] ; then
 			rm -f ${TEMPDIR}/disk/var/www/html/index.html || true
 		fi
 		sync
