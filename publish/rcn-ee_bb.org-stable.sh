@@ -26,23 +26,18 @@ debian_jessie_usbflasher="debian-8.2-usbflasher-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+--rootfs_label rootfs --hostname beaglebone"
 
 bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
-
-beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
-
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+--rootfs_label rootfs --hostname beaglebone"
 
 arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
 
-omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
-omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
-am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
+omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
+am57xx_beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
+--hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -152,9 +147,9 @@ options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --bbb-flasher"
 ###console images: (also single partition)
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb a335-eeprom-\${base_rootfs} ${bb_blank_flasher_console} --a335-flasher" ; generate_img
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --emmc-flasher" ; generate_img
-options="--img-2gb bone-\${base_rootfs} ${beaglebone_console}" ; generate_img
+options="--img-2gb a335-eeprom-\${base_rootfs} ${bb_blank_flasher} --a335-flasher" ; generate_img
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-2gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
