@@ -1209,10 +1209,10 @@ else
 	sudo LANG=C tar --numeric-owner -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
 	cd "${DIR}/" || true
 	ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
+	sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
 fi
 
 echo "Log: USER:${USER}"
-sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
 
 if [ "x${chroot_tarball}" = "xenable" ] ; then
 	echo "Creating: ${export_filename}.tar"
