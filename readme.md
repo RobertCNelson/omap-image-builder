@@ -25,6 +25,10 @@ SanCloud BeagleBone Enhanced:
 
        A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 53 45 30 41 |.U3.A335BNLTSE0A|]
 
+Embest replica?:
+
+          [aa 55 33 ee 41 33 33 35  42 4e 4c 54 74 0a 75 65 |.U3.A335BNLTt.ue|]
+
 Scripts to support customized image generation for many arm systems
 
 BeagleBoard branch:
