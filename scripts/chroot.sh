@@ -1115,6 +1115,9 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
 			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
 		fi
+		if [ -d /var/cache/ti-c6000-cgt-v8.1.x-installer/ ] ; then
+			rm -rf /var/cache/ti-c6000-cgt-v8.1.x-installer/ || true
+		fi
 		if [ -d /var/cache/ti-pru-cgt-installer/ ] ; then
 			rm -rf /var/cache/ti-pru-cgt-installer/ || true
 		fi
