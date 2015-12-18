@@ -227,20 +227,28 @@ install_gem_pkgs () {
 }
 
 install_pip_pkgs () {
-	if [ -f /usr/bin/pip ] ; then
-		echo "Installing pip packages"
-		#Fixed in git, however not pushed to pip yet...(use git and install)
-		#libpython2.7-dev
-		#pip install Adafruit_BBIO
+	if [ -f /usr/bin/python ] ; then
+		wget https://bootstrap.pypa.io/get-pip.py || true
+		if [ -f get-pip.py ] ; then
+			python get-pip.py
+			rm -f get-pip.py || true
 
-		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			python setup.py install
+			if [ -f /usr/local/bin/pip ] ; then
+				echo "Installing pip packages"
+				#Fixed in git, however not pushed to pip yet...(use git and install)
+				#libpython2.7-dev
+				#pip install Adafruit_BBIO
+
+				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+				git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+				git_clone
+				if [ -f ${git_target_dir}/.git/config ] ; then
+					cd ${git_target_dir}/
+					python setup.py install
+				fi
+				pip install --upgrade PyBBIO
+			fi
 		fi
-		pip install --upgrade PyBBIO
 	fi
 }
 
