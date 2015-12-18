@@ -188,6 +188,27 @@ setup_desktop () {
 	if [ -f /bin/ping ] ; then
 		chmod u+x /bin/ping
 	fi
+
+	if [ -d /etc/avahi/ ] ; then
+		#Annouce http server via DNS Sevice Discovery
+		wfile="/etc/avahi/services/http.service"
+		echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+		echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "<service-group>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "  <name replace-wildcards=\"yes\">Bone 101 web site for %h</name>" >> ${wfile}
+		echo "  <service>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "    <type>_http._tcp</type>" >> ${wfile}
+		echo "    <port>80</port>" >> ${wfile}
+		echo "  </service>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "</service-group>" >> ${wfile}
+		chown -R root:root ${wfile}
+	fi
 }
 
 install_gem_pkgs () {
@@ -294,6 +315,27 @@ install_node_pkgs () {
 			fi
 
 			systemctl enable cloud9.socket || true
+
+			if [ -d /etc/avahi/ ] ; then
+				#Annouce http server via DNS Sevice Discovery
+				wfile="/etc/avahi/services/cloud9.service"
+				echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+				echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<service-group>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "  <name replace-wildcards=\"yes\">Cloud9 IDE for %h</name>" >> ${wfile}
+				echo "  <service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "    <type>_http._tcp</type>" >> ${wfile}
+				echo "    <port>3000</port>" >> ${wfile}
+				echo "  </service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "</service-group>" >> ${wfile}
+				chown -R root:root ${wfile}
+			fi
 		fi
 
 		cleanup_npm_cache
