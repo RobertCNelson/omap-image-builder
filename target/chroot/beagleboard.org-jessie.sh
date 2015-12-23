@@ -477,12 +477,7 @@ install_git_repos () {
 	fi
 
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
-	if [ ! "x${is_kernel}" = "x" ] ; then
-		git_branch="4.1-ti"
-	else
-		git_branch="3.14-ti"
-	fi
+	git_branch="4.1-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
