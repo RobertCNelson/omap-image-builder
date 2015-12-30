@@ -967,8 +967,8 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 		sudo cp -v "${DIR}"/git/linux-firmware/ti-connectivity/* "${tempdir}/lib/firmware/ti-connectivity"
 	fi
 
-	if [ -f "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" ] ; then
-		sudo cp -v "${DIR}/git/mt7601u/src/mcu/bin/MT7601.bin" "${tempdir}/lib/firmware/mt7601u.bin"
+	if [ -f "${DIR}/git/linux-firmware/mt7601u.bin" ] ; then
+		sudo cp -v "${DIR}/git/linux-firmware/mt7601u.bin" "${tempdir}/lib/firmware/mt7601u.bin"
 	fi
 fi
 

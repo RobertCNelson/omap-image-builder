@@ -56,11 +56,6 @@ git_trees () {
 	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 	generic_git
 	update_git
-
-	git_project_name="mt7601u"
-	git_clone_address="https://github.com/rcn-ee/mt7601u"
-	generic_git
-	update_git
 }
 
 run_roostock_ng () {
