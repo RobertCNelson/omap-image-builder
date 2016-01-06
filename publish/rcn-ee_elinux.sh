@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
-mirror_dir="/var/www/html/rcn-ee.net/rootfs/"
+mirror_dir="/var/www/html/rcn-ee.us/rootfs/"
 DIR="$PWD"
 
 export apt_proxy=apt-proxy:3142/

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
-mirror_dir="/var/www/html/rcn-ee.net/rootfs/eewiki"
+mirror_dir="/var/www/html/rcn-ee.us/rootfs/eewiki"
 DIR="$PWD"
 host=$(uname -n)
 

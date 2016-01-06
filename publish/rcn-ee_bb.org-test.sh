@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 time=$(date +%Y-%m-%d)
-mirror_dir="/var/www/html/rcn-ee.net/rootfs/bb.org/testing"
+mirror_dir="/var/www/html/rcn-ee.us/rootfs/bb.org/testing"
 DIR="$PWD"
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
