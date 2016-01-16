@@ -24,7 +24,7 @@ debian_jessie_lxqt_2gb="debian-8.2-lxqt-2gb-armhf-${time}"
 debian_jessie_lxqt_4gb="debian-8.2-lxqt-4gb-armhf-${time}"
 debian_jessie_console="debian-8.2-console-armhf-${time}"
 debian_jessie_usbflasher="debian-8.2-usbflasher-armhf-${time}"
-debian_jessie_lxqt_4gb_nodejs="debian-8.2-lxqt-4gb-nodejs-4.2.x-armhf-${time}"
+#debian_jessie_lxqt_4gb_nodejs="debian-8.2-lxqt-4gb-nodejs-4.2.x-armhf-${time}"
 
 archive="xz -z -8"
 
