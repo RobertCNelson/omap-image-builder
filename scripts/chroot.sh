@@ -1009,43 +1009,38 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 
 if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 	echo "Log: setting up: /etc/issue"
-	wfile="/tmp/issue"
+	wfile="${tempdir}/etc/issue"
 	cat "${tempdir}/etc/issue" > ${wfile}
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
-		cat "${tempdir}/etc/dogtag" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "cat '${tempdir}/etc/dogtag' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_console_banner}" = "x" ] ; then
-		echo "${rfs_console_banner}" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "echo '${rfs_console_banner}' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_console_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
-	sudo mv ${wfile} "${tempdir}/etc/issue"
-	sudo chown root:root "${tempdir}/etc/issue"
 fi
 
 if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 	echo "Log: setting up: /etc/issue.net"
-	wfile="/tmp/issue.net"
-	cat "${tempdir}/etc/issue.net" > ${wfile}
-	echo "" >> ${wfile}
+	wfile="${tempdir}/etc/issue.net"
+	sudo sh -c "echo '' >> ${wfile}"
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
-		cat "${tempdir}/etc/dogtag" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "cat '${tempdir}/etc/dogtag' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_ssh_banner}" = "x" ] ; then
-		echo "${rfs_ssh_banner}" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "echo '${rfs_ssh_banner}' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
-		echo "default username:password is [${rfs_username}:${rfs_password}]" >> ${wfile}
-		echo "" >> ${wfile}
+		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
+		sudo sh -c "echo '' >> ${wfile}"
 	fi
-	sudo mv ${wfile} "${tempdir}/etc/issue.net"
-	sudo chown root:root "${tempdir}/etc/issue.net"
 fi
 
 #usually a qemu failure...
