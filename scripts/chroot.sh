@@ -501,9 +501,7 @@ sudo chown root:root "${tempdir}/etc/rcn-ee.conf"
 
 #use /etc/dogtag for all:
 if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
-	echo "${rfs_etc_dogtag} ${time}" > /tmp/dogtag
-	sudo mv /tmp/dogtag "${tempdir}/etc/dogtag"
-	sudo chown root:root "${tempdir}/etc/dogtag"
+	sudo sh -c "echo '${rfs_etc_dogtag} ${time}' > '${tempdir}/etc/dogtag'"
 fi
 
 cat > "${DIR}/chroot_script.sh" <<-__EOF__
