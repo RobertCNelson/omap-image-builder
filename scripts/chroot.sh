@@ -1008,7 +1008,6 @@ echo "Log: Complete: [sudo chroot ${tempdir} /bin/sh -e chroot_script.sh]"
 if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 	echo "Log: setting up: /etc/issue"
 	wfile="${tempdir}/etc/issue"
-	cat "${tempdir}/etc/issue" > ${wfile}
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 		sudo sh -c "cat '${tempdir}/etc/dogtag' >> ${wfile}"
 		sudo sh -c "echo '' >> ${wfile}"
