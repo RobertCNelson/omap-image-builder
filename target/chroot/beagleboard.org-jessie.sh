@@ -348,8 +348,13 @@ install_node_pkgs () {
 			echo "Installing: [npm install -g --unsafe-perm node-red]"
 			TERM=dumb npm install -g --unsafe-perm node-red
 
-#			echo "Installing: [npm install -g --unsafe-perm node-red-node-beaglebone]"
-#			TERM=dumb npm install -g --unsafe-perm node-red-node-beaglebone
+			mkdir -p /root/.node-red
+			cd /root/.node-red
+
+			echo "Installing: [npm install node-red-node-beaglebone]"
+			TERM=dumb npm install node-red-node-beaglebone
+
+			cd /opt/
 
 			wfile="/lib/systemd/system/node-red.socket"
 			echo "[Socket]" > ${wfile}
