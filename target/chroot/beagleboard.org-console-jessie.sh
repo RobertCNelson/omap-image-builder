@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2015 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -186,6 +186,27 @@ setup_desktop () {
 	if [ -f /bin/ping ] ; then
 		chmod u+x /bin/ping
 	fi
+
+	if [ -d /etc/avahi/ ] ; then
+		#Annouce http server via DNS Sevice Discovery
+		wfile="/etc/avahi/services/http.service"
+		echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+		echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "<service-group>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "  <name replace-wildcards=\"yes\">BeagleBone 101 Getting Started for %h</name>" >> ${wfile}
+		echo "  <service>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "    <type>_http._tcp</type>" >> ${wfile}
+		echo "    <port>80</port>" >> ${wfile}
+		echo "  </service>" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "</service-group>" >> ${wfile}
+		chown -R root:root ${wfile}
+	fi
 }
 
 install_gem_pkgs () {
@@ -204,20 +225,28 @@ install_gem_pkgs () {
 }
 
 install_pip_pkgs () {
-	if [ -f /usr/bin/pip ] ; then
-		echo "Installing pip packages"
-		#Fixed in git, however not pushed to pip yet...(use git and install)
-		#libpython2.7-dev
-		#pip install Adafruit_BBIO
+	if [ -f /usr/bin/python ] ; then
+		wget https://bootstrap.pypa.io/get-pip.py || true
+		if [ -f get-pip.py ] ; then
+			python get-pip.py
+			rm -f get-pip.py || true
 
-		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			python setup.py install
+			if [ -f /usr/local/bin/pip ] ; then
+				echo "Installing pip packages"
+				#Fixed in git, however not pushed to pip yet...(use git and install)
+				#libpython2.7-dev
+				#pip install Adafruit_BBIO
+
+				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+				git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+				git_clone
+				if [ -f ${git_target_dir}/.git/config ] ; then
+					cd ${git_target_dir}/
+					python setup.py install
+				fi
+				pip install --upgrade PyBBIO
+			fi
 		fi
-		pip install --upgrade PyBBIO
 	fi
 }
 
@@ -292,6 +321,79 @@ install_node_pkgs () {
 			fi
 
 			systemctl enable cloud9.socket || true
+
+			if [ -d /etc/avahi/ ] ; then
+				#Annouce http server via DNS Sevice Discovery
+				wfile="/etc/avahi/services/cloud9.service"
+				echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+				echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<service-group>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "  <name replace-wildcards=\"yes\">Cloud9 IDE for %h</name>" >> ${wfile}
+				echo "  <service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "    <type>_http._tcp</type>" >> ${wfile}
+				echo "    <port>3000</port>" >> ${wfile}
+				echo "  </service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "</service-group>" >> ${wfile}
+				chown -R root:root ${wfile}
+			fi
+		fi
+
+		if [ -f /usr/bin/make ] ; then
+			echo "Installing: [npm install -g --unsafe-perm node-red]"
+			TERM=dumb npm install -g --unsafe-perm node-red
+
+			mkdir -p /root/.node-red
+			cd /root/.node-red
+
+			echo "Installing: [npm install node-red-node-beaglebone]"
+			TERM=dumb npm install node-red-node-beaglebone
+
+			cd /opt/
+
+			wfile="/lib/systemd/system/node-red.socket"
+			echo "[Socket]" > ${wfile}
+			echo "ListenStream=1880" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=sockets.target" >> ${wfile}
+
+			wfile="/lib/systemd/system/node-red.service"
+			echo "[Unit]" > ${wfile}
+			echo "Description=node-red server" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Service]" >> ${wfile}
+			echo "WorkingDirectory=/usr/local/lib/node_modules/node-red" >> ${wfile}
+			echo "ExecStart=/usr/bin/node --max-old-space-size=128 red.js" >> ${wfile}
+			echo "SyslogIdentifier=node-red" >> ${wfile}
+
+			systemctl enable node-red.socket || true
+
+			if [ -d /etc/avahi/ ] ; then
+				#Annouce http server via DNS Sevice Discovery
+				wfile="/etc/avahi/services/node-red.service"
+				echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+				echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "<service-group>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "  <name replace-wildcards=\"yes\">node-red for %h</name>" >> ${wfile}
+				echo "  <service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "    <type>_http._tcp</type>" >> ${wfile}
+				echo "    <port>1880</port>" >> ${wfile}
+				echo "  </service>" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "</service-group>" >> ${wfile}
+				chown -R root:root ${wfile}
+			fi
 		fi
 
 		cleanup_npm_cache
@@ -435,7 +537,7 @@ install_git_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
-			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
 			if [ ! "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
 					./dtc-overlay.sh

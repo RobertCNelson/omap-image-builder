@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2015 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -197,7 +197,7 @@ setup_desktop () {
 		echo "" >> ${wfile}
 		echo "<service-group>" >> ${wfile}
 		echo "" >> ${wfile}
-		echo "  <name replace-wildcards=\"yes\">Bone 101 web site for %h</name>" >> ${wfile}
+		echo "  <name replace-wildcards=\"yes\">BeagleBone 101 Getting Started for %h</name>" >> ${wfile}
 		echo "  <service>" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "    <type>_http._tcp</type>" >> ${wfile}
@@ -369,7 +369,7 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/usr/local/lib/node_modules/node-red" >> ${wfile}
-			echo "ExecStart=/usr/bin/node red.js" >> ${wfile}
+			echo "ExecStart=/usr/bin/node --max-old-space-size=128 red.js" >> ${wfile}
 			echo "SyslogIdentifier=node-red" >> ${wfile}
 
 			systemctl enable node-red.socket || true
