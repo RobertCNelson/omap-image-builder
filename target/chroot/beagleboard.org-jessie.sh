@@ -345,8 +345,54 @@ install_node_pkgs () {
 		fi
 
 		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g node-red]"
-			TERM=dumb npm install -g node-red
+			echo "Installing: [npm install -g --unsafe-perm node-red]"
+			TERM=dumb npm install -g --unsafe-perm node-red
+
+			if [ -d /root/.node-red ] ; then
+				cd /root/.node-red
+				echo "Installing: [npm install -g --unsafe-perm node-red-node-beaglebone]"
+				TERM=dumb npm install -g --unsafe-perm node-red-node-beaglebone
+				cd /opt/
+
+				wfile="/lib/systemd/system/node-red.socket"
+				echo "[Socket]" > ${wfile}
+				echo "ListenStream=1880" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "[Install]" >> ${wfile}
+				echo "WantedBy=sockets.target" >> ${wfile}
+
+				wfile="/lib/systemd/system/node-red.service"
+				echo "[Unit]" > ${wfile}
+				echo "Description=node-red server" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "[Service]" >> ${wfile}
+				echo "WorkingDirectory=/usr/local/lib/node_modules/node-red" >> ${wfile}
+				echo "ExecStart=/usr/bin/node red.js" >> ${wfile}
+				echo "SyslogIdentifier=node-red" >> ${wfile}
+
+				systemctl enable node-red.socket || true
+
+				if [ -d /etc/avahi/ ] ; then
+					#Annouce http server via DNS Sevice Discovery
+					wfile="/etc/avahi/services/node-red.service"
+					echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
+					echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
+					echo "" >> ${wfile}
+					echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
+					echo "" >> ${wfile}
+					echo "<service-group>" >> ${wfile}
+					echo "" >> ${wfile}
+					echo "  <name replace-wildcards=\"yes\">node-red for %h</name>" >> ${wfile}
+					echo "  <service>" >> ${wfile}
+					echo "" >> ${wfile}
+					echo "    <type>_http._tcp</type>" >> ${wfile}
+					echo "    <port>1880</port>" >> ${wfile}
+					echo "  </service>" >> ${wfile}
+					echo "" >> ${wfile}
+					echo "</service-group>" >> ${wfile}
+					chown -R root:root ${wfile}
+				fi
+			fi
 		fi
 
 		cleanup_npm_cache
