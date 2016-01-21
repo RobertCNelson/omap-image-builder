@@ -344,6 +344,11 @@ install_node_pkgs () {
 			fi
 		fi
 
+		if [ -f /usr/bin/make ] ; then
+			echo "Installing: [npm install -g node-red]"
+			TERM=dumb npm install -g node-red
+		fi
+
 		cleanup_npm_cache
 		sync
 
