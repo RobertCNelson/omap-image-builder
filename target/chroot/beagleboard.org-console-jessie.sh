@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2015 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -347,6 +347,12 @@ install_node_pkgs () {
 		if [ -f /usr/bin/make ] ; then
 			echo "Installing: [npm install -g --unsafe-perm node-red]"
 			TERM=dumb npm install -g --unsafe-perm node-red
+
+			if [ -d /usr/local/lib/node_modules/node-red ] ; then
+				cd /usr/local/lib/node_modules/node-red
+				TERM=dumb npm install systemd
+				cd /opt/
+			fi
 
 			mkdir -p /root/.node-red
 			cd /root/.node-red
