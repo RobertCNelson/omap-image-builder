@@ -356,6 +356,8 @@ install_node_pkgs () {
 
 			cd /opt/
 
+		#broken.. node-red socket activation....
+		if [ "x0" = "x" ] ; then
 			wfile="/lib/systemd/system/node-red.socket"
 			echo "[Socket]" > ${wfile}
 			echo "ListenStream=1880" >> ${wfile}
@@ -373,6 +375,7 @@ install_node_pkgs () {
 			echo "SyslogIdentifier=node-red" >> ${wfile}
 
 			systemctl enable node-red.socket || true
+		fi
 
 			if [ -d /etc/avahi/ ] ; then
 				#Annouce http server via DNS Sevice Discovery
