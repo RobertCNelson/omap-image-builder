@@ -1033,10 +1033,6 @@ populate_rootfs () {
 			echo "#dtb=am335x-boneblack-wl1835mod.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "##BeagleBone Black: replicape" >> ${wfile}
-			echo "#dtb=am335x-boneblack-replicape.dtb" >> ${wfile}
-
-			echo "" >> ${wfile}
 			echo "##BeagleBone Green: eMMC disabled" >> ${wfile}
 			echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
 
