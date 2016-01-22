@@ -354,6 +354,9 @@ install_node_pkgs () {
 				cd /opt/
 			fi
 
+		#disable for now, it needs to be smarter about loading capes in 4.1.x
+		if [ "x0" = "x" ] ; then
+
 			mkdir -p /root/.node-red
 			cd /root/.node-red
 
@@ -361,6 +364,7 @@ install_node_pkgs () {
 			TERM=dumb npm install node-red-node-beaglebone
 
 			cd /opt/
+		fi
 
 		#broken.. node-red socket activation....
 		if [ "x0" = "x" ] ; then
