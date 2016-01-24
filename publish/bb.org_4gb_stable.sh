@@ -64,7 +64,7 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 build_and_upload_image
 
 ##Debian 8:
-#image_name="debian-8.2-lxqt-2gb-armhf-${time}"
+#image_name="debian-8.3-lxqt-2gb-armhf-${time}"
 #size="2gb"
 
 #options="--img-2gb bone-${image_name} --dtb beaglebone \
@@ -75,7 +75,7 @@ build_and_upload_image
 
 # Next/cape-tester image
 ##Debian 8:
-image_name="debian-8.2-tester-2gb-armhf-${time}"
+image_name="debian-8.3-tester-2gb-armhf-${time}"
 size="2gb"
 
 options="--img-2gb bone-${image_name} --dtb beaglebone \
