@@ -344,15 +344,19 @@ install_node_pkgs () {
 			fi
 		fi
 
-		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g --unsafe-perm node-red]"
-			TERM=dumb npm install -g --unsafe-perm node-red
+		ver_nodered="0.9.1-nocolors"
 
-			if [ -d /usr/local/lib/node_modules/node-red ] ; then
-				cd /usr/local/lib/node_modules/node-red
-				TERM=dumb npm install systemd
-				cd /opt/
-			fi
+		if [ -f /opt/scripts/mods/node-red/node-red-${ver_nodered}.patch ] && [ -f /usr/bin/make ] ; then
+
+			echo "Installing: [npm install -g systemd@0.2.6]"
+			TERM=dumb npm install -g systemd@0.2.6
+
+			echo "Installing: [npm install -g node-red@${ver_nodered}]"
+			TERM=dumb npm install -g node-red@${ver_nodered}
+
+			cd /usr/local/lib/node_modules/node-red
+			patch -p1 < /opt/scripts/mods/node-red/node-red-${ver_nodered}.patch
+			cd /opt/
 
 		#disable for now, it needs to be smarter about loading capes in 4.1.x
 		if [ "x0" = "x" ] ; then
@@ -366,8 +370,6 @@ install_node_pkgs () {
 			cd /opt/
 		fi
 
-		#broken.. node-red socket activation....
-		if [ "x0" = "x" ] ; then
 			wfile="/lib/systemd/system/node-red.socket"
 			echo "[Socket]" > ${wfile}
 			echo "ListenStream=1880" >> ${wfile}
@@ -377,15 +379,25 @@ install_node_pkgs () {
 
 			wfile="/lib/systemd/system/node-red.service"
 			echo "[Unit]" > ${wfile}
-			echo "Description=node-red server" >> ${wfile}
+			echo "Description=Start Node-RED" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/usr/local/lib/node_modules/node-red" >> ${wfile}
-			echo "ExecStart=/usr/bin/node --max-old-space-size=128 red.js" >> ${wfile}
-			echo "SyslogIdentifier=node-red" >> ${wfile}
+			echo "Environment=HOME=/root" >> ${wfile}
+			echo "WorkingDirectory=/root" >> ${wfile}
+			echo "ExecStart=/usr/local/lib/node_modules/node-red/node-red.sh" >> ${wfile}
+			echo "SyslogIdentifier=Node-RED" >> ${wfile}
+			echo "RemainAfterExit=yes" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "[Install]" >> ${wfile}
+			echo "WantedBy=multi-user.target" >> ${wfile}
+
+			wfile="/usr/local/lib/node_modules/node-red/node-red.sh"
+			echo "#!/bin/bash -" > ${wfile}
+			echo "export NODE_PATH=/usr/local/lib/node_modules" >> ${wfile}
+			echo "cd /usr/local/lib/node_modules/node-red/" >> ${wfile}
+			echo "/usr/bin/node --max-old-space-size=128 red.js" >> ${wfile}
 
 			systemctl enable node-red.socket || true
-		fi
 
 			if [ -d /etc/avahi/ ] ; then
 				#Annouce http server via DNS Sevice Discovery
@@ -397,7 +409,7 @@ install_node_pkgs () {
 				echo "" >> ${wfile}
 				echo "<service-group>" >> ${wfile}
 				echo "" >> ${wfile}
-				echo "  <name replace-wildcards=\"yes\">node-red for %h</name>" >> ${wfile}
+				echo "  <name replace-wildcards=\"yes\">Node-RED for %h</name>" >> ${wfile}
 				echo "  <service>" >> ${wfile}
 				echo "" >> ${wfile}
 				echo "    <type>_http._tcp</type>" >> ${wfile}
