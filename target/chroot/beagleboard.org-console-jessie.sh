@@ -344,7 +344,7 @@ install_node_pkgs () {
 			fi
 		fi
 
-		ver_nodered="0.12.5"
+		ver_nodered="0.13.1"
 
 		if [ -f /opt/scripts/mods/node-red/node-red-${ver_nodered}.patch ] && [ -f /usr/bin/make ] ; then
 
