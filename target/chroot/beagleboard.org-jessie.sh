@@ -344,7 +344,7 @@ install_node_pkgs () {
 			fi
 		fi
 
-		ver_nodered="0.9.1-nocolors"
+		ver_nodered="0.10.10"
 
 		if [ -f /opt/scripts/mods/node-red/node-red-${ver_nodered}.patch ] && [ -f /usr/bin/make ] ; then
 
@@ -396,6 +396,7 @@ install_node_pkgs () {
 			echo "export NODE_PATH=/usr/local/lib/node_modules" >> ${wfile}
 			echo "cd /usr/local/lib/node_modules/node-red/" >> ${wfile}
 			echo "/usr/bin/node --max-old-space-size=128 red.js" >> ${wfile}
+			chmod +x ${wfile}
 
 			systemctl enable node-red.socket || true
 
