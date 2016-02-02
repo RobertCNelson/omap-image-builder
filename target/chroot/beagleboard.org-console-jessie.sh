@@ -138,9 +138,9 @@ setup_desktop () {
 		echo "Patching: ${wfile}"
 		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
 		sed -i -e 's:#autologin-session=UNIMPLEMENTED:autologin-session='$rfs_default_desktop':g' ${wfile}
-#		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
-#			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
-#		fi
+		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
+			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
+		fi
 	fi
 
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
@@ -312,37 +312,6 @@ install_node_pkgs () {
 		fi
 
 		cd /opt/
-
-		#cloud9 installed by cloud9-installer
-		if [ -d /opt/cloud9/build/standalonebuild ] ; then
-			if [ -f /usr/bin/make ] ; then
-				echo "Installing winston"
-				TERM=dumb npm install -g winston --arch=armhf
-			fi
-
-			systemctl enable cloud9.socket || true
-
-			if [ -d /etc/avahi/ ] ; then
-				#Annouce http server via DNS Sevice Discovery
-				wfile="/etc/avahi/services/cloud9.service"
-				echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
-				echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
-				echo "" >> ${wfile}
-				echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
-				echo "" >> ${wfile}
-				echo "<service-group>" >> ${wfile}
-				echo "" >> ${wfile}
-				echo "  <name replace-wildcards=\"yes\">Cloud9 IDE for %h</name>" >> ${wfile}
-				echo "  <service>" >> ${wfile}
-				echo "" >> ${wfile}
-				echo "    <type>_http._tcp</type>" >> ${wfile}
-				echo "    <port>3000</port>" >> ${wfile}
-				echo "  </service>" >> ${wfile}
-				echo "" >> ${wfile}
-				echo "</service-group>" >> ${wfile}
-				chown -R root:root ${wfile}
-			fi
-		fi
 
 		cleanup_npm_cache
 		sync

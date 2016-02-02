@@ -300,16 +300,6 @@ install_node_pkgs () {
 
 		cd /opt/
 
-		#cloud9 installed by cloud9-installer
-		if [ -d /opt/cloud9/build/standalonebuild ] ; then
-			if [ -f /usr/bin/make ] ; then
-				echo "Installing winston"
-				TERM=dumb npm install -g winston --arch=armhf
-			fi
-
-			systemctl enable cloud9.socket || true
-		fi
-
 		cleanup_npm_cache
 		sync
 
