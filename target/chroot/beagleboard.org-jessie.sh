@@ -480,6 +480,16 @@ install_git_repos () {
 		fi
 	fi
 
+	git_repo="https://github.com/oblique/create_ap"
+	git_target_dir="/opt/source/create_ap"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			make install
+		fi
+	fi
+
 	git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 	git_target_dir="/opt/source/pru-software-support-package"
 	git_clone
