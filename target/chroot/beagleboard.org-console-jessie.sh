@@ -275,6 +275,10 @@ install_node_pkgs () {
 		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
 		chmod 755 /etc/profile.d/node.sh
 
+		echo "Upgrading npm: [npm install -g npm@3.7.1]"
+		TERM=dumb npm install -g npm@3.7.1
+		echo "debug: npm: [`npm --version`]"
+
 		#debug
 		#echo "debug: npm config ls -l (before)"
 		#echo "--------------------------------"
