@@ -28,6 +28,10 @@ SanCloud BeagleBone Enhanced:
 Embest replica?:
 
           [aa 55 33 ee 41 33 33 35  42 4e 4c 54 74 0a 75 65 |.U3.A335BNLTt.ue|]
+          
+GHI OSD3358 Dev Board:
+
+     0.1: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 57 58 30 31 |.U3.A335BNLTGH01|]
 
 Scripts to support customized image generation for many arm systems
 
