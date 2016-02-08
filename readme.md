@@ -31,7 +31,7 @@ Embest replica?:
           
 GHI OSD3358 Dev Board:
 
-     0.1: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 57 58 30 31 |.U3.A335BNLTGH01|]
+     0.1: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 47 48 30 31 |.U3.A335BNLTGH01|]
 
 Scripts to support customized image generation for many arm systems
 
