@@ -277,42 +277,49 @@ install_node_pkgs () {
 
 		echo "Upgrading npm: [npm install -g npm@3.7.1]"
 		TERM=dumb npm install -g npm@3.7.1
-		echo "debug: npm: [`npm --version`]"
+
+		if [ -f /usr/local/bin/npm ] ; then
+			npm_bin="/usr/local/bin/npm"
+		else
+			npm_bin="/usr/bin/npm"
+		fi
+
+		echo "debug: npm: [`${npm_bin} --version`]"
 
 		#debug
 		#echo "debug: npm config ls -l (before)"
 		#echo "--------------------------------"
-		#npm config ls -l
+		#${npm_bin} config ls -l
 		#echo "--------------------------------"
 
 		#c9-core-installer...
-		npm config delete cache
-		npm config delete tmp
-		npm config delete python
+		${npm_bin} config delete cache
+		${npm_bin} config delete tmp
+		${npm_bin} config delete python
 
 		#fix npm in chroot.. (did i mention i hate npm...)
 		if [ ! -d /root/.npm ] ; then
 			mkdir -p /root/.npm
 		fi
-		npm config set cache /root/.npm
-		npm config set group 0
-		npm config set init-module /root/.npm-init.js
+		${npm_bin} config set cache /root/.npm
+		${npm_bin} config set group 0
+		${npm_bin} config set init-module /root/.npm-init.js
 
 		if [ ! -d /root/tmp ] ; then
 			mkdir -p /root/tmp
 		fi
-		npm config set tmp /root/tmp
-		npm config set user 0
-		npm config set userconfig /root/.npmrc
+		${npm_bin} config set tmp /root/tmp
+		${npm_bin} config set user 0
+		${npm_bin} config set userconfig /root/.npmrc
 
 		#echo "debug: npm config ls -l (after)"
 		#echo "--------------------------------"
-		#npm config ls -l
+		#${npm_bin} config ls -l
 		#echo "--------------------------------"
 
 		if [ -f /usr/bin/make ] ; then
 			echo "Installing: [npm install -g bonescript@0.2.5]"
-			TERM=dumb npm install -g bonescript@0.2.5
+			TERM=dumb ${npm_bin} install -g bonescript@0.2.5
 		fi
 
 		cd /opt/
