@@ -11,7 +11,7 @@ if [ -d ./deploy ] ; then
 fi
 
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
-./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
+#./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_trusty_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 
