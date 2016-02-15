@@ -286,6 +286,8 @@ install_node_pkgs () {
 
 		echo "debug: npm: [`${npm_bin} --version`]"
 
+		echo "debug: env: [`env | grep NODE`]"
+
 		#debug
 		#echo "debug: npm config ls -l (before)"
 		#echo "--------------------------------"
@@ -312,10 +314,12 @@ install_node_pkgs () {
 		${npm_bin} config set user 0
 		${npm_bin} config set userconfig /root/.npmrc
 
-		#echo "debug: npm config ls -l (after)"
-		#echo "--------------------------------"
-		#${npm_bin} config ls -l
-		#echo "--------------------------------"
+		${npm_bin} config set prefix /usr/local/
+
+		echo "debug: npm configuration"
+		echo "--------------------------------"
+		${npm_bin} config ls -l
+		echo "--------------------------------"
 
 		if [ -f /usr/bin/make ] ; then
 			echo "Installing: [npm install -g bonescript@0.2.5]"
