@@ -318,8 +318,8 @@ install_node_pkgs () {
 		#echo "--------------------------------"
 
 		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g bonescript@0.2.5]"
-			TERM=dumb ${npm_bin} install -g bonescript@0.2.5
+			echo "Installing: [npm install -g bonescript@beta]"
+			TERM=dumb ${npm_bin} install -g bonescript@beta
 		fi
 
 		cd /opt/
