@@ -265,15 +265,11 @@ install_node_pkgs () {
 	if [ -f /usr/bin/npm ] ; then
 		cd /
 		echo "Installing npm packages"
-		echo "debug: node: [`node --version`]"
-		echo "debug: npm: [`npm --version`]"
+		echo "debug: node: [`nodejs --version`]"
 
 		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
 		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
 		chmod 755 /etc/profile.d/node.sh
-
-		echo "Upgrading npm: [npm install -g npm@3.7.1]"
-		TERM=dumb npm install -g npm@3.7.1
 
 		if [ -f /usr/local/bin/npm ] ; then
 			npm_bin="/usr/local/bin/npm"
@@ -282,8 +278,6 @@ install_node_pkgs () {
 		fi
 
 		echo "debug: npm: [`${npm_bin} --version`]"
-
-		echo "debug: env: [`env | grep NODE`]"
 
 		#debug
 		#echo "debug: npm config ls -l (before)"
