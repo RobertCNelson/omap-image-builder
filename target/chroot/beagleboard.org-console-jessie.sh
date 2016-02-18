@@ -183,27 +183,6 @@ setup_desktop () {
 	if [ -f /bin/ping ] ; then
 		chmod u+x /bin/ping
 	fi
-
-	if [ -d /etc/avahi/ ] ; then
-		#Annouce http server via DNS Sevice Discovery
-		wfile="/etc/avahi/services/http.service"
-		echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->" > ${wfile}
-		echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "<!-- See avahi.service(5) for more information about this configuration file -->" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "<service-group>" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "  <name replace-wildcards=\"yes\">BeagleBone 101 Getting Started for %h</name>" >> ${wfile}
-		echo "  <service>" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "    <type>_http._tcp</type>" >> ${wfile}
-		echo "    <port>80</port>" >> ${wfile}
-		echo "  </service>" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "</service-group>" >> ${wfile}
-		chown -R root:root ${wfile}
-	fi
 }
 
 install_gem_pkgs () {
@@ -267,10 +246,6 @@ install_node_pkgs () {
 		echo "Installing npm packages"
 		echo "debug: node: [`nodejs --version`]"
 
-		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
-		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
-		chmod 755 /etc/profile.d/node.sh
-
 		if [ -f /usr/local/bin/npm ] ; then
 			npm_bin="/usr/local/bin/npm"
 		else
@@ -307,19 +282,11 @@ install_node_pkgs () {
 
 		${npm_bin} config set prefix /usr/local/
 
-		echo "debug: npm configuration"
-		echo "--------------------------------"
-		${npm_bin} config ls -l
-		echo "--------------------------------"
+		#echo "debug: npm configuration"
+		#echo "--------------------------------"
+		#${npm_bin} config ls -l
+		#echo "--------------------------------"
 
-		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g bonescript@0.2.5]"
-			TERM=dumb ${npm_bin} install -g bonescript@0.2.5
-		fi
-
-		cd /opt/
-
-		cleanup_npm_cache
 		sync
 
 		if [ -f /usr/local/bin/jekyll ] ; then
@@ -358,40 +325,6 @@ install_node_pkgs () {
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
 			systemctl enable jekyll-autorun.service || true
-
-			wfile="/lib/systemd/system/bonescript.socket"
-			echo "[Socket]" > ${wfile}
-			echo "ListenStream=80" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=sockets.target" >> ${wfile}
-
-			wfile="/lib/systemd/system/bonescript.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Bonescript server" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
-			echo "SyslogIdentifier=bonescript" >> ${wfile}
-
-			systemctl enable bonescript.socket || true
-
-			wfile="/lib/systemd/system/bonescript-autorun.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Bonescript autorun" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-			echo "EnvironmentFile=/etc/default/node" >> ${wfile}
-			echo "ExecStart=/usr/bin/node autorun.js" >> ${wfile}
-			echo "SyslogIdentifier=bonescript-autorun" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=multi-user.target" >> ${wfile}
-
-			systemctl enable bonescript-autorun.service || true
 
 			if [ -d /etc/apache2/ ] ; then
 				#bone101 takes over port 80, so shove apache/etc to 8080:
