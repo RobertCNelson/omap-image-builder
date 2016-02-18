@@ -17,7 +17,7 @@ fi
 
 debian_stable="debian-8.3-console-armhf-${time}"
 debian_testing="debian-stretch-console-armhf-${time}"
-ubuntu_stable="ubuntu-14.04.3-console-armhf-${time}"
+ubuntu_stable="ubuntu-14.04.4-console-armhf-${time}"
 ubuntu_testing="ubuntu-xenial-console-armhf-${time}"
 
 archive="xz -z -8"
