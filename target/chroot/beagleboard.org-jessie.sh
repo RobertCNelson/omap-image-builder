@@ -92,7 +92,10 @@ setup_system () {
 		fi
 	fi
 
-	if [ -f /etc/securetty ] ; then
+	if [ -f /lib/systemd/system/serial-getty@.service ] ; then
+		cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
+		ln -s /etc/systemd/system/serial-getty@ttyGS0.service /etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
+
 		echo "" >> /etc/securetty
 		echo "#USB Gadget Serial Port" >> /etc/securetty
 		echo "ttyGS0" >> /etc/securetty
