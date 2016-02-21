@@ -224,6 +224,7 @@ install_pip_pkgs () {
 					python setup.py install
 				fi
 				pip install --upgrade PyBBIO
+				pip install iw_parse
 			fi
 		fi
 	fi
