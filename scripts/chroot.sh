@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2012-2015 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2016 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -72,7 +72,7 @@ check_defines () {
 	case "${deb_distribution}" in
 	debian)
 		deb_components=${deb_components:-"main contrib non-free"}
-		deb_mirror=${deb_mirror:-"ftp.us.debian.org/debian/"}
+		deb_mirror=${deb_mirror:-"httpredir.debian.org/debian/"}
 		;;
 	ubuntu)
 		deb_components=${deb_components:-"main universe multiverse"}
@@ -352,11 +352,11 @@ wheezy|jessie)
 	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "deb http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	else
-		echo "#deb http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "##deb-src http://ftp.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "##deb-src http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	fi
 	;;
 stretch)

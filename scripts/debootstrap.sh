@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2012-2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2016 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -104,7 +104,7 @@ check_defines () {
 	if [ ! "${deb_mirror}" ] ; then
 		case "${deb_distribution}" in
 		debian)
-			deb_mirror="ftp.us.debian.org/debian/"
+			deb_mirror="httpredir.debian.org/debian/"
 			;;
 		ubuntu)
 			deb_mirror="ports.ubuntu.com/ubuntu-ports/"
