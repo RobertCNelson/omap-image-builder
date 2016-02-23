@@ -54,34 +54,28 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 
 ## Stable/shipping
 ##Debian 7:
-image_name="debian-7.9-lxde-4gb-armhf-${time}"
-size="4gb"
-
-options="--img-4gb bone-${image_name} --dtb beaglebone \
---enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
-build_and_upload_image
-
-##Debian 8:
-#image_name="debian-8.3-lxqt-2gb-armhf-${time}"
-#size="2gb"
-
-#options="--img-2gb bone-${image_name} --dtb beaglebone \
-#--bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
+#image_name="debian-7.9-lxde-armhf-${time}"
+#size="4gb"
+#options="--img-4gb bone-${image_name} --dtb beaglebone \
+#--enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
+#./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
 #build_and_upload_image
 
-# Next/cape-tester image
+# Next BeagleBone image
 ##Debian 8:
-image_name="debian-8.3-tester-2gb-armhf-${time}"
+image_name="debian-8.3-iot-armhf-${time}"
 size="2gb"
-
 options="--img-2gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
+./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.1
+build_and_upload_image
 
-./RootStock-NG.sh -c bb.org-debian-jessie-tester-2gb-v4.1
+# Next BeagleBoard-X15 image
+##Debian 8:
+image_name="debian-8.3-lxqt-4gb-armhf-${time}"
+size="4gb"
+options="--img-4gb bbx15-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard-x15"
+./RootStock-NG.sh -c debian-8.3-lxqt-4gb-armhf
 build_and_upload_image
 
 [ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
