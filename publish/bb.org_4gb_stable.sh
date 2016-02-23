@@ -75,7 +75,7 @@ build_and_upload_image
 image_name="debian-8.3-lxqt-4gb-armhf-${time}"
 size="4gb"
 options="--img-4gb bbx15-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard-x15"
-./RootStock-NG.sh -c debian-8.3-lxqt-4gb-armhf
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb
 build_and_upload_image
 
 [ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
