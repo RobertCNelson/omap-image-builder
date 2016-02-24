@@ -63,7 +63,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 
 # Next BeagleBone image
 ##Debian 8:
-image_name="debian-8.3-iot-armhf-${time}"
+image_name="debian-jessie-iot-armhf-${time}"
 size="2gb"
 options="--img-2gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone"
@@ -72,10 +72,10 @@ build_and_upload_image
 
 # Next BeagleBoard-X15 image
 ##Debian 8:
-image_name="debian-8.3-lxqt-4gb-armhf-${time}"
+image_name="debian-jessie-lxqt-4gb-armhf-${time}"
 size="4gb"
 options="--img-4gb bbx15-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard-x15"
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 build_and_upload_image
 
 [ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
