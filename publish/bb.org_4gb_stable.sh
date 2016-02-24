@@ -22,6 +22,7 @@ build_and_upload_image () {
 
 	if [ -d ./deploy/${image_name} ] ; then
 		cd ./deploy/${image_name}/
+		echo "debug: [./setup_sdcard.sh ${options}]"
 		sudo ./setup_sdcard.sh ${options}
 
 		if [ -f bone-${image_name}-${size}.img ] ; then
