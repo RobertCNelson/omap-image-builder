@@ -403,11 +403,9 @@ install_git_repos () {
 			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
 			if [ ! "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
-					./dtc-overlay.sh
 					make
 					make install
 					update-initramfs -u -k ${repo_rcnee_pkg_version}
-					rm -rf /home/${rfs_username}/git/ || true
 					make clean
 				fi
 			fi

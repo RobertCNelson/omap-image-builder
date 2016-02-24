@@ -97,7 +97,10 @@ install_git_repos () {
 			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1)
 			if [ ! "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
-					./dtc-overlay.sh
+					#just for trusty, 14.04... drop with xenial...
+					if [ ! -f /usr/bin/dtc-v4.1.x ] ; then
+						./dtc-overlay.sh
+					fi
 					make
 					make install
 					update-initramfs -u -k ${repo_rcnee_pkg_version}
