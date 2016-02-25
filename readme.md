@@ -39,6 +39,10 @@ SanCloud BeagleBone Enhanced:
 
        A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 53 45 30 41 |.U3.A335BNLTSE0A|]
 
+MENTOREL uSomIQ BBB:
+
+       6: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 1a 4d 30 41 |.U3.A335BNLT.M06|]
+
 Embest replica?:
 
           [aa 55 33 ee 41 33 33 35  42 4e 4c 54 74 0a 75 65 |.U3.A335BNLTt.ue|]
