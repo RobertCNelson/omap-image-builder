@@ -41,7 +41,7 @@ SanCloud BeagleBone Enhanced:
 
 MENTOREL uSomIQ BBB:
 
-       6: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 1a 4d 30 41 |.U3.A335BNLT.M06|]
+       6: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 4d 45 30 41 |.U3.A335BNLTME06|]
 
 Embest replica?:
 
