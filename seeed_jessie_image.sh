@@ -3,9 +3,9 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.1
+./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
 
-debian_jessie_lxqt_4gb="debian-8.3-lxqt-4gb-armhf-${time}"
+debian_jessie_iot="debian-8.3-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -59,18 +59,18 @@ generate_img () {
         cd ..
 }
 
-###lxqt-4gb image
-base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
+###iot image
+base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
+base_rootfs="${debian_jessie_iot}" ; blend="iot" ; archive_base_rootfs
 
 blend="lxqt-4gb"
-wfile="BBB-eMMC-flasher-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
-wfile="bone-${debian_jessie_lxqt_4gb}-4gb" ; archive_img
+wfile="BBB-eMMC-flasher-${debian_jessie_iot}-2gb" ; archive_img
+wfile="bone-${debian_jessie_iot}-2gb" ; archive_img
 
 
 __EOF__
