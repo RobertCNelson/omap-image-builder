@@ -373,6 +373,14 @@ if [ "x${repo_external}" = "xenable" ] ; then
 	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
 fi
 
+if [ ! "x${repo_nodesource}" = "x" ] ; then
+	echo "" >> ${wfile}
+	echo "deb https://deb.nodesource.com/${repo_nodesource} ${deb_codename} main" >> ${wfile}
+	echo "#deb-src https://deb.nodesource.com/${repo_nodesource} ${deb_codename} main" >> ${wfile}
+	echo "" >> ${wfile}
+	sudo cp -v "${OIB_DIR}/target/keyring/nodesource.gpg.key" "${tempdir}/tmp/nodesource.gpg.key"
+fi
+
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	#no: precise
 	echo "" >> ${wfile}
@@ -553,6 +561,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkg_updates () {
+		if [ -f /tmp/nodesource.gpg.key ] ; then
+			apt-key add /tmp/nodesource.gpg.key
+			rm -f /tmp/nodesource.gpg.key || true
+		fi
 		if [ "x${repo_rcnee}" = "xenable" ] ; then
 			apt-key add /tmp/repos.rcn-ee.net-archive-keyring.asc
 			rm -f /tmp/repos.rcn-ee.net-archive-keyring.asc || true
