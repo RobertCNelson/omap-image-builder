@@ -324,6 +324,10 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#apt: make sure apt-cacher-ng doesn't break oracle-java8-installer
 	echo 'Acquire::http::Proxy::download.oracle.com "DIRECT";' > /tmp/03-proxy-oracle
 	sudo mv /tmp/03-proxy-oracle "${tempdir}/etc/apt/apt.conf.d/03-proxy-oracle"
+
+	#apt: make sure apt-cacher-ng doesn't break https repos
+	echo 'Acquire::http::Proxy::deb.nodesource.com "DIRECT";' > /tmp/03-proxy-https
+	sudo mv /tmp/03-proxy-https "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
 fi
 
 #set initial 'seed' time...
