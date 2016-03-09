@@ -196,7 +196,9 @@ setup_desktop () {
 		echo "AllowHostnameUpdates=false" >> ${wfile}
 		echo "TetheringTechnologies=ethernet,wifi" >> ${wfile}
 		echo "PersistentTetheringMode=true" >> ${wfile}
+		echo "NetworkInterfaceBlacklist=usb0" >> ${wfile}
 
+		mkdir -p /var/lib/connman/ || true
 		wfile="/var/lib/connman/settings"
 		echo "[global]" > ${wfile}
 		echo "OfflineMode=false" >> ${wfile}
