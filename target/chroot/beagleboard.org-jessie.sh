@@ -186,6 +186,39 @@ setup_desktop () {
 	if [ -f /bin/ping ] ; then
 		chmod u+x /bin/ping
 	fi
+
+	if [ -f /etc/init.d/connman ] ; then
+		mkdir -p /etc/connman/ || true
+		wfile="/etc/connman/main.conf"
+		echo "[General]" > ${wfile}
+		echo "PreferredTechnologies=ethernet,wifi" >> ${wfile}
+		echo "SingleConnectedTechnology=false" >> ${wfile}
+		echo "AllowHostnameUpdates=false" >> ${wfile}
+		echo "TetheringTechnologies=ethernet,wifi" >> ${wfile}
+		echo "PersistentTetheringMode=true" >> ${wfile}
+
+		wfile="/var/lib/connman/settings"
+		echo "[global]" > ${wfile}
+		echo "OfflineMode=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Wired]" >> ${wfile}
+		echo "Enable=true" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[WiFi]" >> ${wfile}
+		echo "Enable=true" >> ${wfile}
+		echo "Tethering=true" >> ${wfile}
+		echo "Tethering.Identifier=BeagleBone" >> ${wfile}
+		echo "Tethering.Passphrase=BeagleBone" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Gadget]" >> ${wfile}
+		echo "Enable=false" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[P2P]" >> ${wfile}
+		echo "Enable=false" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+	fi
 }
 
 install_gem_pkgs () {
