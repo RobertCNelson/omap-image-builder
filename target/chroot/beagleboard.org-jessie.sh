@@ -194,7 +194,6 @@ setup_desktop () {
 		echo "PreferredTechnologies=ethernet,wifi" >> ${wfile}
 		echo "SingleConnectedTechnology=false" >> ${wfile}
 		echo "AllowHostnameUpdates=false" >> ${wfile}
-		echo "TetheringTechnologies=ethernet,wifi" >> ${wfile}
 		echo "PersistentTetheringMode=true" >> ${wfile}
 		echo "NetworkInterfaceBlacklist=usb0" >> ${wfile}
 
