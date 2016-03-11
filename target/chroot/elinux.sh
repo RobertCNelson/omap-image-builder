@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -81,6 +81,11 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+setup_system () {
+	echo "" >> /etc/securetty
+	echo "#USB Gadget Serial Port" >> /etc/securetty
+	echo "ttyGS0" >> /etc/securetty
+}
 
 install_git_repos () {
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
@@ -115,7 +120,7 @@ install_git_repos () {
 
 is_this_qemu
 
-#setup_system
+setup_system
 #setup_desktop
 
 #install_gem_pkgs
