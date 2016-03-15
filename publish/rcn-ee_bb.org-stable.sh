@@ -167,8 +167,8 @@ options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 ###usbflasher images: (also single partition)
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
 
-options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
-options="--img-2gb bbx15-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --usb-flasher" ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --usb-flasher" ; generate_img
 
 ###lxqt-4gb-nodejs-4.2.x image
 base_rootfs="${debian_jessie_lxqt_4gb_nodejs}" ; blend="lxqt-4gb-nodejs-4.2.x" ; extract_base_rootfs
@@ -224,8 +224,8 @@ wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
 #
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
 
-wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
+wfile="BBB-blank-\${base_rootfs}-4gb" ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb" ; archive_img
 
 ###lxqt-4gb-nodejs-4.2.x image
 base_rootfs="${debian_jessie_lxqt_4gb_nodejs}" ; blend="lxqt-4gb-nodejs-4.2.x"
