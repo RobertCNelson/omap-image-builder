@@ -89,7 +89,7 @@ setup_system () {
 
 install_git_repos () {
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="4.1-ti"
+	git_branch="4.4-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
