@@ -13,6 +13,7 @@ if [ -d ./deploy ] ; then
 fi
 
 ./RootStock-NG.sh -c machinekit-debian-wheezy
+./RootStock-NG.sh -c machinekit-debian-jessie
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.1.conf
@@ -21,6 +22,7 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-nodejs-4.2.x-v4.1
 
 debian_wheezy_machinekit="debian-7.9-machinekit-armhf-${time}"
+debian_jessie_machinekit="debian-8.3-machinekit-armhf-${time}"
 debian_jessie_lxqt_2gb="debian-8.3-lxqt-2gb-armhf-${time}"
 debian_jessie_lxqt_4gb="debian-8.3-lxqt-4gb-armhf-${time}"
 debian_jessie_iot="debian-8.3-iot-armhf-${time}"
@@ -133,6 +135,10 @@ base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_ro
 
 options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
+base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
+
 ###lxqt-4gb image
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
@@ -178,6 +184,7 @@ options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
+base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; archive_base_rootfs
@@ -187,6 +194,10 @@ base_rootfs="${debian_jessie_lxqt_4gb_nodejs}" ; blend="lxqt-4gb-nodejs-4.2.x" ;
 
 ###archive *.img
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
+
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
+
+base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit"
 
 wfile="bone-\${base_rootfs}-4gb" ; archive_img
 
