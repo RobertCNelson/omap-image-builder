@@ -135,7 +135,7 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; genera
 
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###lxqt-4gb image
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
