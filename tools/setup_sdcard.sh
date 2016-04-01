@@ -155,6 +155,17 @@ detect_software () {
 		exit
 	fi
 
+	#Debian Stretch, mfks.ext4 default to metadata_csum,64bit disable till u-boot works again..
+	unset ext4_options
+	unset test_mke2fs
+	LC_ALL=C mkfs.ext4 -V &> /tmp/mkfs
+	test_mkfs=$(cat /tmp/mkfs | grep mke2fs | grep 1.43 || true)
+	if [ "x${test_mkfs}" = "x" ] ; then
+		unset ext4_options
+	else
+		ext4_options="-O ^metadata_csum,^64bit"
+	fi
+
 	unset wget_version
 	wget_version=$(LC_ALL=C wget --version | grep "GNU Wget" | awk '{print $3}' | awk -F '.' '{print $2}' || true)
 	case "${wget_version}" in
@@ -487,9 +498,14 @@ format_partition_try2 () {
 }
 
 format_partition () {
-	echo "Formating with: [${mkfs} ${mkfs_partition} ${mkfs_label}]"
+	unset mkfs_options
+	if [ "x${mkfs}" = "xmkfs.ext4" ] ; then
+		mkfs_options="${ext4_options}"
+	fi
+
+	echo "Formating with: [${mkfs} ${mkfs_options} ${mkfs_partition} ${mkfs_label}]"
 	echo "-----------------------------"
-	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_try2
+	LC_ALL=C ${mkfs} ${mkfs_options} ${mkfs_partition} ${mkfs_label} || format_partition_try2
 	sync
 }
 
