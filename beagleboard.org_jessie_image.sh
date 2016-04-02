@@ -7,9 +7,9 @@ DIR="$PWD"
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
 
-debian_jessie_lxqt_2gb="debian-8.3-lxqt-2gb-armhf-${time}"
-debian_jessie_lxqt_4gb="debian-8.3-lxqt-4gb-armhf-${time}"
-debian_jessie_console="debian-8.3-console-armhf-${time}"
+debian_jessie_lxqt_2gb="debian-8.4-lxqt-2gb-armhf-${time}"
+debian_jessie_lxqt_4gb="debian-8.4-lxqt-4gb-armhf-${time}"
+debian_jessie_console="debian-8.4-console-armhf-${time}"
 
 archive="xz -z -8 -v"
 

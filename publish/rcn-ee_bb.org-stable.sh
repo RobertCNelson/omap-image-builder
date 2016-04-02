@@ -21,12 +21,12 @@ fi
 ./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
 
 debian_wheezy_machinekit="debian-7.10-machinekit-armhf-${time}"
-debian_jessie_machinekit="debian-8.3-machinekit-armhf-${time}"
-debian_jessie_lxqt_2gb="debian-8.3-lxqt-2gb-armhf-${time}"
-debian_jessie_lxqt_4gb="debian-8.3-lxqt-4gb-armhf-${time}"
-debian_jessie_iot="debian-8.3-iot-armhf-${time}"
-debian_jessie_console="debian-8.3-console-armhf-${time}"
-debian_jessie_usbflasher="debian-8.3-usbflasher-armhf-${time}"
+debian_jessie_machinekit="debian-8.4-machinekit-armhf-${time}"
+debian_jessie_lxqt_2gb="debian-8.4-lxqt-2gb-armhf-${time}"
+debian_jessie_lxqt_4gb="debian-8.4-lxqt-4gb-armhf-${time}"
+debian_jessie_iot="debian-8.4-iot-armhf-${time}"
+debian_jessie_console="debian-8.4-console-armhf-${time}"
+debian_jessie_usbflasher="debian-8.4-usbflasher-armhf-${time}"
 
 archive="xz -z -8"
 
