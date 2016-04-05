@@ -179,7 +179,17 @@ setup_desktop () {
 	#fix Ping:
 	#ping: icmp open socket: Operation not permitted
 	if [ -f /bin/ping ] ; then
-		chmod u+x /bin/ping
+	    if command -v setcap > /dev/null; then
+		if setcap cap_net_raw+ep /bin/ping cap_net_raw+ep /bin/ping6; then
+		    echo "Setcap worked! Ping(6) is not suid!"
+		else
+		    echo "Setcap failed on /bin/ping, falling back to setuid" >&2
+		    chmod u+s /bin/ping /bin/ping6
+		fi
+	    else
+		echo "Setcap is not installed, falling back to setuid" >&2
+		chmod u+s /bin/ping /bin/ping6
+	    fi
 	fi
 
 	if [ -f /etc/init.d/connman ] ; then
