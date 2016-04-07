@@ -24,6 +24,7 @@ archive="xz -z -8"
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs"
 
+omap3_beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs"
 
@@ -117,6 +118,7 @@ base_rootfs="${debian_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
 options="--img bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
@@ -126,6 +128,7 @@ base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
 
 options="--img BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
 options="--img bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
 options="--img bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
@@ -139,11 +142,13 @@ base_rootfs="${debian_testing}" ; blend="elinux" ; archive_base_rootfs
 #Archive img:
 base_rootfs="${debian_stable}" ; blend="microsd"
 wfile="bone-\${base_rootfs}-2gb" ; archive_img
+wfile="bbxm-\${base_rootfs}-2gb" ; archive_img
 wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
 wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
 base_rootfs="${ubuntu_stable}" ; blend="microsd"
 wfile="bone-\${base_rootfs}-2gb" ; archive_img
+wfile="bbxm-\${base_rootfs}-2gb" ; archive_img
 wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
 wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
