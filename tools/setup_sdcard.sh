@@ -484,6 +484,11 @@ format_partition_error () {
 }
 
 format_partition_try2 () {
+	unset mkfs_options
+	if [ "x${mkfs}" = "xmkfs.ext4" ] ; then
+		mkfs_options="${ext4_options}"
+	fi
+
 	echo "-----------------------------"
 	echo "BUG: [${mkfs_partition}] was not available so trying [${mkfs}] again in 5 seconds..."
 	partprobe ${media}
@@ -491,9 +496,9 @@ format_partition_try2 () {
 	sleep 5
 	echo "-----------------------------"
 
-	echo "Formating with: [${mkfs} ${mkfs_partition} ${mkfs_label}]"
+	echo "Formating with: [${mkfs} ${mkfs_options} ${mkfs_partition} ${mkfs_label}]"
 	echo "-----------------------------"
-	LC_ALL=C ${mkfs} ${mkfs_partition} ${mkfs_label} || format_partition_error
+	LC_ALL=C ${mkfs} ${mkfs_options} ${mkfs_partition} ${mkfs_label} || format_partition_error
 	sync
 }
 
