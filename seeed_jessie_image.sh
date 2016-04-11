@@ -5,7 +5,7 @@ DIR="$PWD"
 
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
 
-debian_jessie_iot="debian-8.4-iot-armhf-${time}"
+debian_jessie_iot="debian-8.4-seeed-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -60,17 +60,15 @@ generate_img () {
 }
 
 ###iot image
-base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
+base_rootfs="${debian_jessie_iot}" ; blend="seeed-iot" ; extract_base_rootfs
 
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
-options="--img-2gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_iot}" ; blend="iot" ; archive_base_rootfs
+base_rootfs="${debian_jessie_iot}" ; blend="seeed-iot" ; archive_base_rootfs
 
 blend="lxqt-4gb"
-wfile="BBB-eMMC-flasher-${debian_jessie_iot}-2gb" ; archive_img
-wfile="bone-${debian_jessie_iot}-2gb" ; archive_img
+wfile="bone-${debian_jessie_iot}-4gb" ; archive_img
 
 
 __EOF__
