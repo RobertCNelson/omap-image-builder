@@ -469,6 +469,31 @@ install_git_repos () {
 		git_target_dir="/opt/source/pru-software-support-package"
 		git_clone
 	fi
+
+	echo "debug: node: [`/usr/bin/nodejs --version`]"
+
+	if [ -f /usr/local/bin/npm ] ; then
+		npm_bin="/usr/local/bin/npm"
+	elif [ -f /usr/bin/npm ] ; then
+		npm_bin="/usr/bin/npm"
+	elif
+		unset npm_bin
+	fi
+
+	if [ ! "x${npm_bin}" = "x" ] ; then
+		echo "debug: npm: [`${npm_bin} --version`]"
+	fi
+
+	git_repo="https://github.com/Pillar1989/wifidog-server"
+	git_branch="BBGW"
+	git_target_dir="/opt/source/wifidog-server"
+	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		if [ ! "x${npm_bin}" = "x" ] ; then
+			cd ${git_target_dir}/
+			/usr/bin/nodejs ${npm_bin} install
+		fi
+	fi
 }
 
 install_build_pkgs () {
