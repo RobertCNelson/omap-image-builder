@@ -476,7 +476,7 @@ install_git_repos () {
 		npm_bin="/usr/local/bin/npm"
 	elif [ -f /usr/bin/npm ] ; then
 		npm_bin="/usr/bin/npm"
-	elif
+	else
 		unset npm_bin
 	fi
 
