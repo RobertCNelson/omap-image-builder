@@ -1627,10 +1627,10 @@ while [ ! -z "$1" ] ; do
 	--bbg-flasher)
 		bbg_flasher="enable"
 		;;
-	--bbb-usb-flasher|--usb-flasher)
+	--bbb-usb-flasher|--usb-flasher|--oem-flasher)
 		usb_flasher="enable"
 		;;
-	--bbb-flasher|--emmc-flasher|--oem-flasher)
+	--bbb-flasher|--emmc-flasher)
 		emmc_flasher="enable"
 		;;
 	--bbb-old-bootloader-in-emmc)
