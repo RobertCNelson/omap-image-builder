@@ -1001,6 +1001,27 @@ populate_rootfs () {
 		echo "Transfer of data is Complete, now syncing data to disk..."
 		sync
 		sync
+
+		if [ ! "x${oem_flasher_img}" = "x" ] ; then
+			if [ ! -d "${TEMPDIR}/disk/opt/emmc/" ] ; then
+				mkdir -p "${TEMPDIR}/disk/opt/emmc/"
+			fi
+			cp -v "${oem_flasher_img}" "${TEMPDIR}/disk/opt/emmc/"
+			sync
+			if [ ! "x${oem_flasher_bmap}" = "x" ] ; then
+				cp -v "${oem_flasher_bmap}" "${TEMPDIR}/disk/opt/emmc/"
+				sync
+			fi
+			if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
+				cp -v "${oem_flasher_eeprom}" "${TEMPDIR}/disk/opt/emmc/"
+				sync
+			fi
+			if [ ! "x${oem_flasher_job}" = "x" ] ; then
+				cp -v "${oem_flasher_job}" "${TEMPDIR}/disk/opt/emmc/job.txt"
+				sync
+			fi
+		fi
+
 		echo "-----------------------------"
 	fi
 
@@ -1609,11 +1630,27 @@ while [ ! -z "$1" ] ; do
 	--bbb-usb-flasher|--usb-flasher)
 		usb_flasher="enable"
 		;;
-	--bbb-flasher|--emmc-flasher)
+	--bbb-flasher|--emmc-flasher|--oem-flasher)
 		emmc_flasher="enable"
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"
+		;;
+	--oem-flasher-img)
+		checkparm $2
+		oem_flasher_img="$2"
+		;;
+	--oem-flasher-bmap)
+		checkparm $2
+		oem_flasher_bmap="$2"
+		;;
+	--oem-flasher-eeprom)
+		checkparm $2
+		oem_flasher_eeprom="$2"
+		;;
+	--oem-flasher-job)
+		checkparm $2
+		oem_flasher_job="$2"
 		;;
 	--enable-systemd)
 		enable_systemd="enabled"
