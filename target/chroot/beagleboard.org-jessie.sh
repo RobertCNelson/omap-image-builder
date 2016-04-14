@@ -363,8 +363,12 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "CPUAccounting=true" >> ${wfile}
+			echo "CPUQuota=10%" >> ${wfile}
+			echo "MemoryAccounting=true" >> ${wfile}
+			echo "MemoryLimit=50M" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Install]" >> ${wfile}
 			echo "WantedBy=multi-user.target" >> ${wfile}
