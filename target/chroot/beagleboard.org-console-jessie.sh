@@ -191,7 +191,7 @@ setup_desktop () {
 		chmod u+s /bin/ping /bin/ping6
 	    fi
 	fi
-	
+
 	if [ -f /etc/init.d/connman ] ; then
 		mkdir -p /etc/connman/ || true
 		wfile="/etc/connman/main.conf"
@@ -363,8 +363,12 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "CPUAccounting=true" >> ${wfile}
+			echo "CPUQuota=10%" >> ${wfile}
+			echo "MemoryAccounting=true" >> ${wfile}
+			echo "MemoryLimit=50M" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Install]" >> ${wfile}
 			echo "WantedBy=multi-user.target" >> ${wfile}
@@ -430,8 +434,16 @@ install_git_repos () {
 		fi
 	fi
 
+	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1. || true)
+	if [ ! "x${is_kernel}" = "x" ] ; then
+		git_branch="4.1-ti"
+	else
+		is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.4. || true)
+		if [ ! "x${is_kernel}" = "x" ] ; then
+			git_branch="4.4-ti"
+		fi
+	fi
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_branch="4.1-ti"
 	git_target_dir="/opt/source/dtb-${git_branch}"
 	git_clone_branch
 
@@ -441,8 +453,8 @@ install_git_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
-			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1 || true)
-			if [ ! "x${is_kernel}" = "x" ] ; then
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 3.8.13 || true)
+			if [ "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
 					make
 					make install
@@ -451,7 +463,6 @@ install_git_repos () {
 				fi
 			fi
 		fi
-		cd /
 	fi
 
 	#am335x-pru-package
