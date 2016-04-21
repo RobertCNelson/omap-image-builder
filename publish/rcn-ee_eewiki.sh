@@ -17,10 +17,10 @@ fi
 
 ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armhf
-./RootStock-NG.sh -c eewiki_minfs_ubuntu_trusty_armhf
+./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
 
 debian_stable="debian-8.4"
-ubuntu_stable="ubuntu-14.04.4"
+ubuntu_stable="ubuntu-16.04"
 archive="xz -z -8"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
