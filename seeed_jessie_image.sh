@@ -3,9 +3,13 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
+./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
 
-debian_jessie_iot="debian-8.4-seeed-iot-armhf-${time}"
+debian_jessie_usbflasher="debian-8.4-usbflasher-armhf-${time}"
+debian_jessie_seeed_lxqt_4gb="debian-8.4-seeed-lxqt-4gb-armhf-${time}"
+debian_jessie_seeed_iot="debian-8.4-seeed-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -59,17 +63,37 @@ generate_img () {
         cd ..
 }
 
-###iot image
-base_rootfs="${debian_jessie_iot}" ; blend="seeed-iot" ; extract_base_rootfs
+###usbflasher images: (also single partition)
+base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
+
+options="--img-4gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
+
+###Seeed lxqt-4gb image
+base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+
+###Seeed iot image
+base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_iot}" ; blend="seeed-iot" ; archive_base_rootfs
+base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_rootfs
+base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive_base_rootfs
+base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; archive_base_rootfs
 
-blend="lxqt-4gb"
-wfile="bone-${debian_jessie_iot}-4gb" ; archive_img
+#
+base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
+wfile="bbx15-\${base_rootfs}-4gb" ; archive_img
 
+#
+base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
+
+#
+base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
 
 __EOF__
 
