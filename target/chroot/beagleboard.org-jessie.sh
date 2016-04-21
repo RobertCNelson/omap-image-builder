@@ -348,8 +348,6 @@ install_node_pkgs () {
 
 				if [ ! "x${bone101_git_sha}" = "x" ] ; then
 					git checkout ${bone101_git_sha} -b tmp-production
-				else
-					git pull --no-edit https://github.com/jadonk/bone101/ master
 				fi
 
 				echo "jekyll pre-building bone101"
