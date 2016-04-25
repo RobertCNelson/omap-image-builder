@@ -227,14 +227,9 @@ install_gem_pkgs () {
 		echo "Installing gem packages"
 		echo "debug: ruby: [`ruby --version`]"
 		echo "debug: gem: [`gem --version`]"
-		gem_wheezy="--no-rdoc --no-ri"
-		gem_jessie="--no-document"
 
 		echo "gem: [beaglebone]"
 		gem install beaglebone || true
-
-		echo "gem: [jekyll -v 3.0.4 ${gem_jessie}]"
-		gem install jekyll -v 3.0.4 ${gem_jessie} || true
 	fi
 }
 
@@ -328,7 +323,7 @@ install_node_pkgs () {
 
 		sync
 
-		if [ -f /usr/local/bin/jekyll ] ; then
+		if [ -f /usr/bin/jekyll ] ; then
 			git_repo="https://github.com/beagleboard/bone101"
 			git_target_dir="/var/lib/cloud9"
 
@@ -347,7 +342,7 @@ install_node_pkgs () {
 				fi
 
 				echo "jekyll pre-building bone101"
-				/usr/local/bin/jekyll build --destination bone101
+				/usr/bin/jekyll build --destination bone101
 			fi
 
 			wfile="/lib/systemd/system/jekyll-autorun.service"
@@ -357,7 +352,7 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
+			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
 			echo "CPUAccounting=true" >> ${wfile}
 			echo "CPUQuota=10%" >> ${wfile}
