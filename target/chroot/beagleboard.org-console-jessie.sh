@@ -237,8 +237,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone || true
 
-		echo "gem: [jekyll ${gem_jessie}]"
-		gem install jekyll ${gem_jessie} || true
+		echo "gem: [jekyll -v 3.1.3 ${gem_jessie}]"
+		gem install jekyll -v 3.1.3 ${gem_jessie} || true
 	fi
 }
 

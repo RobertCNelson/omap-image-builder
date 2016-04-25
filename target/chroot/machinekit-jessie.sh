@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 
 export LC_ALL=C
 
-chromium_release="chromium-33.0.1750.117"
 u_boot_release="v2016.03"
 u_boot_release_x15="v2015.07"
 #bone101_git_sha="50e01966e438ddc43b9177ad4e119e5274a0130d"
@@ -93,14 +92,9 @@ setup_system () {
 		fi
 	fi
 
-	if [ -f /lib/systemd/system/serial-getty@.service ] ; then
-		cp /lib/systemd/system/serial-getty@.service /etc/systemd/system/serial-getty@ttyGS0.service
-		ln -s /etc/systemd/system/serial-getty@ttyGS0.service /etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
-
-		echo "" >> /etc/securetty
-		echo "#USB Gadget Serial Port" >> /etc/securetty
-		echo "ttyGS0" >> /etc/securetty
-	fi
+	echo "" >> /etc/securetty
+	echo "#USB Gadget Serial Port" >> /etc/securetty
+	echo "ttyGS0" >> /etc/securetty
 
 #	this is now done in the choot, need to double check the mode..
 #	# Enable all users to read hidraw devices
@@ -128,6 +122,8 @@ setup_desktop () {
 
 #		echo "        Driver          \"modesetting\"" >> ${wfile}
 		echo "        Driver          \"fbdev\"" >> ${wfile}
+
+		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
 
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
@@ -190,6 +186,40 @@ setup_desktop () {
 			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
 		fi
 	fi
+
+	if [ -f /etc/init.d/connman ] ; then
+		mkdir -p /etc/connman/ || true
+		wfile="/etc/connman/main.conf"
+		echo "[General]" > ${wfile}
+		echo "PreferredTechnologies=ethernet,wifi" >> ${wfile}
+		echo "SingleConnectedTechnology=false" >> ${wfile}
+		echo "AllowHostnameUpdates=false" >> ${wfile}
+		echo "PersistentTetheringMode=true" >> ${wfile}
+		echo "NetworkInterfaceBlacklist=usb0" >> ${wfile}
+
+		mkdir -p /var/lib/connman/ || true
+		wfile="/var/lib/connman/settings"
+		echo "[global]" > ${wfile}
+		echo "OfflineMode=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Wired]" >> ${wfile}
+		echo "Enable=true" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[WiFi]" >> ${wfile}
+		echo "Enable=true" >> ${wfile}
+		echo "Tethering=true" >> ${wfile}
+		echo "Tethering.Identifier=BeagleBone" >> ${wfile}
+		echo "Tethering.Passphrase=BeagleBone" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Gadget]" >> ${wfile}
+		echo "Enable=false" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[P2P]" >> ${wfile}
+		echo "Enable=false" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
+	fi
 }
 
 install_gem_pkgs () {
@@ -202,38 +232,35 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone || true
 
-		echo "gem: [jekyll -v 2.5.3 ${gem_wheezy}]"
-		gem install jekyll -v 2.5.3 ${gem_wheezy} || true
+		echo "gem: [jekyll -v 3.1.3 ${gem_jessie}]"
+		gem install jekyll -v 3.1.3 ${gem_jessie} || true
 	fi
 }
 
 install_pip_pkgs () {
-	if [ -f /usr/bin/pip ] ; then
-		echo "Installing pip packages"
+	if [ -f /usr/bin/python ] ; then
+		wget https://bootstrap.pypa.io/get-pip.py || true
+		if [ -f get-pip.py ] ; then
+			python get-pip.py
+			rm -f get-pip.py || true
 
-		#debian@beaglebone:~$ pip install Adafruit_BBIO
-		#Downloading/unpacking Adafruit-BBIO
-		#  Downloading Adafruit_BBIO-0.0.19.tar.gz
-		#  Running setup.py egg_info for package Adafruit-BBIO
-		#    The required version of distribute (>=0.6.45) is not available,
-		#    and can't be installed while this script is running. Please
-		#    install a more recent version first, using
-		#    'easy_install -U distribute'.
-		#
-		#    (Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
-		#    Complete output from command python setup.py egg_info:
-		#    The required version of distribute (>=0.6.45) is not available,
-		#
-		#and can't be installed while this script is running. Please
-		#
-		#install a more recent version first, using
-		#
-		#'easy_install -U distribute'.
-		#
-		#(Currently using distribute 0.6.24dev-r0 (/usr/lib/python2.7/dist-packages))
+			if [ -f /usr/local/bin/pip ] ; then
+				echo "Installing pip packages"
+				#Fixed in git, however not pushed to pip yet...(use git and install)
+				#libpython2.7-dev
+				#pip install Adafruit_BBIO
 
-		easy_install -U distribute
-		pip install Adafruit_BBIO
+				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+				git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+				git_clone
+				if [ -f ${git_target_dir}/.git/config ] ; then
+					cd ${git_target_dir}/
+					python setup.py install
+				fi
+				pip install --upgrade PyBBIO
+				pip install iw_parse
+			fi
+		fi
 	fi
 }
 
@@ -255,52 +282,49 @@ install_node_pkgs () {
 	if [ -f /usr/bin/npm ] ; then
 		cd /
 		echo "Installing npm packages"
-		echo "debug: node: [`node --version`]"
-		echo "debug: npm: [`npm --version`]"
+		echo "debug: node: [`nodejs --version`]"
 
-		echo "NODE_PATH=/usr/local/lib/node_modules" > /etc/default/node
-		echo "export NODE_PATH=/usr/local/lib/node_modules" > /etc/profile.d/node.sh
-		chmod 755 /etc/profile.d/node.sh
+		if [ -f /usr/local/bin/npm ] ; then
+			npm_bin="/usr/local/bin/npm"
+		else
+			npm_bin="/usr/bin/npm"
+		fi
+
+		echo "debug: npm: [`${npm_bin} --version`]"
 
 		#debug
 		#echo "debug: npm config ls -l (before)"
 		#echo "--------------------------------"
-		#npm config ls -l
+		#${npm_bin} config ls -l
 		#echo "--------------------------------"
 
 		#c9-core-installer...
-		npm config delete cache
-		npm config delete tmp
-		npm config delete python
+		${npm_bin} config delete cache
+		${npm_bin} config delete tmp
+		${npm_bin} config delete python
 
 		#fix npm in chroot.. (did i mention i hate npm...)
 		if [ ! -d /root/.npm ] ; then
 			mkdir -p /root/.npm
 		fi
-		npm config set cache /root/.npm
-		npm config set group 0
-		npm config set init-module /root/.npm-init.js
+		${npm_bin} config set cache /root/.npm
+		${npm_bin} config set group 0
+		${npm_bin} config set init-module /root/.npm-init.js
 
 		if [ ! -d /root/tmp ] ; then
 			mkdir -p /root/tmp
 		fi
-		npm config set tmp /root/tmp
-		npm config set user 0
-		npm config set userconfig /root/.npmrc
+		${npm_bin} config set tmp /root/tmp
+		${npm_bin} config set user 0
+		${npm_bin} config set userconfig /root/.npmrc
 
-		#echo "debug: npm config ls -l (after)"
+		${npm_bin} config set prefix /usr/local/
+
+		#echo "debug: npm configuration"
 		#echo "--------------------------------"
-		#npm config ls -l
+		#${npm_bin} config ls -l
 		#echo "--------------------------------"
 
-		if [ -f /usr/bin/make ] ; then
-			echo "Installing: [npm install -g bonescript@0.2.5]"
-			TERM=dumb npm install -g bonescript@0.2.5
-		fi
-
-		cd /opt/
-
-		cleanup_npm_cache
 		sync
 
 		if [ -f /usr/local/bin/jekyll ] ; then
@@ -319,8 +343,6 @@ install_node_pkgs () {
 
 				if [ ! "x${bone101_git_sha}" = "x" ] ; then
 					git checkout ${bone101_git_sha} -b tmp-production
-				else
-					git pull --no-edit https://github.com/jadonk/bone101/ master
 				fi
 
 				echo "jekyll pre-building bone101"
@@ -334,47 +356,17 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch" >> ${wfile}
+			echo "ExecStart=/usr/local/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+			echo "CPUAccounting=true" >> ${wfile}
+			echo "CPUQuota=10%" >> ${wfile}
+			echo "MemoryAccounting=true" >> ${wfile}
+			echo "MemoryLimit=50M" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "[Install]" >> ${wfile}
 			echo "WantedBy=multi-user.target" >> ${wfile}
 
 			systemctl enable jekyll-autorun.service || true
-
-			wfile="/lib/systemd/system/bonescript.socket"
-			echo "[Socket]" > ${wfile}
-			echo "ListenStream=80" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=sockets.target" >> ${wfile}
-
-			wfile="/lib/systemd/system/bonescript.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Bonescript server" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-			echo "ExecStart=/usr/bin/node server.js" >> ${wfile}
-			echo "SyslogIdentifier=bonescript" >> ${wfile}
-
-			systemctl enable bonescript.socket || true
-
-			wfile="/lib/systemd/system/bonescript-autorun.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=Bonescript autorun" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/usr/local/lib/node_modules/bonescript" >> ${wfile}
-			echo "EnvironmentFile=/etc/default/node" >> ${wfile}
-			echo "ExecStart=/usr/bin/node autorun.js" >> ${wfile}
-			echo "SyslogIdentifier=bonescript-autorun" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=multi-user.target" >> ${wfile}
-
-			systemctl enable bonescript-autorun.service || true
 
 			if [ -d /etc/apache2/ ] ; then
 				#bone101 takes over port 80, so shove apache/etc to 8080:
@@ -384,8 +376,8 @@ install_node_pkgs () {
 				if [ -f /etc/apache2/sites-enabled/000-default ] ; then
 					sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
 				fi
-				if [ -f /var/www/index.html ] ; then
-					rm -rf /var/www/index.html || true
+				if [ -f /var/www/html/index.html ] ; then
+					rm -rf /var/www/html/index.html || true
 				fi
 			fi
 		fi
@@ -439,7 +431,53 @@ install_git_repos () {
 			fi
 			cd /
 		fi
+	fi
 
+	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1. || true)
+	if [ ! "x${is_kernel}" = "x" ] ; then
+		git_branch="4.1-ti"
+	else
+		is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.4. || true)
+		if [ ! "x${is_kernel}" = "x" ] ; then
+			git_branch="4.4-ti"
+		fi
+	fi
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-${git_branch}"
+	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/bb.org-overlays"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
+			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 3.8.13 || true)
+			if [ "x${is_kernel}" = "x" ] ; then
+				if [ -f /usr/bin/make ] ; then
+					make
+					make install
+					update-initramfs -u -k ${repo_rcnee_pkg_version}
+					make clean
+				fi
+			fi
+		fi
+	fi
+
+	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
+	git_target_dir="/opt/source/BBBlfs"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			./autogen.sh
+			./configure
+			make
+		fi
+	fi
+
+	#am335x-pru-package
+	if [ -f /usr/include/prussdrv.h ] ; then
 		git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
 		git_target_dir="/opt/source/pru-software-support-package"
 		git_clone
@@ -448,17 +486,6 @@ install_git_repos () {
 
 install_build_pkgs () {
 	cd /opt/
-	if [ -f /usr/bin/xz ] ; then
-		wget https://rcn-ee.com/pkgs/chromium/${chromium_release}-armhf.tar.xz
-		if [ -f /opt/${chromium_release}-armhf.tar.xz ] ; then
-			tar xf ${chromium_release}-armhf.tar.xz -C /
-			rm -rf ${chromium_release}-armhf.tar.xz || true
-			echo "${chromium_release} : https://rcn-ee.com/pkgs/chromium/${chromium_release}.tar.xz" >> /opt/source/list.txt
-
-			#link Chromium to /usr/bin/x-www-browser
-			update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium 200
-		fi
-	fi
 	cd /
 }
 
@@ -478,29 +505,20 @@ other_source_links () {
 }
 
 unsecure_root () {
+	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
+	sed -i -e 's:'$root_password'::g' /etc/shadow
+
 	if [ -f /etc/ssh/sshd_config ] ; then
 		#Make ssh root@beaglebone work..
+		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
 		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+		#Starting with Jessie:
+		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
 	fi
 
 	if [ -f /etc/sudoers ] ; then
 		#Don't require password for sudo access
 		echo "${rfs_username}  ALL=NOPASSWD: ALL" >>/etc/sudoers
-	fi
-}
-
-todo () {
-	#stuff i need to package in repos.rcn-ee.com
-	#
-	cd /
-	if [ ! -f /etc/Wireless/RT2870STA/RT2870STA.dat ] ; then
-		mkdir -p /etc/Wireless/RT2870STA/
-		cd /etc/Wireless/RT2870STA/
-		wget https://raw.githubusercontent.com/rcn-ee/mt7601u/master/src/RT2870STA.dat
-		cd /
-	fi
-	if [ ! -f /etc/modules-load.d/mt7601.conf ] ; then
-		echo "mt7601Usta" > /etc/modules-load.d/mt7601.conf
 	fi
 }
 
@@ -523,5 +541,4 @@ fi
 #install_build_pkgs
 other_source_links
 unsecure_root
-todo
 #
