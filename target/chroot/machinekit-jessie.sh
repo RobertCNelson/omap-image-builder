@@ -222,17 +222,6 @@ setup_desktop () {
 	fi
 }
 
-install_gem_pkgs () {
-	if [ -f /usr/bin/gem ] ; then
-		echo "Installing gem packages"
-		echo "debug: ruby: [`ruby --version`]"
-		echo "debug: gem: [`gem --version`]"
-
-		echo "gem: [beaglebone]"
-		gem install beaglebone || true
-	fi
-}
-
 install_pip_pkgs () {
 	if [ -f /usr/bin/python ] ; then
 		wget https://bootstrap.pypa.io/get-pip.py || true
@@ -526,7 +515,6 @@ early_git_repos
 setup_system
 setup_desktop
 
-install_gem_pkgs
 install_pip_pkgs
 install_node_pkgs
 if [ -f /usr/bin/git ] ; then
