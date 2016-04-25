@@ -230,6 +230,7 @@ setup_desktop () {
 install_gem_pkgs () {
 	if [ -f /usr/bin/gem ] ; then
 		echo "Installing gem packages"
+		echo "debug: ruby: [`ruby --version`]"
 		echo "debug: gem: [`gem --version`]"
 		gem_wheezy="--no-rdoc --no-ri"
 		gem_jessie="--no-document"
@@ -237,8 +238,8 @@ install_gem_pkgs () {
 		echo "gem: [beaglebone]"
 		gem install beaglebone || true
 
-		echo "gem: [jekyll -v 3.1.2 ${gem_jessie}]"
-		gem install jekyll -v 3.1.2 ${gem_jessie} || true
+		echo "gem: [jekyll -v 3.0.4 ${gem_jessie}]"
+		gem install jekyll -v 3.0.4 ${gem_jessie} || true
 	fi
 }
 
