@@ -357,7 +357,9 @@ install_node_pkgs () {
 			echo "" >> ${wfile}
 			echo "[Service]" >> ${wfile}
 			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
+#debian: jekyll 2.2.0 doesn't support --incremental, i'll add this back when i get 3.0.1 working..
+#			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
+			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch" >> ${wfile}
 			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
 			echo "CPUAccounting=true" >> ${wfile}
 			echo "CPUQuota=10%" >> ${wfile}
