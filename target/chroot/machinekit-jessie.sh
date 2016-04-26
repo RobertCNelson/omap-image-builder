@@ -195,7 +195,7 @@ setup_desktop () {
 		echo "SingleConnectedTechnology=false" >> ${wfile}
 		echo "AllowHostnameUpdates=false" >> ${wfile}
 		echo "PersistentTetheringMode=true" >> ${wfile}
-		echo "NetworkInterfaceBlacklist=usb0" >> ${wfile}
+		echo "NetworkInterfaceBlacklist=usb0,SoftAp0" >> ${wfile}
 
 		mkdir -p /var/lib/connman/ || true
 		wfile="/var/lib/connman/settings"
