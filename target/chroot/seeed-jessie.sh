@@ -426,6 +426,7 @@ install_git_repos () {
 		./configure
 		make
 		make install
+		ln -sf /usr/local/lib/libhttpd.so.0 /lib/arm-linux-gnueabihf/
 	fi
 }
 
