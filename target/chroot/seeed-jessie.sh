@@ -268,115 +268,64 @@ cleanup_npm_cache () {
 	fi
 }
 
-install_node_pkgs () {
-	if [ -f /usr/bin/npm ] ; then
-		cd /
-		echo "Installing npm packages"
-		echo "debug: node: [`nodejs --version`]"
+install_git_repos () {
+	if [ -f /usr/bin/jekyll ] ; then
+		git_repo="https://github.com/beagleboard/bone101"
+		git_target_dir="/var/lib/cloud9"
 
-		if [ -f /usr/local/bin/npm ] ; then
-			npm_bin="/usr/local/bin/npm"
+		if [ "x${bone101_git_sha}" = "x" ] ; then
+			git_clone
 		else
-			npm_bin="/usr/bin/npm"
+			git_clone_full
 		fi
 
-		echo "debug: npm: [`${npm_bin} --version`]"
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
+			cd ${git_target_dir}/
 
-		#debug
-		#echo "debug: npm config ls -l (before)"
-		#echo "--------------------------------"
-		#${npm_bin} config ls -l
-		#echo "--------------------------------"
-
-		#c9-core-installer...
-		${npm_bin} config delete cache
-		${npm_bin} config delete tmp
-		${npm_bin} config delete python
-
-		#fix npm in chroot.. (did i mention i hate npm...)
-		if [ ! -d /root/.npm ] ; then
-			mkdir -p /root/.npm
-		fi
-		${npm_bin} config set cache /root/.npm
-		${npm_bin} config set group 0
-		${npm_bin} config set init-module /root/.npm-init.js
-
-		if [ ! -d /root/tmp ] ; then
-			mkdir -p /root/tmp
-		fi
-		${npm_bin} config set tmp /root/tmp
-		${npm_bin} config set user 0
-		${npm_bin} config set userconfig /root/.npmrc
-
-		${npm_bin} config set prefix /usr/local/
-
-		#echo "debug: npm configuration"
-		#echo "--------------------------------"
-		#${npm_bin} config ls -l
-		#echo "--------------------------------"
-
-		sync
-
-		if [ -f /usr/bin/jekyll ] ; then
-			git_repo="https://github.com/beagleboard/bone101"
-			git_target_dir="/var/lib/cloud9"
-
-			if [ "x${bone101_git_sha}" = "x" ] ; then
-				git_clone
-			else
-				git_clone_full
+			if [ ! "x${bone101_git_sha}" = "x" ] ; then
+				git checkout ${bone101_git_sha} -b tmp-production
 			fi
 
-			if [ -f ${git_target_dir}/.git/config ] ; then
-				chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
-				cd ${git_target_dir}/
+			echo "jekyll pre-building bone101"
+			/usr/bin/jekyll build --destination bone101
+		fi
 
-				if [ ! "x${bone101_git_sha}" = "x" ] ; then
-					git checkout ${bone101_git_sha} -b tmp-production
-				fi
-
-				echo "jekyll pre-building bone101"
-				/usr/bin/jekyll build --destination bone101
-			fi
-
-			wfile="/lib/systemd/system/jekyll-autorun.service"
-			echo "[Unit]" > ${wfile}
-			echo "Description=jekyll autorun" >> ${wfile}
-			echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Service]" >> ${wfile}
-			echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
+		wfile="/lib/systemd/system/jekyll-autorun.service"
+		echo "[Unit]" > ${wfile}
+		echo "Description=jekyll autorun" >> ${wfile}
+		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Service]" >> ${wfile}
+		echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
 #debian: jekyll 2.2.0 doesn't support --incremental, i'll add this back when i get 3.0.1 working..
-#			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
-			echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch" >> ${wfile}
-			echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
-			echo "CPUAccounting=true" >> ${wfile}
-			echo "CPUQuota=10%" >> ${wfile}
-			echo "MemoryAccounting=true" >> ${wfile}
-			echo "MemoryLimit=50M" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "[Install]" >> ${wfile}
-			echo "WantedBy=multi-user.target" >> ${wfile}
+#		echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
+		echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch" >> ${wfile}
+		echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
+		echo "CPUAccounting=true" >> ${wfile}
+		echo "CPUQuota=10%" >> ${wfile}
+		echo "MemoryAccounting=true" >> ${wfile}
+		echo "MemoryLimit=50M" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Install]" >> ${wfile}
+		echo "WantedBy=multi-user.target" >> ${wfile}
 
-			systemctl enable jekyll-autorun.service || true
+		systemctl enable jekyll-autorun.service || true
 
-			if [ -d /etc/apache2/ ] ; then
-				#bone101 takes over port 80, so shove apache/etc to 8080:
-				if [ -f /etc/apache2/ports.conf ] ; then
-					sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
-				fi
-				if [ -f /etc/apache2/sites-enabled/000-default ] ; then
-					sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
-				fi
-				if [ -f /var/www/html/index.html ] ; then
-					rm -rf /var/www/html/index.html || true
-				fi
+		if [ -d /etc/apache2/ ] ; then
+			#bone101 takes over port 80, so shove apache/etc to 8080:
+			if [ -f /etc/apache2/ports.conf ] ; then
+				sed -i -e 's:80:8080:g' /etc/apache2/ports.conf
+			fi
+			if [ -f /etc/apache2/sites-enabled/000-default ] ; then
+				sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+			fi
+			if [ -f /var/www/html/index.html ] ; then
+				rm -rf /var/www/html/index.html || true
 			fi
 		fi
 	fi
-}
 
-install_git_repos () {
 	git_repo="https://github.com/prpplague/Userspace-Arduino"
 	git_target_dir="/opt/source/Userspace-Arduino"
 	git_clone
@@ -469,29 +418,14 @@ install_git_repos () {
 		git_clone
 	fi
 
-	echo "debug: node: [`/usr/bin/nodejs --version`]"
-
-	if [ -f /usr/local/bin/npm ] ; then
-		npm_bin="/usr/local/bin/npm"
-	elif [ -f /usr/bin/npm ] ; then
-		npm_bin="/usr/bin/npm"
-	else
-		unset npm_bin
-	fi
-
-	if [ ! "x${npm_bin}" = "x" ] ; then
-		echo "debug: npm: [`${npm_bin} --version`]"
-	fi
-
-	git_repo="https://github.com/Pillar1989/wifidog-server"
-	git_branch="BBGW"
-	git_target_dir="/opt/source/wifidog-server"
+	git_repo="https://github.com/Pillar1989/wifidog-gateway"
+	git_target_dir="/opt/source/wifidog-gateway"
 	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
-		if [ ! "x${npm_bin}" = "x" ] ; then
-			cd ${git_target_dir}/
-			/usr/bin/nodejs ${npm_bin} install
-		fi
+		./autogen.sh
+		./configure
+		make
+		make install
 	fi
 }
 
@@ -539,7 +473,6 @@ setup_system
 setup_desktop
 
 install_pip_pkgs
-install_node_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
