@@ -417,17 +417,6 @@ install_git_repos () {
 		git_target_dir="/opt/source/pru-software-support-package"
 		git_clone
 	fi
-
-	git_repo="https://github.com/Pillar1989/wifidog-gateway"
-	git_target_dir="/opt/source/wifidog-gateway"
-	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		./autogen.sh
-		./configure
-		make
-		make install
-		ln -sf /usr/local/lib/libhttpd.so.0 /lib/arm-linux-gnueabihf/
-	fi
 }
 
 install_build_pkgs () {
