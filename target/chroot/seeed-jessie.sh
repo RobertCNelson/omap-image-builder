@@ -224,10 +224,13 @@ setup_desktop () {
 		echo "[P2P]" >> ${wfile}
 		echo "Enable=false" >> ${wfile}
 		echo "Tethering=false" >> ${wfile}
+        echo "" >> ${wfile}
+        echo "[Bluetooth]" >> ${wfile}
+        echo "Enable=true" >> ${wfile}
+        echo "Tethering=false" >> ${wfile}
 	fi
 }
 setup_A2DP () {
-    
     wfile="/etc/dbus-1/system.d/pulseaudio-system.conf"
     line=$(grep -nr org.pulseaudio.Server ${wfile} | awk  -F ':'  '{print $1}')
     #add <allow send_destination="org.bluez"/>
