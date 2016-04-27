@@ -224,10 +224,10 @@ setup_desktop () {
 		echo "[P2P]" >> ${wfile}
 		echo "Enable=false" >> ${wfile}
 		echo "Tethering=false" >> ${wfile}
-        echo "" >> ${wfile}
-        echo "[Bluetooth]" >> ${wfile}
-        echo "Enable=true" >> ${wfile}
-        echo "Tethering=false" >> ${wfile}
+		echo "" >> ${wfile}
+		echo "[Bluetooth]" >> ${wfile}
+		echo "Enable=true" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
 	fi
 }
 setup_A2DP () {
