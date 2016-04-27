@@ -213,7 +213,7 @@ setup_desktop () {
 		echo "" >> ${wfile}
 		echo "[WiFi]" >> ${wfile}
 		echo "Enable=true" >> ${wfile}
-		echo "Tethering=true" >> ${wfile}
+		echo "Tethering=false" >> ${wfile}
 		echo "Tethering.Identifier=BeagleBone" >> ${wfile}
 		echo "Tethering.Passphrase=BeagleBone" >> ${wfile}
 		echo "" >> ${wfile}
@@ -226,7 +226,57 @@ setup_desktop () {
 		echo "Tethering=false" >> ${wfile}
 	fi
 }
-
+setup_A2DP () {
+    
+    wfile="/etc/dbus-1/system.d/pulseaudio-system.conf"
+    line=$(grep -nr org.pulseaudio.Server ${wfile} | awk  -F ':'  '{print $1}')
+    #add <allow send_destination="org.bluez"/>
+    sed -i ''${line}'a <allow send_destination="org.bluez"/>' ${wfile}
+    
+    wfile="/etc/pulse/system.pa"
+    line=$(grep -nr  module-suspend-on-idle ${wfile} | awk  -F ':'  '{print $1}')
+    #remove load-module module-suspend-on-idle
+    sed -i ''${line}'d' ${wfile}
+    sed -i '$a ###Baozhu added'  ${wfile} 
+    sed -i '$a ### Automatically load driver modules for Bluetooth hardware' ${wfile}
+    sed -i '$a .ifexists module-bluetooth-policy.so'  ${wfile} 
+    sed -i '$a load-module module-bluetooth-policy'  ${wfile} 
+    sed -i '$a .endif'  ${wfile}
+    sed -i '$a .ifexists module-bluetooth-discover.so'  ${wfile}
+    sed -i '$a load-module module-bluetooth-discover'  ${wfile}
+    sed -i '$a .endif'  ${wfile}
+    
+    #allow users of pulseaudio to communicate with bluetoothd
+    wfile="/etc/dbus-1/system.d/bluetooth.conf"
+    sed -i '$c <!-- allow users of pulseaudio to'  ${wfile}
+    sed -i '$a communicate with bluetoothd -->'  ${wfile}
+    sed -i '$a <policy group="pulse">'  ${wfile}
+    sed -i '$a <allow send_destination="org.bluez"/>'  ${wfile}
+    sed -i '$a </policy>'  ${wfile}
+    sed -i '$a </busconfig>'  ${wfile}
+    
+    #add pulseaudio service
+    wfile="/lib/systemd/system/pulseaudio.service"
+    echo "[Unit]" > ${wfile}
+    echo "Description=Pulse Audio" >> ${wfile}
+    echo "After=bb-wl18xx-bluetooth.service" >> ${wfile}
+    echo "[Service]" >> ${wfile}
+    echo "Type=simple" >> ${wfile}
+    echo "ExecStart=/usr/bin/pulseaudio --system --disallow-exit --disable-shm" >> ${wfile}
+    echo "[Install]" >> ${wfile}
+    echo "WantedBy=multi-user.target" >> ${wfile}
+    systemctl enable pulseaudio.service || true
+    
+    #add a2dp users to root group
+    usermod -a -G bluetooth root
+    usermod -a -G pulse root
+    usermod -a -G pulse-access root
+    
+    wfile="/etc/udev/rules.d/10-local.rules"
+    echo "# Power up bluetooth when hci0 is discovered" > ${wfile}
+    echo "ACTION=="add", KERNEL=="hci0", RUN+="/bin/hciconfig hci0 up"" >> ${wfile}
+    
+}
 install_pip_pkgs () {
 	if [ -f /usr/bin/python ] ; then
 		wget https://bootstrap.pypa.io/get-pip.py || true
@@ -461,6 +511,7 @@ is_this_qemu
 
 setup_system
 setup_desktop
+setup_A2DP
 
 install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
