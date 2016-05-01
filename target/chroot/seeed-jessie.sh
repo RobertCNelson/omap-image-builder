@@ -281,19 +281,19 @@ setup_A2DP () {
     echo "ACTION==\"add\", KERNEL==\"hci0\", RUN+=\"/bin/hciconfig hci0 up\"" >> ${wfile}
     
     #config alsa
-    wfile="/etc/asound.conf"
-    echo "pcm.!default {" > ${wfile}
-    echo "  type pulse" >> ${wfile}
-    echo "  fallback "sysdefault"" >> ${wfile}
-    echo "  hint {" >> ${wfile}
-    echo "    show on" >> ${wfile}
-    echo "    description "ALSA Output to pulseaudio"" >> ${wfile}
-    echo "  }" >> ${wfile}
-    echo "}" >> ${wfile}
-    echo "ctl.!default {" >> ${wfile}
-    echo "  type pulse" >> ${wfile}
-    echo "  fallback "sysdefault"" >> ${wfile}
-    echo "}" >> ${wfile}
+    # wfile="/etc/asound.conf"
+    # echo "pcm.!default {" > ${wfile}
+    # echo "  type pulse" >> ${wfile}
+    # echo "  fallback "sysdefault"" >> ${wfile}
+    # echo "  hint {" >> ${wfile}
+    # echo "    show on" >> ${wfile}
+    # echo "    description "ALSA Output to pulseaudio"" >> ${wfile}
+    # echo "  }" >> ${wfile}
+    # echo "}" >> ${wfile}
+    # echo "ctl.!default {" >> ${wfile}
+    # echo "  type pulse" >> ${wfile}
+    # echo "  fallback "sysdefault"" >> ${wfile}
+    # echo "}" >> ${wfile}
 }
 install_pip_pkgs () {
 	if [ -f /usr/bin/python ] ; then
