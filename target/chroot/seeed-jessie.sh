@@ -191,44 +191,6 @@ setup_desktop () {
 		chmod u+s /bin/ping /bin/ping6
 	    fi
 	fi
-
-	if [ -f /etc/init.d/connman ] ; then
-		mkdir -p /etc/connman/ || true
-		wfile="/etc/connman/main.conf"
-		echo "[General]" > ${wfile}
-		echo "PreferredTechnologies=ethernet,wifi" >> ${wfile}
-		echo "SingleConnectedTechnology=false" >> ${wfile}
-		echo "AllowHostnameUpdates=false" >> ${wfile}
-		echo "PersistentTetheringMode=true" >> ${wfile}
-		echo "NetworkInterfaceBlacklist=usb0,SoftAp0" >> ${wfile}
-
-		mkdir -p /var/lib/connman/ || true
-		wfile="/var/lib/connman/settings"
-		echo "[global]" > ${wfile}
-		echo "OfflineMode=false" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Wired]" >> ${wfile}
-		echo "Enable=true" >> ${wfile}
-		echo "Tethering=false" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[WiFi]" >> ${wfile}
-		echo "Enable=true" >> ${wfile}
-		echo "Tethering=false" >> ${wfile}
-		echo "Tethering.Identifier=BeagleBone" >> ${wfile}
-		echo "Tethering.Passphrase=BeagleBone" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Gadget]" >> ${wfile}
-		echo "Enable=false" >> ${wfile}
-		echo "Tethering=false" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[P2P]" >> ${wfile}
-		echo "Enable=false" >> ${wfile}
-		echo "Tethering=false" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Bluetooth]" >> ${wfile}
-		echo "Enable=true" >> ${wfile}
-		echo "Tethering=false" >> ${wfile}
-	fi
 }
 setup_A2DP () {
     wfile="/etc/dbus-1/system.d/pulseaudio-system.conf"
