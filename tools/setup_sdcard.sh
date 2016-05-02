@@ -250,6 +250,29 @@ dl_bootloader () {
 	else
 		unset UBOOT
 	fi
+
+	if [ "x${bbg_flasher}" = "xenable" ] ; then
+		ABI="ABI2"
+		conf_board="am335x_boneblack"
+
+		if [ "${spl_name}" ] ; then
+			blank_SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
+			${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" ${blank_SPL}
+			blank_SPL=${blank_SPL##*/}
+			echo "blank_SPL Bootloader: ${blank_SPL}"
+		else
+			unset blank_SPL
+		fi
+
+		if [ "${boot_name}" ] ; then
+			blank_UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
+			${dl} --directory-prefix="${TEMPDIR}/dl/" ${blank_UBOOT}
+			blank_UBOOT=${blank_UBOOT##*/}
+			echo "blank_UBOOT Bootloader: ${blank_UBOOT}"
+		else
+			unset blank_UBOOT
+		fi
+	fi
 }
 
 generate_soc () {
