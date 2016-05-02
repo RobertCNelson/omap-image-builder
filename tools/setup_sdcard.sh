@@ -251,7 +251,7 @@ dl_bootloader () {
 		unset UBOOT
 	fi
 
-	if [ "x${bbg_flasher}" = "xenable" ] ; then
+	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
 		ABI="ABI2"
 		conf_board="am335x_boneblack"
 
@@ -466,7 +466,7 @@ dd_uboot_boot () {
 		dd_uboot="${dd_uboot}bs=${dd_uboot_bs}"
 	fi
 
-	if [ "x${bbg_flasher}" = "xenable" ] ; then
+	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
 		uboot_blob="${blank_UBOOT}"
 	else
 		uboot_blob="${UBOOT}"
@@ -500,7 +500,7 @@ dd_spl_uboot_boot () {
 		dd_spl_uboot="${dd_spl_uboot}bs=${dd_spl_uboot_bs}"
 	fi
 
-	if [ "x${bbg_flasher}" = "xenable" ] ; then
+	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
 		spl_uboot_blob="${blank_SPL}"
 	else
 		spl_uboot_blob="${SPL}"
@@ -1662,15 +1662,19 @@ while [ ! -z "$1" ] ; do
 		USE_BETA_BOOTLOADER=1
 		;;
 	--a335-flasher)
+		oem_blank_eeprom="enable"
 		a335_flasher="enable"
 		;;
 	--bbg-flasher)
+		oem_blank_eeprom="enable"
 		bbg_flasher="enable"
 		;;
 	--bbb-usb-flasher|--usb-flasher|--oem-flasher)
+		oem_blank_eeprom="enable"
 		usb_flasher="enable"
 		;;
 	--bbb-flasher|--emmc-flasher)
+		oem_blank_eeprom="enable"
 		emmc_flasher="enable"
 		;;
 	--bbb-old-bootloader-in-emmc)
