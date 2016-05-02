@@ -466,9 +466,15 @@ dd_uboot_boot () {
 		dd_uboot="${dd_uboot}bs=${dd_uboot_bs}"
 	fi
 
-	echo "${uboot_name}: dd if=${uboot_name} of=${media} ${dd_uboot}"
+	if [ "x${bbg_flasher}" = "xenable" ] ; then
+		uboot_blob="${blank_UBOOT}"
+	else
+		uboot_blob="${UBOOT}"
+	fi
+
+	echo "${uboot_name}: dd if=${uboot_blob} of=${media} ${dd_uboot}"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${UBOOT} of=${media} ${dd_uboot}
+	dd if=${TEMPDIR}/dl/${uboot_blob} of=${media} ${dd_uboot}
 	echo "-----------------------------"
 }
 
@@ -494,9 +500,15 @@ dd_spl_uboot_boot () {
 		dd_spl_uboot="${dd_spl_uboot}bs=${dd_spl_uboot_bs}"
 	fi
 
-	echo "${spl_uboot_name}: dd if=${spl_uboot_name} of=${media} ${dd_spl_uboot}"
+	if [ "x${bbg_flasher}" = "xenable" ] ; then
+		spl_uboot_blob="${blank_SPL}"
+	else
+		spl_uboot_blob="${SPL}"
+	fi
+
+	echo "${spl_uboot_name}: dd if=${spl_uboot_blob} of=${media} ${dd_spl_uboot}"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${SPL} of=${media} ${dd_spl_uboot}
+	dd if=${TEMPDIR}/dl/${spl_uboot_blob} of=${media} ${dd_spl_uboot}
 	echo "-----------------------------"
 }
 
