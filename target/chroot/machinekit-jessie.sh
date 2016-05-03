@@ -223,48 +223,6 @@ early_git_repos () {
 
 install_git_repos () {
 	if [ -f /usr/bin/jekyll ] ; then
-		git_repo="https://github.com/beagleboard/bone101"
-		git_target_dir="/var/lib/cloud9"
-
-		if [ "x${bone101_git_sha}" = "x" ] ; then
-			git_clone
-		else
-			git_clone_full
-		fi
-
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			chown -R ${rfs_username}:${rfs_username} ${git_target_dir}
-			cd ${git_target_dir}/
-
-			if [ ! "x${bone101_git_sha}" = "x" ] ; then
-				git checkout ${bone101_git_sha} -b tmp-production
-			fi
-
-			echo "jekyll pre-building bone101"
-			/usr/bin/jekyll build --destination bone101
-		fi
-
-		wfile="/lib/systemd/system/jekyll-autorun.service"
-		echo "[Unit]" > ${wfile}
-		echo "Description=jekyll autorun" >> ${wfile}
-		echo "ConditionPathExists=|/var/lib/cloud9" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Service]" >> ${wfile}
-		echo "WorkingDirectory=/var/lib/cloud9" >> ${wfile}
-#debian: jekyll 2.2.0 doesn't support --incremental, i'll add this back when i get 3.0.1 working..
-#		echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch --incremental" >> ${wfile}
-		echo "ExecStart=/usr/bin/jekyll build --destination bone101 --watch" >> ${wfile}
-		echo "SyslogIdentifier=jekyll-autorun" >> ${wfile}
-		echo "CPUAccounting=true" >> ${wfile}
-		echo "CPUQuota=10%" >> ${wfile}
-		echo "MemoryAccounting=true" >> ${wfile}
-		echo "MemoryLimit=50M" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "[Install]" >> ${wfile}
-		echo "WantedBy=multi-user.target" >> ${wfile}
-
-		systemctl enable jekyll-autorun.service || true
-
 		if [ -d /etc/apache2/ ] ; then
 			#bone101 takes over port 80, so shove apache/etc to 8080:
 			if [ -f /etc/apache2/ports.conf ] ; then
