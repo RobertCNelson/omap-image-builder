@@ -252,6 +252,12 @@ dl_bootloader () {
 	fi
 
 	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
+		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+			unset oem_blank_eeprom
+		fi
+	fi
+
+	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
 		ABI="ABI2"
 		conf_board="am335x_boneblack"
 

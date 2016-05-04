@@ -15,12 +15,12 @@ fi
 #./RootStock-NG.sh -c machinekit-debian-wheezy
 #./RootStock-NG.sh -c machinekit-debian-jessie
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
 #./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
-./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
+#./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
 debian_wheezy_machinekit="debian-7.10-machinekit-armhf-${time}"
 debian_jessie_machinekit="debian-8.4-machinekit-armhf-${time}"
@@ -145,11 +145,11 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 ###lxqt-4gb image
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+#options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 
 #options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --emmc-flasher" ; generate_img
-#options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
+options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 #options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 #options="--img-4gb tre-\${base_rootfs} ${arduino_tre}" ; generate_img
 
@@ -277,6 +277,7 @@ fi
 
 if [ -d /mnt/farm/images/ ] ; then
 	mkdir /mnt/farm/images/${time}/
+	echo "Copying: *.tar to server: images/${time}/"
 	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${time}/
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${time}/gift_wrap_final_images.sh
 	chmod +x /mnt/farm/images/${time}/gift_wrap_final_images.sh
