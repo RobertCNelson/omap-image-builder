@@ -19,7 +19,7 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+#./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
 debian_wheezy_machinekit="debian-7.10-machinekit-armhf-${time}"
