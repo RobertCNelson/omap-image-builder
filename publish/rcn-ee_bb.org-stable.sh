@@ -13,13 +13,13 @@ if [ -d ./deploy ] ; then
 fi
 
 #./RootStock-NG.sh -c machinekit-debian-wheezy
-./RootStock-NG.sh -c machinekit-debian-jessie
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+#./RootStock-NG.sh -c machinekit-debian-jessie
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+#./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
 debian_wheezy_machinekit="debian-7.10-machinekit-armhf-${time}"
@@ -195,7 +195,7 @@ options="--img-4gb BBG-blank-\${base_rootfs} ${bb_blank_flasher} --bbg-flasher" 
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
-#options="--img-4gb BBGW-blank-\${base_rootfs} ${bb_blank_flasher} --bbgw-flasher" ; generate_img
+options="--img-4gb BBGW-blank-\${base_rootfs} ${bb_blank_flasher} --bbgw-flasher" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_rootfs
@@ -264,7 +264,7 @@ wfile="BBG-blank-\${base_rootfs}-4gb" ; archive_img
 #
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 wfile="bone-\${base_rootfs}-4gb" ; archive_img
-#wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
+wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
 
 __EOF__
 
