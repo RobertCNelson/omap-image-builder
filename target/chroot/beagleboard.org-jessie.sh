@@ -300,10 +300,12 @@ install_git_repos () {
 			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 3.8.13 || true)
 			if [ "x${is_kernel}" = "x" ] ; then
 				if [ -f /usr/bin/make ] ; then
-					make
-					make install
+					if [ ! -f /lib/firmware/BB-ADC-00A0.dtbo ] ; then
+						make
+						make install
+						make clean
+					fi
 					update-initramfs -u -k ${repo_rcnee_pkg_version}
-					make clean
 				fi
 			fi
 		fi
