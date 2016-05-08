@@ -22,7 +22,7 @@ ubuntu_stable="ubuntu-16.04-console-armhf-${time}"
 archive="xz -z -8"
 
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---rootfs_label rootfs"
+--rootfs_label rootfs --enable-cape-universal"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs"

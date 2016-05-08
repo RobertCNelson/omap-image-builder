@@ -1128,7 +1128,7 @@ populate_rootfs () {
 		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+	if [ "x${enable_cape_universal}" = "xenable" ] ; then
 		cmdline="${cmdline} cape_universal=enable"
 	fi
 
@@ -1711,6 +1711,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-systemd)
 		enable_systemd="enabled"
+		;;
+	--enable-cape-universal)
+		enable_cape_universal="enable"
 		;;
 	--offline)
 		offline=1

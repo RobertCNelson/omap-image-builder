@@ -69,7 +69,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 image_name="debian-8.4-iot-armhf-${time}"
 size="2gb"
 options="--img-2gb bone-${image_name} --dtb beaglebone \
---bbb-old-bootloader-in-emmc --hostname beaglebone"
+--bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.1
 build_and_upload_image
 

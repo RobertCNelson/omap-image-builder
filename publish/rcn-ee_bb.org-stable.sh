@@ -35,10 +35,10 @@ debian_jessie_seeed_iot="debian-8.4-seeed-iot-armhf-${time}"
 archive="xz -z -8"
 
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---rootfs_label rootfs --hostname beaglebone"
+--rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
 bb_blank_flasher="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---rootfs_label rootfs --hostname beaglebone"
+--rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
 arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
