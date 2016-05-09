@@ -465,14 +465,3 @@ fi
 other_source_links
 unsecure_root
 #
-#link the upm and mraa to right location
-if [ -d /usr/lib/node_modules/mraa ] ; then
-	ln -s /usr/lib/node_modules/jsupm* /usr/local/lib/node_modules
-	ln -s /usr/lib/node_modules/mraa /usr/local/lib/node_modules
-fi
-
-#disable bonescript-autorun
-/lib/systemd/system/bonescript-autorun.service
-if [ -f /lib/systemd/system/bonescript-autorun.service ] ; then
-	systemctl disable bonescript-autorun.service
-fi
