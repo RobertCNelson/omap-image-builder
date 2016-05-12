@@ -407,6 +407,10 @@ install_git_repos () {
 		git_target_dir="/opt/source/pru-software-support-package"
 		git_clone
 	fi
+
+	git_repo="https://github.com/jadonk/beagle-tester"
+	git_target_dir="/opt/source/beagle-tester"
+	git_clone
 }
 
 install_build_pkgs () {
