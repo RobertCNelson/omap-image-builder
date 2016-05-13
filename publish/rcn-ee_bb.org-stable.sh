@@ -13,7 +13,7 @@ if [ -d ./deploy ] ; then
 fi
 
 #./RootStock-NG.sh -c machinekit-debian-wheezy
-./RootStock-NG.sh -c machinekit-debian-jessie
+#./RootStock-NG.sh -c machinekit-debian-jessie
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
