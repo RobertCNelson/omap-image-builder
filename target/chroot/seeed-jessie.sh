@@ -407,6 +407,22 @@ install_git_repos () {
 		git_target_dir="/opt/source/pru-software-support-package"
 		git_clone
 	fi
+
+	git_repo="https://github.com/jadonk/beagle-tester"
+	git_target_dir="/opt/source/beagle-tester"
+	git_clone
+
+	git_repo="https://github.com/rcn-ee/ti-18xx-ti-utils"
+	git_target_dir="/opt/source/ti-18xx-ti-utils"
+	git_branch="R8.6_SP1-bbgw"
+	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			make
+			make install
+		fi
+	fi
 }
 
 install_build_pkgs () {
