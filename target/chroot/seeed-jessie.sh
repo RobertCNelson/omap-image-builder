@@ -408,9 +408,17 @@ install_git_repos () {
 		git_clone
 	fi
 
+	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
 	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/make ] ; then
+			make
+			make install
+		fi
+	fi
 
 	git_repo="https://github.com/rcn-ee/ti-18xx-ti-utils"
 	git_target_dir="/opt/source/ti-18xx-ti-utils"
