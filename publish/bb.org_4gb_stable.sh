@@ -76,7 +76,7 @@ build_and_upload_image
 # Next BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.4-lxqt-armhf-${time}"
+image_name="debian-8.4-lxqt-4gb-armhf-${time}"
 size="4gb"
 options="--img-4gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
