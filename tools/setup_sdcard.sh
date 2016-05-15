@@ -1253,61 +1253,63 @@ populate_rootfs () {
 			echo "exec /sbin/getty 115200 ${SERIAL}" >> ${wfile}
 		fi
 
-		wfile="${TEMPDIR}/disk/etc/network/interfaces"
-		echo "# This file describes the network interfaces available on your system" > ${wfile}
-		echo "# and how to activate them. For more information, see interfaces(5)." >> ${wfile}
-		echo "" >> ${wfile}
-		echo "# The loopback network interface" >> ${wfile}
-		echo "auto lo" >> ${wfile}
-		echo "iface lo inet loopback" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "# The primary network interface" >> ${wfile}
+		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
+			wfile="${TEMPDIR}/disk/etc/network/interfaces"
+			echo "# This file describes the network interfaces available on your system" > ${wfile}
+			echo "# and how to activate them. For more information, see interfaces(5)." >> ${wfile}
+			echo "" >> ${wfile}
+			echo "# The loopback network interface" >> ${wfile}
+			echo "auto lo" >> ${wfile}
+			echo "iface lo inet loopback" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "# The primary network interface" >> ${wfile}
 
-		if [ "${DISABLE_ETH}" ] ; then
-			echo "#auto eth0" >> ${wfile}
-			echo "#iface eth0 inet dhcp" >> ${wfile}
-		else
-			echo "auto eth0"  >> ${wfile}
-			echo "iface eth0 inet dhcp" >> ${wfile}
-		fi
+			if [ "${DISABLE_ETH}" ] ; then
+				echo "#auto eth0" >> ${wfile}
+				echo "#iface eth0 inet dhcp" >> ${wfile}
+			else
+				echo "auto eth0"  >> ${wfile}
+				echo "iface eth0 inet dhcp" >> ${wfile}
+			fi
 
-		#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
-		if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
-			if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
+			#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
+			if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
+				if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
+					sed -i 's/auto eth0/#auto eth0/g' ${wfile}
+					sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
+					sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
+				fi
+			fi
+
+			#if we have connman, disable eth0 in /etc/network/interfaces
+			if [ -f ${TEMPDIR}/disk/etc/init.d/connman ] ; then
 				sed -i 's/auto eth0/#auto eth0/g' ${wfile}
 				sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
 				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
 			fi
+
+			echo "# Example to keep MAC address between reboots" >> ${wfile}
+			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${wfile}
+
+			echo "" >> ${wfile}
+			echo "# The secondary network interface" >> ${wfile}
+			echo "#auto eth1" >> ${wfile}
+			echo "#iface eth1 inet dhcp" >> ${wfile}
+
+			echo "" >> ${wfile}
+
+			echo "# WiFi use: -> connmanctl" >> ${wfile}
+
+			echo "" >> ${wfile}
+
+			echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
+			echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh" >> ${wfile}
+			echo "iface usb0 inet static" >> ${wfile}
+			echo "    address 192.168.7.2" >> ${wfile}
+			echo "    netmask 255.255.255.252" >> ${wfile}
+			echo "    network 192.168.7.0" >> ${wfile}
+			echo "    gateway 192.168.7.1" >> ${wfile}
 		fi
-
-		#if we have connman, disable eth0 in /etc/network/interfaces
-		if [ -f ${TEMPDIR}/disk/etc/init.d/connman ] ; then
-			sed -i 's/auto eth0/#auto eth0/g' ${wfile}
-			sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
-			sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
-		fi
-
-		echo "# Example to keep MAC address between reboots" >> ${wfile}
-		echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${wfile}
-
-		echo "" >> ${wfile}
-		echo "# The secondary network interface" >> ${wfile}
-		echo "#auto eth1" >> ${wfile}
-		echo "#iface eth1 inet dhcp" >> ${wfile}
-
-		echo "" >> ${wfile}
-
-		echo "# WiFi use: -> connmanctl" >> ${wfile}
-
-		echo "" >> ${wfile}
-
-		echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
-		echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh" >> ${wfile}
-		echo "iface usb0 inet static" >> ${wfile}
-		echo "    address 192.168.7.2" >> ${wfile}
-		echo "    netmask 255.255.255.252" >> ${wfile}
-		echo "    network 192.168.7.0" >> ${wfile}
-		echo "    gateway 192.168.7.1" >> ${wfile}
 
 		if [ -f ${TEMPDIR}/disk/var/www/index.html ] ; then
 			rm -f ${TEMPDIR}/disk/var/www/index.html || true
