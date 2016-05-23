@@ -1198,10 +1198,10 @@ populate_rootfs () {
 	fi
 
 	#oob out of box experience:
-	if [ "x${oobe_cape}" = "xBB-BONE-WL1837" ] ; then
+	if [ ! "x${oobe_cape}" = "x" ] ; then
 		echo "" >> ${wfile}
 		echo "dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
-		echo "cape_enable=bone_capemgr.enable_partno=BB-BONE-WL1837" >> ${wfile}
+		echo "cape_enable=bone_capemgr.enable_partno=${oobe_cape}" >> ${wfile}
 	fi
 
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
