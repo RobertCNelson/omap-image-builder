@@ -278,17 +278,12 @@ install_git_repos () {
 		fi
 	fi
 
-	is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.1. || true)
-	if [ ! "x${is_kernel}" = "x" ] ; then
-		git_branch="4.1-ti"
-	else
-		is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 4.4. || true)
-		if [ ! "x${is_kernel}" = "x" ] ; then
-			git_branch="4.4-ti"
-		fi
-	fi
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_target_dir="/opt/source/dtb-${git_branch}"
+	git_target_dir="/opt/source/dtb-4.1-ti"
+	git_clone_branch
+
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-4.4-ti"
 	git_clone_branch
 
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
