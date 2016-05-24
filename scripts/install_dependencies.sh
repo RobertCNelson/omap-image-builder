@@ -44,7 +44,7 @@ debootstrap_is_installed () {
 }
 
 debootstrap_what_version () {
-	test_debootstrap=$(/usr/sbin/debootstrap --version | cut -f3 -d.)
+	test_debootstrap=$(/usr/sbin/debootstrap --version | cut -f3 -d. | grep -o '^[0-9.]\+')
 	echo "Log: debootstrap version: 1.0.$test_debootstrap"
 }
 
