@@ -1176,6 +1176,9 @@ populate_rootfs () {
 		elif [ "x${bbgw_flasher}" = "xenable" ] ; then
 			echo "##enable BBG: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbgw.sh" >> ${wfile}
+		elif [ "x${m10a_flasher}" = "xenable" ] ; then
+			echo "##enable m10a: eMMC Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-m10a.sh" >> ${wfile}
 		elif [ "x${a335_flasher}" = "xenable" ] ; then
 			echo "##enable a335: eeprom Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
@@ -1690,6 +1693,10 @@ while [ ! -z "$1" ] ; do
 	--bbgw-flasher)
 		oem_blank_eeprom="enable"
 		bbgw_flasher="enable"
+		;;
+	--m10a-flasher)
+		oem_blank_eeprom="enable"
+		m10a_flasher="enable"
 		;;
 	--bbb-usb-flasher|--usb-flasher|--oem-flasher)
 		oem_blank_eeprom="enable"
