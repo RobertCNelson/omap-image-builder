@@ -100,6 +100,7 @@ copy_img_to_mirror () {
                         fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                sync
                                 if [ -f \${wfile}.img.xz.job.txt ] ; then
                                         cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
                                 fi
