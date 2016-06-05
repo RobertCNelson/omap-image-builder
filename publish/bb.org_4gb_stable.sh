@@ -66,7 +66,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 # Next BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.4-iot-armhf-${time}"
+image_name="debian-8.5-iot-armhf-${time}"
 size="2gb"
 options="--img-2gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
@@ -76,7 +76,7 @@ build_and_upload_image
 # Next BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.4-lxqt-4gb-armhf-${time}"
+image_name="debian-8.5-lxqt-4gb-armhf-${time}"
 size="4gb"
 options="--img-4gb bone-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
@@ -86,7 +86,7 @@ build_and_upload_image
 # Next BeagleBoard-X15 image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-#image_name="debian-8.4-lxqt-4gb-armhf-${time}"
+#image_name="debian-8.5-lxqt-4gb-armhf-${time}"
 #size="4gb"
 #options="--img-4gb bbx15-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard-x15"
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1

@@ -18,7 +18,7 @@ fi
 
 debian_wheezy_lxde_2gb="debian-7.11-lxde-armhf-${time}"
 debian_wheezy_lxde_4gb="debian-7.11-lxde-4gb-armhf-${time}"
-debian_wheezy_console="debian-7.11-console-armhf-${time}"
+ debian_wheezy_console="debian-7.11-console-armhf-${time}"
 
 archive="xz -z -8"
 
