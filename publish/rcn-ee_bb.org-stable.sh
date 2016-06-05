@@ -22,7 +22,7 @@ fi
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
-debian_wheezy_machinekit="debian-7.10-machinekit-armhf-${time}"
+debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
 debian_jessie_machinekit="debian-8.4-machinekit-armhf-${time}"
 debian_jessie_lxqt_2gb="debian-8.4-lxqt-2gb-armhf-${time}"
 debian_jessie_lxqt_4gb="debian-8.4-lxqt-4gb-armhf-${time}"

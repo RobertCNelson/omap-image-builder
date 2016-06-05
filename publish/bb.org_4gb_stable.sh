@@ -56,7 +56,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 ## Stable/shipping
 ##Debian 7:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-#image_name="debian-7.10-lxde-armhf-${time}"
+#image_name="debian-7.11-lxde-armhf-${time}"
 #size="4gb"
 #options="--img-4gb bone-${image_name} --dtb beaglebone \
 #--enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
