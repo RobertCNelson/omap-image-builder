@@ -22,16 +22,8 @@ debian_wheezy_lxde_4gb="debian-7.11-lxde-4gb-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
-
-bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
-
-beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
-
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+--rootfs_label rootfs --hostname beaglebone --enable-systemd"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -68,7 +60,9 @@ extract_base_rootfs () {
 
         if [ -f \${base_rootfs}.tar.xz ] ; then
                 tar xf \${base_rootfs}.tar.xz
-        else
+        fi
+
+        if [ -f \${base_rootfs}.tar ] ; then
                 tar xf \${base_rootfs}.tar
         fi
 }
@@ -84,6 +78,7 @@ copy_img_to_mirror () {
                         fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                sync
                                 if [ -f \${wfile}.img.xz.job.txt ] ; then
                                         cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
                                 fi
@@ -107,52 +102,55 @@ archive_img () {
 }
 
 generate_img () {
-        cd \${base_rootfs}/
-        sudo ./setup_sdcard.sh \${options}
-        mv *.img ../
-        mv *.job.txt ../
-        cd ..
+        if [ -d \${base_rootfs}/ ] ; then
+                cd \${base_rootfs}/
+                sudo ./setup_sdcard.sh \${options}
+                mv *.img ../
+                mv *.job.txt ../
+                cd ..
+        fi
 }
 
 ###Production lxde images: (BBB: 4GB eMMC)
 base_rootfs="${debian_wheezy_lxde_4gb}" ; blend="lxde-4gb" ; extract_base_rootfs
 
-options="--img-4gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbb-flasher" ; generate_img
-options="--img-4gb BBG-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher} --enable-systemd --bbg-flasher" ; generate_img
-options="--img-4gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
 
 ###lxde images: (BBB: 2GB eMMC)
 base_rootfs="${debian_wheezy_lxde_2gb}" ; blend="lxde" ; extract_base_rootfs
 
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --enable-systemd --bbb-flasher" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
 
-###console images: (also single partition)
+###console images
 base_rootfs="${debian_wheezy_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb BBB-blank-eMMC-flasher-\${base_rootfs} ${bb_blank_flasher_console} --enable-systemd --bbb-flasher" ; generate_img
-options="--img-2gb BBB-eMMC-flasher-\${base_rootfs} ${beaglebone_console} --enable-systemd --bbb-flasher" ; generate_img
-options="--img-2gb bone-\${base_rootfs} ${beaglebone_console} --enable-systemd" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_wheezy_lxde_4gb}" ; blend="lxde-4gb" ; archive_base_rootfs
-base_rootfs="${debian_wheezy_lxde_2gb}" ; blend="lxde" ; archive_base_rootfs
-base_rootfs="${debian_wheezy_console}" ; blend="console" ; archive_base_rootfs
+base_rootfs="${debian_wheezy_lxde_2gb}" ; blend="lxde"     ; archive_base_rootfs
+base_rootfs="${debian_wheezy_console}"  ; blend="console"  ; archive_base_rootfs
 
 ###archive *.img
-blend="lxde-4gb"
-wfile="BBB-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
-wfile="BBG-blank-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
-wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
-wfile="bone-${debian_wheezy_lxde_4gb}-4gb" ; archive_img
+base_rootfs="${debian_wheezy_lxde_4gb}" ; blend="lxde-4gb"
 
-blend="lxde"
-wfile="BBB-eMMC-flasher-${debian_wheezy_lxde_2gb}-2gb" ; archive_img
+wfile="BBB-blank-${base_rootfs}-4gb" ; archive_img
+wfile="bone-${base_rootfs}-4gb"      ; archive_img
 
-blend="console"
-wfile="BBB-blank-eMMC-flasher-${debian_wheezy_console}-2gb" ;archive_img
-wfile="BBB-eMMC-flasher-${debian_wheezy_console}-2gb" ; archive_img
-wfile="bone-${debian_wheezy_console}-2gb" ; archive_img
+#
+base_rootfs="${debian_wheezy_lxde_2gb}" ; blend="lxde"
+
+wfile="BBB-blank-${base_rootfs}-2gb" ; archive_img
+wfile="bone-${base_rootfs}-2gb"      ; archive_img
+
+#
+base_rootfs="${debian_wheezy_console}" ; blend="console"
+
+wfile="BBB-blank-${base_rootfs}-2gb" ; archive_img
+wfile="bone-${base_rootfs}-2gb"      ; archive_img
 
 __EOF__
 

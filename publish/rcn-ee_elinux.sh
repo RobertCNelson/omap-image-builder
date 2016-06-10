@@ -81,6 +81,7 @@ copy_img_to_mirror () {
                         fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                sync
                                 if [ -f \${wfile}.img.xz.job.txt ] ; then
                                         cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
                                 fi
@@ -116,48 +117,48 @@ generate_img () {
 #Debian Stable
 base_rootfs="${debian_stable}" ; blend="elinux" ; extract_base_rootfs
 
-options="--img BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
-options="--img bone-\${base_rootfs} ${beaglebone}" ; generate_img
-options="--img bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
+options="--img BBB-eMMC-flasher-\${base_rootfs}   ${beaglebone}        --emmc-flasher" ; generate_img
+options="--img bone-\${base_rootfs}               ${beaglebone}"                       ; generate_img
+options="--img bbxm-\${base_rootfs}               ${omap3_beagle_xm}"                  ; generate_img
 options="--img bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
-options="--img bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
-options="--img omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
+options="--img bbx15-\${base_rootfs}              ${am57xx_beagle_x15}"                ; generate_img
+options="--img omap5-uevm-\${base_rootfs}         ${omap5_uevm}"                       ; generate_img
 
 #Ubuntu Stable
 base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
 
-options="--img BBB-eMMC-flasher-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
-options="--img bone-\${base_rootfs} ${beaglebone}" ; generate_img
-options="--img bbxm-\${base_rootfs} ${omap3_beagle_xm}" ; generate_img
+options="--img BBB-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"        ; generate_img
+options="--img bone-\${base_rootfs}               ${beaglebone}"                       ; generate_img
+options="--img bbxm-\${base_rootfs}               ${omap3_beagle_xm}"                  ; generate_img
 options="--img bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
-options="--img bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
-options="--img omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
+options="--img bbx15-\${base_rootfs}              ${am57xx_beagle_x15}"                ; generate_img
+options="--img omap5-uevm-\${base_rootfs}         ${omap5_uevm}"                       ; generate_img
 
 #Archive tar:
-base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
-base_rootfs="${ubuntu_stable}" ; blend="elinux" ; archive_base_rootfs
+base_rootfs="${debian_stable}"  ; blend="elinux" ; archive_base_rootfs
+base_rootfs="${ubuntu_stable}"  ; blend="elinux" ; archive_base_rootfs
 base_rootfs="${debian_testing}" ; blend="elinux" ; archive_base_rootfs
 #base_rootfs="${ubuntu_testing}" ; blend="elinux" ; archive_base_rootfs
 
 #Archive img:
 base_rootfs="${debian_stable}" ; blend="microsd"
-wfile="bone-\${base_rootfs}-2gb" ; archive_img
-wfile="bbxm-\${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
+wfile="bone-\${base_rootfs}-2gb"       ; archive_img
+wfile="bbxm-\${base_rootfs}-2gb"       ; archive_img
+wfile="bbx15-\${base_rootfs}-2gb"      ; archive_img
 wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
 base_rootfs="${ubuntu_stable}" ; blend="microsd"
-wfile="bone-\${base_rootfs}-2gb" ; archive_img
-wfile="bbxm-\${base_rootfs}-2gb" ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
+wfile="bone-\${base_rootfs}-2gb"       ; archive_img
+wfile="bbxm-\${base_rootfs}-2gb"       ; archive_img
+wfile="bbx15-\${base_rootfs}-2gb"      ; archive_img
 wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
 base_rootfs="${debian_stable}" ; blend="flasher"
-wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb"   ; archive_img
 wfile="bbx15-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
 
 base_rootfs="${ubuntu_stable}" ; blend="flasher"
-wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
+wfile="BBB-eMMC-flasher-\${base_rootfs}-2gb"   ; archive_img
 wfile="bbx15-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
 
 __EOF__
