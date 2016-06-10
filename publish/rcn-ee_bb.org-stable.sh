@@ -12,14 +12,14 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c machinekit-debian-wheezy
-#./RootStock-NG.sh -c machinekit-debian-jessie
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
-#./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c machinekit-debian-wheezy
+./RootStock-NG.sh -c machinekit-debian-jessie
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
     debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
@@ -41,7 +41,7 @@ arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
 
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
-am57xx_beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
+beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
 --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
@@ -143,14 +143,14 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 ###lxqt-4gb image
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                        ; generate_img
-options="--img-4gb bbx15-\${base_rootfs}       ${am57xx_beagle_x15}"                 ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}         --emmc-flasher" ; generate_img
-options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}         --m10a-flasher" ; generate_img
-options="--img-4gb bbx15-blank-\${base_rootfs} ${am57xx_beagle_x15}  --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
+options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
+options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}  --m10a-flasher" ; generate_img
+options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
 
-#options="--img-4gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                       ; generate_img
-#options="--img-4gb tre-\${base_rootfs}         ${arduino_tre}"                      ; generate_img
+#options="--img-4gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                 ; generate_img
+#options="--img-4gb tre-\${base_rootfs}         ${arduino_tre}"                ; generate_img
 
 ###lxqt-2gb image
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
@@ -168,15 +168,15 @@ options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone}  --emmc-flasher" ; g
 ###console images
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb a335-eeprom-\${base_rootfs} ${beaglebone}         --a335-flasher" ; generate_img
-options="--img-2gb bone-\${base_rootfs}        ${beaglebone}"                        ; generate_img
-options="--img-2gb bbx15-\${base_rootfs}       ${am57xx_beagle_x15}"                 ; generate_img
-options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}         --emmc-flasher" ; generate_img
+options="--img-2gb a335-eeprom-\${base_rootfs} ${beaglebone}  --a335-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
+options="--img-2gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 
-#options="--img-2gb bbx15-blank-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
+#options="--img-2gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
 
-#options="--img-2gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                       ; generate_img
-#options="--img-2gb BBGW-blank-\${base_rootfs}  ${beaglebone}       --bbgw-flasher"  ; generate_img
+#options="--img-2gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                  ; generate_img
+#options="--img-2gb BBGW-blank-\${base_rootfs}  ${beaglebone}  --bbgw-flasher"  ; generate_img
 
 ###usbflasher images: (also single partition)
 base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
@@ -217,10 +217,11 @@ wfile="bone-\${base_rootfs}-4gb" ; archive_img
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
 
 wfile="bone-\${base_rootfs}-4gb"        ; archive_img
-wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
-wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
 wfile="m10a-blank-\${base_rootfs}-4gb"  ; archive_img
+wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
 wfile="bbx15-blank-\${base_rootfs}-4gb" ; archive_img
+
 #wfile="omap5-uevm-\${base_rootfs}-4gb"  ; archive_img
 #wfile="tre-\${base_rootfs}-4gb"         ; archive_img
 
@@ -241,10 +242,10 @@ base_rootfs="${debian_jessie_console}" ; blend="console"
 
 wfile="a335-eeprom-\${base_rootfs}-2gb" ; archive_img
 wfile="bone-\${base_rootfs}-2gb"        ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb"       ; archive_img
 wfile="BBB-blank-\${base_rootfs}-2gb"   ; archive_img
-
+wfile="bbx15-\${base_rootfs}-2gb"       ; archive_img
 wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
+
 #wfile="omap5-uevm-\${base_rootfs}-2gb"  ; archive_img
 #wfile="BBGW-blank-\${base_rootfs}-2gb"  ; archive_img
 
