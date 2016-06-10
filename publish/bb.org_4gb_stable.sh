@@ -53,17 +53,7 @@ build_and_upload_image () {
 keep_net_alive & KEEP_NET_ALIVE_PID=$!
 echo "pid: [${KEEP_NET_ALIVE_PID}]"
 
-## Stable/shipping
-##Debian 7:
-#image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-#image_name="debian-7.11-lxde-armhf-${time}"
-#size="4gb"
-#options="--img-4gb bone-${image_name} --dtb beaglebone \
-#--enable-systemd --bbb-old-bootloader-in-emmc --hostname beaglebone"
-#./RootStock-NG.sh -c bb.org-debian-wheezy-lxde-4gb
-#build_and_upload_image
-
-# Next BeagleBone image
+# IoT BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 image_name="debian-8.5-iot-armhf-${time}"
@@ -73,7 +63,7 @@ options="--img-2gb bone-${image_name} --dtb beaglebone \
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 build_and_upload_image
 
-# Next BeagleBone image
+# LXQT BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 image_name="debian-8.5-lxqt-4gb-armhf-${time}"
@@ -83,7 +73,16 @@ options="--img-4gb bone-${image_name} --dtb beaglebone \
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 build_and_upload_image
 
-# Next BeagleBoard-X15 image
+# LXQT BeagleBoard-xM image
+##Debian 8:
+#image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
+image_name="debian-8.5-lxqt-4gb-armhf-${time}"
+size="4gb"
+options="--img-4gb bbxm-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname BeagleBoard"
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+build_and_upload_image
+
+# LXQT BeagleBoard-X15 image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 #image_name="debian-8.5-lxqt-4gb-armhf-${time}"
