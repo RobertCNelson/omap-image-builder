@@ -137,20 +137,20 @@ base_rootfs="${debian_wheezy_console}"  ; blend="console"  ; archive_base_rootfs
 ###archive *.img
 base_rootfs="${debian_wheezy_lxde_4gb}" ; blend="lxde-4gb"
 
-wfile="BBB-blank-${base_rootfs}-4gb" ; archive_img
-wfile="bone-${base_rootfs}-4gb"      ; archive_img
+wfile="BBB-blank-\${base_rootfs}-4gb" ; archive_img
+wfile="bone-\${base_rootfs}-4gb"      ; archive_img
 
 #
 base_rootfs="${debian_wheezy_lxde_2gb}" ; blend="lxde"
 
-wfile="BBB-blank-${base_rootfs}-2gb" ; archive_img
-wfile="bone-${base_rootfs}-2gb"      ; archive_img
+wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
+wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 
 #
 base_rootfs="${debian_wheezy_console}" ; blend="console"
 
-wfile="BBB-blank-${base_rootfs}-2gb" ; archive_img
-wfile="bone-${base_rootfs}-2gb"      ; archive_img
+wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
+wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 
 __EOF__
 
