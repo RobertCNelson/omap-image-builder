@@ -79,7 +79,7 @@ build_and_upload_image
 image_name="debian-8.5-lxqt-4gb-armhf-${time}"
 size="4gb"
 options="--img-4gb bbxm-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname BeagleBoard"
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-xm
 build_and_upload_image
 
 # LXQT BeagleBoard-X15 image
