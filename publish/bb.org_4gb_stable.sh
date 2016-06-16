@@ -64,7 +64,7 @@ target_name="bone"
 options="--img-2gb ${target_name}-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
 config_name="bb.org-debian-jessie-iot-v4.4"
-#build_and_upload_image
+build_and_upload_image
 
 # LXQT BeagleBone image
 ##Debian 8:
@@ -75,7 +75,7 @@ target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
 config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
-#build_and_upload_image
+build_and_upload_image
 
 # LXQT BeagleBoard-xM image
 ##Debian 8:
