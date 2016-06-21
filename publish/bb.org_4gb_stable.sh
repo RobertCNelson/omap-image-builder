@@ -48,7 +48,11 @@ build_and_upload_image () {
 			#cleanup:
 			cd ../../
 			sudo rm -rf ./deploy/ || true
+		else
+			echo "***ERROR***: Could not find ${target_name}-${image_name}-${size}.img"
 		fi
+	else
+		echo "***ERROR***: Could not find ./deploy/${image_name}"
 	fi
 }
 
