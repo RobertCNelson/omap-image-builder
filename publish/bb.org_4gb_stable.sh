@@ -79,7 +79,7 @@ target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
 --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
 config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
-build_and_upload_image
+#build_and_upload_image
 
 # LXQT BeagleBoard-xM image
 ##Debian 8:
@@ -89,7 +89,7 @@ size="4gb"
 target_name="bbxm"
 options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 config_name="bb.org-debian-jessie-lxqt-4gb-xm"
-build_and_upload_image
+#build_and_upload_image
 
 # LXQT BeagleBoard-X15 image
 ##Debian 8:
@@ -99,7 +99,7 @@ size="4gb"
 target_name="bbx15"
 options="--img-4gb ${target_name}-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard"
 config_name="bb.org-debian-jessie-lxqt-4gb-v4.1"
-build_and_upload_image
+#build_and_upload_image
 
 [ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
 
