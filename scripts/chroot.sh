@@ -623,6 +623,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
+			apt-get update
 			apt-get -y --force-yes install ${deb_additional_pkgs}
 		fi
 
