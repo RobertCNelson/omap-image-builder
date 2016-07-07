@@ -221,7 +221,7 @@ early_git_repos () {
 }
 
 install_git_repos () {
-	if [ -f /usr/bin/jekyll ] ; then
+	if [ -d /usr/local/lib/node_modules/bonescript ] ; then
 		if [ -d /etc/apache2/ ] ; then
 			#bone101 takes over port 80, so shove apache/etc to 8080:
 			if [ -f /etc/apache2/ports.conf ] ; then
@@ -229,6 +229,9 @@ install_git_repos () {
 			fi
 			if [ -f /etc/apache2/sites-enabled/000-default ] ; then
 				sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default
+			fi
+			if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
+				sed -i -e 's:80:8080:g' /etc/apache2/sites-enabled/000-default.conf
 			fi
 			if [ -f /var/www/html/index.html ] ; then
 				rm -rf /var/www/html/index.html || true
