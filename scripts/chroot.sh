@@ -1138,6 +1138,9 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		apt-get clean
 		rm -rf /var/lib/apt/lists/*
 
+		if [ -d /var/cache/bb-node-red-installer ] ; then
+			rm -rf /var/cache/bb-node-red-installer|| true
+		fi
 		if [ -d /var/cache/c9-core-installer/ ] ; then
 			rm -rf /var/cache/c9-core-installer/ || true
 		fi
