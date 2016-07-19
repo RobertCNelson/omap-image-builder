@@ -93,13 +93,15 @@ copy_img_to_mirror () {
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         if [ -f \${wfile}.bmap ] ; then
-                                cp -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
+                                mv -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
+                                sync
                         fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
-                                cp -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
+                                mv -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
                                 sync
                                 if [ -f \${wfile}.img.xz.job.txt ] ; then
-                                        cp -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
+                                        mv -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
+                                        sync
                                 fi
                                 cd ${mirror_dir}/${time}/\${blend}/
                                 ${archive} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
@@ -124,8 +126,10 @@ generate_img () {
         if [ -d \${base_rootfs}/ ] ; then
                 cd \${base_rootfs}/
                 sudo ./setup_sdcard.sh \${options}
-                mv *.img ../
-                mv *.job.txt ../
+                sudo chown ${SUDO_USER}:${SUDO_USER} *.img || true
+                sudo chown ${SUDO_USER}:${SUDO_USER} *.job.txt || true
+                mv *.img ../ || true
+                mv *.job.txt ../ || true
                 cd ..
         fi
 }
