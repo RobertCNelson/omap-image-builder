@@ -585,12 +585,17 @@ format_rootfs_partition () {
 	if [ "x${build_img_file}" = "xenable" ] ; then
 		rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
 	else
-		unset rootfs_uuid
-		rootfs_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
-		if [ ! "x${rootfs_uuid}" = "x" ] ; then
-			rootfs_drive="UUID=${rootfs_uuid}"
-		else
+		#x15, ti v4.4.x uuid is broken, but we have u-boot patched for mmc0=microSD, mmc1=eMMC
+		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 			rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
+		else
+			unset rootfs_uuid
+			rootfs_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
+			if [ ! "x${rootfs_uuid}" = "x" ] ; then
+				rootfs_drive="UUID=${rootfs_uuid}"
+			else
+				rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
+			fi
 		fi
 	fi
 
@@ -1202,6 +1207,12 @@ populate_rootfs () {
 		elif [ "x${a335_flasher}" = "xenable" ] ; then
 			echo "##enable a335: eeprom Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
+		else
+			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+				echo "##enable x15: eMMC Flasher:" >> ${wfile}
+				echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
+				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
+			fi
 		fi
 	fi
 
@@ -1307,13 +1318,23 @@ populate_rootfs () {
 			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "# The secondary network interface" >> ${wfile}
-			echo "#auto eth1" >> ${wfile}
-			echo "#iface eth1 inet dhcp" >> ${wfile}
+
+			echo "##connman: ethX static config" >> ${wfile}
+			echo "#connmanctl services" >> ${wfile}
+			echo "#Using the appropriate ethernet service, tell connman to setup a static IP address for that service:" >> ${wfile}
+			echo "#sudo connmanctl config <service> --ipv4 manual <ip_addr> <netmask> <gateway> --nameservers <dns_server>" >> ${wfile}
 
 			echo "" >> ${wfile}
 
-			echo "# WiFi use: -> connmanctl" >> ${wfile}
+			echo "##connman: WiFi" >> ${wfile}
+			echo "#" >> ${wfile}
+			echo "#connmanctl" >> ${wfile}
+			echo "#connmanctl> tether wifi disable" >> ${wfile}
+			echo "#connmanctl> enable wifi" >> ${wfile}
+			echo "#connmanctl> scan wifi" >> ${wfile}
+			echo "#connmanctl> services" >> ${wfile}
+			echo "#connmanctl> connect wifi_*_managed_psk" >> ${wfile}
+			echo "#connmanctl> quit" >> ${wfile}
 
 			echo "" >> ${wfile}
 
