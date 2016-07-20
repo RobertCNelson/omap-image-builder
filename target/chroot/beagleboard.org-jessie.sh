@@ -333,6 +333,9 @@ install_git_repos () {
 		if [ -f /usr/bin/make ] ; then
 			make
 			make install
+			if [ ! "x${image_type}" = "xtester-2gb" ] ; then
+				systemctl disable beagle-tester.service || true
+			fi
 		fi
 	fi
 }

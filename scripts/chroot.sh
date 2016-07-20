@@ -516,6 +516,7 @@ echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 echo "release_date=${time}" >> /tmp/rcn-ee.conf
 echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
 echo "abi=${abi}" >> /tmp/rcn-ee.conf
+echo "image_type=${image_type}" >> /tmp/rcn-ee.conf
 sudo mv /tmp/rcn-ee.conf "${tempdir}/etc/rcn-ee.conf"
 sudo chown root:root "${tempdir}/etc/rcn-ee.conf"
 
