@@ -42,7 +42,7 @@ TEMPDIR=$(mktemp -d)
 
 keep_net_alive () {
 	while : ; do
-		echo "running: $*"
+		echo "syncing media... $*"
 		sleep 300
 	done
 }
