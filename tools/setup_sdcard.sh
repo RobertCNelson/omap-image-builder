@@ -1333,6 +1333,7 @@ populate_rootfs () {
 			echo "#connmanctl> enable wifi" >> ${wfile}
 			echo "#connmanctl> scan wifi" >> ${wfile}
 			echo "#connmanctl> services" >> ${wfile}
+			echo "#connmanctl> agent on" >> ${wfile}
 			echo "#connmanctl> connect wifi_*_managed_psk" >> ${wfile}
 			echo "#connmanctl> quit" >> ${wfile}
 
