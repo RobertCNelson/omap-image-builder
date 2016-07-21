@@ -37,6 +37,9 @@ archive="xz -z -8"
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
+bbbw="--dtb osd335x-blank-eeprom \
+--rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+
 arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
 
@@ -167,6 +170,8 @@ options="--img-2gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
+#just temp:
+options="--img-4gb bbbw-\${base_rootfs}       ${bbbw}"                       ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone}  --emmc-flasher" ; generate_img
 
 ###console images
@@ -239,6 +244,8 @@ wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 base_rootfs="${debian_jessie_iot}" ; blend="iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
+#just temp:
+wfile="bbbw-\${base_rootfs}-4gb"       ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"  ; archive_img
 
 #
