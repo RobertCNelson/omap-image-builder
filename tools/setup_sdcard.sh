@@ -806,6 +806,9 @@ populate_boot () {
 		fi
 
 		echo "" >> ${wfile}
+	fi
+
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
 		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
 		echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
@@ -1096,7 +1099,7 @@ populate_rootfs () {
 	else
 		echo "#dtb=" >> ${wfile}
 
-		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 			echo "" >> ${wfile}
 			echo "##BeagleBone Black/Green dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
 
@@ -1159,7 +1162,9 @@ populate_rootfs () {
 		echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
 		echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
 		echo "" >> ${wfile}
+	fi
 
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 		echo "##Example v4.1.x" >> ${wfile}
 		echo "#cape_disable=bone_capemgr.disable_partno=" >> ${wfile}
 		echo "#cape_enable=bone_capemgr.enable_partno=" >> ${wfile}
@@ -1380,7 +1385,7 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk${file}
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
 		file="/etc/udev/rules.d/70-persistent-net.rules"
 		echo "" > ${TEMPDIR}/disk${file}
