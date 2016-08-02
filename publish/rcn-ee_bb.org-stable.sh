@@ -170,9 +170,8 @@ options="--img-2gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
-#just temp:
-options="--img-4gb bbbw-\${base_rootfs}       ${bbbw}"                       ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone}  --emmc-flasher" ; generate_img
+options="--img-4gb BBBW-blank-\${base_rootfs} ${beaglebone}  --bbbw-flasher" ; generate_img
 
 ###console images
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
@@ -244,9 +243,8 @@ wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 base_rootfs="${debian_jessie_iot}" ; blend="iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
-#just temp:
-wfile="bbbw-\${base_rootfs}-4gb"       ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"  ; archive_img
+wfile="BBBW-blank-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_console}" ; blend="console"
