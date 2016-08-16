@@ -593,6 +593,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		apt-get update
 		apt-get upgrade -y --force-yes
+		apt-get dist-upgrade -y --force-yes
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
