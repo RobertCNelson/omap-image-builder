@@ -1458,6 +1458,12 @@ populate_rootfs () {
 		echo "${new_hostname}" > ${TEMPDIR}/disk${wfile}
 	fi
 
+	# setuid root ping+ping6 - capabilities does not survive tar
+	if [ -x  ${TEMPDIR}/disk/bin/ping ] ; then
+		echo "making ping/ping6 setuid root"
+		chmod u+s ${TEMPDIR}/disk//bin/ping ${TEMPDIR}/disk//bin/ping6
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
