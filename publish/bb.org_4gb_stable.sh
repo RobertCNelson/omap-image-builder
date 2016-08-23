@@ -35,7 +35,7 @@ build_and_upload_image () {
 
 			bmaptool create -o ${target_name}-${image_name}-${size}.bmap ${target_name}-${image_name}-${size}.img
 
-			xz -z -3 -v -v --verbose ${target_name}-${image_name}-${size}.img
+			xz -T0 -z -3 -v -v --verbose ${target_name}-${image_name}-${size}.img
 			sha256sum ${target_name}-${image_name}-${size}.img.xz > ${target_name}-${image_name}-${size}.img.xz.sha256sum
 
 			#upload:
