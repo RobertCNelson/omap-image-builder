@@ -657,8 +657,15 @@ create_partitions () {
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
-		sfdisk_single_partition_layout
-		media_rootfs_partition=1
+		if [ "x${enable_fat_partition}" = "xenable" ] ; then
+			conf_boot_endmb=${conf_boot_endmb:-"96"}
+			conf_boot_fstype=${conf_boot_fstype:-"fat"}
+			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+			sfdisk_partition_layout
+		else
+			sfdisk_single_partition_layout
+			media_rootfs_partition=1
+		fi
 		;;
 	*)
 		echo "Using sfdisk to create partition layout"
@@ -1780,6 +1787,9 @@ while [ ! -z "$1" ] ; do
 	--enable-cape)
 		checkparm $2
 		oobe_cape="$2"
+		;;
+	--enable-fat-partition)
+		enable_fat_partition="enable"
 		;;
 	esac
 	shift
