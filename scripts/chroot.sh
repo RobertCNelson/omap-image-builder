@@ -930,6 +930,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get remove -y --force-yes ntpdate --purge || true
 			fi
 		fi
+
+		#kill systemd/connman-wait-online.service, as it delays serial console upto 2 minutes...
+		if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
+			systemctl disable connman-wait-online.service || true
+		fi
 	}
 
 	#cat /chroot_script.sh
