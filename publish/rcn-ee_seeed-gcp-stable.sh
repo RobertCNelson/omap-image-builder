@@ -110,8 +110,8 @@ generate_img () {
         if [ -d \${base_rootfs}/ ] ; then
                 cd \${base_rootfs}/
                 sudo ./setup_sdcard.sh \${options}
-                sudo chown \${SUDO_USER}:\${SUDO_USER} *.img || true
-                sudo chown \${SUDO_USER}:\${SUDO_USER} *.job.txt || true
+                sudo chown 1000:1000 *.img || true
+                sudo chown 1000:1000 *.job.txt || true
                 mv *.img ../ || true
                 mv *.job.txt ../ || true
                 cd ..
