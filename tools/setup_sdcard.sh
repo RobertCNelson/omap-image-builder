@@ -1557,7 +1557,18 @@ process_dtb_conf () {
 	echo "-----------------------------"
 
 	#defaults, if not set...
-	conf_boot_startmb=${conf_boot_startmb:-"4"}
+	case "${bootloader_location}" in
+	fatfs_boot)
+		conf_boot_startmb=${conf_boot_startmb:-"1"}
+		;;
+	dd_uboot_boot|dd_spl_uboot_boot)
+		conf_boot_startmb=${conf_boot_startmb:-"4"}
+		;;
+	*)
+		conf_boot_startmb=${conf_boot_startmb:-"4"}
+		;;
+	esac
+
 	#https://wiki.linaro.org/WorkingGroups/KernelArchived/Projects/FlashCardSurvey
 	conf_root_device=${conf_root_device:-"/dev/mmcblk0"}
 
