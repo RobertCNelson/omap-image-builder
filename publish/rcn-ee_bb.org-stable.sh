@@ -16,6 +16,7 @@ fi
 ./RootStock-NG.sh -c machinekit-debian-jessie
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-xm
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
@@ -26,6 +27,7 @@ fi
     debian_jessie_machinekit="debian-8.5-machinekit-armhf-${time}"
       debian_jessie_lxqt_2gb="debian-8.5-lxqt-2gb-armhf-${time}"
       debian_jessie_lxqt_4gb="debian-8.5-lxqt-4gb-armhf-${time}"
+   debian_jessie_lxqt_xm_4gb="debian-8.5-lxqt-4gb-armhf-${time}"
            debian_jessie_iot="debian-8.5-iot-armhf-${time}"
        debian_jessie_console="debian-8.5-console-armhf-${time}"
     debian_jessie_usbflasher="debian-8.5-usbflasher-armhf-${time}"
@@ -42,6 +44,8 @@ bbbw="--dtb osd335x-blank-eeprom \
 
 arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
+
+beagle_xm="-dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
 beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
@@ -166,6 +170,11 @@ options="--img-2gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
 
 #options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
 
+###lxqt-xm-4gb image
+base_rootfs="${debian_jessie_lxqt_xm_4gb}" ; blend="lxqt-xm-4gb" ; extract_base_rootfs
+
+options="--img-4gb bbxm-\${base_rootfs}  ${beagle_xm}" ; generate_img
+
 ###iot image
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
@@ -206,6 +215,7 @@ base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"     ; archive
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"       ; archive_base_rootfs
+base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"    ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}"            ; blend="iot"            ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"        ; archive_base_rootfs
 base_rootfs="${debian_jessie_usbflasher}"     ; blend="usbflasher"     ; archive_base_rootfs
@@ -238,6 +248,11 @@ base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb"
 
 wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 #wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
+
+#
+base_rootfs="${debian_jessie_lxqt_xm_4gb}" ; blend="lxqt-xm-4gb"
+
+wfile="bbxm-\${base_rootfs}-4gb"      ; archive_img
 
 #
 base_rootfs="${debian_jessie_iot}" ; blend="iot"
