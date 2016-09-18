@@ -14,7 +14,7 @@ fi
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 
- debian_stable="debian-8.5-console-armhf-${time}"
+ debian_stable="debian-8.6-console-armhf-${time}"
 debian_testing="debian-stretch-console-armhf-${time}"
  ubuntu_stable="ubuntu-16.04.1-console-armhf-${time}"
 #ubuntu_testing="ubuntu-16.04.1-console-armhf-${time}"
