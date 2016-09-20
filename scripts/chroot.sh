@@ -571,6 +571,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
 		fi
+
+		apt_options="--force-yes"
+		if [ "x\${deb_codename}" = "xstretch" ] ; then
+			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
+		fi
 	}
 
 	install_pkg_updates () {
@@ -592,8 +597,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		apt-get update
-		apt-get upgrade -y --force-yes
-		apt-get dist-upgrade -y --force-yes
+		apt-get upgrade -y \${apt_options}
+		apt-get dist-upgrade -y \${apt_options}
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
@@ -626,13 +631,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
 			apt-get update
-			apt-get -y --force-yes install ${deb_additional_pkgs}
+			apt-get -y \${apt_options} install ${deb_additional_pkgs}
 		fi
 
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
-			apt-get -y --force-yes install mt7601u-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y --force-yes install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y \${apt_options} install mt7601u-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y \${apt_options} install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
@@ -640,13 +645,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
 				echo "Log: (chroot) Installing (from backports): ${chroot_debian_backports_pkg_list}"
-				sudo apt-get -y --force-yes -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
+				sudo apt-get -y \${apt_options} -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
 			fi
 		fi
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
-			apt-get -y --force-yes install ${repo_external_pkg_list}
+			apt-get -y \${apt_options} install ${repo_external_pkg_list}
 		fi
 	}
 
@@ -693,7 +698,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	run_deborphan () {
 		echo "Log: (chroot): deborphan is not reliable, run manual and add pkg list to: [chroot_manual_deborphan_list]"
-		apt-get -y --force-yes install deborphan
+		apt-get -y \${apt_options} install deborphan
 
 		# Prevent deborphan from removing explicitly required packages
 		deborphan -A ${deb_additional_pkgs} ${repo_external_pkg_list} ${deb_include}
@@ -927,7 +932,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
-				apt-get remove -y --force-yes ntpdate --purge || true
+				apt-get remove -y \${apt_options} ntpdate --purge || true
 			fi
 		fi
 
