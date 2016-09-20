@@ -576,6 +576,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ "x\${deb_codename}" = "xstretch" ] ; then
 			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
 		fi
+		echo "Log: (chroot): apt using \${apt_options}"
 	}
 
 	install_pkg_updates () {
