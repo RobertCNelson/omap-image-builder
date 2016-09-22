@@ -512,6 +512,7 @@ fi
 
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 echo "distro=${distro}" > /tmp/rcn-ee.conf
+echo "deb_codename=${deb_codename}" >> /tmp/rcn-ee.conf
 echo "rfs_username=${rfs_username}" >> /tmp/rcn-ee.conf
 echo "release_date=${time}" >> /tmp/rcn-ee.conf
 echo "third_party_modules=${third_party_modules}" >> /tmp/rcn-ee.conf
@@ -574,12 +575,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		apt_options="--force-yes"
 		if [ "x\${deb_codename}" = "xstretch" ] ; then
-			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
+			apt_options=""
 		fi
 		if [ "x\${deb_codename}" = "xxenial" ] ; then
 			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
 		fi
-		echo "Log: (chroot): apt using \${apt_options}"
+		echo "Log: (chroot): apt using extra: [\${apt_options}]"
 	}
 
 	install_pkg_updates () {
