@@ -22,6 +22,7 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 
     debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
     debian_jessie_machinekit="debian-8.6-machinekit-armhf-${time}"
@@ -33,6 +34,7 @@ fi
     debian_jessie_usbflasher="debian-8.6-usbflasher-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
      debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
+          debian_stretch_iot="debian-stretch-iot-armhf-${time}"
 
 archive="xz -z -8"
 
@@ -210,6 +212,11 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_root
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                ; generate_img
 options="--img-4gb BBGW-blank-\${base_rootfs} ${beaglebone} --bbgw-flasher" ; generate_img
 
+###stretch iot image
+base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
+
 ###archive *.tar
 base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
@@ -221,6 +228,7 @@ base_rootfs="${debian_jessie_console}"        ; blend="console"        ; archive
 base_rootfs="${debian_jessie_usbflasher}"     ; blend="usbflasher"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"      ; archive_base_rootfs
+base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"    ; archive_base_rootfs
 
 ###archive *.img
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
@@ -287,6 +295,11 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
 wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
+
+#
+base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
+
+wfile="bone-\${base_rootfs}-4gb"       ; archive_img
 
 __EOF__
 
