@@ -22,10 +22,12 @@ BeagleBoard.org or Element14 BeagleBone Black:
 BeagleBoard.org BeagleBone Blue:
 
       A0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 4c 41 30 |.U3.A335BNLTBLA0|]
+      A1: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 4c 41 30 |.U3.A335BNLTBLA1|]      
 
 BeagleBoard.org BeagleBone Black Wireless:
 
       A3: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 57 41 33 |.U3.A335BNLTBWA3|]
+      A5: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 57 41 33 |.U3.A335BNLTBWA5|]
 
 SeeedStudio BeagleBone Green:
 
