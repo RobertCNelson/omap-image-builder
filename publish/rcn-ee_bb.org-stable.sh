@@ -27,7 +27,7 @@ fi
     debian_jessie_machinekit="debian-8.6-machinekit-armhf-${time}"
       debian_jessie_lxqt_2gb="debian-8.6-lxqt-2gb-armhf-${time}"
       debian_jessie_lxqt_4gb="debian-8.6-lxqt-4gb-armhf-${time}"
-   debian_jessie_lxqt_xm_4gb="debian-8.6-lxqt-4gb-armhf-${time}"
+   debian_jessie_lxqt_xm_4gb="debian-8.6-lxqt-xm-4gb-armhf-${time}"
            debian_jessie_iot="debian-8.6-iot-armhf-${time}"
        debian_jessie_console="debian-8.6-console-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
