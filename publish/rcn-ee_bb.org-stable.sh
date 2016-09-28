@@ -302,10 +302,10 @@ if [ ! -d /mnt/farm/images/ ] ; then
 fi
 
 if [ -d /mnt/farm/images/ ] ; then
-	mkdir /mnt/farm/images/${time}/
-	echo "Copying: *.tar to server: images/${time}/"
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${time}/
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${time}/gift_wrap_final_images.sh
-	chmod +x /mnt/farm/images/${time}/gift_wrap_final_images.sh
+	mkdir /mnt/farm/images/bb.org-${time}/
+	echo "Copying: *.tar to server: images/bb.org-${time}/"
+	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/bb.org-${time}/
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh
+	chmod +x /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh
 fi
 
