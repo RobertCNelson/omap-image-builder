@@ -62,7 +62,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 # IoT BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.6-iot-armhf-${time}"
+image_name="debian-8.6-iot-2gb-armhf-${time}"
 size="2gb"
 target_name="bone"
 options="--img-2gb ${target_name}-${image_name} --dtb beaglebone \
