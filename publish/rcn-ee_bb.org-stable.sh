@@ -23,6 +23,8 @@ if [ ! -f jenkins.build ] ; then
 #./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 #./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 #./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+else
+	mkdir -p ${DIR}/deploy/ || true
 fi
 
     debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
