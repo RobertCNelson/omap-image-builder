@@ -12,6 +12,7 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
+if [ ! -f jenkins.build ] ; then
 #./RootStock-NG.sh -c machinekit-debian-wheezy
 #./RootStock-NG.sh -c machinekit-debian-jessie
 ##./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
@@ -22,6 +23,7 @@ fi
 #./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 #./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 #./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+fi
 
     debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
     debian_jessie_machinekit="debian-8.6-machinekit-armhf-${time}"
@@ -296,16 +298,26 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
-if [ ! -d /mnt/farm/images/ ] ; then
-	#nfs mount...
-	sudo mount -a
+#node:
+if [ ! -d /var/www/html/farm/images/ ] ; then
+	if [ ! -d /mnt/farm/images/ ] ; then
+		#nfs mount...
+		sudo mount -a
+	fi
+
+	if [ -d /mnt/farm/images/ ] ; then
+		mkdir /mnt/farm/images/bb.org-${time}/
+		echo "Copying: *.tar to server: images/bb.org-${time}/"
+		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/bb.org-${time}/ || true
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
+		chmod +x /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
+	fi
 fi
 
-if [ -d /mnt/farm/images/ ] ; then
-	mkdir /mnt/farm/images/bb.org-${time}/
+#x86:
+if [ -d /var/www/html/farm/images/ ] ; then
+	mkdir /var/www/html/farm/images/bb.org-${time}/
 	echo "Copying: *.tar to server: images/bb.org-${time}/"
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/bb.org-${time}/
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh
-	chmod +x /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
+	chmod +x /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
 fi
-
