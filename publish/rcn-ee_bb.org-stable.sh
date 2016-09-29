@@ -323,4 +323,5 @@ if [ -d /var/www/html/farm/images/ ] ; then
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	sudo chown -R 114:114 /var/www/html/farm/images/${image_prefix}-${time}/ || true
 fi
