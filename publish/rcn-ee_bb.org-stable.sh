@@ -308,7 +308,7 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 	fi
 
 	if [ -d /mnt/farm/images/ ] ; then
-		mkdir /mnt/farm/images/bb.org-${time}/
+		mkdir -p /mnt/farm/images/bb.org-${time}/ || true
 		echo "Copying: *.tar to server: images/bb.org-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/bb.org-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
@@ -318,7 +318,7 @@ fi
 
 #x86:
 if [ -d /var/www/html/farm/images/ ] ; then
-	mkdir /var/www/html/farm/images/bb.org-${time}/
+	mkdir -p /var/www/html/farm/images/bb.org-${time}/ || true
 	echo "Copying: *.tar to server: images/bb.org-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
 	chmod +x /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
