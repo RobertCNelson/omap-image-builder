@@ -1173,9 +1173,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		if [ -d /var/cache/ti-pru-cgt-installer/ ] ; then
 			rm -rf /var/cache/ti-pru-cgt-installer/ || true
 		fi
-		if [ -d /var/cache/vpdma-dra7xx-installer/ ] ; then
-			rm -rf /var/cache/vpdma-dra7xx-installer/ || true
-		fi
 		rm -f /usr/sbin/policy-rc.d
 
 		if [ "x\${distro}" = "xUbuntu" ] ; then
