@@ -13,16 +13,16 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-#./RootStock-NG.sh -c machinekit-debian-wheezy
-#./RootStock-NG.sh -c machinekit-debian-jessie
-##./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
+./RootStock-NG.sh -c machinekit-debian-wheezy
+./RootStock-NG.sh -c machinekit-debian-jessie
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-xm
-#./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-#./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
-#./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
-#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
+./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
@@ -49,7 +49,7 @@ bbbw="--dtb osd335x-blank-eeprom \
 arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
 --rootfs_label rootfs --hostname arduino-tre"
 
-beagle_xm="-dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
+beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
 beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
