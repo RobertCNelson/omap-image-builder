@@ -10,9 +10,13 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
+if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
+else
+	mkdir -p ${DIR}/deploy/ || true
+fi
 
  debian_stable="debian-8.6-console-armhf-${time}"
 debian_testing="debian-stretch-console-armhf-${time}"
@@ -169,15 +173,27 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
-if [ ! -d /mnt/farm/images/ ] ; then
-	#nfs mount...
-	sudo mount -a
+image_prefix="elinux"
+#node:
+if [ ! -d /var/www/html/farm/images/ ] ; then
+	if [ ! -d /mnt/farm/images/ ] ; then
+		#nfs mount...
+		sudo mount -a
+	fi
+
+	if [ -d /mnt/farm/images/ ] ; then
+		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	fi
 fi
 
-if [ -d /mnt/farm/images/ ] ; then
-	mkdir /mnt/farm/images/elinux-${time}/
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/elinux-${time}/
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/elinux-${time}/gift_wrap_final_images.sh
-	chmod +x /mnt/farm/images/elinux-${time}/gift_wrap_final_images.sh
+#x86:
+if [ -d /var/www/html/farm/images/ ] ; then
+	mkdir -p /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 fi
-

@@ -300,6 +300,7 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
+image_prefix="bb.org"
 #node:
 if [ ! -d /var/www/html/farm/images/ ] ; then
 	if [ ! -d /mnt/farm/images/ ] ; then
@@ -308,18 +309,18 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 	fi
 
 	if [ -d /mnt/farm/images/ ] ; then
-		mkdir -p /mnt/farm/images/bb.org-${time}/ || true
-		echo "Copying: *.tar to server: images/bb.org-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/bb.org-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
-		chmod +x /mnt/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
+		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	fi
 fi
 
 #x86:
 if [ -d /var/www/html/farm/images/ ] ; then
-	mkdir -p /var/www/html/farm/images/bb.org-${time}/ || true
-	echo "Copying: *.tar to server: images/bb.org-${time}/"
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
-	chmod +x /var/www/html/farm/images/bb.org-${time}/gift_wrap_final_images.sh || true
+	mkdir -p /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 fi
