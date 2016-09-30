@@ -1,8 +1,0 @@
-#!/bin/sh
-
-cd ~
-
-#wget http://static.mah.priv.at/public/beaglebone/starterkit/deploy/3.8.13xenomai-bone20.config
-#wget http://static.mah.priv.at/public/beaglebone/starterkit/deploy/3.8.13xenomai-bone23.config
-#wget http://www.machinekit.net/deb/wheezy-armhf/v3.8.13xenomai-bone26/3.8.13xenomai-bone26.config
-

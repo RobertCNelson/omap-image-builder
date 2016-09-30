@@ -4,19 +4,22 @@ echo "chroot: ${tempdir}"
 
 echo "userid: ${rfs_username}:${rfs_password}"
 
-#xenomai_gid="$(sed -n '/xenomai/{s/^[^:]*:[^:]*:\([^:]*\):.*/\1/;p;}' /etc/group)"
-#echo "xenomai gid: ${xenomai_gid}"
-
 sudo rsync -va ${DIR}/machinekit/scripts/* ${tempdir}/tmp/
 
 for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]* ; do
 	case "$SCRIPT" in
+	# Run script as root on the new image
 	*.shr)	time sudo chroot ${tempdir} /bin/sh  ${SCRIPT#$tempdir} ${rfs_username}
 		;;
+
+	# Run script as user on the new image
 	*.shu)	time sudo chroot ${tempdir} /bin/su  ${rfs_username} -c ${SCRIPT#$tempdir}
 		;;
+
+	# Run script on the build host, which can see both filesystems
 	*.sh)	. ${SCRIPT}
 		;;
+
 	*)	echo "Log: Unknown script format: ${SCRIPT}"
 		;;
 	esac
