@@ -120,6 +120,7 @@ setup_desktop () {
 		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> ${wfile}
 
 #		echo "        Driver          \"modesetting\"" >> ${wfile}
+#		echo "        Option          \"AccelMethod\"   \"none\"" >> ${wfile}
 		echo "        Driver          \"fbdev\"" >> ${wfile}
 
 		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
