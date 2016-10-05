@@ -370,7 +370,7 @@ sfdisk_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_boot_size_mb="${conf_boot_endmb}"
-	sfdisk_var_startmb="${conf_var_startmb}"
+	sfdisk_var_size_mb="${conf_var_startmb}"
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -378,19 +378,19 @@ sfdisk_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_boot_size_mb="${sfdisk_boot_size_mb}M"
-		sfdisk_var_startmb="${sfdisk_var_startmb}M"
+		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [,${sfdisk_var_startmb},,-]"
+		echo "sfdisk: [,${sfdisk_var_size_mb},,-]"
 		echo "sfdisk: [,,,-]"
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 			${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
-			,${sfdisk_var_startmb},,-
+			,${sfdisk_var_size_mb},,-
 			,,,-
 		__EOF__
 
@@ -414,14 +414,14 @@ sfdisk_partition_layout () {
 sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
-	sfdisk_var_startmb="${conf_var_startmb}"
+	sfdisk_var_size_mb="${conf_var_startmb}"
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
-		sfdisk_var_startmb="${sfdisk_var_startmb}M"
+		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
@@ -431,7 +431,7 @@ sfdisk_single_partition_layout () {
 		echo "sfdisk: [,,,-]"
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${sfdisk_boot_startmb},${sfdisk_var_startmb},${sfdisk_fstype},*
+			${sfdisk_boot_startmb},${sfdisk_var_size_mb},${sfdisk_fstype},*
 			,,,-
 		__EOF__
 
