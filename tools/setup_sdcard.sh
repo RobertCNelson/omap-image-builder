@@ -633,7 +633,7 @@ create_partitions () {
 
 	unset ext4_options
 
-	if [ ! "x${uboot_supports_csum}" = "xtrue" ]
+	if [ ! "x${uboot_supports_csum}" = "xtrue" ] ; then
 		#Debian Stretch, mfks.ext4 default to metadata_csum, 64bit disable till u-boot works again..
 		unset ext4_options
 		unset test_mke2fs
