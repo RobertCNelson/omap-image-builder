@@ -155,17 +155,6 @@ detect_software () {
 		exit
 	fi
 
-	#Debian Stretch, mfks.ext4 default to metadata_csum,64bit disable till u-boot works again..
-	unset ext4_options
-	unset test_mke2fs
-	LC_ALL=C mkfs.ext4 -V &> /tmp/mkfs
-	test_mkfs=$(cat /tmp/mkfs | grep mke2fs | grep 1.43 || true)
-	if [ "x${test_mkfs}" = "x" ] ; then
-		unset ext4_options
-	else
-		ext4_options="-O ^metadata_csum,^64bit"
-	fi
-
 	unset wget_version
 	wget_version=$(LC_ALL=C wget --version | grep "GNU Wget" | awk '{print $3}' | awk -F '.' '{print $2}' || true)
 	case "${wget_version}" in
@@ -641,6 +630,21 @@ create_partitions () {
 
 	media_boot_partition=1
 	media_rootfs_partition=2
+
+	unset ext4_options
+
+	if [ ! "x${uboot_supports_csum}" = "xtrue" ]
+		#Debian Stretch, mfks.ext4 default to metadata_csum, 64bit disable till u-boot works again..
+		unset ext4_options
+		unset test_mke2fs
+		LC_ALL=C mkfs.ext4 -V &> /tmp/mkfs
+		test_mkfs=$(cat /tmp/mkfs | grep mke2fs | grep 1.43 || true)
+		if [ "x${test_mkfs}" = "x" ] ; then
+			unset ext4_options
+		else
+			ext4_options="-O ^metadata_csum,^64bit"
+		fi
+	fi
 
 	echo ""
 	case "${bootloader_location}" in
