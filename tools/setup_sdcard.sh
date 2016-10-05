@@ -371,6 +371,12 @@ sfdisk_partition_layout () {
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_boot_size_mb="${conf_boot_endmb}"
 	sfdisk_var_size_mb="${conf_var_startmb}"
+	if [ "x${option_ro_root}" = "xenable" ] ; then
+		sfdisk_var_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
+		sfdisk_rootfs_startmb=$(($sfdisk_var_startmb + $sfdisk_var_size_mb))
+	else
+		sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
+	fi
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -378,20 +384,22 @@ sfdisk_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_boot_size_mb="${sfdisk_boot_size_mb}M"
+		sfdisk_var_startmb="${sfdisk_var_startmb}M"
 		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
+		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [,${sfdisk_var_size_mb},,-]"
-		echo "sfdisk: [,,,-]"
+		echo "sfdisk: [${sfdisk_var_startmb},${sfdisk_var_size_mb},,-]"
+		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 			${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
-			,${sfdisk_var_size_mb},,-
-			,,,-
+			${sfdisk_var_startmb},${sfdisk_var_size_mb},,-
+			${sfdisk_rootfs_startmb},,,-
 		__EOF__
 
 		media_rootfs_var_partition=3
@@ -399,11 +407,11 @@ sfdisk_partition_layout () {
 		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
 		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [,,,-]"
+		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 			${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
-			,,,-
+			${sfdisk_rootfs_startmb},,,-
 		__EOF__
 
 	fi
@@ -415,6 +423,9 @@ sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_var_size_mb="${conf_var_startmb}"
+	if [ "x${option_ro_root}" = "xenable" ] ; then
+		sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_var_size_mb))
+	fi
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -422,17 +433,20 @@ sfdisk_single_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
+		if [ "x${option_ro_root}" = "xenable" ] ; then
+			sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
+		fi
 	fi
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 		echo "sfdisk: [${sfdisk_options} ${media}]"
-		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [,,,-]"
+		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_var_size_mb},${sfdisk_fstype},*]"
+		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 			${sfdisk_boot_startmb},${sfdisk_var_size_mb},${sfdisk_fstype},*
-			,,,-
+			${sfdisk_rootfs_startmb},,,-
 		__EOF__
 
 		media_rootfs_var_partition=2
