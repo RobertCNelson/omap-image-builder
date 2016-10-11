@@ -340,6 +340,10 @@ install_git_repos () {
 			fi
 		fi
 	fi
+
+	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
+	git_target_dir="/opt/source/Robotics_Cape_Installer"
+	git_clone
 }
 
 install_build_pkgs () {
