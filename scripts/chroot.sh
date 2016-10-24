@@ -73,6 +73,8 @@ check_defines () {
 	debian)
 		deb_components=${deb_components:-"main contrib non-free"}
 		deb_mirror=${deb_mirror:-"httpredir.debian.org/debian/"}
+		#Debian Stretch:
+		#deb_mirror=${deb_mirror:-"deb.debian.org/debian/"}
 		;;
 	ubuntu)
 		deb_components=${deb_components:-"main universe multiverse"}
