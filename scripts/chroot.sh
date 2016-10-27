@@ -1166,9 +1166,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		if [ -d /var/cache/c9-core-installer/ ] ; then
 			rm -rf /var/cache/c9-core-installer/ || true
 		fi
-		if [ -d /var/cache/ipumm-dra7xx-installer/ ] ; then
-			rm -rf /var/cache/ipumm-dra7xx-installer/ || true
-		fi
 		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
 			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
 		fi
