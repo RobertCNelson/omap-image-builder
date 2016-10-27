@@ -98,7 +98,7 @@ image_name="debian-8.6-lxqt-4gb-armhf-${time}"
 size="4gb"
 target_name="bbx15"
 options="--img-4gb ${target_name}-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard"
-config_name="bb.org-debian-jessie-lxqt-4gb-v4.1"
+config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
 build_and_upload_image
 
 [ -e /proc/$KEEP_NET_ALIVE_PID ] && sudo kill $KEEP_NET_ALIVE_PID
