@@ -23,6 +23,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+./RootStock-NG.sh -c bb.org-debian-stretch-wayland-v4.4
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
@@ -37,6 +38,7 @@ fi
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
      debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
           debian_stretch_iot="debian-stretch-iot-armhf-${time}"
+      debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
 
 archive="xz -z -8"
 
@@ -217,17 +219,23 @@ base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
 
+###stretch wayland image
+base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
+
+options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
+
 ###archive *.tar
-base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
-base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
-base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"       ; archive_base_rootfs
-base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"       ; archive_base_rootfs
-base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"    ; archive_base_rootfs
-base_rootfs="${debian_jessie_iot}"            ; blend="iot"            ; archive_base_rootfs
-base_rootfs="${debian_jessie_console}"        ; blend="console"        ; archive_base_rootfs
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive_base_rootfs
-base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"      ; archive_base_rootfs
-base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"    ; archive_base_rootfs
+base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
+base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
+base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"        ; archive_base_rootfs
+base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"        ; archive_base_rootfs
+base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"     ; archive_base_rootfs
+base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archive_base_rootfs
+base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
+base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
+base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
+base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"     ; archive_base_rootfs
+base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland" ; archive_base_rootfs
 
 ###archive *.img
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
@@ -297,6 +305,11 @@ wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
+
+#
+base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland"
+
+wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
 
 __EOF__
 
