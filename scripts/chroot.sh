@@ -813,8 +813,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		dpkg_check
 
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-			echo "Log: (chroot) adding admin group to /etc/sudoers"
-			echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+			if [ -f /etc/sudoers.d/README ] ; then
+				echo "Log: (chroot) adding admin group to /etc/sudoers.d/admin"
+				echo "%admin ALL=(ALL:ALL) ALL" >/etc/sudoers.d/admin
+				chmod 0440 /etc/sudoers.d/admin
+			else
+				echo "Log: (chroot) adding admin group to /etc/sudoers"
+				echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
+			fi
 		else
 			dpkg_package_missing
 			if [ "x${rfs_disable_root}" = "xenable" ] ; then

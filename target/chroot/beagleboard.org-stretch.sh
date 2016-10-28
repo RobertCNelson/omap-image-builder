@@ -357,9 +357,10 @@ unsecure_root () {
 		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
 	fi
 
-	if [ -f /etc/sudoers ] ; then
+	if [ -d /etc/sudoers.d/ ] ; then
 		#Don't require password for sudo access
-		echo "${rfs_username}  ALL=NOPASSWD: ALL" >>/etc/sudoers
+		echo "${rfs_username} ALL=NOPASSWD: ALL" >/etc/sudoers.d/${rfs_username}
+		chmod 0440 /etc/sudoers.d/${rfs_username}
 	fi
 }
 
