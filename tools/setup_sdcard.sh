@@ -1286,6 +1286,10 @@ populate_rootfs () {
 		board=${conf_board}
 	fi
 
+	echo "/boot/uEnv.txt---------------"
+	cat ${wfile}
+	echo "-----------------------------"
+
 	wfile="${TEMPDIR}/disk/boot/SOC.sh"
 	generate_soc
 
