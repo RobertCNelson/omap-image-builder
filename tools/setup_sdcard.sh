@@ -1093,7 +1093,18 @@ populate_rootfs () {
 			if [ ! "x${oem_flasher_job}" = "x" ] ; then
 				cp -v "${oem_flasher_job}" "${TEMPDIR}/disk/opt/emmc/job.txt"
 				sync
+				if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
+					echo "conf_eeprom_file=${oem_flasher_eeprom}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+					if [ ! "x${conf_eeprom_compare}" = "x" ] ; then
+						echo "conf_eeprom_compare=${conf_eeprom_compare}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+					else
+						echo "conf_eeprom_compare=335" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+					fi
+				fi
 			fi
+			echo "-----------------------------"
+			cat "${TEMPDIR}/disk/opt/emmc/job.txt"
+			echo "-----------------------------"
 		fi
 
 		echo "-----------------------------"
