@@ -3,11 +3,11 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
 
-    debian_jessie_usbflasher="debian-8.6-usbflasher-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.6-oemflasher-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
      debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
 
@@ -63,8 +63,8 @@ generate_img () {
         cd ..
 }
 
-###usbflasher images: (also single partition)
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
+###oemflasher images: (also single partition)
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
 
 options="--img-4gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
 
@@ -79,12 +79,12 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_root
 options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_rootfs
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; archive_base_rootfs
 
 #
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
 wfile="bbx15-\${base_rootfs}-4gb" ; archive_img
 
 #

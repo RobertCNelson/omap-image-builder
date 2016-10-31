@@ -18,7 +18,7 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-#./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+#./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
@@ -28,7 +28,7 @@ fi
       debian_jessie_lxqt_4gb="debian-8.6-lxqt-4gb-armhf-${time}"
            debian_jessie_iot="debian-8.6-iot-armhf-${time}"
        debian_jessie_console="debian-8.6-console-armhf-${time}"
-    debian_jessie_usbflasher="debian-8.6-usbflasher-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.6-oemflasher-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
      debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
 
@@ -182,8 +182,8 @@ options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; 
 #options="--img-2gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                  ; generate_img
 #options="--img-2gb BBGW-blank-\${base_rootfs}  ${beaglebone}  --bbgw-flasher"  ; generate_img
 
-###usbflasher images: (also single partition)
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
+###oemflasher images: (also single partition)
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
 
 ###Seeed lxqt-4gb image
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
@@ -204,7 +204,7 @@ base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"       ; archive
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}"            ; blend="iot"            ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"        ; archive_base_rootfs
-base_rootfs="${debian_jessie_usbflasher}"     ; blend="usbflasher"     ; archive_base_rootfs
+base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"      ; archive_base_rootfs
 
@@ -254,7 +254,7 @@ wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
 #wfile="BBGW-blank-\${base_rootfs}-2gb"  ; archive_img
 
 #
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
 
 #
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"

@@ -16,13 +16,13 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.1
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.1
-#./RootStock-NG.sh -c bb.org-debian-jessie-usbflasher
+#./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
   debian_jessie_lxqt_2gb="debian-8.6-lxqt-2gb-armhf-${time}"
   debian_jessie_lxqt_4gb="debian-8.6-lxqt-4gb-armhf-${time}"
    debian_jessie_console="debian-8.6-console-armhf-${time}"
-debian_jessie_usbflasher="debian-8.6-usbflasher-armhf-${time}"
+debian_jessie_oemflasher="debian-8.6-oemflasher-armhf-${time}"
 
 archive="xz -z -8"
 
@@ -164,8 +164,8 @@ options="--img-2gb a335-eeprom-\${base_rootfs} ${bb_blank_flasher_console} --a33
 #options="--img-2gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 #options="--img-2gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
 
-###usbflasher images: (also single partition)
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; extract_base_rootfs
+###oemflasher images: (also single partition)
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
 
 options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
 options="--img-2gb bbx15-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --usb-flasher" ; generate_img
@@ -175,7 +175,7 @@ base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; archive_base_ro
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}" ; blend="console" ; archive_base_rootfs
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher" ; archive_base_rootfs
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; archive_base_rootfs
 
 ###archive *.img
 base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
@@ -208,7 +208,7 @@ wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
 wfile="omap5-uevm-\${base_rootfs}-2gb" ; archive_img
 
 #
-base_rootfs="${debian_jessie_usbflasher}" ; blend="usbflasher"
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
 
 wfile="BBB-blank-\${base_rootfs}-2gb" ; archive_img
 wfile="bbx15-\${base_rootfs}-2gb" ; archive_img
