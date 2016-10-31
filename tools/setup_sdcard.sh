@@ -1212,7 +1212,11 @@ populate_rootfs () {
 		fi
 
 		if [ "x${usb_flasher}" = "xenable" ] ; then
-			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+			if [ ! "x${oem_flasher_script}" = "x" ] ; then
+				echo "cmdline=init=/opt/scripts/tools/eMMC/${oem_flasher_script}" >> ${wfile}
+			else
+				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+			fi
 		elif [ "x${emmc_flasher}" = "xenable" ] ; then
 			echo "##enable Generic eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
@@ -1239,7 +1243,11 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	else
 		if [ "x${usb_flasher}" = "xenable" ] ; then
-			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+			if [ ! "x${oem_flasher_script}" = "x" ] ; then
+				echo "cmdline=init=/opt/scripts/tools/eMMC/${oem_flasher_script}" >> ${wfile}
+			else
+				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
+			fi
 		elif [ "x${emmc_flasher}" = "xenable" ] ; then
 			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 				echo "##enable x15: eMMC Flasher:" >> ${wfile}
@@ -1800,6 +1808,10 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"
+		;;
+	--oem-flasher-script)
+		checkparm $2
+		oem_flasher_script="$2"
 		;;
 	--oem-flasher-img)
 		checkparm $2
