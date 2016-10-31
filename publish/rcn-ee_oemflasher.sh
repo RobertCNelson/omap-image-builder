@@ -109,11 +109,8 @@ generate_img () {
         fi
 }
 
-###oemflasher images: (also single partition)
-base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
-
 ###archive *.tar
-base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; archive_base_rootfs
+base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archive_base_rootfs
 
 #
 base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"

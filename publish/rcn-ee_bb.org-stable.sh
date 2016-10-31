@@ -22,6 +22,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-wayland-v4.4
 else
@@ -37,6 +38,7 @@ fi
        debian_jessie_console="debian-8.6-console-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
      debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.6-oemflasher-armhf-${time}"
           debian_stretch_iot="debian-stretch-iot-armhf-${time}"
       debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
 
@@ -234,6 +236,7 @@ base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archiv
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
+base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"     ; archive_base_rootfs
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland" ; archive_base_rootfs
 
@@ -300,6 +303,9 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
 wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
+
+#
+base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
 
 #
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
