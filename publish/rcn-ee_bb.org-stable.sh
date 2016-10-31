@@ -252,7 +252,7 @@ base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
 wfile="bone-\${base_rootfs}-4gb"        ; archive_img
 wfile="m10a-blank-\${base_rootfs}-4gb"  ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
-wfile="BBBw-blank-\${base_rootfs}-4gb"   ; archive_img
+wfile="BBBW-blank-\${base_rootfs}-4gb"  ; archive_img
 wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
 wfile="bbx15-blank-\${base_rootfs}-4gb" ; archive_img
 
