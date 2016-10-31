@@ -1073,6 +1073,8 @@ populate_rootfs () {
 		fi
 
 		echo "Transfer of data is Complete, now syncing data to disk..."
+		echo "Disk Size"
+		du -sh ${TEMPDIR}/disk/
 		sync
 		sync
 
@@ -1105,6 +1107,8 @@ populate_rootfs () {
 			echo "-----------------------------"
 			cat "${TEMPDIR}/disk/opt/emmc/job.txt"
 			echo "-----------------------------"
+			echo "Disk Size, with *.img"
+			du -sh ${TEMPDIR}/disk/
 		fi
 
 		echo "-----------------------------"
