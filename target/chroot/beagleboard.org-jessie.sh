@@ -22,7 +22,7 @@
 
 export LC_ALL=C
 
-u_boot_release="v2016.09"
+u_boot_release="v2016.11-rc3"
 u_boot_release_x15="ti-2016.05"
 
 #contains: rfs_username, release_date
