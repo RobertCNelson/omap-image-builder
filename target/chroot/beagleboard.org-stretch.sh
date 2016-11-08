@@ -307,13 +307,6 @@ install_git_repos () {
 		fi
 	fi
 
-	#am335x-pru-package
-	if [ -f /usr/include/prussdrv.h ] ; then
-		git_repo="git://git.ti.com/pru-software-support-package/pru-software-support-package.git"
-		git_target_dir="/opt/source/pru-software-support-package"
-		git_clone
-	fi
-
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
