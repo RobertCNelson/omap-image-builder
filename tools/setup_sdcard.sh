@@ -1480,7 +1480,7 @@ populate_rootfs () {
 	if [ "x${drm}" = "xetnaviv" ] ; then
 		wfile="/etc/X11/xorg.conf"
 		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
-			if [ -f ${TEMPDIR}/disk/usr/lib/xorg/modules/drivers/armada_drv.so ] then
+			if [ -f ${TEMPDIR}/disk/usr/lib/xorg/modules/drivers/armada_drv.so ] ; then
 				sudo sed -i -e 's:modesetting:armada:g' ${TEMPDIR}/disk${wfile}
 				sudo sed -i -e 's:fbdev:armada:g' ${TEMPDIR}/disk${wfile}
 			else
