@@ -106,7 +106,7 @@ check_project_config () {
 	#${project_config}.conf
 	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
 	if [ -f ${DIR}/configs/${project_config}.conf ] ; then
-		. ${DIR}/configs/${project_config}.conf
+		m4 -P ${DIR}/configs/${project_config}.conf | . /dev/fd/0
 		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 
 		# for automation
@@ -116,7 +116,7 @@ check_project_config () {
 		echo "time=\"${time}\"" >> ${DIR}/.project
 		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
 		echo "#" >> ${DIR}/.project
-		cat ${DIR}/configs/${project_config}.conf >> ${DIR}/.project
+		m4 -P ${DIR}/configs/${project_config}.conf >> ${DIR}/.project
 	else
 		echo "Invalid *.conf"
 		exit
