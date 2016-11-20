@@ -4,7 +4,7 @@ echo "chroot: ${tempdir}"
 
 echo "userid: ${rfs_username}:${rfs_password}"
 
-sudo rsync -va ${DIR}/machinekit/scripts/* ${tempdir}/tmp/
+sudo rsync -va ${DIR}/machinekit/scripts/* ${tempdir}/tmp/ || true
 
 for SCRIPT in ${tempdir}/tmp/[0-9][0-9][0-9]* ; do
 	case "$SCRIPT" in
