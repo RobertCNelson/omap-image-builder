@@ -1192,6 +1192,9 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 #		if [ -d /run/ ] ; then
 #			rm -rf /run/* || true
 #		fi
+
+		# Clear out the /tmp directory
+		rm -rf /tmp/* || true
 	}
 
 	cleanup
