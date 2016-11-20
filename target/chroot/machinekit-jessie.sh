@@ -338,18 +338,12 @@ install_git_repos () {
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
 	git_clone
 
-	# Device tree compiler compatible with 3.8 kernels
-	git_repo="https://github.com/RobertCNelson/tools.git"
-	git_target_dir="/opt/source/tools"
-	git_clone
-# Don't try to run the build script, sudo will fail
-# Instead, run as two parts using the machinekit chroot-hook script
-#	if [ -f ${git_target_dir}/.git/config ] ; then
-#		cd ${git_target_dir}/
-#		if [ -f ${git_target_dir}/pkgs/dtc.sh ] ; then
-#			${git_target_dir}/pkgs/dtc.sh
-#		fi
-#	fi
+	# Build a dtc compiler that works with the 3.8.13 kernel
+	if [ -f /usr/bin/make ] ; then
+		if [ -f /opt/scripts/tools/dtc/dtc-3.8.x.sh ] ; then
+			/opt/scripts/tools/dtc/dtc-3.8.x.sh
+		fi
+	fi
 }
 
 install_build_pkgs () {
