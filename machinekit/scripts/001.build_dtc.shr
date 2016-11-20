@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+# Install a dtc compiler that works with the 3.8.13 kernel
+cd /home/machinekit/git/dtc
+make PREFIX=/usr/local/ install
+

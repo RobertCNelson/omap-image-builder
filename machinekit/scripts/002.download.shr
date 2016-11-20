@@ -1,4 +1,0 @@
-#!/bin/sh
-
-eval mv ~$1/*.config /boot/ || true
-
