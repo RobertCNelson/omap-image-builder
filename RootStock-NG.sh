@@ -106,7 +106,7 @@ check_project_config () {
 	#${project_config}.conf
 	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
 	if [ -f ${DIR}/configs/${project_config}.conf ] ; then
-		m4 -P ${DIR}/configs/${project_config}.conf | . /dev/fd/0
+		. <(m4 -P ${DIR}/configs/${project_config}.conf)
 		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 
 		# for automation
