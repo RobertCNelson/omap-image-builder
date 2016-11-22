@@ -1483,11 +1483,7 @@ populate_rootfs () {
 			if [ -f ${TEMPDIR}/disk/usr/lib/xorg/modules/drivers/armada_drv.so ] ; then
 				sudo sed -i -e 's:modesetting:armada:g' ${TEMPDIR}/disk${wfile}
 				sudo sed -i -e 's:fbdev:armada:g' ${TEMPDIR}/disk${wfile}
-			else
-				sudo sed -i -e 's:modesetting:omap:g' ${TEMPDIR}/disk${wfile}
-				sudo sed -i -e 's:fbdev:omap:g' ${TEMPDIR}/disk${wfile}
 			fi
-			sudo sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
 			sudo sed -i -e 's:16:24:g' ${TEMPDIR}/disk${wfile}
 		fi
 	fi
