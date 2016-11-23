@@ -307,18 +307,26 @@ install_git_repos () {
 		fi
 	fi
 
+	if [ ! -f /usr/lib/libroboticscape.so ] ; then
+		git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
+		git_target_dir="/opt/source/Robotics_Cape_Installer"
+		git_clone
+	fi
+
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			make
-			make install || true
-#			if [ ! "x${image_type}" = "xtester-2gb" ] ; then
-#				systemctl disable beagle-tester.service || true
-#			fi
+		if [ -f /usr/lib/libroboticscape.so ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/make ] ; then
+				make
+				make install || true
+#				if [ ! "x${image_type}" = "xtester-2gb" ] ; then
+#					systemctl disable beagle-tester.service || true
+#				fi
+			fi
 		fi
 	fi
 }
