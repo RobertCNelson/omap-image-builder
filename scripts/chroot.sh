@@ -618,6 +618,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					rm -f /usr/local/bin/reboot
 				fi
 
+				#df: unrecognized option '--portability'
+				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
+				if [ -f /usr/local/bin/df ] ; then
+					rm -f /usr/local/bin/df
+				fi
+
 				#tar: unrecognized option '--warning=no-timestamp'
 				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
 				if [ -f /usr/local/bin/tar ] ; then
