@@ -1171,7 +1171,7 @@ populate_rootfs () {
 		fi
 	fi
 
-	cmdline="coherent_pool=1M quiet"
+	cmdline="coherent_pool=1M quiet net.ifnames=0"
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
 		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
