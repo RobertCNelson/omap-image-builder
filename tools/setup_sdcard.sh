@@ -585,22 +585,7 @@ format_rootfs_partition () {
 
 	format_partition
 
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
-	else
-		#x15, ti v4.4.x uuid is broken, but we have u-boot patched for mmc0=microSD, mmc1=eMMC
-		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
-			rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
-		else
-			unset rootfs_uuid
-			rootfs_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
-			if [ ! "x${rootfs_uuid}" = "x" ] ; then
-				rootfs_drive="UUID=${rootfs_uuid}"
-			else
-				rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
-			fi
-		fi
-	fi
+	rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 
@@ -609,18 +594,7 @@ format_rootfs_partition () {
 		mkfs_label="-L var"
 
 		format_partition
-
-		if [ "x${build_img_file}" = "xenable" ] ; then
-			rootfs_var_drive="${conf_root_device}p${media_rootfs_var_partition}"
-		else
-			unset rootfs_var_uuid
-			rootfs_var_uuid=$(/sbin/blkid -c /dev/null -s UUID -o value ${mkfs_partition} || true)
-			if [ ! "x${rootfs_var_uuid}" = "x" ] ; then
-				rootfs_var_drive="UUID=${rootfs_var_uuid}"
-			else
-				rootfs_var_drive="${conf_root_device}p${media_rootfs_var_partition}"
-			fi
-		fi
+		rootfs_var_drive="${conf_root_device}p${media_rootfs_var_partition}"
 	fi
 }
 
@@ -1128,11 +1102,7 @@ populate_rootfs () {
 		echo "uname_r=${kernel_override}" >> ${wfile}
 	fi
 
-	if [ ! "x${rootfs_uuid}" = "x" ] ; then
-		echo "uuid=${rootfs_uuid}" >> ${wfile}
-	else
-		echo "#uuid=" >> ${wfile}
-	fi
+	echo "#uuid=" >> ${wfile}
 
 	if [ ! "x${dtb}" = "x" ] ; then
 		echo "dtb=${dtb}" >> ${wfile}
