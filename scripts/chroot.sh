@@ -962,6 +962,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
 			systemctl disable connman-wait-online.service || true
 		fi
+
+		#We manually start dnsmasq, usb0/SoftAp0 are not available till late in boot...
+		if [ -f /lib/systemd/system/dnsmasq.service ] ; then
+			systemctl disable dnsmasq.service || true
+		fi
 	}
 
 	#cat /chroot_script.sh
