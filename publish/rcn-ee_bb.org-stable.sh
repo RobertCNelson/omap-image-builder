@@ -209,13 +209,13 @@ options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; 
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
-options="--img-4gb BBG-blank-\${base_rootfs} ${beaglebone}  --bbg-flasher" ; generate_img
+#options="--img-4gb BBG-blank-\${base_rootfs} ${beaglebone}  --bbg-flasher" ; generate_img
 
 ###Seeed iot image
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                ; generate_img
-options="--img-4gb BBGW-blank-\${base_rootfs} ${beaglebone} --bbgw-flasher" ; generate_img
+#options="--img-4gb BBGW-blank-\${base_rootfs} ${beaglebone} --bbgw-flasher" ; generate_img
 
 ###stretch iot image
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
@@ -225,6 +225,7 @@ options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; g
 ###stretch wayland image
 base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
 
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ###archive *.tar
@@ -298,13 +299,13 @@ wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"
 
 wfile="bone-\${base_rootfs}-4gb"      ; archive_img
-wfile="BBG-blank-\${base_rootfs}-4gb" ; archive_img
+#wfile="BBG-blank-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
-wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
+#wfile="BBGW-blank-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
@@ -317,7 +318,8 @@ wfile="bone-\${base_rootfs}-4gb"       ; archive_img
 #
 base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland"
 
-wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
+wfile="bone-\${base_rootfs}-4gb"       ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb"      ; archive_img
 
 __EOF__
 
