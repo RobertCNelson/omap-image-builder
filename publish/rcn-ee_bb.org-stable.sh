@@ -147,9 +147,9 @@ generate_img () {
 }
 
 ###machinekit (wheezy):
-#base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
-#
-#options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
+base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
 
 ###machinekit (jessie):
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
@@ -223,7 +223,7 @@ options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; g
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ###archive *.tar
-#base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
+base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archive_base_rootfs
@@ -237,10 +237,10 @@ base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"     ; archiv
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland" ; archive_base_rootfs
 
 ###archive *.img
-####machinekit (wheezy):
-#base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
-#
-#wfile="bone-\${base_rootfs}-4gb" ; archive_img
+###machinekit (wheezy):
+base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
+
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
 
 ###machinekit (jessie):
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit"
