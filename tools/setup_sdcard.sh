@@ -1138,10 +1138,15 @@ populate_rootfs () {
 			echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
+
+			echo "###EXPERIMENTAL###" >> ${wfile}
+			echo "#enable_uboot_overlays=1" >> ${wfile}
+			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
+			echo "###EXPERIMENTAL###" >> ${wfile}
 		fi
 	fi
 
-	cmdline="coherent_pool=1M quiet net.ifnames=0"
+	cmdline="coherent_pool=1M net.ifnames=0 quiet"
 	if [ "x${enable_systemd}" = "xenabled" ] ; then
 		cmdline="${cmdline} init=/lib/systemd/systemd"
 	fi
