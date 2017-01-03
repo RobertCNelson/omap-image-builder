@@ -36,17 +36,17 @@ check_defines () {
 	fi
 
 	if [ "${deb_include}" ] ; then
-		include=$(echo ${deb_include} | sed 's/ /,/g')
+		include=$(echo ${deb_include} | sed 's/ /,/g' | sed 's/\t/,/g')
 		options="${options} --include=${include}"
 	fi
 
 	if [ "${deb_exclude}" ] ; then
-		exclude=$(echo ${deb_exclude} | sed 's/ /,/g')
+		exclude=$(echo ${deb_exclude} | sed 's/ /,/g' | sed 's/\t/,/g')
 		options="${options} --exclude=${exclude}"
 	fi
 
 	if [ "${deb_components}" ] ; then
-		components=$(echo ${deb_components} | sed 's/ /,/g')
+		components=$(echo ${deb_components} | sed 's/ /,/g' | sed 's/\t/,/g')
 		options="${options} --components=${components}"
 	fi
 
