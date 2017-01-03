@@ -1138,11 +1138,12 @@ populate_rootfs () {
 			echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-
 			echo "###EXPERIMENTAL###" >> ${wfile}
 			echo "#enable_uboot_overlays=1" >> ${wfile}
 			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
+
+			echo "" >> ${wfile}
 		fi
 	fi
 
