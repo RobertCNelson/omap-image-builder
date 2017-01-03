@@ -1052,6 +1052,26 @@ populate_rootfs () {
 		sync
 		sync
 
+		echo "-----------------------------"
+		if [ -f /usr/bin/stat ] ; then
+			echo "-----------------------------"
+			echo "Checking [${TEMPDIR}/disk/] permissions"
+			/usr/bin/stat ${TEMPDIR}/disk/
+			echo "-----------------------------"
+		fi
+
+		echo "Setting [${TEMPDIR}/disk/] chown root:root"
+		chown root:root ${TEMPDIR}/disk/
+		echo "Setting [${TEMPDIR}/disk/] chmod 755"
+		chmod 755 ${TEMPDIR}/disk/
+
+		if [ -f /usr/bin/stat ] ; then
+			echo "-----------------------------"
+			echo "Verifying [${TEMPDIR}/disk/] permissions"
+			/usr/bin/stat ${TEMPDIR}/disk/
+		fi
+		echo "-----------------------------"
+
 		if [ ! "x${oem_flasher_img}" = "x" ] ; then
 			if [ ! -d "${TEMPDIR}/disk/opt/emmc/" ] ; then
 				mkdir -p "${TEMPDIR}/disk/opt/emmc/"
