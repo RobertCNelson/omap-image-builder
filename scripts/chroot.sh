@@ -125,14 +125,14 @@ check_defines () {
 	if [ "x${deb_additional_pkgs}" = "x" ] ; then
 		##Backwards compat pre configs
 		if [ ! "x${base_pkg_list}" = "x" ] ; then
-			deb_additional_pkgs="$(echo ${base_pkg_list} | sed 's/,/ /g')"
+			deb_additional_pkgs="$(echo ${base_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')"
 		fi
 	else
-		deb_additional_pkgs="$(echo ${deb_additional_pkgs} | sed 's/,/ /g')"
+		deb_additional_pkgs="$(echo ${deb_additional_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
 
 	if [ ! "x${deb_include}" = "x" ] ; then
-		include=$(echo ${deb_include} | sed 's/,/ /g')
+		include=$(echo ${deb_include} | sed 's/,/ /g' | sed 's/\t/,/g')
 		deb_additional_pkgs="${deb_additional_pkgs} ${include}"
 	fi
 
