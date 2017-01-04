@@ -1134,7 +1134,12 @@ populate_rootfs () {
 	if [ ! "x${dtb}" = "x" ] ; then
 		echo "dtb=${dtb}" >> ${wfile}
 	else
-		echo "#dtb=" >> ${wfile}
+
+		if [ ! "x${forced_dtb}" = "x" ] ; then
+			echo "dtb=${forced_dtb}" >> ${wfile}
+		else
+			echo "#dtb=" >> ${wfile}
+		fi
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 			echo "" >> ${wfile}
@@ -1887,7 +1892,7 @@ while [ ! -z "$1" ] ; do
 		;;
 	--force-device-tree)
 		checkparm $2
-		dtb="$2"
+		forced_dtb="$2"
 		;;
 	esac
 	shift
