@@ -765,6 +765,13 @@ populate_boot () {
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] ; then
 
+		if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
+			if [ "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
+				unset bbb_old_bootloader_in_emmc
+				echo "sorry: --bbb-old-bootloader-in-emmc not compatible with --enable-uboot-cape-overlays"
+			fi
+		fi
+
 		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
 			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
@@ -1159,7 +1166,11 @@ populate_rootfs () {
 
 			echo "" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
-			echo "#enable_uboot_overlays=1" >> ${wfile}
+			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
+				echo "enable_uboot_overlays=1" >> ${wfile}
+			else
+				echo "#enable_uboot_overlays=1" >> ${wfile}
+			fi
 			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
 
@@ -1857,6 +1868,9 @@ while [ ! -z "$1" ] ; do
 	--enable-cape-universal)
 		enable_cape_universal="enable"
 		;;
+	--enable-uboot-cape-overlays)
+		uboot_cape_overlays="enable"
+		;;
 	--offline)
 		offline=1
 		;;
@@ -1870,6 +1884,10 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-fat-partition)
 		enable_fat_partition="enable"
+		;;
+	--force-device-tree)
+		checkparm $2
+		dtb="$2"
 		;;
 	esac
 	shift
