@@ -17,7 +17,7 @@ fi
 ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armhf
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
 
-debian_stable="debian-8.6"
+debian_stable="debian-8.7"
 ubuntu_stable="ubuntu-16.04.1"
 archive="xz -z -8"
 

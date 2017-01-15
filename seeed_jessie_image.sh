@@ -7,9 +7,9 @@ DIR="$PWD"
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.1
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
 
-    debian_jessie_oemflasher="debian-8.6-oemflasher-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.6-seeed-lxqt-4gb-armhf-${time}"
-     debian_jessie_seeed_iot="debian-8.6-seeed-iot-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.7-oemflasher-armhf-${time}"
+debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
+     debian_jessie_seeed_iot="debian-8.7-seeed-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 
