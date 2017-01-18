@@ -1177,6 +1177,8 @@ populate_rootfs () {
 				echo "#enable_uboot_overlays=1" >> ${wfile}
 			fi
 			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
+			echo "##U-Boot fdt tweaks..." >> ${wfile}
+			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
 
 			echo "" >> ${wfile}
