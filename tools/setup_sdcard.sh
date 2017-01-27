@@ -1176,8 +1176,18 @@ populate_rootfs () {
 			else
 				echo "#enable_uboot_overlays=1" >> ${wfile}
 			fi
+			echo "###Overide capes with eeprom" >> ${wfile}
+			echo "#uboot_overlay_addr0=/lib/firmware/<file0>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr1=/lib/firmware/<file1>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr2=/lib/firmware/<file2>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr3=/lib/firmware/<file3>.dtbo" >> ${wfile}
+			echo "###Custom Cape" >> ${wfile}
 			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
-			echo "##U-Boot fdt tweaks..." >> ${wfile}
+			echo "###Disable auto loading of virtual capes (emmc/video/wireless)" >> ${wfile}
+			echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
+			echo "#disable_uboot_overlay_video=1" >> ${wfile}
+			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
+			echo "###U-Boot fdt tweaks..." >> ${wfile}
 			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
 
