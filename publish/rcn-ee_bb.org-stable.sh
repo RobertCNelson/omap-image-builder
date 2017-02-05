@@ -46,7 +46,9 @@ debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
           debian_stretch_iot="debian-stretch-iot-armhf-${time}"
       debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
 
-archive="xz -z -8"
+xz_img="xz -z -8"
+xz_tar="xz -z -8"
+#xz_tar="xz -T0 -z -8"
 
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
@@ -68,7 +70,7 @@ copy_base_rootfs_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
+                                ${xz_tar} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
                                 cd -
                         fi
                 fi
@@ -116,7 +118,7 @@ copy_img_to_mirror () {
                                         sync
                                 fi
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                ${archive} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
+                                ${xz_img} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
                                 cd -
                         fi
                 fi
