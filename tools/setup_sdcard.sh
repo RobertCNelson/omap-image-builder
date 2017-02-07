@@ -763,7 +763,7 @@ populate_boot () {
 		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
 		if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
 			if [ "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
@@ -779,10 +779,6 @@ populate_boot () {
 		else
 			wfile="${TEMPDIR}/disk/uEnv.txt"
 			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
-		fi
-
-		if [ "x${conf_board}" = "xarduino-tre" ] ; then
-			wfile="${TEMPDIR}/disk/uEnv.txt"
 		fi
 
 		echo "" >> ${wfile}
@@ -805,17 +801,11 @@ populate_boot () {
 		echo "" >> ${wfile}
 		echo "mmcargs=setenv bootargs console=tty0 console=\${console} \${optargs} \${cape_disable} \${cape_enable} root=/dev/mmcblk0p${media_rootfs_partition} rootfstype=\${mmcrootfstype} \${cmdline}" >> ${wfile}
 		echo "" >> ${wfile}
-
-		if [ "x${conf_board}" = "xarduino-tre" ] ; then
-			echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} - \${fdtaddr}] ... ; bootz \${loadaddr} - \${fdtaddr};" >> ${wfile}
-		else
-			echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr}] ... ; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
-		fi
-
+		echo "uenvcmd=run loadall; run mmcargs; echo debug: [\${bootargs}] ... ; echo debug: [bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr}] ... ; bootz \${loadaddr} \${rdaddr}:\${rdsize} \${fdtaddr};" >> ${wfile}
 		echo "" >> ${wfile}
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
 		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
 		echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
@@ -1470,7 +1460,7 @@ populate_rootfs () {
 		echo "" >> ${TEMPDIR}/disk${file}
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xarduino-tre" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
 		file="/etc/udev/rules.d/70-persistent-net.rules"
 		echo "" > ${TEMPDIR}/disk${file}

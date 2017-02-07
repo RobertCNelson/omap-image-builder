@@ -24,9 +24,6 @@ beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
 --hostname beaglebone"
 
-arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
---rootfs_label rootfs --hostname arduino-tre"
-
 omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
 omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"

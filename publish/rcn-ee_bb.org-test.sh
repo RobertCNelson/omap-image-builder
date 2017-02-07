@@ -37,9 +37,6 @@ beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
 --hostname beaglebone --enable-cape-universal"
 
-arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
---rootfs_label rootfs --hostname arduino-tre"
-
 omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
 omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"
 am57xx_beagle_x15="--dtb am57xx-beagle-x15 --hostname BeagleBoard-X15"
@@ -147,7 +144,6 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 options="--img-4gb bbx15-eMMC-flasher-\${base_rootfs} ${am57xx_beagle_x15} --emmc-flasher" ; generate_img
 options="--img-4gb bbx15-\${base_rootfs} ${am57xx_beagle_x15}" ; generate_img
 options="--img-4gb omap5-uevm-\${base_rootfs} ${omap5_uevm}" ; generate_img
-options="--img-4gb tre-\${base_rootfs} ${arduino_tre}" ; generate_img
 
 ###lxqt-2gb image
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs

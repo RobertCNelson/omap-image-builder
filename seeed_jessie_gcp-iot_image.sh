@@ -12,9 +12,6 @@ archive="xz -z -8 -v"
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
-arduino_tre="--dtb am335x-arduino-tre --boot_label ARDUINO-TRE \
---rootfs_label rootfs --hostname arduino-tre"
-
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
 beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
 --hostname BeagleBoard-X15"
