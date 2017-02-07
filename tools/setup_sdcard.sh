@@ -1171,6 +1171,7 @@ populate_rootfs () {
 
 			echo "" >> ${wfile}
 			echo "###EXPERIMENTAL###" >> ${wfile}
+			echo "http://elinux.org/Beagleboard:BeagleBone_Debian_Image_Migration#U-Boot_Overlays" >> ${wfile}
 			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
 				echo "enable_uboot_overlays=1" >> ${wfile}
 			else
@@ -1182,10 +1183,11 @@ populate_rootfs () {
 			echo "#uboot_overlay_addr2=/lib/firmware/<file2>.dtbo" >> ${wfile}
 			echo "#uboot_overlay_addr3=/lib/firmware/<file3>.dtbo" >> ${wfile}
 			echo "###Custom Cape" >> ${wfile}
-			echo "#dtb_overlay=/lib/firmware/BB-UART2-00A0.dtbo" >> ${wfile}
+			echo "#dtb_overlay=/lib/firmware/<file4>.dtbo" >> ${wfile}
 			echo "###Disable auto loading of virtual capes (emmc/video/wireless)" >> ${wfile}
 			echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
 			echo "#disable_uboot_overlay_video=1" >> ${wfile}
+			echo "#disable_uboot_overlay_audio=1" >> ${wfile}
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
 			echo "###U-Boot fdt tweaks..." >> ${wfile}
 			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
