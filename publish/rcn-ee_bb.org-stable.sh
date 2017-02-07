@@ -171,8 +171,8 @@ options="--img-2gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; 
 ###iot image (jessie):
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                  ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone}   --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 options="--img-4gb BBBL-blank-\${base_rootfs}  ${beaglebone}  --bbbl-flasher" ; generate_img
 
 #options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone}   --bbbw-flasher" ; generate_img
@@ -215,13 +215,13 @@ options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; gen
 ###iot image (stretch):
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} --enable-uboot-cape-overlays"                 ; generate_img
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ### wayland image (stretch):
 base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                 ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} --enable-uboot-cape-overlays"                 ; generate_img
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ###archive *.tar
