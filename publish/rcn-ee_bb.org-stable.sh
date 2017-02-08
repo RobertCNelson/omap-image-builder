@@ -47,8 +47,8 @@ debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
       debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
 
 xz_img="xz -z -8"
-xz_tar="xz -z -8"
-#xz_tar="xz -T0 -z -8"
+#xz_tar="xz -z -8"
+xz_tar="xz -T0 -z -8"
 
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
