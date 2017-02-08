@@ -1154,8 +1154,9 @@ populate_rootfs () {
 			echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
 
 			echo "" >> ${wfile}
-			echo "###EXPERIMENTAL###" >> ${wfile}
-			echo "http://elinux.org/Beagleboard:BeagleBone_Debian_Image_Migration#U-Boot_Overlays" >> ${wfile}
+			echo "###U-Boot Overlays###" >> ${wfile}
+			echo "###Documentation: http://elinux.org/Beagleboard:BeagleBone_Debian_Image_Migration#U-Boot_Overlays" >> ${wfile}
+			echo "###Master Enable" >> ${wfile}
 			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
 				echo "enable_uboot_overlays=1" >> ${wfile}
 			else
@@ -1173,9 +1174,11 @@ populate_rootfs () {
 			echo "#disable_uboot_overlay_video=1" >> ${wfile}
 			echo "#disable_uboot_overlay_audio=1" >> ${wfile}
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
+			echo "###Cape Universal Enable" >> ${wfile}
+			echo "#enable_uboot_cape_universal=1" >> ${wfile}
 			echo "###U-Boot fdt tweaks..." >> ${wfile}
 			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
-			echo "###EXPERIMENTAL###" >> ${wfile}
+			echo "###U-Boot Overlays###" >> ${wfile}
 
 			echo "" >> ${wfile}
 		fi
