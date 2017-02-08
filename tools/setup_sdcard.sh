@@ -765,13 +765,6 @@ populate_boot () {
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
-		if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
-			if [ "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-				unset bbb_old_bootloader_in_emmc
-				echo "sorry: --bbb-old-bootloader-in-emmc not compatible with --enable-uboot-cape-overlays"
-			fi
-		fi
-
 		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
 			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
