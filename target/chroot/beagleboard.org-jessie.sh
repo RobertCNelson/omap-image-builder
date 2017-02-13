@@ -321,7 +321,6 @@ install_git_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		if [ -f /usr/lib/libroboticscape.so ] ; then
 			cd ${git_target_dir}/
-			git pull --no-edit https://github.com/rcn-ee/beagle-tester roboticscape-3.0
 			if [ -f /usr/bin/make ] ; then
 				make
 				make install || true
