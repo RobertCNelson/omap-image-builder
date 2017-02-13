@@ -386,5 +386,5 @@ if [ -f /usr/bin/git ] ; then
 fi
 #install_build_pkgs
 other_source_links
-unsecure_root
+#unsecure_root
 #
