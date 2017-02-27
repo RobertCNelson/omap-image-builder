@@ -85,6 +85,19 @@ setup_system () {
 }
 
 install_git_repos () {
+	git_repo="https://github.com/cdsteinkuehler/beaglebone-universal-io.git"
+	git_target_dir="/opt/source/beaglebone-universal-io"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		if [ -f ${git_target_dir}/config-pin ] ; then
+			ln -s ${git_target_dir}/config-pin /usr/local/bin/
+		fi
+	fi
+
+	git_repo="https://github.com/strahlex/BBIOConfig.git"
+	git_target_dir="/opt/source/BBIOConfig"
+	git_clone
+
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
 	git_target_dir="/opt/source/dtb-4.4-ti"
 	git_branch="4.4-ti"
