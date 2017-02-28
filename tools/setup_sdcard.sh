@@ -1405,7 +1405,7 @@ populate_rootfs () {
 			echo "##connman: WiFi" >> ${wfile}
 			echo "#" >> ${wfile}
 			echo "#connmanctl" >> ${wfile}
-			echo "#connmanctl> tether wifi disable" >> ${wfile}
+			echo "#connmanctl> tether wifi off" >> ${wfile}
 			echo "#connmanctl> enable wifi" >> ${wfile}
 			echo "#connmanctl> scan wifi" >> ${wfile}
 			echo "#connmanctl> services" >> ${wfile}
