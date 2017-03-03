@@ -4,8 +4,8 @@ time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.1
-./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.1
+./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
     debian_jessie_oemflasher="debian-8.7-oemflasher-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
