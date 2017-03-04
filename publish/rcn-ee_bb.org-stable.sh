@@ -53,6 +53,9 @@ xz_tar="xz -T0 -z -8"
 beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
+beaglebone_stretch="--dtb beaglebone \
+--rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
 beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
@@ -215,13 +218,13 @@ options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; gen
 ###iot image (stretch):
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} --enable-uboot-cape-overlays"                 ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone_stretch} --enable-uboot-cape-overlays"                 ; generate_img
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ### wayland image (stretch):
 base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} --enable-uboot-cape-overlays"                 ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone_stretch} --enable-uboot-cape-overlays"                 ; generate_img
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                 ; generate_img
 
 ###archive *.tar
