@@ -177,6 +177,7 @@ base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 options="--img-4gb BBBL-blank-\${base_rootfs}  ${beaglebone}  --bbbl-flasher" ; generate_img
+options="--img-4gb ME06-blank-\${base_rootfs}  ${beaglebone}  --me06-flasher" ; generate_img
 
 #options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone}   --bbbw-flasher" ; generate_img
 
