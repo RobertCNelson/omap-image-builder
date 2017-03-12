@@ -803,6 +803,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^tisdk || groupadd -r tisdk || true
 		cat /etc/group | grep ^weston-launch || groupadd -r weston-launch || true
 		cat /etc/group | grep ^xenomai || groupadd -r xenomai || true
+		cat /etc/group | grep ^bluetooth || groupadd -r bluetooth || true
 
 		echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
