@@ -195,6 +195,7 @@ options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                 ; 
 options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone}  --bbbw-flasher" ; generate_img
+options="--img-4gb BBB-blank-uboot-overlay-\${base_rootfs}   ${beaglebone}  --emmc-flasher --enable-uboot-cape-overlays" ; generate_img
 
 #options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}  --m10a-flasher" ; generate_img
 #options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
@@ -269,6 +270,7 @@ base_rootfs="${debian_jessie_iot}" ; blend="iot"
 wfile="bone-\${base_rootfs}-4gb"        ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
 wfile="BBBL-blank-\${base_rootfs}-4gb"  ; archive_img
+wfile="ME06-blank-\${base_rootfs}-4gb"  ; archive_img
 
 #wfile="BBBW-blank-\${base_rootfs}-4gb" ; archive_img
 
@@ -286,6 +288,7 @@ wfile="bone-\${base_rootfs}-4gb"        ; archive_img
 wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
 wfile="BBBW-blank-\${base_rootfs}-4gb"  ; archive_img
+wfile="BBB-blank-uboot-overlay-\${base_rootfs}-4gb"  ; archive_img
 
 #wfile="m10a-blank-\${base_rootfs}-4gb"  ; archive_img
 #wfile="bbx15-blank-\${base_rootfs}-4gb" ; archive_img
