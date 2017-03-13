@@ -1255,6 +1255,9 @@ populate_rootfs () {
 		elif [ "x${bbbw_flasher}" = "xenable" ] ; then
 			echo "##enable bbbw: eMMC Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbbw.sh" >> ${wfile}
+		elif [ "x${bp00_flasher}" = "xenable" ] ; then
+			echo "##enable bp00: eeprom Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
 		elif [ "x${a335_flasher}" = "xenable" ] ; then
 			echo "##enable a335: eeprom Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
@@ -1279,6 +1282,9 @@ populate_rootfs () {
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
 			fi
+		elif [ "x${bp00_flasher}" = "xenable" ] ; then
+			echo "##enable bp00: eeprom Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
 		elif [ "x${a335_flasher}" = "xenable" ] ; then
 			echo "##enable a335: eeprom Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
@@ -1819,6 +1825,10 @@ while [ ! -z "$1" ] ; do
 	--a335-flasher)
 		oem_blank_eeprom="enable"
 		a335_flasher="enable"
+		;;
+	--bp00-flasher)
+		oem_blank_eeprom="enable"
+		bp00_flasher="enable"
 		;;
 	--bbg-flasher)
 		oem_blank_eeprom="enable"
