@@ -166,7 +166,7 @@ options="--img-2gb a335-eeprom-\${base_rootfs} ${beaglebone}  --a335-flasher" ; 
 options="--img-2gb bp00-eeprom-\${base_rootfs} ${beaglebone}  --bp00-flasher" ; generate_img
 options="--img-2gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
 options="--img-2gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
-options="--img-2gb ME06-blank-\${base_rootfs}  ${beaglebone}  --me06-flasher" ; generate_img
+options="--img-2gb me06-blank-\${base_rootfs}  ${beaglebone}  --me06-flasher" ; generate_img
 
 #options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 #options="--img-2gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher"        ; generate_img
@@ -260,7 +260,7 @@ wfile="a335-eeprom-\${base_rootfs}-2gb" ; archive_img
 wfile="bp00-eeprom-\${base_rootfs}-2gb" ; archive_img
 wfile="bone-\${base_rootfs}-2gb"        ; archive_img
 wfile="bbx15-\${base_rootfs}-2gb"       ; archive_img
-wfile="ME06-blank-\${base_rootfs}-2gb"  ; archive_img
+wfile="me06-blank-\${base_rootfs}-2gb"  ; archive_img
 
 #wfile="BBB-blank-\${base_rootfs}-2gb"   ; archive_img
 #wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
