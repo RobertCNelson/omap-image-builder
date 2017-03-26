@@ -162,14 +162,14 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 ###console images (jessie):
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
-options="--img-2gb a335-eeprom-\${base_rootfs} ${beaglebone}  --a335-flasher" ; generate_img
-options="--img-2gb bp00-eeprom-\${base_rootfs} ${beaglebone}  --bp00-flasher" ; generate_img
-options="--img-2gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
-options="--img-2gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
-options="--img-2gb me06-blank-\${base_rootfs}  ${beaglebone}  --me06-flasher" ; generate_img
+options="--img-1gb a335-eeprom-\${base_rootfs} ${beaglebone}  --a335-flasher" ; generate_img
+options="--img-1gb bp00-eeprom-\${base_rootfs} ${beaglebone}  --bp00-flasher" ; generate_img
+options="--img-1gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
+options="--img-1gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
+options="--img-1gb me06-blank-\${base_rootfs}  ${beaglebone}  --me06-flasher" ; generate_img
 
-#options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
-#options="--img-2gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher"        ; generate_img
+#options="--img-1gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
+#options="--img-1gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher"        ; generate_img
 
 ###iot image (jessie):
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
@@ -256,14 +256,14 @@ wfile="bone-\${base_rootfs}-4gb" ; archive_img
 ###console images (jessie):
 base_rootfs="${debian_jessie_console}" ; blend="console"
 
-wfile="a335-eeprom-\${base_rootfs}-2gb" ; archive_img
-wfile="bp00-eeprom-\${base_rootfs}-2gb" ; archive_img
-wfile="bone-\${base_rootfs}-2gb"        ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb"       ; archive_img
-wfile="me06-blank-\${base_rootfs}-2gb"  ; archive_img
+wfile="a335-eeprom-\${base_rootfs}-1gb" ; archive_img
+wfile="bp00-eeprom-\${base_rootfs}-1gb" ; archive_img
+wfile="bone-\${base_rootfs}-1gb"        ; archive_img
+wfile="bbx15-\${base_rootfs}-1gb"       ; archive_img
+wfile="me06-blank-\${base_rootfs}-1gb"  ; archive_img
 
-#wfile="BBB-blank-\${base_rootfs}-2gb"   ; archive_img
-#wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
+#wfile="BBB-blank-\${base_rootfs}-1gb"   ; archive_img
+#wfile="bbx15-blank-\${base_rootfs}-1gb" ; archive_img
 
 ###iot image (jessie):
 base_rootfs="${debian_jessie_iot}" ; blend="iot"
