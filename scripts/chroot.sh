@@ -968,6 +968,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /lib/systemd/system/dnsmasq.service ] ; then
 			systemctl disable dnsmasq.service || true
 		fi
+
+		#Our kernels do not have ubuntu's ureadahead patches...
+		if [ -f /lib/systemd/system/ureadahead.service ] ; then
+			systemctl disable ureadahead.service || true
+		fi
 	}
 
 	#cat /chroot_script.sh
