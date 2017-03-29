@@ -72,13 +72,11 @@ check_defines () {
 	case "${deb_distribution}" in
 	debian)
 		deb_components=${deb_components:-"main contrib non-free"}
-		deb_mirror=${deb_mirror:-"httpredir.debian.org/debian/"}
-		#Debian Stretch:
-		#deb_mirror=${deb_mirror:-"deb.debian.org/debian/"}
+		deb_mirror=${deb_mirror:-"deb.debian.org/debian"}
 		;;
 	ubuntu)
 		deb_components=${deb_components:-"main universe multiverse"}
-		deb_mirror=${deb_mirror:-"ports.ubuntu.com/ubuntu-ports/"}
+		deb_mirror=${deb_mirror:-"ports.ubuntu.com/ubuntu-ports"}
 		;;
 	esac
 
@@ -341,7 +339,7 @@ echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfil
 echo "" >> ${wfile}
 
 case "${deb_codename}" in
-stretch|buster|sid)
+buster|sid)
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	;;
@@ -352,23 +350,36 @@ stretch|buster|sid)
 esac
 
 case "${deb_codename}" in
-wheezy|jessie)
+wheezy)
 	echo "" >> ${wfile}
 	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "deb http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	else
-		echo "#deb http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "##deb-src http://httpredir.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "##deb-src http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 	fi
 	;;
-stretch)
+jessie|stretch)
 	echo "" >> ${wfile}
-	echo "#deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "##deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
+		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+	else
+		echo "#deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "##deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+	fi
+	;;
+buster|sid)
+	echo "" >> ${wfile}
+	echo "#deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "##deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
 esac
