@@ -833,10 +833,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 			if [ -f /etc/sudoers.d/README ] ; then
 				echo "Log: (chroot) adding admin group to /etc/sudoers.d/admin"
-				echo "%admin ALL=(ALL:ALL) ALL" >/etc/sudoers.d/admin
+				echo "Defaults	env_keep += \"NODE_PATH\"" >/etc/sudoers.d/admin
+				echo "%admin ALL=(ALL:ALL) ALL" >>/etc/sudoers.d/admin
 				chmod 0440 /etc/sudoers.d/admin
 			else
 				echo "Log: (chroot) adding admin group to /etc/sudoers"
+				echo "Defaults	env_keep += \"NODE_PATH\"" >>/etc/sudoers
 				echo "%admin  ALL=(ALL) ALL" >>/etc/sudoers
 			fi
 		else
