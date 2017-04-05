@@ -1181,11 +1181,12 @@ populate_rootfs () {
 			echo "###Custom Cape" >> ${wfile}
 			echo "#dtb_overlay=/lib/firmware/<file8>.dtbo" >> ${wfile}
 			echo "###" >> ${wfile}
-			echo "###Disable auto loading of virtual capes (emmc/video/wireless)" >> ${wfile}
+			echo "###Disable auto loading of virtual capes (emmc/video/wireless/adc)" >> ${wfile}
 			echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
 			echo "#disable_uboot_overlay_video=1" >> ${wfile}
 			echo "#disable_uboot_overlay_audio=1" >> ${wfile}
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
+			echo "#disable_uboot_overlay_adc=1" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###Cape Universal Enable" >> ${wfile}
 			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
