@@ -1269,6 +1269,13 @@ if [ -f "${tempdir}/etc/dogtag" ] ; then
 	sudo chown root:root "${DIR}/deploy/${export_filename}/ID.txt"
 fi
 
+#Add Google IPv4 nameservers
+if [ -f "${tempdir}/etc/resolv.conf" ] ; then
+	wfile="${tempdir}/etc/resolv.conf"
+	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
+	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
+fi
+
 report_size
 chroot_umount
 
