@@ -66,8 +66,8 @@ wait_till_2gb_free () {
         memory=2048
         free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
         until [ "\$free_memory" -gt "\$memory" ] ; do
-                free_memory=$(free --mega | grep Mem | awk '{print \$7}')
-                echo "have [\$free_memory] need [$memory]"
+                free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
+                echo "have [\$free_memory] need [\$memory]"
                 sleep 10
         done
 }
