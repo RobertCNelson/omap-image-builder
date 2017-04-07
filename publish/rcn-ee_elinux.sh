@@ -26,8 +26,7 @@ debian_testing="debian-stretch-console-armhf-${time}"
 xz_img="xz -z -8"
 xz_tar="xz -T0 -z -8"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---rootfs_label rootfs --enable-cape-universal"
+beaglebone="--dtb beaglebone --rootfs_label rootfs --enable-cape-universal --enable-uboot-cape-overlays"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs"
