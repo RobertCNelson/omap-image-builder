@@ -62,8 +62,8 @@ beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
-wait_till_2gb_free () {
-        memory=2048
+wait_till_Xgb_free () {
+        memory=3072
         free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
         until [ "\$free_memory" -gt "\$memory" ] ; do
                 free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
@@ -73,6 +73,7 @@ wait_till_2gb_free () {
 }
 
 copy_base_rootfs_to_mirror () {
+        wait_till_Xgb_free
         if [ -d ${mirror_dir}/ ] ; then
                 if [ ! -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
@@ -81,7 +82,6 @@ copy_base_rootfs_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${base_rootfs}.tar.xz ] ; then
                                 cp -v \${base_rootfs}.tar ${mirror_dir}/${time}/\${blend}/
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                wait_till_2gb_free
                                 ${xz_tar} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
                                 cd -
                         fi
@@ -113,6 +113,7 @@ extract_base_rootfs () {
 }
 
 copy_img_to_mirror () {
+        wait_till_Xgb_free
         if [ -d ${mirror_dir} ] ; then
                 if [ ! -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
@@ -130,7 +131,6 @@ copy_img_to_mirror () {
                                         sync
                                 fi
                                 cd ${mirror_dir}/${time}/\${blend}/
-                                wait_till_2gb_free
                                 ${xz_img} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
                                 cd -
                         fi
