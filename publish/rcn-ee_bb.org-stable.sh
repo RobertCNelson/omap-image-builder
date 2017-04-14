@@ -44,6 +44,7 @@ fi
 debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
 
           debian_stretch_iot="debian-stretch-iot-armhf-${time}"
+         debian_stretch_lxqt="debian-stretch-lxqt-armhf-${time}"
       debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
 
 xz_img="xz -z -8"
@@ -236,6 +237,13 @@ options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${overlay}"         
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                           ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${overlay} --emmc-flasher" ; generate_img
 
+###lxqt image (stretch):
+base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${overlay}"                ; generate_img
+options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                           ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${overlay} --emmc-flasher" ; generate_img
+
 ### wayland image (stretch):
 base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
 
@@ -327,6 +335,13 @@ wfile="bone-\${base_rootfs}-4gb"      ; archive_img
 
 ###iot image (stretch):
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
+
+wfile="bone-\${base_rootfs}-4gb"           ; archive_img
+wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb"          ; archive_img
+
+###lxqt image (stretch):
+base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt"
 
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
