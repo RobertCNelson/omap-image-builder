@@ -67,7 +67,7 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 wait_till_Xgb_free () {
-        memory=3072
+        memory=4096
         free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
         until [ "\$free_memory" -gt "\$memory" ] ; do
                 free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
