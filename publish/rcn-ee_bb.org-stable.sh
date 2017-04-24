@@ -52,7 +52,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
 
 xz_img="xz -z -8"
 #xz_tar="xz -z -8"
-xz_tar="xz -T0 -z -8"
+xz_tar="xz -T2 -z -8"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
