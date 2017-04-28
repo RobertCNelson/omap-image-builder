@@ -119,7 +119,7 @@ setup_desktop () {
 		echo "        Identifier      \"Builtin Default fbdev Screen 0\"" >> ${wfile}
 		echo "        Device          \"Builtin Default fbdev Device 0\"" >> ${wfile}
 		echo "        Monitor         \"Builtin Default Monitor\"" >> ${wfile}
-		echo "#        DefaultDepth    16" >> ${wfile}
+		echo "#DefaultDepth        DefaultDepth    16" >> ${wfile}
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "Section \"ServerLayout\"" >> ${wfile}
