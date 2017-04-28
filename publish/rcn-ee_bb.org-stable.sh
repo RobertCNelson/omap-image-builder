@@ -56,7 +56,7 @@ xz_tar="xz -T2 -z -8"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
-overlay="--enable-uboot-cape-overlays"
+overlay="--enable-uboot-cape-overlays --enable-uboot-pru-rproc-44ti"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 

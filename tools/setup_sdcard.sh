@@ -1188,6 +1188,14 @@ populate_rootfs () {
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
 			echo "#disable_uboot_overlay_adc=1" >> ${wfile}
 			echo "###" >> ${wfile}
+			echo "###PRUSS OPTIONS" >> ${wfile}
+			echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
+			if [ "x${uboot_pru_rproc_44ti}" = "xenable" ] ; then
+				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
+			else
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
+			fi
+			echo "###" >> ${wfile}
 			echo "###Cape Universal Enable" >> ${wfile}
 			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
 				echo "enable_uboot_cape_universal=1" >> ${wfile}
@@ -1917,6 +1925,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-cape-overlays)
 		uboot_cape_overlays="enable"
+		;;
+	--enable-uboot-pru-rproc-44ti)
+		uboot_pru_rproc_44ti="enable"
 		;;
 	--offline)
 		offline=1
