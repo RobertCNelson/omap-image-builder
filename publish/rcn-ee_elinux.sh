@@ -24,9 +24,9 @@ debian_testing="debian-stretch-console-armhf-${time}"
 #ubuntu_testing="ubuntu-16.04.2-console-armhf-${time}"
 
 xz_img="xz -z -8"
-xz_tar="xz -T0 -z -8"
+xz_tar="xz -T2 -z -8"
 
-beaglebone="--dtb beaglebone --rootfs_label rootfs --enable-cape-universal --enable-uboot-cape-overlays"
+beaglebone="--dtb beaglebone --rootfs_label rootfs --enable-cape-universal --enable-uboot-cape-overlays --enable-uboot-pru-rproc-44ti"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs"
