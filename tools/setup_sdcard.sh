@@ -1189,11 +1189,16 @@ populate_rootfs () {
 			echo "#disable_uboot_overlay_adc=1" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###PRUSS OPTIONS" >> ${wfile}
-			echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
 			if [ "x${uboot_pru_rproc_44ti}" = "xenable" ] ; then
+				echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
+				echo "###pru_uio (mainline kernel)" >> ${wfile}
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 			else
+				echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
+				echo "###pru_uio (mainline kernel)" >> ${wfile}
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 			fi
 			echo "###" >> ${wfile}
 			echo "###Cape Universal Enable" >> ${wfile}
