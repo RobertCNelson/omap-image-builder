@@ -264,27 +264,31 @@ dl_bootloader () {
 			fi
 		fi
 
-		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
-			ABI="ABI2"
-			conf_board="beagle_x15_flasher"
+		if [ "x${x15_force_revb_flash}" = "xenable" ] ; then
+			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+				ABI="ABI2"
+				conf_board="beagle_x15_flasher"
 
-			if [ "${spl_name}" ] ; then
-				blank_SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
-				${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" ${blank_SPL}
-				blank_SPL=${blank_SPL##*/}
-				echo "blank_SPL Bootloader: ${blank_SPL}"
-			else
-				unset blank_SPL
-			fi
+				if [ "${spl_name}" ] ; then
+					blank_SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
+					${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" ${blank_SPL}
+					blank_SPL=${blank_SPL##*/}
+					echo "blank_SPL Bootloader: ${blank_SPL}"
+				else
+					unset blank_SPL
+				fi
 
-			if [ "${boot_name}" ] ; then
-				blank_UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
-				${dl} --directory-prefix="${TEMPDIR}/dl/" ${blank_UBOOT}
-				blank_UBOOT=${blank_UBOOT##*/}
-				echo "blank_UBOOT Bootloader: ${blank_UBOOT}"
-			else
-				unset blank_UBOOT
+				if [ "${boot_name}" ] ; then
+					blank_UBOOT=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:BOOT" | awk '{print $2}')
+					${dl} --directory-prefix="${TEMPDIR}/dl/" ${blank_UBOOT}
+					blank_UBOOT=${blank_UBOOT##*/}
+					echo "blank_UBOOT Bootloader: ${blank_UBOOT}"
+				else
+					unset blank_UBOOT
+				fi
 			fi
+		else
+			unset oem_blank_eeprom
 		fi
 	fi
 }
@@ -1335,6 +1339,9 @@ populate_rootfs () {
 			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 				echo "##enable x15: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
+			elif [ "x${conf_board}" = "xbeagle_x15_flasher" ] ; then
+				echo "##enable x15: eMMC Flasher:" >> ${wfile}
+				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
 			else
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
@@ -1920,6 +1927,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"
+		;;
+	--x15-force-revb-flash)
+		x15_force_revb_flash="enable"
 		;;
 	--oem-flasher-script)
 		checkparm $2
