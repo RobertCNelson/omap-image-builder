@@ -16,10 +16,10 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
-  debian_jessie_lxqt_2gb="debian-8.7-lxqt-2gb-armhf-${time}"
-  debian_jessie_lxqt_4gb="debian-8.7-lxqt-4gb-armhf-${time}"
-   debian_jessie_console="debian-8.7-console-armhf-${time}"
-debian_jessie_oemflasher="debian-8.7-oemflasher-armhf-${time}"
+  debian_jessie_lxqt_2gb="debian-8.8-lxqt-2gb-armhf-${time}"
+  debian_jessie_lxqt_4gb="debian-8.8-lxqt-4gb-armhf-${time}"
+   debian_jessie_console="debian-8.8-console-armhf-${time}"
+debian_jessie_oemflasher="debian-8.8-oemflasher-armhf-${time}"
 
 archive="xz -z -8"
 

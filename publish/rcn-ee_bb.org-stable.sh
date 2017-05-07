@@ -33,17 +33,17 @@ else
 fi
 
     debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
-    debian_jessie_machinekit="debian-8.7-machinekit-armhf-${time}"
+    debian_jessie_machinekit="debian-8.8-machinekit-armhf-${time}"
 
-       debian_jessie_console="debian-8.7-console-armhf-${time}"
-           debian_jessie_iot="debian-8.7-iot-armhf-${time}"
-      debian_jessie_lxqt_2gb="debian-8.7-lxqt-2gb-armhf-${time}"
-      debian_jessie_lxqt_4gb="debian-8.7-lxqt-4gb-armhf-${time}"
-   debian_jessie_lxqt_xm_4gb="debian-8.7-lxqt-xm-4gb-armhf-${time}"
-    debian_jessie_oemflasher="debian-8.7-oemflasher-armhf-${time}"
+       debian_jessie_console="debian-8.8-console-armhf-${time}"
+           debian_jessie_iot="debian-8.8-iot-armhf-${time}"
+      debian_jessie_lxqt_2gb="debian-8.8-lxqt-2gb-armhf-${time}"
+      debian_jessie_lxqt_4gb="debian-8.8-lxqt-4gb-armhf-${time}"
+   debian_jessie_lxqt_xm_4gb="debian-8.8-lxqt-xm-4gb-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.8-oemflasher-armhf-${time}"
 
-     debian_jessie_seeed_iot="debian-8.7-seeed-iot-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.7-seeed-lxqt-4gb-armhf-${time}"
+     debian_jessie_seeed_iot="debian-8.8-seeed-iot-armhf-${time}"
+debian_jessie_seeed_lxqt_4gb="debian-8.8-seeed-lxqt-4gb-armhf-${time}"
 
           debian_stretch_iot="debian-stretch-iot-armhf-${time}"
          debian_stretch_lxqt="debian-stretch-lxqt-armhf-${time}"

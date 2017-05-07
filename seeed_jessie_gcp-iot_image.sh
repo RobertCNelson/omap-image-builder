@@ -5,7 +5,7 @@ DIR="$PWD"
 
 ./RootStock-NG.sh -c seeed-debian-jessie-gcp-iot-v4.4
 
-debian_jessie_seeed_gcp_iot="debian-8.7-seeed-gcp-iot-armhf-${time}"
+debian_jessie_seeed_gcp_iot="debian-8.8-seeed-gcp-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 

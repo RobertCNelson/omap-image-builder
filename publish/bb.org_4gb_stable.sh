@@ -62,7 +62,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 # IoT BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.7-iot-2gb-armhf-${time}"
+image_name="debian-8.8-iot-2gb-armhf-${time}"
 size="2gb"
 target_name="bone"
 options="--img-2gb ${target_name}-${image_name} --dtb beaglebone \
@@ -73,7 +73,7 @@ build_and_upload_image
 # LXQT BeagleBone image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.7-lxqt-4gb-armhf-${time}"
+image_name="debian-8.8-lxqt-4gb-armhf-${time}"
 size="4gb"
 target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
@@ -84,7 +84,7 @@ build_and_upload_image
 # LXQT BeagleBoard-xM image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.7-lxqt-xm-4gb-armhf-${time}"
+image_name="debian-8.8-lxqt-xm-4gb-armhf-${time}"
 size="4gb"
 target_name="bbxm"
 options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
@@ -94,7 +94,7 @@ build_and_upload_image
 # LXQT BeagleBoard-X15 image
 ##Debian 8:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.7-lxqt-4gb-armhf-${time}"
+image_name="debian-8.8-lxqt-4gb-armhf-${time}"
 size="4gb"
 target_name="bbx15"
 options="--img-4gb ${target_name}-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard"
