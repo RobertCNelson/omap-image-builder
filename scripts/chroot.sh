@@ -625,8 +625,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				busybox --install -s /usr/local/bin/
 
 				#conflicts with systemd reboot...
+				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
 				if [ -f /usr/local/bin/reboot ] ; then
 					rm -f /usr/local/bin/reboot
+				fi
+
+				#poweroff: broken...
+				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
+				if [ -f /usr/local/bin/poweroff ] ; then
+					rm -f /usr/local/bin/poweroff
 				fi
 
 				#df: unrecognized option '--portability'
