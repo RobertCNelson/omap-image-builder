@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2012-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2017 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,9 @@ debootstrap_is_installed () {
 
 	if [ "x${host_arch}" != "xarmv7l" ] ; then
 		if [ "x${host_arch}" != "xaarch64" ] ; then
+			echo "QEMU is un-reliable, thus no longer supported... Spend some Money and buy a real ARMHF device to run this script."
+			#FIXME: comment out the next line to use QEMU
+			exit 2
 			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
 			dpkg -l | grep $(dpkg --print-architecture) | grep -v "qemu-" | grep qemu >/dev/null || deb_pkgs="${deb_pkgs}qemu "
 		fi
