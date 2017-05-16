@@ -378,11 +378,9 @@ install_git_repos () {
 		fi
 	fi
 
-	if [ ! -f /usr/lib/libroboticscape.so ] ; then
-		git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
-		git_target_dir="/opt/source/Robotics_Cape_Installer"
-		git_clone
-	fi
+	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
+	git_target_dir="/opt/source/Robotics_Cape_Installer"
+	git_clone
 
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
