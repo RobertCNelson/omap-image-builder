@@ -264,10 +264,10 @@ dl_bootloader () {
 			fi
 		fi
 
-		if [ "x${x15_force_revb_flash}" = "xenable" ] ; then
-			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+			if [ ! "x${flasher_uboot}" = "x" ] ; then
 				ABI="ABI2"
-				conf_board="beagle_x15_flasher"
+				conf_board="${flasher_uboot}"
 
 				if [ "${spl_name}" ] ; then
 					blank_SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
@@ -286,9 +286,9 @@ dl_bootloader () {
 				else
 					unset blank_UBOOT
 				fi
+			else
+				unset oem_blank_eeprom
 			fi
-		else
-			unset oem_blank_eeprom
 		fi
 	fi
 }
@@ -1336,16 +1336,8 @@ populate_rootfs () {
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
 			fi
 		elif [ "x${emmc_flasher}" = "xenable" ] ; then
-			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
-				echo "##enable x15: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
-			elif [ "x${conf_board}" = "xbeagle_x15_flasher" ] ; then
-				echo "##enable x15: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
-			else
-				echo "##enable Generic eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
-			fi
+			echo "##enable Generic eMMC Flasher:" >> ${wfile}
+			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
 		elif [ "x${bp00_flasher}" = "xenable" ] ; then
 			echo "##enable bp00: eeprom Flasher:" >> ${wfile}
 			echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
@@ -1356,7 +1348,7 @@ populate_rootfs () {
 			if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 				echo "##enable x15: eMMC Flasher:" >> ${wfile}
 				echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
-				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-x15_b1.sh" >> ${wfile}
+				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
 			fi
 		fi
 	fi
@@ -1930,6 +1922,12 @@ while [ ! -z "$1" ] ; do
 		;;
 	--x15-force-revb-flash)
 		x15_force_revb_flash="enable"
+		;;
+	--am57xx-x15-flasher)
+		flasher_uboot="am57xx_evm_ti_flasher"
+		;;
+	--am571x-sndrblock-flasher)
+		flasher_uboot="am571x_sndrblock_flasher"
 		;;
 	--oem-flasher-script)
 		checkparm $2
