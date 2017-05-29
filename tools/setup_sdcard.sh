@@ -1924,7 +1924,7 @@ while [ ! -z "$1" ] ; do
 		x15_force_revb_flash="enable"
 		;;
 	--am57xx-x15-flasher)
-		flasher_uboot="am57xx_evm_ti_flasher"
+		flasher_uboot="beagle_x15_flasher"
 		;;
 	--am571x-sndrblock-flasher)
 		flasher_uboot="am571x_sndrblock_flasher"
