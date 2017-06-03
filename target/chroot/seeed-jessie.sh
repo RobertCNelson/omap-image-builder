@@ -382,6 +382,16 @@ install_git_repos () {
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
 	git_clone
 
+	git_repo="https://github.com/mcdeoliveira/rcpy"
+	git_target_dir="/opt/source/rcpy"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/python3 ] ; then
+			/usr/bin/python3 setup.py install
+		fi
+	fi
+
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
