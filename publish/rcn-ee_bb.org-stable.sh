@@ -209,14 +209,14 @@ options="--img-2gb bone-\${base_rootfs}  ${beaglebone} ${pru_rproc}" ; generate_
 ###lxqt-4gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
-options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                             ; generate_img
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc} --emmc-flasher" ; generate_img
-options="--img-4gb BBBW-blank-\${base_rootfs} ${beaglebone} ${pru_rproc} --bbbw-flasher" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                             ; generate_img
+options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc} --emmc-flasher" ; generate_img
+options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc} --bbbw-flasher" ; generate_img
 
 #options="--img-4gb BBB-blank-uboot-overlay-\${base_rootfs}  ${beaglebone} --emmc-flasher ${overlay}" ; generate_img
 #options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}  --m10a-flasher" ; generate_img
-#options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
 
 ###lxqt-xm-4gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_xm_4gb}" ; blend="lxqt-xm-4gb" ; extract_base_rootfs
@@ -315,6 +315,7 @@ wfile="bone-\${base_rootfs}-2gb"      ; archive_img
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
 
 wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
+wfile="bbx15-blank-\${base_rootfs}-4gb" ; archive_img
 wfile="bone-\${base_rootfs}-4gb"        ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
 wfile="BBBW-blank-\${base_rootfs}-4gb"  ; archive_img
