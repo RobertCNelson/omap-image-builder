@@ -136,7 +136,8 @@ check_defines () {
 
 	if [ "x${repo_rcnee}" = "xenable" ] ; then
 		if [ ! "x${repo_rcnee_pkg_list}" = "x" ] ; then
-			deb_additional_pkgs="${deb_additional_pkgs} ${repo_rcnee_pkg_list}"
+			include=$(echo ${repo_rcnee_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
+			deb_additional_pkgs="${deb_additional_pkgs} ${include}"
 		fi
 	fi
 }
