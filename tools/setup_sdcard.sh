@@ -1215,16 +1215,12 @@ populate_rootfs () {
 			if [ "x${uboot_pru_rproc_44ti}" = "xenable" ] ; then
 				echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_rproc (4.9.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-9-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (mainline kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 			else
 				echo "###pru_rproc (4.4.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-4-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_rproc (4.9.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-9-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (mainline kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 			fi
 			echo "###" >> ${wfile}
