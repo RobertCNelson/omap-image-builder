@@ -45,10 +45,10 @@ fi
      debian_jessie_seeed_iot="debian-8.8-seeed-iot-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.8-seeed-lxqt-4gb-armhf-${time}"
 
-          debian_stretch_iot="debian-stretch-iot-armhf-${time}"
-         debian_stretch_lxqt="debian-stretch-lxqt-armhf-${time}"
-      debian_stretch_lxqt_xm="debian-stretch-lxqt-xm-armhf-${time}"
-      debian_stretch_wayland="debian-stretch-wayland-armhf-${time}"
+          debian_stretch_iot="debian-9.0-iot-armhf-${time}"
+         debian_stretch_lxqt="debian-9.0-lxqt-armhf-${time}"
+      debian_stretch_lxqt_xm="debian-9.0-lxqt-xm-armhf-${time}"
+      debian_stretch_wayland="debian-9.0-wayland-armhf-${time}"
 
 xz_img="xz -z -8"
 #xz_tar="xz -z -8"
