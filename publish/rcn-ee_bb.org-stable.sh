@@ -24,10 +24,10 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.4
+
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
-./RootStock-NG.sh -c bb.org-debian-stretch-wayland-v4.4
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
