@@ -26,7 +26,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 else
@@ -246,9 +246,9 @@ options="--img-1gb bone-\${base_rootfs}      ${beaglebone}"                ; gen
 ###iot image (stretch):
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
-options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                                   ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
 
 ###lxqt image (stretch):
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
