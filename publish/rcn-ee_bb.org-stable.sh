@@ -13,7 +13,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-#./RootStock-NG.sh -c machinekit-debian-wheezy
 ./RootStock-NG.sh -c machinekit-debian-jessie
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
@@ -33,7 +32,6 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-    debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
     debian_jessie_machinekit="debian-8.8-machinekit-armhf-${time}"
 
        debian_jessie_console="debian-8.8-console-armhf-${time}"
@@ -166,11 +164,6 @@ generate_img () {
         fi
 }
 
-###machinekit (wheezy):
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
-
 ###machinekit (jessie):
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
 
@@ -270,7 +263,6 @@ options="--img-4gb bbx15-\${base_rootfs} ${beagle_x15}"    ; generate_img
 options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archive_base_rootfs
@@ -287,11 +279,6 @@ base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm" ; archiv
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland" ; archive_base_rootfs
 
 ###archive *.img
-###machinekit (wheezy):
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
-
-wfile="bone-\${base_rootfs}-4gb" ; archive_img
-
 ###machinekit (jessie):
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit"
 

@@ -12,7 +12,6 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c machinekit-debian-wheezy
 #./RootStock-NG.sh -c machinekit-debian-jessie
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
 #./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
@@ -22,7 +21,6 @@ fi
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
-    debian_wheezy_machinekit="debian-7.11-machinekit-armhf-${time}"
     debian_jessie_machinekit="debian-8.8-machinekit-armhf-${time}"
       debian_jessie_lxqt_2gb="debian-8.8-lxqt-2gb-armhf-${time}"
       debian_jessie_lxqt_4gb="debian-8.8-lxqt-4gb-armhf-${time}"
@@ -131,11 +129,6 @@ generate_img () {
         fi
 }
 
-###machinekit (wheezy):
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs} ${beaglebone} --enable-systemd" ; generate_img
-
 ###machinekit (jessie)
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
 
@@ -194,7 +187,6 @@ options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                ; ge
 options="--img-4gb BBGW-blank-\${base_rootfs} ${beaglebone} --bbgw-flasher" ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_wheezy_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"     ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"       ; archive_base_rootfs
@@ -205,10 +197,6 @@ base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; archive
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"      ; archive_base_rootfs
 
 ###archive *.img
-base_rootfs="${debian_wheezy_machinekit}" ; blend="machinekit"
-
-wfile="bone-\${base_rootfs}-4gb" ; archive_img
-
 base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit"
 
 wfile="bone-\${base_rootfs}-4gb" ; archive_img

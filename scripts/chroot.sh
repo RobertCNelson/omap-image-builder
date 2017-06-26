@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2017 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -351,19 +351,6 @@ buster|sid)
 esac
 
 case "${deb_codename}" in
-wheezy)
-	echo "" >> ${wfile}
-	echo "deb http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://security.debian.org/ ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-	else
-		echo "#deb http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "##deb-src http://ftp.us.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-	fi
-	;;
 jessie|stretch)
 	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
@@ -461,15 +448,6 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
-		wheezy)
-			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.sh" "${tempdir}/etc/init.d/generic-boot-script.sh"
-			sudo chown root:root "${tempdir}/etc/init.d/generic-boot-script.sh"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init.d/capemgr.sh"
-			sudo chown root:root "${tempdir}/etc/init.d/capemgr.sh"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
-			sudo chown root:root "${tempdir}/etc/default/capemgr"
-			distro="Debian"
-			;;
 		jessie|stretch)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -743,7 +721,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		# Purge keep file
 		deborphan -Z
 
-		#FIXME, only tested on wheezy/jessie...
+		#FIXME, only tested on jessie...
 		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
 		apt-get clean
 	}
