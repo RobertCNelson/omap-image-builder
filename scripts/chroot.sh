@@ -462,22 +462,6 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		;;
 	ubuntu)
 		case "${deb_codename}" in
-		trusty)
-			sudo cp "${OIB_DIR}/target/init_scripts/generic-${deb_distribution}.conf" "${tempdir}/etc/init/generic-boot-script.conf"
-			sudo chown root:root "${tempdir}/etc/init/generic-boot-script.conf"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr-${deb_distribution}.sh" "${tempdir}/etc/init/capemgr.sh"
-			sudo chown root:root "${tempdir}/etc/init/capemgr.sh"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
-			sudo chown root:root "${tempdir}/etc/default/capemgr"
-			distro="Ubuntu"
-
-			if [ -f "${tempdir}/etc/init/failsafe.conf" ] ; then
-				#Ubuntu: with no ethernet cable connected it can take up to 2 mins to login, removing upstart sleep calls..."
-				sudo sed -i -e 's:sleep 20:#sleep 20:g' "${tempdir}/etc/init/failsafe.conf"
-				sudo sed -i -e 's:sleep 40:#sleep 40:g' "${tempdir}/etc/init/failsafe.conf"
-				sudo sed -i -e 's:sleep 59:#sleep 59:g' "${tempdir}/etc/init/failsafe.conf"
-			fi
-			;;
 		vivid|wily|xenial)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"

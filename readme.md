@@ -112,15 +112,15 @@ Master branch:
 
 eewiki.net: Debian Stable (armel) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armel
+    ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armel
 
 eewiki.net: Debian Stable (armhf) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_jessie_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armhf
 
 eewiki.net: Ubuntu Stable (armhf) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_trusty_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
 
 eewiki.net: Debian Stable (armel) barefs:
 
@@ -138,7 +138,7 @@ elinux.org: Debian Images:
 
 elinux.org: Ubuntu Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_trusty_armhf
+    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
 Release Process:
