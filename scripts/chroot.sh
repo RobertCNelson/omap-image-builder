@@ -715,6 +715,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${chroot_manual_deborphan_list}" = "x" ] ; then
 			echo "Log: (chroot): cleanup: [${chroot_manual_deborphan_list}]"
 			apt-get -y remove ${chroot_manual_deborphan_list} --purge
+			apt-get autoremove --purge
 			apt-get clean
 		fi
 	}
