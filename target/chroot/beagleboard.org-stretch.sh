@@ -195,7 +195,6 @@ install_pip_pkgs () {
 					sed -i -e 's:4.1.0:3.4.0:g' setup.py
 					python setup.py install
 				fi
-				pip install --upgrade PyBBIO
 				pip install iw_parse
 			fi
 		fi
