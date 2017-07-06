@@ -1192,6 +1192,14 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 			dpkg-divert --local --rename --remove /sbin/initctl
 		fi
 
+		if [ -f /etc/apt/apt.conf.d/03-proxy-oracle ] ; then
+			rm -rf /etc/apt/apt.conf.d/03-proxy-oracle || true
+		fi
+
+		if [ -f /etc/apt/apt.conf.d/03-proxy-https ] ; then
+			rm -rf /etc/apt/apt.conf.d/03-proxy-https || true
+		fi
+
 #		#This is tmpfs, clear out any left overs...
 #		if [ -d /run/ ] ; then
 #			rm -rf /run/* || true
