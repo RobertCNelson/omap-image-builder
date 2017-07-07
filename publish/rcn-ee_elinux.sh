@@ -11,15 +11,15 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c rcn-ee_console_debian_jessie_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
+./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
- debian_stable="debian-8.8-console-armhf-${time}"
-debian_testing="debian-9.0-console-armhf-${time}"
+ debian_stable="debian-9.0-console-armhf-${time}"
+debian_testing="debian-buster-console-armhf-${time}"
  ubuntu_stable="ubuntu-16.04.2-console-armhf-${time}"
 #ubuntu_testing="ubuntu-16.04.2-console-armhf-${time}"
 
