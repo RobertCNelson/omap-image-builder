@@ -28,6 +28,8 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
+
+./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
@@ -49,6 +51,8 @@ debian_jessie_seeed_lxqt_4gb="debian-8.8-seeed-lxqt-4gb-armhf-${time}"
          debian_stretch_lxqt="debian-9.0-lxqt-armhf-${time}"
       debian_stretch_lxqt_xm="debian-9.0-lxqt-xm-armhf-${time}"
       debian_stretch_wayland="debian-9.0-wayland-armhf-${time}"
+
+           debian_buster_iot="debian-buster-iot-armhf-${time}"
 
 xz_img="xz -z -8"
 #xz_tar="xz -z -8"
@@ -262,6 +266,13 @@ base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base
 options="--img-4gb bbx15-\${base_rootfs} ${beagle_x15}"    ; generate_img
 options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 
+###iot image (buster):
+base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
+
+options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
@@ -272,11 +283,14 @@ base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"     ; archiv
 base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
+
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console" ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"     ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm" ; archive_base_rootfs
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland" ; archive_base_rootfs
+
+base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"      ; archive_base_rootfs
 
 ###archive *.img
 ###machinekit (jessie):
@@ -363,6 +377,13 @@ base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland"
 
 wfile="bbx15-\${base_rootfs}-4gb"      ; archive_img
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
+
+###iot image (buster):
+base_rootfs="${debian_buster_iot}" ; blend="buster-iot"
+
+wfile="bbx15-\${base_rootfs}-4gb"          ; archive_img
+wfile="bone-\${base_rootfs}-4gb"           ; archive_img
+wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
 
 __EOF__
 
