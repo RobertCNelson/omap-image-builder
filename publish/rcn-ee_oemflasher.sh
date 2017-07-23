@@ -14,7 +14,7 @@ fi
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
-debian_jessie_oemflasher="debian-8.8-oemflasher-armhf-${time}"
+debian_jessie_oemflasher="debian-8.9-oemflasher-armhf-${time}"
 
 archive="xz -z -8"
 

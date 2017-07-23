@@ -17,7 +17,7 @@ fi
 ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armhf
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
 
-debian_stable="debian-9.0"
+debian_stable="debian-9.1"
 ubuntu_stable="ubuntu-16.04.2"
 archive="xz -z -8"
 
