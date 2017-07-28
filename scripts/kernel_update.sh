@@ -11,7 +11,7 @@ current_kernel () {
 	if [ "x${filter}" = "x" ] ; then
 		old_kernel=$(cat "configs/kernel.data" | grep "${var}" | grep "${ver}" | awk '{print $3}')
 	else
-		old_kernel=$(cat "configs/kernel.data" | grep -v "${filter}" | grep "${var}" | grep "${ver}" | awk '{print $3}')
+		old_kernel=$(cat "configs/kernel.data" | grep -v "${filter1}" | grep -v "${filter2}" | grep "${var}" | grep "${ver}" | awk '{print $3}')
 	fi
 	if [ ! "x${latest_kernel}" = "x${old_kernel}" ] ; then
 		echo "kernel bump: ${git_msg} ($latest_kernel)"
@@ -28,14 +28,19 @@ if [ -f configs/kernel.data ] ; then
 	var="omap-psp"   ; ver="STABLE" ; current_kernel
 
 	git_msg="3.8.13-xenomai"
-	filter="ti"
+	filter1="ti"
+	filter2="ti"
 	var="xenomai"    ; ver="STABLE" ; current_kernel
 	unset filter
 
 	git_msg="4.4.x"
-	filter="xenomai"
+	filter1="xenomai"
+	filter2="rt"
 	var="ti"         ; ver="LTS44"  ; current_kernel
 	unset filter
+
+	git_msg="4.4.x-rt"
+	var="ti-rt"      ; ver="LTS44"  ; current_kernel
 
 	git_msg="4.4.x-xenomai"
 	var="ti-xenomai" ; ver="LTS44"  ; current_kernel
@@ -46,7 +51,8 @@ if [ -f configs/kernel.data ] ; then
 #	var="armv7"      ; ver="TESTING"  ; current_kernel
 
 	git_msg="4.9.x"
-	filter="xenomai"
+	filter1="xenomai"
+	filter2="rt"
 	var="ti"         ; ver="LTS49"  ; current_kernel
 	unset filter
 fi
