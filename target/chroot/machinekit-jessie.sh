@@ -172,20 +172,26 @@ setup_desktop () {
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
 
-	#Disable LXDE's screensaver on autostart
-	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
-		sed -i '/xscreensaver/s/^/#/' /etc/xdg/lxsession/LXDE/autostart
-	fi
+#	#Disable LXDE's screensaver on autostart
+#	if [ -f /etc/xdg/lxsession/LXDE/autostart ] ; then
+#		sed -i '/xscreensaver/s/^/#/' /etc/xdg/lxsession/LXDE/autostart
+#	fi
 
 	#echo "CAPE=cape-bone-proto" >> /etc/default/capemgr
 
-	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
-	if [ -f /usr/bin/lxterminal ] ; then
-		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
-			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
-			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
-		fi
-	fi
+#	#root password is blank, so remove useless application as it requires a password.
+#	if [ -f /usr/share/applications/gksu.desktop ] ; then
+#		rm -f /usr/share/applications/gksu.desktop || true
+#	fi
+
+#	#lxterminal doesnt reference .profile by default, so call via loginshell and start bash
+#	if [ -f /usr/bin/lxterminal ] ; then
+#		if [ -f /usr/share/applications/lxterminal.desktop ] ; then
+#			sed -i -e 's:Exec=lxterminal:Exec=lxterminal -l -e bash:g' /usr/share/applications/lxterminal.desktop
+#			sed -i -e 's:TryExec=lxterminal -l -e bash:TryExec=lxterminal:g' /usr/share/applications/lxterminal.desktop
+#		fi
+#	fi
+
 }
 
 install_pip_pkgs () {
@@ -275,6 +281,11 @@ install_git_repos () {
 	git_branch="4.4-ti"
 	git_clone_branch
 
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-4.9-ti"
+	git_branch="4.9-ti"
+	git_clone_branch
+
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
@@ -321,19 +332,19 @@ install_git_repos () {
 			if [ -f /usr/bin/make ] ; then
 				make
 				make install || true
-				if [ ! "x${image_type}" = "xtester-2gb" ] ; then
-					systemctl disable beagle-tester.service || true
-				fi
+#				if [ ! "x${image_type}" = "xtester-2gb" ] ; then
+#					systemctl disable beagle-tester.service || true
+#				fi
 			fi
 		fi
 	fi
 
-	# Build a dtc compiler that works with the 3.8.13 kernel
-	if [ -f /usr/bin/make ] ; then
-		if [ -f /opt/scripts/tools/dtc/dtc-3.8.x.sh ] ; then
-			/opt/scripts/tools/dtc/dtc-3.8.x.sh
-		fi
-	fi
+#	# Build a dtc compiler that works with the 3.8.13 kernel
+#	if [ -f /usr/bin/make ] ; then
+#		if [ -f /opt/scripts/tools/dtc/dtc-3.8.x.sh ] ; then
+#			/opt/scripts/tools/dtc/dtc-3.8.x.sh
+#		fi
+#	fi
 }
 
 install_build_pkgs () {
@@ -358,16 +369,16 @@ other_source_links () {
 }
 
 unsecure_root () {
-	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
-	sed -i -e 's:'$root_password'::g' /etc/shadow
+#	root_password=$(cat /etc/shadow | grep root | awk -F ':' '{print $2}')
+#	sed -i -e 's:'$root_password'::g' /etc/shadow
 
-	if [ -f /etc/ssh/sshd_config ] ; then
-		#Make ssh root@beaglebone work..
-		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
-		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
-		#Starting with Jessie:
-		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
-	fi
+#	if [ -f /etc/ssh/sshd_config ] ; then
+#		#Make ssh root@beaglebone work..
+#		sed -i -e 's:PermitEmptyPasswords no:PermitEmptyPasswords yes:g' /etc/ssh/sshd_config
+#		sed -i -e 's:UsePAM yes:UsePAM no:g' /etc/ssh/sshd_config
+#		#Starting with Jessie:
+#		sed -i -e 's:PermitRootLogin without-password:PermitRootLogin yes:g' /etc/ssh/sshd_config
+#	fi
 
 	if [ -f /etc/sudoers ] ; then
 		#Don't require password for sudo access
@@ -391,5 +402,5 @@ if [ -f /usr/bin/git ] ; then
 fi
 #install_build_pkgs
 other_source_links
-#unsecure_root
+unsecure_root
 #
