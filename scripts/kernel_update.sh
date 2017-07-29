@@ -48,8 +48,6 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="4.4.x-xenomai"
 	var="ti-xenomai" ; ver="LTS44"  ; current_kernel
 
-	exit 2
-
 	git_msg="4.12.x-xM"
 #	var="armv7"      ; ver="LTS49"  ; current_kernel
 	var="armv7"      ; ver="STABLE"  ; current_kernel
