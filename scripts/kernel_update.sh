@@ -7,11 +7,15 @@ current_kernel () {
 		rm -rf /tmp/LATEST-${var} | true
 	fi
 	wget --quiet --directory-prefix=/tmp/ ${server}${var}
+	unset latest_kernel
 	latest_kernel=$(cat "/tmp/LATEST-${var}" | grep "ABI:1 ${ver}" | awk '{print $3}')
+	unset old_kernel
 	if [ "x${filter1}" = "x" ] ; then
 		old_kernel=$(cat "configs/kernel.data" | grep "${var}" | grep "${ver}" | awk '{print $3}')
 	else
 		old_kernel=$(cat "configs/kernel.data" | grep -v "${filter1}" | grep -v "${filter2}" | grep "${var}" | grep "${ver}" | awk '{print $3}')
+		unset filter1
+		unset filter2
 	fi
 	if [ ! "x${latest_kernel}" = "x${old_kernel}" ] ; then
 		echo "kernel bump: ${git_msg} ($latest_kernel)"
@@ -32,21 +36,19 @@ if [ -f configs/kernel.data ] ; then
 	filter1="ti"
 	filter2="ti"
 	var="xenomai"    ; ver="STABLE" ; current_kernel
-	unset filter
 
 	git_msg="4.4.x"
 	filter1="xenomai"
 	filter2="rt"
 	var="ti"         ; ver="LTS44"  ; current_kernel
-	unset filter
-
-	exit 2
 
 	git_msg="4.4.x-rt"
 	var="ti-rt"      ; ver="LTS44"  ; current_kernel
 
 	git_msg="4.4.x-xenomai"
 	var="ti-xenomai" ; ver="LTS44"  ; current_kernel
+
+	exit 2
 
 	git_msg="4.12.x-xM"
 #	var="armv7"      ; ver="LTS49"  ; current_kernel
@@ -57,5 +59,4 @@ if [ -f configs/kernel.data ] ; then
 	filter1="xenomai"
 	filter2="rt"
 	var="ti"         ; ver="LTS49"  ; current_kernel
-	unset filter
 fi
