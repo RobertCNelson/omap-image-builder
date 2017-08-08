@@ -20,8 +20,8 @@ fi
 
  debian_stable="debian-9.1-console-armhf-${time}"
 debian_testing="debian-buster-console-armhf-${time}"
- ubuntu_stable="ubuntu-16.04.2-console-armhf-${time}"
-#ubuntu_testing="ubuntu-16.04.2-console-armhf-${time}"
+ ubuntu_stable="ubuntu-16.04.3-console-armhf-${time}"
+#ubuntu_testing="ubuntu-16.04.3-console-armhf-${time}"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
