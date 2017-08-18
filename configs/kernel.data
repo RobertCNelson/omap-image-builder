@@ -2,6 +2,6 @@ omap-psp STABLE 3.8.13-bone86
 xenomai STABLE 3.8.13-xenomai-r86
 ti LTS44 4.4.83-ti-r119
 ti-rt LTS44 4.4.83-ti-rt-r119
-ti-xenomai LTS44 4.4.82-ti-xenomai-r118
+ti-xenomai LTS44 4.4.83-ti-xenomai-r119
 armv7 STABLE 4.12.7-armv7-x3
 ti LTS49 4.9.43-ti-r54
