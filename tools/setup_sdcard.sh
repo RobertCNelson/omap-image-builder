@@ -1126,6 +1126,10 @@ populate_rootfs () {
 	kernel_detection
 	kernel_select
 
+	if [ ! "x${uboot_eeprom}" = "x" ] ; then
+		echo "board_eeprom_header=${uboot_eeprom}" > "${TEMPDIR}/disk/boot/.eeprom.txt"
+	fi
+
 	wfile="${TEMPDIR}/disk/boot/uEnv.txt"
 	echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
 	echo "" >> ${wfile}
@@ -1884,6 +1888,7 @@ while [ ! -z "$1" ] ; do
 	--a335-flasher)
 		oem_blank_eeprom="enable"
 		a335_flasher="enable"
+		uboot_eeprom="bbb_blank"
 		;;
 	--bp00-flasher)
 		oem_blank_eeprom="enable"
@@ -1912,14 +1917,17 @@ while [ ! -z "$1" ] ; do
 	--bbb-flasher|--emmc-flasher)
 		oem_blank_eeprom="enable"
 		emmc_flasher="enable"
+		uboot_eeprom="bbb_blank"
 		;;
 	--bbbl-flasher)
 		oem_blank_eeprom="enable"
 		bbbl_flasher="enable"
+		uboot_eeprom="bbbl_blank"
 		;;
 	--bbbw-flasher)
 		oem_blank_eeprom="enable"
 		bbbw_flasher="enable"
+		uboot_eeprom="bbbw_blank"
 		;;
 	--bbb-old-bootloader-in-emmc)
 		bbb_old_bootloader_in_emmc="enable"
