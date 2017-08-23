@@ -202,8 +202,7 @@ options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v44ti} -
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
 
 options="--img-2gb bone-\${base_rootfs}  ${beaglebone} ${pru_rproc_v44ti}" ; generate_img
-
-#options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone}  ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
 
 ###lxqt-4gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
@@ -322,6 +321,7 @@ wfile="BBBL-blank-\${base_rootfs}-4gb"  ; archive_img
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb"
 
 wfile="bone-\${base_rootfs}-2gb"      ; archive_img
+wfile="BBB-blank-\${base_rootfs}-2gb"      ; archive_img
 
 ###lxqt-4gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
