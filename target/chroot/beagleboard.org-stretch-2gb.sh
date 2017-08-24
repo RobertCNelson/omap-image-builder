@@ -382,7 +382,7 @@ is_this_qemu
 setup_system
 setup_desktop
 
-install_pip_pkgs
+#install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
