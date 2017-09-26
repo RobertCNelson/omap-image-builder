@@ -29,6 +29,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
+./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.4
 
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
 else
@@ -53,6 +54,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.9-seeed-lxqt-4gb-armhf-${time}"
          debian_stretch_lxqt="debian-9.1-lxqt-armhf-${time}"
       debian_stretch_lxqt_xm="debian-9.1-lxqt-xm-armhf-${time}"
       debian_stretch_wayland="debian-9.1-wayland-armhf-${time}"
+   debian_stretch_oemflasher="debian-9.1-oemflasher-armhf-${time}"
 
            debian_buster_iot="debian-buster-iot-armhf-${time}"
 
@@ -292,12 +294,13 @@ base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archiv
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
-base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"  ; archive_base_rootfs
-base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"      ; archive_base_rootfs
-base_rootfs="${debian_stretch_lxqt_2gb}"      ; blend="stretch-lxqt-2gb" ; archive_base_rootfs
-base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"     ; archive_base_rootfs
-base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"  ; archive_base_rootfs
-base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"  ; archive_base_rootfs
+base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
+base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
+base_rootfs="${debian_stretch_lxqt_2gb}"      ; blend="stretch-lxqt-2gb"   ; archive_base_rootfs
+base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; archive_base_rootfs
+base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
+base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
+base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
 
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"      ; archive_base_rootfs
 
