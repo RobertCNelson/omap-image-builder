@@ -50,8 +50,8 @@ if [ -f configs/kernel.data ] ; then
 
 	git_msg="4.13.x-xM"
 #	var="armv7"      ; ver="LTS49"  ; current_kernel
-#	var="armv7"      ; ver="STABLE"  ; current_kernel
-	var="armv7"      ; ver="TESTING"  ; current_kernel
+	var="armv7"      ; ver="STABLE"  ; current_kernel
+#	var="armv7"      ; ver="TESTING"  ; current_kernel
 
 	git_msg="4.9.x"
 	filter1="xenomai"
