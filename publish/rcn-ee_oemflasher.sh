@@ -67,10 +67,6 @@ copy_img_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
-                        if [ -f \${wfile}.bmap ] ; then
-                                mv -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
-                                sync
-                        fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 mv -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
                                 sync
@@ -88,11 +84,6 @@ copy_img_to_mirror () {
 
 archive_img () {
         if [ -f \${wfile}.img ] ; then
-                if [ ! -f \${wfile}.bmap ] ; then
-                        if [ -f /usr/bin/bmaptool ] ; then
-                                bmaptool create -o \${wfile}.bmap \${wfile}.img
-                        fi
-                fi
                 copy_img_to_mirror
         fi
 }
