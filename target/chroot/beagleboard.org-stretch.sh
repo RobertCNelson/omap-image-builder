@@ -265,6 +265,11 @@ install_git_repos () {
 	git_branch="4.9-ti"
 	git_clone_branch
 
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-4.14-ti"
+	git_branch="4.14-ti"
+	git_clone_branch
+
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
