@@ -18,11 +18,11 @@ current_kernel () {
 		unset filter2
 	fi
 	if [ ! "x${latest_kernel}" = "x${old_kernel}" ] ; then
-		echo "kernel bump: ${git_msg} ($latest_kernel)"
+		echo "kernel bump: ${git_msg}: ($latest_kernel)"
 		echo "[sed -i -e 's:'$old_kernel':'$latest_kernel':g']"
 		sed -i -e 's:'$old_kernel':'$latest_kernel':g' configs/*.conf
 		sed -i -e 's:'$old_kernel':'$latest_kernel':g' configs/kernel.data
-		git commit -a -m "kernel bump: ${git_msg} ($latest_kernel)" -s
+		git commit -a -m "kernel bump: ${git_msg}: ($latest_kernel)" -s
 	else
 		echo "x${latest_kernel} = x${old_kernel}"
 	fi
@@ -34,7 +34,7 @@ if [ -f configs/kernel.data ] ; then
 	var="armv7"      ; ver="STABLE"  ; current_kernel
 #	var="armv7"      ; ver="TESTING"  ; current_kernel
 
-	git_msg="3.8.13"
+	git_msg="3.8.13-bone"
 	var="omap-psp"   ; ver="STABLE" ; current_kernel
 
 	git_msg="3.8.13-xenomai"
@@ -42,23 +42,23 @@ if [ -f configs/kernel.data ] ; then
 	filter2="ti"
 	var="xenomai"    ; ver="STABLE" ; current_kernel
 
-	git_msg="4.4.x"
+	git_msg="4.9.x-bone-rt"
+	var="bone-rt"    ; ver="LTS49" ; current_kernel
+
+	git_msg="4.4.x-ti"
 	filter1="xenomai"
 	filter2="rt"
 	var="ti"         ; ver="LTS44"  ; current_kernel
 
-	git_msg="4.4.x-rt"
-	var="ti-rt"      ; ver="LTS44"  ; current_kernel
-
-	git_msg="4.9.x"
+	git_msg="4.9.x-ti"
 	filter1="xenomai"
 	filter2="rt"
 	var="ti"         ; ver="LTS49"  ; current_kernel
 
-	git_msg="4.9.x"
+	git_msg="4.9.x-ti-rt"
 	var="ti-rt"      ; ver="LTS49"  ; current_kernel
 
-	git_msg="4.14.x"
+	git_msg="4.14.x-ti"
 	filter1="rt"
 	filter2="rt"
 	var="ti"         ; ver="LTS414"  ; current_kernel
