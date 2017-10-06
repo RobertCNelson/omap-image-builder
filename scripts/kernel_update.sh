@@ -29,6 +29,11 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
+	git_msg="4.13.x-xM"
+#	var="armv7"      ; ver="LTS49"  ; current_kernel
+	var="armv7"      ; ver="STABLE"  ; current_kernel
+#	var="armv7"      ; ver="TESTING"  ; current_kernel
+
 	git_msg="3.8.13"
 	var="omap-psp"   ; ver="STABLE" ; current_kernel
 
@@ -45,21 +50,16 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="4.4.x-rt"
 	var="ti-rt"      ; ver="LTS44"  ; current_kernel
 
-	git_msg="4.4.x-xenomai"
-	var="ti-xenomai" ; ver="LTS44"  ; current_kernel
-
-	git_msg="4.13.x-xM"
-#	var="armv7"      ; ver="LTS49"  ; current_kernel
-	var="armv7"      ; ver="STABLE"  ; current_kernel
-#	var="armv7"      ; ver="TESTING"  ; current_kernel
-
 	git_msg="4.9.x"
 	filter1="xenomai"
 	filter2="rt"
 	var="ti"         ; ver="LTS49"  ; current_kernel
 
+	git_msg="4.9.x"
+	var="ti-rt"      ; ver="LTS49"  ; current_kernel
+
 	git_msg="4.14.x"
 	filter1="rt"
-	filter1="rt"
+	filter2="rt"
 	var="ti"         ; ver="LTS414"  ; current_kernel
 fi
