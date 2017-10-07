@@ -48,13 +48,13 @@ fi
      debian_jessie_seeed_iot="debian-8.9-seeed-iot-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.9-seeed-lxqt-4gb-armhf-${time}"
 
-      debian_stretch_console="debian-9.1-console-armhf-${time}"
-          debian_stretch_iot="debian-9.1-iot-armhf-${time}"
-     debian_stretch_lxqt_2gb="debian-9.1-lxqt-2gb-armhf-${time}"
-         debian_stretch_lxqt="debian-9.1-lxqt-armhf-${time}"
-      debian_stretch_lxqt_xm="debian-9.1-lxqt-xm-armhf-${time}"
-      debian_stretch_wayland="debian-9.1-wayland-armhf-${time}"
-   debian_stretch_oemflasher="debian-9.1-oemflasher-armhf-${time}"
+      debian_stretch_console="debian-9.2-console-armhf-${time}"
+          debian_stretch_iot="debian-9.2-iot-armhf-${time}"
+     debian_stretch_lxqt_2gb="debian-9.2-lxqt-2gb-armhf-${time}"
+         debian_stretch_lxqt="debian-9.2-lxqt-armhf-${time}"
+      debian_stretch_lxqt_xm="debian-9.2-lxqt-xm-armhf-${time}"
+      debian_stretch_wayland="debian-9.2-wayland-armhf-${time}"
+   debian_stretch_oemflasher="debian-9.2-oemflasher-armhf-${time}"
 
            debian_buster_iot="debian-buster-iot-armhf-${time}"
 
