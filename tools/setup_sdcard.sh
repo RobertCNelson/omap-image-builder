@@ -1092,10 +1092,6 @@ populate_rootfs () {
 			fi
 			cp -v "${oem_flasher_img}" "${TEMPDIR}/disk/opt/emmc/"
 			sync
-			if [ ! "x${oem_flasher_bmap}" = "x" ] ; then
-				cp -v "${oem_flasher_bmap}" "${TEMPDIR}/disk/opt/emmc/"
-				sync
-			fi
 			if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
 				cp -v "${oem_flasher_eeprom}" "${TEMPDIR}/disk/opt/emmc/"
 				sync
@@ -1642,8 +1638,6 @@ populate_rootfs () {
 			wfile="${imagename}.xz.job.txt"
 			echo "abi=aaa" > ${wfile}
 			echo "conf_image=${imagename}.xz" >> ${wfile}
-			bmapimage=$(echo ${imagename} | awk -F ".img" '{print $1}')
-			echo "conf_bmap=${bmapimage}.bmap" >> ${wfile}
 			echo "conf_resize=enable" >> ${wfile}
 			echo "conf_partition1_startmb=${conf_boot_startmb}" >> ${wfile}
 
@@ -1951,10 +1945,6 @@ while [ ! -z "$1" ] ; do
 	--oem-flasher-img)
 		checkparm $2
 		oem_flasher_img="$2"
-		;;
-	--oem-flasher-bmap)
-		checkparm $2
-		oem_flasher_bmap="$2"
 		;;
 	--oem-flasher-eeprom)
 		checkparm $2
