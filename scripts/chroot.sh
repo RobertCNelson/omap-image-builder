@@ -479,6 +479,12 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	esac
 fi
 
+if [ "x${deb_arch}" = "xarmel" ] ; then
+	sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+	sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
+	distro="Debian"
+fi
+
 if [ -d "${tempdir}/usr/share/initramfs-tools/hooks/" ] ; then
 	if [ ! -f "${tempdir}/usr/share/initramfs-tools/hooks/dtbo" ] ; then
 		echo "log: adding: [initramfs-tools hook: dtbo]"
