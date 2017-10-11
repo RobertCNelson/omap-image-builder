@@ -1,0 +1,55 @@
+bb.org-stretch-snapshot-auto
+Schedule:
+########
+H 7 * * 7
+########
+shell:
+########
+#!/bin/bash
+
+touch jenkins.build
+
+./publish/rcn-ee_bb.org-stable.sh
+########
+
+bb.org-debian-stretch-console-v4.9
+bb.org-debian-stretch-iot-v4.4
+bb.org-debian-stretch-lxqt-2gb-v4.9
+bb.org-debian-stretch-lxqt-v4.9
+bb.org-debian-stretch-lxqt-xm
+bb.org-debian-stretch-oemflasher-v4.4
+
+bb.org-debian-buster-iot-v4.9
+
+shell:
+########
+#!/bin/bash
+
+image_prefix=bb.org
+time=$(date +%Y-%m-%d)
+
+if [ ! -f /mnt/farm/images/original.txt ] ; then
+	sudo mount -a || true
+fi
+
+if [ -d ./deploy ] ; then
+	rm -rf ./deploy || true
+fi
+
+#./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
+#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
+#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
+#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
+#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
+#./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.4
+
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
+
+if [ -f ./deploy/*.tar ] ; then
+	ls -lha ./deploy/
+	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+	cp -v ./deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+else
+	exit 1
+fi
+########
