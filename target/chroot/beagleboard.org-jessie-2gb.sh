@@ -186,17 +186,18 @@ install_pip_pkgs () {
 			rm -f get-pip.py || true
 
 			if [ -f /usr/local/bin/pip ] ; then
-				echo "Installing pip packages"
-				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-				git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-				git_clone
-				if [ -f ${git_target_dir}/.git/config ] ; then
-					cd ${git_target_dir}/
-					sed -i -e 's:4.1.0:3.4.0:g' setup.py
-					python setup.py install
+				if [ -f /usr/bin/make ] ; then
+					echo "Installing pip packages"
+					git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+					git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+					git_clone
+					if [ -f ${git_target_dir}/.git/config ] ; then
+						cd ${git_target_dir}/
+						sed -i -e 's:4.1.0:3.4.0:g' setup.py
+						python setup.py install
+					fi
+					pip install iw_parse
 				fi
-				pip install --upgrade PyBBIO
-				pip install iw_parse
 			fi
 		fi
 	fi
