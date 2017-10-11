@@ -1,0 +1,59 @@
+bb.org-jessie-snapshot-auto
+Schedule:
+########
+H 7 1 * *
+########
+shell:
+########
+#!/bin/bash
+
+touch jenkins.build
+
+./publish/rcn-ee_bb.org-stable.sh
+########
+
+machinekit-debian-jessie
+bb.org-debian-jessie-console-v4.4
+bb.org-debian-jessie-iot-v4.4
+bb.org-debian-jessie-lxqt-2gb-v4.4
+bb.org-debian-jessie-lxqt-4gb-v4.4
+bb.org-debian-jessie-lxqt-4gb-xm
+bb.org-debian-jessie-oemflasher
+
+seeed-debian-jessie-lxqt-4gb-v4.4
+seeed-debian-jessie-iot-v4.4
+
+shell:
+########
+#!/bin/bash
+
+image_prefix=bb.org
+time=$(date +%Y-%m-%d)
+
+if [ ! -f /mnt/farm/images/original.txt ] ; then
+	sudo mount -a || true
+fi
+
+if [ -d ./deploy ] ; then
+	rm -rf ./deploy || true
+fi
+
+#./RootStock-NG.sh -c machinekit-debian-jessie
+#./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
+#./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-xm
+#./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
+
+#./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
+#./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
+
+if [ -f ./deploy/*.tar ] ; then
+	ls -lha ./deploy/
+	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+	cp -v ./deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+else
+	exit 1
+fi
+########

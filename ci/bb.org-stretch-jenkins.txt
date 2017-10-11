@@ -14,6 +14,7 @@ touch jenkins.build
 
 bb.org-debian-stretch-console-v4.9
 bb.org-debian-stretch-iot-v4.4
+bb.org-debian-stretch-iot-v4.9
 bb.org-debian-stretch-lxqt-2gb-v4.9
 bb.org-debian-stretch-lxqt-v4.9
 bb.org-debian-stretch-lxqt-xm
@@ -38,6 +39,7 @@ fi
 
 #./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
 #./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
+#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
