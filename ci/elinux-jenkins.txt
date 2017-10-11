@@ -23,6 +23,10 @@ shell:
 image_prefix=elinux
 time=$(date +%Y-%m-%d)
 
+if [ ! -f /mnt/farm/images/original.txt ] ; then
+	sudo mount -a || true
+fi
+
 if [ -d ./deploy ] ; then
 	rm -rf ./deploy || true
 fi
@@ -32,8 +36,9 @@ fi
 #./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 
 if [ -f ./deploy/*.tar ] ; then
+	ls -lha ./deploy/
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
-	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+	cp -v ./deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 else
 	exit 1
 fi
