@@ -1,0 +1,11 @@
+eewiki_image_snapshots
+shell:
+########
+#!/bin/bash
+
+if [ -d ./deploy ] ; then
+	rm -rf ./deploy || true
+fi
+
+./publish/rcn-ee_eewiki.sh
+########

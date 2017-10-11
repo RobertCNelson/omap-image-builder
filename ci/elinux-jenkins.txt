@@ -1,0 +1,40 @@
+elinux_snapshots
+Schedule:
+########
+H 7 7-14 * 5
+########
+shell:
+########
+#!/bin/bash
+
+touch jenkins.build
+
+./publish/rcn-ee_elinux.sh
+########
+
+elinux_debian_buster_armhf
+elinux_debian_stretch_armhf
+elinux_ubuntu_xenial_armhf
+
+shell:
+########
+#!/bin/bash
+
+image_prefix=elinux
+time=$(date +%Y-%m-%d)
+
+if [ -d ./deploy ] ; then
+	rm -rf ./deploy || true
+fi
+
+#./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
+#./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
+#./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
+
+if [ -f ./deploy/*.tar ] ; then
+	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
+	cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
+else
+	exit 1
+fi
+########
