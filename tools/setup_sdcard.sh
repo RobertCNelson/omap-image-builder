@@ -1246,10 +1246,6 @@ populate_rootfs () {
 	fi
 
 	cmdline="coherent_pool=1M net.ifnames=0 quiet"
-	if [ "x${enable_systemd}" = "xenabled" ] ; then
-		cmdline="${cmdline} init=/lib/systemd/systemd"
-	fi
-
 	if [ "x${enable_cape_universal}" = "xenable" ] ; then
 		cmdline="${cmdline} cape_universal=enable"
 	fi
@@ -1955,7 +1951,7 @@ while [ ! -z "$1" ] ; do
 		oem_flasher_job="$2"
 		;;
 	--enable-systemd)
-		enable_systemd="enabled"
+		echo "--enable-systemd: option is depreciated (enabled by default Jessie+)"
 		;;
 	--enable-cape-universal)
 		enable_cape_universal="enable"
