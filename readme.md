@@ -68,6 +68,10 @@ PocketBone:
 
        0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 50 30 30 |.U3.A335BNLTBP00|]
 
+Octavo Systems OSD3358-SM-RED:
+
+       0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 4F 53 30 30 |.U3.A335BNLTOS00|]
+
 BeagleLogic Standalone:
 
        A: [aa 55 33 ee 41 33 33 35  42 4c 47 43 30 30 30 41 |.U3.A335BLGC000A|]
