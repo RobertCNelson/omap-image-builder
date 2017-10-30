@@ -1407,15 +1407,6 @@ populate_rootfs () {
 			fi
 		fi
 
-		if [ "x${distro}" = "xUbuntu" ] ; then
-			wfile="${TEMPDIR}/disk/etc/init/serial.conf"
-			echo "start on stopped rc RUNLEVEL=[2345]" > ${wfile}
-			echo "stop on runlevel [!2345]" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "respawn" >> ${wfile}
-			echo "exec /sbin/getty 115200 ${SERIAL}" >> ${wfile}
-		fi
-
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
 			wfile="${TEMPDIR}/disk/etc/network/interfaces"
 			echo "# This file describes the network interfaces available on your system" > ${wfile}
