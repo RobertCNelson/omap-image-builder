@@ -1396,17 +1396,6 @@ populate_rootfs () {
 
 		echo "debugfs  /sys/kernel/debug  debugfs  defaults  0  0" >> ${wfile}
 
-		if [ "x${distro}" = "xDebian" ] ; then
-			#/etc/inittab is gone in Jessie with systemd...
-			if [ -f ${TEMPDIR}/disk/etc/inittab ] ; then
-				wfile="${TEMPDIR}/disk/etc/inittab"
-				serial_num=$(echo -n "${SERIAL}"| tail -c -1)
-				echo "" >> ${wfile}
-				echo "T${serial_num}:23:respawn:/sbin/getty -L ${SERIAL} 115200 vt102" >> ${wfile}
-				echo "" >> ${wfile}
-			fi
-		fi
-
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
 			wfile="${TEMPDIR}/disk/etc/network/interfaces"
 			echo "# This file describes the network interfaces available on your system" > ${wfile}
