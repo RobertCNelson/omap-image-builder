@@ -25,7 +25,11 @@ BeagleBoard.org BeagleBone Blue:
 
 BeagleBoard.org BeagleBone Black Wireless:
 
-      A5: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 57 41 33 |.U3.A335BNLTBWA5|]
+      A5: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 57 41 35 |.U3.A335BNLTBWA5|]
+      
+BeagleBoard.org PocketBeagle:
+
+      A2: [aa 55 33 ee 41 33 33 35  50 42 47 4c 30 30 41 32 |.U3.A335PBGL00A2|]
 
 SeeedStudio BeagleBone Green:
 
