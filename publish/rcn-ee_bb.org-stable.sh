@@ -25,11 +25,11 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
-./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.4
+./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.9
 
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
 else
@@ -64,6 +64,7 @@ xz_tar="xz -T2 -z -8"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
+pru_rproc_v49ti="--enable-uboot-pru-rproc-49ti"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -172,7 +173,7 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
 options="--img-1gb bbx15-\${base_rootfs}       ${beagle_x15}"                ; generate_img
-options="--img-1gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v44ti}"   ; generate_img
+options="--img-1gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v49ti}"   ; generate_img
 options="--img-1gb a335-eeprom-\${base_rootfs} ${beaglebone} --a335-flasher" ; generate_img
 options="--img-1gb bp00-eeprom-\${base_rootfs} ${beaglebone} --bp00-flasher" ; generate_img
 options="--img-1gb am57xx-x15-eeprom-\${base_rootfs}       ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
@@ -186,9 +187,9 @@ options="--img-1gb am571x-sndrblock-eeprom-\${base_rootfs} ${beagle_x15} --emmc-
 base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                             ; generate_img
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v44ti} --bbbl-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v49ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
+options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v49ti} --bbbl-flasher" ; generate_img
 
 #options="--img-4gb BBB-blank-uboot-overlay-\${base_rootfs}  ${beaglebone} --emmc-flasher ${overlay}" ; generate_img
 #options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone}   --bbbw-flasher" ; generate_img
@@ -196,17 +197,17 @@ options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v44ti} -
 ###lxqt-2gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
 
-options="--img-2gb bone-\${base_rootfs}  ${beaglebone} ${pru_rproc_v44ti}" ; generate_img
-options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone}  ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs}  ${beaglebone} ${pru_rproc_v49ti}" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone}  ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
 
 ###lxqt-4gb image (jessie):
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                             ; generate_img
 options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v44ti} --bbbw-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v49ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
+options="--img-4gb BBBW-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v49ti} --bbbw-flasher" ; generate_img
 
 #options="--img-4gb BBB-blank-uboot-overlay-\${base_rootfs}  ${beaglebone} --emmc-flasher ${overlay}" ; generate_img
 #options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}  --m10a-flasher" ; generate_img
@@ -238,9 +239,9 @@ options="--img-1gb bone-\${base_rootfs}      ${beaglebone}"                ; gen
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                                   ; generate_img
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v44ti} --bbbl-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v49ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
+options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v49ti} --bbbl-flasher" ; generate_img
 
 ###lxqt-2gb image (stretch):
 base_rootfs="${debian_stretch_lxqt_2gb}" ; blend="stretch-lxqt-2gb" ; extract_base_rootfs
