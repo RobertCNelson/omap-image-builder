@@ -1,7 +1,7 @@
-armv7 LTS414 4.14.0-armv7-x0
 omap-psp STABLE 3.8.13-bone86
 xenomai STABLE 3.8.13-xenomai-r86
-bone-rt STABLE 4.13.14-bone-rt-r3
+armv7 LTS414 4.14.0-armv7-x0
+bone-rt LTS414 4.14.0-bone-rt-r3
 ti LTS44 4.4.91-ti-r137
 ti LTS49 4.9.61-ti-r76
 ti-rt LTS49 4.9.61-ti-rt-r76
