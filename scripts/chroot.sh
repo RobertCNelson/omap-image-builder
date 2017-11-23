@@ -797,6 +797,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^cloud9ide || groupadd -r cloud9ide || true
 		cat /etc/group | grep ^gpio || groupadd -r gpio || true
 		cat /etc/group | grep ^pwm || groupadd -r pwm || true
+		cat /etc/group | grep ^eqep || groupadd -r eqep || true
 
 		echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
 		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
@@ -807,7 +808,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,i2c,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,eqep,i2c,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
 
 		pkg="sudo"
 		dpkg_check
