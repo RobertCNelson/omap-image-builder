@@ -450,7 +450,7 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
-		jessie|stretch)
+		jessie|stretch|buster)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -559,6 +559,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		apt_options="--force-yes"
 		if [ "x\${deb_codename}" = "xstretch" ] ; then
+			apt_options=""
+		fi
+		if [ "x\${deb_codename}" = "xbuster" ] ; then
 			apt_options=""
 		fi
 		if [ "x\${deb_codename}" = "xxenial" ] ; then
