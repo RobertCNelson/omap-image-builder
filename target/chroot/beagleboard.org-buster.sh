@@ -199,6 +199,17 @@ install_git_repos () {
 	if [ -f /var/www/html/index.nginx-debian.html ] ; then
 		rm -rf /var/www/html/index.nginx-debian.html || true
 
+		#        location / {
+		#                # First attempt to serve request as file, then
+		#                # as directory, then fall back to displaying a 404.
+		#                try_files $uri $uri/ =404;
+		#                autoindex on;
+		#        }
+		#
+		#        location /bone101 {
+		#                proxy_pass http://127.0.0.1:8000;
+		#        }
+
 		echo "diff --git a/etc/nginx/sites-available/default b/etc/nginx/sites-available/default" > /tmp/nginx.patch
 		echo "index c841ceb..4f977d8 100644" >> /tmp/nginx.patch
 		echo "--- a/etc/nginx/sites-available/default" >> /tmp/nginx.patch
