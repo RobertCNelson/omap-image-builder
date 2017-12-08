@@ -464,7 +464,7 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		;;
 	ubuntu)
 		case "${deb_codename}" in
-		vivid|wily|xenial)
+		vivid|wily|xenial|bionic)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -566,6 +566,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 		if [ "x\${deb_codename}" = "xxenial" ] ; then
 			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
+		fi
+		if [ "x\${deb_codename}" = "xbionic" ] ; then
+			apt_options=""
 		fi
 		echo "Log: (chroot): apt using extra: [\${apt_options}]"
 	}
