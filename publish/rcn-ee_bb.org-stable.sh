@@ -36,17 +36,17 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-    debian_jessie_machinekit="debian-8.9-machinekit-armhf-${time}"
+    debian_jessie_machinekit="debian-8.10-machinekit-armhf-${time}"
 
-       debian_jessie_console="debian-8.9-console-armhf-${time}"
-           debian_jessie_iot="debian-8.9-iot-armhf-${time}"
-      debian_jessie_lxqt_2gb="debian-8.9-lxqt-2gb-armhf-${time}"
-      debian_jessie_lxqt_4gb="debian-8.9-lxqt-4gb-armhf-${time}"
-   debian_jessie_lxqt_xm_4gb="debian-8.9-lxqt-xm-4gb-armhf-${time}"
-    debian_jessie_oemflasher="debian-8.9-oemflasher-armhf-${time}"
+       debian_jessie_console="debian-8.10-console-armhf-${time}"
+           debian_jessie_iot="debian-8.10-iot-armhf-${time}"
+      debian_jessie_lxqt_2gb="debian-8.10-lxqt-2gb-armhf-${time}"
+      debian_jessie_lxqt_4gb="debian-8.10-lxqt-4gb-armhf-${time}"
+   debian_jessie_lxqt_xm_4gb="debian-8.10-lxqt-xm-4gb-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.10-oemflasher-armhf-${time}"
 
-     debian_jessie_seeed_iot="debian-8.9-seeed-iot-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.9-seeed-lxqt-4gb-armhf-${time}"
+     debian_jessie_seeed_iot="debian-8.10-seeed-iot-armhf-${time}"
+debian_jessie_seeed_lxqt_4gb="debian-8.10-seeed-lxqt-4gb-armhf-${time}"
 
       debian_stretch_console="debian-9.3-console-armhf-${time}"
           debian_stretch_iot="debian-9.3-iot-armhf-${time}"
