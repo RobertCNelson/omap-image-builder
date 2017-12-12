@@ -24,6 +24,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
+./RootStock-NG.sh -c machinekit-debian-stretch
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
@@ -48,6 +49,7 @@ fi
      debian_jessie_seeed_iot="debian-8.10-seeed-iot-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.10-seeed-lxqt-4gb-armhf-${time}"
 
+   debian_stretch_machinekit="debian-9.3-machinekit-armhf-${time}"
       debian_stretch_console="debian-9.3-console-armhf-${time}"
           debian_stretch_iot="debian-9.3-iot-armhf-${time}"
      debian_stretch_lxqt_2gb="debian-9.3-lxqt-2gb-armhf-${time}"
@@ -229,6 +231,11 @@ base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract
 options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
 #options="--img-4gb BBG-blank-\${base_rootfs} ${beaglebone}  --bbg-flasher" ; generate_img
 
+###machinekit (stretch):
+base_rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
+
 ###console image (stretch):
 base_rootfs="${debian_stretch_console}" ; blend="stretch-console" ; extract_base_rootfs
 
@@ -286,6 +293,7 @@ base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archiv
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
+base_rootfs="${debian_stretch_machinekit}"    ; blend="stretch-machinekit" ; archive_base_rootfs
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_2gb}"      ; blend="stretch-lxqt-2gb"   ; archive_base_rootfs
@@ -350,6 +358,11 @@ wfile="bone-\${base_rootfs}-4gb"       ; archive_img
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"
 
 wfile="bone-\${base_rootfs}-4gb"      ; archive_img
+
+###machinekit (stretch):
+base_rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit"
+
+wfile="bone-\${base_rootfs}-4gb" ; archive_img
 
 ###console image (stretch):
 base_rootfs="${debian_stretch_console}" ; blend="stretch-console"
