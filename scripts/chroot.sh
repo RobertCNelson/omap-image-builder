@@ -450,7 +450,7 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
-		jessie|stretch|buster)
+		jessie)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -460,11 +460,17 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 			sudo chown root:root "${tempdir}/etc/default/capemgr"
 			distro="Debian"
 			;;
+		stretch|buster)
+			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
+			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			distro="Debian"
+			;;
 		esac
 		;;
 	ubuntu)
 		case "${deb_codename}" in
-		vivid|wily|xenial|bionic)
+		vivid|wily|xenial)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -472,6 +478,12 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
 			sudo chown root:root "${tempdir}/etc/default/capemgr"
+			distro="Ubuntu"
+			;;
+		bionic)
+			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
+			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
+			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			distro="Ubuntu"
 			;;
 		esac
