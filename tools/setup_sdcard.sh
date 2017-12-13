@@ -66,7 +66,7 @@ is_element_of () {
 #
 #########################################################################
 
-VALID_ROOTFS_TYPES="ext2 ext3 ext4"
+VALID_ROOTFS_TYPES="ext2 ext3 ext4 btrfs"
 
 is_valid_rootfs_type () {
 	if is_element_of $1 "${VALID_ROOTFS_TYPES}" ] ; then
@@ -1136,6 +1136,10 @@ populate_rootfs () {
 		echo "uname_r=${kernel_override}" >> ${wfile}
 	fi
 
+	if [ "${BTRFS_FSTAB}" ] ; then
+		echo "mmcrootfstype=btrfs rootwait" >> ${wfile}
+	fi
+
 	echo "#uuid=" >> ${wfile}
 
 	if [ ! "x${dtb}" = "x" ] ; then
@@ -1401,7 +1405,11 @@ populate_rootfs () {
 			echo "#" >> ${wfile}
 			echo "${rootfs_var_drive}  /var  ${ROOTFS_TYPE}  noatime  0  2" >> ${wfile}
 		else
-			echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
+			if [ "${BTRFS_FSTAB}" ] ; then
+				echo "${rootfs_drive}  /  btrfs  defaults,noatime  0  1" >> ${wfile}
+			else
+				echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
+			fi
 		fi
 
 		echo "debugfs  /sys/kernel/debug  debugfs  defaults  0  0" >> ${wfile}
@@ -1631,7 +1639,7 @@ populate_rootfs () {
 			fat)
 				echo "conf_partition1_fstype=0xE" >> ${wfile}
 				;;
-			ext2|ext3|ext4)
+			ext2|ext3|ext4|btrfs)
 				echo "conf_partition1_fstype=0x83" >> ${wfile}
 				;;
 			esac
@@ -1705,7 +1713,7 @@ process_dtb_conf () {
 	fat)
 		sfdisk_fstype="0xE"
 		;;
-	ext2|ext3|ext4)
+	ext2|ext3|ext4|btrfs)
 		sfdisk_fstype="L"
 		;;
 	*)
@@ -1993,6 +2001,24 @@ if ! is_valid_rootfs_type ${ROOTFS_TYPE} ; then
 	echo "ERROR: ${ROOTFS_TYPE} is not a valid root filesystem type"
 	echo "Valid types: ${VALID_ROOTFS_TYPES}"
 	exit
+fi
+
+unset BTRFS_FSTAB
+if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
+	unset NEEDS_COMMAND
+	check_for_command mkfs.btrfs btrfs-tools
+
+	if [ "${NEEDS_COMMAND}" ] ; then
+		echo ""
+		echo "Your system is missing the btrfs dependency needed for this particular target."
+		echo "Ubuntu/Debian: sudo apt-get install btrfs-tools"
+		echo "Fedora: as root: yum install btrfs-progs"
+		echo "Gentoo: emerge btrfs-progs"
+		echo ""
+		exit
+	fi
+
+	BTRFS_FSTAB=1
 fi
 
 find_issue
