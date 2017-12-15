@@ -944,6 +944,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					echo "/opt/scripts/ : ${rfs_opt_scripts}" >> /opt/source/list.txt
 					chown -R ${rfs_username}:${rfs_username} /opt/scripts/
 				fi
+				if [ -f /opt/scripts/boot/default/bb-boot ] ; then
+					cp -v /opt/scripts/boot/default/bb-boot /etc/default/
+				fi
 			fi
 
 		fi
