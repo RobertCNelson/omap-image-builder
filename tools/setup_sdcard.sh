@@ -741,7 +741,7 @@ populate_boot () {
 	fi
 
 	partprobe ${media}
-	if ! mount -t ${mount_partition_format} -o ${mount_options} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
+	if ! mount -t ${mount_partition_format} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
 
 		echo "-----------------------------"
 		echo "BUG: [${media_prefix}${media_boot_partition}] was not available so trying to mount again in 5 seconds..."
@@ -750,7 +750,7 @@ populate_boot () {
 		sleep 5
 		echo "-----------------------------"
 
-		if ! mount -t ${mount_partition_format} -o ${mount_options} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
+		if ! mount -t ${mount_partition_format} ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk; then
 			echo "-----------------------------"
 			echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk to complete populating Boot Partition"
 			echo "Please retry running the script, sometimes rebooting your system helps."
@@ -1005,7 +1005,7 @@ populate_rootfs () {
 	fi
 
 	partprobe ${media}
-	if ! mount -t ${ROOTFS_TYPE} -o ${mount_options} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
+	if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
 
 		echo "-----------------------------"
 		echo "BUG: [${media_prefix}${media_rootfs_partition}] was not available so trying to mount again in 5 seconds..."
@@ -1014,7 +1014,7 @@ populate_rootfs () {
 		sleep 5
 		echo "-----------------------------"
 
-		if ! mount -t ${ROOTFS_TYPE} -o ${mount_options} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
+		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_partition} ${TEMPDIR}/disk; then
 			echo "-----------------------------"
 			echo "Unable to mount ${media_prefix}${media_rootfs_partition} at ${TEMPDIR}/disk to complete populating rootfs Partition"
 			echo "Please retry running the script, sometimes rebooting your system helps."
@@ -1029,7 +1029,7 @@ populate_rootfs () {
 			mkdir -p ${TEMPDIR}/disk/var
 		fi
 
-		if ! mount -t ${ROOTFS_TYPE} -o ${mount_options} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
+		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
 
 			echo "-----------------------------"
 			echo "BUG: [${media_prefix}${media_rootfs_var_partition}] was not available so trying to mount again in 5 seconds..."
@@ -1038,7 +1038,7 @@ populate_rootfs () {
 			sleep 5
 			echo "-----------------------------"
 
-			if ! mount -t ${ROOTFS_TYPE} -o ${mount_options} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
+			if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
 				echo "-----------------------------"
 				echo "Unable to mount ${media_prefix}${media_rootfs_var_partition} at ${TEMPDIR}/disk/var to complete populating rootfs Partition"
 				echo "Please retry running the script, sometimes rebooting your system helps."
@@ -1851,7 +1851,6 @@ while [ ! -z "$1" ] ; do
 	--rootfs)
 		checkparm $2
 		ROOTFS_TYPE="$2"
-		mount_options="defaults"
 		;;
 	--boot_label)
 		checkparm $2
@@ -2019,8 +2018,6 @@ if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
 		exit
 	fi
 
-	#mount_options="compress=lzo"
-	#mount_options="compress=zlib"
 	BTRFS_FSTAB=1
 fi
 
