@@ -713,6 +713,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 				echo "LANG=${rfs_default_locale}" > /etc/default/locale
 
+				echo "Log: (chroot): [locale -a]"
+				locale -a
 			fi
 		else
 			dpkg_package_missing
@@ -1048,33 +1050,33 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 
 	if [ -d "${DIR}/git/linux-firmware/brcm/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/brcm"
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}"/git/linux-firmware/brcm/* "${tempdir}/lib/firmware/brcm"
+		sudo cp "${DIR}/git/linux-firmware/LICENCE.broadcom_bcm43xx" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}"/git/linux-firmware/brcm/* "${tempdir}/lib/firmware/brcm"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/carl9170-1.fw" ] ; then
-		sudo cp -v "${DIR}/git/linux-firmware/carl9170-1.fw" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}/git/linux-firmware/carl9170-1.fw" "${tempdir}/lib/firmware/"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/htc_9271.fw" ] ; then
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.atheros_firmware" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}/git/linux-firmware/htc_9271.fw" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}/git/linux-firmware/LICENCE.atheros_firmware" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}/git/linux-firmware/htc_9271.fw" "${tempdir}/lib/firmware/"
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/rtlwifi/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/rtlwifi"
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}"/git/linux-firmware/rtlwifi/* "${tempdir}/lib/firmware/rtlwifi"
+		sudo cp "${DIR}/git/linux-firmware/LICENCE.rtlwifi_firmware.txt" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}"/git/linux-firmware/rtlwifi/* "${tempdir}/lib/firmware/rtlwifi"
 	fi
 
 	if [ -d "${DIR}/git/linux-firmware/ti-connectivity/" ] ; then
 		sudo mkdir -p "${tempdir}/lib/firmware/ti-connectivity"
-		sudo cp -v "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" "${tempdir}/lib/firmware/"
-		sudo cp -v "${DIR}"/git/linux-firmware/ti-connectivity/* "${tempdir}/lib/firmware/ti-connectivity"
+		sudo cp "${DIR}/git/linux-firmware/LICENCE.ti-connectivity" "${tempdir}/lib/firmware/"
+		sudo cp "${DIR}"/git/linux-firmware/ti-connectivity/* "${tempdir}/lib/firmware/ti-connectivity"
 	fi
 
 	if [ -f "${DIR}/git/linux-firmware/mt7601u.bin" ] ; then
-		sudo cp -v "${DIR}/git/linux-firmware/mt7601u.bin" "${tempdir}/lib/firmware/mt7601u.bin"
+		sudo cp "${DIR}/git/linux-firmware/mt7601u.bin" "${tempdir}/lib/firmware/mt7601u.bin"
 	fi
 fi
 
