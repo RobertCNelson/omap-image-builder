@@ -2019,6 +2019,10 @@ if [ "x${ROOTFS_TYPE}" = "xbtrfs" ] ; then
 	fi
 
 	BTRFS_FSTAB=1
+
+	if [ ! "x${conf_boot_fstype}" = "xfat" ] ; then
+		conf_boot_fstype="btrfs"
+	fi
 fi
 
 find_issue
