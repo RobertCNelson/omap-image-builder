@@ -986,9 +986,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable dnsmasq.service || true
 		fi
 
+		#We use, so make sure udhcpd is disabled at bootup...
+		if [ -f /lib/systemd/system/udhcpd.service ] ; then
+			systemctl disable udhcpd.service || true
+		fi
+
 		#Our kernels do not have ubuntu's ureadahead patches...
 		if [ -f /lib/systemd/system/ureadahead.service ] ; then
 			systemctl disable ureadahead.service || true
+		fi
+
+		#No guarntee we will have an active network connection...
+		if [ -f /lib/systemd/system/apt-daily.service ] ; then
+			systemctl disable apt-daily.service || true
 		fi
 	}
 
