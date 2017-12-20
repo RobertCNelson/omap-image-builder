@@ -279,8 +279,8 @@ options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} --rootfs btrfs"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --rootfs btrfs --emmc-flasher" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
