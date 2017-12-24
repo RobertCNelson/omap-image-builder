@@ -970,7 +970,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			#set our own initial date stamp, otherwise we get July 2014
 			touch /var/lib/systemd/clock
-			chown systemd-timesync:systemd-timesync /var/lib/systemd/clock
+			chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
 
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
