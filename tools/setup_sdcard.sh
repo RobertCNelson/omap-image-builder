@@ -1251,7 +1251,7 @@ populate_rootfs () {
 			echo "#disable_uboot_overlay_addr2=1" >> ${wfile}
 			echo "#disable_uboot_overlay_addr3=1" >> ${wfile}
 			echo "###" >> ${wfile}
-			echo "###U-Boot fdt tweaks..." >> ${wfile}
+			echo "###U-Boot fdt tweaks... (60000 = 384KB)" >> ${wfile}
 			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
 			echo "###U-Boot Overlays###" >> ${wfile}
 
