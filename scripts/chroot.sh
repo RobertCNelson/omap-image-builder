@@ -1034,6 +1034,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		dpkg_package_missing
 	fi
 
+	pkg="c9-core-installer"
+	dpkg_check
+
+	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+		apt-mark hold c9-core-installer || true
+	fi
+
 	if [ -f /lib/systemd/systemd ] ; then
 		systemd_tweaks
 	fi
