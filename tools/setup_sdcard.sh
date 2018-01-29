@@ -1281,19 +1281,7 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-		echo "##Example v3.8.x" >> ${wfile}
-		echo "#cape_disable=capemgr.disable_partno=" >> ${wfile}
-		echo "#cape_enable=capemgr.enable_partno=" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
-		echo "##Example v4.1.x" >> ${wfile}
-		echo "#cape_disable=bone_capemgr.disable_partno=" >> ${wfile}
-		echo "#cape_enable=bone_capemgr.enable_partno=" >> ${wfile}
-		echo "" >> ${wfile}
-
 		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
 			cat "${DIR}/post-uEnv.txt" >> ${wfile}
 			echo "" >> ${wfile}
