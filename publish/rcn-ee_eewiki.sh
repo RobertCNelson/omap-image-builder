@@ -18,7 +18,7 @@ fi
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
 
 debian_stable="debian-9.3"
-ubuntu_stable="ubuntu-16.04.3"
+ubuntu_stable="ubuntu-16.04.4"
 archive="xz -z -8"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
