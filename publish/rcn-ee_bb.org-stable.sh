@@ -67,6 +67,7 @@ xz_tar="xz -T2 -z -8"
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v49ti="--enable-uboot-pru-rproc-49ti"
+pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -279,8 +280,10 @@ options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} --rootfs btrfs"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} --rootfs btrfs --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
+#options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs"                ; generate_img
+#options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs --emmc-flasher" ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
