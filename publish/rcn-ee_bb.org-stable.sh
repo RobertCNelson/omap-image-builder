@@ -32,7 +32,8 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 ./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.9
 
-./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
+./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
+./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
@@ -59,6 +60,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.10-seeed-lxqt-4gb-armhf-${time}"
    debian_stretch_oemflasher="debian-9.4-oemflasher-armhf-${time}"
 
            debian_buster_iot="debian-buster-iot-armhf-${time}"
+       debian_buster_efi_iot="debian-buster-efi-iot-armhf-${time}"
 
 xz_img="xz -z -8"
 #xz_tar="xz -z -8"
@@ -285,6 +287,11 @@ options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} -
 #options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs"                ; generate_img
 #options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs --emmc-flasher" ; generate_img
 
+###efi iot image (buster):
+base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
@@ -306,6 +313,7 @@ base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; arc
 base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
 
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"      ; archive_base_rootfs
+base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"  ; archive_base_rootfs
 
 ###archive *.img
 ###machinekit (jessie):
@@ -412,6 +420,11 @@ base_rootfs="${debian_buster_iot}" ; blend="buster-iot"
 wfile="bbx15-\${base_rootfs}-4gb"          ; archive_img
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
+
+###efi iot image (buster):
+base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
+
+wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 
 __EOF__
 
