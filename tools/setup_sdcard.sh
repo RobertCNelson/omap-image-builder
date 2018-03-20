@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2018 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -675,7 +675,7 @@ create_partitions () {
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
 			conf_boot_endmb=${conf_boot_endmb:-"96"}
 			conf_boot_fstype=${conf_boot_fstype:-"fat"}
-			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+			sfdisk_fstype=${sfdisk_fstype:-"E"}
 			sfdisk_partition_layout
 		else
 			sfdisk_single_partition_layout
@@ -1648,16 +1648,16 @@ populate_rootfs () {
 
 			case "${conf_boot_fstype}" in
 			fat)
-				echo "conf_partition1_fstype=0xE" >> ${wfile}
+				echo "conf_partition1_fstype=E" >> ${wfile}
 				;;
 			ext2|ext3|ext4|btrfs)
-				echo "conf_partition1_fstype=0x83" >> ${wfile}
+				echo "conf_partition1_fstype=L" >> ${wfile}
 				;;
 			esac
 
 			if [ "x${media_rootfs_partition}" = "x2" ] ; then
 				echo "conf_partition1_endmb=${conf_boot_endmb}" >> ${wfile}
-				echo "conf_partition2_fstype=0x83" >> ${wfile}
+				echo "conf_partition2_fstype=L" >> ${wfile}
 			fi
 			echo "conf_root_partition=${media_rootfs_partition}" >> ${wfile}
 		fi
@@ -1722,7 +1722,7 @@ process_dtb_conf () {
 
 	case "${conf_boot_fstype}" in
 	fat)
-		sfdisk_fstype="0xE"
+		sfdisk_fstype="E"
 		;;
 	ext2|ext3|ext4|btrfs)
 		sfdisk_fstype="L"
