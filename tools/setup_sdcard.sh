@@ -595,6 +595,8 @@ format_boot_partition () {
 	fi
 
 	format_partition
+
+	boot_drive="${conf_root_device}p${media_boot_partition}"
 }
 
 format_rootfs_partition () {
@@ -658,6 +660,9 @@ create_partitions () {
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
 			sfdisk_gpt="--label gpt"
 		fi
+		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+			sfdisk_gpt="--label gpt"
+		fi
 		dd_uboot_boot
 		bootloader_installed=1
 		sfdisk_single_partition_layout
@@ -669,6 +674,9 @@ create_partitions () {
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
 			sfdisk_gpt="--label gpt"
 		fi
+		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+			sfdisk_gpt="--label gpt"
+		fi
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
@@ -678,8 +686,16 @@ create_partitions () {
 			sfdisk_fstype=${sfdisk_fstype:-"E"}
 			sfdisk_partition_layout
 		else
-			sfdisk_single_partition_layout
-			media_rootfs_partition=1
+			if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+				conf_boot_endmb="16"
+				conf_boot_fstype="fat"
+				sfdisk_fstype="U"
+				BOOT_LABEL="EFI"
+				sfdisk_partition_layout
+			else
+				sfdisk_single_partition_layout
+				media_rootfs_partition=1
+			fi
 		fi
 		;;
 	*)
@@ -1046,7 +1062,31 @@ populate_rootfs () {
 				exit
 			fi
 		fi
+	fi
 
+	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+
+		if [ ! -d ${TEMPDIR}/disk/boot/efi ] ; then
+			mkdir -p ${TEMPDIR}/disk/boot/efi
+		fi
+
+		if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/efi; then
+
+			echo "-----------------------------"
+			echo "BUG: [${media_prefix}${media_boot_partition}] was not available so trying to mount again in 5 seconds..."
+			partprobe ${media}
+			sync
+			sleep 5
+			echo "-----------------------------"
+
+			if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/efi; then
+				echo "-----------------------------"
+				echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk/boot/efi to complete populating rootfs Partition"
+				echo "Please retry running the script, sometimes rebooting your system helps."
+				echo "-----------------------------"
+				exit
+			fi
+		fi
 	fi
 
 	lsblk | grep -v sr0
@@ -1423,6 +1463,10 @@ populate_rootfs () {
 			fi
 		fi
 
+		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+			echo "${boot_drive}  /boot/efi vfat defaults 0 0" >> ${wfile}
+		fi
+
 		echo "debugfs  /sys/kernel/debug  debugfs  defaults  0  0" >> ${wfile}
 
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
@@ -1616,6 +1660,10 @@ populate_rootfs () {
 
 	if [ "x${option_ro_root}" = "xenable" ] ; then
 		umount ${TEMPDIR}/disk/var || true
+	fi
+
+	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+		umount ${TEMPDIR}/disk/boot/efi || true
 	fi
 
 	umount ${TEMPDIR}/disk || true
@@ -1976,6 +2024,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-pru-rproc-414ti)
 		uboot_pru_rproc_414ti="enable"
+		;;
+	--efi)
+		uboot_efi_mode="enable"
 		;;
 	--offline)
 		offline=1
