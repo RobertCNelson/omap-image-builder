@@ -290,7 +290,7 @@ options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} -
 ###efi iot image (buster):
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --efi"                ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
