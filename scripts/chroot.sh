@@ -1004,6 +1004,17 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
+	grub_tweaks {
+		echo "Log: (chroot): grub_tweaks"
+
+		echo "rcn-ee: grub: set our standard boot args" >> /etc/default/grub
+		echo "GRUB_CMDLINE_LINUX_DEFAULT=\"console=ttyO0,115200n8 rootwait coherent_pool=1M net.ifnames=0 quiet\"" >> /etc/default/grub
+		echo "rcn-ee: grub: disable LINUX_UUID, broken" >> /etc/default/grub
+		echo "GRUB_DISABLE_LINUX_UUID=true" >> /etc/default/grub
+		echo "rcn-ee: grub: disable OS_PROBER, repeated OS entries" >> /etc/default/grub
+		echo "GRUB_DISABLE_OS_PROBER=true" >> /etc/default/grub
+	}
+
 	#cat /chroot_script.sh
 	is_this_qemu
 	stop_init
@@ -1043,6 +1054,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	if [ -f /lib/systemd/systemd ] ; then
 		systemd_tweaks
+	fi
+
+	if [ -f /etc/default/grub ] ; then
+		grub_tweaks
 	fi
 
 	rm -f /chroot_script.sh || true
