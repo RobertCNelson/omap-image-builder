@@ -26,7 +26,10 @@ time=$(date +%Y-%m-%d)
 OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
 chroot_completed="false"
 
-abi=aa
+abi=ab
+
+#ab=efi added 20180321
+#aa
 
 . "${DIR}/.project"
 
@@ -1016,13 +1019,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		mkdir -p /boot/efi/EFI/BOOT/
 
+		###FIXME... still needs work...
+
 		#    fat iso9660 part_gpt part_msdos normal boot linux configfile loopback chain efifwsetup efi_gop \
 		#    efi_uga ls search search_label search_fs_uuid search_fs_file gfxterm gfxterm_background \
 		#    gfxterm_menu test all_video loadenv exfat ext2 ntfs btrfs hfsplus udf
 
-		echo "Log: (chroot): grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi fat iso9660 part_gpt part_msdos normal boot linux configfile"
+		#echo "Log: (chroot): grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi fat iso9660 part_gpt part_msdos normal boot linux configfile"
 
-		grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi fat iso9660 part_gpt part_msdos normal boot linux configfile
+		#grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi fat iso9660 part_gpt part_msdos normal boot linux configfile
 
 	}
 

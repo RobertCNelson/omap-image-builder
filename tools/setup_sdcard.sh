@@ -334,6 +334,12 @@ generate_soc () {
 	echo "conf_boot_endmb=${conf_boot_endmb}" >> ${wfile}
 	echo "sfdisk_fstype=${sfdisk_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
+
+	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
+		echo "uboot_efi_mode=${uboot_efi_mode}" >> ${wfile}
+		echo "" >> ${wfile}
+	fi
+
 	echo "boot_label=${BOOT_LABEL}" >> ${wfile}
 	echo "rootfs_label=${ROOTFS_LABEL}" >> ${wfile}
 	echo "" >> ${wfile}
