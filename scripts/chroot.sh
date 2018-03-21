@@ -1014,9 +1014,18 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "#rcn-ee: grub: disable OS_PROBER, repeated OS entries" >> /etc/default/grub
 		echo "GRUB_DISABLE_OS_PROBER=true" >> /etc/default/grub
 
-		mkdir -p /boot/efi/
-		echo "Log: (chroot): grub-install --efi-directory=/boot/efi/ --target=arm-efi -s --force"
-		grub-install --efi-directory=/boot/efi/ --target=arm-efi -s --force
+		mkdir -p /boot/efi/EFI/BOOT/
+
+		efi_modules=\"fat part_gpt part_msdos normal boot linux configfile loadenv ext2\"
+
+		#    fat iso9660 part_gpt part_msdos normal boot linux configfile loopback chain efifwsetup efi_gop \
+		#    efi_uga ls search search_label search_fs_uuid search_fs_file gfxterm gfxterm_background \
+		#    gfxterm_menu test all_video loadenv exfat ext2 ntfs btrfs hfsplus udf
+
+		echo "Log: (chroot): grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi \${efi_modules}"
+
+		grub-mkimage -d /usr/lib/grub/arm-efi -o /boot/efi/EFI/BOOT/bootarm.efi -p /efi/boot -O arm-efi \${efi_modules}
+
 	}
 
 	#cat /chroot_script.sh
