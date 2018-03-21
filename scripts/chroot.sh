@@ -1013,6 +1013,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "GRUB_DISABLE_LINUX_UUID=true" >> /etc/default/grub
 		echo "rcn-ee: grub: disable OS_PROBER, repeated OS entries" >> /etc/default/grub
 		echo "GRUB_DISABLE_OS_PROBER=true" >> /etc/default/grub
+
+		mkdir -p /boot/efi/
+		echo "Log: (chroot): grub-install --efi-directory=/boot/efi/ --target=arm-efi"
+		grub-install --efi-directory=/boot/efi/ --target=arm-efi
 	}
 
 	#cat /chroot_script.sh
