@@ -1004,7 +1004,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	grub_tweaks {
+	grub_tweaks () {
 		echo "Log: (chroot): grub_tweaks"
 
 		echo "rcn-ee: grub: set our standard boot args" >> /etc/default/grub
