@@ -1019,6 +1019,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		mkdir -p /boot/efi/EFI/BOOT/
 
+		###FIXME: let the boot script take care of this... (for now)
+		touch /boot/efi/EFI/efi.gen
+
 		###FIXME... still needs work...
 
 		#    fat iso9660 part_gpt part_msdos normal boot linux configfile loopback chain efifwsetup efi_gop \
