@@ -655,6 +655,16 @@ create_partitions () {
 	case "${bootloader_location}" in
 	fatfs_boot)
 		conf_boot_endmb=${conf_boot_endmb:-"12"}
+
+		#mkfs.fat 4.1 (2017-01-24)
+		#WARNING: Not enough clusters for a 16 bit FAT! The filesystem will be
+		#misinterpreted as having a 12 bit FAT without mount option "fat=16".
+		#mkfs.vfat: Attempting to create a too large filesystem
+		#LC_ALL=C mkfs.vfat -F 16 /dev/sdg1 -n BOOT
+		#Failure: formating partition
+
+		#When using "E" this fails, however "0xE" works fine...
+
 		echo "Using sfdisk to create partition layout"
 		echo "Version: `LC_ALL=C sfdisk --version`"
 		echo "-----------------------------"
@@ -689,7 +699,7 @@ create_partitions () {
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
 			conf_boot_endmb=${conf_boot_endmb:-"96"}
 			conf_boot_fstype=${conf_boot_fstype:-"fat"}
-			sfdisk_fstype=${sfdisk_fstype:-"E"}
+			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
 			sfdisk_partition_layout
 		else
 			if [ "x${uboot_efi_mode}" = "xenable" ] ; then
@@ -1776,7 +1786,7 @@ process_dtb_conf () {
 
 	case "${conf_boot_fstype}" in
 	fat)
-		sfdisk_fstype="E"
+		sfdisk_fstype="0xE"
 		;;
 	ext2|ext3|ext4|btrfs)
 		sfdisk_fstype="L"
