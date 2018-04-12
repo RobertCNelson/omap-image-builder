@@ -1269,7 +1269,7 @@ populate_rootfs () {
 			echo "#disable_uboot_overlay_video=1" >> ${wfile}
 			echo "#disable_uboot_overlay_audio=1" >> ${wfile}
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
-			echo "disable_uboot_overlay_adc=1" >> ${wfile}
+			echo "#disable_uboot_overlay_adc=1" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###PRUSS OPTIONS" >> ${wfile}
 			unset use_pru_uio
