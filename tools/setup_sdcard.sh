@@ -347,6 +347,9 @@ generate_soc () {
 	echo "dtb=${dtb}" >> ${wfile}
 	echo "serial_tty=${SERIAL}" >> ${wfile}
 	echo "usbnet_mem=${usbnet_mem}" >> ${wfile}
+	echo "" >> ${wfile}
+	echo "#Advanced options" >> ${wfile}
+	echo "#disable_ssh_regeneration=true" >> ${wfile}
 
 	echo "" >> ${wfile}
 }
