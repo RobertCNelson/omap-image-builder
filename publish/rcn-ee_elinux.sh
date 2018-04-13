@@ -13,7 +13,7 @@ fi
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 ./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
-./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
+#./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
 ./RootStock-NG.sh -c rcn-ee_console_ubuntu_bionic_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
@@ -21,8 +21,9 @@ fi
 
  debian_stable="debian-9.4-console-armhf-${time}"
 debian_testing="debian-buster-console-armhf-${time}"
- ubuntu_stable="ubuntu-16.04.4-console-armhf-${time}"
-ubuntu_testing="ubuntu-bionic-console-armhf-${time}"
+# ubuntu_stable="ubuntu-16.04.4-console-armhf-${time}"
+ ubuntu_stable="ubuntu-bionic-console-armhf-${time}"
+#ubuntu_testing="ubuntu-bionic-console-armhf-${time}"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
