@@ -25,12 +25,12 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 ./RootStock-NG.sh -c machinekit-debian-stretch
-./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
+./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
-./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.9
+./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.14
 
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
 ./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
@@ -243,29 +243,29 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 base_rootfs="${debian_stretch_console}" ; blend="stretch-console" ; extract_base_rootfs
 
 options="--img-1gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
-options="--img-1gb bone-\${base_rootfs}      ${beaglebone}  ${pru_rproc_v49ti}"                ; generate_img
+options="--img-1gb bone-\${base_rootfs}      ${beaglebone}  ${pru_rproc_v414ti}"                ; generate_img
 
 ###iot image (stretch):
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}      ${beagle_x15}"                                   ; generate_img
-options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v49ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
-options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v49ti} --bbbl-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
+options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --bbbl-flasher" ; generate_img
 
 ###lxqt-2gb image (stretch):
 base_rootfs="${debian_stretch_lxqt_2gb}" ; blend="stretch-lxqt-2gb" ; extract_base_rootfs
 
-options="--img-2gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v49ti}" ; generate_img
-options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
+options="--img-2gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
 
 ###lxqt image (stretch):
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                             ; generate_img
 options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v49ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v49ti} --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
 
 ###lxqt image (stretch):
 base_rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm" ; extract_base_rootfs
