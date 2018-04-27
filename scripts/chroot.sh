@@ -978,9 +978,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#set our own initial date stamp, otherwise we get July 2014
 			touch /var/lib/systemd/clock
 
-			#set default to root: Debian Buster & Ubuntu Bionic
-			chown root:root /var/lib/systemd/clock || true
-
 			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
 			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
 
