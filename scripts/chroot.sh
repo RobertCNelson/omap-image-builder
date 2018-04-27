@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2017 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2018 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -977,7 +977,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			#set our own initial date stamp, otherwise we get July 2014
 			touch /var/lib/systemd/clock
-			chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
+
+			#set default to root: Debian Buster & Ubuntu Bionic
+			chown root:root /var/lib/systemd/clock || true
+
+			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
+			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
 
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
