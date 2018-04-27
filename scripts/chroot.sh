@@ -965,6 +965,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
 		fi
 
+		if [ -f /etc/systemd/journald.conf ] ; then
+			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/journald.conf
+		fi
+
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
@@ -1004,6 +1008,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#No guarntee we will have an active network connection...
 		if [ -f /lib/systemd/system/apt-daily.service ] ; then
 			systemctl disable apt-daily.service || true
+		fi
+
+		#We use connman...
+		if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
+			systemctl disable systemd-networkd.service || true
 		fi
 	}
 
