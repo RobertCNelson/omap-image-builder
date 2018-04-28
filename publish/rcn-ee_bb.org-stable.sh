@@ -34,6 +34,9 @@ if [ ! -f jenkins.build ] ; then
 
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
 ./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
+
+./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.14
+
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
@@ -61,6 +64,8 @@ debian_jessie_seeed_lxqt_4gb="debian-8.10-seeed-lxqt-4gb-armhf-${time}"
 
            debian_buster_iot="debian-buster-iot-armhf-${time}"
        debian_buster_efi_iot="debian-buster-efi-iot-armhf-${time}"
+
+       ubuntu_bionic_ros_iot="debian-18.04-ros-iot-armhf-${time}"
 
 xz_img="xz -z -8"
 #xz_tar="xz -z -8"
@@ -292,6 +297,11 @@ base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_r
 
 options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --efi"                ; generate_img
 
+###ros iot image (buster):
+base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
@@ -314,6 +324,8 @@ base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; arc
 
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"      ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"  ; archive_base_rootfs
+
+base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
 ###archive *.img
 ###machinekit (jessie):
@@ -423,6 +435,11 @@ wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
 
 ###efi iot image (buster):
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
+
+wfile="bone-\${base_rootfs}-4gb"           ; archive_img
+
+###ros iot image (buster):
+base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot"
 
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 
