@@ -368,6 +368,17 @@ install_git_repos () {
 	fi
 }
 
+workshop_stuff () {
+	git_repo="https://github.com/RobertCNelson/Teardown-2018-PocketBeagle"
+	git_target_dir="/home/debian/Teardown-2018-PocketBeagle"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		./scripts/get_all.sh
+		./scripts/build_u-boot.sh
+	fi
+}
+
 other_source_links () {
 	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
 
@@ -416,6 +427,7 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 fi
+workshop_stuff
 other_source_links
 #unsecure_root
 #
