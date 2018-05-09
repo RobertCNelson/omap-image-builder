@@ -376,6 +376,7 @@ workshop_stuff () {
 		cd ${git_target_dir}/
 		./scripts/get_all.sh
 		./scripts/build_u-boot.sh
+		./scripts/build_linux.sh
 	fi
 }
 
