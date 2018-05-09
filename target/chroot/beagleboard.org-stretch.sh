@@ -378,6 +378,7 @@ workshop_stuff () {
 		./scripts/build_u-boot.sh
 		./scripts/build_linux.sh
 	fi
+	chown -R ${rfs_username}:${rfs_username} /home/debian/Teardown-2018-PocketBeagle
 }
 
 other_source_links () {
