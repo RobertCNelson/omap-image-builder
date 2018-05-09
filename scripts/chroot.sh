@@ -1299,6 +1299,13 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 			rm -rf /etc/apt/apt.conf.d/03-proxy-https || true
 		fi
 
+		#update time stamp before final cleanup...
+		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
+			touch /var/lib/systemd/clock
+
+			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
+		fi
+
 #		#This is tmpfs, clear out any left overs...
 #		if [ -d /run/ ] ; then
 #			rm -rf /run/* || true
