@@ -1,6 +1,6 @@
 #!/bin/bash
 
-server="https://rcn-ee.net/repos/latest/jessie-armhf/LATEST-"
+server="https://rcn-ee.net/repos/latest/stretch-armhf/LATEST-"
 
 current_kernel () {
 	if [ -f /tmp/LATEST-${var} ] ; then
