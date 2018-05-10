@@ -429,7 +429,7 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 fi
-workshop_stuff
+#workshop_stuff
 other_source_links
 #unsecure_root
 #
