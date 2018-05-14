@@ -319,6 +319,14 @@ install_git_repos () {
 #	fi
 }
 
+ros_initialize_rosdep () {
+	echo "ros: Initialize rosdep"
+	rosdep init
+	su - ${rfs_username} -c "rosdep update"
+
+	echo "source /opt/ros/melodic/setup.bash" >> /home/${rfs_username}/.bashrc
+}
+
 other_source_links () {
 	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
 
@@ -348,5 +356,6 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 fi
+ros_initialize_rosdep
 other_source_links
 #
