@@ -321,9 +321,18 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	echo 'Acquire::Languages "none";' > /tmp/02-no-languages
 	sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
-	#apt: /var/lib/apt/lists/, store compressed only
-	echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
-	sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+	case "${deb_codename}" in
+	jessie)
+		#apt: /var/lib/apt/lists/, store compressed only
+		echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
+		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+		;;
+	stretch|buster|sid)
+		#apt: /var/lib/apt/lists/, store compressed only
+		echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
+		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+		;;
+	esac
 
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break oracle-java8-installer
