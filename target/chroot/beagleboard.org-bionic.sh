@@ -322,9 +322,17 @@ install_git_repos () {
 ros_initialize_rosdep () {
 	echo "ros: Initialize rosdep"
 	rosdep init
-	rosdep update
-	ls -lha /home/
+
 	#su - ${rfs_username} -c "rosdep update"
+	ls -lha /home/
+
+	rosdep update
+
+	#13:38:25 Warning: running 'rosdep update' as root is not recommended.
+	#13:38:25   You should run 'sudo rosdep fix-permissions' and invoke 'rosdep update' again without sudo.
+	#13:40:15 reading in sources list data from /etc/ros/rosdep/sources.list.d
+
+	rosdep fix-permissions
 
 	echo "source /opt/ros/melodic/setup.bash" >> /home/${rfs_username}/.bashrc
 }
