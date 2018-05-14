@@ -423,6 +423,14 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc" "${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc"
 fi
 
+if [ "x${repo_ros}" = "xenable" ] ; then
+	echo "" >> ${wfile}
+	echo "deb [arch=armhf] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+	echo "#deb-src [arch=armhf] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+
+	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
+fi
+
 if [ -f /tmp/sources.list ] ; then
 	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
 fi
@@ -606,6 +614,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-key add /tmp/repos.rcn-ee.net-archive-keyring.asc
 			rm -f /tmp/repos.rcn-ee.net-archive-keyring.asc || true
 		fi
+		if [ "x${repo_ros}" = "xenable" ] ; then
+			apt-key add /tmp/ros-archive-keyring.asc
+			rm -f /tmp/ros-archive-keyring.asc || true
+		fi
 		if [ "x${repo_external}" = "xenable" ] ; then
 			apt-key add /tmp/${repo_external_key}
 			rm -f /tmp/${repo_external_key} || true
@@ -687,6 +699,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
 			apt-get -y \${apt_options} install ${repo_external_pkg_list}
+		fi
+
+		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
+			echo "Log: (chroot) Installing (from external repo): ${repo_ros_pkg_list}"
+			apt-get -y \${apt_options} install ${repo_ros_pkg_list}
 		fi
 	}
 
