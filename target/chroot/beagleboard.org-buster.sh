@@ -153,8 +153,8 @@ setup_desktop () {
 }
 
 install_pip_pkgs () {
-	if [ -f /usr/bin/python ] ; then
-		if [ -f /usr/bin/pip ] ; then
+	if [ -f /usr/bin/python3 ] ; then
+		if [ -f /usr/bin/pip3 ] ; then
 			if [ -f /usr/bin/make ] ; then
 				echo "Installing pip packages"
 				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
@@ -163,9 +163,9 @@ install_pip_pkgs () {
 				if [ -f ${git_target_dir}/.git/config ] ; then
 					cd ${git_target_dir}/
 					sed -i -e 's:4.1.0:3.4.0:g' setup.py
-					python setup.py install
+					python3 setup.py install
 				fi
-				pip install iw_parse
+				pip3 install iw_parse
 			fi
 		fi
 	fi
