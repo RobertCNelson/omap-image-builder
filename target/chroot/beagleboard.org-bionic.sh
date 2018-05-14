@@ -154,24 +154,18 @@ setup_desktop () {
 
 install_pip_pkgs () {
 	if [ -f /usr/bin/python ] ; then
-		wget https://bootstrap.pypa.io/get-pip.py || true
-		if [ -f get-pip.py ] ; then
-			python get-pip.py
-			rm -f get-pip.py || true
-
-			if [ -f /usr/local/bin/pip ] ; then
-				if [ -f /usr/bin/make ] ; then
-					echo "Installing pip packages"
-					git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-					git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-					git_clone
-					if [ -f ${git_target_dir}/.git/config ] ; then
-						cd ${git_target_dir}/
-						sed -i -e 's:4.1.0:3.4.0:g' setup.py
-						python setup.py install
-					fi
-					pip install iw_parse
+		if [ -f /usr/bin/pip ] ; then
+			if [ -f /usr/bin/make ] ; then
+				echo "Installing pip packages"
+				git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+				git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+				git_clone
+				if [ -f ${git_target_dir}/.git/config ] ; then
+					cd ${git_target_dir}/
+					sed -i -e 's:4.1.0:3.4.0:g' setup.py
+					python setup.py install
 				fi
+				pip install iw_parse
 			fi
 		fi
 	fi
