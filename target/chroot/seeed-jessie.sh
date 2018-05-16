@@ -382,7 +382,8 @@ install_git_repos () {
 
 	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
-	git_clone
+	git_branch="v0.3.4"
+	git_clone_branch
 
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
