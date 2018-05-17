@@ -304,18 +304,18 @@ install_git_repos () {
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
 	git_clone
-#	if [ -f ${git_target_dir}/.git/config ] ; then
-#		if [ -f /usr/lib/libroboticscape.so ] ; then
-#			cd ${git_target_dir}/
-#			if [ -f /usr/bin/make ] ; then
-#				make
-#				make install || true
-##				if [ ! "x${image_type}" = "xtester-2gb" ] ; then
-##					systemctl disable beagle-tester.service || true
-##				fi
-#			fi
-#		fi
-#	fi
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		if [ -f /usr/lib/libroboticscape.so ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/make ] ; then
+				make
+				make install || true
+#				if [ ! "x${image_type}" = "xtester-2gb" ] ; then
+#					systemctl disable beagle-tester.service || true
+#				fi
+			fi
+		fi
+	fi
 }
 
 other_source_links () {
