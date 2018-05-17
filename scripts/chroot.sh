@@ -1044,7 +1044,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable systemd-networkd.service || true
 		fi
 
-		#We use connman...
+		#We use dnsmasq & connman...
 		if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
 			systemctl disable systemd-resolved.service || true
 		fi
