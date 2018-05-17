@@ -309,22 +309,22 @@ install_git_repos () {
 	git_repo="https://github.com/mcdeoliveira/rcpy"
 	git_target_dir="/opt/source/rcpy"
 	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
-			/usr/bin/python3 setup.py install
-		fi
-	fi
+#	if [ -f ${git_target_dir}/.git/config ] ; then
+#		cd ${git_target_dir}/
+#		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+#			/usr/bin/python3 setup.py install
+#		fi
+#	fi
 
 	git_repo="https://github.com/mcdeoliveira/pyctrl"
 	git_target_dir="/opt/source/pyctrl"
 	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
-			/usr/bin/python3 setup.py install
-		fi
-	fi
+#	if [ -f ${git_target_dir}/.git/config ] ; then
+#		cd ${git_target_dir}/
+#		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+#			/usr/bin/python3 setup.py install
+#		fi
+#	fi
 
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
