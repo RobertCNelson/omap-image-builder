@@ -306,21 +306,20 @@ sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel
 sudo mkdir -p "${tempdir}/usr/share/flash-kernel/db/" || true
 sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kernel/db/"
 
+#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
+sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
+
+#apt: emulate apt-get clean:
+echo '#Custom apt-get clean' > /tmp/02apt-get-clean
+echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
+echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
+sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
+
+#apt: drop translations
+echo 'Acquire::Languages "none";' > /tmp/02-no-languages
+sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
 if [ "x${deb_distribution}" = "xdebian" ] ; then
-	#generic apt.conf tweaks for flash/mmc devices to save on wasted space...
-	sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
-
-	#apt: emulate apt-get clean:
-	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
-	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-	sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
-
-	#apt: drop translations
-	echo 'Acquire::Languages "none";' > /tmp/02-no-languages
-	sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
-
 	case "${deb_codename}" in
 	jessie)
 		#apt: /var/lib/apt/lists/, store compressed only
