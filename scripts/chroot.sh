@@ -1118,6 +1118,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		systemd_tweaks
 	fi
 
+	if [ -d /etc/update-motd.d/ ] ; then
+		#disable the message of the day (motd) welcome message
+		chmod -R 0644 /etc/update-motd.d/ || true
+	fi
+
 	if [ -f /etc/default/grub ] ; then
 		grub_tweaks
 	fi
