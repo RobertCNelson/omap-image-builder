@@ -287,34 +287,10 @@ install_git_repos () {
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
-			is_kernel=$(echo ${repo_rcnee_pkg_version} | grep 3.8.13 || true)
-			if [ "x${is_kernel}" = "x" ] ; then
-				if [ -f /usr/bin/make ] ; then
-					if [ ! -f /lib/firmware/BB-ADC-00A0.dtbo ] ; then
-						make
-						make install
-						make clean
-					fi
-					update-initramfs -u -k ${repo_rcnee_pkg_version}
-				fi
-			fi
-		fi
-	fi
 
 	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
 	git_target_dir="/opt/source/BBBlfs"
 	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			./autogen.sh
-			./configure
-			make
-		fi
-	fi
 
 	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
@@ -325,7 +301,7 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python3 ] ; then
 			/usr/bin/python3 setup.py install
 		fi
 	fi
@@ -335,7 +311,7 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python3 ] ; then
 			/usr/bin/python3 setup.py install
 		fi
 	fi

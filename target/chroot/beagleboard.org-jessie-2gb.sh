@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2018 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -292,19 +292,11 @@ install_git_repos () {
 	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
 	git_target_dir="/opt/source/BBBlfs"
 #	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			./autogen.sh
-			./configure
-			make
-		fi
-	fi
 
 	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
 	git_branch="v0.3.4"
-	#git_clone_branch
+#	git_clone_branch
 
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
