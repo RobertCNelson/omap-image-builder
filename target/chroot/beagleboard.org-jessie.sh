@@ -300,9 +300,10 @@ install_git_repos () {
 
 	git_repo="https://github.com/mcdeoliveira/rcpy"
 	git_target_dir="/opt/source/rcpy"
-	git_clone
+	git_clone_full
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
+		git checkout 713de1a415a41efe05b5162947743407e193760e
 		if [ -f /usr/bin/python3 ] ; then
 			/usr/bin/python3 setup.py install
 		fi
