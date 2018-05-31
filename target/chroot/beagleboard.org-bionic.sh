@@ -282,10 +282,10 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		if [ -f /usr/bin/python2 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python2 ] ; then
 			/usr/bin/python2 setup.py install
 		fi
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python3 ] ; then
 			/usr/bin/python3 setup.py install
 		fi
 	fi
@@ -295,10 +295,10 @@ install_git_repos () {
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-		if [ -f /usr/bin/python2 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python2 ] ; then
 			/usr/bin/python2 setup.py install
 		fi
-		if [ -f /usr/bin/python3 ] && [ -f /usr/bin/easy_install ] ; then
+		if [ -f /usr/bin/python3 ] ; then
 			/usr/bin/python3 setup.py install
 		fi
 	fi
