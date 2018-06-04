@@ -320,15 +320,19 @@ echo 'Acquire::Languages "none";' > /tmp/02-no-languages
 sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
 if [ "x${deb_distribution}" = "xdebian" ] ; then
+	#apt: /var/lib/apt/lists/, store compressed only
 	case "${deb_codename}" in
 	jessie)
-		#apt: /var/lib/apt/lists/, store compressed only
 		echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
-	stretch|buster|sid)
-		#apt: /var/lib/apt/lists/, store compressed only
+	stretch)
 		echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
+		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+		;;
+	buster|sid)
+		###FIXME: close to release switch to ^ xz, right now buster is slow on apt...
+		echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
 	esac
