@@ -297,10 +297,11 @@ base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_r
 
 options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --efi"                ; generate_img
 
-###ros iot image (buster):
+###ros iot image (bionic):
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"  ; generate_img
+options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                      ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
@@ -438,10 +439,11 @@ base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
 
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 
-###ros iot image (buster):
+###ros iot image (bionic):
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot"
 
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
+wfile="bbx15-\${base_rootfs}-4gb"          ; archive_img
 
 __EOF__
 
