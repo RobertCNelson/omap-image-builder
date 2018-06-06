@@ -1351,6 +1351,12 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	}
 
 	cleanup
+
+	if [ -f /usr/bin/connmanctl ] ; then
+		rm -rf /etc/resolv.conf || true
+		ln -s /run/connman/resolv.conf /etc/resolv.conf
+	fi
+
 	rm -f /cleanup_script.sh || true
 __EOF__
 
