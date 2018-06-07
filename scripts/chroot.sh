@@ -79,7 +79,7 @@ check_defines () {
 		;;
 	ubuntu)
 		deb_components=${deb_components:-"main universe multiverse"}
-		deb_mirror=${deb_mirror:-"ports.ubuntu.com/ubuntu-ports"}
+		deb_mirror=${deb_mirror:-"ports.ubuntu.com/"}
 		;;
 	esac
 

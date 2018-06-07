@@ -107,7 +107,7 @@ check_defines () {
 			deb_mirror="deb.debian.org/debian"
 			;;
 		ubuntu)
-			deb_mirror="ports.ubuntu.com/ubuntu-ports"
+			deb_mirror="ports.ubuntu.com/"
 			;;
 		esac
 	fi
