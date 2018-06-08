@@ -152,7 +152,7 @@ setup_desktop () {
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
 }
 
-install_pip_pkgs () {
+install_git_repos () {
 	if [ -f /usr/bin/make ] ; then
 		echo "Installing pip packages"
 		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
@@ -169,9 +169,7 @@ install_pip_pkgs () {
 			fi
 		fi
 	fi
-}
 
-install_git_repos () {
 	if [ -d /usr/local/lib/node_modules/bonescript ] ; then
 		if [ -d /etc/apache2/ ] ; then
 			#bone101 takes over port 80, so shove apache/etc to 8080:
@@ -295,6 +293,14 @@ install_git_repos () {
 	fi
 }
 
+install_go_pkgs () {
+	if [ -f /usr/bin/go ] ; then
+		echo "go env: [`go env`]"
+		echo "go get -d -u gobot.io/x/gobot/..."
+		go get -d -u gobot.io/x/gobot/...
+	fi
+}
+
 other_source_links () {
 	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
 
@@ -316,11 +322,11 @@ is_this_qemu
 setup_system
 setup_desktop
 
-install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
+	install_go_pkgs
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 fi
