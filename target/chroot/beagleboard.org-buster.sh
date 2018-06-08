@@ -298,6 +298,7 @@ install_go_pkgs () {
 		echo "go env: [`go env`]"
 		echo "go get -d -u gobot.io/x/gobot/..."
 		go get -d -u gobot.io/x/gobot/...
+		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/go/
 	fi
 }
 
@@ -310,6 +311,7 @@ other_source_links () {
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0002-U-Boot-BeagleBone-Cape-Manager.patch
 	mkdir -p /opt/source/u-boot_${u_boot_release_x15}/
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release_x15}/" ${rcn_https}/${u_boot_release_x15}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
+	rm /home/${rfs_username}/.wget-hsts || true
 
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 	echo "u-boot_${u_boot_release_x15} : /opt/source/u-boot_${u_boot_release_x15}" >> /opt/source/list.txt
@@ -329,6 +331,7 @@ if [ -f /usr/bin/git ] ; then
 	install_go_pkgs
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
+	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 other_source_links
 #

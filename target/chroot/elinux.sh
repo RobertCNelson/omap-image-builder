@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2018 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -85,29 +85,6 @@ setup_system () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/strahlex/BBIOConfig.git"
-	git_target_dir="/opt/source/BBIOConfig"
-	git_clone
-
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_target_dir="/opt/source/dtb-4.4-ti"
-	git_branch="4.4-ti"
-	git_clone_branch
-
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_target_dir="/opt/source/dtb-4.9-ti"
-	git_branch="4.9-ti"
-	git_clone_branch
-
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_target_dir="/opt/source/dtb-4.14-ti"
-	git_branch="4.14-ti"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/bb.org-overlays"
-	git_target_dir="/opt/source/bb.org-overlays"
-	git_clone
-
 	if [ -f /usr/bin/make ] ; then
 		echo "Installing pip packages"
 		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
@@ -124,23 +101,62 @@ install_git_repos () {
 			fi
 		fi
 	fi
-}
 
+	git_repo="https://github.com/strahlex/BBIOConfig.git"
+	git_target_dir="/opt/source/BBIOConfig"
+	git_clone
+
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-4.9-ti"
+	git_branch="4.9-ti"
+	git_clone_branch
+
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-4.14-ti"
+	git_branch="4.14-ti"
+	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/bb.org-overlays"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
+
+	git_repo="https://github.com/mcdeoliveira/rcpy"
+	git_target_dir="/opt/source/rcpy"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/python3 ] ; then
+			/usr/bin/python3 setup.py install
+		fi
+	fi
+
+	git_repo="https://github.com/mcdeoliveira/pyctrl"
+	git_target_dir="/opt/source/pyctrl"
+	git_clone
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		if [ -f /usr/bin/python3 ] ; then
+			/usr/bin/python3 setup.py install
+		fi
+	fi
+
+	git_repo="https://github.com/mvduin/py-uio"
+	git_target_dir="/opt/source/py-uio"
+	git_clone
+}
 
 is_this_qemu
 
 setup_system
 #setup_desktop
 
-#install_gem_pkgs
-#install_node_pkgs
-#install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
+	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 #install_build_pkgs
 #other_source_links

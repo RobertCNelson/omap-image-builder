@@ -178,7 +178,7 @@ setup_desktop () {
 
 }
 
-install_pip_pkgs () {
+install_git_repos () {
 	if [ -f /usr/bin/make ] ; then
 		echo "Installing pip packages"
 		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
@@ -195,9 +195,7 @@ install_pip_pkgs () {
 			fi
 		fi
 	fi
-}
 
-install_git_repos () {
 	if [ -d /usr/local/lib/node_modules/bonescript ] ; then
 		if [ -d /etc/apache2/ ] ; then
 			#bone101 takes over port 80, so shove apache/etc to 8080:
@@ -360,6 +358,7 @@ other_source_links () {
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0002-U-Boot-BeagleBone-Cape-Manager.patch
 	mkdir -p /opt/source/u-boot_${u_boot_release_x15}/
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release_x15}/" ${rcn_https}/${u_boot_release_x15}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
+	rm /home/${rfs_username}/.wget-hsts || true
 
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 	echo "u-boot_${u_boot_release_x15} : /opt/source/u-boot_${u_boot_release_x15}" >> /opt/source/list.txt
@@ -391,13 +390,13 @@ is_this_qemu
 setup_system
 setup_desktop
 
-install_pip_pkgs
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
+	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 #workshop_stuff
 other_source_links
