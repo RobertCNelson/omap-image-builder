@@ -191,8 +191,8 @@ install_git_repos () {
 	if [ -f /var/www/html/index.nginx-debian.html ] ; then
 		rm -rf /var/www/html/index.nginx-debian.html || true
 
-		if [ -d /opt/scripts/distro/buster/nginx/ ] ; then
-			cp -v /opt/scripts/distro/buster/nginx/default /etc/nginx/sites-available/default
+		if [ -d /opt/scripts/distro/bionic/nginx/ ] ; then
+			cp -v /opt/scripts/distro/bionic/nginx/default /etc/nginx/sites-available/default
 		fi
 	fi
 
