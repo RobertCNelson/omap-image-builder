@@ -21,14 +21,14 @@ fi
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
-    debian_jessie_machinekit="debian-8.10-machinekit-armhf-${time}"
-      debian_jessie_lxqt_2gb="debian-8.10-lxqt-2gb-armhf-${time}"
-      debian_jessie_lxqt_4gb="debian-8.10-lxqt-4gb-armhf-${time}"
-           debian_jessie_iot="debian-8.10-iot-armhf-${time}"
-       debian_jessie_console="debian-8.10-console-armhf-${time}"
-    debian_jessie_oemflasher="debian-8.10-oemflasher-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.10-seeed-lxqt-4gb-armhf-${time}"
-     debian_jessie_seeed_iot="debian-8.10-seeed-iot-armhf-${time}"
+    debian_jessie_machinekit="debian-8.11-machinekit-armhf-${time}"
+      debian_jessie_lxqt_2gb="debian-8.11-lxqt-2gb-armhf-${time}"
+      debian_jessie_lxqt_4gb="debian-8.11-lxqt-4gb-armhf-${time}"
+           debian_jessie_iot="debian-8.11-iot-armhf-${time}"
+       debian_jessie_console="debian-8.11-console-armhf-${time}"
+    debian_jessie_oemflasher="debian-8.11-oemflasher-armhf-${time}"
+debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
+     debian_jessie_seeed_iot="debian-8.11-seeed-iot-armhf-${time}"
 
 archive="xz -z -8"
 
