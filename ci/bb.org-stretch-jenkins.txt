@@ -12,15 +12,20 @@ touch jenkins.build
 ./publish/rcn-ee_bb.org-stable.sh
 ########
 
-bb.org-debian-stretch-console-v4.9
-bb.org-debian-stretch-iot-v4.4
-bb.org-debian-stretch-iot-v4.9
-bb.org-debian-stretch-lxqt-2gb-v4.9
-bb.org-debian-stretch-lxqt-v4.9
+machinekit-debian-stretch
+
+bb.org-debian-stretch-console-v4.14
+bb.org-debian-stretch-iot-v4.14
+bb.org-debian-stretch-lxqt-2gb-v4.14
+bb.org-debian-stretch-lxqt-v4.14
 bb.org-debian-stretch-lxqt-xm
 bb.org-debian-stretch-oemflasher-v4.4
 
-bb.org-debian-buster-iot-v4.9
+bb.org-debian-buster-iot-v4.14
+bb.org-debian-buster-efi-iot-v4.14
+bb.org-debian-buster-gobot-iot-v4.14
+
+bb.org-ubuntu-bionic-ros-iot-v4.14
 
 shell:
 ########
@@ -28,6 +33,8 @@ shell:
 
 image_prefix=bb.org
 time=$(date +%Y-%m-%d)
+
+export apt_proxy=apt-proxy:3142/
 
 if [ ! -f /mnt/farm/images/original.txt ] ; then
 	sudo mount -a || true
@@ -37,15 +44,20 @@ if [ -d ./deploy ] ; then
 	rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.9
-#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.4
-#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.9
-#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.9
-#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.9
+#./RootStock-NG.sh -c machinekit-debian-stretch
+
+#./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
+#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
+#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
+#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 #./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.4
 
-#./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.9
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
+#./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
+#./RootStock-NG.sh -c bb.org-debian-buster-gobot-iot-v4.14
+
+#./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.14
 
 if [ -f ./deploy/*.tar ] ; then
 	ls -lha ./deploy/

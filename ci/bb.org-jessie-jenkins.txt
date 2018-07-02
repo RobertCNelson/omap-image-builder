@@ -30,6 +30,8 @@ shell:
 image_prefix=bb.org
 time=$(date +%Y-%m-%d)
 
+export apt_proxy=apt-proxy:3142/
+
 if [ ! -f /mnt/farm/images/original.txt ] ; then
 	sudo mount -a || true
 fi

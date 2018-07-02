@@ -14,7 +14,7 @@ touch jenkins.build
 
 elinux_debian_buster_armhf
 elinux_debian_stretch_armhf
-elinux_ubuntu_xenial_armhf
+elinux_ubuntu_bionic_armhf
 
 shell:
 ########
@@ -22,6 +22,8 @@ shell:
 
 image_prefix=elinux
 time=$(date +%Y-%m-%d)
+
+export apt_proxy=apt-proxy:3142/
 
 if [ ! -f /mnt/farm/images/original.txt ] ; then
 	sudo mount -a || true
@@ -33,7 +35,7 @@ fi
 
 #./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
 #./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
-#./RootStock-NG.sh -c rcn-ee_console_ubuntu_xenial_armhf
+#./RootStock-NG.sh -c rcn-ee_console_ubuntu_bionic_armhf
 
 if [ -f ./deploy/*.tar ] ; then
 	ls -lha ./deploy/
