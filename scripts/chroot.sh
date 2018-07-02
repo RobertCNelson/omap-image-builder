@@ -701,7 +701,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
-			apt-get -y \${apt_options} install mt7601u-modules-${repo_rcnee_pkg_version} || true
+			#rtl8723bu = 3.8.13 > 4.4.x
 			apt-get -y \${apt_options} install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y \${apt_options} install ti-cmem-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y \${apt_options} install ti-debugss-modules-${repo_rcnee_pkg_version} || true
