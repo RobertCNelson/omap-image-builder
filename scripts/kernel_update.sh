@@ -29,14 +29,6 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
-	git_msg="3.8.13-bone"
-	var="omap-psp"   ; ver="STABLE" ; current_kernel
-
-	git_msg="3.8.13-xenomai"
-	filter1="ti"
-	filter2="ti"
-	var="xenomai"    ; ver="STABLE" ; current_kernel
-
 	git_msg="4.17.x-xM"
 #	var="armv7"      ; ver="LTS49"        ; current_kernel
 #	var="armv7"      ; ver="LTS414"       ; current_kernel
