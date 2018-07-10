@@ -32,8 +32,8 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="4.17.x-xM"
 #	var="armv7"      ; ver="LTS49"        ; current_kernel
 #	var="armv7"      ; ver="LTS414"       ; current_kernel
-#	var="armv7"      ; ver="STABLE"       ; current_kernel
-	var="armv7"      ; ver="TESTING"      ; current_kernel
+	var="armv7"      ; ver="STABLE"       ; current_kernel
+#	var="armv7"      ; ver="TESTING"      ; current_kernel
 #	var="armv7"      ; ver="EXPERIMENTAL" ; current_kernel
 
 	git_msg="4.14.x-bone-rt"
