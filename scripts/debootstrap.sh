@@ -127,7 +127,8 @@ if [ "${apt_proxy}" ] ; then
 fi
 
 echo "Log: Running: debootstrap in [${tempdir}]"
-echo "Log: [sudo debootstrap ${options} ${suite} ${target} ${mirror}]"
-sudo debootstrap ${options} ${suite} "${target}" ${mirror}
+###FIXME: --no-merged-usr eventually we will support, but as of 1.0.101+ it's back, so default to pre...
+echo "Log: [sudo debootstrap --no-merged-usr ${options} ${suite} ${target} ${mirror}]"
+sudo debootstrap --no-merged-usr ${options} ${suite} "${target}" ${mirror}
 report_size
 #
