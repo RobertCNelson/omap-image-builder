@@ -62,6 +62,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
       debian_stretch_wayland="debian-9.4-wayland-armhf-${time}"
    debian_stretch_oemflasher="debian-9.4-oemflasher-armhf-${time}"
 
+          debian_buster_tiny="debian-buster-tiny-armhf-${time}"
            debian_buster_iot="debian-buster-iot-armhf-${time}"
      debian_buster_gobot_iot="debian-buster-gobot-iot-armhf-${time}"
        debian_buster_efi_iot="debian-buster-efi-iot-armhf-${time}"
@@ -330,6 +331,7 @@ base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; arc
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
 
+base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"      ; archive_base_rootfs
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"       ; archive_base_rootfs
 base_rootfs="${debian_buster_gobot_iot}"      ; blend="buster-gobot-iot" ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"   ; archive_base_rootfs
