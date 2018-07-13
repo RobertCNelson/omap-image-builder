@@ -1473,71 +1473,73 @@ populate_rootfs () {
 
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
 			wfile="${TEMPDIR}/disk/etc/network/interfaces"
-			echo "# This file describes the network interfaces available on your system" > ${wfile}
-			echo "# and how to activate them. For more information, see interfaces(5)." >> ${wfile}
-			echo "" >> ${wfile}
-			echo "# The loopback network interface" >> ${wfile}
-			echo "auto lo" >> ${wfile}
-			echo "iface lo inet loopback" >> ${wfile}
-			echo "" >> ${wfile}
-			echo "# The primary network interface" >> ${wfile}
+			if [ -f ${wfile} ] ; then
+				echo "# This file describes the network interfaces available on your system" > ${wfile}
+				echo "# and how to activate them. For more information, see interfaces(5)." >> ${wfile}
+				echo "" >> ${wfile}
+				echo "# The loopback network interface" >> ${wfile}
+				echo "auto lo" >> ${wfile}
+				echo "iface lo inet loopback" >> ${wfile}
+				echo "" >> ${wfile}
+				echo "# The primary network interface" >> ${wfile}
 
-			if [ "${DISABLE_ETH}" ] ; then
-				echo "#auto eth0" >> ${wfile}
-				echo "#iface eth0 inet dhcp" >> ${wfile}
-			else
-				echo "auto eth0"  >> ${wfile}
-				echo "iface eth0 inet dhcp" >> ${wfile}
-			fi
+				if [ "${DISABLE_ETH}" ] ; then
+					echo "#auto eth0" >> ${wfile}
+					echo "#iface eth0 inet dhcp" >> ${wfile}
+				else
+					echo "auto eth0"  >> ${wfile}
+					echo "iface eth0 inet dhcp" >> ${wfile}
+				fi
 
-			#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
-			if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
-				if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
+				#if we have systemd & wicd-gtk, disable eth0 in /etc/network/interfaces
+				if [ -f ${TEMPDIR}/disk/lib/systemd/systemd ] ; then
+					if [ -f ${TEMPDIR}/disk/usr/bin/wicd-gtk ] ; then
+						sed -i 's/auto eth0/#auto eth0/g' ${wfile}
+						sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
+						sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
+					fi
+				fi
+
+				#if we have connman, disable eth0 in /etc/network/interfaces
+				if [ -f ${TEMPDIR}/disk/etc/init.d/connman ] ; then
 					sed -i 's/auto eth0/#auto eth0/g' ${wfile}
 					sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
 					sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
 				fi
+
+				echo "# Example to keep MAC address between reboots" >> ${wfile}
+				echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${wfile}
+
+				echo "" >> ${wfile}
+
+				echo "##connman: ethX static config" >> ${wfile}
+				echo "#connmanctl services" >> ${wfile}
+				echo "#Using the appropriate ethernet service, tell connman to setup a static IP address for that service:" >> ${wfile}
+				echo "#sudo connmanctl config <service> --ipv4 manual <ip_addr> <netmask> <gateway> --nameservers <dns_server>" >> ${wfile}
+
+				echo "" >> ${wfile}
+
+				echo "##connman: WiFi" >> ${wfile}
+				echo "#" >> ${wfile}
+				echo "#connmanctl" >> ${wfile}
+				echo "#connmanctl> tether wifi off" >> ${wfile}
+				echo "#connmanctl> enable wifi" >> ${wfile}
+				echo "#connmanctl> scan wifi" >> ${wfile}
+				echo "#connmanctl> services" >> ${wfile}
+				echo "#connmanctl> agent on" >> ${wfile}
+				echo "#connmanctl> connect wifi_*_managed_psk" >> ${wfile}
+				echo "#connmanctl> quit" >> ${wfile}
+
+				echo "" >> ${wfile}
+
+				echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
+				echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh" >> ${wfile}
+				echo "iface usb0 inet static" >> ${wfile}
+				echo "    address 192.168.7.2" >> ${wfile}
+				echo "    netmask 255.255.255.252" >> ${wfile}
+				echo "    network 192.168.7.0" >> ${wfile}
+				echo "    gateway 192.168.7.1" >> ${wfile}
 			fi
-
-			#if we have connman, disable eth0 in /etc/network/interfaces
-			if [ -f ${TEMPDIR}/disk/etc/init.d/connman ] ; then
-				sed -i 's/auto eth0/#auto eth0/g' ${wfile}
-				sed -i 's/allow-hotplug eth0/#allow-hotplug eth0/g' ${wfile}
-				sed -i 's/iface eth0 inet dhcp/#iface eth0 inet dhcp/g' ${wfile}
-			fi
-
-			echo "# Example to keep MAC address between reboots" >> ${wfile}
-			echo "#hwaddress ether DE:AD:BE:EF:CA:FE" >> ${wfile}
-
-			echo "" >> ${wfile}
-
-			echo "##connman: ethX static config" >> ${wfile}
-			echo "#connmanctl services" >> ${wfile}
-			echo "#Using the appropriate ethernet service, tell connman to setup a static IP address for that service:" >> ${wfile}
-			echo "#sudo connmanctl config <service> --ipv4 manual <ip_addr> <netmask> <gateway> --nameservers <dns_server>" >> ${wfile}
-
-			echo "" >> ${wfile}
-
-			echo "##connman: WiFi" >> ${wfile}
-			echo "#" >> ${wfile}
-			echo "#connmanctl" >> ${wfile}
-			echo "#connmanctl> tether wifi off" >> ${wfile}
-			echo "#connmanctl> enable wifi" >> ${wfile}
-			echo "#connmanctl> scan wifi" >> ${wfile}
-			echo "#connmanctl> services" >> ${wfile}
-			echo "#connmanctl> agent on" >> ${wfile}
-			echo "#connmanctl> connect wifi_*_managed_psk" >> ${wfile}
-			echo "#connmanctl> quit" >> ${wfile}
-
-			echo "" >> ${wfile}
-
-			echo "# Ethernet/RNDIS gadget (g_ether)" >> ${wfile}
-			echo "# Used by: /opt/scripts/boot/autoconfigure_usb0.sh" >> ${wfile}
-			echo "iface usb0 inet static" >> ${wfile}
-			echo "    address 192.168.7.2" >> ${wfile}
-			echo "    netmask 255.255.255.252" >> ${wfile}
-			echo "    network 192.168.7.0" >> ${wfile}
-			echo "    gateway 192.168.7.1" >> ${wfile}
 		fi
 
 		if [ -f ${TEMPDIR}/disk/var/www/index.html ] ; then
