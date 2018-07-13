@@ -473,17 +473,7 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
 		case "${deb_codename}" in
-		jessie)
-			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/capemgr.service"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
-			sudo chown root:root "${tempdir}/etc/default/capemgr"
-			distro="Debian"
-			;;
-		stretch|buster)
+		jessie|stretch|buster)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -892,29 +882,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	debian_startup_script () {
 		echo "Log: (chroot): debian_startup_script"
-		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
-			if [ -f /etc/init.d/generic-boot-script.sh ] ; then
-				chown root:root /etc/init.d/generic-boot-script.sh
-				chmod +x /etc/init.d/generic-boot-script.sh
-				insserv generic-boot-script.sh || true
-			fi
-
-			if [ -f /etc/init.d/capemgr.sh ] ; then
-				chown root:root /etc/init.d/capemgr.sh
-				chown root:root /etc/default/capemgr
-				chmod +x /etc/init.d/capemgr.sh
-				insserv capemgr.sh || true
-			fi
-		fi
 	}
 
 	ubuntu_startup_script () {
 		echo "Log: (chroot): ubuntu_startup_script"
-		if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
-			if [ -f /etc/init/generic-boot-script.conf ] ; then
-				chown root:root /etc/init/generic-boot-script.conf
-			fi
-		fi
 
 		#Not Optional...
 		#(protects your kernel, from Ubuntu repo which may try to take over your system on an upgrade)...
@@ -936,10 +907,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ -f /lib/systemd/system/generic-board-startup.service ] ; then
 			systemctl enable generic-board-startup.service || true
-		fi
-
-		if [ -f /lib/systemd/system/capemgr.service ] ; then
-			systemctl enable capemgr.service || true
 		fi
 
 		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
