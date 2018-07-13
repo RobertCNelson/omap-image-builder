@@ -500,15 +500,6 @@ if [ "x${deb_arch}" = "xarmel" ] ; then
 	distro="Debian"
 fi
 
-if [ -d "${tempdir}/usr/share/initramfs-tools/hooks/" ] ; then
-	if [ ! -f "${tempdir}/usr/share/initramfs-tools/hooks/dtbo" ] ; then
-		echo "log: adding: [initramfs-tools hook: dtbo]"
-		sudo cp "${OIB_DIR}/target/other/dtbo" "${tempdir}/usr/share/initramfs-tools/hooks/"
-		sudo chmod +x "${tempdir}/usr/share/initramfs-tools/hooks/dtbo"
-		sudo chown root:root "${tempdir}/usr/share/initramfs-tools/hooks/dtbo"
-	fi
-fi
-
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
 echo "distro=${distro}" > /tmp/rcn-ee.conf
 echo "deb_codename=${deb_codename}" >> /tmp/rcn-ee.conf
