@@ -493,16 +493,6 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 		;;
 	ubuntu)
 		case "${deb_codename}" in
-		vivid|wily|xenial)
-			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-capemgr.service" "${tempdir}/lib/systemd/system/capemgr.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo cp "${OIB_DIR}/target/init_scripts/capemgr" "${tempdir}/etc/default/"
-			sudo chown root:root "${tempdir}/etc/default/capemgr"
-			distro="Ubuntu"
-			;;
 		bionic)
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
@@ -591,21 +581,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			dpkg-divert --local --rename --add /sbin/initctl
 			ln -s /bin/true /sbin/initctl
 		fi
-
-		apt_options="--force-yes"
-		if [ "x\${deb_codename}" = "xstretch" ] ; then
-			apt_options=""
-		fi
-		if [ "x\${deb_codename}" = "xbuster" ] ; then
-			apt_options=""
-		fi
-		if [ "x\${deb_codename}" = "xxenial" ] ; then
-			apt_options="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
-		fi
-		if [ "x\${deb_codename}" = "xbionic" ] ; then
-			apt_options=""
-		fi
-		echo "Log: (chroot): apt using extra: [\${apt_options}]"
 	}
 
 	install_pkg_updates () {
@@ -631,8 +606,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		apt-get update
-		apt-get upgrade -y \${apt_options}
-		apt-get dist-upgrade -y \${apt_options}
+		apt-get upgrade -y
+		apt-get dist-upgrade -y
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
@@ -678,34 +653,34 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
 			apt-get update
-			apt-get -y \${apt_options} install ${deb_additional_pkgs}
+			apt-get -y install ${deb_additional_pkgs}
 		fi
 
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
 				echo "Log: (chroot) Installing (from backports): ${chroot_debian_backports_pkg_list}"
-				sudo apt-get -y \${apt_options} -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
+				sudo apt-get -y -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
 			fi
 		fi
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
-			apt-get -y \${apt_options} install ${repo_external_pkg_list}
+			apt-get -y install ${repo_external_pkg_list}
 		fi
 
 		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_ros_pkg_list}"
-			apt-get -y \${apt_options} install ${repo_ros_pkg_list}
+			apt-get -y install ${repo_ros_pkg_list}
 		fi
 
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
 			#rtl8723bu = 3.8.13 > 4.4.x
-			apt-get -y \${apt_options} install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y \${apt_options} install ti-cmem-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y \${apt_options} install ti-debugss-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y \${apt_options} install ti-temperature-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install ti-cmem-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install ti-debugss-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install ti-temperature-modules-${repo_rcnee_pkg_version} || true
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
@@ -756,7 +731,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	run_deborphan () {
 		echo "Log: (chroot): deborphan is not reliable, run manual and add pkg list to: [chroot_manual_deborphan_list]"
-		apt-get -y \${apt_options} install deborphan
+		apt-get -y install deborphan
 
 		# Prevent deborphan from removing explicitly required packages
 		deborphan -A ${deb_additional_pkgs} ${repo_external_pkg_list} ${deb_include}
@@ -1013,7 +988,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
-				apt-get remove -y \${apt_options} ntpdate --purge || true
+				apt-get remove -y ntpdate --purge || true
 			fi
 		fi
 

@@ -13,13 +13,13 @@ fi
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armhf
-./RootStock-NG.sh -c eewiki_minfs_ubuntu_xenial_armhf
+./RootStock-NG.sh -c eewiki_minfs_ubuntu_bionic_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
 debian_stable="debian-9.4"
-ubuntu_stable="ubuntu-16.04.4"
+ubuntu_stable="ubuntu-18.04"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
@@ -42,10 +42,6 @@ copy_base_rootfs_to_mirror () {
                 fi
         fi
 }
-
-blend=barefs
-base_rootfs="${debian_stable}-bare-armel-${time}" ; copy_base_rootfs_to_mirror
-base_rootfs="${debian_stable}-bare-armhf-${time}" ; copy_base_rootfs_to_mirror
 
 blend=minfs
 base_rootfs="${debian_stable}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
