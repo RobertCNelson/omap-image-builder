@@ -18,7 +18,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
- debian_stable="debian-9.4-console-armhf-${time}"
+ debian_stable="debian-9.5-console-armhf-${time}"
 debian_testing="debian-buster-console-armhf-${time}"
  ubuntu_stable="ubuntu-18.04-console-armhf-${time}"
 #ubuntu_testing="ubuntu-bionic-console-armhf-${time}"
