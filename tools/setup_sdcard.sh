@@ -1212,35 +1212,6 @@ populate_rootfs () {
 		fi
 
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
-			echo "" >> ${wfile}
-
-			if [ ! "x${uboot_cape_overlays}" = "xenable" ] ; then
-				echo "##BeagleBone Black/Green dtb's for v4.1.x (BeagleBone White just works..)" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Black: HDMI (Audio/Video) disabled:" >> ${wfile}
-				echo "#dtb=am335x-boneblack-emmc-overlay.dtb" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Black: eMMC disabled:" >> ${wfile}
-				echo "#dtb=am335x-boneblack-hdmi-overlay.dtb" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Black: HDMI Audio/eMMC disabled:" >> ${wfile}
-				echo "#dtb=am335x-boneblack-nhdmi-overlay.dtb" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Black: HDMI (Audio/Video)/eMMC disabled:" >> ${wfile}
-				echo "#dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Black: wl1835" >> ${wfile}
-				echo "#dtb=am335x-boneblack-wl1835mod.dtb" >> ${wfile}
-
-				echo "" >> ${wfile}
-				echo "##BeagleBone Green: eMMC disabled" >> ${wfile}
-				echo "#dtb=am335x-bonegreen-overlay.dtb" >> ${wfile}
-			fi
 
 			echo "" >> ${wfile}
 			echo "###U-Boot Overlays###" >> ${wfile}
