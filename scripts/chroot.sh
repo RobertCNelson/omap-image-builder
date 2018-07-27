@@ -586,9 +586,17 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			rm -f /tmp/${repo_flat_key} || true
 		fi
 
+		echo "debug: networking: --------------"
+		cat /etc/resolv.conf || true
+		echo "---------------------------------"
+
 		apt-get update
 		apt-get upgrade -y
 		apt-get dist-upgrade -y
+
+		echo "debug: networking: --------------"
+		cat /etc/resolv.conf || true
+		echo "---------------------------------"
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
