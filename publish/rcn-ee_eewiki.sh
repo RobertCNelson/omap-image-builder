@@ -19,7 +19,7 @@ else
 fi
 
 debian_stable="debian-9.5"
-ubuntu_stable="ubuntu-18.04"
+ubuntu_stable="ubuntu-18.04.1"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
