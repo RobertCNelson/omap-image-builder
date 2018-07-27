@@ -586,17 +586,20 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			rm -f /tmp/${repo_flat_key} || true
 		fi
 
-		echo "debug: networking: --------------"
-		cat /etc/resolv.conf || true
-		echo "---------------------------------"
+		if [ -f /etc/resolv.conf ] ; then
+			echo "debug: networking: --------------"
+			cat /etc/resolv.conf || true
+			echo "---------------------------------"
+			cp -v /etc/resolv.conf /etc/resolv.conf.bak
+		fi
 
 		apt-get update
 		apt-get upgrade -y
 		apt-get dist-upgrade -y
 
-		echo "debug: networking: --------------"
-		cat /etc/resolv.conf || true
-		echo "---------------------------------"
+		if [ ! -f /etc/resolv.conf ] ; then
+			cp -v /etc/resolv.conf.bak /etc/resolv.conf
+		fi
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
@@ -1294,6 +1297,7 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	cleanup
 
 	if [ -f /usr/bin/connmanctl ] ; then
+		rm -rf /etc/resolv.conf.bak || true
 		rm -rf /etc/resolv.conf || true
 		ln -s /run/connman/resolv.conf /etc/resolv.conf
 	fi
