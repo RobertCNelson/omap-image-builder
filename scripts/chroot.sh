@@ -598,7 +598,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		apt-get dist-upgrade -y
 
 		if [ ! -f /etc/resolv.conf ] ; then
-			cp -v /etc/resolv.conf.bak /etc/resolv.conf
+			#'/etc/resolv.conf.bak' -> '/etc/resolv.conf'
+			#cp: not writing through dangling symlink '/etc/resolv.conf'
+			cp -v --remove-destination /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
