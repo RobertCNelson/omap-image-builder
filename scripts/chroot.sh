@@ -673,8 +673,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#rtl8723bu = 3.8.13 > 4.4.x
 			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install ti-cmem-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install ti-debugss-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install ti-temperature-modules-${repo_rcnee_pkg_version} || true
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
