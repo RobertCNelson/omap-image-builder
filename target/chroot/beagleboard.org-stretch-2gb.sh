@@ -281,12 +281,8 @@ install_git_repos () {
 	git_target_dir="/opt/source/bb.org-overlays"
 #	git_clone
 
-	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
-	git_target_dir="/opt/source/BBBlfs"
-#	git_clone
-
-	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"
-	git_target_dir="/opt/source/Robotics_Cape_Installer"
+	git_repo="https://github.com/StrawsonDesign/librobotcontrol"
+	git_target_dir="/opt/source/librobotcontrol"
 #	git_clone
 
 	git_repo="https://github.com/mcdeoliveira/rcpy"
