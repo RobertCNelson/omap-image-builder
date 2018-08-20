@@ -1155,21 +1155,21 @@ populate_rootfs () {
 				cp -v "${oem_flasher_eeprom}" "${TEMPDIR}/disk/opt/emmc/"
 				sync
 			fi
-			if [ ! "x${oem_flasher_job}" = "x" ] ; then
-				cp -v "${oem_flasher_job}" "${TEMPDIR}/disk/opt/emmc/job.txt"
-				sync
-				if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
-					echo "conf_eeprom_file=${oem_flasher_eeprom}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
-					if [ ! "x${conf_eeprom_compare}" = "x" ] ; then
-						echo "conf_eeprom_compare=${conf_eeprom_compare}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
-					else
-						echo "conf_eeprom_compare=335" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
-					fi
-				fi
-			fi
-			echo "-----------------------------"
-			cat "${TEMPDIR}/disk/opt/emmc/job.txt"
-			echo "-----------------------------"
+#			if [ ! "x${oem_flasher_job}" = "x" ] ; then
+#				cp -v "${oem_flasher_job}" "${TEMPDIR}/disk/opt/emmc/job.txt"
+#				sync
+#				if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
+#					echo "conf_eeprom_file=${oem_flasher_eeprom}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+#					if [ ! "x${conf_eeprom_compare}" = "x" ] ; then
+#						echo "conf_eeprom_compare=${conf_eeprom_compare}" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+#					else
+#						echo "conf_eeprom_compare=335" >> "${TEMPDIR}/disk/opt/emmc/job.txt"
+#					fi
+#				fi
+#			fi
+#			echo "-----------------------------"
+#			cat "${TEMPDIR}/disk/opt/emmc/job.txt"
+#			echo "-----------------------------"
 			echo "Disk Size, with *.img"
 			du -sh ${TEMPDIR}/disk/
 		fi
@@ -1650,28 +1650,28 @@ populate_rootfs () {
 		echo "Image file: ${imagename}"
 		echo "-----------------------------"
 
-		if [ "x${usb_flasher}" = "x" ] && [ "x${emmc_flasher}" = "x" ] ; then
-			wfile="${imagename}.xz.job.txt"
-			echo "abi=aaa" > ${wfile}
-			echo "conf_image=${imagename}.xz" >> ${wfile}
-			echo "conf_resize=enable" >> ${wfile}
-			echo "conf_partition1_startmb=${conf_boot_startmb}" >> ${wfile}
-
-			case "${conf_boot_fstype}" in
-			fat)
-				echo "conf_partition1_fstype=E" >> ${wfile}
-				;;
-			ext2|ext3|ext4|btrfs)
-				echo "conf_partition1_fstype=L" >> ${wfile}
-				;;
-			esac
-
-			if [ "x${media_rootfs_partition}" = "x2" ] ; then
-				echo "conf_partition1_endmb=${conf_boot_endmb}" >> ${wfile}
-				echo "conf_partition2_fstype=L" >> ${wfile}
-			fi
-			echo "conf_root_partition=${media_rootfs_partition}" >> ${wfile}
-		fi
+#		if [ "x${usb_flasher}" = "x" ] && [ "x${emmc_flasher}" = "x" ] ; then
+#			wfile="${imagename}.xz.job.txt"
+#			echo "abi=aaa" > ${wfile}
+#			echo "conf_image=${imagename}.xz" >> ${wfile}
+#			echo "conf_resize=enable" >> ${wfile}
+#			echo "conf_partition1_startmb=${conf_boot_startmb}" >> ${wfile}
+#
+#			case "${conf_boot_fstype}" in
+#			fat)
+#				echo "conf_partition1_fstype=E" >> ${wfile}
+#				;;
+#			ext2|ext3|ext4|btrfs)
+#				echo "conf_partition1_fstype=L" >> ${wfile}
+#				;;
+#			esac
+#
+#			if [ "x${media_rootfs_partition}" = "x2" ] ; then
+#				echo "conf_partition1_endmb=${conf_boot_endmb}" >> ${wfile}
+#				echo "conf_partition2_fstype=L" >> ${wfile}
+#			fi
+#			echo "conf_root_partition=${media_rootfs_partition}" >> ${wfile}
+#		fi
 	fi
 }
 
