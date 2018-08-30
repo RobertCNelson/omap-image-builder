@@ -1317,6 +1317,10 @@ populate_rootfs () {
 		echo "" >> ${wfile}
 	fi
 
+	echo "#Use an overlayfs on top of a read-only root filesystem:" >> ${wfile}
+	echo "#cmdline=${cmdline} overlayroot=tmpfs" >> ${wfile}
+	echo "" >> ${wfile}
+
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 		if [ ! "x${has_post_uenvtxt}" = "x" ] ; then
 			cat "${DIR}/post-uEnv.txt" >> ${wfile}
