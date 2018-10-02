@@ -69,9 +69,8 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 
        ubuntu_bionic_ros_iot="ubuntu-18.04.1-ros-iot-armhf-${time}"
 
-xz_img="xz -z -8"
-#xz_tar="xz -z -8"
-xz_tar="xz -T2 -z -8"
+xz_img="xz -T2 -z -8"
+xz_tar="xz -T3 -z -8"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
