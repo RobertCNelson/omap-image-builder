@@ -1747,6 +1747,10 @@ process_dtb_conf () {
 		exit
 		;;
 	esac
+
+	if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
+		echo "U-Boot Overlays Enabled..."
+	fi
 }
 
 check_dtb_board () {

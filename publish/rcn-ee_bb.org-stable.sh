@@ -72,7 +72,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 xz_img="xz -T2 -z -8"
 xz_tar="xz -T3 -z -8"
 
-beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
+beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 
