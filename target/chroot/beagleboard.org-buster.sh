@@ -229,6 +229,11 @@ install_git_repos () {
 		fi
 	fi
 
+	git_repo="https://github.com/rogerq/pru-software-support-package"
+	git_target_dir="/opt/source/rogerq-mainline-pru-software-support-package"
+	git_branch="upstream/pruss"
+	git_clone_branch
+
 	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
 	git_target_dir="/opt/source/dtb-4.14-ti"
 	git_branch="4.14-ti"
