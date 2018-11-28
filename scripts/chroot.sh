@@ -674,6 +674,20 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-mark hold chromium || true
 		fi
 
+		#Lets force depmod...
+		if [ ! "x${repo_rcnee_depmod0}" = "x" ] ; then
+			echo "Log: (chroot) Running depmod for: ${repo_rcnee_depmod0}"
+			depmod -a ${repo_rcnee_depmod0}
+			update-initramfs -u -k ${repo_rcnee_depmod0}
+		fi
+
+		#Lets force depmod...
+		if [ ! "x${repo_rcnee_depmod1}" = "x" ] ; then
+			echo "Log: (chroot) Running depmod for: ${repo_rcnee_depmod1}"
+			depmod -a ${repo_rcnee_depmod1}
+			update-initramfs -u -k ${repo_rcnee_depmod1}
+		fi
+
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
