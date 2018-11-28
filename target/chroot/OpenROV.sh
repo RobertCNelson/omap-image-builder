@@ -56,6 +56,7 @@ git_clone () {
 	qemu_command="git clone ${git_repo} ${git_target_dir} --depth 1 || true"
 	qemu_warning
 	git clone ${git_repo} ${git_target_dir} --depth 1 || true
+	chown -R 1000:1000 ${git_target_dir}
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
@@ -65,6 +66,7 @@ git_clone_branch () {
 	qemu_command="git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true"
 	qemu_warning
 	git clone -b ${git_branch} ${git_repo} ${git_target_dir} --depth 1 || true
+	chown -R 1000:1000 ${git_target_dir}
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
@@ -74,6 +76,7 @@ git_clone_full () {
 	qemu_command="git clone ${git_repo} ${git_target_dir} || true"
 	qemu_warning
 	git clone ${git_repo} ${git_target_dir} || true
+	chown -R 1000:1000 ${git_target_dir}
 	sync
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
