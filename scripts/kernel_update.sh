@@ -53,4 +53,9 @@ if [ -f configs/kernel.data ] ; then
 
 	git_msg="4.14.x-ti-rt"
 	var="ti-rt"      ; ver="LTS414"  ; current_kernel
+
+	git_msg="4.19.x-ti"
+	filter1="rt"
+	filter2="rt"
+	var="ti"         ; ver="LTS419"  ; current_kernel
 fi
