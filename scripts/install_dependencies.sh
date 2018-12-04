@@ -22,7 +22,7 @@
 
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
-minimal_debootstrap="110"
+minimal_debootstrap="111"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
