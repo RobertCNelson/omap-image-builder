@@ -684,8 +684,15 @@ create_partitions () {
 		fi
 		dd_uboot_boot
 		bootloader_installed=1
-		sfdisk_single_partition_layout
-		media_rootfs_partition=1
+		if [ "x${enable_fat_partition}" = "xenable" ] ; then
+			conf_boot_endmb=${conf_boot_endmb:-"96"}
+			conf_boot_fstype=${conf_boot_fstype:-"fat"}
+			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+			sfdisk_partition_layout
+		else
+			sfdisk_single_partition_layout
+			media_rootfs_partition=1
+		fi
 		;;
 	dd_spl_uboot_boot)
 		echo "Using dd to place bootloader on drive"
@@ -1737,7 +1744,7 @@ process_dtb_conf () {
 
 	case "${conf_boot_fstype}" in
 	fat)
-		sfdisk_fstype="0xE"
+		sfdisk_fstype=${sfdisk_fstype:-"0xE"}
 		;;
 	ext2|ext3|ext4|btrfs)
 		sfdisk_fstype="L"
