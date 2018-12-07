@@ -910,6 +910,10 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
+	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ]
+		touch ${TEMPDIR}/disk/.imx8mq-evk
+	fi
+
 	if [ ${has_uenvtxt} ] ; then
 		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
 			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
