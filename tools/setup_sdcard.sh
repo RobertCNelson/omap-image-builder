@@ -138,8 +138,8 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git-core kpartx wget parted"
-		echo "Fedora: yum install dosfstools dosfstools git-core wget"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git kpartx wget parted"
+		echo "Fedora: yum install dosfstools dosfstools git wget"
 		echo "Gentoo: emerge dosfstools git wget"
 		echo ""
 		exit
