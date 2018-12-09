@@ -282,7 +282,7 @@ install_git_repos () {
 	#beagle-tester
 	git_repo="https://github.com/jadonk/beagle-tester"
 	git_target_dir="/opt/source/beagle-tester"
-	git_clone
+#	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		if [ -f /usr/lib/libroboticscape.so ] ; then
 			cd ${git_target_dir}/
