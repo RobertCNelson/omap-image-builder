@@ -681,6 +681,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_ros_pkg_list}"
 			apt-get -y install ${repo_ros_pkg_list}
+			#ROS: ubuntu, extra crude, cleanup....
+			apt autoremove -y || true
 		fi
 
 		if [ ! "x${repo_rcnee_chromium_special}" = "x" ] ; then
