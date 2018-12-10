@@ -910,7 +910,7 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
-	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ]
+	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ] ; then
 		touch ${TEMPDIR}/disk/.imx8mq-evk
 	fi
 
