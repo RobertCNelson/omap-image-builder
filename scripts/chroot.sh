@@ -593,9 +593,25 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			cp -v /etc/resolv.conf /etc/resolv.conf.bak
 		fi
 
+		echo "---------------------------------"
+		echo "debug: apt-get update------------"
 		apt-get update
+		echo "---------------------------------"
+
+		echo "debug: apt-get upgrade -y--------"
 		apt-get upgrade -y
+
+		if [ -f /etc/resolv.conf ] ; then
+			echo "debug: networking: --------------"
+			cat /etc/resolv.conf || true
+			echo "---------------------------------"
+			cp -v /etc/resolv.conf /etc/resolv.conf.bak
+		fi
+		echo "---------------------------------"
+
+		echo "debug: apt-get dist-upgrade -y---"
 		apt-get dist-upgrade -y
+		echo "---------------------------------"
 
 		if [ ! -f /etc/resolv.conf ] ; then
 			#'/etc/resolv.conf.bak' -> '/etc/resolv.conf'
