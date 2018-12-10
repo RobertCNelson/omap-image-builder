@@ -601,23 +601,23 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "debug: apt-get upgrade -y--------"
 		apt-get upgrade -y
 
-		if [ -f /etc/resolv.conf ] ; then
-			echo "debug: networking: --------------"
-			cat /etc/resolv.conf || true
-			echo "---------------------------------"
-			cp -v /etc/resolv.conf /etc/resolv.conf.bak
+		if [ ! -f /etc/resolv.conf ] ; then
+			echo "debug: /etc/resolv.conf was removed! Fixing..."
+			#'/etc/resolv.conf.bak' -> '/etc/resolv.conf'
+			#cp: not writing through dangling symlink '/etc/resolv.conf'
+			cp -v --remove-destination /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 		echo "---------------------------------"
 
 		echo "debug: apt-get dist-upgrade -y---"
 		apt-get dist-upgrade -y
-		echo "---------------------------------"
-
 		if [ ! -f /etc/resolv.conf ] ; then
+			echo "debug: /etc/resolv.conf was removed! Fixing..."
 			#'/etc/resolv.conf.bak' -> '/etc/resolv.conf'
 			#cp: not writing through dangling symlink '/etc/resolv.conf'
 			cp -v --remove-destination /etc/resolv.conf.bak /etc/resolv.conf
 		fi
+		echo "---------------------------------"
 
 		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			if [ -f /bin/busybox ] ; then
