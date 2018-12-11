@@ -35,7 +35,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
 ./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
 
-./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.14
+./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
 
 else
 	mkdir -p ${DIR}/deploy/ || true
@@ -75,6 +75,7 @@ xz_tar="xz -T3 -z -8"
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
+pru_rproc_mainline="--enable-mainline-pru-rproc"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -306,7 +307,7 @@ options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} -
 ###ros iot image (bionic):
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 
-options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"  ; generate_img
+options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_mainline}"  ; generate_img
 options="--img-6gb bbx15-\${base_rootfs}     ${beagle_x15}"                      ; generate_img
 
 ###archive *.tar
