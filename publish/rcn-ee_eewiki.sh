@@ -18,7 +18,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_stable="debian-9.6"
+debian_stable="debian-9.7"
 ubuntu_stable="ubuntu-18.04.1"
 
 xz_img="xz -z -8"
