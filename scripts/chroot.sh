@@ -1021,9 +1021,20 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable ureadahead.service || true
 		fi
 
-		#No guarntee we will have an active network connection...
+		#No guarantee we will have an active network connection...
+		#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily.service
+		#     9.445s apt-daily.services
 		if [ -f /lib/systemd/system/apt-daily.service ] ; then
 			systemctl disable apt-daily.service || true
+			systemctl disable apt-daily.timer || true
+		fi
+
+		#No guarantee we will have an active network connection...
+		#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily-upgrade.service
+		#     10.300s apt-daily-upgrade.service
+		if [ -f /lib/systemd/system/apt-daily-upgrade.service ] ; then
+			systemctl disable apt-daily-upgrade.service || true
+			systemctl disable apt-daily-upgrade.timer || true
 		fi
 
 		#We use connman...
@@ -1034,6 +1045,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#We use dnsmasq & connman...
 		if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
 			systemctl disable systemd-resolved.service || true
+		fi
+
+		#Kill man-db
+		#debian@beaglebone:~$ sudo systemd-analyze blame | grep man-db.service
+		#    4min 10.587s man-db.service
+		if [ -f /lib/systemd/system/man-db.service ] ; then
+			systemctl disable man-db.service || true
+			systemctl disable man-db.timer || true
 		fi
 	}
 
