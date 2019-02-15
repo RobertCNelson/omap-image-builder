@@ -75,7 +75,9 @@ xz_tar="xz -T3 -z -8"
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
+pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 pru_rproc_mainline="--enable-mainline-pru-rproc"
+pru_uio_v419="--enable-uboot-pru-uio-419"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -288,26 +290,26 @@ options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                ; generate_img
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
-#options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs"                ; generate_img
-#options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --rootfs btrfs --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
+#options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti} --rootfs btrfs"                ; generate_img
+#options="--img-4gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v419ti} --rootfs btrfs --emmc-flasher" ; generate_img
 
 ###gobot iot image (buster):
 base_rootfs="${debian_buster_gobot_iot}" ; blend="buster-gobot-iot" ; extract_base_rootfs
 
 options="--img-4gb bbx15-\${base_rootfs}     ${beagle_x15}"                     ; generate_img
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}" ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti}" ; generate_img
 
 ###efi iot image (buster):
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
 
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti} --efi"                ; generate_img
+options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti} --efi"                ; generate_img
 
 ###ros iot image (bionic):
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 
-options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_mainline}"  ; generate_img
+options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_uio_v419}"  ; generate_img
 options="--img-6gb bbx15-\${base_rootfs}     ${beagle_x15}"                      ; generate_img
 
 ###archive *.tar
