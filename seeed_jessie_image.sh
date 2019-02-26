@@ -85,7 +85,7 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; archive_base_root
 
 #
 base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher"
-wfile="bbx15-\${base_rootfs}-4gb" ; archive_img
+wfile="am57xx-\${base_rootfs}-4gb" ; archive_img
 
 #
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"

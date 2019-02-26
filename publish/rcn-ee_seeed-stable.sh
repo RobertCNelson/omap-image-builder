@@ -138,10 +138,10 @@ options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
-options="--img-4gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
+options="--img-4gb am57xx-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
 options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 options="--img-4gb m10a-blank-\${base_rootfs}  ${beaglebone}  --m10a-flasher" ; generate_img
-options="--img-4gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
+options="--img-4gb am57xx-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
 
 #options="--img-4gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                 ; generate_img
 
@@ -163,10 +163,10 @@ base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
 options="--img-2gb a335-eeprom-\${base_rootfs} ${beaglebone}  --a335-flasher" ; generate_img
 options="--img-2gb bone-\${base_rootfs}        ${beaglebone}"                 ; generate_img
-options="--img-2gb bbx15-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
+options="--img-2gb am57xx-\${base_rootfs}       ${beagle_x15}"                 ; generate_img
 options="--img-2gb BBB-blank-\${base_rootfs}   ${beaglebone}  --emmc-flasher" ; generate_img
 
-#options="--img-2gb bbx15-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
+#options="--img-2gb am57xx-blank-\${base_rootfs} ${beagle_x15}  --emmc-flasher" ; generate_img
 
 #options="--img-2gb omap5-uevm-\${base_rootfs}  ${omap5_uevm}"                  ; generate_img
 #options="--img-2gb BBGW-blank-\${base_rootfs}  ${beaglebone}  --bbgw-flasher"  ; generate_img
@@ -207,8 +207,8 @@ base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
 wfile="bone-\${base_rootfs}-4gb"        ; archive_img
 wfile="m10a-blank-\${base_rootfs}-4gb"  ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
-wfile="bbx15-\${base_rootfs}-4gb"       ; archive_img
-wfile="bbx15-blank-\${base_rootfs}-4gb" ; archive_img
+wfile="am57xx-\${base_rootfs}-4gb"       ; archive_img
+wfile="am57xx-blank-\${base_rootfs}-4gb" ; archive_img
 
 #wfile="omap5-uevm-\${base_rootfs}-4gb"  ; archive_img
 #wfile="tre-\${base_rootfs}-4gb"         ; archive_img
@@ -231,8 +231,8 @@ base_rootfs="${debian_jessie_console}" ; blend="console"
 wfile="a335-eeprom-\${base_rootfs}-2gb" ; archive_img
 wfile="bone-\${base_rootfs}-2gb"        ; archive_img
 wfile="BBB-blank-\${base_rootfs}-2gb"   ; archive_img
-wfile="bbx15-\${base_rootfs}-2gb"       ; archive_img
-wfile="bbx15-blank-\${base_rootfs}-2gb" ; archive_img
+wfile="am57xx-\${base_rootfs}-2gb"       ; archive_img
+wfile="am57xx-blank-\${base_rootfs}-2gb" ; archive_img
 
 #wfile="omap5-uevm-\${base_rootfs}-2gb"  ; archive_img
 #wfile="BBGW-blank-\${base_rootfs}-2gb"  ; archive_img

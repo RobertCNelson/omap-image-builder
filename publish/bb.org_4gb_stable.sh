@@ -96,7 +96,7 @@ build_and_upload_image
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
 image_name="debian-8.11-lxqt-4gb-armhf-${time}"
 size="4gb"
-target_name="bbx15"
+target_name="am57xx"
 options="--img-4gb ${target_name}-${image_name} --dtb am57xx-beagle-x15 --hostname beagleboard"
 config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
 build_and_upload_image
