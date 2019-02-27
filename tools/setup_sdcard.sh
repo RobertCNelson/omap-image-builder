@@ -1265,7 +1265,7 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
@@ -1278,7 +1278,7 @@ populate_rootfs () {
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
@@ -1291,7 +1291,7 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
@@ -1304,7 +1304,7 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
@@ -1317,7 +1317,7 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
@@ -1330,7 +1330,7 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-				echo "###pru_uio (4.4.x-ti, 4.14.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "###pru_uio (4.4.x-ti, 4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 #				echo "###pru_uio_4.19+ (4.19.x-ti (mainline/bone kernel))" >> ${wfile}
 #				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-4-19-00A0.dtbo" >> ${wfile}
