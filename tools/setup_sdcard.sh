@@ -1506,7 +1506,7 @@ populate_rootfs () {
 			echo "${boot_drive}  /boot/efi vfat defaults 0 0" >> ${wfile}
 		fi
 
-		echo "debugfs  /sys/kernel/debug  debugfs  defaults  0  0" >> ${wfile}
+		echo "debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0" >> ${wfile}
 
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
 			wfile="${TEMPDIR}/disk/etc/network/interfaces"
