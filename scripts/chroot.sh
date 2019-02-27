@@ -1055,6 +1055,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable man-db.service || true
 			systemctl disable man-db.timer || true
 		fi
+
+		#Anyone who needs this can enable it...
+		if [ -f /lib/systemd/system/spppd-dns.service ] ; then
+			systemctl disable pppd-dns.service || true
+		fi
 	}
 
 	grub_tweaks () {
