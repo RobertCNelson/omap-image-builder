@@ -366,11 +366,6 @@ install_git_repos () {
 	git_target_dir="/opt/source/Robotics_Cape_Installer"
 	git_branch="v0.3.4"
 	git_clone_branch
-
-	#beagle-tester
-	git_repo="https://github.com/jadonk/beagle-tester"
-	git_target_dir="/opt/source/beagle-tester"
-	git_clone
 }
 
 install_build_pkgs () {

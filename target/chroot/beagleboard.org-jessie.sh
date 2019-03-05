@@ -304,11 +304,6 @@ install_git_repos () {
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
 	git_clone
-
-	#beagle-tester
-	git_repo="https://github.com/jadonk/beagle-tester"
-	git_target_dir="/opt/source/beagle-tester"
-	git_clone
 }
 
 install_build_pkgs () {
