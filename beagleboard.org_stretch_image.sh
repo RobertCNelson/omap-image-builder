@@ -3,8 +3,8 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-#./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
+#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
@@ -49,14 +49,16 @@ extract_base_rootfs () {
         if [ -f \${base_rootfs}.tar.xz ] ; then
                 tar xf \${base_rootfs}.tar.xz
         else
-                tar xf \${base_rootfs}.tar
+                if [ -f \${base_rootfs}.tar ] ; then
+                        tar xf \${base_rootfs}.tar
+                fi
         fi
 }
 
 archive_img () {
-	#prevent xz warning for 'Cannot set the file group: Operation not permitted'
-	sudo chown \${UID}:\${GROUPS} \${wfile}.img
         if [ -f \${wfile}.img ] ; then
+                #prevent xz warning for 'Cannot set the file group: Operation not permitted'
+                sudo chown 1000:1000 \${wfile}.img
                 if [ ! -f \${wfile}.bmap ] ; then
                         if [ -f /usr/bin/bmaptool ] ; then
                                 bmaptool create -o \${wfile}.bmap \${wfile}.img
@@ -67,17 +69,16 @@ archive_img () {
 }
 
 generate_img () {
-        cd \${base_rootfs}/
-        sudo ./setup_sdcard.sh \${options}
-        mv *.img ../
-        mv *.job.txt ../
-        cd ..
+        if [ ! "x\${base_rootfs}" = "x" ] ; then
+                if [ -d \${base_rootfs}/ ] ; then
+                        cd \${base_rootfs}/
+                        sudo ./setup_sdcard.sh \${options}
+                        mv *.img ../ || true
+                        mv *.job.txt ../ || true
+                        cd ..
+                fi
+        fi
 }
-
-###machinekit (stretch):
-base_rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs} ${beaglebone}" ; generate_img
 
 ###console image (stretch):
 base_rootfs="${debian_stretch_console}" ; blend="stretch-console" ; extract_base_rootfs
@@ -111,12 +112,6 @@ options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v414ti}
 base_rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm" ; extract_base_rootfs
 
 options="--img-4gb bbxm-\${base_rootfs}  ${beagle_xm}" ; generate_img
-
-### wayland image (stretch):
-base_rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${base_rootfs} ${beagle_x15}"    ; generate_img
-options="--img-4gb bone-\${base_rootfs}  ${beaglebone}"    ; generate_img
 
 ###archive *.tar
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs

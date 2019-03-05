@@ -48,14 +48,16 @@ extract_base_rootfs () {
         if [ -f \${base_rootfs}.tar.xz ] ; then
                 tar xf \${base_rootfs}.tar.xz
         else
-                tar xf \${base_rootfs}.tar
+                if [ -f \${base_rootfs}.tar ] ; then
+                        tar xf \${base_rootfs}.tar
+                fi
         fi
 }
 
 archive_img () {
-	#prevent xz warning for 'Cannot set the file group: Operation not permitted'
-	sudo chown \${UID}:\${GROUPS} \${wfile}.img
         if [ -f \${wfile}.img ] ; then
+                #prevent xz warning for 'Cannot set the file group: Operation not permitted'
+                sudo chown 1000:1000 \${wfile}.img
                 if [ ! -f \${wfile}.bmap ] ; then
                         if [ -f /usr/bin/bmaptool ] ; then
                                 bmaptool create -o \${wfile}.bmap \${wfile}.img
@@ -66,11 +68,15 @@ archive_img () {
 }
 
 generate_img () {
-        cd \${base_rootfs}/
-        sudo ./setup_sdcard.sh \${options}
-        mv *.img ../
-        mv *.job.txt ../
-        cd ..
+        if [ ! "x\${base_rootfs}" = "x" ] ; then
+                if [ -d \${base_rootfs}/ ] ; then
+                        cd \${base_rootfs}/
+                        sudo ./setup_sdcard.sh \${options}
+                        mv *.img ../ || true
+                        mv *.job.txt ../ || true
+                        cd ..
+                fi
+        fi
 }
 
 ###lxqt-4gb image
