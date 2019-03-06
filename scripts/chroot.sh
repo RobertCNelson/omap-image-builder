@@ -1057,8 +1057,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		#Anyone who needs this can enable it...
-		if [ -f /lib/systemd/system/spppd-dns.service ] ; then
+		if [ -f /lib/systemd/system/pppd-dns.service ] ; then
 			systemctl disable pppd-dns.service || true
+		fi
+
+		if [ -f /lib/systemd/system/hostapd.service ] ; then
+			systemctl disable hostapd.service || true
 		fi
 	}
 
