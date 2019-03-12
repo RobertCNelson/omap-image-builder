@@ -412,6 +412,13 @@ if [ ! "x${repo_nodesource}" = "x" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/nodesource.gpg.key" "${tempdir}/tmp/nodesource.gpg.key"
 fi
 
+if [ "x${repo_azulsystems}" = "xenable" ] ; then
+	echo "" >> ${wfile}
+	echo "deb http://repos.azulsystems.com/${deb_distribution} stable main" >> ${wfile}
+	echo "" >> ${wfile}
+	sudo cp -v "${OIB_DIR}/target/keyring/repos.azulsystems.com.pubkey.asc" "${tempdir}/tmp/repos.azulsystems.com.pubkey.asc"
+fi
+
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	#no: precise
 	echo "" >> ${wfile}
@@ -569,6 +576,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /tmp/nodesource.gpg.key ] ; then
 			apt-key add /tmp/nodesource.gpg.key
 			rm -f /tmp/nodesource.gpg.key || true
+		fi
+		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
+			apt-key add repos.azulsystems.com.pubkey.asc
+			rm -f repos.azulsystems.com.pubkey.asc || true
 		fi
 		if [ "x${repo_rcnee}" = "xenable" ] ; then
 			apt-key add /tmp/repos.rcn-ee.net-archive-keyring.asc
