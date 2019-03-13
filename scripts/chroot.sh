@@ -578,8 +578,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			rm -f /tmp/nodesource.gpg.key || true
 		fi
 		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
-			apt-key add repos.azulsystems.com.pubkey.asc
-			rm -f repos.azulsystems.com.pubkey.asc || true
+			apt-key add /tmp/repos.azulsystems.com.pubkey.asc
+			rm -f /tmp/repos.azulsystems.com.pubkey.asc || true
 		fi
 		if [ "x${repo_rcnee}" = "xenable" ] ; then
 			apt-key add /tmp/repos.rcn-ee.net-archive-keyring.asc
