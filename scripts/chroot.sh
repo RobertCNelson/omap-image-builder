@@ -737,7 +737,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 			if [ -f /etc/ssh/sshd_config ] ; then
-				sed -i -e 's:#Banner:Banner:g' /etc/ssh/sshd_config
+				sed -i -e 's:#Banner none:Banner /etc/issue.net:g' /etc/ssh/sshd_config
 			fi
 		fi
 	}
