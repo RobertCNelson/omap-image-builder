@@ -33,6 +33,10 @@ if [ -f ${DIR}/.project ] ; then
 	. ${DIR}/.project
 fi
 
+usage () {
+	echo "usage: ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14"
+}
+
 generic_git () {
 	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		git clone ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
