@@ -26,62 +26,9 @@ TIME=$(date +%Y-%m-%d)
 
 OIB_DIR="$( cd "$(dirname "$0")" ; pwd -P )" 
 DIR="$PWD"
-mkdir -p ${DIR}/ignore
-
-
-if [ -f ${DIR}/.project ] ; then
-	. ${DIR}/.project
-fi
 
 usage () {
 	echo "usage: ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14"
-}
-
-generic_git () {
-	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
-		git clone ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
-	fi
-}
-
-update_git () {
-	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
-		cd ${DIR}/git/${git_project_name}/
-		git pull --rebase || true
-		cd -
-	fi
-}
-
-git_trees () {
-	if [ ! -d ${DIR}/git/ ] ; then
-		mkdir -p ${DIR}/git/
-	fi
-
-	git_project_name="linux-firmware"
-	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
-	generic_git
-	update_git
-}
-
-run_roostock_ng () {
-	if [ ! -f ${DIR}/.project ] ; then
-		echo "error: [.project] file not defined"
-		exit 1
-	else
-		echo "Debug: .project"
-		echo "-----------------------------"
-		cat ${DIR}/.project
-		echo "-----------------------------"
-	fi
-
-	if [ ! "${tempdir}" ] ; then
-		tempdir=$(mktemp -d -p ${DIR}/ignore)
-		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
-	fi
-
-	/bin/bash -e "${OIB_DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
-	/bin/bash -e "${OIB_DIR}/scripts/debootstrap.sh" || { exit 1 ; }
-	/bin/bash -e "${OIB_DIR}/scripts/chroot.sh" || { exit 1 ; }
-	sudo rm -rf ${tempdir}/ || true
 }
 
 checkparm () {
@@ -140,16 +87,13 @@ check_saved_config () {
 	fi
 }
 
-git_trees
-
-cd ${DIR}/
-
 unset need_to_compress_rootfs
 # parse commandline options
 while [ ! -z "$1" ] ; do
 	case $1 in
 	-h|--help)
 		usage
+		exit
 		;;
 	-c|-C|--config)
 		checkparm $2
@@ -162,6 +106,63 @@ while [ ! -z "$1" ] ; do
 	esac
 	shift
 done
+
+mkdir -p ${DIR}/ignore
+
+if [ -f ${DIR}/.project ] ; then
+	. ${DIR}/.project
+fi
+
+generic_git () {
+	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
+		git clone ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
+	fi
+}
+
+update_git () {
+	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
+		cd ${DIR}/git/${git_project_name}/
+		git pull --rebase || true
+		cd -
+	fi
+}
+
+git_trees () {
+	if [ ! -d ${DIR}/git/ ] ; then
+		mkdir -p ${DIR}/git/
+	fi
+
+	git_project_name="linux-firmware"
+	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+	generic_git
+	update_git
+}
+
+run_roostock_ng () {
+	if [ ! -f ${DIR}/.project ] ; then
+		echo "error: [.project] file not defined"
+		exit 1
+	else
+		echo "Debug: .project"
+		echo "-----------------------------"
+		cat ${DIR}/.project
+		echo "-----------------------------"
+	fi
+
+	if [ ! "${tempdir}" ] ; then
+		tempdir=$(mktemp -d -p ${DIR}/ignore)
+		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
+	fi
+
+	/bin/bash -e "${OIB_DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
+	/bin/bash -e "${OIB_DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	/bin/bash -e "${OIB_DIR}/scripts/chroot.sh" || { exit 1 ; }
+	sudo rm -rf ${tempdir}/ || true
+}
+
+git_trees
+
+cd ${DIR}/
 
 run_roostock_ng
 
