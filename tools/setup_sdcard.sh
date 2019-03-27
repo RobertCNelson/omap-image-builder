@@ -1251,8 +1251,16 @@ populate_rootfs () {
 			echo "###" >> ${wfile}
 			echo "###Disable auto loading of virtual capes (emmc/video/wireless/adc)" >> ${wfile}
 			echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
-			echo "#disable_uboot_overlay_video=1" >> ${wfile}
-			echo "#disable_uboot_overlay_audio=1" >> ${wfile}
+			if [ "x${uboot_disable_video}" = "xenable" ] ; then
+				echo "disable_uboot_overlay_video=1" >> ${wfile}
+			else
+				echo "#disable_uboot_overlay_video=1" >> ${wfile}
+			fi
+			if [ "x${uboot_disable_audio}" = "xenable" ] ; then
+				echo "disable_uboot_overlay_audio=1" >> ${wfile}
+			else
+				echo "#disable_uboot_overlay_audio=1" >> ${wfile}
+			fi
 			echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
 			echo "#disable_uboot_overlay_adc=1" >> ${wfile}
 			echo "###" >> ${wfile}
@@ -2048,6 +2056,12 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-cape-overlays)
 		uboot_cape_overlays="enable"
+		;;
+	--enable-uboot-disable-video)
+		uboot_disable_video="enable"
+		;;
+	--enable-uboot-disable-audio)
+		uboot_disable_audio="enable"
 		;;
 	--enable-uboot-pru-rproc-44ti)
 		uboot_pru_rproc_44ti="enable"
