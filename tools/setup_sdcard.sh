@@ -1322,7 +1322,7 @@ populate_rootfs () {
 			fi
 			echo "###" >> ${wfile}
 			echo "###Cape Universal Enable" >> ${wfile}
-			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
+			if [ "x${uboot_cape_overlays}" = "xenable" ] && [ "x${enable_cape_universal}" = "xenable" ] ; then
 				echo "enable_uboot_cape_universal=1" >> ${wfile}
 			else
 				echo "#enable_uboot_cape_universal=1" >> ${wfile}
