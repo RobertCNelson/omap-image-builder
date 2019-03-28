@@ -357,10 +357,14 @@ echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 echo "" >> ${wfile}
 
+#https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
 buster|sid)
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	;;
+jessie)
+	echo "###For Debian 8 Jessie, jessie-updates no longer exists as this suite no longer receives updates since 2018-05-17." >> ${wfile}
 	;;
 *)
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
@@ -368,6 +372,7 @@ buster|sid)
 	;;
 esac
 
+#https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
 jessie|stretch)
 	echo "" >> ${wfile}
