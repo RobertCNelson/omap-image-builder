@@ -377,12 +377,11 @@ esac
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
 jessie|stretch)
-	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
 	;;
 buster|sid)
-	echo "" >> ${wfile}
 	echo "#deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
