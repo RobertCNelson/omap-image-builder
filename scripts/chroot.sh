@@ -362,6 +362,7 @@ case "${deb_codename}" in
 buster|sid)
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
 	;;
 jessie)
 	echo "###For Debian 8 Jessie, jessie-updates no longer exists as this suite no longer receives updates since 2018-05-17." >> ${wfile}
@@ -369,6 +370,7 @@ jessie)
 *)
 	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
 	;;
 esac
 
@@ -378,14 +380,6 @@ jessie|stretch)
 	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-	else
-		echo "#deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "##deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-	fi
 	;;
 buster|sid)
 	echo "" >> ${wfile}
@@ -394,6 +388,17 @@ buster|sid)
 	echo "" >> ${wfile}
 	;;
 esac
+
+#https://wiki.debian.org/Backports
+if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
+	case "${deb_codename}" in
+	jessie|stretch)
+		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "" >> ${wfile}
+		;;
+	esac
+fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	echo "" >> ${wfile}
