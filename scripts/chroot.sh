@@ -143,6 +143,13 @@ check_defines () {
 			include=$(echo ${repo_rcnee_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
 			deb_additional_pkgs="${deb_additional_pkgs} ${include}"
 		fi
+
+		if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+			if [ ! "x${repo_rcnee_sgx_pkg_list}" = "x" ] ; then
+				include=$(echo ${repo_rcnee_sgx_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
+				deb_additional_pkgs="${deb_additional_pkgs} ${include}"
+			fi
+		fi
 	fi
 }
 
@@ -1203,6 +1210,13 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 	if [ -f "${DIR}/git/linux-firmware/mt7601u.bin" ] ; then
 		sudo cp "${DIR}/git/linux-firmware/mt7601u.bin" "${tempdir}/lib/firmware/mt7601u.bin"
 	fi
+fi
+
+if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+	sudo mkdir -p "${tempdir}/opt/sgx/"
+	sudo wget --directory-prefix="${tempdir}/opt/sgx/" http://repos.rcn-ee.net/debian/pool/main/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
+	wfile="${tempdir}/opt/sgx/status"
+	sudo sh -c "echo 'not_installed' >> ${wfile}"
 fi
 
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
