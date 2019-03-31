@@ -1214,7 +1214,7 @@ fi
 
 if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
 	sudo mkdir -p "${tempdir}/opt/sgx/"
-	sudo wget --directory-prefix="${tempdir}/opt/sgx/" http://repos.rcn-ee.net/debian/pool/main/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
+	sudo wget --directory-prefix="${tempdir}/opt/sgx/" https://rcn-ee.net/repos/debian/pool/main/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
 	wfile="${tempdir}/opt/sgx/status"
 	sudo sh -c "echo 'not_installed' >> ${wfile}"
 fi
