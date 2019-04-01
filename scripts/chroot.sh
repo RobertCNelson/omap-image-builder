@@ -1170,6 +1170,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		grub_tweaks
 	fi
 
+	if [ -d /opt/sgx/ ] ; then
+		chown -R ${rfs_username}:${rfs_username} /opt/sgx/
+	fi
+
 	rm -f /chroot_script.sh || true
 __EOF__
 
@@ -1213,8 +1217,11 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 fi
 
 if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+	sgx_http="https://rcn-ee.net/repos/debian/pool/main"
 	sudo mkdir -p "${tempdir}/opt/sgx/"
-	sudo wget --directory-prefix="${tempdir}/opt/sgx/" https://rcn-ee.net/repos/debian/pool/main/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
+	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
+	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
+	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
 	wfile="${tempdir}/opt/sgx/status"
 	sudo sh -c "echo 'not_installed' >> ${wfile}"
 fi
