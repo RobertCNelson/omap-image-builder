@@ -9,12 +9,16 @@ debian_jessie_seeed_gcp_iot="debian-8.11-seeed-gcp-iot-armhf-${time}"
 
 archive="xz -z -8 -v"
 
-beaglebone="--dtb beaglebone \
---rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
+pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
+pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
+pru_rproc_mainline="--enable-mainline-pru-rproc"
+pru_uio_v419="--enable-uboot-pru-uio-419"
 
-omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"
-beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
---hostname BeagleBoard-X15"
+beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
+
+beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -35,17 +39,17 @@ extract_base_rootfs () {
 
         if [ -f \${base_rootfs}.tar.xz ] ; then
                 tar xf \${base_rootfs}.tar.xz
-        fi
-
-        if [ -f \${base_rootfs}.tar ] ; then
-                tar xf \${base_rootfs}.tar
+        else
+                if [ -f \${base_rootfs}.tar ] ; then
+                        tar xf \${base_rootfs}.tar
+                fi
         fi
 }
 
 archive_img () {
-	#prevent xz warning for 'Cannot set the file group: Operation not permitted'
-	sudo chown \${UID}:\${GROUPS} \${wfile}.img
         if [ -f \${wfile}.img ] ; then
+                #prevent xz warning for 'Cannot set the file group: Operation not permitted'
+                sudo chown 1000:1000 \${wfile}.img
                 if [ ! -f \${wfile}.bmap ] ; then
                         if [ -f /usr/bin/bmaptool ] ; then
                                 bmaptool create -o \${wfile}.bmap \${wfile}.img
@@ -56,16 +60,18 @@ archive_img () {
 }
 
 generate_img () {
-        if [ -d \${base_rootfs}/ ] ; then
-                cd \${base_rootfs}/
-                sudo ./setup_sdcard.sh \${options}
-                mv *.img ../ || true
-                mv *.job.txt ../ || true
-                cd ..
+        if [ ! "x\${base_rootfs}" = "x" ] ; then
+                if [ -d \${base_rootfs}/ ] ; then
+                        cd \${base_rootfs}/
+                        sudo ./setup_sdcard.sh \${options}
+                        mv *.img ../ || true
+                        mv *.job.txt ../ || true
+                        cd ..
+                fi
         fi
 }
 
-###seeed gcp iot image
+###Seeed gcp iot image (jessie):
 base_rootfs="${debian_jessie_seeed_gcp_iot}" ; blend="seeed-gcp-iot" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                ; generate_img
