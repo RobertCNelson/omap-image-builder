@@ -88,30 +88,6 @@ BeagleBoard branch:
 
     git clone https://github.com/beagleboard/image-builder.git
 
-Images:
-
-    ./beagleboard.org_image.sh
-    http://beagleboard.org/source
-
-Flasher:
-
-    sudo ./setup_sdcard.sh --img-4gb BBB-eMMC-flasher-debian-7.X-201Y-MM-DD \
-    --dtb beaglebone --enable-systemd --bbb-flasher \
-    --bbb-old-bootloader-in-emmc
-
-    xz -z -8 -v BBB-eMMC-flasher-debian-7.X-201Y-MM-DD-4gb.img
-
-2GB, microSD:
-
-    sudo ./setup_sdcard.sh --img-2gb bone-debian-7.X-201Y-MM-DD --dtb beaglebone \
-    --enable-systemd --bbb-old-bootloader-in-emmc
-
-    xz -z -8 -v bone-debian-7.X-201Y-MM-DD-2gb.img
-
-Bug Tracker:
-
-    http://bugs.elinux.org/projects/debian-image-releases
-
 Release Process:
 
     bb.org-v201Y.MM.DD

@@ -18,7 +18,7 @@ debian_jessie_seeed_gcp_iot="debian-8.11-seeed-gcp-iot-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+beaglebone="--dtb beaglebone \
 --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
 omap5_uevm="--dtb omap5-uevm --rootfs_label rootfs --hostname omap5-uevm"

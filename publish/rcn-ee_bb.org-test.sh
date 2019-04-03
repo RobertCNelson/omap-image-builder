@@ -21,15 +21,15 @@ debian_jessie_oemflasher="debian-8.11-oemflasher-armhf-${time}"
 
 archive="xz -z -8"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
+beaglebone="--dtb beaglebone --hostname beaglebone --enable-cape-universal"
 
-bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+bb_blank_flasher="--dtb bbb-blank-eeprom \
 --hostname beaglebone --enable-cape-universal"
 
-beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
+beaglebone_console="--dtb beaglebone \
 --hostname beaglebone --enable-cape-universal"
 
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
+bb_blank_flasher_console="--dtb bbb-blank-eeprom \
 --hostname beaglebone --enable-cape-universal"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
@@ -153,7 +153,7 @@ options="--img-2gb a335-eeprom-\${base_rootfs} ${bb_blank_flasher_console} --a33
 ###oemflasher images: (also single partition)
 base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
 
-options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
+options="--img-2gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --hostname beaglebone --usb-flasher" ; generate_img
 options="--img-2gb am57xx-\${base_rootfs} --dtb am57xx-beagle-x15 --hostname BeagleBoard-X15 --usb-flasher" ; generate_img
 
 ###archive *.tar

@@ -13,16 +13,13 @@ debian_jessie_lxqt_4gb="debian-8.11-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --hostname beaglebone"
 
-bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+bb_blank_flasher="--dtb bbb-blank-eeprom --hostname beaglebone"
 
-beaglebone_console="--dtb beaglebone --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+beaglebone_console="--dtb beaglebone --hostname beaglebone"
 
-bb_blank_flasher_console="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+bb_blank_flasher_console="--dtb bbb-blank-eeprom --hostname beaglebone"
 
 omap3_beagle_xm="--dtb omap3-beagle-xm --hostname BeagleBoard"
 omap5_uevm="--dtb omap5-uevm --hostname omap5-uevm"

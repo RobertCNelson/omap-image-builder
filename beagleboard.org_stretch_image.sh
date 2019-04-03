@@ -26,8 +26,7 @@ pru_uio_v419="--enable-uboot-pru-uio-419"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
-beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
---hostname BeagleBoard-X15"
+beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash

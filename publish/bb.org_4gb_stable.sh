@@ -66,7 +66,7 @@ image_name="debian-8.11-iot-2gb-armhf-${time}"
 size="2gb"
 target_name="bone"
 options="--img-2gb ${target_name}-${image_name} --dtb beaglebone \
---bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
+--hostname beaglebone --enable-cape-universal"
 config_name="bb.org-debian-jessie-iot-2gb-v4.4"
 build_and_upload_image
 
@@ -77,7 +77,7 @@ image_name="debian-8.11-lxqt-4gb-armhf-${time}"
 size="4gb"
 target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
---bbb-old-bootloader-in-emmc --hostname beaglebone --enable-cape-universal"
+--hostname beaglebone --enable-cape-universal"
 config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
 build_and_upload_image
 

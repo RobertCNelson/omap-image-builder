@@ -13,10 +13,9 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
-beaglebone="--dtb beaglebone --bbb-old-bootloader-in-emmc --hostname beaglebone"
+beaglebone="--dtb beaglebone --hostname beaglebone"
 
-bb_blank_flasher="--dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc \
---hostname beaglebone"
+bb_blank_flasher="--dtb bbb-blank-eeprom --hostname beaglebone"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -66,7 +65,7 @@ generate_img () {
 ###oemflasher images: (also single partition)
 base_rootfs="${debian_jessie_oemflasher}" ; blend="oemflasher" ; extract_base_rootfs
 
-options="--img-4gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --bbb-old-bootloader-in-emmc --hostname beaglebone --usb-flasher" ; generate_img
+options="--img-4gb BBB-blank-\${base_rootfs} --dtb bbb-blank-eeprom --hostname beaglebone --usb-flasher" ; generate_img
 
 ###Seeed lxqt-4gb image
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
