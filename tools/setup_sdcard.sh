@@ -830,14 +830,9 @@ populate_boot () {
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
 
-		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-			wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
-			echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
-			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
-		else
-			wfile="${TEMPDIR}/disk/uEnv.txt"
-			echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." > ${wfile}
-		fi
+		wfile="${TEMPDIR}/disk/bbb-uEnv.txt"
+		echo "##Rename as: uEnv.txt to override old bootloader in eMMC" > ${wfile}
+		echo "##These are needed to be compliant with Angstrom's 2013.06.20 u-boot." >> ${wfile}
 
 		echo "" >> ${wfile}
 		echo "loadaddr=0x82000000" >> ${wfile}
@@ -915,10 +910,8 @@ populate_boot () {
 	fi
 
 	if [ ${has_uenvtxt} ] ; then
-		if [ ! "x${bbb_old_bootloader_in_emmc}" = "xenable" ] ; then
-			cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
-			echo "-----------------------------"
-		fi
+		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
+		echo "-----------------------------"
 	fi
 
 	cd ${TEMPDIR}/disk
@@ -1995,7 +1988,8 @@ while [ ! -z "$1" ] ; do
 		uboot_eeprom="bbbw_blank"
 		;;
 	--bbb-old-bootloader-in-emmc)
-		bbb_old_bootloader_in_emmc="enable"
+		echo "[--bbb-old-bootloader-in-emmc] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--x15-force-revb-flash)
 		x15_force_revb_flash="enable"
