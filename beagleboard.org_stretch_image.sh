@@ -4,10 +4,10 @@ time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
-#./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
-#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
-#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
-#./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
+./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
       debian_stretch_console="debian-9.8-console-armhf-${time}"
           debian_stretch_iot="debian-9.8-iot-armhf-${time}"
