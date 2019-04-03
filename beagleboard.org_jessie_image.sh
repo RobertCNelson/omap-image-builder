@@ -15,11 +15,14 @@ archive="xz -z -8 -v"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
+pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
+pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
+pru_rproc_mainline="--enable-mainline-pru-rproc"
+pru_uio_v419="--enable-uboot-pru-uio-419"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
-beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs \
---hostname BeagleBoard-X15"
+beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname BeagleBoard-X15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
