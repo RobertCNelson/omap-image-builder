@@ -125,6 +125,7 @@ archive_img () {
 generate_img () {
         if [ -d \${base_rootfs}/ ] ; then
                 cd \${base_rootfs}/
+                echo "./setup_sdcard.sh \${options}"
                 sudo ./setup_sdcard.sh \${options}
                 sudo chown 1000:1000 *.img || true
                 sudo chown 1000:1000 *.job.txt || true
