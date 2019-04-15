@@ -76,8 +76,6 @@ beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enabl
 pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
-pru_rproc_mainline="--enable-mainline-pru-rproc"
-pru_uio_v419="--enable-uboot-pru-uio-419"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -318,7 +316,7 @@ options="--img-4gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti} -
 ###ros iot image (bionic):
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 
-options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_uio_v419}"  ; generate_img
+options="--img-6gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v419ti}"  ; generate_img
 options="--img-6gb am57xx-\${base_rootfs}     ${beagle_x15}"                      ; generate_img
 
 ###archive *.tar
