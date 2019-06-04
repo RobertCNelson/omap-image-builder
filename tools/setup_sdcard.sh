@@ -1335,10 +1335,17 @@ populate_rootfs () {
 		fi
 	fi
 
-	cmdline="coherent_pool=1M net.ifnames=0 rng_core.default_quality=100 quiet"
+	cmdline="coherent_pool=1M net.ifnames=0"
+
+	if [ ! "x${rng_core}" = "x" ] ; then
+		cmdline="${cmdline} ${rng_core}"
+	fi
+
 	if [ "x${enable_cape_universal}" = "xenable" ] ; then
 		cmdline="${cmdline} cape_universal=enable"
 	fi
+
+	cmdline="${cmdline} quiet"
 
 	unset kms_video
 
