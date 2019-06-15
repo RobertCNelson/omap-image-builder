@@ -29,7 +29,7 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
-	git_msg="5.0.x-xM"
+	git_msg="5.1.x-xM"
 #	var="armv7"      ; ver="LTS414"       ; current_kernel
 #	var="armv7"      ; ver="LTS419"       ; current_kernel
 	var="armv7"      ; ver="STABLE"       ; current_kernel
