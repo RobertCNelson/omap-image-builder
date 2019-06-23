@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2018 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -246,24 +246,9 @@ install_git_repos () {
 		fi
 	fi
 
-	git_repo="https://github.com/prpplague/Userspace-Arduino"
-	git_target_dir="/opt/source/Userspace-Arduino"
-	git_clone
-
 	git_repo="https://github.com/strahlex/BBIOConfig.git"
 	git_target_dir="/opt/source/BBIOConfig"
 	git_clone
-
-	git_repo="https://github.com/prpplague/fb-test-app.git"
-	git_target_dir="/opt/source/fb-test-app"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			make
-		fi
-		cd /
-	fi
 
 	#am335x-pru-package
 	if [ -f /usr/include/prussdrv.h ] ; then
@@ -284,13 +269,17 @@ install_git_repos () {
 	git_branch="4.4-ti"
 	git_clone_branch
 
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-4.14-ti"
 	git_branch="4.14-ti"
 	git_clone_branch
 
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
+
+	git_repo="https://github.com/ungureanuvladvictor/BBBlfs"
+	git_target_dir="/opt/source/BBBlfs"
 	git_clone
 
 	git_repo="https://github.com/StrawsonDesign/Robotics_Cape_Installer"

@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2016 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2018 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -303,24 +303,9 @@ install_git_repos () {
 		fi
 	fi
 
-	git_repo="https://github.com/prpplague/Userspace-Arduino"
-	git_target_dir="/opt/source/Userspace-Arduino"
-	git_clone
-
 	git_repo="https://github.com/strahlex/BBIOConfig.git"
 	git_target_dir="/opt/source/BBIOConfig"
 	git_clone
-
-	git_repo="https://github.com/prpplague/fb-test-app.git"
-	git_target_dir="/opt/source/fb-test-app"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/make ] ; then
-			make
-		fi
-		cd /
-	fi
 
 	#am335x-pru-package
 	if [ -f /usr/include/prussdrv.h ] ; then
@@ -341,7 +326,7 @@ install_git_repos () {
 	git_branch="4.4-ti"
 	git_clone_branch
 
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-4.14-ti"
 	git_branch="4.14-ti"
 	git_clone_branch
@@ -382,6 +367,7 @@ other_source_links () {
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0002-U-Boot-BeagleBone-Cape-Manager.patch
 	mkdir -p /opt/source/u-boot_${u_boot_release_x15}/
 	wget --directory-prefix="/opt/source/u-boot_${u_boot_release_x15}/" ${rcn_https}/${u_boot_release_x15}/0001-beagle_x15-uEnv.txt-bootz-n-fixes.patch
+	rm /home/${rfs_username}/.wget-hsts || true
 
 	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
 	echo "u-boot_${u_boot_release_x15} : /opt/source/u-boot_${u_boot_release_x15}" >> /opt/source/list.txt
@@ -420,6 +406,7 @@ if [ -f /usr/bin/git ] ; then
 	install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
+	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 #install_build_pkgs
 other_source_links
