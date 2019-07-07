@@ -334,12 +334,12 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 		echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
-	stretch)
+	stretch|buster)
 		echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
-	buster|sid)
-		###FIXME: close to release switch to ^ xz, right now buster is slow on apt...
+	sid)
+		###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
 		echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
@@ -366,7 +366,7 @@ echo "" >> ${wfile}
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
-buster|sid)
+sid)
 	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -383,12 +383,12 @@ esac
 
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
-jessie|stretch)
+jessie|stretch|buster)
 	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-buster|sid)
+sid)
 	echo "#deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
