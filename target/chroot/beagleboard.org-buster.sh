@@ -164,9 +164,6 @@ install_git_repos () {
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			cd ${git_target_dir}/
 			sed -i -e 's:4.1.0:3.4.0:g' setup.py
-			if [ -f /usr/bin/python2 ] ; then
-				python2 setup.py install || true
-			fi
 			if [ -f /usr/bin/python3 ] ; then
 				python3 setup.py install || true
 			fi
