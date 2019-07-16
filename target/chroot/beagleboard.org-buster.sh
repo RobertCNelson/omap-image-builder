@@ -138,8 +138,8 @@ setup_desktop () {
 
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
 		mkdir -p /home/${rfs_username}/.config/ || true
-		if [ -d /opt/scripts/desktop-defaults/stretch/lxqt/ ] ; then
-			cp -rv /opt/scripts/desktop-defaults/stretch/lxqt/* /home/${rfs_username}/.config
+		if [ -d /opt/scripts/desktop-defaults/buster/lxqt/ ] ; then
+			cp -rv /opt/scripts/desktop-defaults/buster/lxqt/* /home/${rfs_username}/.config
 		fi
 		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 	fi
