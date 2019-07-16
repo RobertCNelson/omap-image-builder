@@ -33,7 +33,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.14
 
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
-./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.19
+./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
 
 ./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
 
@@ -66,6 +66,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
            debian_buster_iot="debian-10.0-iot-armhf-${time}"
      debian_buster_gobot_iot="debian-10.0-gobot-iot-armhf-${time}"
        debian_buster_efi_iot="debian-10.0-efi-iot-armhf-${time}"
+          debian_buster_lxqt="debian-10.0-lxqt-armhf-${time}"
 
        ubuntu_bionic_ros_iot="ubuntu-18.04.2-ros-iot-armhf-${time}"
 
@@ -307,6 +308,12 @@ base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_r
 options="--img-4gb am57xx-\${base_rootfs}  ${beagle_x15} --efi"                     ; generate_img
 options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --efi" ; generate_img
 
+###DEBIAN BUSTER: lxqt
+base_rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt" ; extract_base_rootfs
+
+options="--img-4gb am57xx-\${base_rootfs}  ${beagle_x15}"                     ; generate_img
+options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}" ; generate_img
+
 ###UBUNTU BIONIC: ros-iot
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 
@@ -337,6 +344,7 @@ base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"      ; archi
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"       ; archive_base_rootfs
 base_rootfs="${debian_buster_gobot_iot}"      ; blend="buster-gobot-iot" ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"   ; archive_base_rootfs
+base_rootfs="${debian_buster_lxqt}"        ; blend="buster-lxqt"   ; archive_base_rootfs
 
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
@@ -460,6 +468,12 @@ wfile="bone-\${base_rootfs}-4gb"    ; archive_img
 
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
+
+wfile="am57xx-\${base_rootfs}-4gb"  ; archive_img
+wfile="bone-\${base_rootfs}-4gb"    ; archive_img
+
+###DEBIAN BUSTER: lxqt
+base_rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt"
 
 wfile="am57xx-\${base_rootfs}-4gb"  ; archive_img
 wfile="bone-\${base_rootfs}-4gb"    ; archive_img
