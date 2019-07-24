@@ -1341,10 +1341,6 @@ populate_rootfs () {
 		cmdline="${cmdline} ${rng_core}"
 	fi
 
-	if [ "x${enable_cape_universal}" = "xenable" ] ; then
-		cmdline="${cmdline} cape_universal=enable"
-	fi
-
 	cmdline="${cmdline} quiet"
 
 	unset kms_video
