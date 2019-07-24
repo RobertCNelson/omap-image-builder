@@ -1434,13 +1434,6 @@ populate_rootfs () {
 		fi
 	fi
 
-	#oob out of box experience:
-	if [ ! "x${oobe_cape}" = "x" ] ; then
-		echo "" >> ${wfile}
-		echo "dtb=am335x-boneblack-overlay.dtb" >> ${wfile}
-		echo "cape_enable=bone_capemgr.enable_partno=${oobe_cape}" >> ${wfile}
-	fi
-
 	#am335x_boneblack is a custom u-boot to ignore empty factory eeproms...
 	if [ "x${conf_board}" = "xam335x_boneblack" ] ; then
 		board="am335x_evm"
@@ -2068,8 +2061,10 @@ while [ ! -z "$1" ] ; do
 		kernel_override="$2"
 		;;
 	--enable-cape)
-		checkparm $2
-		oobe_cape="$2"
+		#checkparm $2
+		#oobe_cape="$2"
+		echo "[--enable-cape XYZ] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--enable-fat-partition)
 		enable_fat_partition="enable"
