@@ -1443,6 +1443,7 @@ populate_rootfs () {
 
 	echo "/boot/uEnv.txt---------------"
 	cat ${wfile}
+	sudo chown -R 1000:1000 ${wfile}
 	echo "-----------------------------"
 
 	wfile="${TEMPDIR}/disk/boot/SOC.sh"
