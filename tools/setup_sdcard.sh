@@ -1587,7 +1587,11 @@ populate_rootfs () {
 	fi
 
 	if [ -f ${TEMPDIR}/disk/etc/init.d/cpufrequtils ] ; then
-		sed -i 's/GOVERNOR="ondemand"/GOVERNOR="performance"/g' ${TEMPDIR}/disk/etc/init.d/cpufrequtils
+		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+			sed -i 's/GOVERNOR="ondemand"/GOVERNOR="powersave"/g' ${TEMPDIR}/disk/etc/init.d/cpufrequtils
+		else
+			sed -i 's/GOVERNOR="ondemand"/GOVERNOR="performance"/g' ${TEMPDIR}/disk/etc/init.d/cpufrequtils
+		fi
 	fi
 
 	if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
