@@ -64,7 +64,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
    debian_stretch_oemflasher="debian-9.9-oemflasher-armhf-${time}"
 
           debian_buster_tiny="debian-10.0-tiny-armhf-${time}"
-      debian_buster_console="debian-10.0-console-armhf-${time}"
+       debian_buster_console="debian-10.0-console-armhf-${time}"
            debian_buster_iot="debian-10.0-iot-armhf-${time}"
      debian_buster_gobot_iot="debian-10.0-gobot-iot-armhf-${time}"
        debian_buster_efi_iot="debian-10.0-efi-iot-armhf-${time}"
@@ -82,7 +82,7 @@ pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
-beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname BeagleBoard-X15"
+beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname beaglebone"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
