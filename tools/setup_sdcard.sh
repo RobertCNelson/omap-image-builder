@@ -1906,7 +1906,10 @@ while [ ! -z "$1" ] ; do
 		### seek=$((1024 * (gsize * 850)))
 		## x 850 (85%) #1GB = 850 #2GB = 1700 #4GB = 3400
 		#
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 850)))
+		### seek=$((1024 * (gsize * 900)))
+		## x 900 (90%) #1GB = 900 #2GB = 1800 #4GB = 3600
+		#
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 900)))
 		;;
 	--dtb)
 		checkparm $2
