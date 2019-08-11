@@ -70,7 +70,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
        debian_buster_efi_iot="debian-10.0-efi-iot-armhf-${time}"
           debian_buster_lxqt="debian-10.0-lxqt-armhf-${time}"
 
-       ubuntu_bionic_ros_iot="ubuntu-18.04.2-ros-iot-armhf-${time}"
+       ubuntu_bionic_ros_iot="ubuntu-18.04.3-ros-iot-armhf-${time}"
 
 xz_img="xz -T3 -z -8"
 xz_tar="xz -T4 -z -8"
