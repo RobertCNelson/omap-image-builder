@@ -63,12 +63,12 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
       debian_stretch_wayland="debian-9.10-wayland-armhf-${time}"
    debian_stretch_oemflasher="debian-9.10-oemflasher-armhf-${time}"
 
-          debian_buster_tiny="debian-10.0-tiny-armhf-${time}"
-       debian_buster_console="debian-10.0-console-armhf-${time}"
-           debian_buster_iot="debian-10.0-iot-armhf-${time}"
-     debian_buster_gobot_iot="debian-10.0-gobot-iot-armhf-${time}"
-       debian_buster_efi_iot="debian-10.0-efi-iot-armhf-${time}"
-          debian_buster_lxqt="debian-10.0-lxqt-armhf-${time}"
+          debian_buster_tiny="debian-10.1-tiny-armhf-${time}"
+       debian_buster_console="debian-10.1-console-armhf-${time}"
+           debian_buster_iot="debian-10.1-iot-armhf-${time}"
+     debian_buster_gobot_iot="debian-10.1-gobot-iot-armhf-${time}"
+       debian_buster_efi_iot="debian-10.1-efi-iot-armhf-${time}"
+          debian_buster_lxqt="debian-10.1-lxqt-armhf-${time}"
 
        ubuntu_bionic_ros_iot="ubuntu-18.04.3-ros-iot-armhf-${time}"
 
