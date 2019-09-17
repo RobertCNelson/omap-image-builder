@@ -20,7 +20,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_stretch="debian-9.10"
+debian_stretch="debian-9.11"
 debian_buster="debian-10.1"
 ubuntu_stable="ubuntu-18.04.3"
 
