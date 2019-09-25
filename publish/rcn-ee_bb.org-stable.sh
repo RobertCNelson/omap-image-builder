@@ -14,7 +14,6 @@ fi
 
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-xm
@@ -42,7 +41,6 @@ else
 fi
 
        debian_jessie_console="debian-8.11-console-armhf-${time}"
-           debian_jessie_iot="debian-8.11-iot-armhf-${time}"
       debian_jessie_lxqt_2gb="debian-8.11-lxqt-2gb-armhf-${time}"
       debian_jessie_lxqt_4gb="debian-8.11-lxqt-4gb-armhf-${time}"
    debian_jessie_lxqt_xm_4gb="debian-8.11-lxqt-xm-4gb-armhf-${time}"
@@ -193,14 +191,6 @@ options="--img-1gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-fla
 options="--img-1gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
 options="--img-1gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
 
-###DEBIAN JESSIE: iot
-base_rootfs="${debian_jessie_iot}" ; blend="iot" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                   ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                    ; generate_img
-options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-
 ###DEBIAN JESSIE: lxqt-2gb
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
 
@@ -330,7 +320,6 @@ options="--img-6gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}"  ;
 
 ###archive *.tar
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
-base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"        ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"        ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"     ; archive_base_rootfs
@@ -365,14 +354,6 @@ wfile="am57xx-\${base_rootfs}-1gb"               ; archive_img
 wfile="am57xx-eMMC-flasher-\${base_rootfs}-1gb"  ; archive_img
 wfile="bone-\${base_rootfs}-1gb"                 ; archive_img
 wfile="bone-eMMC-flasher-\${base_rootfs}-1gb"    ; archive_img
-
-###DEBIAN JESSIE: iot
-base_rootfs="${debian_jessie_iot}" ; blend="iot"
-
-wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-4gb"  ; archive_img
-wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 
 ###DEBIAN JESSIE: lxqt-2gb
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb"
