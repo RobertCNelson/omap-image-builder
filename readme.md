@@ -131,5 +131,5 @@ Release Process:
 MachineKit:
 ------------
 
-    ./RootStock-NG.sh -c machinekit-debian-jessie
+    ./RootStock-NG.sh -c machinekit-debian-stretch
     http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#BBW.2FBBB_.28All_Revs.29_Machinekit

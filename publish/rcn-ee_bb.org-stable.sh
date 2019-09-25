@@ -13,7 +13,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c machinekit-debian-jessie
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-iot-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
@@ -41,8 +40,6 @@ if [ ! -f jenkins.build ] ; then
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
-
-    debian_jessie_machinekit="debian-8.11-machinekit-armhf-${time}"
 
        debian_jessie_console="debian-8.11-console-armhf-${time}"
            debian_jessie_iot="debian-8.11-iot-armhf-${time}"
@@ -188,11 +185,6 @@ generate_img () {
         fi
 }
 
-###DEBIAN JESSIE: machinekit
-base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
-
 ###DEBIAN JESSIE: console
 base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
 
@@ -337,7 +329,6 @@ options="--img-6gb am57xx-\${base_rootfs}  ${beagle_x15}"                      ;
 options="--img-6gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}"  ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_machinekit}"     ; blend="machinekit"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_iot}"            ; blend="iot"             ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"        ; archive_base_rootfs
@@ -367,11 +358,6 @@ base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; arch
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
 ###archive *.img
-###DEBIAN JESSIE: machinekit
-base_rootfs="${debian_jessie_machinekit}" ; blend="machinekit"
-
-wfile="bone-\${base_rootfs}-4gb"  ; archive_img
-
 ###DEBIAN JESSIE: console
 base_rootfs="${debian_jessie_console}" ; blend="console"
 
