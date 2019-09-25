@@ -65,6 +65,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 
           debian_buster_tiny="debian-10.1-tiny-armhf-${time}"
        debian_buster_console="debian-10.1-console-armhf-${time}"
+    debian_buster_console_xm="debian-10.1-console-xm-armhf-${time}"
            debian_buster_iot="debian-10.1-iot-armhf-${time}"
      debian_buster_gobot_iot="debian-10.1-gobot-iot-armhf-${time}"
        debian_buster_efi_iot="debian-10.1-efi-iot-armhf-${time}"
@@ -296,6 +297,11 @@ options="--img-1gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-fla
 options="--img-1gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
 options="--img-1gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
 
+###DEBIAN BUSTER: console-xm
+base_rootfs="${debian_buster_console_xm}" ; blend="buster-console-xm" ; extract_base_rootfs
+
+options="--img-1gb bbxm-\${base_rootfs}  ${beagle_xm}" ; generate_img
+
 ###DEBIAN BUSTER: iot
 base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
 
@@ -350,12 +356,13 @@ base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; arc
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
 
-base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"      ; archive_base_rootfs
-base_rootfs="${debian_buster_console}"        ; blend="buster-console"   ; archive_base_rootfs
-base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"       ; archive_base_rootfs
-base_rootfs="${debian_buster_gobot_iot}"      ; blend="buster-gobot-iot" ; archive_base_rootfs
-base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"   ; archive_base_rootfs
-base_rootfs="${debian_buster_lxqt}"        ; blend="buster-lxqt"   ; archive_base_rootfs
+base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"       ; archive_base_rootfs
+base_rootfs="${debian_buster_console}"        ; blend="buster-console"    ; archive_base_rootfs
+base_rootfs="${debian_buster_console_xm}"     ; blend="buster-console-xm" ; archive_base_rootfs
+base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"        ; archive_base_rootfs
+base_rootfs="${debian_buster_gobot_iot}"      ; blend="buster-gobot-iot"  ; archive_base_rootfs
+base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"    ; archive_base_rootfs
+base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; archive_base_rootfs
 
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
@@ -468,6 +475,11 @@ wfile="am57xx-\${base_rootfs}-1gb"               ; archive_img
 wfile="am57xx-eMMC-flasher-\${base_rootfs}-1gb"  ; archive_img
 wfile="bone-\${base_rootfs}-1gb"                 ; archive_img
 wfile="bone-eMMC-flasher-\${base_rootfs}-1gb"    ; archive_img
+
+###DEBIAN BUSTER: console-xm
+base_rootfs="${debian_buster_console_xm}" ; blend="buster-console-xm"
+
+wfile="bbxm-\${base_rootfs}-1gb"               ; archive_img
 
 ###DEBIAN BUSTER: iot
 base_rootfs="${debian_buster_iot}" ; blend="buster-iot"
