@@ -41,6 +41,10 @@ SeeedStudio BeagleBone Green Wireless:
 
      W1A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 47 57 31 41 |.U3.A335BNLTGW1A|]
 
+SeeedStudio BeagleBone Green Gateway:
+
+    GG1A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 47 57 31 41 |.U3.A335BNLTGG1A|]
+
 Arrow BeagleBone Black Industrial:
 
       A0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 41 49 41 30 |.U3.A335BNLTAIA0|]
