@@ -27,6 +27,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 ./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.14
 
@@ -54,6 +55,7 @@ debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
           debian_stretch_iot="debian-9.11-iot-armhf-${time}"
      debian_stretch_lxqt_2gb="debian-9.11-lxqt-2gb-armhf-${time}"
          debian_stretch_lxqt="debian-9.11-lxqt-armhf-${time}"
+    debian_stretch_lxqt_tidl="debian-9.11-lxqt-tidl-armhf-${time}"
       debian_stretch_lxqt_xm="debian-9.11-lxqt-xm-armhf-${time}"
       debian_stretch_wayland="debian-9.11-wayland-armhf-${time}"
    debian_stretch_oemflasher="debian-9.11-oemflasher-armhf-${time}"
@@ -253,12 +255,17 @@ options="--img-2gb bone-eMMC-flasher-\${base_rootfs}  ${beaglebone} ${pru_rproc_
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
 
 options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
 options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
 options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
 
 options="--img-4gb BBBW-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v414ti} --bbbw-flasher" ; generate_img
-options="--img-4gb am57xx-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
+
+###DEBIAN STRETCH: lxqt-tidl
+base_rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl" ; extract_base_rootfs
+
+options="--img-6gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-6gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
+options="--img-6gb am57xx-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
 
 ###DEBIAN STRETCH: lxqt-xm
 base_rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm" ; extract_base_rootfs
@@ -332,6 +339,7 @@ base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; arc
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_2gb}"      ; blend="stretch-lxqt-2gb"   ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; archive_base_rootfs
+base_rootfs="${debian_stretch_lxqt_tidl}"     ; blend="stretch-lxqt-tidl"  ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
@@ -417,12 +425,18 @@ wfile="bone-eMMC-flasher-\${base_rootfs}-2gb"  ; archive_img
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt"
 
 wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-4gb"  ; archive_img
 wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
 wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 
 wfile="BBBW-blank-\${base_rootfs}-4gb"         ; archive_img
-wfile="am57xx-blank-\${base_rootfs}-4gb"       ; archive_img
+
+###DEBIAN STRETCH: lxqt-tidl
+base_rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl"
+
+wfile="am57xx-\${base_rootfs}-6gb"               ; archive_img
+wfile="am57xx-eMMC-flasher-\${base_rootfs}-6gb"  ; archive_img
+
+wfile="am57xx-blank-\${base_rootfs}-6gb"       ; archive_img
 
 ###DEBIAN STRETCH: lxqt-xm
 base_rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm"
