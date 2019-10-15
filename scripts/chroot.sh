@@ -934,6 +934,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		mkdir -p /home/${rfs_username}/bin
 		chown ${rfs_username}:${rfs_username} /home/${rfs_username}/bin
 
+		if [ ! "x${rfs_desktop_icon}" = "x" ] ; then
+			if [ -f /usr/share/applications/${rfs_desktop_icon} ] ; then
+				mkdir -p /home/${rfs_username}/Desktop
+				cp -v /usr/share/applications/${rfs_desktop_icon} home/${rfs_username}/Desktop/
+				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/Desktop/
+			fi
+		fi
+
 		case "\${distro}" in
 		Debian)
 
