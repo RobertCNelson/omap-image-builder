@@ -20,7 +20,6 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
-./RootStock-NG.sh -c bb.org-debian-stretch-oemflasher-v4.14
 
 ./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
@@ -40,7 +39,6 @@ fi
     debian_stretch_lxqt_tidl="debian-9.11-lxqt-tidl-armhf-${time}"
       debian_stretch_lxqt_xm="debian-9.11-lxqt-xm-armhf-${time}"
       debian_stretch_wayland="debian-9.11-wayland-armhf-${time}"
-   debian_stretch_oemflasher="debian-9.11-oemflasher-armhf-${time}"
 
           debian_buster_tiny="debian-10.1-tiny-armhf-${time}"
        debian_buster_console="debian-10.1-console-armhf-${time}"
@@ -279,7 +277,6 @@ base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; arc
 base_rootfs="${debian_stretch_lxqt_tidl}"     ; blend="stretch-lxqt-tidl"  ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
-base_rootfs="${debian_stretch_oemflasher}"    ; blend="stretch-oemflasher" ; archive_base_rootfs
 
 base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"       ; archive_base_rootfs
 base_rootfs="${debian_buster_console}"        ; blend="buster-console"    ; archive_base_rootfs

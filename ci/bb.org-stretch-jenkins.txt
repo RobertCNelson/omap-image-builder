@@ -19,7 +19,6 @@ bb.org-debian-stretch-iot-v4.14
 bb.org-debian-stretch-lxqt-2gb-v4.14
 bb.org-debian-stretch-lxqt-v4.14
 bb.org-debian-stretch-lxqt-xm
-bb.org-debian-stretch-oemflasher-v4.4
 
 bb.org-debian-buster-iot-v4.14
 bb.org-debian-buster-efi-iot-v4.14
