@@ -54,7 +54,6 @@ xz_img="xz -T3 -z -8"
 xz_tar="xz -T4 -z -8"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
-pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 

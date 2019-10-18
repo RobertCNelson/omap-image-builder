@@ -18,7 +18,6 @@ DIR="$PWD"
 archive="xz -z -8 -v"
 
 beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
-pru_rproc_v44ti="--enable-uboot-pru-rproc-44ti"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 pru_rproc_mainline="--enable-mainline-pru-rproc"
