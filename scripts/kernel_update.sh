@@ -44,11 +44,6 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="4.19.x-bone-rt"
 	var="bone-rt"    ; ver="LTS419" ; current_kernel
 
-	git_msg="4.4.x-ti"
-	filter1="xenomai"
-	filter2="rt"
-	var="ti"         ; ver="LTS44"  ; current_kernel
-
 	git_msg="4.14.x-ti"
 	filter1="rt"
 	filter2="rt"
