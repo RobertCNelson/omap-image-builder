@@ -3,11 +3,9 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
      debian_jessie_seeed_iot="debian-8.11-seeed-iot-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -78,24 +76,13 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_root
 
 options="--img-4gb bone-\${base_rootfs}       ${beaglebone}"                ; generate_img
 
-###Seeed lxqt-4gb image (jessie):
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs}      ${beaglebone}"                ; generate_img
-
 ###archive *.tar
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
 ###Seeed iot image (jessie):
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 
 wfile="bone-\${base_rootfs}-4gb"       ; archive_img
-
-###Seeed lxqt-4gb image (jessie):
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"
-
-wfile="bone-\${base_rootfs}-4gb"      ; archive_img
 
 __EOF__
 

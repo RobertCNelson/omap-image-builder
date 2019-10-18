@@ -13,7 +13,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
 ./RootStock-NG.sh -c machinekit-debian-stretch
@@ -36,7 +35,6 @@ else
 fi
 
      debian_jessie_seeed_iot="debian-8.11-seeed-iot-armhf-${time}"
-debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
 
    debian_stretch_machinekit="debian-9.11-machinekit-armhf-${time}"
       debian_stretch_console="debian-9.11-console-armhf-${time}"
@@ -178,11 +176,6 @@ base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_root
 
 options="--img-4gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
 
-###DEBIAN JESSIE: Seeed lxqt-4gb
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs}  ${beaglebone}" ; generate_img
-
 ###DEBIAN STRETCH: machinekit
 base_rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit" ; extract_base_rootfs
 
@@ -288,7 +281,6 @@ options="--img-6gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}"  ;
 
 ###archive *.tar
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
 base_rootfs="${debian_stretch_machinekit}"    ; blend="stretch-machinekit" ; archive_base_rootfs
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
@@ -313,11 +305,6 @@ base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archiv
 ###archive *.img
 ###DEBIAN JESSIE: Seeed iot
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
-
-wfile="bone-\${base_rootfs}-4gb"  ; archive_img
-
-###DEBIAN JESSIE: Seeed lxqt-4gb
-base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"
 
 wfile="bone-\${base_rootfs}-4gb"  ; archive_img
 
