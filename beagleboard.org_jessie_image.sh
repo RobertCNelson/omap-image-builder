@@ -5,11 +5,9 @@ DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
 ./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-2gb-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-lxqt-4gb-v4.4
 
        debian_jessie_console="debian-8.11-console-armhf-${time}"
       debian_jessie_lxqt_2gb="debian-8.11-lxqt-2gb-armhf-${time}"
-      debian_jessie_lxqt_4gb="debian-8.11-lxqt-4gb-armhf-${time}"
 
 archive="xz -z -8 -v"
 
@@ -87,18 +85,9 @@ base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb" ; extract_base_rootfs
 
 options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone}  ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
 
-###lxqt-4gb image (jessie):
-base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${base_rootfs}       ${beagle_x15}"                             ; generate_img
-options="--img-4gb am57xx-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
-options="--img-4gb bone-\${base_rootfs}        ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-4gb BBB-blank-\${base_rootfs}   ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-
 ###archive *.tar
 base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"        ; archive_base_rootfs
-base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"        ; archive_base_rootfs
 
 ###console images (jessie):
 base_rootfs="${debian_jessie_console}" ; blend="console"
@@ -110,14 +99,6 @@ wfile="bone-\${base_rootfs}-1gb"        ; archive_img
 base_rootfs="${debian_jessie_lxqt_2gb}" ; blend="lxqt-2gb"
 
 wfile="BBB-blank-\${base_rootfs}-2gb"      ; archive_img
-
-###lxqt-4gb image (jessie):
-base_rootfs="${debian_jessie_lxqt_4gb}" ; blend="lxqt-4gb"
-
-wfile="am57xx-\${base_rootfs}-4gb"       ; archive_img
-wfile="am57xx-blank-\${base_rootfs}-4gb" ; archive_img
-wfile="bone-\${base_rootfs}-4gb"        ; archive_img
-wfile="BBB-blank-\${base_rootfs}-4gb"   ; archive_img
 
 __EOF__
 
