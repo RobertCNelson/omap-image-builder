@@ -60,14 +60,14 @@ keep_net_alive & KEEP_NET_ALIVE_PID=$!
 echo "pid: [${KEEP_NET_ALIVE_PID}]"
 
 # IoT BeagleBone image
-##Debian 8:
+##Debian 9:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.11-iot-2gb-armhf-${time}"
-size="2gb"
+image_name="debian-9.11-iot-armhf-${time}"
+size="4gb"
 target_name="bone"
-options="--img-2gb ${target_name}-${image_name} --dtb beaglebone \
---hostname beaglebone --enable-cape-universal"
-config_name="bb.org-debian-jessie-iot-2gb-v4.4"
+options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
+--hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
+config_name="bb.org-debian-stretch-iot-v4.14"
 build_and_upload_image
 
 # LXQT BeagleBone image

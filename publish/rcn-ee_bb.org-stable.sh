@@ -13,8 +13,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c bb.org-debian-jessie-console-v4.4
-
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
 
@@ -36,8 +34,6 @@ if [ ! -f jenkins.build ] ; then
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
-
-       debian_jessie_console="debian-8.11-console-armhf-${time}"
 
      debian_jessie_seeed_iot="debian-8.11-seeed-iot-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
@@ -177,14 +173,6 @@ generate_img () {
         fi
 }
 
-###DEBIAN JESSIE: console
-base_rootfs="${debian_jessie_console}" ; blend="console" ; extract_base_rootfs
-
-options="--img-1gb am57xx-\${base_rootfs}               ${beagle_x15}"                                   ; generate_img
-options="--img-1gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                    ; generate_img
-options="--img-1gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v44ti}"                ; generate_img
-options="--img-1gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v44ti} --emmc-flasher" ; generate_img
-
 ###DEBIAN JESSIE: Seeed iot
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot" ; extract_base_rootfs
 
@@ -299,7 +287,6 @@ options="--img-6gb am57xx-\${base_rootfs}  ${beagle_x15}"                      ;
 options="--img-6gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}"  ; generate_img
 
 ###archive *.tar
-base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
@@ -324,14 +311,6 @@ base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; arch
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
 ###archive *.img
-###DEBIAN JESSIE: console
-base_rootfs="${debian_jessie_console}" ; blend="console"
-
-wfile="am57xx-\${base_rootfs}-1gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-1gb"  ; archive_img
-wfile="bone-\${base_rootfs}-1gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${base_rootfs}-1gb"    ; archive_img
-
 ###DEBIAN JESSIE: Seeed iot
 base_rootfs="${debian_jessie_seeed_iot}" ; blend="seeed-iot"
 
