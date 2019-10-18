@@ -20,7 +20,6 @@ if [ ! -f jenkins.build ] ; then
 
 ./RootStock-NG.sh -c seeed-debian-jessie-lxqt-4gb-v4.4
 ./RootStock-NG.sh -c seeed-debian-jessie-iot-v4.4
-./RootStock-NG.sh -c bb.org-debian-jessie-oemflasher
 
 ./RootStock-NG.sh -c machinekit-debian-stretch
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
@@ -45,7 +44,6 @@ fi
       debian_jessie_lxqt_2gb="debian-8.11-lxqt-2gb-armhf-${time}"
       debian_jessie_lxqt_4gb="debian-8.11-lxqt-4gb-armhf-${time}"
    debian_jessie_lxqt_xm_4gb="debian-8.11-lxqt-xm-4gb-armhf-${time}"
-    debian_jessie_oemflasher="debian-8.11-oemflasher-armhf-${time}"
 
      debian_jessie_seeed_iot="debian-8.11-seeed-iot-armhf-${time}"
 debian_jessie_seeed_lxqt_4gb="debian-8.11-seeed-lxqt-4gb-armhf-${time}"
@@ -330,7 +328,6 @@ base_rootfs="${debian_jessie_console}"        ; blend="console"         ; archiv
 base_rootfs="${debian_jessie_lxqt_2gb}"       ; blend="lxqt-2gb"        ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_4gb}"       ; blend="lxqt-4gb"        ; archive_base_rootfs
 base_rootfs="${debian_jessie_lxqt_xm_4gb}"    ; blend="lxqt-xm-4gb"     ; archive_base_rootfs
-base_rootfs="${debian_jessie_oemflasher}"     ; blend="oemflasher"      ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_iot}"      ; blend="seeed-iot"       ; archive_base_rootfs
 base_rootfs="${debian_jessie_seeed_lxqt_4gb}" ; blend="seeed-lxqt-4gb"  ; archive_base_rootfs
 
