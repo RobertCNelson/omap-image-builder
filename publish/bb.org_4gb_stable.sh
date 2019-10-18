@@ -82,13 +82,13 @@ config_name="bb.org-debian-jessie-lxqt-4gb-v4.4"
 build_and_upload_image
 
 # LXQT BeagleBoard-xM image
-##Debian 8:
+##Debian 9:
 #image_name="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
-image_name="debian-8.11-lxqt-xm-4gb-armhf-${time}"
+image_name="debian-9.11-lxqt-xm-armhf-${time}"
 size="4gb"
 target_name="bbxm"
 options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
-config_name="bb.org-debian-jessie-lxqt-4gb-xm"
+config_name="bb.org-debian-stretch-lxqt-xm"
 build_and_upload_image
 
 # LXQT BeagleBoard-X15 image
