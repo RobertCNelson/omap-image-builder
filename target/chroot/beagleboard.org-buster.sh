@@ -259,15 +259,6 @@ install_git_repos () {
 	git_clone
 }
 
-install_go_pkgs () {
-	if [ -f /usr/bin/go ] ; then
-		echo "go env: [`go env`]"
-		echo "go get -d -u gobot.io/x/gobot/..."
-		go get -d -u gobot.io/x/gobot/...
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/go/
-	fi
-}
-
 other_source_links () {
 	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
 
@@ -294,7 +285,6 @@ if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
-	install_go_pkgs
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig

@@ -44,7 +44,6 @@ fi
        debian_buster_console="debian-10.1-console-armhf-${time}"
     debian_buster_console_xm="debian-10.1-console-xm-armhf-${time}"
            debian_buster_iot="debian-10.1-iot-armhf-${time}"
-     debian_buster_gobot_iot="debian-10.1-gobot-iot-armhf-${time}"
        debian_buster_efi_iot="debian-10.1-efi-iot-armhf-${time}"
           debian_buster_lxqt="debian-10.1-lxqt-armhf-${time}"
 
@@ -243,12 +242,6 @@ options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rpro
 
 options="--img-4gb BBBL-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v419ti} --bbbl-flasher" ; generate_img
 
-###DEBIAN BUSTER: gobot-iot
-base_rootfs="${debian_buster_gobot_iot}" ; blend="buster-gobot-iot" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${base_rootfs}  ${beagle_x15}"                     ; generate_img
-options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}" ; generate_img
-
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
 
@@ -281,7 +274,6 @@ base_rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"       ; arch
 base_rootfs="${debian_buster_console}"        ; blend="buster-console"    ; archive_base_rootfs
 base_rootfs="${debian_buster_console_xm}"     ; blend="buster-console-xm" ; archive_base_rootfs
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"        ; archive_base_rootfs
-base_rootfs="${debian_buster_gobot_iot}"      ; blend="buster-gobot-iot"  ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"    ; archive_base_rootfs
 base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; archive_base_rootfs
 
@@ -367,12 +359,6 @@ wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
 wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 
 wfile="BBBL-blank-\${base_rootfs}-4gb"         ; archive_img
-
-###DEBIAN BUSTER: gobot-iot
-base_rootfs="${debian_buster_gobot_iot}" ; blend="buster-gobot-iot"
-
-wfile="am57xx-\${base_rootfs}-4gb"  ; archive_img
-wfile="bone-\${base_rootfs}-4gb"    ; archive_img
 
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
