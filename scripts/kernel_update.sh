@@ -36,11 +36,6 @@ if [ -f configs/kernel.data ] ; then
 #	var="armv7"      ; ver="TESTING"      ; current_kernel
 #	var="armv7"      ; ver="EXPERIMENTAL" ; current_kernel
 
-	git_msg="4.14.x-bone-rt"
-#	var="bone-rt"    ; ver="LTS49"  ; current_kernel
-	var="bone-rt"    ; ver="LTS414" ; current_kernel
-#	var="bone-rt"    ; ver="STABLE" ; current_kernel
-
 	git_msg="4.19.x-bone-rt"
 	var="bone-rt"    ; ver="LTS419" ; current_kernel
 
