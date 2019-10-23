@@ -1174,6 +1174,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		chmod -R 0644 /etc/update-motd.d/ || true
 	fi
 
+	echo "[global]" > /etc/pip.conf
+	echo "extra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
+
 	if [ -f /etc/default/grub ] ; then
 		grub_tweaks
 	fi
