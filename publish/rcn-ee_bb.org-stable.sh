@@ -396,14 +396,11 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 			mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
 		fi
 
-		ls -lha ${DIR}/deploy/
-		sudo chown -R 1000:1000 ${DIR}/deploy/
-		ls -lha ${DIR}/deploy/
-
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		sudo chown -R 1000:1000 /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	fi
 fi
 
