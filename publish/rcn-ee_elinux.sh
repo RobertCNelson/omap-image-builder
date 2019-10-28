@@ -213,11 +213,11 @@ fi
 #x86:
 if [ -d /var/www/html/farm/images/ ] ; then
 	mkdir -p /var/www/html/farm/images/${image_prefix}-${time}/ || true
-	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 
+	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	sudo chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	sudo chmod g+wr /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	ls -lha /var/www/html/farm/images/${image_prefix}-${time}/
