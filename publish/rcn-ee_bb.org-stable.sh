@@ -392,6 +392,8 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 
 	if [ -d /mnt/farm/images/ ] ; then
 		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		ls -lha ${DIR}/deploy/
+
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
