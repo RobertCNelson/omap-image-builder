@@ -391,7 +391,13 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 	fi
 
 	if [ -d /mnt/farm/images/ ] ; then
-		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		if [ ! -d /mnt/farm/images/${image_prefix}-${time}/ ] ; then
+			echo "mkdir: /mnt/farm/images/${image_prefix}-${time}/"
+			mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		fi
+
+		ls -lha ${DIR}/deploy/
+		sudo chown -R 1000:1000 ${DIR}/deploy/
 		ls -lha ${DIR}/deploy/
 
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
