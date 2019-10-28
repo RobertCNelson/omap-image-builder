@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+OIB_USER=${OIB_USER:-1000}
+
 time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.us/rootfs/bb.org/testing"
 DIR="$PWD"
@@ -400,7 +402,7 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-		sudo chown -R 1000:1000 /var/www/html/farm/images/${image_prefix}-${time}/ || true
+		sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	fi
 fi
 
@@ -410,5 +412,5 @@ if [ -d /var/www/html/farm/images/ ] ; then
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	sudo chown -R 1000:1000 /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 fi

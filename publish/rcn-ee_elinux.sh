@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+OIB_USER=${OIB_USER:-1000}
+
 time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.us/rootfs/"
 DIR="$PWD"
@@ -36,7 +38,7 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 wait_till_Xgb_free () {
-        memory=4096
+        memory=16384
         free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
         until [ "\$free_memory" -gt "\$memory" ] ; do
                 free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
@@ -195,11 +197,16 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 	fi
 
 	if [ -d /mnt/farm/images/ ] ; then
-		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		if [ ! -d /mnt/farm/images/${image_prefix}-${time}/ ] ; then
+			echo "mkdir: /mnt/farm/images/${image_prefix}-${time}/"
+			mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		fi
+
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	fi
 fi
 
@@ -209,5 +216,5 @@ if [ -d /var/www/html/farm/images/ ] ; then
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	sudo chown -R apt-cacher-ng:apt-cacher-ng /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 fi
