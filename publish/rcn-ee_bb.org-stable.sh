@@ -413,4 +413,5 @@ if [ -d /var/www/html/farm/images/ ] ; then
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	sudo chmod g+wr /var/www/html/farm/images/${image_prefix}-${time}/ || true
 fi
