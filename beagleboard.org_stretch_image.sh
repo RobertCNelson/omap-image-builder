@@ -5,13 +5,11 @@ DIR="$PWD"
 
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-2gb-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
       debian_stretch_console="debian-9.11-console-armhf-${time}"
           debian_stretch_iot="debian-9.11-iot-armhf-${time}"
-     debian_stretch_lxqt_2gb="debian-9.11-lxqt-2gb-armhf-${time}"
          debian_stretch_lxqt="debian-9.11-lxqt-armhf-${time}"
       debian_stretch_lxqt_xm="debian-9.11-lxqt-xm-armhf-${time}"
 
@@ -92,12 +90,6 @@ options="--img-4gb bone-\${base_rootfs}       ${beaglebone} ${pru_rproc_v414ti}"
 options="--img-4gb BBB-blank-\${base_rootfs}  ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
 options="--img-4gb BBBL-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --bbbl-flasher" ; generate_img
 
-###lxqt-2gb image (stretch):
-base_rootfs="${debian_stretch_lxqt_2gb}" ; blend="stretch-lxqt-2gb" ; extract_base_rootfs
-
-options="--img-2gb bone-\${base_rootfs}      ${beaglebone} ${pru_rproc_v414ti}" ; generate_img
-options="--img-2gb BBB-blank-\${base_rootfs} ${beaglebone} ${pru_rproc_v414ti} --emmc-flasher" ; generate_img
-
 ###lxqt image (stretch):
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
 
@@ -114,7 +106,6 @@ options="--img-4gb bbxm-\${base_rootfs}  ${beagle_xm}" ; generate_img
 ###archive *.tar
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
-base_rootfs="${debian_stretch_lxqt_2gb}"      ; blend="stretch-lxqt-2gb"   ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
 
@@ -131,12 +122,6 @@ wfile="am57xx-\${base_rootfs}-4gb"          ; archive_img
 wfile="bone-\${base_rootfs}-4gb"           ; archive_img
 wfile="BBB-blank-\${base_rootfs}-4gb"      ; archive_img
 wfile="BBBL-blank-\${base_rootfs}-4gb"     ; archive_img
-
-###lxqt-2gb image (stretch):
-base_rootfs="${debian_stretch_lxqt_2gb}" ; blend="stretch-lxqt-2gb"
-
-wfile="bone-\${base_rootfs}-2gb"           ; archive_img
-wfile="BBB-blank-\${base_rootfs}-2gb"      ; archive_img
 
 ###lxqt image (stretch):
 base_rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt"
