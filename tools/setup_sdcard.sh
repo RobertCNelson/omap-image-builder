@@ -1945,6 +1945,12 @@ while [ ! -z "$1" ] ; do
 		oem_blank_eeprom="enable"
 		bbgw_flasher="enable"
 		;;
+	--bbgg-flasher)
+		oem_blank_eeprom="enable"
+		uboot_eeprom="bbgg_blank"
+		#default:
+		emmc_flasher="enable"
+		;;
 	--m10a-flasher)
 		oem_blank_eeprom="enable"
 		m10a_flasher="enable"
@@ -1959,8 +1965,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--bbb-flasher|--emmc-flasher)
 		oem_blank_eeprom="enable"
-		emmc_flasher="enable"
 		uboot_eeprom="bbb_blank"
+		#default:
+		emmc_flasher="enable"
 		;;
 	--bbbl-flasher)
 		oem_blank_eeprom="enable"
