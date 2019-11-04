@@ -285,6 +285,11 @@ install_git_repos () {
 	git_branch="v4.19.x-ti"
 	git_clone_branch
 
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
+	git_target_dir="/opt/source/dtb-5.4-ti"
+	git_branch="v5.4.x-ti"
+	git_clone_branch
+
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
