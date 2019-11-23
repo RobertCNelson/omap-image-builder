@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+OIB_USER=${OIB_USER:-1000}
+
 time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.us/rootfs/eewiki"
 DIR="$PWD"
@@ -68,19 +70,28 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 	fi
 
 	if [ -d /mnt/farm/images/ ] ; then
-		mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		if [ ! -d /mnt/farm/images/${image_prefix}-${time}/ ] ; then
+			echo "mkdir: /mnt/farm/images/${image_prefix}-${time}/"
+			mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+		fi
+
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-		chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		sudo chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+		sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
 	fi
 fi
 
 #x86:
 if [ -d /var/www/html/farm/images/ ] ; then
 	mkdir -p /var/www/html/farm/images/${image_prefix}-${time}/ || true
+
 	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
 	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	sudo chown -R apt-cacher-ng:apt-cacher-ng /var/www/html/farm/images/${image_prefix}-${time}/ || true
+
+	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	sudo chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	sudo chmod g+wr /var/www/html/farm/images/${image_prefix}-${time}/ || true
+	ls -lha /var/www/html/farm/images/${image_prefix}-${time}/
 fi
