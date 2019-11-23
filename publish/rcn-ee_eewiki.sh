@@ -4,7 +4,7 @@ time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.us/rootfs/eewiki"
 DIR="$PWD"
 
-export apt_proxy=apt-proxy:3142/
+export apt_proxy=192.168.1.19:3142/
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
