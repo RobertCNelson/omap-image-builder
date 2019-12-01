@@ -8,7 +8,7 @@ DIR="$PWD"
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
 
-export apt_proxy=192.168.1.19:3142/
+export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
