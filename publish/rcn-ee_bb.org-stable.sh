@@ -25,6 +25,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
+./RootStock-NG.sh -c bb.org-debian-buster-iot-webthings-gateway-v4.19
 
 ./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
 
@@ -32,22 +33,23 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-   debian_stretch_machinekit="debian-9.11-machinekit-armhf-${time}"
-      debian_stretch_console="debian-9.11-console-armhf-${time}"
-          debian_stretch_iot="debian-9.11-iot-armhf-${time}"
-         debian_stretch_lxqt="debian-9.11-lxqt-armhf-${time}"
-    debian_stretch_lxqt_tidl="debian-9.11-lxqt-tidl-armhf-${time}"
-      debian_stretch_lxqt_xm="debian-9.11-lxqt-xm-armhf-${time}"
-      debian_stretch_wayland="debian-9.11-wayland-armhf-${time}"
+          debian_stretch_machinekit="debian-9.11-machinekit-armhf-${time}"
+             debian_stretch_console="debian-9.11-console-armhf-${time}"
+                 debian_stretch_iot="debian-9.11-iot-armhf-${time}"
+                debian_stretch_lxqt="debian-9.11-lxqt-armhf-${time}"
+           debian_stretch_lxqt_tidl="debian-9.11-lxqt-tidl-armhf-${time}"
+             debian_stretch_lxqt_xm="debian-9.11-lxqt-xm-armhf-${time}"
+             debian_stretch_wayland="debian-9.11-wayland-armhf-${time}"
 
-          debian_buster_tiny="debian-10.2-tiny-armhf-${time}"
-       debian_buster_console="debian-10.2-console-armhf-${time}"
-    debian_buster_console_xm="debian-10.2-console-xm-armhf-${time}"
-           debian_buster_iot="debian-10.2-iot-armhf-${time}"
-       debian_buster_efi_iot="debian-10.2-efi-iot-armhf-${time}"
-          debian_buster_lxqt="debian-10.2-lxqt-armhf-${time}"
+                 debian_buster_tiny="debian-10.2-tiny-armhf-${time}"
+              debian_buster_console="debian-10.2-console-armhf-${time}"
+           debian_buster_console_xm="debian-10.2-console-xm-armhf-${time}"
+                  debian_buster_iot="debian-10.2-iot-armhf-${time}"
+              debian_buster_efi_iot="debian-10.2-efi-iot-armhf-${time}"
+                 debian_buster_lxqt="debian-10.2-lxqt-armhf-${time}"
+debian_buster_iot_webthings_gateway="debian-10.2-iot-webthings-gateway-armhf-${time}"
 
-       ubuntu_bionic_ros_iot="ubuntu-18.04.3-ros-iot-armhf-${time}"
+              ubuntu_bionic_ros_iot="ubuntu-18.04.3-ros-iot-armhf-${time}"
 
 xz_img="xz -T3 -z -8"
 xz_tar="xz -T4 -z -8"
@@ -240,6 +242,12 @@ options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-fla
 options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
 options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
 
+###DEBIAN BUSTER: iot-webthings-gateway
+base_rootfs="${debian_buster_iot_webthings_gateway}" ; blend="buster-iot-webthings-gateway" ; extract_base_rootfs
+
+options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
+
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
 
@@ -273,6 +281,7 @@ base_rootfs="${debian_buster_console_xm}"     ; blend="buster-console-xm" ; arch
 base_rootfs="${debian_buster_iot}"            ; blend="buster-iot"        ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"    ; archive_base_rootfs
 base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; archive_base_rootfs
+base_rootfs="${debian_buster_iot_webthings_gateway}"            ; blend="buster-iot-webthings-gateway"        ; archive_base_rootfs
 
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
@@ -354,6 +363,12 @@ wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
 wfile="am57xx-eMMC-flasher-\${base_rootfs}-4gb"  ; archive_img
 wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
 wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
+
+###DEBIAN BUSTER: iot-webthings-gateway
+base_rootfs="${debian_buster_iot_webthings_gateway}" ; blend="buster-iot-webthings-gateway"
+
+wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
+wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
 
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
