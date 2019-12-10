@@ -155,6 +155,29 @@ setup_desktop () {
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
 }
 
+setup_docker () {
+	mkdir -p /opt/docker/
+	chown -R ${rfs_username}:docker /opt/docker/
+
+	docker run -d --restart always -v /opt/docker/:/home/node/.mozilla-iot --net=host --name webthings-gateway mozillaiot/gateway:arm || true
+
+	wfile="/etc/systemd/system/docker-webthings-gateway.service"
+	echo "[Unit]" > ${wfile}
+	echo "Description=Mozilla WebThings Gateway Container" >> ${wfile}
+	echo "Requires=docker.service" >> ${wfile}
+	echo "After=docker.service" >> ${wfile}
+	echo "" >> ${wfile}
+	echo "[Service]" >> ${wfile}
+	echo "Restart=always" >> ${wfile}
+	echo "ExecStart=/usr/bin/docker start -a  webthings-gateway" >> ${wfile}
+	echo "ExecStop=/usr/bin/docker stop -t 2 webthings-gateway" >> ${wfile}
+	echo "" >> ${wfile}
+	echo "[Install]" >> ${wfile}
+	echo "WantedBy=local.target" >> ${wfile}
+
+	systemctl enable docker-webthings-gateway.service || true
+}
+
 install_git_repos () {
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-4.14-ti"
@@ -197,6 +220,7 @@ is_this_qemu
 
 setup_system
 setup_desktop
+setup_docker
 
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
