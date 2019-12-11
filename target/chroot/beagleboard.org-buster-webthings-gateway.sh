@@ -158,8 +158,8 @@ setup_desktop () {
 setup_docker () {
 	mkdir -p /opt/docker/
 	chown -R ${rfs_username}:docker /opt/docker/
-
-	docker run -d --restart always -v /opt/docker/:/home/node/.mozilla-iot --net=host --name webthings-gateway mozillaiot/gateway:arm || true
+	docker pull mozillaiot/gateway:arm || true
+	#docker run -d --restart always -v /opt/docker/:/home/node/.mozilla-iot --net=host --name webthings-gateway mozillaiot/gateway:arm || true
 
 	wfile="/etc/systemd/system/docker-webthings-gateway.service"
 	echo "[Unit]" > ${wfile}
