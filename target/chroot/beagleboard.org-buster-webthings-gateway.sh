@@ -167,7 +167,7 @@ setup_docker () {
 
 	wget --directory-prefix="/opt/docker_deploy/" http://builder.gfnd.rcn-ee.org/internal/dl/docker.io/docker-mozillaiot-gateway-0.10.0-arm.tar.xz
 
-	tar xfv /opt/docker_deploy/docker-mozillaiot-gateway-0.10.0-arm.tar.xz -C /
+	tar xf /opt/docker_deploy/docker-mozillaiot-gateway-0.10.0-arm.tar.xz -C /
 
 	rm -rf /opt/docker_deploy/
 
