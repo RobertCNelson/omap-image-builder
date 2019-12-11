@@ -245,8 +245,8 @@ options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rpro
 ###DEBIAN BUSTER: iot-webthings-gateway
 base_rootfs="${debian_buster_iot_webthings_gateway}" ; blend="buster-iot-webthings-gateway" ; extract_base_rootfs
 
-options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
-options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
+#options="--img-6gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-6gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
 
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot" ; extract_base_rootfs
@@ -367,8 +367,8 @@ wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 ###DEBIAN BUSTER: iot-webthings-gateway
 base_rootfs="${debian_buster_iot_webthings_gateway}" ; blend="buster-iot-webthings-gateway"
 
-wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
-wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
+wfile="am57xx-\${base_rootfs}-6gb"               ; archive_img
+wfile="bone-\${base_rootfs}-6gb"                 ; archive_img
 
 ###DEBIAN BUSTER: efi-iot
 base_rootfs="${debian_buster_efi_iot}" ; blend="buster-efi-iot"
