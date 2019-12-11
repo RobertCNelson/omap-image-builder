@@ -167,12 +167,14 @@ setup_docker () {
 
 	wget --directory-prefix="/opt/docker_deploy/" http://builder.gfnd.rcn-ee.org/internal/dl/docker.io/docker-mozillaiot-gateway-0.10.0-arm.tar.xz
 
-	sudo tar xfv /opt/docker_deploy/docker-mozillaiot-gateway-0.10.0-arm.tar.xz -C /
+	tar xfv /opt/docker_deploy/docker-mozillaiot-gateway-0.10.0-arm.tar.xz -C /
 
-	#sudo rm -rf /opt/docker_deploy/
+	rm -rf /opt/docker_deploy/
 
 	mkdir -p /opt/docker/
 	chown -R ${rfs_username}:docker /opt/docker/
+
+	touch /etc/docker.init.webthings-gateway
 
 	wfile="/etc/systemd/system/docker-webthings-gateway.service"
 	echo "[Unit]" > ${wfile}
