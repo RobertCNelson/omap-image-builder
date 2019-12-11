@@ -157,10 +157,11 @@ setup_desktop () {
 
 setup_docker () {
 	mkdir -p /opt/docker/
+	mkdir -p /opt/docker_deploy/
 	chown -R ${rfs_username}:docker /opt/docker/
-	systemctl start docker || true
-	docker pull mozillaiot/gateway:arm || true
-	#docker run -d --restart always -v /opt/docker/:/home/node/.mozilla-iot --net=host --name webthings-gateway mozillaiot/gateway:arm || true
+	chown -R ${rfs_username}:docker /opt/docker_deploy/
+
+	wget --directory-prefix="/opt/docker_deploy/" http://builder.gfnd.rcn-ee.org/internal/dl/docker.io/mozillaiot-gateway-0.10.0-arm.tar.gz
 
 	wfile="/etc/systemd/system/docker-webthings-gateway.service"
 	echo "[Unit]" > ${wfile}
@@ -176,7 +177,7 @@ setup_docker () {
 	echo "[Install]" >> ${wfile}
 	echo "WantedBy=local.target" >> ${wfile}
 
-	systemctl enable docker-webthings-gateway.service || true
+	#systemctl enable docker-webthings-gateway.service || true
 }
 
 install_git_repos () {
