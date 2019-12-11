@@ -176,19 +176,19 @@ setup_docker () {
 
 	touch /etc/docker.init.webthings-gateway
 
-	wfile="/etc/systemd/system/docker-webthings-gateway.service"
-	echo "[Unit]" > ${wfile}
-	echo "Description=Mozilla WebThings Gateway Container" >> ${wfile}
-	echo "Requires=docker.service" >> ${wfile}
-	echo "After=docker.service" >> ${wfile}
-	echo "" >> ${wfile}
-	echo "[Service]" >> ${wfile}
-	echo "Restart=always" >> ${wfile}
-	echo "ExecStart=/usr/bin/docker start -a  webthings-gateway" >> ${wfile}
-	echo "ExecStop=/usr/bin/docker stop -t 2 webthings-gateway" >> ${wfile}
-	echo "" >> ${wfile}
-	echo "[Install]" >> ${wfile}
-	echo "WantedBy=local.target" >> ${wfile}
+#	wfile="/etc/systemd/system/docker-webthings-gateway.service"
+#	echo "[Unit]" > ${wfile}
+#	echo "Description=Mozilla WebThings Gateway Container" >> ${wfile}
+#	echo "Requires=docker.service" >> ${wfile}
+#	echo "After=docker.service" >> ${wfile}
+#	echo "" >> ${wfile}
+#	echo "[Service]" >> ${wfile}
+#	echo "Restart=always" >> ${wfile}
+#	echo "ExecStart=/usr/bin/docker start -a  webthings-gateway" >> ${wfile}
+#	echo "ExecStop=/usr/bin/docker stop -t 2 webthings-gateway" >> ${wfile}
+#	echo "" >> ${wfile}
+#	echo "[Install]" >> ${wfile}
+#	echo "WantedBy=local.target" >> ${wfile}
 
 	#systemctl enable docker-webthings-gateway.service || true
 }
