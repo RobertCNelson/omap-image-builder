@@ -1918,11 +1918,15 @@ while [ ! -z "$1" ] ; do
 	--spl)
 		checkparm $2
 		LOCAL_SPL="$2"
+		SPL="${LOCAL_SPL##*/}"
+		blank_SPL="${SPL}"
 		USE_LOCAL_BOOT=1
 		;;
 	--bootloader)
 		checkparm $2
 		LOCAL_BOOTLOADER="$2"
+		UBOOT="${LOCAL_BOOTLOADER##*/}"
+		blank_UBOOT="${UBOOT}"
 		USE_LOCAL_BOOT=1
 		;;
 	--use-beta-bootloader)
