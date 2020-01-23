@@ -1,0 +1,8 @@
+#Seeed Music Kit Defaults...
+uboot_overlay_addr0=/lib/firmware/PB-I2C1-TLV320AIC3104.dtbo
+uboot_overlay_addr1=/lib/firmware/BB-GPIO-P9813.dtbo
+uboot_overlay_addr2=/lib/firmware/BB-GPIO-HCSR04.dtbo
+uboot_overlay_addr3=/lib/firmware/BB-GPIO-GROVE-BUTTON.dtbo
+uboot_overlay_addr4=/lib/firmware/BB-I2C1-JHD1802.dtbo
+uboot_overlay_addr5=/lib/firmware/BB-I2C2-ADXL34X.dtbo
+uboot_overlay_addr6=/lib/firmware/BB-I2C2-MPR121.dtbo
