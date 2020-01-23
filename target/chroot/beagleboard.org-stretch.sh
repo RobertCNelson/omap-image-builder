@@ -263,27 +263,29 @@ install_git_repos () {
 	git_target_dir="/opt/source/bb.org-overlays"
 	git_clone
 
-	git_repo="https://github.com/StrawsonDesign/librobotcontrol"
-	git_target_dir="/opt/source/librobotcontrol"
-	git_clone
+	if [ -f /usr/lib/librobotcontrol.so ] ; then
+		git_repo="https://github.com/StrawsonDesign/librobotcontrol"
+		git_target_dir="/opt/source/librobotcontrol"
+		git_clone
 
-	git_repo="https://github.com/mcdeoliveira/rcpy"
-	git_target_dir="/opt/source/rcpy"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] ; then
-			/usr/bin/python3 setup.py install
+		git_repo="https://github.com/mcdeoliveira/rcpy"
+		git_target_dir="/opt/source/rcpy"
+		git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/python3 ] ; then
+				/usr/bin/python3 setup.py install
+			fi
 		fi
-	fi
 
-	git_repo="https://github.com/mcdeoliveira/pyctrl"
-	git_target_dir="/opt/source/pyctrl"
-	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] ; then
-			/usr/bin/python3 setup.py install
+		git_repo="https://github.com/mcdeoliveira/pyctrl"
+		git_target_dir="/opt/source/pyctrl"
+		git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/python3 ] ; then
+				/usr/bin/python3 setup.py install
+			fi
 		fi
 	fi
 

@@ -196,6 +196,7 @@ install_git_repos () {
 			if [ -f /usr/bin/python3 ] ; then
 				python3 setup.py install || true
 			fi
+			git reset HEAD --hard || true
 		fi
 	fi
 
@@ -220,21 +221,9 @@ install_git_repos () {
 	if [ -f /var/www/html/index.nginx-debian.html ] ; then
 		rm -rf /var/www/html/index.nginx-debian.html || true
 
-		echo "diff --git a/etc/nginx/sites-available/default b/etc/nginx/sites-available/default" > /tmp/nginx.patch
-		echo "index c841ceb..4f977d8 100644" >> /tmp/nginx.patch
-		echo "--- a/etc/nginx/sites-available/default" >> /tmp/nginx.patch
-		echo "+++ b/etc/nginx/sites-available/default" >> /tmp/nginx.patch
-		echo "@@ -49,6 +49,7 @@ server {" >> /tmp/nginx.patch
-		echo -e " \t\t# First attempt to serve request as file, then" >> /tmp/nginx.patch
-		echo -e " \t\t# as directory, then fall back to displaying a 404." >> /tmp/nginx.patch
-		echo -e " \t\ttry_files \$uri \$uri/ =404;" >> /tmp/nginx.patch
-		echo -e "+\t\tautoindex on;" >> /tmp/nginx.patch
-		echo -e " \t}" >> /tmp/nginx.patch
-		echo " " >> /tmp/nginx.patch
-		echo -e " \t# pass PHP scripts to FastCGI server" >> /tmp/nginx.patch
-
-		cd /
-		patch -p1 < /tmp/nginx.patch
+		if [ -d /opt/scripts/distro/buster/nginx/ ] ; then
+			cp -v /opt/scripts/distro/buster/nginx/default /etc/nginx/sites-available/default
+		fi
 	fi
 
 	git_repo="https://github.com/strahlex/BBIOConfig.git"
@@ -274,27 +263,29 @@ install_git_repos () {
 	git_target_dir="/opt/source/bb.org-overlays"
 #	git_clone
 
-	git_repo="https://github.com/StrawsonDesign/librobotcontrol"
-	git_target_dir="/opt/source/librobotcontrol"
-#	git_clone
+	if [ -f /usr/lib/librobotcontrol.so ] ; then
+		git_repo="https://github.com/StrawsonDesign/librobotcontrol"
+		git_target_dir="/opt/source/librobotcontrol"
+		#git_clone
 
-	git_repo="https://github.com/mcdeoliveira/rcpy"
-	git_target_dir="/opt/source/rcpy"
-#	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] ; then
-			/usr/bin/python3 setup.py install
+		git_repo="https://github.com/mcdeoliveira/rcpy"
+		git_target_dir="/opt/source/rcpy"
+		#git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/python3 ] ; then
+				/usr/bin/python3 setup.py install
+			fi
 		fi
-	fi
 
-	git_repo="https://github.com/mcdeoliveira/pyctrl"
-	git_target_dir="/opt/source/pyctrl"
-#	git_clone
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		if [ -f /usr/bin/python3 ] ; then
-			/usr/bin/python3 setup.py install
+		git_repo="https://github.com/mcdeoliveira/pyctrl"
+		git_target_dir="/opt/source/pyctrl"
+		#git_clone
+		if [ -f ${git_target_dir}/.git/config ] ; then
+			cd ${git_target_dir}/
+			if [ -f /usr/bin/python3 ] ; then
+				/usr/bin/python3 setup.py install
+			fi
 		fi
 	fi
 
