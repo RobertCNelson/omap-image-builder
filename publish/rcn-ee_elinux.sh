@@ -101,10 +101,6 @@ copy_img_to_mirror () {
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
                                 mv -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
                                 sync
-                                if [ -f \${wfile}.img.xz.job.txt ] ; then
-                                        mv -v \${wfile}.img.xz.job.txt ${mirror_dir}/${time}/\${blend}/
-                                        sync
-                                fi
                                 cd ${mirror_dir}/${time}/\${blend}/
                                 ${xz_img} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
                                 cd -
@@ -130,9 +126,7 @@ generate_img () {
                 echo "./setup_sdcard.sh \${options}"
                 sudo ./setup_sdcard.sh \${options}
                 sudo chown 1000:1000 *.img || true
-                sudo chown 1000:1000 *.job.txt || true
                 mv *.img ../ || true
-                mv *.job.txt ../ || true
                 cd ..
         fi
 }

@@ -29,7 +29,6 @@ build_and_upload_image () {
 
 		if [ -f ${target_name}-${image_name}-${size}.img ] ; then
 			sudo chown buildbot.buildbot ${target_name}-${image_name}-${size}.img
-			sudo chown buildbot.buildbot ${target_name}-${image_name}-${size}.img.xz.job.txt
 
 			sync ; sync ; sleep 5
 
@@ -42,7 +41,6 @@ build_and_upload_image () {
 			ssh ${ssh_user} mkdir -p ${server_dir}
 			rsync -e ssh -av ./${target_name}-${image_name}-${size}.bmap ${ssh_user}:${server_dir}/
 			rsync -e ssh -av ./${target_name}-${image_name}-${size}.img.xz ${ssh_user}:${server_dir}/
-			rsync -e ssh -av ./${target_name}-${image_name}-${size}.img.xz.job.txt ${ssh_user}:${server_dir}/
 			rsync -e ssh -av ./${target_name}-${image_name}-${size}.img.xz.sha256sum ${ssh_user}:${server_dir}/
 
 			#cleanup:
