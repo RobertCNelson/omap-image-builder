@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2019 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2020 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -100,10 +100,11 @@ setup_system () {
 
 	#make the sound card work by default
 	if [ -f /etc/alsa/tlv320aic3104.state.txt ] ; then
-		cp /etc/alsa/tlv320aic3104.state.txt /var/lib/alsa/asound.state
-		cp /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
+		if [ -d /var/lib/alsa/ ] ; then
+			cp -v /etc/alsa/tlv320aic3104.state.txt /var/lib/alsa/asound.state
+			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
+		fi
 	fi
-
 }
 
 setup_desktop () {
