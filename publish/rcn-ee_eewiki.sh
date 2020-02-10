@@ -23,7 +23,7 @@ else
 fi
 
 debian_stretch="debian-9.12"
-debian_buster="debian-10.2"
+debian_buster="debian-10.3"
 ubuntu_stable="ubuntu-18.04.3"
 
 xz_img="xz -z -8"

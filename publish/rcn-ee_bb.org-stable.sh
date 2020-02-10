@@ -45,14 +45,14 @@ fi
              debian_stretch_lxqt_xm="debian-9.12-lxqt-xm-armhf-${time}"
              debian_stretch_wayland="debian-9.12-wayland-armhf-${time}"
 
-                 debian_buster_tiny="debian-10.2-tiny-armhf-${time}"
-              debian_buster_console="debian-10.2-console-armhf-${time}"
-           debian_buster_console_xm="debian-10.2-console-xm-armhf-${time}"
-                  debian_buster_iot="debian-10.2-iot-armhf-${time}"
-        debian_buster_iot_grove_kit="debian-10.2-iot-grove-kit-armhf-${time}"
-              debian_buster_efi_iot="debian-10.2-efi-iot-armhf-${time}"
-                 debian_buster_lxqt="debian-10.2-lxqt-armhf-${time}"
-debian_buster_iot_webthings_gateway="debian-10.2-iot-webthings-gateway-armhf-${time}"
+                 debian_buster_tiny="debian-10.3-tiny-armhf-${time}"
+              debian_buster_console="debian-10.3-console-armhf-${time}"
+           debian_buster_console_xm="debian-10.3-console-xm-armhf-${time}"
+                  debian_buster_iot="debian-10.3-iot-armhf-${time}"
+        debian_buster_iot_grove_kit="debian-10.3-iot-grove-kit-armhf-${time}"
+              debian_buster_efi_iot="debian-10.3-efi-iot-armhf-${time}"
+                 debian_buster_lxqt="debian-10.3-lxqt-armhf-${time}"
+debian_buster_iot_webthings_gateway="debian-10.3-iot-webthings-gateway-armhf-${time}"
 
               ubuntu_bionic_ros_iot="ubuntu-18.04.3-ros-iot-armhf-${time}"
 
