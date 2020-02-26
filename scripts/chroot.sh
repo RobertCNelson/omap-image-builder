@@ -26,7 +26,7 @@ time=$(date +%Y-%m-%d)
 OIB_DIR="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )" )"
 chroot_completed="false"
 
-abi=ac
+abi=ad
 
 #ac=change /sys/kernel/debug mount persmissions
 #ab=efi added 20180321
