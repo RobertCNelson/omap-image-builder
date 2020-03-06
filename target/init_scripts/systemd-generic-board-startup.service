@@ -1,6 +1,6 @@
 [Unit]
 Description=Generic Board Startup
-After=local-fs.target
+After=network.target
 
 [Service]
 Type=oneshot
