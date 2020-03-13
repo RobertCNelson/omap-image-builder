@@ -206,7 +206,7 @@ if [ -f /opt/images/nas.FREENAS ] ; then
 	sudo mkdir -p /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
 
 	echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
+	sudo cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
 
 	ls -lha /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/
 fi
