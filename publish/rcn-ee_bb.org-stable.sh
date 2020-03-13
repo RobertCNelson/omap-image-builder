@@ -440,6 +440,13 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 			mkdir -p /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
 		fi
 
+		echo "Permissions of RootFS"
+		ls -lha ${DIR}/deploy/
+
+		echo "Permissions of target dir"
+		ls -lha /mnt/farm/images/
+		ls -lha /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/
+
 		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
 		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
 		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
