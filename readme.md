@@ -105,15 +105,18 @@ Master branch:
 
 eewiki.net: Debian Stable (armel) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armel
+    ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
 
 eewiki.net: Debian Stable (armhf) minfs:
 
-    ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_armhf
+    ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
+
+eewiki.net: Ubuntu Stable (armhf) minfs:
+
+    ./RootStock-NG.sh -c eewiki_minfs_ubuntu_bionic_armhf
 
 elinux.org: Debian Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
     ./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
     http://elinux.org/BeagleBoardDebian#Demo_Image
 
@@ -125,7 +128,7 @@ elinux.org: Ubuntu Images:
 Release Process:
 
     vYEAR.MONTH
-    git tag -a v201y.mm -m 'v201y.mm'
+    git tag -a v202y.mm -m 'v202y.mm'
     git push origin --tags
 
 MachineKit:
