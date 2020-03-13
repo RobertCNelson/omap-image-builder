@@ -427,70 +427,12 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
-#node:
-if [ ! -d /var/www/html/farm/images/ ] ; then
-	if [ ! -d /mnt/farm/images/ ] ; then
-		#nfs mount...
-		sudo mount -a
-	fi
-
-	if [ ! -f /mnt/images/nas.FREENAS ] ; then
-		#nfs mount...
-		sudo mount -a
-	fi
-
-	if [ -f /mnt/images/nas.FREENAS ] ; then
-		if [ ! -d /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ ] ; then
-			echo "mkdir: /mnt/images/${IMAGE_DIR_PREFIX}-${time}/"
-			mkdir -p /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-		fi
-
-		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-
-		ls -lha /mnt/images/${IMAGE_DIR_PREFIX}-${time}/
-	fi
-
-	if [ -d /mnt/farm/images/ ] ; then
-		if [ ! -d /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ ] ; then
-			echo "mkdir: /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/"
-			mkdir -p /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-		fi
-
-		echo "Permissions of RootFS"
-		ls -lha ${DIR}/deploy/
-
-		echo "Permissions of target dir"
-		ls -lha /mnt/farm/images/
-		ls -lha /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/
-
-		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-		sudo chmod +x /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-		sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-	fi
-fi
-
-#x86:
-if [ -d /var/www/html/farm/images/ ] ; then
-	mkdir -p /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
+#x86: My Server...
+if [ -f /opt/images/nas.FREENAS ] ; then
+	sudo mkdir -p /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
 
 	echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
+	sudo cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
 
-	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-	sudo chmod +x /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-	sudo chmod g+wr /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-	ls -lha /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/
-
-	if [ -f /opt/images/nas.FREENAS ] ; then
-		mkdir -p /opt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
-
-		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-
-		ls -lha /opt/images/${IMAGE_DIR_PREFIX}-${time}/
-	fi
+	ls -lha /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/
 fi

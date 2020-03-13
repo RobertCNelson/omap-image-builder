@@ -175,33 +175,7 @@ __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
-#node:
-if [ ! -d /var/www/html/farm/images/ ] ; then
-	if [ ! -d /mnt/farm/images/ ] ; then
-		#nfs mount...
-		sudo mount -a
-	fi
-
-	if [ ! -f /mnt/images/nas.FREENAS ] ; then
-		#nfs mount...
-		sudo mount -a
-	fi
-
-	if [ -f /mnt/images/nas.FREENAS ] ; then
-		if [ ! -d /mnt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ ] ; then
-			echo "mkdir: /mnt/images/wip/${IMAGE_DIR_PREFIX}-${time}/"
-			mkdir -p /mnt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
-		fi
-
-		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/images/wip/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
-
-		ls -lha /mnt/images/${IMAGE_DIR_PREFIX}-${time}/
-	fi
-fi
-
-#x86:
+#x86: My Server...
 if [ -f /opt/images/nas.FREENAS ] ; then
 	sudo mkdir -p /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
 
