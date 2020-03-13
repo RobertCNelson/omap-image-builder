@@ -434,6 +434,24 @@ if [ ! -d /var/www/html/farm/images/ ] ; then
 		sudo mount -a
 	fi
 
+	if [ ! -f /mnt/images/nas.FREENAS ] ; then
+		#nfs mount...
+		sudo mount -a
+	fi
+
+	if [ -f /mnt/images/nas.FREENAS ] ; then
+		if [ ! -d /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ ] ; then
+			echo "mkdir: /mnt/images/${IMAGE_DIR_PREFIX}-${time}/"
+			mkdir -p /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
+		fi
+
+		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
+		cp -v ${DIR}/deploy/*.tar /mnt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
+
+		ls -lha /mnt/images/${IMAGE_DIR_PREFIX}-${time}/
+	fi
+
 	if [ -d /mnt/farm/images/ ] ; then
 		if [ ! -d /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/ ] ; then
 			echo "mkdir: /mnt/farm/images/${IMAGE_DIR_PREFIX}-${time}/"
@@ -466,4 +484,13 @@ if [ -d /var/www/html/farm/images/ ] ; then
 	sudo chmod +x /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
 	sudo chmod g+wr /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/ || true
 	ls -lha /var/www/html/farm/images/${IMAGE_DIR_PREFIX}-${time}/
+
+	if [ -f /opt/images/nas.FREENAS ] ; then
+		mkdir -p /opt/images/${IMAGE_DIR_PREFIX}-${time}/ || true
+
+		echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
+
+		ls -lha /opt/images/${IMAGE_DIR_PREFIX}-${time}/
+	fi
 fi
