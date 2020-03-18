@@ -1303,6 +1303,10 @@ populate_rootfs () {
 
 	cmdline="coherent_pool=1M net.ifnames=0"
 
+	if [ ! "x${loops_per_jiffy}" = "x" ] ; then
+		cmdline="${cmdline} ${loops_per_jiffy}"
+	fi
+
 	if [ ! "x${rng_core}" = "x" ] ; then
 		cmdline="${cmdline} ${rng_core}"
 	fi
