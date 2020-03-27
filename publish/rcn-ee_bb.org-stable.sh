@@ -197,8 +197,8 @@ options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rpro
 ###DEBIAN STRETCH: iot-tidl
 base_rootfs="${debian_stretch_iot_tidl}" ; blend="stretch-iot-tidl" ; extract_base_rootfs
 
-options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
+options="--img-6gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-6gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
 
 ###DEBIAN STRETCH: iot-grove-kit
 base_rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit" ; extract_base_rootfs
@@ -259,8 +259,8 @@ options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rpro
 ###DEBIAN BUSTER: iot-tidl
 base_rootfs="${debian_buster_iot_tidl}" ; blend="buster-iot-tidl" ; extract_base_rootfs
 
-options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
+options="--img-6gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-6gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
 
 ###DEBIAN BUSTER: iot-grove-kit
 base_rootfs="${debian_buster_iot_grove_kit}" ; blend="buster-iot-grove-kit" ; extract_base_rootfs
@@ -344,8 +344,8 @@ wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 ###DEBIAN STRETCH: iot-tidl
 base_rootfs="${debian_stretch_iot_tidl}" ; blend="stretch-iot-tidl"
 
-wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-4gb"  ; archive_img
+wfile="am57xx-\${base_rootfs}-6gb"               ; archive_img
+wfile="am57xx-eMMC-flasher-\${base_rootfs}-6gb"  ; archive_img
 
 ###DEBIAN STRETCH: iot-grove-kit
 base_rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit"
@@ -407,8 +407,8 @@ wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
 ###DEBIAN BUSTER: iot-tidl
 base_rootfs="${debian_buster_iot_tidl}" ; blend="buster-iot-tidl"
 
-wfile="am57xx-\${base_rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-4gb"  ; archive_img
+wfile="am57xx-\${base_rootfs}-6gb"               ; archive_img
+wfile="am57xx-eMMC-flasher-\${base_rootfs}-6gb"  ; archive_img
 
 ###DEBIAN BUSTER: iot-grove-kit
 base_rootfs="${debian_buster_iot_grove_kit}" ; blend="buster-iot-grove-kit"
