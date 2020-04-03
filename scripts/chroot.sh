@@ -741,6 +741,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get -y install ti-cmem-modules-${repo_rcnee_pkg_version} || true
 			fi
 
+			if [ ! "x${repo_rcnee_sgx_preinstall}" = "x" ] ; then
+				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
+			fi
+
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
@@ -1234,14 +1238,22 @@ if [ "x${include_firmware}" = "xenable" ] ; then
 	fi
 fi
 
-if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
-	sgx_http="https://rcn-ee.net/repos/debian/pool/main"
-	sudo mkdir -p "${tempdir}/opt/sgx/"
-	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
-	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
-	sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
-	wfile="${tempdir}/opt/sgx/status"
-	sudo sh -c "echo 'not_installed' >> ${wfile}"
+#repo_rcnee_sgx_preinstall: we've pre-selected ti335x or jacinto6evm, no decision on first bootup...
+if [ "x${repo_rcnee_sgx_preinstall}" = "x" ] ; then
+	if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+		sgx_http="https://rcn-ee.net/repos/debian/pool/main"
+		sudo mkdir -p "${tempdir}/opt/sgx/"
+		sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti33x-ddk-um/ti-sgx-ti33x-ddk-um_1.14.3699939-git20171201.0-0rcnee9~stretch+20190328_armhf.deb
+		sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}/ti-sgx-ti335x-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
+		sudo wget --directory-prefix="${tempdir}/opt/sgx/" ${sgx_http}/t/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}/ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version}_1${deb_codename}_armhf.deb
+		wfile="${tempdir}/opt/sgx/status"
+		sudo sh -c "echo 'not_installed' >> ${wfile}"
+	fi
+else
+	if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+		wfile="${tempdir}/opt/sgx/status"
+		sudo sh -c "echo 'installed' >> ${wfile}"
+	fi
 fi
 
 if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
