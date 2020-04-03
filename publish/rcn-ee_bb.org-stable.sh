@@ -18,10 +18,10 @@ fi
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c machinekit-debian-stretch
 ./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
+./RootStock-NG.sh -c bb.org-debian-stretch-imgtec-v4.14.conf
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-iot-grove-kit-v4.14.conf
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-imgtec-v4.14.conf
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
@@ -41,10 +41,10 @@ fi
 
           debian_stretch_machinekit="debian-9.12-machinekit-armhf-${time}"
              debian_stretch_console="debian-9.12-console-armhf-${time}"
+              debian_stretch_imgtec="debian-9.12-imgtec-armhf-${time}"
                  debian_stretch_iot="debian-9.12-iot-armhf-${time}"
             debian_stretch_iot_tidl="debian-9.12-iot-tidl-armhf-${time}"
        debian_stretch_iot_grove_kit="debian-9.12-iot-grove-kit-armhf-${time}"
-          debian_stretch_iot_imgtec="debian-9.12-iot-imgtec-armhf-${time}"
                 debian_stretch_lxqt="debian-9.12-lxqt-armhf-${time}"
            debian_stretch_lxqt_tidl="debian-9.12-lxqt-tidl-armhf-${time}"
              debian_stretch_lxqt_xm="debian-9.12-lxqt-xm-armhf-${time}"
@@ -188,6 +188,11 @@ options="--img-1gb BBBL-blank-\${base_rootfs}           ${beaglebone} ${pru_rpro
 options="--img-1gb BBBW-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v414ti} --bbbw-flasher" ; generate_img
 options="--img-1gb BBGG-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v414ti} --bbgg-flasher" ; generate_img
 
+###DEBIAN STRETCH: imgtec
+base_rootfs="${debian_stretch_imgtec}" ; blend="stretch-imgtec" ; extract_base_rootfs
+
+options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
+
 ###DEBIAN STRETCH: iot
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
 
@@ -204,11 +209,6 @@ options="--img-6gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-fla
 
 ###DEBIAN STRETCH: iot-grove-kit
 base_rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
-
-###DEBIAN STRETCH: iot-imgtec
-base_rootfs="${debian_stretch_iot_imgtec}" ; blend="stretch-iot-imgtec" ; extract_base_rootfs
 
 options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v414ti}"                ; generate_img
 
@@ -301,10 +301,10 @@ options="--img-6gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}"  ;
 ###archive *.tar
 base_rootfs="${debian_stretch_machinekit}"    ; blend="stretch-machinekit" ; archive_base_rootfs
 base_rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
+base_rootfs="${debian_stretch_imgtec}"        ; blend="stretch-imgtec"     ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot_tidl}"      ; blend="stretch-iot-tidl"   ; archive_base_rootfs
 base_rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit"   ; archive_base_rootfs
-base_rootfs="${debian_stretch_iot_imgtec}"    ; blend="stretch-iot-imgtec" ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_tidl}"     ; blend="stretch-lxqt-tidl"  ; archive_base_rootfs
 base_rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
@@ -341,6 +341,11 @@ wfile="BBBL-blank-\${base_rootfs}-1gb"           ; archive_img
 wfile="BBBW-blank-\${base_rootfs}-1gb"           ; archive_img
 wfile="BBGG-blank-\${base_rootfs}-1gb"           ; archive_img
 
+###DEBIAN STRETCH: imgtec
+base_rootfs="${debian_stretch_imgtec}" ; blend="stretch-imgtec"
+
+wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
+
 ###DEBIAN STRETCH: iot
 base_rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
 
@@ -357,11 +362,6 @@ wfile="am57xx-eMMC-flasher-\${base_rootfs}-6gb"  ; archive_img
 
 ###DEBIAN STRETCH: iot-grove-kit
 base_rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit"
-
-wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
-
-###DEBIAN STRETCH: iot-imgtec
-base_rootfs="${debian_stretch_iot_imgtec}" ; blend="stretch-iot-imgtec"
 
 wfile="bone-\${base_rootfs}-4gb"                 ; archive_img
 
