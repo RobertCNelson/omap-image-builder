@@ -1251,6 +1251,7 @@ if [ "x${repo_rcnee_sgx_preinstall}" = "x" ] ; then
 	fi
 else
 	if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
+		sudo mkdir -p "${tempdir}/opt/sgx/"
 		wfile="${tempdir}/opt/sgx/status"
 		sudo sh -c "echo 'installed' >> ${wfile}"
 	fi
