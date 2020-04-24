@@ -342,10 +342,6 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	esac
 
 	if [ "${apt_proxy}" ] ; then
-		#apt: make sure apt-cacher-ng doesn't break oracle-java8-installer
-		echo 'Acquire::http::Proxy::download.oracle.com "DIRECT";' > /tmp/03-proxy-oracle
-		sudo mv /tmp/03-proxy-oracle "${tempdir}/etc/apt/apt.conf.d/03-proxy-oracle"
-
 		#apt: make sure apt-cacher-ng doesn't break https repos
 		echo 'Acquire::http::Proxy::deb.nodesource.com "DIRECT";' > /tmp/03-proxy-https
 		sudo mv /tmp/03-proxy-https "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
@@ -1409,10 +1405,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		if [ "x\${distro}" = "xUbuntu" ] ; then
 			rm -f /sbin/initctl || true
 			dpkg-divert --local --rename --remove /sbin/initctl
-		fi
-
-		if [ -f /etc/apt/apt.conf.d/03-proxy-oracle ] ; then
-			rm -rf /etc/apt/apt.conf.d/03-proxy-oracle || true
 		fi
 
 		if [ -f /etc/apt/apt.conf.d/03-proxy-https ] ; then
