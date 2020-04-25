@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-OIB_USER=${OIB_USER:-1000}
+IMAGE_DIR_PREFIX=${IMAGE_DIR_PREFIX:-eewiki}
 
 time=$(date +%Y-%m-%d)
 mirror_dir="/var/www/html/rcn-ee.us/rootfs/eewiki"
@@ -54,26 +54,6 @@ base_rootfs="${ubuntu_stable}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirro
 __EOF__
 
 chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
-
-image_prefix="eewiki"
-#node:
-if [ ! -d /mnt/images/ ] ; then
-	if [ ! -f /mnt/images/nas.FREENAS ] ; then
-		#nfs mount...
-		sudo mount -a
-	fi
-
-	if [ -d /mnt/images/wip/ ] ; then
-		if [ ! -d /mnt/images/wip/${image_prefix}-${time}/ ] ; then
-			echo "mkdir: /mnt/images/wip/${image_prefix}-${time}/"
-			mkdir -p /mnt/images/wip/${image_prefix}-${time}/ || true
-		fi
-
-		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/images/wip/${image_prefix}-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/images/wip/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	fi
-fi
 
 #x86: My Server...
 if [ -f /opt/images/nas.FREENAS ] ; then
