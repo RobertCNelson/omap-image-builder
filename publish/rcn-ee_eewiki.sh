@@ -15,13 +15,13 @@ fi
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
-./RootStock-NG.sh -c eewiki_minfs_ubuntu_bionic_armhf
+./RootStock-NG.sh -c eewiki_minfs_ubuntu_focal_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
 debian_buster="debian-10.3"
-ubuntu_stable="ubuntu-18.04.4"
+ubuntu_stable="ubuntu-20.04"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
@@ -57,35 +57,30 @@ chmod +x ${DIR}/deploy/gift_wrap_final_images.sh
 
 image_prefix="eewiki"
 #node:
-if [ ! -d /var/www/html/farm/images/ ] ; then
-	if [ ! -d /mnt/farm/images/ ] ; then
+if [ ! -d /mnt/images/ ] ; then
+	if [ ! -f /mnt/images/nas.FREENAS ] ; then
 		#nfs mount...
 		sudo mount -a
 	fi
 
-	if [ -d /mnt/farm/images/ ] ; then
-		if [ ! -d /mnt/farm/images/${image_prefix}-${time}/ ] ; then
-			echo "mkdir: /mnt/farm/images/${image_prefix}-${time}/"
-			mkdir -p /mnt/farm/images/${image_prefix}-${time}/ || true
+	if [ -d /mnt/images/wip/ ] ; then
+		if [ ! -d /mnt/images/wip/${image_prefix}-${time}/ ] ; then
+			echo "mkdir: /mnt/images/wip/${image_prefix}-${time}/"
+			mkdir -p /mnt/images/wip/${image_prefix}-${time}/ || true
 		fi
 
 		echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
-		cp -v ${DIR}/deploy/*.tar /mnt/farm/images/${image_prefix}-${time}/ || true
-		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-		sudo chmod +x /mnt/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-		sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
+		cp -v ${DIR}/deploy/*.tar /mnt/images/wip/${image_prefix}-${time}/ || true
+		cp -v ${DIR}/deploy/gift_wrap_final_images.sh /mnt/images/wip/${image_prefix}-${time}/gift_wrap_final_images.sh || true
 	fi
 fi
 
-#x86:
-if [ -d /var/www/html/farm/images/ ] ; then
-	mkdir -p /var/www/html/farm/images/${image_prefix}-${time}/ || true
+#x86: My Server...
+if [ -f /opt/images/nas.FREENAS ] ; then
+	sudo mkdir -p /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/ || true
 
-	echo "Copying: *.tar to server: images/${image_prefix}-${time}/"
-	cp -v ${DIR}/deploy/gift_wrap_final_images.sh /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
+	echo "Copying: *.tar to server: images/${IMAGE_DIR_PREFIX}-${time}/"
+	sudo cp -v ${DIR}/deploy/gift_wrap_final_images.sh /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/gift_wrap_final_images.sh || true
 
-	sudo chown -R ${OIB_USER}:${OIB_USER} /var/www/html/farm/images/${image_prefix}-${time}/ || true
-	sudo chmod +x /var/www/html/farm/images/${image_prefix}-${time}/gift_wrap_final_images.sh || true
-	sudo chmod g+wr /var/www/html/farm/images/${image_prefix}-${time}/ || true
-	ls -lha /var/www/html/farm/images/${image_prefix}-${time}/
+	ls -lha /opt/images/wip/${IMAGE_DIR_PREFIX}-${time}/
 fi
