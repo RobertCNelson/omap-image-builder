@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 server="https://rcn-ee.net/repos/latest/buster-armhf/LATEST-"
 
