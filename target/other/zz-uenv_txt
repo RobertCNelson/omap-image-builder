@@ -10,7 +10,7 @@ fi
 
 if [ -f /boot/uEnv.txt ] ; then
 	unset older_kernel
-	older_kernel=$(cat /boot/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
+	older_kernel=$(cat /boot/uEnv.txt | grep -v '#' | sed 's/ /\n/g' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
 
 	if [ ! "x${older_kernel}" = "x" ] ; then
 		if [ ! "x${older_kernel}" = "x${version}" ] ; then
@@ -25,9 +25,9 @@ fi
 udir="/boot/uboot/boot"
 if [ -f ${udir}/uEnv.txt ] ; then
 	unset older_kernel
-	older_kernel=$(cat ${udir}/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
+	older_kernel=$(cat ${udir}/uEnv.txt | grep -v '#' | sed 's/ /\n/g' | grep 'uname_r=' | awk -F"=" '{print $2}' || true)
 	unset zreladdr
-	zreladdr=$(cat ${udir}/uEnv.txt | sed 's/ /\n/g' | grep -v '#' | grep 'zreladdr=' | awk -F"=" '{print $2}' || true)
+	zreladdr=$(cat ${udir}/uEnv.txt | grep -v '#' | sed 's/ /\n/g' | grep 'zreladdr=' | awk -F"=" '{print $2}' || true)
 
 	if [ "x${older_kernel}" = "xcurrent" ] ; then
 
