@@ -17,6 +17,7 @@ BeagleBoard.org or Element14 BeagleBone Black:
      A5B: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 41 35 42 |.U3.A335BNLT0A5B|]
      A5C: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 41 35 43 |.U3.A335BNLT0A5C|]
       A6: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 41 36 |.U3.A335BNLT00A6|]
+       B: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 30 42 |.U3.A335BNLT000B|]
        C: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 30 43 |.U3.A335BNLT000C|]
        C: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 43 30 |.U3.A335BNLT00C0|]
 
