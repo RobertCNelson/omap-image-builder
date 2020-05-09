@@ -26,7 +26,7 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
-./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
+./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.14
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.19
