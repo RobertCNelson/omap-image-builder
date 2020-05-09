@@ -20,7 +20,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_buster="debian-10.3"
+debian_buster="debian-10.4"
 ubuntu_stable="ubuntu-20.04"
 
 xz_img="xz -z -8"
