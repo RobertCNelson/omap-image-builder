@@ -314,6 +314,6 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
-#ros_initialize_rosdep
+ros_initialize_rosdep
 other_source_links
 #
