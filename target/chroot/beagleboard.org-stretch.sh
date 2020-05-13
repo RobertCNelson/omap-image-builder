@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2019 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2020 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -109,13 +109,10 @@ setup_desktop () {
 		echo "" >> ${wfile}
 		echo "Section \"Device\"" >> ${wfile}
 		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> ${wfile}
-
 #		echo "        Driver          \"modesetting\"" >> ${wfile}
 #		echo "        Option          \"AccelMethod\"   \"none\"" >> ${wfile}
 		echo "        Driver          \"fbdev\"" >> ${wfile}
-
 		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
-
 		echo "EndSection" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "Section \"Screen\"" >> ${wfile}
