@@ -133,6 +133,10 @@ copy_img_to_mirror () {
                         mkdir -p ${mirror_dir}/${time}/\${blend}/ || true
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
+                        if [ -f ./generate.log ] ; then
+                                mv -v ./generate.log ${mirror_dir}/${time}/\${blend}/
+                                sync
+                        fi
                         if [ -f \${wfile}.bmap ] ; then
                                 mv -v \${wfile}.bmap ${mirror_dir}/${time}/\${blend}/
                                 sync
@@ -162,6 +166,7 @@ archive_img () {
 generate_img () {
         if [ -d \${base_rootfs}/ ] ; then
                 cd \${base_rootfs}/
+                echo "./setup_sdcard.sh \${options}" >> ../generate.log
                 echo "./setup_sdcard.sh \${options}"
                 sudo ./setup_sdcard.sh \${options}
                 sudo chown 1000:1000 *.img || true
