@@ -31,6 +31,8 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.14
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
+./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.14
+./RootStock-NG.sh -c bb.org-debian-buster-lxqt-xm
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-webthings-gateway-v4.19
 
 ./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
@@ -58,6 +60,8 @@ fi
         debian_buster_iot_grove_kit="debian-10.4-iot-grove-kit-armhf-${time}"
               debian_buster_efi_iot="debian-10.4-efi-iot-armhf-${time}"
                  debian_buster_lxqt="debian-10.4-lxqt-armhf-${time}"
+            debian_buster_lxqt_tidl="debian-10.4-lxqt-tidl-armhf-${time}"
+              debian_buster_lxqt_xm="debian-10.4-lxqt-xm-armhf-${time}"
 debian_buster_iot_webthings_gateway="debian-10.4-iot-webthings-gateway-armhf-${time}"
 
               ubuntu_bionic_ros_iot="ubuntu-18.04.4-ros-iot-armhf-${time}"
@@ -296,6 +300,19 @@ base_rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt" ; extract_base_rootfs
 
 options="--img-4gb am57xx-\${base_rootfs}  ${beagle_x15}"                     ; generate_img
 options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}" ; generate_img
+options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
+
+###DEBIAN BUSTER: lxqt-tidl
+base_rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl" ; extract_base_rootfs
+
+options="--img-6gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
+options="--img-6gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
+options="--img-6gb am57xx-blank-\${base_rootfs} ${beagle_x15} --emmc-flasher --am57xx-x15-revc-flasher" ; generate_img
+
+###DEBIAN BUSTER: lxqt-xm
+base_rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm" ; extract_base_rootfs
+
+options="--img-4gb bbxm-\${base_rootfs}  ${beagle_xm}" ; generate_img
 
 ###UBUNTU BIONIC: ros-iot
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
@@ -323,6 +340,8 @@ base_rootfs="${debian_buster_iot_tidl}"       ; blend="buster-iot-tidl"   ; arch
 base_rootfs="${debian_buster_iot_grove_kit}"  ; blend="buster-iot-grove-kit"   ; archive_base_rootfs
 base_rootfs="${debian_buster_efi_iot}"        ; blend="buster-efi-iot"    ; archive_base_rootfs
 base_rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; archive_base_rootfs
+base_rootfs="${debian_buster_lxqt_tidl}"      ; blend="buster-lxqt-tidl"  ; archive_base_rootfs
+base_rootfs="${debian_buster_lxqt_xm}"        ; blend="buster-lxqt-xm"    ; archive_base_rootfs
 base_rootfs="${debian_buster_iot_webthings_gateway}"            ; blend="buster-iot-webthings-gateway"        ; archive_base_rootfs
 
 base_rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
@@ -450,6 +469,20 @@ base_rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt"
 
 wfile="am57xx-\${base_rootfs}-4gb"  ; archive_img
 wfile="bone-\${base_rootfs}-4gb"    ; archive_img
+wfile="bone-eMMC-flasher-\${base_rootfs}-4gb"    ; archive_img
+
+###DEBIAN BUSTER: lxqt-tidl
+base_rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl"
+
+wfile="am57xx-\${base_rootfs}-6gb"               ; archive_img
+wfile="am57xx-eMMC-flasher-\${base_rootfs}-6gb"  ; archive_img
+
+wfile="am57xx-blank-\${base_rootfs}-6gb"       ; archive_img
+
+###DEBIAN BUSTER: lxqt-xm
+base_rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm"
+
+wfile="bbxm-\${base_rootfs}-4gb"  ; archive_img
 
 ###UBUNTU BIONIC: ros-iot
 base_rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot"
