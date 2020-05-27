@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2019 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2020 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -760,6 +760,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		# set system type
 		echo "ICON_NAME=computer-embedded" > /etc/machine-info
 		echo "CHASSIS=embedded" >> /etc/machine-info
+
+		#https://github.com/RobertCNelson/omap-image-builder/issues/131
+		if [ -f /var/lib/connman/settings ] ; then
+			echo "Log: (chroot): /var/lib/connman/settings"
+			cat /var/lib/connman/settings
+		fi
 	}
 
 	set_locale () {
