@@ -765,6 +765,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /var/lib/connman/settings ] ; then
 			echo "Log: (chroot): /var/lib/connman/settings"
 			cat /var/lib/connman/settings
+			sed -i -e 's:OfflineMode=false:OfflineMode=false\nTimezoneUpdates=manual:g' /var/lib/connman/settings
+			sed -i -e 's:OfflineMode=false:OfflineMode=false\nTimeUpdates=manual:g' /var/lib/connman/settings
+			echo "Log: (chroot): Patched: /var/lib/connman/settings"
+			cat /var/lib/connman/settings
 		fi
 	}
 
