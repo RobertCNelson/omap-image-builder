@@ -26,17 +26,25 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
+#./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
 ./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.14
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-mikrobus
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.14
+#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-xm
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-webthings-gateway-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-webthings-gateway-v5.4
 
 ./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
+#./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v5.4
 
 else
 	mkdir -p ${DIR}/deploy/ || true
