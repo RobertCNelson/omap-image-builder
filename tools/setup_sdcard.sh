@@ -1262,6 +1262,15 @@ populate_rootfs () {
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 				use_pru_uio="blocked"
 			fi
+			if [ "x${uboot_pru_rproc_54ti}" = "xenable" ] ; then
+				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				use_pru_uio="blocked"
+			fi
 			if [ "x${mainline_pru_rproc}" = "xenable" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
 				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
@@ -1998,6 +2007,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-pru-rproc-419ti)
 		uboot_pru_rproc_419ti="enable"
+		;;
+	--enable-uboot-pru-rproc-54ti)
+		uboot_pru_rproc_54ti="enable"
 		;;
 	--enable-mainline-pru-rproc)
 		mainline_pru_rproc="enable"
