@@ -727,7 +727,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
 			apt-get -y install libpruio-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install mikrobus-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8821cu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install seeed-modules-${repo_rcnee_pkg_version} || true
