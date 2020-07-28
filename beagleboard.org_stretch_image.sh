@@ -8,10 +8,10 @@ DIR="$PWD"
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
-      debian_stretch_console="debian-9.12-console-armhf-${time}"
-          debian_stretch_iot="debian-9.12-iot-armhf-${time}"
-         debian_stretch_lxqt="debian-9.12-lxqt-armhf-${time}"
-      debian_stretch_lxqt_xm="debian-9.12-lxqt-xm-armhf-${time}"
+      debian_stretch_console="debian-9.13-console-armhf-${time}"
+          debian_stretch_iot="debian-9.13-iot-armhf-${time}"
+         debian_stretch_lxqt="debian-9.13-lxqt-armhf-${time}"
+      debian_stretch_lxqt_xm="debian-9.13-lxqt-xm-armhf-${time}"
 
 archive="xz -z -8 -v"
 

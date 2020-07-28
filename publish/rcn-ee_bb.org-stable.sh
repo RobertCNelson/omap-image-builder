@@ -50,16 +50,16 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-          debian_stretch_machinekit="debian-9.12-machinekit-armhf-${time}"
-             debian_stretch_console="debian-9.12-console-armhf-${time}"
-              debian_stretch_imgtec="debian-9.12-imgtec-armhf-${time}"
-                 debian_stretch_iot="debian-9.12-iot-armhf-${time}"
-            debian_stretch_iot_tidl="debian-9.12-iot-tidl-armhf-${time}"
-       debian_stretch_iot_grove_kit="debian-9.12-iot-grove-kit-armhf-${time}"
-                debian_stretch_lxqt="debian-9.12-lxqt-armhf-${time}"
-           debian_stretch_lxqt_tidl="debian-9.12-lxqt-tidl-armhf-${time}"
-             debian_stretch_lxqt_xm="debian-9.12-lxqt-xm-armhf-${time}"
-             debian_stretch_wayland="debian-9.12-wayland-armhf-${time}"
+          debian_stretch_machinekit="debian-9.13-machinekit-armhf-${time}"
+             debian_stretch_console="debian-9.13-console-armhf-${time}"
+              debian_stretch_imgtec="debian-9.13-imgtec-armhf-${time}"
+                 debian_stretch_iot="debian-9.13-iot-armhf-${time}"
+            debian_stretch_iot_tidl="debian-9.13-iot-tidl-armhf-${time}"
+       debian_stretch_iot_grove_kit="debian-9.13-iot-grove-kit-armhf-${time}"
+                debian_stretch_lxqt="debian-9.13-lxqt-armhf-${time}"
+           debian_stretch_lxqt_tidl="debian-9.13-lxqt-tidl-armhf-${time}"
+             debian_stretch_lxqt_xm="debian-9.13-lxqt-xm-armhf-${time}"
+             debian_stretch_wayland="debian-9.13-wayland-armhf-${time}"
 
                  debian_buster_tiny="debian-10.4-tiny-armhf-${time}"
               debian_buster_console="debian-10.4-console-armhf-${time}"

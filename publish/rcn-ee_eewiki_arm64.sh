@@ -7,7 +7,7 @@ export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
 
 ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_arm64
 
-debian_stretch="debian-9.12"
+debian_stretch="debian-9.13"
 archive="xz -z -8 -v"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
