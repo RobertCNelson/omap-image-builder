@@ -172,7 +172,6 @@ install_git_repos () {
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			cd ${git_target_dir}/
 			sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
-			sed -i -e "s/strict-aliasing/strict-aliasing', '-Wno-cast-function-type', '-Wno-format-truncation', '-Wno-sizeof-pointer-memaccess', '-Wno-stringop-overflow/g" setup.py || true
 			if [ -f /usr/bin/python3 ] ; then
 				python3 setup.py install || true
 			fi
