@@ -26,16 +26,16 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
 ./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
-#./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
-./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
-#./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
-./RootStock-NG.sh -c bb.org-debian-buster-iot-v5.4
+./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
+./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-iot-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.14
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.19
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-mikrobus
-#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
-./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v5.4
+./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
+#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.14
 #./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.19
 #./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v5.4
@@ -262,13 +262,13 @@ base_rootfs="${debian_buster_console}" ; blend="buster-console" ; extract_base_r
 
 options="--img-1gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
 options="--img-1gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
-options="--img-1gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v54ti}"                ; generate_img
-options="--img-1gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v54ti} --emmc-flasher" ; generate_img
+options="--img-1gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
+options="--img-1gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
 
-options="--img-1gb BBB-blank-\${base_rootfs}            ${beaglebone} ${pru_rproc_v54ti} --bbb-flasher"  ; generate_img
-options="--img-1gb BBBL-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v54ti} --bbbl-flasher" ; generate_img
-options="--img-1gb BBBW-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v54ti} --bbbw-flasher" ; generate_img
-#options="--img-1gb BBGG-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v54ti} --bbgg-flasher" ; generate_img
+options="--img-1gb BBB-blank-\${base_rootfs}            ${beaglebone} ${pru_rproc_v419ti} --bbb-flasher"  ; generate_img
+options="--img-1gb BBBL-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v419ti} --bbbl-flasher" ; generate_img
+options="--img-1gb BBBW-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v419ti} --bbbw-flasher" ; generate_img
+#options="--img-1gb BBGG-blank-\${base_rootfs}           ${beaglebone} ${pru_rproc_v419ti} --bbgg-flasher" ; generate_img
 
 ###DEBIAN BUSTER: console-xm
 base_rootfs="${debian_buster_console_xm}" ; blend="buster-console-xm" ; extract_base_rootfs
@@ -280,8 +280,8 @@ base_rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
 
 options="--img-4gb am57xx-\${base_rootfs}               ${beagle_x15}"                                    ; generate_img
 options="--img-4gb am57xx-eMMC-flasher-\${base_rootfs}  ${beagle_x15} --emmc-flasher"                     ; generate_img
-options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v54ti}"                ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v54ti} --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}                 ${beaglebone} ${pru_rproc_v419ti}"                ; generate_img
+options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
 
 ###DEBIAN BUSTER: iot-tidl
 base_rootfs="${debian_buster_iot_tidl}" ; blend="buster-iot-tidl" ; extract_base_rootfs
@@ -315,8 +315,8 @@ options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v54ti} --ef
 base_rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt" ; extract_base_rootfs
 
 options="--img-4gb am57xx-\${base_rootfs}  ${beagle_x15}"                     ; generate_img
-options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v54ti}" ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v54ti} --emmc-flasher" ; generate_img
+options="--img-4gb bone-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti}" ; generate_img
+options="--img-4gb bone-eMMC-flasher-\${base_rootfs}    ${beaglebone} ${pru_rproc_v419ti} --emmc-flasher" ; generate_img
 
 ###DEBIAN BUSTER: lxqt-tidl
 base_rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl" ; extract_base_rootfs
