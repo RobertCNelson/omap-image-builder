@@ -741,6 +741,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
 			fi
 
+			if [ -f /lib/firmware/am335x-pru0-fw.sleep ] ; then
+				cp -v /lib/firmware/am335x-pru0-fw.sleep lib/firmware/am335x-pru0-fw
+			fi
+
+			if [ -f /lib/firmware/am335x-pru1-fw.sleep ] ; then
+				cp -v /lib/firmware/am335x-pru1-fw.sleep lib/firmware/am335x-pru1-fw
+			fi
+
+
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
