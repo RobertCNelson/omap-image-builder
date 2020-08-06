@@ -742,11 +742,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			if [ -f /lib/firmware/am335x-pru0-fw.sleep ] ; then
-				cp -v /lib/firmware/am335x-pru0-fw.sleep lib/firmware/am335x-pru0-fw
+				cp -v /lib/firmware/am335x-pru0-fw.sleep /lib/firmware/am335x-pru0-fw
+				/bin/chgrp gpio /lib/firmware/am335x-pru0-fw
+				/bin/chmod g=u /lib/firmware/am335x-pru0-fw
 			fi
 
 			if [ -f /lib/firmware/am335x-pru1-fw.sleep ] ; then
-				cp -v /lib/firmware/am335x-pru1-fw.sleep lib/firmware/am335x-pru1-fw
+				cp -v /lib/firmware/am335x-pru1-fw.sleep /lib/firmware/am335x-pru1-fw
+				/bin/chgrp gpio /lib/firmware/am335x-pru1-fw
+				/bin/chmod g=u /lib/firmware/am335x-pru1-fw
 			fi
 
 
