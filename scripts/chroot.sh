@@ -753,6 +753,29 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				/bin/chmod g=u /lib/firmware/am335x-pru1-fw
 			fi
 
+			if [ -f /lib/firmware/am57xx-pru1_0-fw.sleep ] ; then
+				cp -v /lib/firmware/am57xx-pru1_0-fw.sleep /lib/firmware/am57xx-pru1_0-fw
+				/bin/chgrp gpio /lib/firmware/am57xx-pru1_0-fw
+				/bin/chmod g=u /lib/firmware/am57xx-pru1_0-fw
+			fi
+
+			if [ -f /lib/firmware/am57xx-pru1_1-fw.sleep ] ; then
+				cp -v /lib/firmware/am57xx-pru1_1-fw.sleep /lib/firmware/am57xx-pru1_1-fw
+				/bin/chgrp gpio /lib/firmware/am57xx-pru1_1-fw
+				/bin/chmod g=u /lib/firmware/am57xx-pru1_1-fw
+			fi
+
+			if [ -f /lib/firmware/am57xx-pru2_0-fw.sleep ] ; then
+				cp -v /lib/firmware/am57xx-pru2_0-fw.sleep /lib/firmware/am57xx-pru2_0-fw
+				/bin/chgrp gpio /lib/firmware/am57xx-pru2_0-fw
+				/bin/chmod g=u /lib/firmware/am57xx-pru2_0-fw
+			fi
+
+			if [ -f /lib/firmware/am57xx-pru2_1-fw.sleep ] ; then
+				cp -v /lib/firmware/am57xx-pru1_1-fw.sleep /lib/firmware/am57xx-pru2_1-fw
+				/bin/chgrp gpio /lib/firmware/am57xx-pru2_1-fw
+				/bin/chmod g=u /lib/firmware/am57xx-pru2_1-fw
+			fi
 
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
