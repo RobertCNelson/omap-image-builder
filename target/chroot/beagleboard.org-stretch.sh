@@ -23,7 +23,7 @@
 export LC_ALL=C
 
 u_boot_release="v2019.04"
-u_boot_release_x15="v2019.07-rc4"
+u_boot_release_x15="v2020.10-rc2"
 
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
