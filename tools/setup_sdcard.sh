@@ -1200,6 +1200,44 @@ populate_rootfs () {
 			echo "#dtb=" >> ${wfile}
 		fi
 
+		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+			echo "" >> ${wfile}
+			echo "###U-Boot Overlays###" >> ${wfile}
+			echo "###Documentation: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#U-Boot_Overlays" >> ${wfile}
+			echo "###Master Enable" >> ${wfile}
+			if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
+				echo "enable_uboot_overlays=1" >> ${wfile}
+			else
+				echo "#enable_uboot_overlays=1" >> ${wfile}
+			fi
+			echo "###" >> ${wfile}
+			echo "###Overide capes with eeprom" >> ${wfile}
+			echo "#uboot_overlay_addr0=<file0>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr1=<file1>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr2=<file2>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr3=<file3>.dtbo" >> ${wfile}
+			echo "###" >> ${wfile}
+			echo "###Additional custom capes" >> ${wfile}
+			echo "#uboot_overlay_addr4=<file4>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr5=<file5>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr6=<file6>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr7=<file7>.dtbo" >> ${wfile}
+			echo "###" >> ${wfile}
+			echo "###Custom Cape" >> ${wfile}
+			echo "#dtb_overlay=<file8>.dtbo" >> ${wfile}
+			echo "###" >> ${wfile}
+			echo "###Debug: disable uboot autoload of Cape" >> ${wfile}
+			echo "#disable_uboot_overlay_addr0=1" >> ${wfile}
+			echo "#disable_uboot_overlay_addr1=1" >> ${wfile}
+			echo "#disable_uboot_overlay_addr2=1" >> ${wfile}
+			echo "#disable_uboot_overlay_addr3=1" >> ${wfile}
+			echo "###" >> ${wfile}
+			echo "###U-Boot fdt tweaks... (60000 = 384KB)" >> ${wfile}
+			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
+			echo "###U-Boot Overlays###" >> ${wfile}
+			echo "" >> ${wfile}
+		fi
+
 		if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
 			echo "" >> ${wfile}
@@ -1213,19 +1251,19 @@ populate_rootfs () {
 			fi
 			echo "###" >> ${wfile}
 			echo "###Overide capes with eeprom" >> ${wfile}
-			echo "#uboot_overlay_addr0=/lib/firmware/<file0>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr1=/lib/firmware/<file1>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr2=/lib/firmware/<file2>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr3=/lib/firmware/<file3>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr0=<file0>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr1=<file1>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr2=<file2>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr3=<file3>.dtbo" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###Additional custom capes" >> ${wfile}
-			echo "#uboot_overlay_addr4=/lib/firmware/<file4>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr5=/lib/firmware/<file5>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr6=/lib/firmware/<file6>.dtbo" >> ${wfile}
-			echo "#uboot_overlay_addr7=/lib/firmware/<file7>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr4=<file4>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr5=<file5>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr6=<file6>.dtbo" >> ${wfile}
+			echo "#uboot_overlay_addr7=<file7>.dtbo" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###Custom Cape" >> ${wfile}
-			echo "#dtb_overlay=/lib/firmware/<file8>.dtbo" >> ${wfile}
+			echo "#dtb_overlay=<file8>.dtbo" >> ${wfile}
 			echo "###" >> ${wfile}
 			echo "###Disable auto loading of virtual capes (emmc/video/wireless/adc)" >> ${wfile}
 			echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
@@ -1246,47 +1284,47 @@ populate_rootfs () {
 			unset use_pru_uio
 			if [ "x${uboot_pru_rproc_414ti}" = "xenable" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 				use_pru_uio="blocked"
 			fi
 			if [ "x${uboot_pru_rproc_419ti}" = "xenable" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 				use_pru_uio="blocked"
 			fi
 			if [ "x${uboot_pru_rproc_54ti}" = "xenable" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 				use_pru_uio="blocked"
 			fi
 			if [ "x${mainline_pru_rproc}" = "xenable" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 				use_pru_uio="blocked"
 			fi
 			if [ "x${use_pru_uio}" = "x" ] ; then
 				echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-				echo "#uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+				echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 				echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				echo "uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 			fi
 			echo "###" >> ${wfile}
 			echo "###Cape Universal Enable" >> ${wfile}
