@@ -252,6 +252,12 @@ if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	fi
 fi
 
+if [ "x${host_arch}" != "xriscv64" ] ; then
+	if [ "x${deb_arch}" = "xriscv64" ] ; then
+		sudo cp $(which qemu-riscv64-static) "${tempdir}/usr/bin/"
+	fi
+fi
+
 chroot_mount_run
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
 sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage
@@ -1522,6 +1528,10 @@ fi
 
 if [ -f "${tempdir}/usr/bin/qemu-aarch64-static" ] ; then
 	sudo rm -f "${tempdir}/usr/bin/qemu-aarch64-static" || true
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-riscv64-static" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-riscv64-static" || true
 fi
 
 echo "${rfs_username}:${rfs_password}" > /tmp/user_password.list
