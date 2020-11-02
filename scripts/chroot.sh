@@ -469,6 +469,7 @@ fi
 
 if [ -f /tmp/sources.list ] ; then
 	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
+	sudo chown root:root "${tempdir}/etc/apt/sources.list"
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
@@ -486,6 +487,7 @@ fi
 if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" > /tmp/apt.conf
 	sudo mv /tmp/apt.conf "${tempdir}/etc/apt/apt.conf"
+	sudo chown root:root "${tempdir}/etc/apt/apt.conf"
 fi
 
 echo "127.0.0.1	localhost" > /tmp/hosts
