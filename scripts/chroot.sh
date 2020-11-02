@@ -287,6 +287,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	echo "" >> /tmp/01_nodoc
 
 	sudo mv /tmp/01_nodoc "${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc"
+	sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc"
 
 	sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
@@ -296,10 +297,12 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	echo "  pkgcache \"\";" >> /tmp/02nocache
 	echo "}" >> /tmp/02nocache
 	sudo mv  /tmp/02nocache "${tempdir}/etc/apt/apt.conf.d/02nocache"
+	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02nocache"
 
 	#apt: drop translations...
 	echo "Acquire::Languages \"none\";" > /tmp/02translations
 	sudo mv /tmp/02translations "${tempdir}/etc/apt/apt.conf.d/02translations"
+	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02translations"
 
 	echo "Log: after locale/man purge"
 	report_size
@@ -316,6 +319,7 @@ echo "path-exclude=/etc/kernel/postrm.d/zz-flash-kernel" >> /tmp/01_noflash_kern
 echo ""  >> /tmp/01_noflash_kernel
 
 sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
+sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 
 sudo mkdir -p "${tempdir}/usr/share/flash-kernel/db/" || true
 sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kernel/db/"
@@ -328,14 +332,17 @@ echo '#Custom apt-get clean' > /tmp/02apt-get-clean
 echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
 echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
 sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
 
 #apt: drop translations
 echo 'Acquire::Languages "none";' > /tmp/02-no-languages
 sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
 #apt: no PDiffs..
 echo 'Acquire::PDiffs "0";' > /tmp/02-no-pdiffs
 sudo mv /tmp/02-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
 
 if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#apt: /var/lib/apt/lists/, store compressed only
@@ -343,11 +350,13 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 	stretch|buster)
 		echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
 	sid)
 		###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
 		echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
 		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 		;;
 	esac
 
@@ -355,6 +364,7 @@ if [ "x${deb_distribution}" = "xdebian" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
 		echo 'Acquire::http::Proxy::deb.nodesource.com "DIRECT";' > /tmp/03-proxy-https
 		sudo mv /tmp/03-proxy-https "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
+		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
 	fi
 fi
 
