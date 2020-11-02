@@ -333,6 +333,10 @@ sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
 echo 'Acquire::Languages "none";' > /tmp/02-no-languages
 sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 
+#apt: no PDiffs..
+echo 'Acquire::PDiffs "0";' > /tmp/02-no-pdiffs
+sudo mv /tmp/02-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
+
 if [ "x${deb_distribution}" = "xdebian" ] ; then
 	#apt: /var/lib/apt/lists/, store compressed only
 	case "${deb_codename}" in
