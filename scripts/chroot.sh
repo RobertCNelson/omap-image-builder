@@ -327,12 +327,15 @@ sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kerne
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
-#apt: emulate apt-get clean:
-echo '#Custom apt-get clean' > /tmp/02apt-get-clean
-echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
-sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
+
+if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+	#apt: emulate apt-get clean:
+	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
+	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
+	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
+	sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
+	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
+fi
 
 #apt: drop translations
 echo 'Acquire::Languages "none";' > /tmp/02-no-languages
@@ -344,22 +347,26 @@ echo 'Acquire::PDiffs "0";' > /tmp/02-no-pdiffs
 sudo mv /tmp/02-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
 sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
 
-if [ "x${deb_distribution}" = "xdebian" ] ; then
-	#apt: /var/lib/apt/lists/, store compressed only
-	case "${deb_codename}" in
-	stretch|buster)
-		echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
-		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-		;;
-	sid)
-		###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
-		echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
-		sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-		;;
-	esac
+if [ "x${chroot_very_small_image}" = "xenable" ] ; then
+	if [ "x${deb_distribution}" = "xdebian" ] ; then
+		#apt: /var/lib/apt/lists/, store compressed only
+		case "${deb_codename}" in
+		stretch|buster)
+			echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
+			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+			sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+			;;
+		sid)
+			###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
+			echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
+			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+			sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
+			;;
+		esac
+	fi
+fi
 
+if [ "x${deb_distribution}" = "xdebian" ] ; then
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
 		echo 'Acquire::http::Proxy::deb.nodesource.com "DIRECT";' > /tmp/03-proxy-https
