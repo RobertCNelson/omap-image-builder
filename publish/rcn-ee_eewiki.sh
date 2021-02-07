@@ -21,7 +21,7 @@ else
 fi
 
 debian_buster="debian-10.8"
-ubuntu_stable="ubuntu-20.04.1"
+ubuntu_stable="ubuntu-20.04.2"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
