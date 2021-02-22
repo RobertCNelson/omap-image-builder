@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2020 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2021 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,6 +32,7 @@ BOOT_LABEL="BOOT"
 unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
+unset USE_DISTRO_BOOTLOADER
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -189,6 +190,25 @@ local_bootloader () {
 	if [ "${boot_name}" ] ; then
 		cp ${LOCAL_BOOTLOADER} ${TEMPDIR}/dl/
 		UBOOT=${LOCAL_BOOTLOADER##*/}
+		echo "UBOOT Bootloader: ${UBOOT}"
+	fi
+}
+
+distro_bootloader () {
+	echo ""
+	echo "Using Distro Bootloader"
+	echo "-----------------------------"
+	mkdir -p ${TEMPDIR}/dl/
+
+	if [ "${conf_bl_distro_SPL}" ] ; then
+		cp ./${conf_bl_distro_SPL} ${TEMPDIR}/dl/
+		SPL=${spl_name}
+		echo "SPL Bootloader: ${SPL}"
+	fi
+
+	if [ "${conf_bl_distro_UBOOT}" ] ; then
+		cp ./${conf_bl_distro_UBOOT} ${TEMPDIR}/dl/
+		UBOOT=${boot_name}
 		echo "UBOOT Bootloader: ${UBOOT}"
 	fi
 }
@@ -1921,6 +1941,9 @@ while [ ! -z "$1" ] ; do
 		checkparm $2
 		ROOTFS_LABEL="$2"
 		;;
+	--distro-bootloader)
+		USE_DISTRO_BOOTLOADER=1
+		;;
 	--spl)
 		checkparm $2
 		LOCAL_SPL="$2"
@@ -2133,6 +2156,8 @@ detect_software
 if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 	if [ "${USE_LOCAL_BOOT}" ] ; then
 		local_bootloader
+	elif [ "${USE_DISTRO_BOOTLOADER}" ] ; then
+		distro_bootloader
 	else
 		dl_bootloader
 	fi
