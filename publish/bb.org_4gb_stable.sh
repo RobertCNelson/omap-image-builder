@@ -63,7 +63,7 @@ echo "pid: [${KEEP_NET_ALIVE_PID}]"
 image_name="debian-9.13-iot-armhf-${time}"
 size="4gb"
 target_name="bone"
-options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
+options="--img-4gb ${target_name}-${image_name} --dtb beaglebone --distro-bootloader \
 --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
 config_name="bb.org-debian-stretch-iot-v4.14"
 build_and_upload_image
@@ -74,7 +74,7 @@ build_and_upload_image
 image_name="debian-9.13-lxqt-armhf-${time}"
 size="4gb"
 target_name="bone"
-options="--img-4gb ${target_name}-${image_name} --dtb beaglebone \
+options="--img-4gb ${target_name}-${image_name} --dtb beaglebone --distro-bootloader \
 --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
 config_name="bb.org-debian-stretch-lxqt-v4.14"
 build_and_upload_image
