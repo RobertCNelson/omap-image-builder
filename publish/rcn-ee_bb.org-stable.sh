@@ -195,7 +195,7 @@ generate_img () {
 ###DEBIAN STRETCH: machinekit
 rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit" ; extract_base_rootfs
 
-options="--img-4gb bone-\${rootfs} ${am335x_mainline}" --distro-bootloader"  ; generate_img
+options="--img-4gb bone-\${rootfs} ${am335x_mainline} --distro-bootloader"  ; generate_img
 
 ###DEBIAN STRETCH: console
 rootfs="${debian_stretch_console}" ; blend="stretch-console" ; extract_base_rootfs
