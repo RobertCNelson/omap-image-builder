@@ -669,37 +669,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /bin/busybox ] ; then
 				echo "Log: (chroot): Setting up BusyBox"
 
-				busybox --install -s /usr/local/bin/
-
-				#conflicts with systemd reboot...
-				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-				if [ -f /usr/local/bin/reboot ] ; then
-					rm -f /usr/local/bin/reboot
-				fi
-
-				#poweroff: broken...
-				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-				if [ -f /usr/local/bin/poweroff ] ; then
-					rm -f /usr/local/bin/poweroff
-				fi
-
-				#df: unrecognized option '--portability'
-				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-				if [ -f /usr/local/bin/df ] ; then
-					rm -f /usr/local/bin/df
-				fi
-
-				#tar: unrecognized option '--warning=no-timestamp'
-				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-				if [ -f /usr/local/bin/tar ] ; then
-					rm -f /usr/local/bin/tar
-				fi
-
-				#run-parts: unrecognized option '--list'
-				#BusyBox v1.22.1 (Debian 1:1.22.0-9+deb8u1) multi-call binary.
-				if [ -f /usr/local/bin/run-parts ] ; then
-					rm -f /usr/local/bin/run-parts
-				fi
+				#Install only non-existent commands to avoid conflicts
+				for cmd in \$(busybox --list)
+				do
+					type \${cmd} >/dev/null 2>&1 ||
+						ln -s /bin/busybox /usr/local/bin/\${cmd}
+				done
 			fi
 		fi
 	}
