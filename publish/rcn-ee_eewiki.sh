@@ -15,6 +15,7 @@ fi
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
+./RootStock-NG.sh -c eewiki_minfs_debian_buster_arm64
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_focal_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
@@ -48,6 +49,7 @@ copy_base_rootfs_to_mirror () {
 blend=minfs
 base_rootfs="${debian_buster}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
 base_rootfs="${debian_buster}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_buster}-minimal-arm64-${time}" ; copy_base_rootfs_to_mirror
 
 base_rootfs="${ubuntu_stable}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
 
