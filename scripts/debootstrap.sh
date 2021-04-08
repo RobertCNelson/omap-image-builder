@@ -53,7 +53,7 @@ check_defines () {
 		options="${options} --components=${components}"
 	fi
 
-	#http://linux.die.net/man/8/debootstrap
+	#https://manpages.debian.org/buster/debootstrap/debootstrap.8.en.html
 	if [ "${deb_variant}" ] ; then
 		#--variant=minbase|buildd|fakechroot|scratchbox
 		options="${options} --variant=${deb_variant}"
