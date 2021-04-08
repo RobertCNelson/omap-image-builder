@@ -452,7 +452,7 @@ if [ "x${repo_azulsystems}" = "xenable" ] ; then
 fi
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
-	#no: precise
+	repo_rcnee_arch=${repo_rcnee_arch:-"armhf"}
 	echo "" >> ${wfile}
 	echo "#Kernel source (repos.rcn-ee.com) : https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
 	echo "#" >> ${wfile}
@@ -460,16 +460,17 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	echo "#cd ./linux-stable-rcn-ee" >> ${wfile}
 	echo "#git checkout \`uname -r\` -b tmp" >> ${wfile}
 	echo "#" >> ${wfile}
-	echo "deb [arch=armhf] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
-	echo "#deb-src [arch=armhf] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
+	echo "deb [arch=${repo_rcnee_arch}] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
+	echo "#deb-src [arch=${repo_rcnee_arch}] http://repos.rcn-ee.com/${deb_distribution}/ ${deb_codename} main" >> ${wfile}
 
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc" "${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc"
 fi
 
 if [ "x${repo_ros}" = "xenable" ] ; then
+	repo_ros_arch=${repo_ros_arch:-"armhf"}
 	echo "" >> ${wfile}
-	echo "deb [arch=armhf] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
-	echo "#deb-src [arch=armhf] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+	echo "deb [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+	echo "#deb-src [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
 
 	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
 fi
