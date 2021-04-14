@@ -17,9 +17,9 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_arm64
 
-./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armel
-./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armhf
-./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_arm64
+#./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armel
+#./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armhf
+#./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_arm64
 
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_bionic_armhf
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_focal_armhf
