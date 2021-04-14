@@ -16,13 +16,21 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
 ./RootStock-NG.sh -c eewiki_minfs_debian_buster_arm64
+
+./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armel
+./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armhf
+./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_arm64
+
+./RootStock-NG.sh -c eewiki_minfs_ubuntu_bionic_armhf
 ./RootStock-NG.sh -c eewiki_minfs_ubuntu_focal_armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
 debian_buster="debian-10.9"
-ubuntu_stable="ubuntu-20.04.2"
+debian_bullseye="debian-11"
+ubuntu_bionic="ubuntu-18.04.5"
+ubuntu_focal="ubuntu-20.04.2"
 
 xz_img="xz -z -8"
 xz_tar="xz -T2 -z -8"
@@ -47,11 +55,16 @@ copy_base_rootfs_to_mirror () {
 }
 
 blend=minfs
-base_rootfs="${debian_buster}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
-base_rootfs="${debian_buster}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
-base_rootfs="${debian_buster}-minimal-arm64-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_buster}-minimal-armel-${time}"   ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_buster}-minimal-armhf-${time}"   ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_buster}-minimal-arm64-${time}"   ; copy_base_rootfs_to_mirror
 
-base_rootfs="${ubuntu_stable}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_bullseye}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_bullseye}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
+base_rootfs="${debian_bullseye}-minimal-arm64-${time}" ; copy_base_rootfs_to_mirror
+
+base_rootfs="${ubuntu_bionic}-minimal-armhf-${time}"   ; copy_base_rootfs_to_mirror
+base_rootfs="${ubuntu_focal}-minimal-armhf-${time}"    ; copy_base_rootfs_to_mirror
 
 __EOF__
 
