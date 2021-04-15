@@ -245,21 +245,22 @@ check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	if [ "x${deb_arch}" = "xarmel" ] || [ "x${deb_arch}" = "xarmhf" ] ; then
-		sudo cp $(which qemu-arm-static) "${tempdir}/usr/bin/"
+		sudo cp -v $(which qemu-arm-static) "${tempdir}/usr/bin/"
 	fi
 	if [ "x${deb_arch}" = "xarm64" ] ; then
-		sudo cp $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
+		sudo cp -v $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
 	fi
 fi
 
 if [ "x${host_arch}" != "xriscv64" ] ; then
 	if [ "x${deb_arch}" = "xriscv64" ] ; then
-		sudo cp $(which qemu-riscv64-static) "${tempdir}/usr/bin/"
+		sudo cp -v $(which qemu-riscv64-static) "${tempdir}/usr/bin/"
 	fi
 fi
 
 chroot_mount_run
 echo "Log: Running: debootstrap second-stage in [${tempdir}]"
+echo "Log: [sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage]"
 sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage
 echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
 report_size
