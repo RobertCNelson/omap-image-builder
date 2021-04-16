@@ -379,8 +379,14 @@ fi
 #set initial 'seed' time...
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
+#Just Temp... riscv64 on ports doesnt have the key yet...
+key_override=""
+if [ "x${deb_arch}" = "xriscv64" ] ; then
+	key_override="[trusted=yes] "
+fi
+
 wfile="/tmp/sources.list"
-echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
+echo "deb ${key_override}http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 echo "" >> ${wfile}
 
