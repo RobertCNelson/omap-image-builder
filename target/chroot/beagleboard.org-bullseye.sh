@@ -303,5 +303,5 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
-other_source_links
+#other_source_links
 #
