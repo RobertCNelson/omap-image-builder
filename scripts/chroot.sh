@@ -430,9 +430,9 @@ if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
-	echo "" >> ${wfile}
 	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
 	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
+	echo "" >> ${wfile}
 fi
 
 if [ "x${repo_flat}" = "xenable" ] ; then
@@ -440,11 +440,11 @@ if [ "x${repo_flat}" = "xenable" ] ; then
 	for component in "${repo_flat_components[@]}" ; do
 		echo "deb ${repo_flat_server} ${component}" >> ${wfile}
 		echo "#deb-src ${repo_flat_server} ${component}" >> ${wfile}
+		echo "" >> ${wfile}
 	done
 fi
 
 if [ ! "x${repo_nodesource}" = "x" ] ; then
-	echo "" >> ${wfile}
 	echo "deb https://deb.nodesource.com/${repo_nodesource} ${repo_nodesource_dist} main" >> ${wfile}
 	echo "#deb-src https://deb.nodesource.com/${repo_nodesource} ${repo_nodesource_dist} main" >> ${wfile}
 	echo "" >> ${wfile}
@@ -452,10 +452,17 @@ if [ ! "x${repo_nodesource}" = "x" ] ; then
 fi
 
 if [ "x${repo_azulsystems}" = "xenable" ] ; then
-	echo "" >> ${wfile}
 	echo "deb http://repos.azulsystems.com/${deb_distribution} stable main" >> ${wfile}
 	echo "" >> ${wfile}
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.azulsystems.com.pubkey.asc" "${tempdir}/tmp/repos.azulsystems.com.pubkey.asc"
+fi
+
+if [ "x${repo_ros}" = "xenable" ] ; then
+	repo_ros_arch=${repo_ros_arch:-"armhf"}
+	echo "deb [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+	echo "#deb-src [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
+	echo "" >> ${wfile}
+	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
 fi
 
 if [ "x${repo_rcnee}" = "xenable" ] ; then
@@ -474,7 +481,6 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		fi
 	fi
 
-	echo "" >> ${wfile}
 	echo "#Kernel source (repos.rcn-ee.com) : https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
 	echo "#" >> ${wfile}
 	echo "#git clone https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
@@ -483,17 +489,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	echo "#" >> ${wfile}
 	echo "deb [arch=${repo_rcnee_arch}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 	echo "#deb-src [arch=${repo_rcnee_arch}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
-
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.rcn-ee.net-archive-keyring.asc" "${tempdir}/tmp/repos.rcn-ee.net-archive-keyring.asc"
-fi
-
-if [ "x${repo_ros}" = "xenable" ] ; then
-	repo_ros_arch=${repo_ros_arch:-"armhf"}
-	echo "" >> ${wfile}
-	echo "deb [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
-	echo "#deb-src [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
-
-	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
 fi
 
 if [ -f /tmp/sources.list ] ; then
