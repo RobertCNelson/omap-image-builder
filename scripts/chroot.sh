@@ -476,7 +476,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	else
 		#arm64 -> debian-arm64, riscv64 -> debian-riscv64
 		rcnee_url_directory="${deb_distribution}-${repo_rcnee_arch}"
-		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
+		if [ "x${repo_rcnee_mirror}" = "xdebian.beagle.cc" ] ; then
 			rcnee_url_directory="${repo_rcnee_arch}"
 		fi
 	fi
