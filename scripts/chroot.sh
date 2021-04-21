@@ -1113,11 +1113,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot): enabling: systemd-timesyncd.service"
 			systemctl enable systemd-timesyncd.service || true
 
+			#systemd v232: (Debian Stretch)
 			#set our own initial date stamp, otherwise we get July 2014
 			touch /var/lib/systemd/clock
 
 			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
 			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
+
+			#systemd v235+: (Debian Buster/Bullseye)
+			#set our own initial date stamp, otherwise we get July 2014
+			touch /var/lib/systemd/timesync/clock
+
+			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
+			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/timesync/clock || true
 
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
