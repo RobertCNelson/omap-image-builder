@@ -1122,6 +1122,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			#systemd v235+: (Debian Buster/Bullseye)
 			#set our own initial date stamp, otherwise we get July 2014
+			mkdir -p /var/lib/systemd/timesync/ || true
 			touch /var/lib/systemd/timesync/clock
 
 			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
