@@ -1569,6 +1569,8 @@ if [ -d "${tempdir}/etc/ssh/" -a "x${keep_ssh_keys}" = "x" ] ; then
 	#Remove pre-generated ssh keys, these will be regenerated on first bootup...
 	sudo rm -rf "${tempdir}"/etc/ssh/ssh_host_* || true
 	sudo touch "${tempdir}/etc/ssh/ssh.regenerate" || true
+	#Remove machine-id, this will be regenerated on first bootup...
+	sudo rm -f "${tempdir}"/etc/machine-id || true
 fi
 
 #ID.txt:
