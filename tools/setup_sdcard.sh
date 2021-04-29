@@ -1247,7 +1247,7 @@ populate_rootfs () {
 		if [ "x${kernel_override}" = "x" ] ; then
 			echo "uname_r=${select_kernel}" >> ${wfile}
 		else
-			echo "#dtb=" >> ${wfile}
+			echo "uname_r=${kernel_override}" >> ${wfile}
 		fi
 
 		if [ "${BTRFS_FSTAB}" ] ; then
@@ -1303,28 +1303,6 @@ populate_rootfs () {
 				echo "###U-Boot Overlays###" >> ${wfile}
 				echo "" >> ${wfile}
 			fi
-			if [ "x${uboot_disable_audio}" = "xenable" ] ; then
-				echo "disable_uboot_overlay_audio=1" >> ${wfile}
-			elsedio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-				echo "#uboot_overlayd335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-			fi
-			echo "###" >> ${wfile}
-			echo "###Cape Universal Enable" >> ${wfile}
-			if [ "x${uboot_cape_overlays}" = "xenable" ] && [ "x${enable_cape_universal}" = "xenable" ] ; then
-				echo "enable_uboot_cape_universal=1" >> ${wfile}
-			else
-				echo "#enable_uboot_cape_universal=1" >> ${wfile}
-			fi
-			echo "###" >> ${wfile}
-			echo "###Debug: disable uboot autoload of Cape" >> ${wfile}
-			echo "#disable_uboot_overlay_addr0=1" >> ${wfile}
-			echo "#disable_uboot_overlay_addr1=1" >> ${wfile}
-			echo "#disable_uboot_overlay_addr2=1" >> ${wfile}
-			echo "#disable_uboot_overlay_addr3=1" >> ${wfile}
-			echo "###" >> ${wfile}
-			echo "###U-Boot fdt tweaks... (60000 = 384KB)" >> ${wfile}
-			echo "#uboot_fdt_buffer=0x60000" >> ${wfile}
-			echo "###U-Boot Overlays###" >> ${wfile}
 
 			if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
 
