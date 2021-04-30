@@ -1,7 +1,5 @@
 #!/bin/bash
 
-server="https://rcn-ee.net/repos/latest/buster-armhf/LATEST-"
-
 current_kernel () {
 	if [ -f /tmp/LATEST-${var} ] ; then
 		rm -rf /tmp/LATEST-${var} | true
@@ -29,6 +27,7 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
+	server="https://rcn-ee.net/repos/latest/buster-armhf/LATEST-"
 	git_msg="5.4.x-xM"
 #	var="armv7"      ; ver="LTS419"       ; current_kernel
 	var="armv7"      ; ver="LTS54"       ; current_kernel
@@ -66,4 +65,8 @@ if [ -f configs/kernel.data ] ; then
 
 	git_msg="5.4.x-ti-rt"
 	var="ti-rt"      ; ver="LTS54"  ; current_kernel
+
+	server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
+	git_msg="5.10.x-sft-riscv"
+	var="sft-riscv"   ; ver="LTS510" ; current_kernel
 fi
