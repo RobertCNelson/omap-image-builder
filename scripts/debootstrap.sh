@@ -132,6 +132,13 @@ if [ "${apt_proxy}" ] ; then
 	echo "Log: using apt proxy: [${apt_proxy}]"
 fi
 
+stat ${tempdir}
+
+sudo chown root:root ${tempdir}
+sudo chmod 755 ${tempdir}
+
+stat ${tempdir}
+
 echo "Log: Running: debootstrap in [${tempdir}]"
 
 case "${deb_codename}" in
