@@ -154,8 +154,16 @@ run_roostock_ng () {
 		echo "tempdir=\"${tempdir}\"" >> ${DIR}/.project
 	fi
 
+	echo "Log: stat ${tempdir}"
+	sudo chown root:root ${tempdir}
+	sudo chmod 755 ${tempdir}
+	stat ${tempdir}
+
+	echo 'Log: /bin/bash -e "${OIB_DIR}/scripts/install_dependencies.sh"'
 	/bin/bash -e "${OIB_DIR}/scripts/install_dependencies.sh" || { exit 1 ; }
+	echo 'Log: /bin/bash -e "${OIB_DIR}/scripts/debootstrap.sh"'
 	/bin/bash -e "${OIB_DIR}/scripts/debootstrap.sh" || { exit 1 ; }
+	echo 'Log: /bin/bash -e "${OIB_DIR}/scripts/chroot.sh"'
 	/bin/bash -e "${OIB_DIR}/scripts/chroot.sh" || { exit 1 ; }
 	sudo rm -rf ${tempdir}/ || true
 }
