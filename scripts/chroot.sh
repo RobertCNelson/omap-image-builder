@@ -388,7 +388,7 @@ fi
 wfile="/tmp/sources.list"
 echo "deb ${key_override}http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 if [ "x${deb_arch}" = "xriscv64" ] ; then
-	echo "deb ${key_override}http://${deb_mirror} unreleased ${deb_components}" > ${wfile}
+	echo "deb ${key_override}http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
 fi
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 echo "" >> ${wfile}
