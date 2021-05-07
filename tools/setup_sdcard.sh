@@ -1228,12 +1228,15 @@ populate_rootfs () {
 
 		echo "label Linux ${select_kernel}" > ${wfile}
 		echo "    kernel /boot/vmlinuz-${select_kernel}" >> ${wfile}
+
 		if [ ! "x${extlinux_append}" = "x" ] ; then
-			echo "    append console=ttyS0,115200 root=/dev/mmcblk0p1 ro rootfstype=ext4 rootwait" >> ${wfile}
-		else
 			echo "    append ${extlinux_append}" >> ${wfile}
 		fi
-		echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+
+		if [ "x${extlinux_fdtdir}" = "xenable" ] ; then
+			echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+		fi
+
 		if [ ! "x${extlinux_devicetree}" = "x" ] ; then
 			echo "    devicetree /boot/dtbs/${select_kernel}/${extlinux_devicetree}" >> ${wfile}
 		fi
