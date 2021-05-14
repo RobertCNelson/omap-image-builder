@@ -1561,7 +1561,11 @@ populate_rootfs () {
 			if [ "${BTRFS_FSTAB}" ] ; then
 				echo "${rootfs_drive}  /  btrfs  defaults,noatime  0  1" >> ${wfile}
 			else
-				echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
+				if [ "x${fstab_use_label}" = "xenable" ] ; then
+					echo "LABEL=rootfs  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
+				else
+					echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
+				fi
 			fi
 		fi
 
