@@ -67,6 +67,6 @@ if [ -f configs/kernel.data ] ; then
 	var="ti-rt"      ; ver="LTS54"  ; current_kernel
 
 	server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
-	git_msg="5.10.x-sft-riscv"
-	var="sft-riscv"   ; ver="LTS510" ; current_kernel
+	git_msg="5.13.x-riscv64"
+	var="riscv64"    ; ver="V513X"  ; current_kernel
 fi
