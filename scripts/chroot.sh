@@ -245,15 +245,18 @@ check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	if [ "x${deb_arch}" = "xarmel" ] || [ "x${deb_arch}" = "xarmhf" ] ; then
+		echo "sudo cp -v $(which qemu-arm-static) \"${tempdir}/usr/bin/\""
 		sudo cp -v $(which qemu-arm-static) "${tempdir}/usr/bin/"
 	fi
 	if [ "x${deb_arch}" = "xarm64" ] ; then
+		echo "sudo cp -v $(which qemu-aarch64-static) \"${tempdir}/usr/bin/\""
 		sudo cp -v $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
 	fi
 fi
 
 if [ "x${host_arch}" != "xriscv64" ] ; then
 	if [ "x${deb_arch}" = "xriscv64" ] ; then
+		echo "sudo cp -v $(which qemu-riscv64-static) \"${tempdir}/usr/bin/\""
 		sudo cp -v $(which qemu-riscv64-static) "${tempdir}/usr/bin/"
 	fi
 fi
