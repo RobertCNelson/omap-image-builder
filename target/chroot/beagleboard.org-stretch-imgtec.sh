@@ -22,9 +22,6 @@
 
 export LC_ALL=C
 
-u_boot_release="v2019.04"
-u_boot_release_x15="v2020.10-rc2"
-
 #contains: rfs_username, release_date
 if [ -f /etc/rcn-ee.conf ] ; then
 	. /etc/rcn-ee.conf
@@ -319,19 +316,6 @@ workshop_stuff () {
 }
 
 other_source_links () {
-	rcn_https="https://rcn-ee.com/repos/git/u-boot-patches"
-
-	mkdir -p /opt/source/u-boot_${u_boot_release}/
-	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-omap3_beagle-uEnv.txt-bootz-n-fixes.patch
-	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0001-am335x_evm-uEnv.txt-bootz-n-fixes.patch
-	wget --directory-prefix="/opt/source/u-boot_${u_boot_release}/" ${rcn_https}/${u_boot_release}/0002-U-Boot-BeagleBone-Cape-Manager.patch
-	mkdir -p /opt/source/u-boot_${u_boot_release_x15}/
-	wget --directory-prefix="/opt/source/u-boot_${u_boot_release_x15}/" ${rcn_https}/${u_boot_release_x15}/0001-am57xx_evm-fixes.patch
-	rm /home/${rfs_username}/.wget-hsts || true
-
-	echo "u-boot_${u_boot_release} : /opt/source/u-boot_${u_boot_release}" >> /opt/source/list.txt
-	echo "u-boot_${u_boot_release_x15} : /opt/source/u-boot_${u_boot_release_x15}" >> /opt/source/list.txt
-
 	chown -R ${rfs_username}:${rfs_username} /opt/source/
 }
 
@@ -368,6 +352,6 @@ if [ -f /usr/bin/git ] ; then
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 #workshop_stuff
-other_source_links
+#other_source_links
 #unsecure_root
 #
