@@ -385,7 +385,8 @@ sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 #Just Temp... riscv64 on ports doesnt have the key yet...
 key_override=""
 if [ "x${deb_arch}" = "xriscv64" ] ; then
-	key_override="[trusted=yes] "
+	#key_override="[trusted=yes] "
+	key_override=""
 fi
 
 wfile="/tmp/sources.list"
