@@ -201,15 +201,15 @@ distro_bootloader () {
 	mkdir -p ${TEMPDIR}/dl/
 
 	if [ "${conf_bl_distro_SPL}" ] ; then
-		cp ./${conf_bl_distro_SPL} ${TEMPDIR}/dl/
+		cp -v ./${conf_bl_distro_SPL} ${TEMPDIR}/dl/
 		SPL=${spl_name}
-		echo "SPL Bootloader: ${SPL}"
+		echo "SPL Bootloader: ${conf_bl_distro_SPL}"
 	fi
 
 	if [ "${conf_bl_distro_UBOOT}" ] ; then
-		cp ./${conf_bl_distro_UBOOT} ${TEMPDIR}/dl/
+		cp -v ./${conf_bl_distro_UBOOT} ${TEMPDIR}/dl/
 		UBOOT=${boot_name}
-		echo "UBOOT Bootloader: ${UBOOT}"
+		echo "UBOOT Bootloader: ${conf_bl_distro_UBOOT}"
 	fi
 }
 
@@ -1643,15 +1643,24 @@ populate_rootfs () {
 
 	fi #RootStock-NG
 
-	if [ ! "x${uboot_name}" = "x" ] ; then
-		echo "Backup version of u-boot: /opt/backup/uboot/"
+	if [ ! "x${spl_uboot_name}" = "x" ] ; then
+		echo "Backup version of u-boot (${spl_uboot_name}): /opt/backup/uboot/"
 		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
-		cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
+		if [ "${conf_bl_distro_SPL}" ] ; then
+			cp -v ./${conf_bl_distro_SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
+		else
+			cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
+		fi
 	fi
 
-	if [ ! "x${spl_uboot_name}" = "x" ] ; then
+	if [ ! "x${uboot_name}" = "x" ] ; then
+		echo "Backup version of u-boot (${uboot_name}): /opt/backup/uboot/"
 		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
-		cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
+		if [ "${conf_bl_distro_UBOOT}" ] ; then
+			cp -v ./${conf_bl_distro_UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
+		else
+			cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
+		fi
 	fi
 
 	if [ ! -f ${TEMPDIR}/etc/udev/rules.d/60-omap-tty.rules ] ; then
