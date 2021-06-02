@@ -25,7 +25,7 @@ ubuntu_stable="ubuntu-20.04.2-console-armhf-${time}"
 xz_img="xz -T3 -z -8"
 xz_tar="xz -T4 -z -8"
 
-beaglebone="--dtb beaglebone --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+beaglebone="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 
@@ -133,20 +133,20 @@ generate_img () {
 #Debian Stable
 base_rootfs="${debian_stable}" ; blend="elinux" ; extract_base_rootfs
 
-options="--img am57xx-\${base_rootfs}              ${beagle_x15}"                      ; generate_img
-options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"       ; generate_img
-options="--img bone-\${base_rootfs}                ${beaglebone} --distro-bootloader"  ; generate_img
-options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"       ; generate_img
-options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                       ; generate_img
+options="--img am57xx-\${base_rootfs}              ${beagle_x15}"                 ; generate_img
+options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"  ; generate_img
+options="--img bone-\${base_rootfs}                ${beaglebone}"                 ; generate_img
+options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"  ; generate_img
+options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                  ; generate_img
 
 #Ubuntu Stable
 base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
 
-options="--img am57xx-\${base_rootfs}              ${beagle_x15}"                      ; generate_img
-options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"       ; generate_img
-options="--img bone-\${base_rootfs}                ${beaglebone} --distro-bootloader"  ; generate_img
-options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"       ; generate_img
-options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                       ; generate_img
+options="--img am57xx-\${base_rootfs}              ${beagle_x15}"                 ; generate_img
+options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"  ; generate_img
+options="--img bone-\${base_rootfs}                ${beaglebone}"                 ; generate_img
+options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"  ; generate_img
+options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                  ; generate_img
 
 #Archive tar:
 base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
