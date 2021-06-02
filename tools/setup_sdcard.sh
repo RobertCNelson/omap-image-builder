@@ -211,6 +211,21 @@ distro_bootloader () {
 		UBOOT=${boot_name}
 		echo "UBOOT Bootloader: ${conf_bl_distro_UBOOT}"
 	fi
+
+	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
+		mkdir -p ${TEMPDIR}/dl/oem/
+		if [ "${conf_bl_distro_blank_SPL}" ] ; then
+			cp -v ./${conf_bl_distro_blank_SPL} ${TEMPDIR}/dl/oem/
+			blank_SPL=${spl_name}
+			echo "blank_SPL Bootloader: ${conf_bl_distro_blank_SPL}"
+		fi
+
+		if [ "${conf_bl_distro_blank_UBOOT}" ] ; then
+			cp -v ./${conf_bl_distro_blank_UBOOT} ${TEMPDIR}/dl/oem/
+			blank_UBOOT=${boot_name}
+			echo "blank_UBOOT Bootloader: ${conf_bl_distro_blank_UBOOT}"
+		fi
+	fi
 }
 
 dl_bootloader () {
@@ -533,9 +548,16 @@ dd_uboot_boot () {
 		uboot_blob="${UBOOT}"
 	fi
 
-	echo "${uboot_name}: dd if=${uboot_blob} of=${media} ${dd_uboot}"
+	wdir="dl"
+	if [ "${USE_DISTRO_BOOTLOADER}" ] ; then
+		if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
+			wdir="dl/oem"
+		fi
+	fi
+
+	echo "${uboot_name}: [dd if=..${wdir}/${uboot_blob} of=${media} ${dd_uboot}]"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${uboot_blob} of=${media} ${dd_uboot}
+	dd if=${TEMPDIR}/${wdir}/${uboot_blob} of=${media} ${dd_uboot}
 	echo "-----------------------------"
 }
 
@@ -567,9 +589,16 @@ dd_spl_uboot_boot () {
 		spl_uboot_blob="${SPL}"
 	fi
 
-	echo "${spl_uboot_name}: dd if=${spl_uboot_blob} of=${media} ${dd_spl_uboot}"
+	wdir="dl"
+	if [ "${USE_DISTRO_BOOTLOADER}" ] ; then
+		if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
+			wdir="dl/oem"
+		fi
+	fi
+
+	echo "${spl_uboot_name}: [dd if=../${wdir}/${spl_uboot_blob} of=${media} ${dd_spl_uboot}]"
 	echo "-----------------------------"
-	dd if=${TEMPDIR}/dl/${spl_uboot_blob} of=${media} ${dd_spl_uboot}
+	dd if=${TEMPDIR}/${wdir}/${spl_uboot_blob} of=${media} ${dd_spl_uboot}
 	echo "-----------------------------"
 }
 
