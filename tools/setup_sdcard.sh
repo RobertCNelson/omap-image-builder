@@ -1761,13 +1761,6 @@ populate_rootfs () {
 		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
 	fi
 
-	if [ "x${slim_auto_login}" = "xenable" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/slim.conf ] ; then
-			echo "default_user ${rfs_username}" >> ${TEMPDIR}/disk/etc/slim.conf
-			echo "auto_login yes" >> ${TEMPDIR}/disk/etc/slim.conf
-		fi
-	fi
-
 	if [ ! "x${new_hostname}" = "x" ] ; then
 		echo "Updating Image hostname too: [${new_hostname}]"
 
@@ -2204,9 +2197,6 @@ while [ ! -z "$1" ] ; do
 	--force-device-tree)
 		checkparm $2
 		forced_dtb="$2"
-		;;
-	--slim-auto-login)
-		slim_auto_login="enable"
 		;;
 	esac
 	shift
