@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2019 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2020 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -254,6 +254,11 @@ install_git_repos () {
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-5.4-ti"
 	git_branch="v5.4.x-ti-overlays"
+	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
+	git_target_dir="/opt/source/dtb-5.10-ti"
+	git_branch="v5.10.x-ti"
 	git_clone_branch
 
 	git_repo="https://github.com/beagleboard/bb.org-overlays"
