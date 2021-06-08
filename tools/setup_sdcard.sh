@@ -1560,7 +1560,7 @@ populate_rootfs () {
 	fi
 
 	cat ${wfile}
-	sudo chown -R 1000:1000 ${wfile}
+	chown -R 1000:1000 ${wfile}
 	echo "-----------------------------"
 
 	wfile="${TEMPDIR}/disk/boot/SOC.sh"
@@ -1714,29 +1714,29 @@ populate_rootfs () {
 	if [ ! "x${conf_kernel}" = "xriscv" ] ; then
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
 			git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
-			sudo chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
+			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
 			if [ ! -f ${TEMPDIR}/disk/etc/default/bb-boot ] ; then
-				sudo cp -v ${TEMPDIR}/disk/opt/scripts/boot/default/bb-boot ${TEMPDIR}/disk/etc/default/
+				cp -v ${TEMPDIR}/disk/opt/scripts/boot/default/bb-boot ${TEMPDIR}/disk/etc/default/
 			fi
 		else
 			cd ${TEMPDIR}/disk/opt/scripts/
 			git pull
 			cd -
-			sudo chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
+			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
 		fi
 	fi
 
 	if [ "x${drm}" = "xomapdrm" ] ; then
 		wfile="/etc/X11/xorg.conf"
 		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
-			sudo sed -i -e 's:modesetting:omap:g' ${TEMPDIR}/disk${wfile}
-			sudo sed -i -e 's:fbdev:omap:g' ${TEMPDIR}/disk${wfile}
+			sed -i -e 's:modesetting:omap:g' ${TEMPDIR}/disk${wfile}
+			sed -i -e 's:fbdev:omap:g' ${TEMPDIR}/disk${wfile}
 
 			if [ "x${conf_board}" = "xomap3_beagle" ] ; then
-				sudo sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
-				sudo sed -i -e 's:#DefaultDepth::g' ${TEMPDIR}/disk${wfile}
+				sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
+				sed -i -e 's:#DefaultDepth::g' ${TEMPDIR}/disk${wfile}
 			else
-				sudo sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
+				sed -i -e 's:#HWcursor_false::g' ${TEMPDIR}/disk${wfile}
 			fi
 		fi
 	fi
@@ -1745,8 +1745,8 @@ populate_rootfs () {
 		wfile="/etc/X11/xorg.conf"
 		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
 			if [ -f ${TEMPDIR}/disk/usr/lib/xorg/modules/drivers/armada_drv.so ] ; then
-				sudo sed -i -e 's:modesetting:armada:g' ${TEMPDIR}/disk${wfile}
-				sudo sed -i -e 's:fbdev:armada:g' ${TEMPDIR}/disk${wfile}
+				sed -i -e 's:modesetting:armada:g' ${TEMPDIR}/disk${wfile}
+				sed -i -e 's:fbdev:armada:g' ${TEMPDIR}/disk${wfile}
 			fi
 		fi
 	fi
