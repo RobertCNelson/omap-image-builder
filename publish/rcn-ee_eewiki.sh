@@ -27,7 +27,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_buster="debian-10.9"
+debian_buster="debian-10.10"
 debian_bullseye="debian-11"
 ubuntu_bionic="ubuntu-18.04.5"
 ubuntu_focal="ubuntu-20.04.2"
