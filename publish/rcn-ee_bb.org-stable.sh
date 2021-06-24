@@ -83,9 +83,9 @@ beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
    am335x_v54ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-54ti"
 am335x_mainline="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 
-am57xx_v414ti="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname beaglebone"
-am57xx_v419ti="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
- am57xx_v54ti="--dtb am57xx-beagle-x15 --rootfs_label rootfs --hostname beaglebone"
+am57xx_v414ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone"
+am57xx_v419ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
+ am57xx_v54ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -243,7 +243,6 @@ rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl" ; extract_base_
 
 options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                                   ; generate_img
 options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"                    ; generate_img
-options="--img-6gb am57xx-blank-\${rootfs} ${am57xx_v414ti} --emmc-flasher --am57xx-x15-revc-flasher"  ; generate_img
 
 ###DEBIAN STRETCH: lxqt-xm
 rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm" ; extract_base_rootfs
@@ -316,7 +315,6 @@ rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl" ; extract_base_ro
 
 options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                                   ; generate_img
 options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"                    ; generate_img
-options="--img-6gb am57xx-blank-\${rootfs} ${am57xx_v414ti} --emmc-flasher --am57xx-x15-revc-flasher"  ; generate_img
 
 ###DEBIAN BUSTER: lxqt-xm
 rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm" ; extract_base_rootfs
@@ -411,8 +409,6 @@ rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl"
 wfile="am57xx-\${rootfs}-6gb"               ; archive_img
 wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
 
-wfile="am57xx-blank-\${rootfs}-6gb"       ; archive_img
-
 ###DEBIAN STRETCH: lxqt-xm
 rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm"
 
@@ -484,8 +480,6 @@ rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl"
 
 wfile="am57xx-\${rootfs}-6gb"               ; archive_img
 wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
-
-wfile="am57xx-blank-\${rootfs}-6gb"       ; archive_img
 
 ###DEBIAN BUSTER: lxqt-xm
 rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm"
