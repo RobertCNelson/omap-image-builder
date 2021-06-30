@@ -151,6 +151,10 @@ check_defines () {
 			fi
 		fi
 	fi
+
+	if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
+		deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
 }
 
 report_size () {
@@ -708,6 +712,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
 			apt-get update
 			apt-get -y install ${deb_additional_pkgs}
+		fi
+
+		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
+			#Install the user choosen list.
+			echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
+			apt-get update
+			apt-get -y install ${deb_desktop_pkgs}
 		fi
 
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
