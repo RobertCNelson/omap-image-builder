@@ -179,7 +179,7 @@ local_bootloader () {
 	echo ""
 	echo "Using Locally Stored Device Bootloader"
 	echo "-----------------------------"
-	mkdir -p ${TEMPDIR}/dl/
+	mkdir -p ${TEMPDIR}/dl/oem/
 
 	if [ "${spl_name}" ] ; then
 		cp ${LOCAL_SPL} ${TEMPDIR}/dl/
@@ -198,7 +198,7 @@ distro_bootloader () {
 	echo ""
 	echo "Using Distro Bootloader"
 	echo "-----------------------------"
-	mkdir -p ${TEMPDIR}/dl/
+	mkdir -p ${TEMPDIR}/dl/oem/
 
 	if [ "${conf_bl_distro_SPL}" ] ; then
 		cp -v ./${conf_bl_distro_SPL} ${TEMPDIR}/dl/
@@ -213,7 +213,6 @@ distro_bootloader () {
 	fi
 
 	if [ "x${oem_blank_eeprom}" = "xenable" ] ; then
-		mkdir -p ${TEMPDIR}/dl/oem/
 		if [ "${conf_bl_distro_blank_SPL}" ] ; then
 			cp -v ./${conf_bl_distro_blank_SPL} ${TEMPDIR}/dl/oem/
 			blank_SPL=${spl_name}
