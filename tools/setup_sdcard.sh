@@ -792,6 +792,12 @@ create_partitions () {
 		sfdisk_single_partition_layout
 		media_rootfs_partition=1
 		;;
+	distro_bootloader_dual_partition)
+		bypass_bootup_scripts=true
+		echo "Distro Bootloader, Dual Partition"
+		echo "-----------------------------"
+		sfdisk_partition_layout
+		;;
 	*)
 		echo "Using sfdisk to create partition layout"
 		echo "Version: `LC_ALL=C sfdisk --version`"
