@@ -33,6 +33,7 @@ unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
 unset USE_DISTRO_BOOTLOADER
+unset bypass_bootup_scripts
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -778,6 +779,7 @@ create_partitions () {
 		fi
 		;;
 	no_bootloader_single_partition)
+		bypass_bootup_scripts=true
 		echo "No Bootloader, Single Partition"
 		echo "-----------------------------"
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
@@ -1715,7 +1717,7 @@ populate_rootfs () {
 	fi
 
 	#RISCV For now lets not use special bootup scripts...
-	if [ ! "x${conf_kernel}" = "xriscv" ] ; then
+	if [ ! "x${bypass_bootup_scripts}" = "xtrue" ] ; then
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
 			git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
 			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
