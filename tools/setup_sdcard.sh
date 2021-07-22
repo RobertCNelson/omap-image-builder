@@ -413,11 +413,12 @@ unmount_all_drive_partitions () {
 		umount ${DRIVE} >/dev/null 2>&1 || true
 	done
 
-	echo "Zeroing out Drive"
+	dd_erase_count=${dd_erase_count:-"100"}
+	echo "Zeroing out Drive, First ${dd_erase_count}MB"
 	echo "-----------------------------"
-	dd if=/dev/zero of=${media} bs=1M count=100 || drive_error_ro
+	dd if=/dev/zero of=${media} bs=1M count=${dd_erase_count} || drive_error_ro
 	sync
-	dd if=${media} of=/dev/null bs=1M count=100
+	dd if=${media} of=/dev/null bs=1M count=${dd_erase_count}
 	sync
 }
 
