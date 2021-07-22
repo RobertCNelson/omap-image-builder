@@ -1112,8 +1112,16 @@ kernel_select () {
 	if [ "${select_kernel}" ] ; then
 		echo "Debug: using: v${select_kernel}"
 	else
-		echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone,ti]..."
-		exit
+		echo "debug: kernel_select: picking the first available kernel..."
+		unset check
+		check=$(ls "${dir_check}" | grep vmlinuz- | head -n 1)
+		if [ "x${check}" != "x" ] ; then
+			select_kernel=$(ls "${dir_check}" | grep vmlinuz- | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+			echo "debug: kernel_select: found: [${select_kernel}]"
+		else
+			echo "Error: [conf_kernel] not defined [armv7_lpae,armv7,bone,ti]..."
+			exit
+		fi
 	fi
 }
 
