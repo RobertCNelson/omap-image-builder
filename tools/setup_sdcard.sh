@@ -891,6 +891,10 @@ populate_boot () {
 		fi
 	fi
 
+	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
+		cp -v ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
+	fi
+
 	if [ "x${distro_defaults}" = "xenable" ] ; then
 		${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" https://raw.githubusercontent.com/RobertCNelson/netinstall/master/lib/distro_defaults.scr
 		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
