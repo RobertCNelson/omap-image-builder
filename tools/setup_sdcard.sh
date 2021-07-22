@@ -898,7 +898,7 @@ populate_boot () {
 	fi
 
 	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
-		cp -v ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
+		cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
 	fi
 
 	if [ "x${distro_defaults}" = "xenable" ] ; then
