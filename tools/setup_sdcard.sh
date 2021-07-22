@@ -967,10 +967,6 @@ populate_boot () {
 
 	fi
 
-	if [ -f "${DIR}/ID.txt" ] ; then
-		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
-	fi
-
 	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ] ; then
 		touch ${TEMPDIR}/disk/.imx8mq-evk
 	fi
@@ -978,6 +974,10 @@ populate_boot () {
 	if [ ${has_uenvtxt} ] ; then
 		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
 		echo "-----------------------------"
+	fi
+
+	if [ -f "${DIR}/ID.txt" ] ; then
+		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
 	cd ${TEMPDIR}/disk
