@@ -642,9 +642,13 @@ format_partition () {
 format_boot_partition () {
 	mkfs_partition="${media_prefix}${media_boot_partition}"
 
-	if [ "x${conf_boot_fstype}" = "xfat" ] ; then
+	if [ "x${conf_boot_fstype}" = "xfat" ] || [ "x${conf_boot_fstype}" = "xfat16" ]; then
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
+		mkfs_label="-n ${BOOT_LABEL}"
+	elif [ "x${conf_boot_fstype}" = "xfat32" ] ; then
+		mount_partition_format="vfat"
+		mkfs="mkfs.vfat -F 32"
 		mkfs_label="-n ${BOOT_LABEL}"
 	else
 		mount_partition_format="${conf_boot_fstype}"
@@ -1876,8 +1880,11 @@ process_dtb_conf () {
 	fi
 
 	case "${conf_boot_fstype}" in
-	fat)
+	fat|fat16)
 		sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+		;;
+	fat32)
+		sfdisk_fstype=${sfdisk_fstype:-"0xC"}
 		;;
 	ext2|ext3|ext4|btrfs)
 		sfdisk_fstype="L"
