@@ -1584,7 +1584,11 @@ populate_rootfs () {
 	if [ -f ${TEMPDIR}/disk/etc/rcn-ee.conf ] ; then
 		. ${TEMPDIR}/disk/etc/rcn-ee.conf
 
-		mkdir -p ${TEMPDIR}/disk/boot/uboot || true
+		if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
+			mkdir -p ${TEMPDIR}/disk/boot/firmware || true
+		else
+			mkdir -p ${TEMPDIR}/disk/boot/uboot || true
+		fi
 
 		wfile="${TEMPDIR}/disk/etc/fstab"
 		echo "# /etc/fstab: static file system information." > ${wfile}
@@ -1610,6 +1614,10 @@ populate_rootfs () {
 
 		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 			echo "${boot_drive}  /boot/efi vfat defaults 0 0" >> ${wfile}
+		fi
+
+		if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
+			echo "${boot_drive}  /boot/firmware vfat defaults 0 0" >> ${wfile}
 		fi
 
 		echo "debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0" >> ${wfile}
