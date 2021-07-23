@@ -1060,15 +1060,6 @@ kernel_detection () {
 		echo "Debug: image has: v${xenomai_dt_kernel}"
 		has_xenomai_kernel="enable"
 	fi
-
-	unset has_riscv
-	unset check
-	check=$(ls "${dir_check}" | grep vmlinuz- | grep riscv | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		riscv_dt_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep riscv | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has: v${riscv_dt_kernel}"
-		has_riscv="enable"
-	fi
 }
 
 kernel_select () {
@@ -1114,12 +1105,6 @@ kernel_select () {
 			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
 				select_kernel="${armv7_kernel}"
 			fi
-		fi
-	fi
-
-	if [ "x${conf_kernel}" = "xriscv" ] ; then
-		if [ "x${has_riscv}" = "xenable" ] ; then
-			select_kernel="${riscv_dt_kernel}"
 		fi
 	fi
 
