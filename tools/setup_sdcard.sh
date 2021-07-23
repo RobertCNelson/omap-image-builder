@@ -992,6 +992,10 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
+	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
+		echo "args_mmc=setenv bootargs ttyS2,115200n8 earlycon=ns16550a,mmio32,0x02800000 root=/dev/mmcblk0p2 ro rootfstype=ext4 rootwait net.ifnames=0" > "${TEMPDIR}/disk/uEnv.txt"
+	fi
+
 	cd ${TEMPDIR}/disk
 	sync
 	cd "${DIR}"/
@@ -1581,6 +1585,11 @@ populate_rootfs () {
 		fi
 
 		echo "/boot/uEnv.txt---------------"
+	fi
+
+	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
+		cp -v "${TEMPDIR}/disk/boot/Image-${select_kernel}" "${TEMPDIR}/disk/boot/Image"
+		cp -v "${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ti"/*.dtb "${TEMPDIR}/disk/boot/"
 	fi
 
 	cat ${wfile}
