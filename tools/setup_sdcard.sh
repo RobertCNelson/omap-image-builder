@@ -994,7 +994,6 @@ populate_boot () {
 
 	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
 		echo "args_mmc=setenv bootargs console=ttyS2,115200n8 earlycon=ns16550a,mmio32,0x02800000 root=/dev/mmcblk1p2 ro rootfstype=ext4 rootwait net.ifnames=0" > "${TEMPDIR}/disk/uEnv.txt"
-		chown -R 1000:1000 "${TEMPDIR}/disk/uEnv.txt"
 	fi
 
 	cd ${TEMPDIR}/disk
