@@ -1133,9 +1133,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
-		#kill systemd/connman-wait-online.service, as it delays serial console upto 2 minutes...
-		if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
-			systemctl disable connman-wait-online.service || true
+		if [ -f /usr/bin/connmanctl ] ; then
+			#kill systemd/connman-wait-online.service, as it delays serial console upto 2 minutes...
+			if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
+				systemctl disable connman-wait-online.service || true
+			fi
 		fi
 
 		#We manually start dnsmasq, usb0/SoftAp0 are not available till late in boot...
@@ -1169,14 +1171,18 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable apt-daily-upgrade.timer || true
 		fi
 
-		#We use connman...
-		if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
-			systemctl disable systemd-networkd.service || true
+		if [ -f /usr/bin/connmanctl ] ; then
+			#We use connman...
+			if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
+				systemctl disable systemd-networkd.service || true
+			fi
 		fi
 
-		#We use dnsmasq & connman...
-		if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
-			systemctl disable systemd-resolved.service || true
+		if [ -f /usr/bin/connmanctl ] ; then
+			#We use dnsmasq & connman...
+			if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
+				systemctl disable systemd-resolved.service || true
+			fi
 		fi
 
 		#Kill man-db
