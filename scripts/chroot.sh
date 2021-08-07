@@ -962,7 +962,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		cat /etc/group | grep ^iio || groupadd -r iio || true
 		cat /etc/group | grep ^i2c || groupadd -r i2c || true
-		cat /etc/group | grep ^docker || groupadd -r docker || true
 		cat /etc/group | grep ^kmem || groupadd -r kmem || true
 		cat /etc/group | grep ^netdev || groupadd -r netdev || true
 		cat /etc/group | grep ^systemd-journal || groupadd -r systemd-journal || true
@@ -982,7 +981,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,docker,gpio,pwm,eqep,iio,i2c,input,remoteproc,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,eqep,iio,i2c,input,remoteproc,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
 
 		pkg="sudo"
 		dpkg_check
@@ -1200,10 +1199,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ -f /lib/systemd/system/hostapd.service ] ; then
 			systemctl disable hostapd.service || true
-		fi
-
-		if [ -f /usr/bin/docker ] ; then
-			sudo systemctl enable docker.service || true
 		fi
 	}
 
