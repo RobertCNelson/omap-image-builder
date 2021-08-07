@@ -959,20 +959,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
 
-		cat /etc/group | grep ^iio || groupadd -r iio || true
-		cat /etc/group | grep ^i2c || groupadd -r i2c || true
 		cat /etc/group | grep ^kmem || groupadd -r kmem || true
 		cat /etc/group | grep ^netdev || groupadd -r netdev || true
 		cat /etc/group | grep ^systemd-journal || groupadd -r systemd-journal || true
 		cat /etc/group | grep ^tisdk || groupadd -r tisdk || true
 		cat /etc/group | grep ^weston-launch || groupadd -r weston-launch || true
-		cat /etc/group | grep ^xenomai || groupadd -r xenomai || true
 		cat /etc/group | grep ^bluetooth || groupadd -r bluetooth || true
 		cat /etc/group | grep ^cloud9ide || groupadd -r cloud9ide || true
 		cat /etc/group | grep ^gpio || groupadd -r gpio || true
-		cat /etc/group | grep ^pwm || groupadd -r pwm || true
-		cat /etc/group | grep ^eqep || groupadd -r eqep || true
-		cat /etc/group | grep ^remoteproc || groupadd -r remoteproc || true
 
 		echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
 		echo "KERNEL==\"spidev*\", GROUP=\"gpio\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
@@ -980,7 +974,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,eqep,iio,i2c,input,remoteproc,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch"
 
 		pkg="sudo"
 		dpkg_check
