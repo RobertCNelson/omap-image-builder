@@ -958,7 +958,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	add_user () {
 		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
-		groupadd -r spi || true
 
 		cat /etc/group | grep ^iio || groupadd -r iio || true
 		cat /etc/group | grep ^i2c || groupadd -r i2c || true
@@ -976,12 +975,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^remoteproc || groupadd -r remoteproc || true
 
 		echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
-		echo "KERNEL==\"spidev*\", GROUP=\"spi\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
+		echo "KERNEL==\"spidev*\", GROUP=\"gpio\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
 		echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,eqep,iio,i2c,input,remoteproc,kmem,spi,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,pwm,eqep,iio,i2c,input,remoteproc,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch,xenomai"
 
 		pkg="sudo"
 		dpkg_check
