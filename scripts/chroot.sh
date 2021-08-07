@@ -869,7 +869,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				export LANGUAGE=${rfs_default_locale}
 				export LANG=${rfs_default_locale}
 				export LC_ALL=${rfs_default_locale}
+				echo "Log: (chroot): [locale-gen ${rfs_default_locale}]"
 				locale-gen ${rfs_default_locale}
+				echo "Log: (chroot): [update-locale LC_ALL=${rfs_default_locale}]"
+				update-locale LC_ALL=${rfs_default_locale}
 
 				echo "LANG=${rfs_default_locale}" > /etc/default/locale
 
