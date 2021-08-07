@@ -865,19 +865,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			if [ ! "x${rfs_default_locale}" = "x" ] ; then
 
-				echo "Log: (chroot): setting up locales: [${rfs_default_locale}]"
-				export LANGUAGE=${rfs_default_locale}
-				export LANG=${rfs_default_locale}
-				export LC_ALL=${rfs_default_locale}
-				echo "Log: (chroot): [locale-gen ${rfs_default_locale}]"
-				locale-gen ${rfs_default_locale}
-				echo "Log: (chroot): [update-locale LC_ALL=${rfs_default_locale}]"
-				update-locale LC_ALL=${rfs_default_locale}
-
-				echo "LANG=${rfs_default_locale}" > /etc/default/locale
-
-				echo "Log: (chroot): [locale -a]"
-				locale -a
+				echo "Log: (chroot): setting up locales: [${rfs_default_locale} UTF-8]"
+				echo "locales locales/locales_to_be_generated multiselect ${rfs_default_locale} UTF-8" | debconf-set-selections
+				rm /etc/locale.gen || true
+				dpkg-reconfigure --frontend noninteractive locales
 			fi
 		else
 			dpkg_package_missing
