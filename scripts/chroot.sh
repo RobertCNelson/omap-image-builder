@@ -1027,7 +1027,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
-			sed -i -e 's:dialout:dialout i2c spi:g' /etc/adduser.conf
+			sed -i -e 's:dialout:dialout gpio:g' /etc/adduser.conf
 			sed -i -e 's:#ADD_EXTRA_GROUPS:ADD_EXTRA_GROUPS:g' /etc/adduser.conf
 
 			;;
