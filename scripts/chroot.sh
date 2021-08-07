@@ -779,6 +779,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
 			fi
 
+			#this whole mess should be a loop.;)
 			if [ -f /lib/firmware/am335x-pru0-fw.sleep ] ; then
 				cp -v /lib/firmware/am335x-pru0-fw.sleep /lib/firmware/am335x-pru0-fw
 				/bin/chgrp gpio /lib/firmware/am335x-pru0-fw
@@ -813,6 +814,48 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				cp -v /lib/firmware/am57xx-pru1_1-fw.sleep /lib/firmware/am57xx-pru2_1-fw
 				/bin/chgrp gpio /lib/firmware/am57xx-pru2_1-fw
 				/bin/chmod g=u /lib/firmware/am57xx-pru2_1-fw
+			fi
+
+			if [ -f /lib/firmware/j7-c66_0-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-c66_0-fw.tisdk /lib/firmware/j7-c66_0-fw.tisdk
+				/bin/chgrp gpio /lib/firmware/am57xx-pru2_1-fw
+				/bin/chmod g=u /lib/firmware/am57xx-pru2_1-fw
+			fi
+
+			if [ -f /lib/firmware/j7-c66_1-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-c66_1-fw.tisdk /lib/firmware/j7-c66_1-fw
+				/bin/chgrp gpio /lib/firmware/j7-c66_1-fw
+				/bin/chmod g=u /lib/firmware/j7-c66_1-fw
+			fi
+
+			if [ -f /lib/firmware/j7-c71_0-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-c71_0-fw.tisdk /lib/firmware/j7-c71_0-fw
+				/bin/chgrp gpio /lib/firmware/j7-c71_0-fw
+				/bin/chmod g=u /lib/firmware/j7-c71_0-fw
+			fi
+
+			if [ -f /lib/firmware/j7-main-r5f0_0-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-main-r5f0_0-fw.tisdk /lib/firmware/j7-main-r5f0_0-fw
+				/bin/chgrp gpio /lib/firmware/j7-main-r5f0_0-fw
+				/bin/chmod g=u /lib/firmware/j7-main-r5f0_0-fw
+			fi
+
+			if [ -f /lib/firmware/j7-main-r5f0_1-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-main-r5f0_1-fw.tisdk /lib/firmware/j7-main-r5f0_1-fw
+				/bin/chgrp gpio /lib/firmware/j7-main-r5f0_1-fw
+				/bin/chmod g=u /lib/firmware/j7-main-r5f0_1-fw
+			fi
+
+			if [ -f /lib/firmware/j7-main-r5f1_0-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-main-r5f1_0-fw.tisdk /lib/firmware/j7-main-r5f1_0-fw
+				/bin/chgrp gpio /lib/firmware/j7-main-r5f1_0-fw
+				/bin/chmod g=u /lib/firmware/j7-main-r5f1_0-fw
+			fi
+
+			if [ -f /lib/firmware/j7-main-r5f1_1-fw.tisdk ] ; then
+				cp -v /lib/firmware/j7-main-r5f1_1-fw.tisdk /lib/firmware/j7-main-r5f1_1-fw
+				/bin/chgrp gpio /lib/firmware/j7-main-r5f1_1-fw
+				/bin/chmod g=u /lib/firmware/j7-main-r5f1_1-fw
 			fi
 
 			depmod -a ${repo_rcnee_pkg_version}
