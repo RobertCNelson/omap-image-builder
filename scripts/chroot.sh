@@ -779,6 +779,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
 			fi
 
+			cat /etc/group | grep ^gpio || groupadd -r gpio || true
+
 			#this whole mess should be a loop.;)
 			if [ -f /lib/firmware/am335x-pru0-fw.sleep ] ; then
 				cp -v /lib/firmware/am335x-pru0-fw.sleep /lib/firmware/am335x-pru0-fw
