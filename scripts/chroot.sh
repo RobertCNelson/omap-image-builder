@@ -817,9 +817,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			if [ -f /lib/firmware/j7-c66_0-fw.tisdk ] ; then
-				cp -v /lib/firmware/j7-c66_0-fw.tisdk /lib/firmware/j7-c66_0-fw.tisdk
-				/bin/chgrp gpio /lib/firmware/am57xx-pru2_1-fw
-				/bin/chmod g=u /lib/firmware/am57xx-pru2_1-fw
+				cp -v /lib/firmware/j7-c66_0-fw.tisdk /lib/firmware/j7-c66_0-fw
+				/bin/chgrp gpio /lib/firmware/j7-c66_0-fw
+				/bin/chmod g=u /lib/firmware/j7-c66_0-fw
 			fi
 
 			if [ -f /lib/firmware/j7-c66_1-fw.tisdk ] ; then
