@@ -918,49 +918,6 @@ populate_boot () {
 		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
 	fi
 
-	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] || [ "x${conf_board}" = "xam335x_blank_bbbw" ] ; then
-
-		wfile="${TEMPDIR}/disk/nfs-uEnv.txt"
-		echo "##Rename as: uEnv.txt to boot via nfs" > ${wfile}
-		echo "" >> ${wfile}
-		echo "##https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "##SERVER: sudo apt-get install tftpd-hpa" >> ${wfile}
-		echo "##SERVER:" >> ${wfile}
-		echo "##SERVER: zImage boot:" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
-		echo "##SERVER: zImage/*.dtb need to be located here:" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY/zImage" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY/dtbs/*.dtb" >> ${wfile}
-		echo "##SERVER:" >> ${wfile}
-		echo "##SERVER: uname_r boot:" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY defined in /etc/default/tftpd-hpa" >> ${wfile}
-		echo "##SERVER: Change TFTP_DIRECTORY to /NFSEXPORT/boot" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY/vmlinuz-\${uname_r}" >> ${wfile}
-		echo "##SERVER: TFTP_DIRECTORY/dtbs/\${uname_r}/*.dtb" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "##client_ip needs to be set for u-boot to try booting via nfs" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "client_ip=192.168.1.101" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "#u-boot defaults: uncomment and override where needed" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "#server_ip=192.168.1.100" >> ${wfile}
-		echo "#gw_ip=192.168.1.1" >> ${wfile}
-		echo "#netmask=255.255.255.0" >> ${wfile}
-		echo "#hostname=" >> ${wfile}
-		echo "#device=eth0" >> ${wfile}
-		echo "#autoconf=off" >> ${wfile}
-		echo "#root_dir=/home/userid/targetNFS" >> ${wfile}
-		echo "#nfs_options=,vers=3" >> ${wfile}
-		echo "#nfsrootfstype=ext4 rootwait fixrtc" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "##use uname_r= only if TFTP SERVER is setup for uname_r boot:" >> ${wfile}
-		echo "#uname_r=" >> ${wfile}
-		echo "" >> ${wfile}
-
-	fi
-
 	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ] ; then
 		touch ${TEMPDIR}/disk/.imx8mq-evk
 	fi
