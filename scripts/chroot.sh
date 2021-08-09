@@ -866,59 +866,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	dl_kernel () {
-		echo "Log: (chroot): dl_kernel"
-		wget --no-verbose --directory-prefix=/tmp/ \${kernel_url}
-
-		#This should create a list of files on the server
-		#<a href="file"></a>
-		cat /tmp/index.html | grep "<a href=" > /tmp/temp.html
-
-		#Note: cat drops one \...
-		#sed -i -e "s/<a href/\\n<a href/g" /tmp/temp.html
-		sed -i -e "s/<a href/\\\n<a href/g" /tmp/temp.html
-
-		sed -i -e 's/\"/\"><\/a>\n/2' /tmp/temp.html
-		cat /tmp/temp.html | grep href > /tmp/index.html
-
-		deb_file=\$(cat /tmp/index.html | grep linux-image)
-		deb_file=\$(echo \${deb_file} | awk -F ".deb" '{print \$1}')
-		deb_file=\${deb_file##*linux-image-}
-
-		kernel_version=\$(echo \${deb_file} | awk -F "_" '{print \$1}')
-		echo "Log: Using: \${kernel_version}"
-
-		deb_file="linux-image-\${deb_file}.deb"
-		wget --directory-prefix=/tmp/ \${kernel_url}\${deb_file}
-
-		dpkg -x /tmp/\${deb_file} /
-
-		pkg="initramfs-tools"
-		dpkg_check
-
-		if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-			depmod \${kernel_version} -a
-			update-initramfs -c -k \${kernel_version}
-		else
-			dpkg_package_missing
-		fi
-
-		unset source_file
-		source_file=\$(cat /tmp/index.html | grep .diff.gz | head -n 1)
-		source_file=\$(echo \${source_file} | awk -F "\"" '{print \$2}')
-
-		if [ "\${source_file}" ] ; then
-			wget --directory-prefix=/opt/source/ \${kernel_url}\${source_file}
-		fi
-
-		rm -f /tmp/index.html || true
-		rm -f /tmp/temp.html || true
-		rm -f /tmp/\${deb_file} || true
-		rm -f /boot/System.map-\${kernel_version} || true
-		mv /boot/config-\${kernel_version} /opt/source || true
-		rm -rf /usr/src/linux-headers* || true
-	}
-
 	add_user () {
 		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
@@ -1205,17 +1152,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	touch /opt/source/list.txt
 
 	startup_script
-
-	pkg="wget"
-	dpkg_check
-
-	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-		if [ "${rfs_kernel}" ] ; then
-			for kernel_url in ${rfs_kernel} ; do dl_kernel ; done
-		fi
-	else
-		dpkg_package_missing
-	fi
 
 	pkg="c9-core-installer"
 	dpkg_check
