@@ -218,12 +218,24 @@ distro_bootloader () {
 			cp -v ./${conf_bl_distro_blank_SPL} ${TEMPDIR}/dl/oem/
 			blank_SPL=${spl_name}
 			echo "blank_SPL Bootloader: ${conf_bl_distro_blank_SPL}"
+		else
+			if [ "${conf_bl_distro_SPL}" ] ; then
+				cp -v ./${conf_bl_distro_SPL} ${TEMPDIR}/dl/oem/
+				blank_SPL=${spl_name}
+				echo "SPL Bootloader: ${conf_bl_distro_SPL}"
+			fi
 		fi
 
 		if [ "${conf_bl_distro_blank_UBOOT}" ] ; then
 			cp -v ./${conf_bl_distro_blank_UBOOT} ${TEMPDIR}/dl/oem/
 			blank_UBOOT=${boot_name}
 			echo "blank_UBOOT Bootloader: ${conf_bl_distro_blank_UBOOT}"
+		else
+			if [ "${conf_bl_distro_UBOOT}" ] ; then
+				cp -v ./${conf_bl_distro_UBOOT} ${TEMPDIR}/dl/oem/
+				blank_UBOOT=${boot_name}
+				echo "UBOOT Bootloader: ${conf_bl_distro_UBOOT}"
+			fi
 		fi
 	fi
 }
