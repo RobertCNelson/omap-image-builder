@@ -1104,6 +1104,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /lib/systemd/system/hostapd.service ] ; then
 			systemctl disable hostapd.service || true
 		fi
+
+		#Starting with Bullseye, we are copying RPi's regenerate_ssh_host_keys service...
+		if [ -f /lib/systemd/system/regenerate_ssh_host_keys.service ] ; then
+			systemctl enable regenerate_ssh_host_keys.service || true
+		fi
 	}
 
 	grub_tweaks () {
