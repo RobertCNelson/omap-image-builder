@@ -29,17 +29,15 @@ current_kernel () {
 if [ -f configs/kernel.data ] ; then
 	server="https://rcn-ee.net/repos/latest/buster-armhf/LATEST-"
 	git_msg="5.4.x-xM"
-#	var="armv7"      ; ver="LTS419"       ; current_kernel
 	var="armv7"      ; ver="LTS54"       ; current_kernel
-#	var="armv7"      ; ver="STABLE"       ; current_kernel
-#	var="armv7"      ; ver="TESTING"      ; current_kernel
-#	var="armv7"      ; ver="EXPERIMENTAL" ; current_kernel
+
+	git_msg="5.10.x-xM"
+	var="armv7"      ; ver="LTS510"       ; current_kernel
 
 	git_msg="4.19.x-bone-rt"
 	var="bone-rt"    ; ver="LTS419" ; current_kernel
 
 	git_msg="5.10.x-bone"
-	#var="omap-psp"   ; ver="V58X" ; current_kernel
 	var="omap-psp"   ; ver="LTS510" ; current_kernel
 
 	git_msg="4.14.x-ti"
@@ -65,6 +63,18 @@ if [ -f configs/kernel.data ] ; then
 
 	git_msg="5.4.x-ti-rt"
 	var="ti-rt"      ; ver="LTS54"  ; current_kernel
+
+	git_msg="5.10.x-ti"
+	filter1="rt"
+	filter2="rt"
+	var="ti"         ; ver="LTS510"  ; current_kernel
+
+	git_msg="5.10.x-ti-rt"
+	var="ti-rt"      ; ver="LTS510"  ; current_kernel
+
+	server="https://rcn-ee.net/repos/latest/sid-arm64/LATEST-"
+	git_msg="5.10.x-ti"
+	var="ti-arm64"    ; ver="LTS510"  ; current_kernel
 
 	server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
 	git_msg="5.13.x-riscv64"
