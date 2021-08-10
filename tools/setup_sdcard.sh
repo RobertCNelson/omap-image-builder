@@ -792,7 +792,7 @@ create_partitions () {
 		fi
 		;;
 	no_bootloader_single_partition)
-		bypass_bootup_scripts=true
+		bypass_bootup_scripts="enable"
 		echo "No Bootloader, Single Partition"
 		echo "-----------------------------"
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
@@ -806,7 +806,7 @@ create_partitions () {
 		media_rootfs_partition=1
 		;;
 	distro_bootloader_dual_partition)
-		bypass_bootup_scripts=true
+		bypass_bootup_scripts="enable"
 		echo "Distro Bootloader, Dual Partition"
 		echo "-----------------------------"
 		sfdisk_partition_layout
@@ -1671,7 +1671,7 @@ populate_rootfs () {
 	fi
 
 	#RISCV For now lets not use special bootup scripts...
-	if [ ! "x${bypass_bootup_scripts}" = "xtrue" ] ; then
+	if [ ! "x${bypass_bootup_scripts}" = "xenable" ] ; then
 		if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
 			git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
 			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
@@ -2140,6 +2140,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-disable-pru)
 		uboot_disable_pru="enable"
+		;;
+	--enable-bypass-bootup-scripts)
+		bypass_bootup_scripts="enable"
 		;;
 	--efi)
 		uboot_efi_mode="enable"
