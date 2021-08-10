@@ -34,6 +34,7 @@ unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
 unset USE_DISTRO_BOOTLOADER
 unset bypass_bootup_scripts
+unset uboot_disable_pru
 
 #Defaults
 ROOTFS_TYPE=ext4
@@ -1329,52 +1330,54 @@ populate_rootfs () {
 				fi
 				echo "#disable_uboot_overlay_wireless=1" >> ${wfile}
 				echo "#disable_uboot_overlay_adc=1" >> ${wfile}
-				echo "###" >> ${wfile}
-				echo "###PRUSS OPTIONS" >> ${wfile}
-				unset use_pru_uio
-				if [ "x${uboot_pru_rproc_414ti}" = "xenable" ] ; then
-					echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-					echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-					use_pru_uio="blocked"
-				fi
-				if [ "x${uboot_pru_rproc_419ti}" = "xenable" ] ; then
-					echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-					echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-					use_pru_uio="blocked"
-				fi
-				if [ "x${uboot_pru_rproc_54ti}" = "xenable" ] ; then
-					echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-					use_pru_uio="blocked"
-				fi
-				if [ "x${mainline_pru_rproc}" = "xenable" ] ; then
-					echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-					use_pru_uio="blocked"
-				fi
-				if [ "x${use_pru_uio}" = "x" ] ; then
-					echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
-					echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
-					echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
-					echo "uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+				if [ "x${uboot_disable_pru}" = "x" ] ; then
+					echo "###" >> ${wfile}
+					echo "###PRUSS OPTIONS" >> ${wfile}
+					unset use_pru_uio
+					if [ "x${uboot_pru_rproc_414ti}" = "xenable" ] ; then
+						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+						echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+						use_pru_uio="blocked"
+					fi
+					if [ "x${uboot_pru_rproc_419ti}" = "xenable" ] ; then
+						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+						echo "uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+						use_pru_uio="blocked"
+					fi
+					if [ "x${uboot_pru_rproc_54ti}" = "xenable" ] ; then
+						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+						use_pru_uio="blocked"
+					fi
+					if [ "x${mainline_pru_rproc}" = "xenable" ] ; then
+						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+						use_pru_uio="blocked"
+					fi
+					if [ "x${use_pru_uio}" = "x" ] ; then
+						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_rproc (4.19.x-ti kernel)" >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
+						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
+						echo "uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+					fi
 				fi
 				echo "###" >> ${wfile}
 				echo "###Cape Universal Enable" >> ${wfile}
@@ -2144,6 +2147,9 @@ while [ ! -z "$1" ] ; do
 	--enable-uboot-pru-uio-419)
 		echo "[--enable-uboot-pru-uio-419] is obsolete, and has been removed..."
 		exit 2
+		;;
+	--enable-uboot-disable-pru)
+		uboot_disable_pru="enable"
 		;;
 	--efi)
 		uboot_efi_mode="enable"
