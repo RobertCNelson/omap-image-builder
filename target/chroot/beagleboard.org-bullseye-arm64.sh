@@ -153,24 +153,18 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	if [ -f /var/www/html/index.nginx-debian.html ] ; then
-		rm -rf /var/www/html/index.nginx-debian.html || true
-
-		if [ -d /opt/scripts/distro/buster/nginx/ ] ; then
-			cp -v /opt/scripts/distro/buster/nginx/default /etc/nginx/sites-available/default
-		fi
-	fi
+	echo "nothing.."
 }
 
 is_this_qemu
 
 setup_system
-setup_desktop
+#setup_desktop
 
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
-	install_git_repos
+	#install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
