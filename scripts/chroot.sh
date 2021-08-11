@@ -542,6 +542,7 @@ ubuntu)
 	;;
 esac
 
+if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
 if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
@@ -568,6 +569,7 @@ fi
 if [ "x${deb_arch}" = "xarmel" ] ; then
 	sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 	sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
+fi
 fi
 
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
