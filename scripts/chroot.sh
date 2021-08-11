@@ -586,11 +586,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /usr/bin/qemu-aarch64-static ] ; then
 			warn_qemu_will_fail=1
 		fi
+		if [ -f /usr/bin/qemu-riscv64-static ] ; then
+			warn_qemu_will_fail=1
+		fi
 	}
 
 	qemu_warning () {
 		if [ "\${warn_qemu_will_fail}" ] ; then
-			echo "Log: (chroot) Warning, qemu can fail here... (run on real armv7l hardware for production images)"
+			echo "Log: (chroot) Warning, qemu can fail here... (run on real target hardware for production images)"
 			echo "Log: (chroot): [\${qemu_command}]"
 		fi
 	}
