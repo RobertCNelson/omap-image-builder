@@ -543,33 +543,9 @@ ubuntu)
 esac
 
 if [ "x${rfs_startup_scripts}" = "xenable" ] ; then
-if [ "x${deb_arch}" = "xarmhf" ] ; then
-	case "${deb_distribution}" in
-	debian)
-		case "${deb_codename}" in
-		stretch|buster|bullseye|bookworm|sid)
-			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			;;
-		esac
-		;;
-	ubuntu)
-		case "${deb_codename}" in
-		bionic|focal)
-			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
-			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			;;
-		esac
-		;;
-	esac
-fi
-
-if [ "x${deb_arch}" = "xarmel" ] ; then
+	#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 	sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 	sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-fi
 fi
 
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
