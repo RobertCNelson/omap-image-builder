@@ -533,6 +533,15 @@ echo "${rfs_hostname}" > /tmp/hostname
 sudo mv /tmp/hostname "${tempdir}/etc/hostname"
 sudo chown root:root "${tempdir}/etc/hostname"
 
+case "${deb_distribution}" in
+debian)
+	distro="Debian"
+	;;
+ubuntu)
+	distro="Ubuntu"
+	;;
+esac
+
 if [ "x${deb_arch}" = "xarmhf" ] ; then
 	case "${deb_distribution}" in
 	debian)
@@ -541,7 +550,6 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			distro="Debian"
 			;;
 		esac
 		;;
@@ -551,7 +559,6 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 			#while bb-customizations installes "generic-board-startup.service" other boards/configs could use this default.
 			sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 			sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-			distro="Ubuntu"
 			;;
 		esac
 		;;
@@ -561,7 +568,6 @@ fi
 if [ "x${deb_arch}" = "xarmel" ] ; then
 	sudo cp "${OIB_DIR}/target/init_scripts/systemd-generic-board-startup.service" "${tempdir}/lib/systemd/system/generic-board-startup.service"
 	sudo chown root:root "${tempdir}/lib/systemd/system/generic-board-startup.service"
-	distro="Debian"
 fi
 
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
