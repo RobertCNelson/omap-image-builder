@@ -1402,6 +1402,10 @@ populate_rootfs () {
 			fi
 		fi
 
+		if [ ! "x${extlinux_console}" = "x" ] ; then
+			echo "console=${extlinux_console}" >> ${wfile}
+		fi
+
 		cmdline="coherent_pool=1M net.ifnames=0"
 
 		if [ ! "x${loops_per_jiffy}" = "x" ] ; then
