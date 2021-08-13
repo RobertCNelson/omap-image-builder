@@ -394,30 +394,41 @@ fi
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 echo "" >> ${wfile}
 
-#https://wiki.debian.org/StableUpdates
-case "${deb_codename}" in
-bullseye|bookworm|sid)
-	echo "#deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "##deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	;;
-*)
-	echo "deb http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://${deb_mirror} ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	;;
-esac
+#Q) What should I use in sources.list for bullseye?
+#There is a change in the security repository compared to prior releases.
+#deb http://deb.debian.org/debian bullseye main
+#deb http://security.debian.org/debian-security bullseye-security main
+#deb http://deb.debian.org/debian bullseye-updates main
 
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
 stretch|buster)
-	echo "deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "deb http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-bullseye|bookworm|sid)
-	echo "#deb http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "##deb-src http://deb.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+bullseye)
+	echo "deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	;;
+bookworm|sid)
+	echo "#deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "##deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	;;
+esac
+
+#https://wiki.debian.org/StableUpdates
+case "${deb_codename}" in
+stretch|buster|bullseye)
+	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	;;
+bookworm|sid)
+	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
 esac
@@ -425,7 +436,7 @@ esac
 #https://wiki.debian.org/Backports
 if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 	case "${deb_codename}" in
-	stretch|buster)
+	stretch|buster|bullseye)
 		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "" >> ${wfile}
