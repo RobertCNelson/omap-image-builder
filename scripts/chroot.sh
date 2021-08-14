@@ -1107,6 +1107,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /lib/systemd/system/regenerate_ssh_host_keys.service ] ; then
 			systemctl enable regenerate_ssh_host_keys.service || true
 		fi
+
+		#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
+		if [ -f /lib/systemd/system/bb-usb-gadgets.service ] ; then
+			systemctl enable bb-usb-gadgets.service || true
+		fi
 	}
 
 	grub_tweaks () {
