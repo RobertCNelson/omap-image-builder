@@ -427,7 +427,7 @@ stretch|buster|bullseye)
 	echo "" >> ${wfile}
 	;;
 bookworm|sid)
-	echo "deb http://snapshot.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "deb https://snapshot.debian.org/archive/debian-ports/20210816T201129Z/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
