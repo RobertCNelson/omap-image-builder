@@ -1334,7 +1334,7 @@ populate_rootfs () {
 			cmdline="${cmdline} ${rng_core}"
 		fi
 
-		cmdline="${cmdline} quiet"
+		#cmdline="${cmdline} quiet"
 
 		unset kms_video
 
