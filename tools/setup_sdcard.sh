@@ -442,12 +442,7 @@ sfdisk_partition_layout () {
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_boot_size_mb="${conf_boot_endmb}"
 	sfdisk_var_size_mb="${conf_var_startmb}"
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		sfdisk_var_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
-		sfdisk_rootfs_startmb=$(($sfdisk_var_startmb + $sfdisk_var_size_mb))
-	else
-		sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
-	fi
+	sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -460,32 +455,15 @@ sfdisk_partition_layout () {
 		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
 	fi
 
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
-		echo "sfdisk: [${sfdisk_options} ${media}]"
-		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [${sfdisk_var_startmb},${sfdisk_var_size_mb},,-]"
-		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
+	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
+	echo "sfdisk: [${sfdisk_options} ${media}]"
+	echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
+	echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
-		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
-			${sfdisk_var_startmb},${sfdisk_var_size_mb},,-
-			${sfdisk_rootfs_startmb},,,-
-		__EOF__
-
-		media_rootfs_var_partition=3
-	else
-		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
-		echo "sfdisk: [${sfdisk_options} ${media}]"
-		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
-
-		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
-			${sfdisk_rootfs_startmb},,,-
-		__EOF__
-
-	fi
+	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
+		${sfdisk_boot_startmb},${sfdisk_boot_size_mb},${sfdisk_fstype},*
+		${sfdisk_rootfs_startmb},,,-
+	__EOF__
 
 	sync
 }
@@ -494,9 +472,6 @@ sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_var_size_mb="${conf_var_startmb}"
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_var_size_mb))
-	fi
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -504,33 +479,15 @@ sfdisk_single_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
-		if [ "x${option_ro_root}" = "xenable" ] ; then
-			sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
-		fi
 	fi
 
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
-		echo "sfdisk: [${sfdisk_options} ${media}]"
-		echo "sfdisk: [${sfdisk_boot_startmb},${sfdisk_var_size_mb},${sfdisk_fstype},*]"
-		echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
+	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
+	echo "sfdisk: [${sfdisk_options} ${media}]"
+	echo "sfdisk: [${sfdisk_boot_startmb},,${sfdisk_fstype},*]"
 
-		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${sfdisk_boot_startmb},${sfdisk_var_size_mb},${sfdisk_fstype},*
-			${sfdisk_rootfs_startmb},,,-
-		__EOF__
-
-		media_rootfs_var_partition=2
-	else
-		echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
-		echo "sfdisk: [${sfdisk_options} ${media}]"
-		echo "sfdisk: [${sfdisk_boot_startmb},,${sfdisk_fstype},*]"
-
-		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-			${sfdisk_boot_startmb},,${sfdisk_fstype},*
-		__EOF__
-
-	fi
+	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
+		${sfdisk_boot_startmb},,${sfdisk_fstype},*
+	__EOF__
 
 	sync
 }
@@ -677,27 +634,13 @@ format_boot_partition () {
 }
 
 format_rootfs_partition () {
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		mkfs="mkfs.ext2"
-	else
-		mkfs="mkfs.${ROOTFS_TYPE}"
-	fi
+	mkfs="mkfs.${ROOTFS_TYPE}"
 	mkfs_partition="${media_prefix}${media_rootfs_partition}"
 	mkfs_label="-L ${ROOTFS_LABEL}"
 
 	format_partition
 
 	rootfs_drive="${conf_root_device}p${media_rootfs_partition}"
-
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-
-		mkfs="mkfs.${ROOTFS_TYPE}"
-		mkfs_partition="${media_prefix}${media_rootfs_var_partition}"
-		mkfs_label="-L var"
-
-		format_partition
-		rootfs_var_drive="${conf_root_device}p${media_rootfs_var_partition}"
-	fi
 }
 
 create_partitions () {
@@ -1090,31 +1033,6 @@ populate_rootfs () {
 			echo "Please retry running the script, sometimes rebooting your system helps."
 			echo "-----------------------------"
 			exit
-		fi
-	fi
-
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-
-		if [ ! -d ${TEMPDIR}/disk/var ] ; then
-			mkdir -p ${TEMPDIR}/disk/var
-		fi
-
-		if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
-
-			echo "-----------------------------"
-			echo "BUG: [${media_prefix}${media_rootfs_var_partition}] was not available so trying to mount again in 5 seconds..."
-			partprobe ${media}
-			sync
-			sleep 5
-			echo "-----------------------------"
-
-			if ! mount -t ${ROOTFS_TYPE} ${media_prefix}${media_rootfs_var_partition} ${TEMPDIR}/disk/var; then
-				echo "-----------------------------"
-				echo "Unable to mount ${media_prefix}${media_rootfs_var_partition} at ${TEMPDIR}/disk/var to complete populating rootfs Partition"
-				echo "Please retry running the script, sometimes rebooting your system helps."
-				echo "-----------------------------"
-				exit
-			fi
 		fi
 	fi
 
@@ -1560,20 +1478,10 @@ populate_rootfs () {
 			rootfs_fstab="defaults,noatime"
 		fi
 
-		if [ "x${option_ro_root}" = "xenable" ] ; then
-			echo "#With read only rootfs, we need to boot once as rw..." >> ${wfile}
-			echo "${rootfs_drive}  /  ext2  noatime,errors=remount-ro  0  1" >> ${wfile}
-			echo "#" >> ${wfile}
-			echo "#Switch to read only rootfs:" >> ${wfile}
-			echo "#${rootfs_drive}  /  ext2  noatime,ro,errors=remount-ro  0  1" >> ${wfile}
-			echo "#" >> ${wfile}
-			echo "${rootfs_var_drive}  /var  ${ROOTFS_TYPE}  noatime  0  2" >> ${wfile}
+		if [ "${BTRFS_FSTAB}" ] ; then
+			echo "${rootfs_drive}  /  btrfs  ${rootfs_fstab}  0  1" >> ${wfile}
 		else
-			if [ "${BTRFS_FSTAB}" ] ; then
-				echo "${rootfs_drive}  /  btrfs  ${rootfs_fstab}  0  1" >> ${wfile}
-			else
-				echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  ${rootfs_fstab}  0  1" >> ${wfile}
-			fi
+			echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  ${rootfs_fstab}  0  1" >> ${wfile}
 		fi
 
 		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
@@ -1765,10 +1673,6 @@ populate_rootfs () {
 	sync
 	sync
 	cd "${DIR}/"
-
-	if [ "x${option_ro_root}" = "xenable" ] ; then
-		umount ${TEMPDIR}/disk/var || true
-	fi
 
 	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 		umount ${TEMPDIR}/disk/boot/efi || true
@@ -2000,8 +1904,8 @@ while [ ! -z "$1" ] ; do
 		check_dtb_board
 		;;
 	--ro)
-		conf_var_startmb="2048"
-		option_ro_root="enable"
+		echo "[--ro] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--rootfs)
 		checkparm $2
