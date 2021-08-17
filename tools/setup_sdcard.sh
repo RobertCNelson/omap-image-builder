@@ -1550,7 +1550,9 @@ populate_rootfs () {
 
 		if [ "x${growfs_fstab}" = "xenable" ] ; then
 			if [ -f ${TEMPDIR}/disk/usr/bin/bb-growpart ] ; then
-				rootfs_fstab="defaults,noatime,x-systemd.growfs"
+				###NOT QUITE WORKING....
+				#rootfs_fstab="defaults,noatime,x-systemd.growfs"
+				rootfs_fstab="defaults,noatime"
 			else
 				rootfs_fstab="defaults,noatime"
 			fi
