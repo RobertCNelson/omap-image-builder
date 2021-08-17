@@ -422,12 +422,12 @@ esac
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
 stretch|buster|bullseye)
-	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
 bookworm|sid)
-	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "deb http://snapshot.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
