@@ -1,0 +1,10 @@
+[Unit]
+Description=<starts the OSD3358-SM-RED tester program>
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/beagle-tester BBNR
+
+[Install]
+WantedBy=multi-user.target

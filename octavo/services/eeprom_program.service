@@ -1,0 +1,10 @@
+[Unit]
+Description=<Flash the EEPROM with BB compatible header>
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/eeprom_program.sh
+
+[Install]
+WantedBy=multi-user.target
