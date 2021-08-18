@@ -388,9 +388,6 @@ sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
 wfile="/tmp/sources.list"
 echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
-if [ "x${deb_arch}" = "xriscv64" ] ; then
-	echo "deb http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
-fi
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 echo "" >> ${wfile}
 
