@@ -1349,6 +1349,21 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	fi
 fi
 
+if [ ! "x${chroot_script_external}" = "x" ]
+	report_size
+	echo "Calling chroot_script script: ${chroot_script_external}"
+	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
+	sudo cp -v "${chroot_script_external}" "${tempdir}/final.sh"
+	sudo chroot "${tempdir}" /bin/bash -e final.sh
+	sudo rm -f "${tempdir}/final.sh" || true
+	sudo rm -f "${tempdir}/etc/oib.project" || true
+	chroot_script=""
+	if [ -f "${tempdir}/npm-debug.log" ] ; then
+		echo "Log: ERROR: npm error in script, review log [cat ${tempdir}/npm-debug.log]..."
+		exit 1
+	fi
+fi
+
 ##Building final tar file...
 
 if [ -d "${DIR}/deploy/${export_filename}/" ] ; then
