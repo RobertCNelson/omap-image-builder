@@ -1349,7 +1349,7 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	fi
 fi
 
-if [ ! "x${chroot_script_external}" = "x" ]
+if [ ! "x${chroot_script_external}" = "x" ] ; then
 	report_size
 	echo "Calling chroot_script script: ${chroot_script_external}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
