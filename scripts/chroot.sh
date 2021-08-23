@@ -155,6 +155,14 @@ check_defines () {
 	if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
 		deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
+ 
+    if [ ! "x${deb_desktop_additiona_pkgs}" = "x" ] ; then
+        deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+    fi
+    
+    if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
+        deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+    fi
 }
 
 report_size () {
