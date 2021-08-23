@@ -157,11 +157,11 @@ check_defines () {
 	fi
  
     if [ ! "x${deb_desktop_additiona_pkgs}" = "x" ] ; then
-        deb_desktop_additional_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+        deb_desktop_additional_pkgs="$(echo ${deb_desktop_additional_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
     fi
     
     if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
-        deb_desktop_application_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+        deb_desktop_application_pkgs="$(echo ${deb_desktop_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
     fi
 }
 
