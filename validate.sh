@@ -7,7 +7,8 @@ if [ -d ./deploy ] ; then
 fi
 
 ./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
-./RootStock-NG.sh -c bb.org-debian-bullseye-console-v5.4
+./RootStock-NG.sh -c octavo-debian-buster-console-v4.19
+./RootStock-NG.sh -c bb.org-debian-bullseye-console-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-console-arm64
 ./RootStock-NG.sh -c bb.org-debian-sid-console-riscv64
 
