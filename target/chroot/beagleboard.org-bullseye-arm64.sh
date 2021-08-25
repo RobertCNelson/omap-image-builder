@@ -90,10 +90,6 @@ setup_system () {
 			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
 		fi
 	fi
-
-	#echo "" >> /etc/securetty
-	#echo "#USB Gadget Serial Port" >> /etc/securetty
-	#echo "ttyGS0" >> /etc/securetty
 }
 
 setup_desktop () {
