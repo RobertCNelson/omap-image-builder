@@ -2,15 +2,34 @@
 
 export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
 
-if [ -d ./deploy ] ; then
-	sudo rm -rf ./deploy || true
-fi
+cleanup_deploy () {
+	if [ -d ./deploy ] ; then
+		sudo rm -rf ./deploy || true
+	fi
+}
 
-./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
-./RootStock-NG.sh -c octavo-debian-buster-console-v4.19
-./RootStock-NG.sh -c bb.org-debian-bullseye-console-v5.10-ti-armhf
-./RootStock-NG.sh -c bb.org-debian-bullseye-console-arm64
-#./RootStock-NG.sh -c bb.org-debian-sid-console-riscv64
+run_config () {
+	cleanup_deploy
+	echo "./RootStock-NG.sh -c ${config}"
+	./RootStock-NG.sh -c ${config}
+	source .project
+	if [ ! -f ./deploy/${export_filename}.tar ] ; then
+		echo "Error: deploy/${export_filename}.tar"
+		exit 1
+	fi
+}
+
+config="bb.org-debian-buster-console-v4.19"
+run_config
+
+config="octavo-debian-buster-console-v4.19"
+run_config
+
+config="bb.org-debian-bullseye-console-v5.10-ti-armhf"
+run_config
+
+config="bb.org-debian-bullseye-console-arm64"
+run_config
 
 if [ -d ./ignore ] ; then
 	sudo rm -rf ./ignore || true
