@@ -30,7 +30,7 @@ Production Test Image
 
 ```
 $ cd deploy/debian-10.3-test-armhf-YYYY-MM-DD
-$ sudo ./setup_sd.sh --mmc /dev/sdX --dtb hwpack/octavo-blank-eeprom.conf
+$ sudo ./setup_sdcard.sh --mmc /dev/sdX --dtb hwpack/octavo-blank-eeprom.conf
 ```
 
 Console Image
@@ -38,7 +38,7 @@ Console Image
 
 ```
 $ cd deploy/debian-10.3-console-armhf-YYYY-MM-DD
-$ sudo ./setup_sd.sh --mmc /dev/sdX --dtb hwpack/octavo.conf
+$ sudo ./setup_sdcard.sh --mmc /dev/sdX --dtb hwpack/octavo.conf
 ```
 
 LXQT Image
@@ -46,7 +46,7 @@ LXQT Image
 
 ```
 $ cd deploy/debian-10.3-lxqt-armhf-YYYY-MM-DD
-$ sudo ./setup_sd.sh --mmc /dev/sdX --dtb hwpack/octavo.conf
+$ sudo ./setup_sdcard.sh --mmc /dev/sdX --dtb hwpack/octavo.conf
 ```
 
 Generate Image File
@@ -54,5 +54,5 @@ Generate Image File
 
 ```
 $ cd deploy/debian-10.3-TYPE-armhf-YYYY-MM-DD
-$ sudo ./setup_sh.sh --img image-name-here --dtb hwpack/[octavo|octavo-blank-eeprom].conf
+$ sudo ./setup_sh.sh --img-4gb image-name-here --dtb hwpack/[octavo|octavo-blank-eeprom].conf
 ```
