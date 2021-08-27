@@ -33,9 +33,9 @@ if [ -d ./deploy ] ; then
 	rm -rf ./deploy || true
 fi
 
-#./RootStock-NG.sh -c rcn-ee_console_debian_stretch_armhf
-#./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
-#./RootStock-NG.sh -c rcn-ee_console_ubuntu_bionic_armhf
+#./RootStock-NG.sh -c rcn-ee.net-console-debian-stretch-armhf
+#./RootStock-NG.sh -c rcn-ee.net-console-debian-buster-armhf
+#./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-bionic-armhf
 
 if [ -f ./deploy/*.tar ] ; then
 	ls -lha ./deploy/

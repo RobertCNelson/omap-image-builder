@@ -118,12 +118,12 @@ eewiki.net: Ubuntu Stable (armhf) minfs:
 
 elinux.org: Debian Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
+    ./RootStock-NG.sh -c rcn-ee.net-console-debian-buster-armhf
     http://elinux.org/BeagleBoardDebian#Demo_Image
 
 elinux.org: Ubuntu Images:
 
-    ./RootStock-NG.sh -c rcn-ee_console_ubuntu_bionic_armhf
+    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-bionic-armhf
     http://elinux.org/BeagleBoardUbuntu#Demo_Image
 
 Release Process:

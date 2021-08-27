@@ -13,8 +13,8 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c rcn-ee_console_debian_buster_armhf
-./RootStock-NG.sh -c rcn-ee_console_ubuntu_focal_armhf
+./RootStock-NG.sh -c rcn-ee.net-console-debian-buster-armhf
+./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-focal-armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
