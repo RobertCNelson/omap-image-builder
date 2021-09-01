@@ -916,15 +916,6 @@ kernel_detection () {
 		echo "Debug: image has: v${armv7_lpae_kernel}"
 		has_multi_armv7_lpae_kernel="enable"
 	fi
-
-	unset has_ti_kernel
-	unset check
-	check=$(ls "${dir_check}" | grep vmlinuz- | grep ti | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		ti_dt_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep ti | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has: v${ti_dt_kernel}"
-		has_ti_kernel="enable"
-	fi
 }
 
 kernel_select () {
@@ -938,16 +929,6 @@ kernel_select () {
 	if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
 		if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
 			select_kernel="${armv7_lpae_kernel}"
-		else
-			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_kernel}"
-			fi
-		fi
-	fi
-
-	if [ "x${conf_kernel}" = "xti" ] ; then
-		if [ "x${has_ti_kernel}" = "xenable" ] ; then
-			select_kernel="${ti_dt_kernel}"
 		else
 			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
 				select_kernel="${armv7_kernel}"
