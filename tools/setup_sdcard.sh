@@ -898,57 +898,16 @@ populate_boot () {
 	echo "-----------------------------"
 }
 
-kernel_detection () {
-	unset has_multi_armv7_kernel
-	unset check
-	check=$(ls "${dir_check}" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		armv7_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep armv7 | grep -v lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has: v${armv7_kernel}"
-		has_multi_armv7_kernel="enable"
-	fi
-
-	unset has_multi_armv7_lpae_kernel
-	unset check
-	check=$(ls "${dir_check}" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1)
-	if [ "x${check}" != "x" ] ; then
-		armv7_lpae_kernel=$(ls "${dir_check}" | grep vmlinuz- | grep armv7 | grep lpae | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-		echo "Debug: image has: v${armv7_lpae_kernel}"
-		has_multi_armv7_lpae_kernel="enable"
-	fi
-}
-
 kernel_select () {
-	unset select_kernel
-	if [ "x${conf_kernel}" = "xarmv7" ] || [ "x${conf_kernel}" = "x" ] ; then
-		if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-			select_kernel="${armv7_kernel}"
-		fi
-	fi
-
-	if [ "x${conf_kernel}" = "xarmv7_lpae" ] ; then
-		if [ "x${has_multi_armv7_lpae_kernel}" = "xenable" ] ; then
-			select_kernel="${armv7_lpae_kernel}"
-		else
-			if [ "x${has_multi_armv7_kernel}" = "xenable" ] ; then
-				select_kernel="${armv7_kernel}"
-			fi
-		fi
-	fi
-
-	if [ "${select_kernel}" ] ; then
-		echo "Debug: using: v${select_kernel}"
+	echo "debug: kernel_select: picking the first available kernel..."
+	unset check
+	check=$(ls "${dir_check}" | grep vmlinuz- | head -n 1)
+	if [ "x${check}" != "x" ] ; then
+		select_kernel=$(ls "${dir_check}" | grep vmlinuz- | head -n 1 | awk -F'vmlinuz-' '{print $2}')
+		echo "debug: kernel_select: found: [${select_kernel}]"
 	else
-		echo "debug: kernel_select: picking the first available kernel..."
-		unset check
-		check=$(ls "${dir_check}" | grep vmlinuz- | head -n 1)
-		if [ "x${check}" != "x" ] ; then
-			select_kernel=$(ls "${dir_check}" | grep vmlinuz- | head -n 1 | awk -F'vmlinuz-' '{print $2}')
-			echo "debug: kernel_select: found: [${select_kernel}]"
-		else
-			echo "Error: [conf_kernel] not defined [armv7_lpae,armv7]..."
-			exit
-		fi
+		echo "Error: no installed kernel"
+		exit
 	fi
 }
 
@@ -1061,7 +1020,6 @@ populate_rootfs () {
 	fi
 
 	dir_check="${TEMPDIR}/disk/boot/"
-	kernel_detection
 	kernel_select
 
 	if [ ! "x${uboot_eeprom}" = "x" ] ; then
@@ -1831,7 +1789,6 @@ while [ ! -z "$1" ] ; do
 		checkparm $2
 		dtb_board="$2"
 		dir_check="${DIR}/"
-		kernel_detection
 		check_dtb_board
 		;;
 	--ro)
