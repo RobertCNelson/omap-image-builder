@@ -149,7 +149,10 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	echo "nothing.."
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
+	git_target_dir="/opt/source/dtb-5.10-ti-arm64"
+	git_branch="v5.10.x-ti-arm64"
+	git_clone_branch
 }
 
 is_this_qemu
@@ -160,7 +163,7 @@ setup_system
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
-	#install_git_repos
+	install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
