@@ -732,19 +732,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get -y install ${deb_desktop_pkgs}
 		fi
 
-        if [ ! "x${deb_desktop_additional_pkgs}" = "x" ] ; then
-            #Install the user choosen list.
-            echo "Log: (chroot) Installing: ${deb_desktop_additional_pkgs}"
-            apt-get update
-            apt-get -y install ${deb_desktop_additional_pkgs}
-        fi
-        
-        if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
-            #Install the user choosen list.
-            echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
-            apt-get update
-            apt-get -y install ${deb_desktop_application_pkgs}
-        fi
+		if [ ! "x${deb_desktop_additional_pkgs}" = "x" ] ; then
+			#Install the user choosen list.
+			echo "Log: (chroot) Installing: ${deb_desktop_additional_pkgs}"
+			apt-get update
+			apt-get -y install ${deb_desktop_additional_pkgs}
+		fi
+
+		if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
+			#Install the user choosen list.
+			echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
+			apt-get update
+			apt-get -y install ${deb_desktop_application_pkgs}
+		fi
 
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
