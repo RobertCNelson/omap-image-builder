@@ -1384,6 +1384,7 @@ populate_rootfs () {
 
 		echo "debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0" >> ${wfile}
 
+		if [ ! -f ${TEMPDIR}/disk//etc/systemd/network/eth0.network ] ; then
 		if [ ! -f ${TEMPDIR}/disk/usr/bin/nmcli ] ; then
 		if [ "x${DISABLE_ETH}" != "xskip" ] ; then
 			wfile="${TEMPDIR}/disk/etc/network/interfaces"
@@ -1444,6 +1445,7 @@ populate_rootfs () {
 				echo "#connmanctl> connect wifi_*_managed_psk" >> ${wfile}
 				echo "#connmanctl> quit" >> ${wfile}
 			fi
+		fi
 		fi
 		fi
 

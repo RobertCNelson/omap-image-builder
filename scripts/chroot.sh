@@ -1099,6 +1099,18 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
+		if [ ! "x${rfs_use_systemdnetworkd}" = "x" ] ; then
+			echo "[Match]" > /etc/systemd/network/eth0.network
+			echo "Name=eth0" >> /etc/systemd/network/eth0.network
+			echo "" >> /etc/systemd/network/eth0.network
+			echo "[Network]" >> /etc/systemd/network/eth0.network
+			echo "DHCP=yes" >> /etc/systemd/network/eth0.network
+
+			if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
+				systemctl enable systemd-networkd.service || true
+			fi
+		fi
+
 		#Kill man-db
 		#debian@beaglebone:~$ sudo systemd-analyze blame | grep man-db.service
 		#    4min 10.587s man-db.service
