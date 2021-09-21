@@ -1100,11 +1100,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ ! "x${rfs_use_systemdnetworkd}" = "x" ] ; then
-			echo "[Match]" > /etc/systemd/network/eth0.network
-			echo "Name=eth0" >> /etc/systemd/network/eth0.network
-			echo "" >> /etc/systemd/network/eth0.network
-			echo "[Network]" >> /etc/systemd/network/eth0.network
-			echo "DHCP=yes" >> /etc/systemd/network/eth0.network
+			if [ -f /etc/bbb.io/templates/eth0-DHCP.network ] ; then
+				cp -v /etc/bbb.io/templates/eth0-DHCP.network /etc/systemd/network/eth0.network
+			fi
 
 			if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
 				systemctl enable systemd-networkd.service || true
