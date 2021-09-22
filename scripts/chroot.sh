@@ -1104,6 +1104,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/systemd-networkd.service ] ; then
 				systemctl enable systemd-networkd.service || true
 			fi
+
+			if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
+				systemctl enable wpa_supplicant@wlan0 || true
+			fi
 		fi
 
 		#Kill man-db
