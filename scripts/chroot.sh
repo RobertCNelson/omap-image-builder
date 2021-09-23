@@ -1311,15 +1311,12 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 	wfile="${tempdir}/etc/issue"
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 		sudo sh -c "cat '${tempdir}/etc/dogtag' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_console_banner}" = "x" ] ; then
 		sudo sh -c "echo '${rfs_console_banner}' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 fi
 
@@ -1329,15 +1326,12 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 	sudo sh -c "echo '' >> ${wfile}"
 	if [ ! "x${rfs_etc_dogtag}" = "x" ] ; then
 		sudo sh -c "cat '${tempdir}/etc/dogtag' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_ssh_banner}" = "x" ] ; then
 		sudo sh -c "echo '${rfs_ssh_banner}' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 	if [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
-		sudo sh -c "echo '' >> ${wfile}"
 	fi
 fi
 
