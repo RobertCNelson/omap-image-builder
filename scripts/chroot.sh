@@ -1318,6 +1318,7 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 	if [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 	fi
+	sudo sh -c "echo '' >> ${wfile}"
 fi
 
 if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
@@ -1333,6 +1334,7 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 	if [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 		sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 	fi
+	sudo sh -c "echo '' >> ${wfile}"
 fi
 
 #usually a qemu failure...
