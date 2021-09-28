@@ -1220,6 +1220,13 @@ populate_rootfs () {
 				echo "###U-Boot Overlays###" >> ${wfile}
 
 				echo "" >> ${wfile}
+
+				###Todo: make this more generic so you can specify any overlay...
+				if [ "x${load_custom_overlay}" = "xenable" ] ; then
+					echo "###" >> ${wfile}
+					echo "dtb_overlay=PB-HACKADAY-2021.dtbo" >> ${wfile}
+					echo "" >> ${wfile}
+				fi
 			fi
 		fi
 
@@ -1956,6 +1963,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-bypass-bootup-scripts)
 		bypass_bootup_scripts="enable"
+		;;
+	--enable-load-custom-overlay)
+		load_custom_overlay="enable"
 		;;
 	--efi)
 		uboot_efi_mode="enable"
