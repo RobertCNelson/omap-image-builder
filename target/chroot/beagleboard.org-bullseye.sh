@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2020 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2021 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -198,34 +198,6 @@ install_git_repos () {
 		fi
 	fi
 
-	git_repo="https://github.com/strahlex/BBIOConfig.git"
-	git_target_dir="/opt/source/BBIOConfig"
-	git_clone
-
-	#am335x-pru-package
-	if [ -f /usr/include/prussdrv.h ] ; then
-		git_repo="https://github.com/biocode3D/prufh.git"
-		git_target_dir="/opt/source/prufh"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			if [ -f /usr/bin/make ] ; then
-				make LIBDIR_APP_LOADER=/usr/lib/ INCDIR_APP_LOADER=/usr/include
-			fi
-			cd /
-		fi
-	fi
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-4.14-ti"
-	git_branch="v4.14.x-ti"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-4.19-ti"
-	git_branch="v4.19.x-ti-overlays"
-	git_clone_branch
-
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-5.4-ti"
 	git_branch="v5.4.x-ti-overlays"
@@ -235,36 +207,6 @@ install_git_repos () {
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti"
 	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/bb.org-overlays"
-	git_target_dir="/opt/source/bb.org-overlays"
-	git_clone
-
-	if [ -f /usr/lib/librobotcontrol.so ] ; then
-		git_repo="https://github.com/StrawsonDesign/librobotcontrol"
-		git_target_dir="/opt/source/librobotcontrol"
-		git_clone
-
-		git_repo="https://github.com/mcdeoliveira/rcpy"
-		git_target_dir="/opt/source/rcpy"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			if [ -f /usr/bin/python3 ] ; then
-				/usr/bin/python3 setup.py install
-			fi
-		fi
-
-		git_repo="https://github.com/mcdeoliveira/pyctrl"
-		git_target_dir="/opt/source/pyctrl"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			if [ -f /usr/bin/python3 ] ; then
-				/usr/bin/python3 setup.py install
-			fi
-		fi
-	fi
 
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
