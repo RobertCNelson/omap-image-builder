@@ -29,7 +29,7 @@ fi
 
 debian_buster="debian-10.11"
 debian_bullseye="debian-11.1"
-ubuntu_bionic="ubuntu-18.04.5"
+ubuntu_bionic="ubuntu-18.04.6"
 ubuntu_focal="ubuntu-20.04.2"
 
 xz_img="xz -z -8"

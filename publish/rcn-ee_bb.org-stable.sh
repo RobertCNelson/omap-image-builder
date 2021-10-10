@@ -71,7 +71,7 @@ debian_buster_iot_grove_kit="debian-10.11-iot-grove-kit-armhf-${time}"
     debian_buster_lxqt_tidl="debian-10.11-lxqt-tidl-armhf-${time}"
       debian_buster_lxqt_xm="debian-10.11-lxqt-xm-armhf-${time}"
 
-      ubuntu_bionic_ros_iot="ubuntu-18.04.4-ros-iot-armhf-${time}"
+      ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
 xz_img="xz -T3 -z -8"
 xz_tar="xz -T4 -z -8"
