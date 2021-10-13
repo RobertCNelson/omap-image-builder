@@ -1349,7 +1349,7 @@ populate_rootfs () {
 
 	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
 		cp -v "${TEMPDIR}/disk/boot/Image-${select_kernel}" "${TEMPDIR}/disk/boot/Image"
-		cp -v "${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ti"/*.dtb "${TEMPDIR}/disk/boot/"
+		cp -v "${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ti"/k3-j721e*.dtb "${TEMPDIR}/disk/boot/"
 	fi
 
 	cat ${wfile}
