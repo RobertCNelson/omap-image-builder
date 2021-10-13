@@ -1481,12 +1481,15 @@ sudo mv "${DIR}/cleanup_script.sh" "${tempdir}/cleanup_script.sh"
 sudo chroot "${tempdir}" /bin/bash -e cleanup_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/bash -e cleanup_script.sh]"
 
-#add /boot/uEnv.txt update script
-if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
-	if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
-		sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
-		sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
-		sudo chown root:root "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
+
+if [ "x${deb_arch}" = "xarmhf" ] ; then
+	#add /boot/uEnv.txt update script
+	if [ -d "${tempdir}/etc/kernel/postinst.d/" ] ; then
+		if [ ! -f "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt" ] ; then
+			sudo cp -v "${OIB_DIR}/target/other/zz-uenv_txt" "${tempdir}/etc/kernel/postinst.d/"
+			sudo chmod +x "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
+			sudo chown root:root "${tempdir}/etc/kernel/postinst.d/zz-uenv_txt"
+		fi
 	fi
 fi
 
