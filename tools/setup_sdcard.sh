@@ -855,7 +855,7 @@ populate_boot () {
 
 	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
 		cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
-		if [ "x${bootloader_distro_dir_sysfw}" = "xenable" ] ; then
+		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
 			cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
 		fi
 	fi
