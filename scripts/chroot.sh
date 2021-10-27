@@ -1024,15 +1024,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot): enabling: systemd-timesyncd.service"
 			systemctl enable systemd-timesyncd.service || true
 
-			#systemd v232: (Debian Stretch)
-			#set our own initial date stamp, otherwise we get July 2014
+			#systemd v232: (Debian Stretch): Legacy...
 			touch /var/lib/systemd/clock
 
 			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
 			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
 
 			#systemd v235+: (Debian Buster/Bullseye)
-			#set our own initial date stamp, otherwise we get July 2014
 			mkdir -p /var/lib/systemd/timesync/ || true
 			touch /var/lib/systemd/timesync/clock
 
@@ -1455,9 +1453,14 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 
 		#update time stamp before final cleanup...
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
+			#Legacy... Stretch???
 			touch /var/lib/systemd/clock
-
 			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
+
+			#systemd v235+: (Debian Buster/Bullseye)
+			mkdir -p /var/lib/systemd/timesync/ || true
+			touch /var/lib/systemd/timesync/clock
+			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/timesync/clock || true
 		fi
 
 #		#This is tmpfs, clear out any left overs...
