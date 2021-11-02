@@ -1135,13 +1135,17 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl enable regenerate_ssh_host_keys.service || true
 		fi
 
-		if [ -f /lib/systemd/system/grow_partition.service ] ; then
-			systemctl enable grow_partition.service || true
+		if [ "x${rfs_disable_grow_partition}" = "x" ] ; then
+			if [ -f /lib/systemd/system/grow_partition.service ] ; then
+				systemctl enable grow_partition.service || true
+			fi
 		fi
 
-		#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
-		if [ -f /lib/systemd/system/bb-usb-gadgets.service ] ; then
-			systemctl enable bb-usb-gadgets.service || true
+		if [ "x${rfs_disable_usb_gadgets}" = "x" ] ; then
+			#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
+			if [ -f /lib/systemd/system/bb-usb-gadgets.service ] ; then
+				systemctl enable bb-usb-gadgets.service || true
+			fi
 		fi
 	}
 
