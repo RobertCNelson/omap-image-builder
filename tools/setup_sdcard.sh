@@ -1571,6 +1571,14 @@ populate_rootfs () {
 		chmod u+s ${TEMPDIR}/disk//bin/ping ${TEMPDIR}/disk//bin/ping6
 	fi
 
+	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
+		sed -i -e 's:generic:am335x:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+	fi
+
+	if [ "x${conf_board}" = "xbeagle_x15" ] ; then
+		sed -i -e 's:generic:am57xx:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync

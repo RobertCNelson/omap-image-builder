@@ -1163,6 +1163,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl enable bb-usb-gadgets.service || true
 			fi
 		fi
+
+		if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
+			if [ -f /lib/systemd/system/bb-install-modules.service ] ; then
+				systemctl enable bb-install-modules.service || true
+			fi
+		fi
 	}
 
 	grub_tweaks () {
