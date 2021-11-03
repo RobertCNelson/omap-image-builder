@@ -794,6 +794,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
 				mkdir -p /opt/modules/ || true
 				cd /opt/modules/
+				apt-get download bbb.io-kernel-tasks || true
 				apt-get download bbb.io-kernel-${repo_rcnee_kernel} || true
 				if [ "x${deb_arch}" = "xarmhf" ] ; then
 					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-am335x || true
