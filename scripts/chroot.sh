@@ -1165,8 +1165,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
-			if [ -f /lib/systemd/system/bb-install-modules.service ] ; then
-				systemctl enable bb-install-modules.service || true
+			if [ -f /lib/systemd/system/bb_install_modules.service ] ; then
+				systemctl enable bb_install_modules.service || true
 			fi
 		fi
 	}
