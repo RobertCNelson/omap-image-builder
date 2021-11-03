@@ -791,6 +791,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
 			fi
 
+			if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
+				mkdir -p /opt/modules/ || true
+				cd /opt/modules/
+				apt-get download bbb.io-kernel-${repo_rcnee_kernel} || true
+				if [ "x${deb_arch}" = "xarmhf" ] ; then
+					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-am335x || true
+					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-am57xx || true || true
+					apt-get download ti-sgx-ti335x-modules-${repo_rcnee_pkg_version} || true
+					apt-get download ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version} || true
+				fi
+				cd -
+			fi
+
 			depmod -a ${repo_rcnee_pkg_version}
 			update-initramfs -u -k ${repo_rcnee_pkg_version}
 		fi
