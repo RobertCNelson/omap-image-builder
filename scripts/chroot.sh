@@ -801,6 +801,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					apt-get download ti-sgx-ti335x-modules-${repo_rcnee_pkg_version} || true
 					apt-get download ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version} || true
 				fi
+				echo "branch=${repo_rcnee_kernel}" > /opt/modules/install
+				echo "uname=${repo_rcnee_pkg_version}" >> /opt/modules/install
 				cd -
 			fi
 
