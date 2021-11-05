@@ -1169,6 +1169,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl enable bb_install_modules.service || true
 			fi
 		fi
+
+		if [ -f /lib/systemd/system/nodered.service ] ; then
+			#Don't just enable on the old socket version...
+			if [ ! -f /lib/systemd/system/nodered.socket ] ; then
+				systemctl enable nodered.service || true
+			fi
+		fi
 	}
 
 	grub_tweaks () {
