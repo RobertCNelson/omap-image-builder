@@ -22,8 +22,8 @@ fi
 debian_stable="debian-10.11-console-armhf-${time}"
 ubuntu_stable="ubuntu-20.04.3-console-armhf-${time}"
 
-xz_img="xz -T3 -z -8"
-xz_tar="xz -T4 -z -8"
+xz_img="xz -T2 -z -8"
+xz_tar="xz -T2 -z -8"
 
 beaglebone="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"

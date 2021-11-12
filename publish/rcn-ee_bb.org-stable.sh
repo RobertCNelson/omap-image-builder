@@ -73,8 +73,8 @@ debian_buster_iot_grove_kit="debian-10.11-iot-grove-kit-armhf-${time}"
 
       ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
-xz_img="xz -T3 -z -8"
-xz_tar="xz -T4 -z -8"
+xz_img="xz -T2 -z -8"
+xz_tar="xz -T2 -z -8"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
