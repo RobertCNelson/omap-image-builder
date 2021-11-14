@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
+export apt_proxy=192.168.1.12:3142/
 
 cleanup_deploy () {
 	if [ -d ./deploy ] ; then
