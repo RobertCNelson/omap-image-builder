@@ -9,7 +9,7 @@ DIR="$PWD"
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
 
-export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
+export apt_proxy=192.168.1.12:3142/
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
@@ -91,7 +91,7 @@ cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
 
 wait_till_Xgb_free () {
-        memory=16384
+        memory=8192
         free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
         until [ "\$free_memory" -gt "\$memory" ] ; do
                 free_memory=\$(free --mega | grep Mem | awk '{print \$7}')
