@@ -1572,11 +1572,15 @@ populate_rootfs () {
 	fi
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
-		sed -i -e 's:generic:am335x:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
+			sed -i -e 's:generic:am335x:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
 	fi
 
 	if [ "x${conf_board}" = "xbeagle_x15" ] ; then
-		sed -i -e 's:generic:am57xx:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
+			sed -i -e 's:generic:am57xx:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
 	fi
 
 	cd ${TEMPDIR}/disk/
