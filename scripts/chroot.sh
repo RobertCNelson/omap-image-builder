@@ -494,6 +494,13 @@ if [ "x${repo_ros}" = "xenable" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
 fi
 
+if [ "x${repo_ros}" = "xros2" ] ; then
+	echo "deb [arch=${repo_ros_arch} signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu ${repo_ros_dist} main" >> ${wfile}
+	echo "#deb-src [arch=${repo_ros_arch} signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu ${repo_ros_dist} main" >> ${wfile}
+	echo "" >> ${wfile}
+	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/ros-archive-keyring.gpg"
+fi
+
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	repo_rcnee_arch=${repo_rcnee_arch:-"armhf"}
 	repo_rcnee_mirror=${repo_rcnee_mirror:-"repos.rcn-ee.com"}
