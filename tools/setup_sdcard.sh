@@ -1284,7 +1284,11 @@ populate_rootfs () {
 				fi
 			elif [ "x${emmc_flasher}" = "xenable" ] ; then
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
+					echo "cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
+				else
+					echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+				fi
 			elif [ "x${bbg_flasher}" = "xenable" ] ; then
 				echo "##enable BBG: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbg.sh" >> ${wfile}
@@ -1311,8 +1315,11 @@ populate_rootfs () {
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 			else
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
-				echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
-				echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
+					echo "#cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
+				else
+					echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh" >> ${wfile}
+				fi
 			fi
 			echo "" >> ${wfile}
 		else
@@ -1324,7 +1331,11 @@ populate_rootfs () {
 				fi
 			elif [ "x${emmc_flasher}" = "xenable" ] ; then
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
+				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
+					echo "cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
+				else
+					echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
+				fi
 			elif [ "x${bp00_flasher}" = "xenable" ] ; then
 				echo "##enable bp00: eeprom Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
@@ -1333,7 +1344,7 @@ populate_rootfs () {
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 			else
 				if [ "x${conf_board}" = "xbeagle_x15" ] ; then
-					echo "##enable x15: eMMC Flasher:" >> ${wfile}
+					echo "##enable Generic eMMC Flasher:" >> ${wfile}
 					echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
 					echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
 				fi
