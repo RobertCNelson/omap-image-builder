@@ -1575,11 +1575,17 @@ populate_rootfs () {
 		if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
 			sed -i -e 's:generic:am335x:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
+		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ] ; then
+			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+		fi
 	fi
 
 	if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
 			sed -i -e 's:generic:am57xx:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
+		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/bbai-microsd-to-emmc ] ; then
+			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/bbai-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
 		fi
 	fi
 
