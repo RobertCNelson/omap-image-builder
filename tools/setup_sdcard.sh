@@ -1276,13 +1276,7 @@ populate_rootfs () {
 				echo "" >> ${wfile}
 			fi
 
-			if [ "x${usb_flasher}" = "xenable" ] ; then
-				if [ ! "x${oem_flasher_script}" = "x" ] ; then
-					echo "cmdline=init=/opt/scripts/tools/eMMC/${oem_flasher_script}" >> ${wfile}
-				else
-					echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
-				fi
-			elif [ "x${emmc_flasher}" = "xenable" ] ; then
+			if [ "x${emmc_flasher}" = "xenable" ] ; then
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
 					echo "cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
@@ -1295,24 +1289,12 @@ populate_rootfs () {
 			elif [ "x${bbgw_flasher}" = "xenable" ] ; then
 				echo "##enable BBG: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbgw.sh" >> ${wfile}
-			elif [ "x${m10a_flasher}" = "xenable" ] ; then
-				echo "##enable m10a: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-m10a.sh" >> ${wfile}
-			elif [ "x${me06_flasher}" = "xenable" ] ; then
-				echo "##enable me06: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-me06.sh" >> ${wfile}
 			elif [ "x${bbbl_flasher}" = "xenable" ] ; then
 				echo "##enable bbbl: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbbl.sh" >> ${wfile}
 			elif [ "x${bbbw_flasher}" = "xenable" ] ; then
 				echo "##enable bbbw: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbbw.sh" >> ${wfile}
-			elif [ "x${bp00_flasher}" = "xenable" ] ; then
-				echo "##enable bp00: eeprom Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
-			elif [ "x${a335_flasher}" = "xenable" ] ; then
-				echo "##enable a335: eeprom Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 			else
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
@@ -1323,30 +1305,21 @@ populate_rootfs () {
 			fi
 			echo "" >> ${wfile}
 		else
-			if [ "x${usb_flasher}" = "xenable" ] ; then
-				if [ ! "x${oem_flasher_script}" = "x" ] ; then
-					echo "cmdline=init=/opt/scripts/tools/eMMC/${oem_flasher_script}" >> ${wfile}
-				else
-					echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-from-usb-media.sh" >> ${wfile}
-				fi
-			elif [ "x${emmc_flasher}" = "xenable" ] ; then
+			if [ "x${emmc_flasher}" = "xenable" ] ; then
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
 					echo "cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
 				else
 					echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
 				fi
-			elif [ "x${bp00_flasher}" = "xenable" ] ; then
-				echo "##enable bp00: eeprom Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-bp00.sh" >> ${wfile}
-			elif [ "x${a335_flasher}" = "xenable" ] ; then
-				echo "##enable a335: eeprom Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-a335.sh" >> ${wfile}
 			else
 				if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 					echo "##enable Generic eMMC Flasher:" >> ${wfile}
-					echo "##make sure, these tools are installed: dosfstools rsync" >> ${wfile}
-					echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
+					if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
+						echo "#cmdline=init=/usr/sbin/init-beagle-flasher" >> ${wfile}
+					else
+						echo "#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh" >> ${wfile}
+					fi
 				fi
 			fi
 		fi
@@ -1869,13 +1842,12 @@ while [ ! -z "$1" ] ; do
 		USE_BETA_BOOTLOADER=1
 		;;
 	--a335-flasher)
-		oem_blank_eeprom="enable"
-		a335_flasher="enable"
-		uboot_eeprom="bbb_blank"
+		echo "[--a335-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bp00-flasher)
-		oem_blank_eeprom="enable"
-		bp00_flasher="enable"
+		echo "[--bp00-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bbg-flasher)
 		oem_blank_eeprom="enable"
@@ -1892,16 +1864,16 @@ while [ ! -z "$1" ] ; do
 		emmc_flasher="enable"
 		;;
 	--m10a-flasher)
-		oem_blank_eeprom="enable"
-		m10a_flasher="enable"
+		echo "[--m10a-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--me06-flasher)
-		oem_blank_eeprom="enable"
-		me06_flasher="enable"
+		echo "[--me06-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bbb-usb-flasher|--usb-flasher|--oem-flasher)
-		oem_blank_eeprom="enable"
-		usb_flasher="enable"
+		echo "[--bbb-usb-flasher|--usb-flasher|--oem-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bbb-flasher|--emmc-flasher)
 		oem_blank_eeprom="enable"
