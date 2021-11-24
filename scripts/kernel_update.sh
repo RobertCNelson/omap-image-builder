@@ -43,6 +43,9 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="5.14.x-bone"
 	var="omap-psp"   ; ver="V514X" ; current_kernel
 
+	git_msg="5.15.x-bone"
+	var="omap-psp"   ; ver="LTS515" ; current_kernel
+
 	git_msg="4.14.x-ti"
 	filter1="rt"
 	filter2="arm64"
