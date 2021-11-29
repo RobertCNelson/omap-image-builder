@@ -73,8 +73,8 @@ debian_buster_iot_grove_kit="debian-10.11-iot-grove-kit-armhf-${time}"
 
       ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
-xz_img="xz -T2 -z -8"
-xz_tar="xz -T2 -z -8"
+xz_img="xz -T4 -z -8"
+xz_tar="xz -T4 -z -8"
 
 beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
 
@@ -108,10 +108,10 @@ copy_base_rootfs_to_mirror () {
                 fi
                 if [ -d ${mirror_dir}/${time}/\${blend}/ ] ; then
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${rootfs}.tar.xz ] ; then
-                                cp -v \${rootfs}.tar ${mirror_dir}/${time}/\${blend}/
-                                cd ${mirror_dir}/${time}/\${blend}/
-                                ${xz_tar} \${rootfs}.tar && sha256sum \${rootfs}.tar.xz > \${rootfs}.tar.xz.sha256sum &
-                                cd -
+                                ${xz_tar} \${rootfs}.tar
+                                sha256sum \${rootfs}.tar.xz > \${rootfs}.tar.xz.sha256sum
+                                cp -v \${rootfs}.tar.xz ${mirror_dir}/${time}/\${blend}/
+                                mv -v \${rootfs}.tar.xz.sha256sum ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
@@ -156,11 +156,10 @@ copy_img_to_mirror () {
                                 sync
                         fi
                         if [ ! -f ${mirror_dir}/${time}/\${blend}/\${wfile}.img.zx ] ; then
-                                mv -v \${wfile}.img ${mirror_dir}/${time}/\${blend}/
-                                sync
-                                cd ${mirror_dir}/${time}/\${blend}/
-                                ${xz_img} \${wfile}.img && sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum &
-                                cd -
+                                ${xz_img} \${wfile}.img
+                                sha256sum \${wfile}.img.xz > \${wfile}.img.xz.sha256sum
+                                mv -v \${wfile}.img.xz ${mirror_dir}/${time}/\${blend}/
+                                mv -v \${wfile}.img.xz.sha256sum ${mirror_dir}/${time}/\${blend}/
                         fi
                 fi
         fi
