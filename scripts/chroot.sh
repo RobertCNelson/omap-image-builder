@@ -914,11 +914,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^cloud9ide || groupadd -r cloud9ide || true
 		cat /etc/group | grep ^gpio || groupadd -r gpio || true
 
-		echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
-		echo "KERNEL==\"spidev*\", GROUP=\"gpio\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
+		#echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
+		#echo "KERNEL==\"spidev*\", GROUP=\"gpio\", MODE=\"0660\"" > /etc/udev/rules.d/50-spi.rules
 
-		echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
-		echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
+		#echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
+		#echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
 		default_groups="admin,adm,cloud9ide,dialout,gpio,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch"
 
