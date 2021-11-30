@@ -1188,9 +1188,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl enable beagle-flasher-init-shutdown.service || true
 		fi
 
-		#if [ -f /lib/systemd/system/bb-code-server.service ] ; then
-		#	systemctl enable bb-code-server.service || true
-		#fi
+		if [ -f /lib/systemd/system/bb-code-server.service ] ; then
+			systemctl enable bb-code-server.service || true
+		fi
 	}
 
 	grub_tweaks () {
