@@ -1573,6 +1573,12 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-microsd-to-emmc ] ; then
+			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+		fi
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
