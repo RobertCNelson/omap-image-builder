@@ -90,11 +90,6 @@ setup_system () {
 			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
 		fi
 	fi
-
-	#Make sure examples show up under /home/user/
-	if [ -d /opt/bb-code-server/examples/ ] ; then
-		ln -s /opt/bb-code-server/examples/ /home/${rfs_username}/
-	fi
 }
 
 setup_desktop () {
