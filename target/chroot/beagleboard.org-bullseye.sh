@@ -98,6 +98,11 @@ setup_system () {
 			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
 		fi
 	fi
+
+	#Make sure examples show up under /home/user/
+	if [ -d /opt/bb-code-server/examples/ ] ; then
+		ln -s /opt/bb-code-server/examples/ /home/${rfs_username}/
+	fi
 }
 
 setup_desktop () {
@@ -212,6 +217,10 @@ install_git_repos () {
 	git_target_dir="/opt/source/dtb-5.15"
 	git_branch="v5.15.x"
 	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/bb.org-overlays"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_clone
 
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"

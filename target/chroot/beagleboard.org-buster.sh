@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright (c) 2014-2020 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2014-2021 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -101,6 +101,11 @@ setup_system () {
 			cp -v /etc/alsa/tlv320aic3104.state.txt /var/lib/alsa/asound.state
 			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
 		fi
+	fi
+
+	#Make sure examples show up under /home/user/
+	if [ -d /opt/bb-code-server/examples/ ] ; then
+		ln -s /opt/bb-code-server/examples/ /home/${rfs_username}/
 	fi
 }
 
