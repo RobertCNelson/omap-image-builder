@@ -32,8 +32,8 @@ debian_bullseye="debian-11.2"
 ubuntu_bionic="ubuntu-18.04.6"
 ubuntu_focal="ubuntu-20.04.3"
 
-xz_img="xz -z -8"
-xz_tar="xz -T2 -z -8"
+xz_img="xz -T4 -z -8"
+xz_tar="xz -T4 -z -8"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash
@@ -45,10 +45,10 @@ copy_base_rootfs_to_mirror () {
                 fi
                 if [ -d ${mirror_dir}/\${blend}/ ] ; then
                         if [ ! -f ${mirror_dir}/\${blend}/\${base_rootfs}.tar.xz ] ; then
-                                cp -v \${base_rootfs}.tar ${mirror_dir}/\${blend}/
-                                cd ${mirror_dir}/\${blend}/
-                                ${xz_tar} \${base_rootfs}.tar && sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum &
-                                cd -
+                                ${xz_tar} \${base_rootfs}.tar
+                                sha256sum \${base_rootfs}.tar.xz > \${base_rootfs}.tar.xz.sha256sum
+                                cp -v \${base_rootfs}.tar.xz ${mirror_dir}/\${blend}/
+                                cp -v \${base_rootfs}.tar.xz.sha256sum ${mirror_dir}/\${blend}/
                         fi
                 fi
         fi
