@@ -220,6 +220,13 @@ install_git_repos () {
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
 	git_clone
+
+	git_repo="https://github.com/mvduin/bbb-pin-utils"
+	git_target_dir="/opt/source/bbb-pin-utils"
+	git_clone
+	if [ -d /opt/source/bbb-pin-utils/ ] ; then
+		ln -s /opt/source/bbb-pin-utils/show-pins /usr/local/sbin/
+	fi
 }
 
 other_source_links () {
@@ -239,5 +246,5 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
-#other_source_links
+other_source_links
 #
