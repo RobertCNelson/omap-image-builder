@@ -44,6 +44,7 @@ if [ ! -f jenkins.build ] ; then
 #./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.19
 ./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v5.4
 
+./RootStock-NG.sh -c bb.org-debian-bullseye-minimal-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-iot-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-xfce-v5.10-ti-armhf
 
@@ -77,8 +78,9 @@ debian_buster_iot_grove_kit="debian-10.11-iot-grove-kit-armhf-${time}"
       ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
 
- debian_bullseye_iot="debian-11.2-iot-armhf-${time}"
-debian_bullseye_xfce="debian-11.2-xfce-armhf-${time}"
+debian_bullseye_minimal="debian-11.2-minimal-armhf-${time}"
+    debian_bullseye_iot="debian-11.2-iot-armhf-${time}"
+   debian_bullseye_xfce="debian-11.2-xfce-armhf-${time}"
 
 xz_img="xz -T4 -z -8"
 xz_tar="xz -T4 -z -8"
@@ -335,6 +337,12 @@ rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot" ; extract_base_rootfs
 options="--img-6gb am57xx-\${rootfs}  ${am57xx_v54ti}"  ; generate_img
 options="--img-6gb bone-\${rootfs}    ${am335x_v54ti}"  ; generate_img
 
+###debian bullseye minimal
+rootfs="${debian_bullseye_minimal}" ; blend="bullseye-minimal" ; extract_base_rootfs
+
+options="--img-2gb am335x-\${rootfs}  ${am335x_v510ti}"  ; generate_img
+options="--img-2gb am57xx-\${rootfs}  ${am57xx_v510ti}"  ; generate_img
+
 ###debian bullseye iot
 rootfs="${debian_bullseye_iot}" ; blend="bullseye-iot" ; extract_base_rootfs
 
@@ -373,8 +381,9 @@ rootfs="${debian_buster_lxqt_xm}"        ; blend="buster-lxqt-xm"    ; archive_b
 
 rootfs="${ubuntu_bionic_ros_iot}"        ; blend="bionic-ros-iot"  ; archive_base_rootfs
 
-rootfs="${debian_bullseye_iot}"   ; blend="bullseye-iot"   ; archive_base_rootfs
-rootfs="${debian_bullseye_xfce}"  ; blend="bullseye-xfce"  ; archive_base_rootfs
+rootfs="${debian_bullseye_minimal}"  ; blend="bullseye-minimal"  ; archive_base_rootfs
+rootfs="${debian_bullseye_iot}"      ; blend="bullseye-iot"      ; archive_base_rootfs
+rootfs="${debian_bullseye_xfce}"     ; blend="bullseye-xfce"     ; archive_base_rootfs
 
 ###archive *.img
 ###DEBIAN STRETCH: machinekit
@@ -514,6 +523,12 @@ rootfs="${ubuntu_bionic_ros_iot}" ; blend="bionic-ros-iot"
 
 wfile="am57xx-\${rootfs}-6gb"  ; archive_img
 wfile="bone-\${rootfs}-6gb"    ; archive_img
+
+###debian bullseye minimal
+rootfs="${debian_bullseye_minimal}" ; blend="bullseye-minimal"
+
+wfile="am335x-\${rootfs}-2gb"  ; archive_img
+wfile="am57xx-\${rootfs}-2gb"  ; archive_img
 
 ###debian bullseye iot
 rootfs="${debian_bullseye_iot}" ; blend="bullseye-iot"
