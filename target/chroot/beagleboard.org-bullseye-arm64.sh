@@ -124,9 +124,6 @@ setup_desktop () {
 		echo "Patching: ${wfile}"
 		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
 		sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' ${wfile}
-		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
-			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
-		fi
 	fi
 
 	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
@@ -149,10 +146,18 @@ setup_desktop () {
 }
 
 install_git_repos () {
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		rm -rf /var/www/html/index.nginx-debian.html || true
+	fi
+
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-5.10-ti-arm64"
 	git_branch="v5.10.x-ti-arm64"
 	git_clone_branch
+}
+
+other_source_links () {
+	chown -R ${rfs_username}:${rfs_username} /opt/source/
 }
 
 ros_initialize_rosdep () {
@@ -194,5 +199,6 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
+other_source_links
 ros_initialize_rosdep
 #
