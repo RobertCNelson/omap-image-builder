@@ -1188,8 +1188,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl enable beagle-flasher-init-shutdown.service || true
 		fi
 
-		if [ -f /lib/systemd/system/bb-code-server.service ] ; then
-			systemctl enable bb-code-server.service || true
+		if [ "x${rfs_enable_vscode}" = "xenable" ] ; then
+			if [ -f /lib/systemd/system/bb-code-server.service ] ; then
+				systemctl enable bb-code-server.service || true
+			fi
 		fi
 	}
 
