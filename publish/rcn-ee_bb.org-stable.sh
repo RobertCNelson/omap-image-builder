@@ -16,16 +16,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c machinekit-debian-stretch
-./RootStock-NG.sh -c bb.org-debian-stretch-console-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-imgtec-v4.14.conf
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-tidl-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-iot-grove-kit-v4.14.conf
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-tidl-v4.14
-./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
-
 ./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
 #./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
 ./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
@@ -47,21 +37,9 @@ if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c bb.org-debian-bullseye-minimal-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-iot-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-xfce-v5.10-ti-armhf
-
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
-
-  debian_stretch_machinekit="debian-9.13-machinekit-armhf-${time}"
-     debian_stretch_console="debian-9.13-console-armhf-${time}"
-      debian_stretch_imgtec="debian-9.13-imgtec-armhf-${time}"
-         debian_stretch_iot="debian-9.13-iot-armhf-${time}"
-    debian_stretch_iot_tidl="debian-9.13-iot-tidl-armhf-${time}"
-debian_stretch_iot_grove_kit="debian-9.13-iot-grove-kit-armhf-${time}"
-        debian_stretch_lxqt="debian-9.13-lxqt-armhf-${time}"
-   debian_stretch_lxqt_tidl="debian-9.13-lxqt-tidl-armhf-${time}"
-     debian_stretch_lxqt_xm="debian-9.13-lxqt-xm-armhf-${time}"
-     debian_stretch_wayland="debian-9.13-wayland-armhf-${time}"
 
          debian_buster_tiny="debian-10.11-tiny-armhf-${time}"
       debian_buster_console="debian-10.11-console-armhf-${time}"
@@ -199,72 +177,6 @@ generate_img () {
         fi
 }
 
-###DEBIAN STRETCH: machinekit
-rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${rootfs} ${am335x_mainline}"  ; generate_img
-
-###DEBIAN STRETCH: console
-rootfs="${debian_stretch_console}" ; blend="stretch-console" ; extract_base_rootfs
-
-options="--img-1gb am57xx-\${rootfs}               ${am57xx_v414ti}"                 ; generate_img
-options="--img-1gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"  ; generate_img
-options="--img-1gb bone-\${rootfs}                 ${am335x_v414ti}"                 ; generate_img
-options="--img-1gb bone-eMMC-flasher-\${rootfs}    ${am335x_v414ti} --emmc-flasher"  ; generate_img
-
-options="--img-1gb BBB-blank-\${rootfs}            ${am335x_v414ti} --bbb-flasher"   ; generate_img
-options="--img-1gb BBBL-blank-\${rootfs}           ${am335x_v414ti} --bbbl-flasher"  ; generate_img
-options="--img-1gb BBBW-blank-\${rootfs}           ${am335x_v414ti} --bbbw-flasher"  ; generate_img
-options="--img-1gb BBGG-blank-\${rootfs}           ${am335x_v414ti} --bbgg-flasher"  ; generate_img
-
-###DEBIAN STRETCH: imgtec
-rootfs="${debian_stretch_imgtec}" ; blend="stretch-imgtec" ; extract_base_rootfs
-
-options="--img-4gb bone-\${rootfs}  ${am335x_v414ti}"  ; generate_img
-
-###DEBIAN STRETCH: iot
-rootfs="${debian_stretch_iot}" ; blend="stretch-iot" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${rootfs}               ${am57xx_v414ti}"                 ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"  ; generate_img
-options="--img-4gb bone-\${rootfs}                 ${am335x_v414ti}"                 ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${rootfs}    ${am335x_v414ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN STRETCH: iot-tidl
-rootfs="${debian_stretch_iot_tidl}" ; blend="stretch-iot-tidl" ; extract_base_rootfs
-
-options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                 ; generate_img
-options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN STRETCH: iot-grove-kit
-rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${rootfs}  ${am335x_v414ti}"  ; generate_img
-
-###DEBIAN STRETCH: lxqt
-rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${rootfs}             ${am57xx_v414ti}"                 ; generate_img
-options="--img-4gb bone-\${rootfs}               ${am335x_v414ti}"                 ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${rootfs}  ${am335x_v414ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN STRETCH: lxqt-tidl
-rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl" ; extract_base_rootfs
-
-options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                                   ; generate_img
-options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"                    ; generate_img
-
-###DEBIAN STRETCH: lxqt-xm
-rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm" ; extract_base_rootfs
-
-options="--img-4gb bbxm-\${rootfs}  ${beagle_xm}"  ; generate_img
-
-###DEBIAN STRETCH: wayland
-rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${rootfs}  ${am57xx_v414ti}"  ; generate_img
-options="--img-4gb bone-\${rootfs}    ${am335x_v414ti}"  ; generate_img
-
 ###DEBIAN BUSTER: console
 rootfs="${debian_buster_console}" ; blend="buster-console" ; extract_base_rootfs
 
@@ -356,17 +268,6 @@ options="--img-4gb am335x-\${rootfs}  ${am335x_v510ti}"  ; generate_img
 options="--img-4gb am57xx-\${rootfs}  ${am57xx_v510ti}"  ; generate_img
 
 ###archive *.tar
-rootfs="${debian_stretch_machinekit}"    ; blend="stretch-machinekit" ; archive_base_rootfs
-rootfs="${debian_stretch_console}"       ; blend="stretch-console"    ; archive_base_rootfs
-rootfs="${debian_stretch_imgtec}"        ; blend="stretch-imgtec"     ; archive_base_rootfs
-rootfs="${debian_stretch_iot}"           ; blend="stretch-iot"        ; archive_base_rootfs
-rootfs="${debian_stretch_iot_tidl}"      ; blend="stretch-iot-tidl"   ; archive_base_rootfs
-rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit"   ; archive_base_rootfs
-rootfs="${debian_stretch_lxqt}"          ; blend="stretch-lxqt"       ; archive_base_rootfs
-rootfs="${debian_stretch_lxqt_tidl}"     ; blend="stretch-lxqt-tidl"  ; archive_base_rootfs
-rootfs="${debian_stretch_lxqt_xm}"       ; blend="stretch-lxqt-xm"    ; archive_base_rootfs
-rootfs="${debian_stretch_wayland}"       ; blend="stretch-wayland"    ; archive_base_rootfs
-
 rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"       ; archive_base_rootfs
 rootfs="${debian_buster_console}"        ; blend="buster-console"    ; archive_base_rootfs
 rootfs="${debian_buster_console_xm}"     ; blend="buster-console-xm" ; archive_base_rootfs
@@ -386,72 +287,6 @@ rootfs="${debian_bullseye_iot}"      ; blend="bullseye-iot"      ; archive_base_
 rootfs="${debian_bullseye_xfce}"     ; blend="bullseye-xfce"     ; archive_base_rootfs
 
 ###archive *.img
-###DEBIAN STRETCH: machinekit
-rootfs="${debian_stretch_machinekit}" ; blend="stretch-machinekit"
-
-wfile="bone-\${rootfs}-4gb"  ; archive_img
-
-###DEBIAN STRETCH: console
-rootfs="${debian_stretch_console}" ; blend="stretch-console"
-
-wfile="am57xx-\${rootfs}-1gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-1gb"  ; archive_img
-wfile="bone-\${rootfs}-1gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-1gb"    ; archive_img
-
-wfile="BBB-blank-\${rootfs}-1gb"            ; archive_img
-wfile="BBBL-blank-\${rootfs}-1gb"           ; archive_img
-wfile="BBBW-blank-\${rootfs}-1gb"           ; archive_img
-wfile="BBGG-blank-\${rootfs}-1gb"           ; archive_img
-
-###DEBIAN STRETCH: imgtec
-rootfs="${debian_stretch_imgtec}" ; blend="stretch-imgtec"
-
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-
-###DEBIAN STRETCH: iot
-rootfs="${debian_stretch_iot}" ; blend="stretch-iot"
-
-wfile="am57xx-\${rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-4gb"  ; archive_img
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-4gb"    ; archive_img
-
-###DEBIAN STRETCH: iot-tidl
-rootfs="${debian_stretch_iot_tidl}" ; blend="stretch-iot-tidl"
-
-wfile="am57xx-\${rootfs}-6gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
-
-###DEBIAN STRETCH: iot-grove-kit
-rootfs="${debian_stretch_iot_grove_kit}" ; blend="stretch-iot-grove-kit"
-
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-
-###DEBIAN STRETCH: lxqt
-rootfs="${debian_stretch_lxqt}" ; blend="stretch-lxqt"
-
-wfile="am57xx-\${rootfs}-4gb"               ; archive_img
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-4gb"    ; archive_img
-
-###DEBIAN STRETCH: lxqt-tidl
-rootfs="${debian_stretch_lxqt_tidl}" ; blend="stretch-lxqt-tidl"
-
-wfile="am57xx-\${rootfs}-6gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
-
-###DEBIAN STRETCH: lxqt-xm
-rootfs="${debian_stretch_lxqt_xm}" ; blend="stretch-lxqt-xm"
-
-wfile="bbxm-\${rootfs}-4gb"  ; archive_img
-
-###DEBIAN STRETCH: wayland
-rootfs="${debian_stretch_wayland}" ; blend="stretch-wayland"
-
-wfile="am57xx-\${rootfs}-4gb"  ; archive_img
-wfile="bone-\${rootfs}-4gb"    ; archive_img
-
 ###DEBIAN BUSTER: console
 rootfs="${debian_buster_console}" ; blend="buster-console"
 
