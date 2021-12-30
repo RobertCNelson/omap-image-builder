@@ -200,5 +200,5 @@ if [ -f /usr/bin/git ] ; then
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 other_source_links
-ros_initialize_rosdep
+#ros_initialize_rosdep
 #
