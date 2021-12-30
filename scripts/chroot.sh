@@ -1203,6 +1203,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl disable cockpit-motd.service || true
 			fi
 			rm -rf /etc/motd.d/cockpit || true
+			rm -rf /etc/issue.d/cockpit.issue || true
 		fi
 	}
 
