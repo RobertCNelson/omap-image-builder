@@ -1192,6 +1192,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/bb-code-server.service ] ; then
 				systemctl enable bb-code-server.service || true
 			fi
+		else
+			if [ -f /lib/systemd/system/dphys-swapfile.service ] ; then
+				systemctl disable dphys-swapfile.service || true
+			fi
 		fi
 	}
 
