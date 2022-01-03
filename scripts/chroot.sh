@@ -1134,6 +1134,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					systemctl enable wpa_supplicant@mlan0 || true
 				fi
 			fi
+
+			if [ -f /lib/systemd/system/systemd-networkd-wait-online.service ] ; then
+				systemctl disable systemd-networkd-wait-online.service || true
+			fi
 		fi
 
 		#Kill man-db
