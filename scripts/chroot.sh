@@ -1201,14 +1201,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl disable dphys-swapfile.service || true
 			fi
 		fi
-
-		if [ -f /etc/motd.d/cockpit ] ; then
-			if [ -f /lib/systemd/system/cockpit-motd.service ] ; then
-				systemctl disable cockpit-motd.service || true
-			fi
-			rm -rf /etc/motd.d/cockpit || true
-			rm -rf /etc/issue.d/cockpit.issue || true
-		fi
 	}
 
 	grub_tweaks () {
