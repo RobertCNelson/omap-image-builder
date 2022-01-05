@@ -878,10 +878,6 @@ populate_boot () {
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
 	fi
 
-	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
-		echo "args_mmc=setenv bootargs console=ttyS2,115200n8 earlycon=ns16550a,mmio32,0x02800000 root=/dev/mmcblk1p2 ro rootfstype=ext4 rootwait net.ifnames=0" > "${TEMPDIR}/disk/uEnv.txt"
-	fi
-
 	cd ${TEMPDIR}/disk
 	sync
 	cd "${DIR}"/
@@ -1041,7 +1037,11 @@ populate_rootfs () {
 		fi
 
 		if [ "x${extlinux_fdtdir}" = "xenable" ] ; then
-			echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+			if [ ! "x${extlinux_fdtdir_dir}" = "x" ] ; then
+				echo "    fdtdir ${extlinux_fdtdir_dir}/" >> ${wfile}
+			else
+				echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+			fi
 		fi
 
 		if [ ! "x${extlinux_devicetree}" = "x" ] ; then
