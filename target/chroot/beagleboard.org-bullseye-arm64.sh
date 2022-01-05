@@ -154,6 +154,11 @@ install_git_repos () {
 	git_target_dir="/opt/source/dtb-5.10-ti-arm64"
 	git_branch="v5.10.x-ti-arm64"
 	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/u-boot"
+	git_target_dir="/opt/source/u-boot-v2021.01-ti-08.00.00.004"
+	git_branch="v2021.01-ti-08.00.00.004"
+	git_clone_branch
 }
 
 other_source_links () {
