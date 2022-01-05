@@ -160,36 +160,10 @@ other_source_links () {
 	chown -R ${rfs_username}:${rfs_username} /opt/source/
 }
 
-ros_initialize_rosdep () {
-	if [ -f /usr/bin/rosdep ] ; then
-		echo "ros: Initialize rosdep"
-		mkdir -p /home/${rfs_username}/ros2_foxy/src
-		cd /home/${rfs_username}/ros2_foxy/
-		wget https://raw.githubusercontent.com/ros2/ros2/foxy/ros2.repos
-		vcs import src < ros2.repos
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/ros2_foxy/
-
-		rosdep init
-
-		#su - ${rfs_username} -c "rosdep update"
-		#ls -lha /home/
-		su - ${rfs_username} -c "rosdep update"
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/ros2_foxy/
-
-		#rosdep update
-
-		#13:38:25 Warning: running 'rosdep update' as root is not recommended.
-		#13:38:25   You should run 'sudo rosdep fix-permissions' and invoke 'rosdep update' again without sudo.
-		#13:40:15 reading in sources list data from /etc/ros/rosdep/sources.list.d
-
-		#rosdep fix-permissions
-	fi
-}
-
 is_this_qemu
 
 setup_system
-#setup_desktop
+setup_desktop
 
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
@@ -200,5 +174,4 @@ if [ -f /usr/bin/git ] ; then
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 other_source_links
-#ros_initialize_rosdep
 #
