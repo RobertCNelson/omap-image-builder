@@ -1595,13 +1595,6 @@ if [ -f "${tempdir}/etc/resolv.conf" ] ; then
 	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
 fi
 
-#chroot_populate_firmware_dir
-if [ ! "x${chroot_populate_firmware_dir}" = "x" ] ; then
-	sudo mkdir -p ${tempdir}/boot/firmware/
-	sudo cp -v ${tempdir}/boot/Image-${repo_rcnee_pkg_version} ${tempdir}/boot/firmware/
-	sudo cp -v ${tempdir}/boot/dtbs/${repo_rcnee_pkg_version}/ti/*.dtb ${tempdir}/boot/firmware/
-fi
-
 report_size
 chroot_umount
 
@@ -1640,12 +1633,6 @@ else
 		echo "Copying: packaged version of U-Boot"
 		mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
 		cp -rv ./* "${DIR}/deploy/${export_filename}/u-boot"
-	fi
-	if [ -d ./boot/ ] ; then
-		cd ./boot/ || true
-		echo "Copying: packaged version of boot"
-		mkdir -p "${DIR}/deploy/${export_filename}/boot"
-		cp -rv ./* "${DIR}/deploy/${export_filename}/boot"
 	fi
 	cd "${tempdir}" || true
 	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"

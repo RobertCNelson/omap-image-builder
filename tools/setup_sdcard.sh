@@ -855,14 +855,14 @@ populate_boot () {
 
 	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
 		#cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
-		if [ ! "x${bootloader_distro_dir_mcu}" = "x" ] ; then
-			cp -v ./${bootloader_distro_dir_mcu}/* "${TEMPDIR}/disk/"
+		if [ ! "x${bootloader_distro_mcu}" = "x" ] ; then
+			cp -v ./${bootloader_distro_mcu} "${TEMPDIR}/disk/"
 		fi
-		if [ ! "x${bootloader_distro_dir_spl}" = "x" ] ; then
-			cp -v ./${bootloader_distro_dir_spl}/* "${TEMPDIR}/disk/"
+		if [ ! "x${bootloader_distro_spl}" = "x" ] ; then
+			cp -v ./${bootloader_distro_spl} "${TEMPDIR}/disk/"
 		fi
-		if [ ! "x${bootloader_distro_dir_img}" = "x" ] ; then
-			cp -v ./${bootloader_distro_dir_img}/* "${TEMPDIR}/disk/"
+		if [ ! "x${bootloader_distro_img}" = "x" ] ; then
+			cp -v ./${bootloader_distro_img} "${TEMPDIR}/disk/"
 		fi
 		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
 			cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
