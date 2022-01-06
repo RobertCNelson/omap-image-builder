@@ -1621,6 +1621,18 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
+		if [ ! "x${extlinux_kernel}" = "x" ] ; then
+			cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/${extlinux_kernel}
+		fi
+		if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
+			if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
+				cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/
+			fi
+		fi
+		cp -v ${TEMPDIR}/disk/boot/initrd.img-${select_kernel} ${TEMPDIR}/disk/boot/firmware/initrd.img
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
