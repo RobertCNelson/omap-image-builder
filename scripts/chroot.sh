@@ -1641,6 +1641,12 @@ else
 		mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
 		cp -rv ./* "${DIR}/deploy/${export_filename}/u-boot"
 	fi
+	if [ -d ./boot/ ] ; then
+		cd ./boot/ || true
+		echo "Copying: packaged version of boot"
+		mkdir -p "${DIR}/deploy/${export_filename}/boot"
+		cp -rv ./* "${DIR}/deploy/${export_filename}/boot"
+	fi
 	cd "${tempdir}" || true
 	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
 	sudo LANG=C tar --numeric-owner -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .

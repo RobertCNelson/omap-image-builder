@@ -854,7 +854,16 @@ populate_boot () {
 	fi
 
 	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
-		cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
+		#cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
+		if [ ! "x${bootloader_distro_dir_mcu}" = "x" ] ; then
+			cp -v ./${bootloader_distro_dir_mcu}/* "${TEMPDIR}/disk/"
+		fi
+		if [ ! "x${bootloader_distro_dir_spl}" = "x" ] ; then
+			cp -v ./${bootloader_distro_dir_spl}/* "${TEMPDIR}/disk/"
+		fi
+		if [ ! "x${bootloader_distro_dir_img}" = "x" ] ; then
+			cp -v ./${bootloader_distro_dir_img}/* "${TEMPDIR}/disk/"
+		fi
 		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
 			cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
 		fi
@@ -1332,11 +1341,6 @@ populate_rootfs () {
 		fi
 
 		echo "/boot/uEnv.txt---------------"
-	fi
-
-	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
-		cp -v "${TEMPDIR}/disk/boot/Image-${select_kernel}" "${TEMPDIR}/disk/boot/Image"
-		cp -v "${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ti"/k3-j721e*.dtb "${TEMPDIR}/disk/boot/"
 	fi
 
 	cat ${wfile}
