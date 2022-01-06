@@ -1030,6 +1030,8 @@ populate_rootfs () {
 	dir_check="${TEMPDIR}/disk/boot/"
 	kernel_select
 
+	tree ${TEMPDIR}/disk/boot/ || true
+
 	if [ ! "x${uboot_eeprom}" = "x" ] ; then
 		echo "board_eeprom_header=${uboot_eeprom}" > "${TEMPDIR}/disk/boot/.eeprom.txt"
 	fi
@@ -1344,7 +1346,7 @@ populate_rootfs () {
 	fi
 
 	cat ${wfile}
-	chown -R 1000:1000 ${wfile}
+	chown -R 1000:1000 ${wfile} || true
 	echo "-----------------------------"
 
 	wfile="${TEMPDIR}/disk/boot/SOC.sh"
@@ -1587,6 +1589,8 @@ populate_rootfs () {
 	sync
 	sync
 	cd "${DIR}/"
+
+	tree ${TEMPDIR}/disk/boot/ || true
 
 	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 		umount ${TEMPDIR}/disk/boot/efi || true
