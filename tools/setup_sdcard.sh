@@ -1065,6 +1065,12 @@ populate_rootfs () {
 		if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
 			mkdir -p "${TEMPDIR}/disk/boot/firmware/extlinux/"
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
+			if [ -f "${TEMPDIR}/disk/${extlinux_firmware_file}" ] ; then
+				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
+				echo "/boot/firmware/extlinux/extlinux.conf-"
+			else
+				echo "ERROR: not found [${extlinux_firmware_file}]"
+			fi
 		else
 			mkdir -p "${TEMPDIR}/disk/boot/extlinux/"
 			wfile="${TEMPDIR}/disk/boot/extlinux/extlinux.conf"
