@@ -1062,29 +1062,34 @@ populate_rootfs () {
 	fi
 
 	if [ "x${extlinux}" = "xenable" ] ; then
-		mkdir -p "${TEMPDIR}/disk/boot/extlinux/"
-		wfile="${TEMPDIR}/disk/boot/extlinux/extlinux.conf"
+		if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
+			mkdir -p "${TEMPDIR}/disk/boot/firmware/extlinux/"
+			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
+		else
+			mkdir -p "${TEMPDIR}/disk/boot/extlinux/"
+			wfile="${TEMPDIR}/disk/boot/extlinux/extlinux.conf"
 
-		echo "label Linux ${select_kernel}" > ${wfile}
-		echo "    kernel /boot/vmlinuz-${select_kernel}" >> ${wfile}
+			echo "label Linux ${select_kernel}" > ${wfile}
+			echo "    kernel /boot/vmlinuz-${select_kernel}" >> ${wfile}
 
-		if [ ! "x${extlinux_append}" = "x" ] ; then
-			echo "    append ${extlinux_append}" >> ${wfile}
-		fi
-
-		if [ "x${extlinux_fdtdir}" = "xenable" ] ; then
-			if [ ! "x${extlinux_fdtdir_dir}" = "x" ] ; then
-				echo "    fdtdir ${extlinux_fdtdir_dir}/" >> ${wfile}
-			else
-				echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+			if [ ! "x${extlinux_append}" = "x" ] ; then
+				echo "    append ${extlinux_append}" >> ${wfile}
 			fi
-		fi
 
-		if [ ! "x${extlinux_devicetree}" = "x" ] ; then
-			echo "    devicetree /boot/dtbs/${select_kernel}/${extlinux_devicetree}" >> ${wfile}
-		fi
+			if [ "x${extlinux_fdtdir}" = "xenable" ] ; then
+				if [ ! "x${extlinux_fdtdir_dir}" = "x" ] ; then
+					echo "    fdtdir ${extlinux_fdtdir_dir}/" >> ${wfile}
+				else
+					echo "    fdtdir /boot/dtbs/${select_kernel}/" >> ${wfile}
+				fi
+			fi
 
-		echo "/boot/extlinux/extlinux.conf-"
+			if [ ! "x${extlinux_devicetree}" = "x" ] ; then
+				echo "    devicetree /boot/dtbs/${select_kernel}/${extlinux_devicetree}" >> ${wfile}
+			fi
+
+			echo "/boot/extlinux/extlinux.conf-"
+		fi
 	else
 		wfile="${TEMPDIR}/disk/boot/uEnv.txt"
 		echo "#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0" > ${wfile}
