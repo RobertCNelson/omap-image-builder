@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2021 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2022 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -972,6 +972,31 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
+
+		if [ ! -d ${TEMPDIR}/disk/boot/firmware ] ; then
+			mkdir -p ${TEMPDIR}/disk/boot/firmware
+		fi
+
+		if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/firmware; then
+
+			echo "-----------------------------"
+			echo "BUG: [${media_prefix}${media_boot_partition}] was not available so trying to mount again in 5 seconds..."
+			partprobe ${media}
+			sync
+			sleep 5
+			echo "-----------------------------"
+
+			if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/firmware; then
+				echo "-----------------------------"
+				echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk/boot/firmware to complete populating rootfs Partition"
+				echo "Please retry running the script, sometimes rebooting your system helps."
+				echo "-----------------------------"
+				exit
+			fi
+		fi
+	fi
+
 	lsblk | grep -v sr0
 	echo "-----------------------------"
 
@@ -1594,6 +1619,10 @@ populate_rootfs () {
 
 	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 		umount ${TEMPDIR}/disk/boot/efi || true
+	fi
+
+	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
+		umount ${TEMPDIR}/disk/boot/firmware || true
 	fi
 
 	umount ${TEMPDIR}/disk || true
