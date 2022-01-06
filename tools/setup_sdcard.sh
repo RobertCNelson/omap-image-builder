@@ -1067,6 +1067,9 @@ populate_rootfs () {
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
 			if [ -f "${TEMPDIR}/disk/${extlinux_firmware_file}" ] ; then
 				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
+				if [ "x${extlinux_flasher}" = "xenable" ] ; then
+					sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
+				fi
 				echo "/boot/firmware/extlinux/extlinux.conf-"
 			else
 				echo "ERROR: not found [${extlinux_firmware_file}]"
@@ -2039,6 +2042,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--efi)
 		uboot_efi_mode="enable"
+		;;
+	--enable-extlinux-flasher)
+		extlinux_flasher="enable"
 		;;
 	--offline)
 		offline=1
