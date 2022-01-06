@@ -1597,9 +1597,9 @@ fi
 
 #chroot_populate_firmware_dir
 if [ ! "x${chroot_populate_firmware_dir}" = "x" ] ; then
-	mkdir -p ${tempdir}/boot/firmware/
-	cp -v ${tempdir}/boot/Image-${repo_rcnee_pkg_version} ${tempdir}/boot/firmware/
-	cp -v ${tempdir}/boot/dtbs/${repo_rcnee_pkg_version}/ti/*.dtb ${tempdir}/boot/firmware/
+	sudo mkdir -p ${tempdir}/boot/firmware/
+	sudo cp -v ${tempdir}/boot/Image-${repo_rcnee_pkg_version} ${tempdir}/boot/firmware/
+	sudo cp -v ${tempdir}/boot/dtbs/${repo_rcnee_pkg_version}/ti/*.dtb ${tempdir}/boot/firmware/
 fi
 
 report_size
