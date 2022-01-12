@@ -1640,6 +1640,18 @@ populate_rootfs () {
 		cp -v ${TEMPDIR}/disk/boot/initrd.img-${select_kernel} ${TEMPDIR}/disk/boot/firmware/initrd.img
 	fi
 
+	if [ "x${emmc_flasher}" = "xenable" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
+			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
+		fi
+	fi
+
+	if [ "x${extlinux_flasher}" = "xenable" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
+			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
+		fi
+	fi
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
