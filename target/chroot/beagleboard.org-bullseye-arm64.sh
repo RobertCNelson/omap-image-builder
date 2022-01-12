@@ -126,11 +126,9 @@ setup_desktop () {
 		sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' ${wfile}
 	fi
 
-	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-		mkdir -p /home/${rfs_username}/.config/ || true
-		if [ -d /opt/scripts/desktop-defaults/buster/lxqt/ ] ; then
-			cp -rv /opt/scripts/desktop-defaults/buster/lxqt/* /home/${rfs_username}/.config
-		fi
+	if [ -f /etc/bbb.io/templates/xfce4-desktop.xml ] ; then
+		mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
+		cp -v /etc/bbb.io/templates/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
 		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
 	fi
 
