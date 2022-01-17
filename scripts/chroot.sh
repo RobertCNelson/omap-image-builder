@@ -1640,7 +1640,7 @@ else
 	fi
 	cd "${tempdir}" || true
 	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
-	sudo LANG=C tar --numeric-owner --acls --xattrs-include='*' -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
+	sudo LANG=C tar --numeric-owner --acls --xattrs -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
 	cd "${DIR}/" || true
 	ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
 	sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
