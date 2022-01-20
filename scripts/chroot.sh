@@ -1038,14 +1038,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "Log: (chroot): systemd_tweaks"
 		#We have systemd, so lets use it..
 
-		if [ -f /etc/systemd/systemd-journald.conf ] ; then
-			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/systemd-journald.conf
-		fi
-
-		if [ -f /etc/systemd/journald.conf ] ; then
-			sed -i -e 's:#SystemMaxUse=:SystemMaxUse=8M:g' /etc/systemd/journald.conf
-		fi
-
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
