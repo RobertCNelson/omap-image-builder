@@ -157,6 +157,11 @@ install_git_repos () {
 	git_target_dir="/opt/source/u-boot-v2021.01-ti-08.00.00.004"
 	git_branch="v2021.01-ti-08.00.00.004"
 	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/u-boot"
+	git_target_dir="/opt/source/u-boot-v2021.01-ti-08.01.00.006"
+	git_branch="v2021.01-ti-08.01.00.006"
+	git_clone_branch
 }
 
 other_source_links () {
