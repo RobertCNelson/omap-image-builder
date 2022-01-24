@@ -1135,6 +1135,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/systemd-networkd-wait-online.service ] ; then
 				systemctl disable systemd-networkd-wait-online.service || true
 			fi
+
+			if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
+				systemctl enable systemd-resolved.service || true
+			fi
 		fi
 
 		#Kill man-db
@@ -1532,6 +1536,12 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		rm -rf /etc/resolv.conf.bak || true
 		rm -rf /etc/resolv.conf || true
 		ln -s /run/connman/resolv.conf /etc/resolv.conf
+	fi
+
+	if [ -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service ] ; then
+		rm -rf /etc/resolv.conf.bak || true
+		rm -rf /etc/resolv.conf || true
+		ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 	fi
 
 	rm -f /cleanup_script.sh || true
