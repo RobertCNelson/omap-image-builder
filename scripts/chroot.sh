@@ -1139,6 +1139,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
 				systemctl enable systemd-resolved.service || true
 			fi
+
+			if [ -f /etc/systemd/system/multi-user.target.wants/ModemManager.service ] ; then
+				systemctl disable ModemManager.service || true
+			fi
+
+			if [ -f /etc/systemd/system/multi-user.target.wants/NetworkManager.service ] ; then
+				systemctl disable NetworkManager.service || true
+			fi
 		fi
 
 		#Kill man-db
