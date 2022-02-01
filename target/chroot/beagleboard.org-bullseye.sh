@@ -205,10 +205,10 @@ install_git_repos () {
 	git_target_dir="/opt/source/overlay-utils"
 	git_clone
 
-	git_repo="https://github.com/beagleboard/u-boot"
-	git_target_dir="/opt/source/u-boot-v2021.10-bbb.io-am335x"
-	git_branch="v2021.10-bbb.io-am335x"
-	git_clone_branch
+#	git_repo="https://github.com/beagleboard/u-boot"
+#	git_target_dir="/opt/source/u-boot-v2021.10-bbb.io-am335x"
+#	git_branch="v2021.10-bbb.io-am335x"
+#	git_clone_branch
 }
 
 other_source_links () {
