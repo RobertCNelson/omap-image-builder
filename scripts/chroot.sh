@@ -985,6 +985,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		esac
 	}
 
+	add_user_group () {
+		echo "Log: (chroot): add_user_group"
+		cat /etc/group | grep ^docker && usermod -aG docker ${rfs_username} || true
+	}
+
 	debian_startup_script () {
 		echo "Log: (chroot): debian_startup_script"
 	}
@@ -1253,6 +1258,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	fi
 	manual_deborphan
 	add_user
+	add_user_group
 
 	mkdir -p /opt/source || true
 	touch /opt/source/list.txt
