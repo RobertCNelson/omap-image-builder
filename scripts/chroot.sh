@@ -910,6 +910,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
 
+		#i2c: by default, these come up root:i2c, so make sure i2c is used...[crw-rw---- 1 root i2c 89, 2 Feb 16 15:51 /dev/i2c-2]
+
+		cat /etc/group | grep ^i2c || groupadd -r i2c || true
 		cat /etc/group | grep ^kmem || groupadd -r kmem || true
 		cat /etc/group | grep ^netdev || groupadd -r netdev || true
 		cat /etc/group | grep ^systemd-journal || groupadd -r systemd-journal || true
@@ -925,7 +928,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		#echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,i2c,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch"
 
 		pkg="sudo"
 		dpkg_check
@@ -975,7 +978,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
-			sed -i -e 's:dialout:dialout gpio:g' /etc/adduser.conf
+			sed -i -e 's:dialout:dialout gpio i2c:g' /etc/adduser.conf
 			sed -i -e 's:#ADD_EXTRA_GROUPS:ADD_EXTRA_GROUPS:g' /etc/adduser.conf
 
 			;;
