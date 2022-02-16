@@ -81,18 +81,8 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
-setup_system () {
-	#For when sed/grep/etc just gets way to complex...
-	cd /
-	if [ -f /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff ] ; then
-		if [ -f /usr/bin/patch ] ; then
-			echo "Patching: /etc/profile"
-			patch -p1 < /opt/scripts/mods/debian-add-sbin-usr-sbin-to-default-path.diff
-		fi
-	fi
-}
-
 setup_desktop () {
+	cd /
 	if [ -d /etc/X11/ ] ; then
 		wfile="/etc/X11/xorg.conf"
 		echo "Patching: ${wfile}"
@@ -170,7 +160,6 @@ other_source_links () {
 
 is_this_qemu
 
-setup_system
 setup_desktop
 
 if [ -f /usr/bin/git ] ; then
