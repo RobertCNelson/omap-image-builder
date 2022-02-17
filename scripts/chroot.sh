@@ -791,6 +791,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get -y install libpruio-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8821cu-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install qcacld-2.0-modules-${repo_rcnee_pkg_version} || true
 			#apt-get -y install seeed-modules-${repo_rcnee_pkg_version} || true
 
 			if [ ! "x${repo_rcnee_cmem_version}" = "x" ] ; then
