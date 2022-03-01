@@ -20,7 +20,7 @@ else
 fi
 
 debian_stable="debian-10.11-console-armhf-${time}"
-ubuntu_stable="ubuntu-20.04.3-console-armhf-${time}"
+ubuntu_stable="ubuntu-20.04.4-console-armhf-${time}"
 
 xz_img="xz -T2 -z -8"
 xz_tar="xz -T2 -z -8"

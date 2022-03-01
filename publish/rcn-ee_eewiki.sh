@@ -30,7 +30,7 @@ fi
 debian_buster="debian-10.11"
 debian_bullseye="debian-11.2"
 ubuntu_bionic="ubuntu-18.04.6"
-ubuntu_focal="ubuntu-20.04.3"
+ubuntu_focal="ubuntu-20.04.4"
 
 xz_img="xz -T4 -z -8"
 xz_tar="xz -T4 -z -8"
