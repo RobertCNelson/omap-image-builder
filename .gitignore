@@ -5,3 +5,5 @@ git/
 *.host
 release
 .project
+
+.DS_Store
