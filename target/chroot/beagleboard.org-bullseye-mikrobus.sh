@@ -207,13 +207,34 @@ install_zephyr () {
 	if [ -f /usr/local/bin/west ] ; then
 		echo "Installing zephyr"
 		cd /opt/source/
+		echo "west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.4 bcf-zephyr"
 		west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.4 bcf-zephyr
 
 		if [ -d /opt/source/bcf-zephyr/ ] ; then
 			cd /opt/source/bcf-zephyr/
+			echo "west update"
 			west update
+			echo "west zephyr-export"
 			west zephyr-export
+			echo "pip3 install -r zephyr/scripts/requirements-base.txt"
 			pip3 install -r zephyr/scripts/requirements-base.txt
+
+			export ZEPHYR_TOOLCHAIN_VAIRANT=cross-compile
+			export CROSS_COMPILE=/usr/bin/arm-none-eabi-
+			export ZEPHYR_BASE=/opt/source/bcf-zephyr/zephyr
+			export PATH=/opt/source/bcf-zephyr/zephyr/scripts:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+			echo "source /opt/source/bcf-zephyr/zephyr/zephyr-env.sh" >> /root/.bashrc
+			export BOARD=beagleconnect_freedom
+
+			echo "west build -d build/sensortest zephyr/samples/boards/beagle_bcf/sensortest -- -DOVERLAY_CONFIG=overlay-subghz.conf"
+			west build -d build/sensortest zephyr/samples/boards/beagle_bcf/sensortest -- -DOVERLAY_CONFIG=overlay-subghz.conf
+			echo "west build -d build/wpanusb modules/lib/wpanusb_bc -- -DOVERLAY_CONFIG=overlay-subghz.conf"
+			west build -d build/wpanusb modules/lib/wpanusb_bc -- -DOVERLAY_CONFIG=overlay-subghz.conf
+			echo "west build -d build/bcfserial modules/lib/wpanusb_bc -- -DOVERLAY_CONFIG=overlay-bcfserial.conf -DDTC_OVERLAY_FILE=bcfserial.overlay"
+			west build -d build/bcfserial modules/lib/wpanusb_bc -- -DOVERLAY_CONFIG=overlay-bcfserial.conf -DDTC_OVERLAY_FILE=bcfserial.overlay
+			echo "west build -d build/greybus modules/lib/greybus/samples/subsys/greybus/net -- -DOVERLAY_CONFIG=overlay-802154-subg.conf"
+			west build -d build/greybus modules/lib/greybus/samples/subsys/greybus/net -- -DOVERLAY_CONFIG=overlay-802154-subg.conf
 		fi
 	fi
 }
