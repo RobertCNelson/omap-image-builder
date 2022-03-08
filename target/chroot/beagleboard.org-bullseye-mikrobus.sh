@@ -198,10 +198,24 @@ install_git_repos () {
 	git_target_dir="/opt/source/overlay-utils"
 	git_clone
 
-#	git_repo="https://github.com/beagleboard/u-boot"
-#	git_target_dir="/opt/source/u-boot-v2021.10-bbb.io-am335x"
-#	git_branch="v2021.10-bbb.io-am335x"
-#	git_clone_branch
+	git_repo="https://github.com/jadonk/msp430F55xx_usb_uart_bridge"
+	git_target_dir="/opt/source/usb_uart_bridge"
+	git_clone
+}
+
+install_zephyr () {
+	if [ -f /usr/local/bin/west ] ; then
+		echo "Installing zephyr"
+		cd /opt/source/
+		west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.4 bcf-zephyr
+
+		if [ -d /opt/source/bcf-zephyr/ ] ; then
+			cd /opt/source/bcf-zephyr/
+			west update
+			west zephyr-export
+			pip3 install -r zephyr/scripts/requirements-base.txt
+		fi
+	fi
 }
 
 other_source_links () {
@@ -217,6 +231,7 @@ if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
+	install_zephyr
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
