@@ -1254,6 +1254,11 @@ populate_rootfs () {
 						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 						echo "uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 					fi
+					if [ "x${optional_mainline_uio}" = "x" ] ; then
+						echo "###pru_uio (5.4.106-ti-rt-r40 & 5.10.100-ti-r40 newer...)" >> ${wfile}
+						echo "###Default is PRU_REMOTEPROC, but classic UIO_PRUSS can be enabled here." >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+					fi
 				fi
 				echo "###" >> ${wfile}
 				echo "###Cape Universal Enable" >> ${wfile}
@@ -2047,6 +2052,9 @@ while [ ! -z "$1" ] ; do
 	--enable-uboot-pru-uio-419)
 		echo "[--enable-uboot-pru-uio-419] is obsolete, and has been removed..."
 		exit 2
+		;;
+	--optional-uboot-uio-pru)
+		optional_mainline_uio="enable"
 		;;
 	--enable-uboot-disable-pru)
 		uboot_disable_pru="enable"
