@@ -1246,6 +1246,12 @@ populate_rootfs () {
 						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 						use_pru_uio="blocked"
 					fi
+					if [ "x${optional_mainline_uio}" = "xenable" ] ; then
+						echo "###pru_uio (5.4.106-ti-rt-r40 & 5.10.100-ti-r40 newer...)" >> ${wfile}
+						echo "###Default is PRU_REMOTEPROC, but classic UIO_PRUSS can be enabled here." >> ${wfile}
+						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
+						use_pru_uio="blocked"
+					fi
 					if [ "x${use_pru_uio}" = "x" ] ; then
 						echo "###pru_rproc (4.14.x-ti kernel)" >> ${wfile}
 						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-14-TI-00A0.dtbo" >> ${wfile}
@@ -1253,11 +1259,6 @@ populate_rootfs () {
 						echo "#uboot_overlay_pru=AM335X-PRU-RPROC-4-19-TI-00A0.dtbo" >> ${wfile}
 						echo "###pru_uio (4.14.x-ti, 4.19.x-ti & mainline/bone kernel)" >> ${wfile}
 						echo "uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
-					fi
-					if [ "x${optional_mainline_uio}" = "x" ] ; then
-						echo "###pru_uio (5.4.106-ti-rt-r40 & 5.10.100-ti-r40 newer...)" >> ${wfile}
-						echo "###Default is PRU_REMOTEPROC, but classic UIO_PRUSS can be enabled here." >> ${wfile}
-						echo "#uboot_overlay_pru=AM335X-PRU-UIO-00A0.dtbo" >> ${wfile}
 					fi
 				fi
 				echo "###" >> ${wfile}
