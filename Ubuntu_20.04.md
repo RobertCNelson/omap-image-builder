@@ -1,12 +1,12 @@
-Generate: Base Ubuntu 18.04 Image:
+Generate: Base Ubuntu 20.04 Image:
 
     git clone https://github.com/RobertCNelson/omap-image-builder
     cd ./omap-image-builder
-    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-bionic-armhf
+    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-focal-v5.10-ti-armhf
 
 Finalize: BeagleBone Black specific version:
 
-    sudo ./setup_sdcard.sh --img-4gb bone-example --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru
+    sudo ./setup_sdcard.sh --img-4gb bone-example --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts
 
 Finalize: BeagleBoard-x15 specific version:
 
