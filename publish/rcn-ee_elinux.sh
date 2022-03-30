@@ -19,7 +19,7 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_stable="debian-10.11-console-armhf-${time}"
+debian_stable="debian-10.12-console-armhf-${time}"
 ubuntu_stable="ubuntu-20.04.4-console-armhf-${time}"
 
 xz_img="xz -T2 -z -8"
