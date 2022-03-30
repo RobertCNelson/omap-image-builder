@@ -56,9 +56,9 @@ debian_buster_iot_grove_kit="debian-10.12-iot-grove-kit-armhf-${time}"
       ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
 
-debian_bullseye_minimal="debian-11.2-minimal-armhf-${time}"
-    debian_bullseye_iot="debian-11.2-iot-armhf-${time}"
-   debian_bullseye_xfce="debian-11.2-xfce-armhf-${time}"
+debian_bullseye_minimal="debian-11.3-minimal-armhf-${time}"
+    debian_bullseye_iot="debian-11.3-iot-armhf-${time}"
+   debian_bullseye_xfce="debian-11.3-xfce-armhf-${time}"
 
 xz_img="xz -T4 -z -8"
 xz_tar="xz -T4 -z -8"
