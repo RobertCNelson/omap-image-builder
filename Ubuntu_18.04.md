@@ -4,6 +4,8 @@ Generate: Base Ubuntu 18.04 Image:
     cd ./omap-image-builder
     ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-bionic-armhf
 
+Archive will be under "./deploy/"
+
 Finalize: BeagleBone Black specific version:
 
     sudo ./setup_sdcard.sh --img-4gb bone-example --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru
