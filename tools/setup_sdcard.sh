@@ -1534,22 +1534,6 @@ populate_rootfs () {
 		fi
 	fi
 
-	#RISCV For now lets not use special bootup scripts...
-	if [ ! "x${bypass_bootup_scripts}" = "xenable" ] ; then
-		if [ ! -f ${TEMPDIR}/disk/opt/scripts/boot/generic-startup.sh ] ; then
-			git clone https://github.com/RobertCNelson/boot-scripts ${TEMPDIR}/disk/opt/scripts/ --depth 1
-			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
-			if [ ! -f ${TEMPDIR}/disk/etc/default/bb-boot ] ; then
-				cp -v ${TEMPDIR}/disk/opt/scripts/boot/default/bb-boot ${TEMPDIR}/disk/etc/default/
-			fi
-		else
-			cd ${TEMPDIR}/disk/opt/scripts/
-			git pull
-			cd -
-			chown -R 1000:1000 ${TEMPDIR}/disk/opt/scripts/
-		fi
-	fi
-
 	if [ "x${drm}" = "xomapdrm" ] ; then
 		wfile="/etc/X11/xorg.conf"
 		if [ -f ${TEMPDIR}/disk${wfile} ] ; then
