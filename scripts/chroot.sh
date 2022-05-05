@@ -1269,6 +1269,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		apt-mark hold c9-core-installer || true
 	fi
 
+	#We disable the ability to auto upgrade this specific pacakge as they might be insode VSCode, which will fail...
+	pkg="bb-code-server"
+	dpkg_check
+
+	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
+		apt-mark hold bb-code-server || true
+	fi
+
 	if [ -f /lib/systemd/systemd ] ; then
 		systemd_tweaks
 	fi
