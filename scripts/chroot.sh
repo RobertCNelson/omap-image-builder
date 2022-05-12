@@ -152,24 +152,24 @@ check_defines () {
 		fi
 	fi
 
-	if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
-		deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-	fi
- 
-    if [ ! "x${deb_desktop_additiona_pkgs}" = "x" ] ; then
+    if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
+        deb_console_application_pkgs="$(echo ${deb_console_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+    fi
+
+    if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
+        deb_desktop_common_pkgs="$(echo ${deb_desktop_common_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+    fi
+    
+    if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
         deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
     fi
-    
-    if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
-        deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
-    
-    if [ ! "x${deb_desktop_additional_pkgs}" = "x" ] ; then
-        deb_desktop_additional_pkgs="$(echo ${deb_desktop_additional_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
-    
+
     if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
         deb_desktop_application_pkgs="$(echo ${deb_desktop_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+    fi
+
+    if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
+        deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
     fi
 }
 
@@ -723,33 +723,46 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkgs () {
-		if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
-			apt-get update
-			apt-get -y install ${deb_additional_pkgs}
-		fi
+        if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
+            apt-get update
+            apt-get -y install ${deb_additional_pkgs}
+        fi
+  
+        if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Installing: ${deb_console_application_pkgs}"
+            apt-get update
+            apt-get -y install ${deb_console_application_pkgs}
+        fi
 
-		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
-			apt-get update
-			apt-get -y install ${deb_desktop_pkgs}
-		fi
+        if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Installing: ${deb_desktop_common_pkgs}"
+            apt-get update
+            apt-get -y install ${deb_desktop_common_pkgs}
+        fi
 
-		if [ ! "x${deb_desktop_additional_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_additional_pkgs}"
-			apt-get update
-			apt-get -y install ${deb_desktop_additional_pkgs}
-		fi
+        if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
+            apt-get update
+            apt-get -y install ${deb_desktop_pkgs}
+        fi
 
-		if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
-			apt-get update
-			apt-get -y install ${deb_desktop_application_pkgs}
-		fi
+        if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
+            apt-get update
+            apt-get -y install ${deb_desktop_application_pkgs}
+        fi
+  
+        if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
+            #Install the user choosen list.
+            echo "Log: (chroot) Removing: ${deb_purge_pkgs}"
+            apt-get purge -y ${deb_purge_pkgs}
+        fi
 
 		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then

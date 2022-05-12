@@ -153,31 +153,17 @@ setup_desktop () {
 
 install_git_repos () {
 
-    git_repo="https://github.com/RichNeese/bb.org-riscv-overlay.git"
-    git_target_dir="/opt/source/bb.org-riscv-overlay"
+    git_repo="https://github.com/RichNeese/riscv-os-overlay.git"
+    git_target_dir="/opt/source/riscv-os-overlay"
     git_clone
 
-    if [ -f ${git_target_dir}/install ] ; then
-        cd ${git_target_dir}/
-        if [ -f install ] ; then
-            chmod +x install
-            ./install
-        fi
-    fi
-
-    chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
-        
-    git_repo="https://github.com/RichNeese/debian-config.git"
-    git_target_dir="/opt/source/debian-config"
-    git_clone
-
-    if [ -f ${git_target_dir}/install ] ; then
-        cd ${git_target_dir}/
-        if [ -f install ] ; then
-            chmod +x install
-            ./install
-        fi
-    fi
+   # if [ -f ${git_target_dir}/install ] ; then
+   #     cd ${git_target_dir}/
+   #     if [ -f install ] ; then
+   #         chmod +x install
+   #         ./install
+   #     fi
+   # fi
 
     git_repo="https://github.com/RichNeese/gpio_config_tool.git"
     git_target_dir="/opt/source/gpio_config_tool"
