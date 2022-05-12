@@ -739,9 +739,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_common_pkgs}"
+			echo "Log: (chroot) Installing: ${deb_desktop_prerequisite_pkgs}"
 			apt-get update
-			apt-get -y install ${deb_desktop_common_pkgs}
+			apt-get -y install ${deb_desktop_prerequisite_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
