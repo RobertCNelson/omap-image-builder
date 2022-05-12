@@ -82,7 +82,7 @@ if [ -f configs/kernel.data ] ; then
 	git_msg="5.10.x-ti-arm64"
 	var="ti-arm64"    ; ver="LTS510"  ; current_kernel
 
-	server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
-	git_msg="5.13.x-riscv64"
-	var="riscv64"    ; ver="V513X"  ; current_kernel
+	#server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
+	#git_msg="5.13.x-riscv64"
+	#var="riscv64"    ; ver="V513X"  ; current_kernel
 fi
