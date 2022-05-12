@@ -12,4 +12,4 @@ ti-rt LTS54 5.4.106-ti-rt-r41
 ti LTS510 5.10.109-ti-r45
 ti-rt LTS510 5.10.109-ti-rt-r45
 ti-arm64 LTS510 5.10.109-ti-arm64-r45
-riscv64 V513X 5.13.6-riscv64-r17
+riscv64 V514X 5.14.0-rc3-riscv64-r4
