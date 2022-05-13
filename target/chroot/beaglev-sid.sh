@@ -157,23 +157,23 @@ install_git_repos () {
     git_target_dir="/opt/source/riscv-os-overlay"
     git_clone
 
-   # if [ -f ${git_target_dir}/install ] ; then
-   #     cd ${git_target_dir}/
-   #     if [ -f install ] ; then
-   #         chmod +x install
-   #         ./install
-   #     fi
-   # fi
+    if [ -f ${git_target_dir}/install_overlay.sh ] ; then
+        cd ${git_target_dir}/
+        if [ -f install_overlay.sh ] ; then
+            chmod +x install_overlay.sh
+            ./install_overlay.sh
+        fi
+    fi
 
     git_repo="https://github.com/RichNeese/gpio_config_tool.git"
     git_target_dir="/opt/source/gpio_config_tool"
     git_clone
     
-    if [ -f ${git_target_dir}/install ] ; then
+    if [ -f ${git_target_dir}/install-gpio.sh ] ; then
         cd ${git_target_dir}/
-        if [ -f install ] ; then
-            chmod +x install
-            ./install
+        if [ -f install-gpio.sh ] ; then
+            chmod +x install-gpio.sh
+            ./install-gpio.sh
         fi
     fi
 }
