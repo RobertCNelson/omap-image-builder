@@ -1617,7 +1617,12 @@ populate_rootfs () {
 
 	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
 		if [ ! "x${extlinux_kernel}" = "x" ] ; then
-			cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/${extlinux_kernel}
+			echo "Un-Compressed Kernel: [cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image]"
+			cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image
+		fi
+		if [ ! "x${extlinux_compressed_kernel}" = "x" ] ; then
+			echo "Compressed Kernel: [cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image]"
+			cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image
 		fi
 		if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
 			if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
