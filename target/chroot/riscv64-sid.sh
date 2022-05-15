@@ -153,6 +153,18 @@ setup_desktop () {
 
 install_git_repos () {
 
+    git_repo="https://github.com/RichNeese/riscv64-custom-debs.git"
+    git_target_dir="/opt/source/riscv64-custom-debs"
+    git_clone
+    
+    if [ -f ${git_target_dir}/install-debs.sh ; then
+        cd ${git_target_dir}/
+        if [ -f install-debs.sh ] ; then
+            chmod +x install-debs.sh
+            ./install-debs.sh
+        fi
+    fi
+
     git_repo="https://github.com/RichNeese/riscv-os-overlay.git"
     git_target_dir="/opt/source/riscv-os-overlay"
     git_clone
