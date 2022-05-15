@@ -22,18 +22,18 @@
 
 export LC_ALL=C
 
-#contains: rfs_username, release_date
-if [ -f /etc/rcn-ee.conf ] ; then
-	. /etc/rcn-ee.conf
+#contains: rvfs_username, release_date
+if [ -f /etc/riscv.conf ] ; then
+	. /etc/riscv.conf
 fi
 
-if [ -f /etc/oib.project ] ; then
-	. /etc/oib.project
+if [ -f /etc/rvb.project ] ; then
+	. /etc/rvb.project
 fi
 
-export HOME=/home/${rfs_username}
-export USER=${rfs_username}
-export USERNAME=${rfs_username}
+export HOME=/home/${rvfs_username}
+export USER=${rvfs_username}
+export USERNAME=${rvfs_username}
 
 echo "env: [`env`]"
 
@@ -125,30 +125,30 @@ setup_desktop () {
 	wfile="/etc/lightdm/lightdm.conf"
 	if [ -f ${wfile} ] ; then
 		echo "Patching: ${wfile}"
-		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
-		sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' ${wfile}
+		sed -i -e 's:#autologin-user=:autologin-user='$rvfs_username':g' ${wfile}
+		sed -i -e 's:#autologin-session=:autologin-session='$rvfs_default_desktop':g' ${wfile}
 		if [ -f /opt/scripts/3rdparty/xinput_calibrator_pointercal.sh ] ; then
 			sed -i -e 's:#display-setup-script=:display-setup-script=/opt/scripts/3rdparty/xinput_calibrator_pointercal.sh:g' ${wfile}
 		fi
 	fi
 
-	if [ ! "x${rfs_desktop_background}" = "x" ] ; then
-		mkdir -p /home/${rfs_username}/.config/ || true
+	if [ ! "x${rvfs_desktop_background}" = "x" ] ; then
+		mkdir -p /home/${rvfs_username}/.config/ || true
 		if [ -d /opt/scripts/desktop-defaults/buster/lxqt/ ] ; then
-			cp -rv /opt/scripts/desktop-defaults/buster/lxqt/* /home/${rfs_username}/.config
+			cp -rv /opt/scripts/desktop-defaults/buster/lxqt/* /home/${rvfs_username}/.config
 		fi
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+		chown -R ${rvfs_username}:${rvfs_username} /home/${rvfs_username}/.config/
 	fi
 
 	#Disable dpms mode and screen blanking
 	#Better fix for missing cursor
-	wfile="/home/${rfs_username}/.xsessionrc"
+	wfile="/home/${rvfs_username}/.xsessionrc"
 	echo "#!/bin/sh" > ${wfile}
 	echo "" >> ${wfile}
 	echo "xset -dpms" >> ${wfile}
 	echo "xset s off" >> ${wfile}
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
-	chown -R ${rfs_username}:${rfs_username} ${wfile}
+	chown -R ${rvfs_username}:${rvfs_username} ${wfile}
 }
 
 install_git_repos () {
@@ -179,7 +179,7 @@ install_git_repos () {
 }
 
 other_source_links () {
-    chown -R ${rfs_username}:${rfs_username} /opt/source/
+    chown -R ${rvfs_username}:${rvfs_username} /opt/source/
 }
 
 is_this_qemu
@@ -188,12 +188,12 @@ setup_system
 setup_desktop
 
 if [ -f /usr/bin/git ] ; then
-	git config --global user.email "${rfs_username}@example.com"
-	git config --global user.name "${rfs_username}"
+	git config --global user.email "${rvfs_username}@example.com"
+	git config --global user.name "${rvfs_username}"
 	install_git_repos
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
-	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
+	chown ${rvfs_username}:${rvfs_username} /home/${rvfs_username}/.gitconfig
 fi
 #other_source_links
 #
