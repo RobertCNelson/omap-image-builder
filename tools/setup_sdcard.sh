@@ -1853,7 +1853,7 @@ while [ ! -z "$1" ] ; do
 		check_root
 		check_mmc
 		;;
-	--img|--img-[12468]gb)
+	--img|--img-[124689]gb)
 		checkparm $2
 		name=${2:-image}
 		gsize=$(echo "$1" | sed -ne 's/^--img-\([[:digit:]]\+\)gb$/\1/p')
