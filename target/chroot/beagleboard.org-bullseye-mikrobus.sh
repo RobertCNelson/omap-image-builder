@@ -207,8 +207,8 @@ install_zephyr () {
 	if [ -f /usr/local/bin/west ] ; then
 		echo "Installing zephyr"
 		cd /opt/source/
-		echo "west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.4 bcf-zephyr"
-		west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.4 bcf-zephyr
+		echo "west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.5 bcf-zephyr"
+		west init -m https://github.com/jadonk/zephyr --mr bcf-sdk-0.0.5 bcf-zephyr
 
 		if [ -d /opt/source/bcf-zephyr/ ] ; then
 			cd /opt/source/bcf-zephyr/
@@ -252,7 +252,7 @@ if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
-	#install_zephyr
+	install_zephyr
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
