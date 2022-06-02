@@ -252,7 +252,7 @@ if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
-	install_zephyr
+	#install_zephyr
 	git config --global --unset-all user.email
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
