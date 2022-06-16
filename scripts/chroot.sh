@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2021 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2022 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -1224,6 +1224,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/dphys-swapfile.service ] ; then
 				systemctl disable dphys-swapfile.service || true
 			fi
+		fi
+
+		#EW 2022 demo...
+		if [ -f /lib/systemd/system/ti-ew-2022.service ] ; then
+			systemctl enable ti-ew-2022.service || true
 		fi
 	}
 
