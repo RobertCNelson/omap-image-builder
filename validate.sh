@@ -31,6 +31,9 @@ run_config
 config="bb.org-debian-bullseye-console-arm64"
 run_config
 
+config="bela-debian-stretch-bela-v4.14-ti-xenomai"
+run_config
+
 if [ -d ./ignore ] ; then
 	sudo rm -rf ./ignore || true
 fi
