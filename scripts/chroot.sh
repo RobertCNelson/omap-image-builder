@@ -1226,6 +1226,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
+		if [ -f /lib/systemd/system/bb-symlinks.service ] ; then
+			systemctl enable bb-symlinks.service || true
+		fi
+
 		#EW 2022 demo...
 		if [ -f /lib/systemd/system/ti-ew-2022.service ] ; then
 			systemctl enable ti-ew-2022.service || true
