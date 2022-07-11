@@ -298,7 +298,7 @@ install_git_repos () {
 	git_repo="https://github.com/rcn-ee/Native_SDK"
 	git_target_dir="/opt/Native_SDK"
 	git_branch="stretch"
-	git_clone
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		mkdir cmake-build
