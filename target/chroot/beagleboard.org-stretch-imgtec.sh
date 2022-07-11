@@ -295,8 +295,9 @@ install_git_repos () {
 	git_target_dir="/opt/source/py-uio"
 	git_clone
 
-	git_repo="https://github.com/powervr-graphics/Native_SDK"
+	git_repo="https://github.com/rcn-ee/Native_SDK"
 	git_target_dir="/opt/Native_SDK"
+	git_branch="stretch"
 	git_clone
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
