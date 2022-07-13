@@ -792,12 +792,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
-			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version}"
+			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version} (it's okay if these fail to install...)"
 			apt-get -y install libpruio-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
+			apt-get -y install rtl8723du-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install rtl8821cu-modules-${repo_rcnee_pkg_version} || true
 			apt-get -y install qcacld-2.0-modules-${repo_rcnee_pkg_version} || true
-			#apt-get -y install seeed-modules-${repo_rcnee_pkg_version} || true
 
 			if [ ! "x${repo_rcnee_cmem_version}" = "x" ] ; then
 				apt-get -y install ti-cmem-${repo_rcnee_cmem_version}-modules-${repo_rcnee_pkg_version} || true
