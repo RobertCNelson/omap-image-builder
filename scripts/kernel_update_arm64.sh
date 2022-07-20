@@ -30,59 +30,7 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
-	server="https://rcn-ee.net/repos/latest/bullseye-armhf/LATEST-"
-	git_msg="5.4.x-xM"
-	var="armv7"      ; ver="LTS54"       ; current_kernel
-
-	git_msg="5.10.x-xM"
-	var="armv7"      ; ver="LTS510"       ; current_kernel
-
-	git_msg="4.19.x-bone-rt"
-	var="bone-rt"    ; ver="LTS419" ; current_kernel
-
-	git_msg="5.14.x-bone"
-	var="omap-psp"   ; ver="V514X" ; current_kernel
-
-	git_msg="5.15.x-bone"
-	var="omap-psp"   ; ver="LTS515" ; current_kernel
-
-	git_msg="4.14.x-ti"
-	filter1="rt"
-	filter2="arm64"
-	var="ti"         ; ver="LTS414"  ; current_kernel
-
-	git_msg="4.14.x-ti-rt"
-	var="ti-rt"      ; ver="LTS414"  ; current_kernel
-
-	git_msg="4.19.x-ti"
-	filter1="rt"
-	filter2="arm64"
-	var="ti"         ; ver="LTS419"  ; current_kernel
-
-	git_msg="4.19.x-ti-rt"
-	var="ti-rt"      ; ver="LTS419"  ; current_kernel
-
-	git_msg="5.4.x-ti"
-	filter1="rt"
-	filter2="arm64"
-	var="ti"         ; ver="LTS54"  ; current_kernel
-
-	git_msg="5.4.x-ti-rt"
-	var="ti-rt"      ; ver="LTS54"  ; current_kernel
-
-	git_msg="5.10.x-ti"
-	filter1="rt"
-	filter2="arm64"
-	var="ti"         ; ver="LTS510"  ; current_kernel
-
-	git_msg="5.10.x-ti-rt"
-	var="ti-rt"      ; ver="LTS510"  ; current_kernel
-
 	server="https://rcn-ee.net/repos/latest/bullseye-arm64/LATEST-"
 	git_msg="5.10.x-ti-arm64"
 	var="ti-arm64"    ; ver="LTS510"  ; current_kernel
-
-	#server="https://rcn-ee.net/repos/latest/sid-riscv64/LATEST-"
-	#git_msg="5.13.x-riscv64"
-	#var="riscv64"    ; ver="V513X"  ; current_kernel
 fi
