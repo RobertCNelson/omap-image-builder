@@ -131,7 +131,7 @@ install_git_repos () {
         git_branch="master"
         git_clone_branch
 
-        git_repo="htps://github.com/giuliomoro/am335x_pru_package.git"
+        git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
         git_target_dir="/opt/source/am335x_pru_package"
         git_branch="master"
         git_clone_branch
