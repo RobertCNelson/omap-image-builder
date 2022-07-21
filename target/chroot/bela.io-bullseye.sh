@@ -82,66 +82,9 @@ git_clone_full () {
 }
 
 setup_system () {
-	#For when sed/grep/etc just gets way to complex...
-	cd /
-	#make the sound card work by default
-	if [ -f /etc/alsa/tlv320aic3104.state.txt ] ; then
-		if [ -d /var/lib/alsa/ ] ; then
-			cp -v /etc/alsa/tlv320aic3104.state.txt /var/lib/alsa/asound.state
-			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
-		fi
-	fi
-}
-
-setup_desktop () {
-	if [ -d /etc/X11/ ] ; then
-		wfile="/etc/X11/xorg.conf"
-		echo "Patching: ${wfile}"
-		echo "Section \"Monitor\"" > ${wfile}
-		echo "        Identifier      \"Builtin Default Monitor\"" >> ${wfile}
-		echo "EndSection" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "Section \"Device\"" >> ${wfile}
-		echo "        Identifier      \"Builtin Default fbdev Device 0\"" >> ${wfile}
-		echo "        Driver          \"fbdev\"" >> ${wfile}
-		echo "#HWcursor_false        Option          \"HWcursor\"          \"false\"" >> ${wfile}
-		echo "EndSection" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "Section \"Screen\"" >> ${wfile}
-		echo "        Identifier      \"Builtin Default fbdev Screen 0\"" >> ${wfile}
-		echo "        Device          \"Builtin Default fbdev Device 0\"" >> ${wfile}
-		echo "        Monitor         \"Builtin Default Monitor\"" >> ${wfile}
-		echo "#DefaultDepth        DefaultDepth    16" >> ${wfile}
-		echo "EndSection" >> ${wfile}
-		echo "" >> ${wfile}
-		echo "Section \"ServerLayout\"" >> ${wfile}
-		echo "        Identifier      \"Builtin Default Layout\"" >> ${wfile}
-		echo "        Screen          \"Builtin Default fbdev Screen 0\"" >> ${wfile}
-		echo "EndSection" >> ${wfile}
-	fi
-
-	wfile="/etc/lightdm/lightdm.conf"
-	if [ -f ${wfile} ] ; then
-		echo "Patching: ${wfile}"
-		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
-		sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' ${wfile}
-	fi
-
-	if [ -f /etc/bbb.io/templates/xfce4/xfce4-desktop.xml ] ; then
-		mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
-		cp -v /etc/bbb.io/templates/xfce4/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
-	fi
-
-	#Disable dpms mode and screen blanking
-	#Better fix for missing cursor
-	wfile="/home/${rfs_username}/.xsessionrc"
-	echo "#!/bin/sh" > ${wfile}
-	echo "" >> ${wfile}
-	echo "xset -dpms" >> ${wfile}
-	echo "xset s off" >> ${wfile}
-	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
-	chown -R ${rfs_username}:${rfs_username} ${wfile}
+	echo "" >> /etc/securetty
+	echo "#USB Gadget Serial Port" >> /etc/securetty
+	echo "ttyGS0" >> /etc/securetty
 }
 
 install_git_repos () {
@@ -153,15 +96,12 @@ install_git_repos () {
 		if [ -f ${git_target_dir}/.git/config ] ; then
 			cd ${git_target_dir}/
 			sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
+			sed -i -e "s/strict-aliasing/strict-aliasing', '-Wno-cast-function-type', '-Wno-format-truncation', '-Wno-sizeof-pointer-memaccess', '-Wno-stringop-overflow/g" setup.py || true
 			if [ -f /usr/bin/python3 ] ; then
 				python3 setup.py install || true
 			fi
 			git reset HEAD --hard || true
 		fi
-	fi
-
-	if [ -f /var/www/html/index.nginx-debian.html ] ; then
-		rm -rf /var/www/html/index.nginx-debian.html || true
 	fi
 
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
@@ -173,15 +113,85 @@ install_git_repos () {
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti"
 	git_clone_branch
+	
+	git_repo="https://github.com/RobertCNelson/ti-linux-kernel-dev"
+    git_target_dir="/opt/source/ti-linux-kernel-dev"
+    git_branch="ti-linux-xenomai-4.14.y"
+    git_clone_branch
 
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-5.15"
-	git_branch="v5.15.x"
-	git_clone_branch
 
-	git_repo="https://github.com/beagleboard/bb.org-overlays"
-	git_target_dir="/opt/source/bb.org-overlays"
-	git_clone
+    git_repo="git://git.xenomai.org/xenomai-3.git"
+    git_target_dir="/opt/source/xenomai-3"
+    git_branch="stable/v3.0.x"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/Bela.git"
+    git_target_dir="/opt/source/Bela"
+    git_branch="master"
+    git_clone_branch
+
+    git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
+    git_target_dir="/opt/source/am335x_pru_package"
+    git_branch="master"
+    git_clone_branch
+
+    git_repo="https://github.com/giuliomoro/prudebug.git"
+    git_target_dir="/opt/source/prudebug"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
+    git_target_dir="/opt/source/Bootloader-Builder"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
+    git_target_dir="/opt/source/bb.org-overlays"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
+    git_target_dir="/opt/source/bb.org-dtc"
+    git_branch="v1.6.0"
+    git_clone_branch
+
+
+    git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+    git_target_dir="/opt/source/dtb-rebuilder"
+    git_branch="4.14-ti"
+    git_clone_branch
+
+
+    git_repo="https://github.com/mattgodbolt/seasocks.git"
+    git_target_dir="/opt/source/seasocks"
+    git_branch="v1.4.4"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
+    git_target_dir="/opt/source/rtdm_pruss_irq"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/giuliomoro/checkinstall"
+    git_target_dir="/opt/source/checkinstall"
+    git_branch="master"
+        git_clone_branch
+
+
+    git_repo="https://github.com/giuliomoro/hvcc"
+    git_target_dir="/opt/source/hvcc"
+    git_branch="master-bela"
+    git_clone_branch
+	
+    git_repo="https://github.com/beagleboard/bb.org-overlays"
+    git_target_dir="/opt/source/bb.org-overlays"
+    git_clone
 
 	git_repo="https://github.com/mvduin/bbb-pin-utils"
 	git_target_dir="/opt/source/bbb-pin-utils"
@@ -197,11 +207,6 @@ install_git_repos () {
 	git_repo="https://github.com/mvduin/overlay-utils"
 	git_target_dir="/opt/source/overlay-utils"
 	git_clone
-
-#	git_repo="https://github.com/beagleboard/u-boot"
-#	git_target_dir="/opt/source/u-boot-v2021.10-bbb.io-am335x"
-#	git_branch="v2021.10-bbb.io-am335x"
-#	git_clone_branch
 }
 
 other_source_links () {
@@ -211,7 +216,7 @@ other_source_links () {
 is_this_qemu
 
 setup_system
-setup_desktop
+#setup_desktop
 
 if [ -f /usr/bin/git ] ; then
 	git config --global user.email "${rfs_username}@example.com"
@@ -221,5 +226,5 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
-other_source_links
+#other_source_links
 #
