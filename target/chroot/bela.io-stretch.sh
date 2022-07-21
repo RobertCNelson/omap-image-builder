@@ -115,83 +115,83 @@ install_git_repos () {
 	git_clone_branch
 	
 	git_repo="https://github.com/RobertCNelson/ti-linux-kernel-dev"
-        git_target_dir="/opt/source/ti-linux-kernel-dev"
-        git_branch="ti-linux-xenomai-4.14.y"
+    git_target_dir="/opt/source/ti-linux-kernel-dev"
+    git_branch="ti-linux-xenomai-4.14.y"
+    git_clone_branch
+
+
+    git_repo="git://git.xenomai.org/xenomai-3.git"
+    git_target_dir="/opt/source/xenomai-3"
+    git_branch="stable/v3.0.x"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/Bela.git"
+    git_target_dir="/opt/source/Bela"
+    git_branch="master"
+    git_clone_branch
+
+    git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
+    git_target_dir="/opt/source/am335x_pru_package"
+    git_branch="master"
+    git_clone_branch
+
+    git_repo="https://github.com/giuliomoro/prudebug.git"
+    git_target_dir="/opt/source/prudebug"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
+    git_target_dir="/opt/source/Bootloader-Builder"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
+    git_target_dir="/opt/source/bb.org-overlays"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
+    git_target_dir="/opt/source/bb.org-dtc"
+    git_branch="v1.6.0"
+    git_clone_branch
+
+
+    git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+    git_target_dir="/opt/source/dtb-rebuilder"
+    git_branch="4.14-ti"
+    git_clone_branch
+
+
+    git_repo="https://github.com/mattgodbolt/seasocks.git"
+    git_target_dir="/opt/source/seasocks"
+    git_branch="v1.4.4"
+    git_clone_branch
+
+
+    git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
+    git_target_dir="/opt/source/rtdm_pruss_irq"
+    git_branch="master"
+    git_clone_branch
+
+
+    git_repo="https://github.com/giuliomoro/checkinstall"
+    git_target_dir="/opt/source/checkinstall"
+    git_branch="master"
         git_clone_branch
 
 
-        git_repo="git://git.xenomai.org/xenomai-3.git"
-        git_target_dir="/opt/source/xenomai-3"
-        git_branch="stable/v3.0.x"
-        git_clone_branch
-
-
-        git_repo="https://github.com/BelaPlatform/Bela.git"
-        git_target_dir="/opt/source/Bela"
-        git_branch="master"
-        git_clone_branch
-
-        git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
-        git_target_dir="/opt/source/am335x_pru_package"
-        git_branch="master"
-        git_clone_branch
-
-        git_repo="https://github.com/giuliomoro/prudebug.git"
-        git_target_dir="/opt/source/prudebug"
-        git_branch="master"
-        git_clone_branch
-
-
-        git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
-        git_target_dir="/opt/source/Bootloader-Builder"
-        git_branch="master"
-        git_clone_branch
-
-
-        git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
-        git_target_dir="/opt/source/bb.org-overlays"
-        git_branch="master"
-        git_clone_branch
-
-
-        git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
-        git_target_dir="/opt/source/bb.org-dtc"
-        git_branch="v1.6.0"
-        git_clone_branch
-
-
-        git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-        git_target_dir="/opt/source/dtb-rebuilder"
-        git_branch="4.14-ti"
-        git_clone_branch
-
-
-        git_repo="https://github.com/mattgodbolt/seasocks.git"
-        git_target_dir="/opt/source/seasocks"
-        git_branch="v1.4.4"
-        git_clone_branch
-
-
-        git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
-        git_target_dir="/opt/source/rtdm_pruss_irq"
-        git_branch="master"
-        git_clone_branch
-
-
-        git_repo="https://github.com/giuliomoro/checkinstall"
-        git_target_dir="/opt/source/checkinstall"
-        git_branch="master"
-        git_clone_branch
-
-
-        git_repo="https://github.com/giuliomoro/hvcc"
-        git_target_dir="/opt/source/hvcc"
-        git_branch="master-bela"
-        git_clone_branch
+    git_repo="https://github.com/giuliomoro/hvcc"
+    git_target_dir="/opt/source/hvcc"
+    git_branch="master-bela"
+    git_clone_branch
 	
-        git_repo="https://github.com/beagleboard/bb.org-overlays"
-        git_target_dir="/opt/source/bb.org-overlays"
-        git_clone
+    git_repo="https://github.com/beagleboard/bb.org-overlays"
+    git_target_dir="/opt/source/bb.org-overlays"
+    git_clone
 
 	git_repo="https://github.com/mvduin/bbb-pin-utils"
 	git_target_dir="/opt/source/bbb-pin-utils"
