@@ -19,17 +19,17 @@ run_config () {
 	fi
 }
 
-config="bb.org-debian-buster-console-v4.19"
-run_config
+#config="bb.org-debian-buster-console-v4.19"
+#run_config
 
-config="octavo-debian-buster-console-v4.19"
-run_config
+#config="octavo-debian-buster-console-v4.19"
+#run_config
 
-config="bb.org-debian-bullseye-console-v5.10-ti-armhf"
-run_config
+#config="bb.org-debian-bullseye-console-v5.10-ti-armhf"
+#run_config
 
-config="bb.org-debian-bullseye-console-arm64"
-run_config
+#config="bb.org-debian-bullseye-console-arm64"
+#run_config
 
 config="bela.io-debian-stretch-armhf-v4.14-ti-xenomai"
 run_config
