@@ -124,6 +124,13 @@ install_git_repos () {
     git_target_dir="/opt/source/xenomai-3"
     git_branch="stable/v3.0.x"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+        echo "~~~~ cross-compiling xenomai  ~~~~"
+    	scripts/bootstrap
+    	./configure --with-core=cobalt --enable-smp --host=arm-linux-gnueabihf --build=arm CFLAGS="-march=armv7-a -mfpu=vfp3"
+	    make -j${CORES}
+	fi
 
 
     git_repo="https://github.com/BelaPlatform/Bela.git"
