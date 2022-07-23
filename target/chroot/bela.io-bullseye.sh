@@ -135,11 +135,23 @@ install_git_repos () {
     git_target_dir="/opt/source/am335x_pru_package"
     git_branch="master"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building PRU utils ~~~~"
+        make -j${CORES}
+        make install
+	fi
 
     git_repo="https://github.com/giuliomoro/prudebug.git"
     git_target_dir="/opt/source/prudebug"
     git_branch="master"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building prudebug ~~~~"
+        make -j${CORES}
+        cp -v ./prudebug /usr/bin/
+	fi
 
 
     git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
@@ -152,24 +164,63 @@ install_git_repos () {
     git_target_dir="/opt/source/bb.org-overlays"
     git_branch="master"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building bb.org-overlays ~~~~"
+        make clean
+        make -j${CORES}
+        make install
+        cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
+        make clean
+	fi
 
 
     git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
     git_target_dir="/opt/source/bb.org-dtc"
     git_branch="v1.6.0"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building bb.org-dtc ~~~~"
+        make clean
+        make -j${CORES} PREFIX=/usr/local CC=gcc CROSS_COMPILE= all
+        make PREFIX=/usr/local/ install
+        ln -sf /usr/local/bin/dtc /usr/bin/dtc
+        echo "dtc: `/usr/bin/dtc --version`"
+        make clean
+	fi
 
 
     git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
     git_target_dir="/opt/source/dtb-rebuilder"
     git_branch="4.14-ti"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building Bela dtb ~~~~"
+        make clean
+        make -j${CORES}
+        make install
+        make clean
+	fi
 
 
     git_repo="https://github.com/mattgodbolt/seasocks.git"
     git_target_dir="/opt/source/seasocks"
     git_branch="v1.4.4"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building Seasocks ~~~~"
+        mkdir build
+        cd build
+        cmake .. -DDEFLATE_SUPPORT=OFF -DUNITTESTS=OFF -DSEASOCKS_SHARED=ON
+        make -j${CORES} seasocks
+        /usr/bin/cmake -P cmake_install.cmake
+        cd /root
+        rm -rf /opt/seasocks/build
+        ldconfig
+	fi
 
 
     git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
@@ -181,7 +232,7 @@ install_git_repos () {
     git_repo="https://github.com/giuliomoro/checkinstall"
     git_target_dir="/opt/source/checkinstall"
     git_branch="master"
-        git_clone_branch
+    git_clone_branch
 
 
     git_repo="https://github.com/giuliomoro/hvcc"
