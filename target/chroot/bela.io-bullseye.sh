@@ -88,22 +88,6 @@ setup_system () {
 }
 
 install_git_repos () {
-	if [ -f /usr/bin/make ] ; then
-		echo "Installing pip packages"
-		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
-			sed -i -e "s/strict-aliasing/strict-aliasing', '-Wno-cast-function-type', '-Wno-format-truncation', '-Wno-sizeof-pointer-memaccess', '-Wno-stringop-overflow/g" setup.py || true
-			if [ -f /usr/bin/python3 ] ; then
-				python3 setup.py install || true
-			fi
-			git reset HEAD --hard || true
-		fi
-	fi
-
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
 	git_target_dir="/opt/source/dtb-5.4-ti"
 	git_branch="v5.4.x-ti-overlays"
@@ -119,7 +103,6 @@ install_git_repos () {
     git_branch="ti-linux-xenomai-4.14.y"
     git_clone_branch
 
-
     git_repo="git://git.xenomai.org/xenomai-3.git"
     git_target_dir="/opt/source/xenomai-3"
     git_branch="stable/v3.0.x"
@@ -131,7 +114,6 @@ install_git_repos () {
     	./configure --with-core=cobalt --enable-smp --host=arm-linux-gnueabihf --build=arm CFLAGS="-march=armv7-a -mfpu=vfp3"
 	    make -j${CORES}
 	fi
-
 
     git_repo="https://github.com/BelaPlatform/Bela.git"
     git_target_dir="/opt/source/Bela"
@@ -160,12 +142,10 @@ install_git_repos () {
         cp -v ./prudebug /usr/bin/
 	fi
 
-
     git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
     git_target_dir="/opt/source/Bootloader-Builder"
     git_branch="master"
     git_clone_branch
-
 
     git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
     git_target_dir="/opt/source/bb.org-overlays"
@@ -180,7 +160,6 @@ install_git_repos () {
         cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
         make clean
 	fi
-
 
     git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
     git_target_dir="/opt/source/bb.org-dtc"
@@ -197,7 +176,6 @@ install_git_repos () {
         make clean
 	fi
 
-
     git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
     git_target_dir="/opt/source/dtb-rebuilder"
     git_branch="4.14-ti"
@@ -210,7 +188,6 @@ install_git_repos () {
         make install
         make clean
 	fi
-
 
     git_repo="https://github.com/mattgodbolt/seasocks.git"
     git_target_dir="/opt/source/seasocks"
@@ -229,38 +206,20 @@ install_git_repos () {
         ldconfig
 	fi
 
-
     git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
     git_target_dir="/opt/source/rtdm_pruss_irq"
     git_branch="master"
     git_clone_branch
-
 
     git_repo="https://github.com/giuliomoro/checkinstall"
     git_target_dir="/opt/source/checkinstall"
     git_branch="master"
     git_clone_branch
 
-
     git_repo="https://github.com/giuliomoro/hvcc"
     git_target_dir="/opt/source/hvcc"
     git_branch="master-bela"
     git_clone_branch
-	
-    git_repo="https://github.com/beagleboard/bb.org-overlays"
-    git_target_dir="/opt/source/bb.org-overlays"
-    git_clone
-
-	git_repo="https://github.com/mvduin/bbb-pin-utils"
-	git_target_dir="/opt/source/bbb-pin-utils"
-	git_clone
-	if [ -d /opt/source/bbb-pin-utils/ ] ; then
-		ln -s /opt/source/bbb-pin-utils/show-pins /usr/local/sbin/
-	fi
-
-	git_repo="https://github.com/mvduin/py-uio"
-	git_target_dir="/opt/source/py-uio"
-	git_clone
 
 	git_repo="https://github.com/mvduin/overlay-utils"
 	git_target_dir="/opt/source/overlay-utils"
