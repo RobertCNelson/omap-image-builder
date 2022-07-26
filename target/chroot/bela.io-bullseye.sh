@@ -216,10 +216,15 @@ install_git_repos () {
     git_branch="master"
     git_clone_branch
 
-    git_repo="https://github.com/giuliomoro/hvcc"
+    git_repo="https://github.com/Wasted-Audio/hvcc.git"
     git_target_dir="/opt/source/hvcc"
-    git_branch="master-bela"
+    git_branch="develop"
     git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building hvcc ~~~~"
+        sudo -H pip3 install -e .
+	fi
 
 	git_repo="https://github.com/mvduin/overlay-utils"
 	git_target_dir="/opt/source/overlay-utils"
