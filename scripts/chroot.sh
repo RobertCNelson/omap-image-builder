@@ -1679,7 +1679,8 @@ else
 		cd ./opt/u-boot/ || true
 		echo "Copying: packaged version of U-Boot"
 		mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
-		cp -rv ./* "${DIR}/deploy/${export_filename}/u-boot"
+		cp -r ./* "${DIR}/deploy/${export_filename}/u-boot"
+		tree "${DIR}/deploy/${export_filename}/u-boot"
 	fi
 	cd "${tempdir}" || true
 	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
