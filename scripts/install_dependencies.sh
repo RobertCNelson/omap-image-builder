@@ -30,15 +30,10 @@ debootstrap_is_installed () {
 		unset deb_pkgs
 		dpkg -l | grep debootstrap >/dev/null || deb_pkgs="${deb_pkgs}debootstrap "
 
-		if [ "x${host_arch}" != "xarmv7l" ] ; then
-			if [ "x${host_arch}" != "xaarch64" ] ; then
-				#FIXME:...
-				#echo "QEMU is un-reliable, thus no longer supported... Spend some Money and buy a real ARMHF device to run this script."
-				#FIXME: comment out the next line to use QEMU
-				#exit 2
-				dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
-				dpkg -l | grep $(dpkg --print-architecture) | grep "qemu-system-arm" >/dev/null || deb_pkgs="${deb_pkgs}qemu-system-arm "
-			fi
+		if [ "x${host_arch}" = "xx86_64" ] ; then
+			#FIXME: while this is not a catch-all, x86_64 users would need qemu...
+			#If your building RISC-V on ARM64, i'm just going to assume you have qemu installed, instead of fancy logic here...
+			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
 		fi
 
 		if [ "${deb_pkgs}" ] ; then
