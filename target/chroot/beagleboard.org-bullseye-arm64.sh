@@ -146,6 +146,10 @@ install_git_repos () {
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
 	git_clone
+
+	git_repo="https://github.com/rm-hull/spidev-test"
+	git_target_dir="/opt/source/spidev-test"
+	git_clone
 }
 
 other_source_links () {
