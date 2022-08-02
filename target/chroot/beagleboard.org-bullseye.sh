@@ -91,6 +91,15 @@ setup_system () {
 			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
 		fi
 	fi
+
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
+			rm -f /etc/nginx/sites-enabled/default || true
+			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
+			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
+			rm -f /var/www/html/index.nginx-debian.html || true
+		fi
+	fi
 }
 
 setup_desktop () {
@@ -193,10 +202,9 @@ install_git_repos () {
 	git_target_dir="/opt/source/overlay-utils"
 	git_clone
 
-#	git_repo="https://github.com/beagleboard/u-boot"
-#	git_target_dir="/opt/source/u-boot-v2021.10-bbb.io-am335x"
-#	git_branch="v2021.10-bbb.io-am335x"
-#	git_clone_branch
+	git_repo="https://github.com/rm-hull/spidev-test"
+	git_target_dir="/opt/source/spidev-test"
+	git_clone
 }
 
 other_source_links () {

@@ -81,8 +81,18 @@ git_clone_full () {
 	echo "${git_target_dir} : ${git_repo}" >> /opt/source/list.txt
 }
 
+setup_system () {
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
+			rm -f /etc/nginx/sites-enabled/default || true
+			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
+			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
+			rm -f /var/www/html/index.nginx-debian.html || true
+		fi
+	fi
+}
+
 setup_desktop () {
-	cd /
 	if [ -d /etc/X11/ ] ; then
 		wfile="/etc/X11/xorg.conf"
 		echo "Patching: ${wfile}"
@@ -131,15 +141,6 @@ setup_desktop () {
 	echo "xset s off" >> ${wfile}
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
-
-	if [ -f /var/www/html/index.nginx-debian.html ] ; then
-		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
-			rm -f /etc/nginx/sites-enabled/default || true
-			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
-			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
-			rm -f /var/www/html/index.nginx-debian.html || true
-		fi
-	fi
 }
 
 install_git_repos () {
@@ -167,6 +168,7 @@ other_source_links () {
 
 is_this_qemu
 
+setup_system
 setup_desktop
 
 if [ -f /usr/bin/git ] ; then

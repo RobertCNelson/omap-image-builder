@@ -91,6 +91,15 @@ setup_system () {
 			cp -v /etc/alsa/tlv320aic3104.conf.txt /etc/asound.conf
 		fi
 	fi
+
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
+			rm -f /etc/nginx/sites-enabled/default || true
+			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
+			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
+			rm -f /var/www/html/index.nginx-debian.html || true
+		fi
+	fi
 }
 
 setup_desktop () {
@@ -196,6 +205,10 @@ install_git_repos () {
 
 	git_repo="https://github.com/mvduin/overlay-utils"
 	git_target_dir="/opt/source/overlay-utils"
+	git_clone
+
+	git_repo="https://github.com/rm-hull/spidev-test"
+	git_target_dir="/opt/source/spidev-test"
 	git_clone
 
 	git_repo="https://github.com/jadonk/msp430F55xx_usb_uart_bridge"
