@@ -131,6 +131,15 @@ setup_desktop () {
 	echo "xset s off" >> ${wfile}
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
+
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
+			rm -f /etc/nginx/sites-enabled/default || true
+			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
+			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
+			rm -f /var/www/html/index.nginx-debian.html || true
+		fi
+	fi
 }
 
 install_git_repos () {
