@@ -133,6 +133,7 @@ detect_software () {
 	check_for_command wget wget
 	check_for_command git git
 	check_for_command partprobe parted
+	check_for_command tree tree
 
 	if [ "x${build_img_file}" = "xenable" ] ; then
 		check_for_command kpartx kpartx
@@ -141,7 +142,7 @@ detect_software () {
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
 		echo "Your system is missing some dependencies"
-		echo "Debian/Ubuntu: sudo apt-get install dosfstools git kpartx wget parted"
+		echo "Debian/Ubuntu: sudo apt-get install dosfstools git kpartx wget tree parted"
 		echo "Fedora: yum install dosfstools dosfstools git wget"
 		echo "Gentoo: emerge dosfstools git wget"
 		echo ""
