@@ -152,25 +152,25 @@ check_defines () {
 		fi
 	fi
 
-    if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
-        deb_console_application_pkgs="$(echo ${deb_console_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
+	if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
+		deb_console_application_pkgs="$(echo ${deb_console_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
 
-    if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
-        deb_desktop_common_pkgs="$(echo ${deb_desktop_common_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
-    
-    if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
-        deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
+	if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
+		deb_desktop_common_pkgs="$(echo ${deb_desktop_common_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
 
-    if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
-        deb_desktop_application_pkgs="$(echo ${deb_desktop_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
+	if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
+		deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
 
-    if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
-        deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-    fi
+	if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
+		deb_desktop_application_pkgs="$(echo ${deb_desktop_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
+
+	if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
+		deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
+	fi
 }
 
 report_size () {
