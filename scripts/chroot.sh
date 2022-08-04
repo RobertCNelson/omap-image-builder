@@ -524,7 +524,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	echo "#git clone https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
 	echo "#cd ./linux-stable-rcn-ee" >> ${wfile}
 	echo "#git checkout \`uname -r\` -b tmp" >> ${wfile}
-	echo "#" >> ${wfile}
+	echo "" >> ${wfile}
 	if [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
 		echo "deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
@@ -534,6 +534,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			echo "#BeagleBoard.org Mirror on Cloudflare" >> ${wfile}
 			echo "deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
+			echo "" >> ${wfile}
 			echo "#Backup Mirror" >> ${wfile}
 			echo "#deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
