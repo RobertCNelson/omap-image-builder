@@ -1193,7 +1193,11 @@ populate_rootfs () {
 				echo "#dtb_overlay=<file8>.dtbo" >> ${wfile}
 				echo "###" >> ${wfile}
 				echo "###Disable auto loading of virtual capes (emmc/video/wireless/adc)" >> ${wfile}
-				echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
+				if [ "x${uboot_disable_emmc}" = "xenable" ] ; then
+					echo "disable_uboot_overlay_emmc=1" >> ${wfile}
+				else
+					echo "#disable_uboot_overlay_emmc=1" >> ${wfile}
+				fi
 				if [ "x${uboot_disable_video}" = "xenable" ] ; then
 					echo "disable_uboot_overlay_video=1" >> ${wfile}
 				else
@@ -2033,6 +2037,9 @@ while [ ! -z "$1" ] ; do
 		;;
 	--enable-uboot-cape-overlays)
 		uboot_cape_overlays="enable"
+		;;
+	--enable-uboot-disable-emmc)
+		uboot_disable_emmc="enable"
 		;;
 	--enable-uboot-disable-video)
 		uboot_disable_video="enable"
