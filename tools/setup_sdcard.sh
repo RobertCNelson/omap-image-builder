@@ -1292,6 +1292,14 @@ populate_rootfs () {
 					echo "dtb_overlay=PB-HACKADAY-2021.dtbo" >> ${wfile}
 					echo "" >> ${wfile}
 				fi
+				
+				# specified bela device tree overlay
+				if [ "x${load_bela_overlay}" = "xenable" ] ; then
+					echo "###" >> ${wfile}
+					echo "dtb_overlay=BB-BELA-00A1.dtbo" >> ${wfile}
+					echo "dtb_overlay=BB-BELA-CTAG-SPI-00A0.dtbo" >> ${wfile}
+					echo "" >> ${wfile}
+				fi
 			fi
 		fi
 
