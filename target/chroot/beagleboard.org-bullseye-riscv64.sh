@@ -144,15 +144,6 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-5.10-ti-arm64"
-	git_branch="v5.10.x-ti-arm64"
-	git_clone_branch
-
-	git_repo="https://github.com/mvduin/py-uio"
-	git_target_dir="/opt/source/py-uio"
-	git_clone
-
 	git_repo="https://github.com/rm-hull/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
