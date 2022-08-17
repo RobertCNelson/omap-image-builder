@@ -1296,8 +1296,8 @@ populate_rootfs () {
 				# specified bela device tree overlay
 				if [ "x${load_bela_overlay}" = "xenable" ] ; then
 					echo "###" >> ${wfile}
-					echo "dtb_overlay=BB-BELA-00A1.dtbo" >> ${wfile}
-					echo "dtb_overlay=BB-BELA-CTAG-SPI-00A0.dtbo" >> ${wfile}
+					echo "uboot_overlay_addr4=BB-BELA-00A1.dtbo" >> ${wfile}
+					echo "uboot_overlay_addr5=BB-BELA-CTAG-SPI-00A0.dtbo" >> ${wfile}
 					echo "" >> ${wfile}
 				fi
 			fi
