@@ -2092,6 +2092,10 @@ while [ ! -z "$1" ] ; do
 	--enable-load-custom-overlay)
 		load_custom_overlay="enable"
 		;;
+	# enable bela overlay
+	--enable-load-bela-overlay)
+		load_bela_overlay="enable"
+		;;
 	--efi)
 		uboot_efi_mode="enable"
 		;;
