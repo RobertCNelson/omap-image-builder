@@ -18,5 +18,5 @@
 
 ### Finalize: Bela specific version:
 
-    sudo ./setup_sdcard.sh --img-4gb bela-example --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru
+    sudo ./setup_sdcard.sh --img-4gb bela-example --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-load-bela-overlay
 

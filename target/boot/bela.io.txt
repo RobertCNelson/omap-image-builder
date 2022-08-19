@@ -1,7 +1,0 @@
-uenvcmd=echo loading ${fdtfile}; load mmc ${mmcid}:2 ${fdtaddr} boot/dtbs/${uname_r}/${fdtfile}; if env exists uboot_overlay_addr0; then setenv overlay ${uboot_overlay_addr0}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr1; then setenv overlay ${uboot_overlay_addr1}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr2; then setenv overlay ${uboot_overlay_addr2}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr3; then setenv overlay ${uboot_overlay_addr3}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr4; then setenv overlay ${uboot_overlay_addr4}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr5; then setenv overlay ${uboot_overlay_addr5}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr6; then setenv overlay ${uboot_overlay_addr6}; run bela_loadoverlay; fi; if env exists uboot_overlay_addr7; then setenv overlay ${uboot_overlay_addr7}; run bela_loadoverlay; fi; load mmc ${mmcid}:2 ${loadaddr} /boot/vmlinuz-${uname_r}; setenv bootargs console=${console} root=/dev/mmcblk${mmcid}p2 ro rootfstype=ext4 rootwait coherent_pool=1M net.ifnames=0 quiet; bootz ${loadaddr} - ${fdtaddr};
-bela_loadoverlay=echo loading ${overlay}; load mmc ${mmcid}:2 ${rdaddr} ${overlay}; fdt addr $fdtaddr; fdt resize 0x60000; fdt apply ${rdaddr}; fdt resize 0x60000;
-
-uboot_overlay_addr2=/lib/firmware/BB-BELA-00A1.dtbo
-uboot_overlay_addr3=/lib/firmware/BB-BELA-CTAG-SPI-00A0.dtbo
-
-console=ttyS0,115200n8
