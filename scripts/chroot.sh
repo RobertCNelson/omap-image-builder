@@ -839,6 +839,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					apt-get download ti-sgx-ti335x-modules-${repo_rcnee_pkg_version} || true
 					apt-get download ti-sgx-jacinto6evm-modules-${repo_rcnee_pkg_version} || true
 				fi
+				if [ "x${deb_arch}" = "xarm64" ] ; then
+					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-k3-am62 || true
+					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-k3-j721e || true || true
+					apt-get download ti-sgx-am62-modules-${repo_rcnee_pkg_version} || true
+					apt-get download ti-sgx-j721e-modules-${repo_rcnee_pkg_version} || true
+
+				fi
 				echo "branch=${repo_rcnee_kernel}" > /opt/modules/install
 				echo "uname=${repo_rcnee_pkg_version}" >> /opt/modules/install
 				cd -
