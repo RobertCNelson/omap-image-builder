@@ -1628,6 +1628,15 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
+		if [ "x${board_hacks}" = "xj721e_evm" ] ; then
+			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
+		if [ "x${board_hacks}" = "xsk_am62" ] ; then
+			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
+	fi
+
 	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
 		if [ ! "x${extlinux_kernel}" = "x" ] ; then
 			echo "Un-Compressed Kernel: [cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image]"
