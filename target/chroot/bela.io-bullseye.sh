@@ -99,131 +99,131 @@ install_git_repos () {
 	git_clone_branch
 	
 	git_repo="https://github.com/RobertCNelson/ti-linux-kernel-dev"
-    git_target_dir="/opt/source/ti-linux-kernel-dev"
-    git_branch="ti-linux-xenomai-4.14.y"
-    git_clone_branch
+	git_target_dir="/opt/source/ti-linux-kernel-dev"
+	git_branch="ti-linux-xenomai-bela-4.14.y"
+	git_clone_branch
 
-    git_repo="git://git.xenomai.org/xenomai-3.git"
-    git_target_dir="/opt/source/xenomai-3"
-    git_branch="stable/v3.0.x"
-    git_clone_branch
+	git_repo="git://git.xenomai.org/xenomai-3.git"
+	git_target_dir="/opt/source/xenomai-3"
+	git_branch="stable/v3.0.x"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
-        echo "~~~~ cross-compiling xenomai  ~~~~"
-    	scripts/bootstrap
-    	./configure --with-core=cobalt --enable-smp --host=arm-linux-gnueabihf --build=arm CFLAGS="-march=armv7-a -mfpu=vfp3"
-	    make -j${CORES}
+		echo "~~~~ cross-compiling xenomai  ~~~~"
+		scripts/bootstrap
+		./configure --with-core=cobalt --enable-smp --host=arm-linux-gnueabihf --build=arm CFLAGS="-march=armv7-a -mfpu=vfp3"
+		make -j${CORES}
 	fi
 
-    git_repo="https://github.com/BelaPlatform/Bela.git"
-    git_target_dir="/opt/source/Bela"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/BelaPlatform/Bela.git"
+	git_target_dir="/opt/source/Bela"
+	git_branch="master"
+	git_clone_branch
 
-    git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
-    git_target_dir="/opt/source/am335x_pru_package"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
+	git_target_dir="/opt/source/am335x_pru_package"
+	git_branch="master"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building PRU utils ~~~~"
-        make -j${CORES}
-        make install
+		make -j${CORES}
+		make install
 	fi
 
-    git_repo="https://github.com/giuliomoro/prudebug.git"
-    git_target_dir="/opt/source/prudebug"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/giuliomoro/prudebug.git"
+	git_target_dir="/opt/source/prudebug"
+	git_branch="master"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building prudebug ~~~~"
-        make -j${CORES}
-        cp -v ./prudebug /usr/bin/
+		make -j${CORES}
+		cp -v ./prudebug /usr/bin/
 	fi
 
-    git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
-    git_target_dir="/opt/source/Bootloader-Builder"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/giuliomoro/Bootloader-Builder.git"
+	git_target_dir="/opt/source/Bootloader-Builder"
+	git_branch="master"
+	git_clone_branch
 
-    git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
-    git_target_dir="/opt/source/bb.org-overlays"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/BelaPlatform/bb.org-overlays.git"
+	git_target_dir="/opt/source/bb.org-overlays"
+	git_branch="master"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building bb.org-overlays ~~~~"
-        make clean
-        make -j${CORES}
-        make install
-        cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
-        make clean
+	make clean
+	make -j${CORES}
+	make install
+	cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
+	make clean
 	fi
 
-    git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
-    git_target_dir="/opt/source/bb.org-dtc"
-    git_branch="v1.6.0"
-    git_clone_branch
+	git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
+	git_target_dir="/opt/source/bb.org-dtc"
+	git_branch="v1.6.0"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building bb.org-dtc ~~~~"
-        make clean
-        make -j${CORES} PREFIX=/usr/local CC=gcc CROSS_COMPILE= all
-        make PREFIX=/usr/local/ install
-        ln -sf /usr/local/bin/dtc /usr/bin/dtc
-        echo "dtc: `/usr/bin/dtc --version`"
-        make clean
+		make clean
+		make -j${CORES} PREFIX=/usr/local CC=gcc CROSS_COMPILE= all
+		make PREFIX=/usr/local/ install
+		ln -sf /usr/local/bin/dtc /usr/bin/dtc
+		echo "dtc: `/usr/bin/dtc --version`"
+		make clean
 	fi
 
-    git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-    git_target_dir="/opt/source/dtb-rebuilder"
-    git_branch="4.14-ti"
-    git_clone_branch
+	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
+	git_target_dir="/opt/source/dtb-rebuilder"
+	git_branch="4.14-ti"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building Bela dtb ~~~~"
-        make clean
-        make -j${CORES}
-        make install
-        make clean
+		make clean
+		make -j${CORES}
+		make install
+		make clean
 	fi
 
-    git_repo="https://github.com/mattgodbolt/seasocks.git"
-    git_target_dir="/opt/source/seasocks"
-    git_branch="v1.4.4"
-    git_clone_branch
+	git_repo="https://github.com/mattgodbolt/seasocks.git"
+	git_target_dir="/opt/source/seasocks"
+	git_branch="v1.4.4"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building Seasocks ~~~~"
-        mkdir build
-        cd build
-        cmake .. -DDEFLATE_SUPPORT=OFF -DUNITTESTS=OFF -DSEASOCKS_SHARED=ON
-        make -j${CORES} seasocks
-        /usr/bin/cmake -P cmake_install.cmake
-        cd /root
-        rm -rf /opt/seasocks/build
-        ldconfig
+		mkdir build
+		cd build
+		cmake .. -DDEFLATE_SUPPORT=OFF -DUNITTESTS=OFF -DSEASOCKS_SHARED=ON
+		make -j${CORES} seasocks
+		/usr/bin/cmake -P cmake_install.cmake
+		cd /root
+		rm -rf /opt/seasocks/build
+		ldconfig
 	fi
 
-    git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
-    git_target_dir="/opt/source/rtdm_pruss_irq"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
+	git_target_dir="/opt/source/rtdm_pruss_irq"
+	git_branch="master"
+	git_clone_branch
 
-    git_repo="https://github.com/giuliomoro/checkinstall"
-    git_target_dir="/opt/source/checkinstall"
-    git_branch="master"
-    git_clone_branch
+	git_repo="https://github.com/giuliomoro/checkinstall"
+	git_target_dir="/opt/source/checkinstall"
+	git_branch="master"
+	git_clone_branch
 
-    git_repo="https://github.com/Wasted-Audio/hvcc.git"
-    git_target_dir="/opt/source/hvcc"
-    git_branch="develop"
-    git_clone_branch
+	git_repo="https://github.com/Wasted-Audio/hvcc.git"
+	git_target_dir="/opt/source/hvcc"
+	git_branch="develop"
+	git_clone_branch
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building hvcc ~~~~"
-        sudo -H pip3 install -e .
+		sudo -H pip3 install -e .
 	fi
 
 	git_repo="https://github.com/mvduin/overlay-utils"
