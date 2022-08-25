@@ -844,7 +844,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					apt-get download bbb.io-kernel-${repo_rcnee_kernel}-k3-j721e || true || true
 					apt-get download ti-sgx-am62-modules-${repo_rcnee_pkg_version} || true
 					apt-get download ti-sgx-j721e-modules-${repo_rcnee_pkg_version} || true
-
+					apt-get download ti-sgx-am62-ddx-um || true
+					apt-get download ti-sgx-j721e-ddx-um || true
 				fi
 				echo "branch=${repo_rcnee_kernel}" > /opt/modules/install
 				echo "uname=${repo_rcnee_pkg_version}" >> /opt/modules/install
