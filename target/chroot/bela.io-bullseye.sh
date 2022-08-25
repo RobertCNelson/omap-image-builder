@@ -185,7 +185,7 @@ install_git_repos () {
 	if [ -f ${git_target_dir}/.git/config ] ; then
 		cd ${git_target_dir}/
 		echo "~~~~ Building hvcc ~~~~"
-		sudo -H pip3 install -e .
+		pip3 install -e .
 	fi
 
 	git_repo="https://github.com/mvduin/overlay-utils"
