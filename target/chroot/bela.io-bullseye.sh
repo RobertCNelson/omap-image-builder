@@ -88,16 +88,6 @@ setup_system () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-5.4-ti"
-	git_branch="v5.4.x-ti-overlays"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees"
-	git_target_dir="/opt/source/dtb-5.10-ti"
-	git_branch="v5.10.x-ti"
-	git_clone_branch
-	
 	git_repo="https://github.com/RobertCNelson/ti-linux-kernel-dev"
 	git_target_dir="/opt/source/ti-linux-kernel-dev"
 	git_branch="ti-linux-xenomai-bela-4.14.y"
@@ -159,34 +149,6 @@ install_git_repos () {
 	make install
 	cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
 	make clean
-	fi
-
-	git_repo="https://git.kernel.org/pub/scm/utils/dtc/dtc.git/ "
-	git_target_dir="/opt/source/bb.org-dtc"
-	git_branch="v1.6.0"
-	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		echo "~~~~ Building bb.org-dtc ~~~~"
-		make clean
-		make -j${CORES} PREFIX=/usr/local CC=gcc CROSS_COMPILE= all
-		make PREFIX=/usr/local/ install
-		ln -sf /usr/local/bin/dtc /usr/bin/dtc
-		echo "dtc: `/usr/bin/dtc --version`"
-		make clean
-	fi
-
-	git_repo="https://github.com/RobertCNelson/dtb-rebuilder.git"
-	git_target_dir="/opt/source/dtb-rebuilder"
-	git_branch="4.14-ti"
-	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		echo "~~~~ Building Bela dtb ~~~~"
-		make clean
-		make -j${CORES}
-		make install
-		make clean
 	fi
 
 	git_repo="https://github.com/mattgodbolt/seasocks.git"
