@@ -195,11 +195,6 @@ install_git_repos () {
 	git_branch="master"
 	git_clone_branch
 
-	git_repo="https://github.com/giuliomoro/checkinstall"
-	git_target_dir="/opt/source/checkinstall"
-	git_branch="master"
-	git_clone_branch
-
 	git_repo="https://github.com/Wasted-Audio/hvcc.git"
 	git_target_dir="/opt/source/hvcc"
 	git_branch="develop"
