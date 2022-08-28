@@ -106,9 +106,31 @@ install_git_repos () {
 	fi
 
 	git_repo="https://github.com/BelaPlatform/Bela.git"
-	git_target_dir="/opt/source/Bela"
+	git_target_dir="/root/Bela"
 	git_branch="master"
 	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Install .deb files ~~~~"
+		cd resources/stretch/deb/
+			dpkg -i *.deb
+			ldconfig
+		cd ${git_target_dir}/
+		echo "~~~~ Installing Bela ~~~~"
+			for DIR in resources/tools/*; do
+				[ -d "$DIR" ] && { make -j${CORES} -C "$DIR" install || exit 1; }
+			done
+
+			make nostartup
+			make idestartup
+
+			mkdir -p /root/Bela/projects
+			cp -rv /root/Bela/IDE/templates/basic /root/Bela/projects/
+			make -j${CORES} all PROJECT=basic AT=
+			make -j${CORES} lib
+			make -j${CORES} -f Makefile.libraries all
+			ldconfig
+	fi
 
 	git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
 	git_target_dir="/opt/source/am335x_pru_package"
