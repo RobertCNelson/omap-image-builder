@@ -105,6 +105,34 @@ install_git_repos () {
 		make -j${CORES}
 	fi
 
+	git_repo="https://github.com/mattgodbolt/seasocks.git"
+	git_target_dir="/opt/source/seasocks"
+	git_branch="v1.4.4"
+	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building Seasocks ~~~~"
+			mkdir build
+			cd build
+			cmake .. -DDEFLATE_SUPPORT=OFF -DUNITTESTS=OFF -DSEASOCKS_SHARED=ON
+			make -j${CORES} seasocks
+			/usr/bin/cmake -P cmake_install.cmake
+			cd /root
+			rm -rf /opt/seasocks/build
+			ldconfig
+	fi
+
+	git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
+	git_target_dir="/opt/source/am335x_pru_package"
+	git_branch="master"
+	git_clone_branch
+	if [ -f ${git_target_dir}/.git/config ] ; then
+		cd ${git_target_dir}/
+		echo "~~~~ Building PRU utils ~~~~"
+			make -j${CORES}
+			make install
+	fi
+
 	git_repo="https://github.com/BelaPlatform/Bela.git"
 	git_target_dir="/root/Bela"
 	git_branch="master"
@@ -130,17 +158,6 @@ install_git_repos () {
 			make -j${CORES} lib
 			make -j${CORES} -f Makefile.libraries all
 			ldconfig
-	fi
-
-	git_repo="https://github.com/giuliomoro/am335x_pru_package.git"
-	git_target_dir="/opt/source/am335x_pru_package"
-	git_branch="master"
-	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		echo "~~~~ Building PRU utils ~~~~"
-		make -j${CORES}
-		make install
 	fi
 
 	git_repo="https://github.com/giuliomoro/prudebug.git"
@@ -171,23 +188,6 @@ install_git_repos () {
 	make install
 	cp -v ./tools/beaglebone-universal-io/config-pin /usr/local/bin/
 	make clean
-	fi
-
-	git_repo="https://github.com/mattgodbolt/seasocks.git"
-	git_target_dir="/opt/source/seasocks"
-	git_branch="v1.4.4"
-	git_clone_branch
-	if [ -f ${git_target_dir}/.git/config ] ; then
-		cd ${git_target_dir}/
-		echo "~~~~ Building Seasocks ~~~~"
-		mkdir build
-		cd build
-		cmake .. -DDEFLATE_SUPPORT=OFF -DUNITTESTS=OFF -DSEASOCKS_SHARED=ON
-		make -j${CORES} seasocks
-		/usr/bin/cmake -P cmake_install.cmake
-		cd /root
-		rm -rf /opt/seasocks/build
-		ldconfig
 	fi
 
 	git_repo="https://github.com/BelaPlatform/rtdm_pruss_irq"
