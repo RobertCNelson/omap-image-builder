@@ -130,7 +130,9 @@ install_git_repos () {
 	if [ ! -d /usr/xenomai/bin/ ] ; then
 		mkdir -p /usr/xenomai/bin/
 	fi
-	ln -s /usr/bin/xeno-config /usr/xenomai/bin/xeno-config
+	if [ -f /usr/bin/xeno-config ] ; then
+		ln -s /usr/bin/xeno-config /usr/xenomai/bin/xeno-config
+	fi
 
 	git_repo="https://github.com/BelaPlatform/Bela.git"
 	git_target_dir="/root/Bela"
