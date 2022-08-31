@@ -205,10 +205,6 @@ install_git_repos () {
 		echo "~~~~ Building hvcc ~~~~"
 		pip3 install -e .
 	fi
-
-	git_repo="https://github.com/mvduin/overlay-utils"
-	git_target_dir="/opt/source/overlay-utils"
-	git_clone
 }
 
 other_source_links () {
