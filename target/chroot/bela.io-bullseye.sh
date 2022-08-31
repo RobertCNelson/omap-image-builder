@@ -82,9 +82,9 @@ git_clone_full () {
 }
 
 setup_system () {
-	echo "" >> /etc/securetty
-	echo "#USB Gadget Serial Port" >> /etc/securetty
-	echo "ttyGS0" >> /etc/securetty
+	if [ -f /etc/bela/templates/bela-motd ] ; then
+		cp -v /etc/bela/templates/bela-motd /etc/motd
+	fi
 }
 
 install_git_repos () {
