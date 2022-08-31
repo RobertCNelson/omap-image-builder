@@ -126,6 +126,12 @@ install_git_repos () {
 			make install
 	fi
 
+	###FIXME, bela git assumes xeno-config is under xenomai...
+	if [ ! -d /usr/xenomai/bin/ ] ; then
+		mkdir -p /usr/xenomai/bin/
+	fi
+	ln -s /usr/bin/xeno-config /usr/xenomai/bin/xeno-config
+
 	git_repo="https://github.com/BelaPlatform/Bela.git"
 	git_target_dir="/root/Bela"
 	git_branch="master"
