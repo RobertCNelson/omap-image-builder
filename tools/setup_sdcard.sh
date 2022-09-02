@@ -1601,7 +1601,7 @@ populate_rootfs () {
 	# setuid root ping+ping6 - capabilities does not survive tar
 	if [ -x  ${TEMPDIR}/disk/bin/ping ] ; then
 		echo "making ping/ping6 setuid root"
-		chmod u+s ${TEMPDIR}/disk//bin/ping ${TEMPDIR}/disk//bin/ping6
+		chmod u+s ${TEMPDIR}/disk/bin/ping ${TEMPDIR}/disk/bin/ping6
 	fi
 
 	if [ "x${conf_board}" = "xam335x_boneblack" ] || [ "x${conf_board}" = "xam335x_evm" ] ; then
@@ -1635,6 +1635,7 @@ populate_rootfs () {
 		if [ "x${board_hacks}" = "xsk_am62" ] ; then
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
+		cat ${TEMPDIR}/disk/etc/default/generic-sys-mods
 	fi
 
 	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
