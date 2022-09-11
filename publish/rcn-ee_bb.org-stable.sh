@@ -41,17 +41,17 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-         debian_buster_tiny="debian-10.12-tiny-armhf-${time}"
-      debian_buster_console="debian-10.12-console-armhf-${time}"
-   debian_buster_console_xm="debian-10.12-console-xm-armhf-${time}"
-          debian_buster_iot="debian-10.12-iot-armhf-${time}"
-     debian_buster_iot_tidl="debian-10.12-iot-tidl-armhf-${time}"
-debian_buster_iot_grove_kit="debian-10.12-iot-grove-kit-armhf-${time}"
- debian_buster_iot_mikrobus="debian-10.12-iot-mikrobus-armhf-${time}"
-      debian_buster_efi_iot="debian-10.12-efi-iot-armhf-${time}"
-         debian_buster_lxqt="debian-10.12-lxqt-armhf-${time}"
-    debian_buster_lxqt_tidl="debian-10.12-lxqt-tidl-armhf-${time}"
-      debian_buster_lxqt_xm="debian-10.12-lxqt-xm-armhf-${time}"
+         debian_buster_tiny="debian-10.13-tiny-armhf-${time}"
+      debian_buster_console="debian-10.13-console-armhf-${time}"
+   debian_buster_console_xm="debian-10.13-console-xm-armhf-${time}"
+          debian_buster_iot="debian-10.13-iot-armhf-${time}"
+     debian_buster_iot_tidl="debian-10.13-iot-tidl-armhf-${time}"
+debian_buster_iot_grove_kit="debian-10.13-iot-grove-kit-armhf-${time}"
+ debian_buster_iot_mikrobus="debian-10.13-iot-mikrobus-armhf-${time}"
+      debian_buster_efi_iot="debian-10.13-efi-iot-armhf-${time}"
+         debian_buster_lxqt="debian-10.13-lxqt-armhf-${time}"
+    debian_buster_lxqt_tidl="debian-10.13-lxqt-tidl-armhf-${time}"
+      debian_buster_lxqt_xm="debian-10.13-lxqt-xm-armhf-${time}"
 
       ubuntu_bionic_ros_iot="ubuntu-18.04.6-ros-iot-armhf-${time}"
 
