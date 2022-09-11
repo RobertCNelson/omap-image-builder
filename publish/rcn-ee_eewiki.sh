@@ -28,7 +28,7 @@ else
 fi
 
 debian_buster="debian-10.12"
-debian_bullseye="debian-11.4"
+debian_bullseye="debian-11.5"
 ubuntu_bionic="ubuntu-18.04.6"
 ubuntu_focal="ubuntu-20.04.4"
 
