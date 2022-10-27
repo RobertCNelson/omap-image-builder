@@ -1250,10 +1250,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
-		if [ -f /lib/systemd/system/nodered.service ] ; then
-			#Don't just enable on the old socket version...
-			if [ ! -f /lib/systemd/system/nodered.socket ] ; then
-				systemctl enable nodered.service || true
+		if [ "x${rfs_enable_nodered}" = "xenable" ] ; then
+			if [ -f /lib/systemd/system/nodered.service ] ; then
+				#Don't just enable on the old socket version...
+				if [ ! -f /lib/systemd/system/nodered.socket ] ; then
+					systemctl enable nodered.service || true
+				fi
 			fi
 		fi
 
