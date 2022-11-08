@@ -1,6 +1,0 @@
-image: robertcnelson/debian-bullseye-slim-debootstrap:latest
-
-build:
-  stage: build
-  script:
-    - ./RootStock-NG.sh -c bb.org-debian-bullseye-console-v5.10-ti-armhf
