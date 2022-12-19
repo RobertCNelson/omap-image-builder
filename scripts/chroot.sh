@@ -1216,6 +1216,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
+		if [ ! "x${rfs_use_networkmanager}" = "x" ] ; then
+			if [ -f /lib/systemd/system/NetworkManager.service ] ; then
+				systemctl enable NetworkManager.service || true
+			fi
+
+			if [ "x${rfs_disable_usb_gadgets}" = "x" ] ; then
+				#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
+				if [ -f /lib/systemd/system/bb-usb-gadgets.service ] ; then
+					systemctl enable bb-usb-gadgets.service || true
+				fi
+			fi
+		fi
+
 		#Kill man-db
 		#debian@beaglebone:~$ sudo systemd-analyze blame | grep man-db.service
 		#    4min 10.587s man-db.service
