@@ -585,6 +585,7 @@ fi
 
 if [ "${apt_proxy}" ] ; then
 	echo "Acquire::http::Proxy \"http://${apt_proxy}\";" > /tmp/apt.conf
+	echo "Acquire::https::Proxy \"false\";" >> /tmp/apt.conf
 	sudo mv /tmp/apt.conf "${tempdir}/etc/apt/apt.conf"
 	sudo chown root:root "${tempdir}/etc/apt/apt.conf"
 fi
