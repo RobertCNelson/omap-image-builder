@@ -435,7 +435,7 @@ esac
 
 #Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-security/
 case "${deb_codename}" in
-bionic|focal)
+bionic|focal|lunar)
 	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -458,7 +458,7 @@ esac
 
 #Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-updates/
 case "${deb_codename}" in
-bionic|focal)
+bionic|focal|lunar)
 	echo "deb http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
