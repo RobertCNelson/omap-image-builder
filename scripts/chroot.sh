@@ -554,13 +554,18 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "" >> ${wfile}
 			echo "#Backup Mirror" >> ${wfile}
-			echo "#deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
-			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
+			if [ "x${repo_rcnee_arch}" = "xriscv64" ] ; then
+				echo "#deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/debian-riscv64/ ${deb_codename} main" >> ${wfile}
+				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/debian-riscv64/ ${deb_codename} main" >> ${wfile}
+
+			else
+				echo "#deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
+				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
+			fi
 
 		else
 			echo "deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
-
 		fi
 	fi
 	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/rcn-ee-archive-keyring.gpg"
