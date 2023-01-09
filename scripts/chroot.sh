@@ -368,7 +368,7 @@ if [ "x${host_arch}" != "xriscv64" ] ; then
 		echo "path-exclude=/usr/lib/firmware/vsc/*" >> /tmp/01_ubuntu_big_firmware
 		echo ""  >> /tmp/01_ubuntu_big_firmware
 
-		sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
+		sudo mv /tmp/01_ubuntu_big_firmware "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
 		sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
 
 		;;
