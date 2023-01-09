@@ -348,6 +348,30 @@ sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 sudo mkdir -p "${tempdir}/usr/share/flash-kernel/db/" || true
 sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kernel/db/"
 
+if [ "x${host_arch}" != "xriscv64" ] ; then
+	case "${deb_distribution}" in
+	ubuntu)
+		echo "# neuter flash-kernel" > /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/netronome/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/mrvl/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/qcom/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/mellanox/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/amdgpu/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/intel/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/liquidio/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/i915/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/qed/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/nvidia/*" >> /tmp/01_ubuntu_big_firmware
+		echo "path-exclude=/usr/lib/firmware/iwlwifi-*" >> /tmp/01_ubuntu_big_firmware
+		echo ""  >> /tmp/01_ubuntu_big_firmware
+
+		sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
+		sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
+
+		;;
+	esac
+fi
+
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
