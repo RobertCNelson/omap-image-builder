@@ -583,7 +583,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			echo "" >> ${wfile}
 			echo "#Backup Mirror" >> ${wfile}
 			if [ "x${repo_rcnee_arch}" = "xriscv64" ] ; then
-				echo "deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/debian-riscv64/ ${deb_codename} main" >> ${wfile}
+				echo "#deb [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/debian-riscv64/ ${deb_codename} main" >> ${wfile}
 				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=/usr/share/keyrings/rcn-ee-archive-keyring.gpg] http://repos.rcn-ee.com/debian-riscv64/ ${deb_codename} main" >> ${wfile}
 
 			else
