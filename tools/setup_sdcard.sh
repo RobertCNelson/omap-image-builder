@@ -1628,15 +1628,20 @@ populate_rootfs () {
 		fi
 	fi
 
+	if [ "x${board_hacks}" = "xbbai64_staging" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-staging-microsd-to-emmc ] ; then
+			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-staging-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+		fi
+	fi
+
 	if [ "x${board_hacks}" = "xsk_am62" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ] ; then
 			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
 		fi
-
 	fi
 
 	if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
-		if [ "x${board_hacks}" = "xj721e_evm" ] ; then
+		if [ "x${board_hacks}" = "xj721e_evm" ] || [ "x${board_hacks}" = "xbbai64_staging" ] ; then
 			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		if [ "x${board_hacks}" = "xsk_am62" ] ; then
