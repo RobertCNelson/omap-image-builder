@@ -797,35 +797,35 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
-			apt-get update
+			apt-get update || true
 			apt-get -y install ${deb_additional_pkgs}
 		fi
 
 		if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_console_application_pkgs}"
-			apt-get update
+			apt-get update || true
 			apt-get -y install ${deb_console_application_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_prerequisite_pkgs}"
-			apt-get update
+			apt-get update || true
 			apt-get -y install ${deb_desktop_prerequisite_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
-			apt-get update
+			apt-get update || true
 			apt-get -y install ${deb_desktop_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
-			apt-get update
+			apt-get update || true
 			apt-get -y install ${deb_desktop_application_pkgs}
 		fi
 
