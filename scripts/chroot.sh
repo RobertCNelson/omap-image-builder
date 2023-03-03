@@ -420,7 +420,6 @@ fi
 if [ "x${deb_distribution}" = "xdebian" ] || [ "x${deb_distribution}" = "xubuntu" ] ; then
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
-		echo 'Acquire::http::Proxy::deb.nodesource.com "DIRECT";' > /tmp/03-proxy-https
 		echo 'Acquire::http::Proxy::debian.beagle.cc "DIRECT";' >> /tmp/03-proxy-https
 		echo 'Acquire::http::Proxy::debian.beagleboard.org "DIRECT";' >> /tmp/03-proxy-https
 		sudo mv /tmp/03-proxy-https "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
@@ -517,13 +516,6 @@ if [ "x${repo_flat}" = "xenable" ] ; then
 		echo "#deb-src ${repo_flat_server} ${component}" >> ${wfile}
 		echo "" >> ${wfile}
 	done
-fi
-
-if [ ! "x${repo_nodesource}" = "x" ] ; then
-	echo "deb https://deb.nodesource.com/${repo_nodesource} ${repo_nodesource_dist} main" >> ${wfile}
-	echo "#deb-src https://deb.nodesource.com/${repo_nodesource} ${repo_nodesource_dist} main" >> ${wfile}
-	echo "" >> ${wfile}
-	sudo cp -v "${OIB_DIR}/target/keyring/nodesource.gpg.key" "${tempdir}/tmp/nodesource.gpg.key"
 fi
 
 if [ "x${repo_azulsystems}" = "xenable" ] ; then
@@ -720,10 +712,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkg_updates () {
-		if [ -f /tmp/nodesource.gpg.key ] ; then
-			apt-key add /tmp/nodesource.gpg.key
-			rm -f /tmp/nodesource.gpg.key || true
-		fi
 		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
 			apt-key add /tmp/repos.azulsystems.com.pubkey.asc
 			rm -f /tmp/repos.azulsystems.com.pubkey.asc || true
