@@ -1071,6 +1071,9 @@ populate_rootfs () {
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					sed -i -e 's:net.ifnames=0:net.ifnames=0 init=/usr/sbin/init-beagle-flasher:g' ${wfile}
+					if [ "x${board_hacks}" = "xsk_am62" ] ; then
+						echo "    fdtoverlays /overlays/k3-am625-beagleplay-bcfserial-no-firmware.dtbo" | sudo tee -a  ${wfile}
+					fi
 				fi
 				echo "/boot/firmware/extlinux/extlinux.conf-"
 			else
