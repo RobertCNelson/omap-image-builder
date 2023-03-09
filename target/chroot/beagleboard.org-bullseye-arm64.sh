@@ -141,6 +141,25 @@ setup_desktop () {
 	echo "xset s off" >> ${wfile}
 	echo "xsetroot -cursor_name left_ptr" >> ${wfile}
 	chown -R ${rfs_username}:${rfs_username} ${wfile}
+
+	if [ -f /usr/sbin/wpa_gui ] ; then
+		mkdir -p /home/${rfs_username}/Desktop/ || true
+		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/Desktop/
+
+		wfile="/home/${rfs_username}/Desktop/wpa_gui.desktop"
+		echo "[Desktop Entry]" > ${wfile}
+		echo "Version=1.0" >> ${wfile}
+		echo "Name=wpa_gui" >> ${wfile}
+		echo "Comment=Graphical user interface for wpa_supplicant" >> ${wfile}
+		echo "Exec=wpa_gui" >> ${wfile}
+		echo "Icon=wpa_gui" >> ${wfile}
+		echo "GenericName=wpa_supplicant user interface" >> ${wfile}
+		echo "Terminal=false" >> ${wfile}
+		echo "Type=Application" >> ${wfile}
+		echo "Categories=Qt;Network;" >> ${wfile}
+		chown -R ${rfs_username}:${rfs_username} ${wfile}
+		chmod +x ${wfile}
+	fi
 }
 
 install_git_repos () {
