@@ -1071,7 +1071,7 @@ populate_rootfs () {
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					sed -i -e 's:net.ifnames=0:net.ifnames=0 init=/usr/sbin/init-beagle-flasher:g' ${wfile}
-					if [ "x${board_hacks}" = "xsk_am62" ] ; then
+					if [ "x${board_hacks}" = "xbeagleplay" ] ; then
 						echo "    fdtoverlays /overlays/k3-am625-beagleplay-bcfserial-no-firmware.dtbo" | sudo tee -a  ${wfile}
 					fi
 				fi
@@ -1637,7 +1637,7 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${board_hacks}" = "xsk_am62" ] ; then
+	if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ] ; then
 			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
 		fi
@@ -1647,10 +1647,16 @@ populate_rootfs () {
 		if [ "x${board_hacks}" = "xj721e_evm" ] || [ "x${board_hacks}" = "xbbai64_staging" ] ; then
 			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
-		if [ "x${board_hacks}" = "xsk_am62" ] ; then
+		if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] ; then
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		cat ${TEMPDIR}/disk/etc/default/generic-sys-mods
+	fi
+
+	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/hostapd/hostapd.conf ] ; then
+			sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
+		fi
 	fi
 
 	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
