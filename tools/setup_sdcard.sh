@@ -1653,9 +1653,15 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] ; then
+	if [ "x${board_hacks}" = "xsk_am62" ]  ; then
 		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ] ; then
 			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+		fi
+	fi
+
+	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beagleplay-microsd-to-emmc ] ; then
+			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/beagleplay-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
 		fi
 	fi
 
