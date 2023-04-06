@@ -166,6 +166,7 @@ run_roostock_ng () {
 	echo 'Log: /bin/bash -e "${OIB_DIR}/scripts/chroot.sh"'
 	/bin/bash -e "${OIB_DIR}/scripts/chroot.sh" || { exit 1 ; }
 	sudo rm -rf ${tempdir}/ || true
+	echo 'Log: RootStock-NG.sh complete'
 }
 
 git_trees
