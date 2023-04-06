@@ -1679,8 +1679,13 @@ populate_rootfs () {
 		if [ -f ${TEMPDIR}/disk/etc/hostapd/hostapd.conf ] ; then
 			sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
 		fi
+
 		if [ -f ${TEMPDIR}/disk/etc/systemd/network/mlan0.network ] ; then
 			rm ${TEMPDIR}/disk/etc/systemd/network/mlan0.network || true
+		fi
+
+		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/wpa_supplicant@mlan0.service ] ; then
+			rm ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/wpa_supplicant@mlan0.service || true
 		fi
 	fi
 
