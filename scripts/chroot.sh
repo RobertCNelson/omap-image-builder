@@ -950,6 +950,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot): Patched: /var/lib/connman/settings"
 			cat /var/lib/connman/settings
 		fi
+
+		if [ ! "x${rfs_xorg_config}" = "x" ] ; then
+			if [ -f /etc/bbb.io/templates/${rfs_xorg_config} ] ; then
+				cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf
+			fi
+		fi
 	}
 
 	set_locale () {
