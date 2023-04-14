@@ -954,6 +954,18 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${rfs_xorg_config}" = "x" ] ; then
 			if [ -f /etc/bbb.io/templates/${rfs_xorg_config} ] ; then
 				cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf
+				echo "Log: (chroot): Configured /etc/X11/xorg.conf"
+				cat /etc/X11/xorg.conf
+			fi
+		fi
+
+		if [ ! "x${rfs_default_desktop}" = "x" ] ; then
+			if [ -d /etc/lightdm/lightdm.conf.d/ ] ; then
+				echo "[Seat:*]" > /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
+				echo "autologin-user=${rfs_username}" >> /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
+				echo "autologin-session=${rfs_default_desktop}" >> /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
+				echo "Log: (chroot): Configured /etc/lightdm/lightdm.conf.d/${rfs_username}.conf"
+				cat /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
 			fi
 		fi
 	}
