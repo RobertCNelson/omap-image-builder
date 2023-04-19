@@ -1025,6 +1025,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^i2c || groupadd -r i2c || true
 		cat /etc/group | grep ^kmem || groupadd -r kmem || true
 		cat /etc/group | grep ^netdev || groupadd -r netdev || true
+		cat /etc/group | grep ^render || groupadd -r render || true
 		cat /etc/group | grep ^systemd-journal || groupadd -r systemd-journal || true
 		cat /etc/group | grep ^tisdk || groupadd -r tisdk || true
 		cat /etc/group | grep ^weston-launch || groupadd -r weston-launch || true
@@ -1038,7 +1039,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		#echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,i2c,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,systemd-journal,tisdk,weston-launch"
+		default_groups="admin,adm,cloud9ide,dialout,gpio,i2c,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,render,systemd-journal,tisdk,weston-launch"
 
 		pkg="sudo"
 		dpkg_check
