@@ -804,35 +804,35 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
 			apt-get update || true
-			apt-get -y install ${deb_additional_pkgs}
+			apt-get install -y -qq ${deb_additional_pkgs}
 		fi
 
 		if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_console_application_pkgs}"
 			apt-get update || true
-			apt-get -y install ${deb_console_application_pkgs}
+			apt-get install -y -qq ${deb_console_application_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_prerequisite_pkgs}"
 			apt-get update || true
-			apt-get -y install ${deb_desktop_prerequisite_pkgs}
+			apt-get install -y -qq ${deb_desktop_prerequisite_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
 			apt-get update || true
-			apt-get -y install ${deb_desktop_pkgs}
+			apt-get install -y -qq ${deb_desktop_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
 			echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
 			apt-get update || true
-			apt-get -y install ${deb_desktop_application_pkgs}
+			apt-get install -y -qq ${deb_desktop_application_pkgs}
 		fi
 
 		if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
@@ -850,12 +850,12 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
-			apt-get -y install ${repo_external_pkg_list}
+			apt-get install -y -qq ${repo_external_pkg_list}
 		fi
 
 		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo): ${repo_ros_pkg_list}"
-			apt-get -y install ${repo_ros_pkg_list}
+			apt-get install -y -qq ${repo_ros_pkg_list}
 			#ROS: ubuntu, extra crude, cleanup....
 			apt autoremove -y || true
 		fi
@@ -870,20 +870,20 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version} (it's okay if these fail to install...)"
-			apt-get -y install libpruio-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install rtl8723bu-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install rtl8723du-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install rtl8821cu-modules-${repo_rcnee_pkg_version} || true
-			apt-get -y install qcacld-2.0-modules-${repo_rcnee_pkg_version} || true
+			apt-get install -y -qq libpruio-modules-${repo_rcnee_pkg_version} || true
+			apt-get install -y -qq rtl8723bu-modules-${repo_rcnee_pkg_version} || true
+			apt-get install -y -qq rtl8723du-modules-${repo_rcnee_pkg_version} || true
+			apt-get install -y -qq rtl8821cu-modules-${repo_rcnee_pkg_version} || true
+			apt-get install -y -qq qcacld-2.0-modules-${repo_rcnee_pkg_version} || true
 
 			if [ ! "x${repo_rcnee_cmem_version}" = "x" ] ; then
-				apt-get -y install ti-cmem-${repo_rcnee_cmem_version}-modules-${repo_rcnee_pkg_version} || true
+				apt-get install -y -qq ti-cmem-${repo_rcnee_cmem_version}-modules-${repo_rcnee_pkg_version} || true
 			else
-				apt-get -y install ti-cmem-modules-${repo_rcnee_pkg_version} || true
+				apt-get install -y -qq ti-cmem-modules-${repo_rcnee_pkg_version} || true
 			fi
 
 			if [ ! "x${repo_rcnee_sgx_preinstall}" = "x" ] ; then
-				apt-get -y install ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
+				apt-get install -y -qq ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
 			fi
 
 			if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
@@ -923,6 +923,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "Log: (chroot) Installing [python3 -m pip install ${python3_pkgs}]"
 				python3 -m pip install ${python3_pkgs}
 			fi
+		fi
+	}
+
+	install_docker_ce () {
+		if [ "x${rfs_enable_docker_ci}" = "xenable" ] ; then
+			echo "Log: (chroot): install_docker_ce"
+			DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl gpg
+			mkdir -p /etc/apt/keyrings && chmod -R 0755 /etc/apt/keyrings
+			curl -fsSL "https://download.docker.com/linux/debian/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+			chmod a+r /etc/apt/keyrings/docker.gpg
+			echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
+			apt-get update -qq
+			apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
 		fi
 	}
 
@@ -991,7 +1004,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	run_deborphan () {
 		echo "Log: (chroot): deborphan is not reliable, run manual and add pkg list to: [chroot_manual_deborphan_list]"
-		apt-get -y install deborphan
+		apt-get install -y -qq deborphan
 
 		# Prevent deborphan from removing explicitly required packages
 		deborphan -A ${deb_additional_pkgs} ${repo_external_pkg_list} ${deb_include}
@@ -1395,6 +1408,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 	install_python_pkgs
+	install_docker_ce
 	system_tweaks
 	set_locale
 	if [ "x${chroot_not_reliable_deborphan}" = "xenable" ] ; then
