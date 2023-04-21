@@ -129,13 +129,6 @@ setup_desktop () {
 		echo "EndSection" >> ${wfile}
 	fi
 
-	wfile="/etc/lightdm/lightdm.conf"
-	if [ -f ${wfile} ] ; then
-		echo "Patching: ${wfile}"
-		sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' ${wfile}
-		sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' ${wfile}
-	fi
-
 	if [ -f /etc/bbb.io/templates/xfce4/xfce4-desktop.xml ] ; then
 		mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
 		cp -v /etc/bbb.io/templates/xfce4/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
