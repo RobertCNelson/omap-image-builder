@@ -979,6 +979,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "autologin-session=${rfs_default_desktop}" >> /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
 				echo "Log: (chroot): Configured /etc/lightdm/lightdm.conf.d/${rfs_username}.conf"
 				cat /etc/lightdm/lightdm.conf.d/${rfs_username}.conf
+			elif [ -f /etc/lightdm/lightdm.conf ] ; then
+				sed -i -e 's:#autologin-user=:autologin-user='$rfs_username':g' /etc/lightdm/lightdm.conf
+				sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' /etc/lightdm/lightdm.conf
+				cat /etc/lightdm/lightdm.conf | grep autologin
 			fi
 		fi
 	}
