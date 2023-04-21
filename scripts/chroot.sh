@@ -1297,6 +1297,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl enable NetworkManager.service || true
 			fi
 
+			if [ -f /lib/systemd/system/systemd-resolved.service ] ; then
+				systemctl enable systemd-resolved.service || true
+			fi
+
 			if [ "x${rfs_disable_usb_gadgets}" = "x" ] ; then
 				#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
 				if [ -f /lib/systemd/system/bb-usb-gadgets.service ] ; then
