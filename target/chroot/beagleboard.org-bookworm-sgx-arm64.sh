@@ -147,6 +147,13 @@ install_git_repos () {
 	git_repo="https://github.com/rm-hull/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
+
+	git_repo="https://git.beagleboard.org/RobertCNelson/pvr-mesa-bookworm.git"
+	git_target_dir="/opt/source/pvr-mesa-bookworm"
+	git_clone
+	cd /opt/source/pvr-mesa-bookworm/
+	./install.sh
+	cd -
 }
 
 other_source_links () {
