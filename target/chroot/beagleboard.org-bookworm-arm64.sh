@@ -135,6 +135,11 @@ install_git_repos () {
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
 
+	git_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.3"
+	git_branch="v6.3.x"
+	git_clone_branch
+
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
 	git_clone
@@ -146,6 +151,9 @@ install_git_repos () {
 	git_repo="https://git.beagleboard.org/RobertCNelson/pvr-mesa-bookworm.git"
 	git_target_dir="/opt/source/pvr-mesa-bookworm"
 	git_clone
+	cd /opt/source/pvr-mesa-bookworm/
+	./install.sh
+	cd -
 }
 
 other_source_links () {
