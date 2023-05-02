@@ -165,6 +165,10 @@ install_git_repos () {
 	dpkg -i /opt/source/home-assistant/homeassistant-supervised*.deb
 
 	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleplay/emmc-extlinux.conf
+
+	git_repo="https://git.beagleboard.org/jkridner/demos.git"
+	git_target_dir="/opt/source/demos"
+	git_clone
 }
 
 other_source_links () {
