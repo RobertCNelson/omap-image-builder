@@ -88,6 +88,20 @@ setup_system () {
 			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
 			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
 			rm -f /var/www/html/index.nginx-debian.html || true
+
+			echo '<!DOCTYPE html>' > /var/www/html/Home-Assistant.html
+			echo '<html lang="en">' >> /var/www/html/Home-Assistant.html
+			echo '<head>' >> /var/www/html/Home-Assistant.html
+			echo '<meta charset="utf-8">' >> /var/www/html/Home-Assistant.html
+			echo '</head>' >> /var/www/html/Home-Assistant.html
+			echo '<body>' >> /var/www/html/Home-Assistant.html
+			echo '    <script>' >> /var/www/html/Home-Assistant.html
+			echo '        let newurl = "http://" + location.host + ":8123/";' >> /var/www/html/Home-Assistant.html
+			echo '        window.location.href = newurl;' >> /var/www/html/Home-Assistant.html
+			echo '    </script>' >> /var/www/html/Home-Assistant.html
+			echo '</body>' >> /var/www/html/Home-Assistant.html
+			echo '</html>' >> /var/www/html/Home-Assistant.html
+
 		fi
 	fi
 }
@@ -149,6 +163,8 @@ install_git_repos () {
 	dpkg -i /opt/source/home-assistant/os-agent*.deb
 	debconf-set-selections <<<'homeassistant-supervised ha/machine-type select qemuarm-64'
 	dpkg -i /opt/source/home-assistant/homeassistant-supervised*.deb
+
+	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleplay/emmc-extlinux.conf
 }
 
 other_source_links () {
