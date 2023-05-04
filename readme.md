@@ -86,6 +86,16 @@ BeagleLogic Standalone:
 
        A: [aa 55 33 ee 41 33 33 35  42 4c 47 43 30 30 30 41 |.U3.A335BLGC000A|]
 
+BeagleBone AI-64:
+
+      B0: [aa 55 33 ee 01 37 00 10  2e 00 42 42 4f 4e 45 41 |.U3..7....BBONEA|]
+          [49 2d 36 34 2d 42 30 2d  00 00                   |I-64-B0-..      |]
+
+BeaglePlay:
+
+      A0: [aa 55 33 ee 01 37 00 10  2e 00 42 45 41 47 4c 45  |.U3..7....BEAGLE|]
+          [50 4c 41 59 2d 41 30 2d  00 00                    |PLAY-A0-..      |]
+
 Scripts to support customized image generation for many arm systems
 
 BeagleBoard branch:
