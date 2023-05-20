@@ -918,10 +918,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_python_pkgs () {
 		if [ ! "x${python3_pkgs}" = "x" ] ; then
 			if [ ! "x${python3_extra_index}" = "x" ] ; then
-				python3 -m pip install --extra-index-url ${python3_extra_index} ${python3_pkgs}
+				python3 -m pip install --extra-index-url ${python3_extra_index} ${python3_pkgs} --break-system-packages
 			else
-				echo "Log: (chroot) Installing [python3 -m pip install ${python3_pkgs}]"
-				python3 -m pip install ${python3_pkgs}
+				echo "Log: (chroot) Installing [python3 -m pip install ${python3_pkgs} --break-system-packages]"
+				python3 -m pip install ${python3_pkgs} --break-system-packages
 			fi
 		fi
 	}
