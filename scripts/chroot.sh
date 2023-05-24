@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2022 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2023 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,10 @@ abi=ad
 #aa
 
 . "${DIR}/.project"
+
+if [ -f "${DIR}/.notar" ] ; then
+	unset chroot_tarball
+fi
 
 check_defines () {
 	if [ ! "${tempdir}" ] ; then
