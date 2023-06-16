@@ -22,6 +22,7 @@
 
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
+actual_debootstrap="128"
 minimal_debootstrap="128+nmu2"
 host_arch="$(uname -m)"
 
@@ -53,7 +54,7 @@ install_debootstrap () {
 	if [ -f /usr/bin/dpkg ] ; then
 		#if [[ "$test_debootstrap" < "$minimal_debootstrap" ]] ; then
 		#if [ "$test_debootstrap" -lt "$minimal_debootstrap" ] ; then
-		if [ ! "x$test_debootstrap+nmu2" = "x$minimal_debootstrap" ] ; then
+		if [ ! "x$test_debootstrap" = "x$actual_debootstrap" ] ; then
 			echo "Log: Installing minimal debootstrap version: 1.0.${minimal_debootstrap}..."
 			wget https://rcn-ee.com/mirror/debootstrap/debootstrap_1.0.${minimal_debootstrap}_all.deb
 			sudo dpkg -i debootstrap_1.0.${minimal_debootstrap}_all.deb
