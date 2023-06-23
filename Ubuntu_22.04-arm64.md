@@ -2,7 +2,7 @@ Generate: Base Ubuntu 22.04 Image:
 
     git clone https://github.com/RobertCNelson/omap-image-builder
     cd ./omap-image-builder
-    ./RootStock-NG.sh -c bb.org-ubuntu-2204-minimal-v5.10-ti-arm64-k3-j721e
+    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-2204-v5.10-ti-arm64-k3-j721e
 
 Archive will be under "./deploy/"
 
