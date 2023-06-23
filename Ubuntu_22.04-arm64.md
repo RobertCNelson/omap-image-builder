@@ -10,3 +10,6 @@ Finalize: BeagleBone AI-64 specific version:
 
     sudo ./setup_sdcard.sh --img-4gb bone-example --dtb bbai64
 
+Finalize: BeagleBone AI-64 with flashing on first startup:
+
+    sudo ./setup_sdcard.sh --img-4gb bone-example --dtb bbai64 --enable-extlinux-flasher
