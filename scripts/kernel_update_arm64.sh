@@ -30,7 +30,7 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
-	server="https://rcn-ee.net/repos/latest/bullseye-arm64/LATEST-"
+	server="https://rcn-ee.us/repos/latest/bullseye-arm64/LATEST-"
 	git_msg="5.10.x-ti-arm64"
 	var="ti-arm64"    ; ver="LTS510"  ; current_kernel
 fi

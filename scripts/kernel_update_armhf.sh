@@ -30,7 +30,7 @@ current_kernel () {
 }
 
 if [ -f configs/kernel.data ] ; then
-	server="https://rcn-ee.net/repos/latest/bullseye-armhf/LATEST-"
+	server="https://rcn-ee.us/repos/latest/bullseye-armhf/LATEST-"
 	git_msg="5.4.x-xM"
 	var="armv7"      ; ver="LTS54"       ; current_kernel
 
