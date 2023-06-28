@@ -38,6 +38,42 @@ checkparm () {
 	fi
 }
 
+check_project_config_legacy () {
+
+	if [ ! -d ${DIR}/ignore ] ; then
+		mkdir -p ${DIR}/ignore
+	fi
+	tempdir=$(mktemp -d -p ${DIR}/ignore)
+
+	time=$(date +%Y-%m-%d)
+
+	#/config/legacy/${project_config}.conf
+	unset leading_slash
+	leading_slash=$(echo ${project_config} | grep "/" || unset leading_slash)
+	if [ "${leading_slash}" ] ; then
+		project_config=$(echo "${leading_slash##*/}")
+	fi
+
+	#${project_config}.conf
+	project_config=$(echo ${project_config} | awk -F ".conf" '{print $1}')
+	if [ -f ${DIR}/configs/legacy/${project_config}.conf ] ; then
+		. <(m4 -P ${DIR}/configs/legacy/${project_config}.conf)
+		export_filename="${deb_distribution}-${release}-${image_type}-${deb_arch}-${time}"
+
+		# for automation
+		echo "${export_filename}" > ${DIR}/latest_version
+
+		echo "tempdir=\"${tempdir}\"" > ${DIR}/.project
+		echo "time=\"${time}\"" >> ${DIR}/.project
+		echo "export_filename=\"${export_filename}\"" >> ${DIR}/.project
+		echo "#" >> ${DIR}/.project
+		m4 -P ${DIR}/configs/legacy/${project_config}.conf >> ${DIR}/.project
+	else
+		echo "Invalid *.conf"
+		exit
+	fi
+}
+
 check_project_config () {
 
 	if [ ! -d ${DIR}/ignore ] ; then
@@ -99,6 +135,11 @@ while [ ! -z "$1" ] ; do
 		checkparm $2
 		project_config="$2"
 		check_project_config
+		;;
+	-l|-L|--legacy)
+		checkparm $2
+		project_config="$2"
+		check_project_config_legacy
 		;;
 	--saved-config)
 		check_saved_config
