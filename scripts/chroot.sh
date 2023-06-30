@@ -144,14 +144,13 @@ check_defines () {
 
 	if [ "x${repo_rcnee}" = "xenable" ] ; then
 		if [ ! "x${repo_rcnee_pkg_list}" = "x" ] ; then
-			include=$(echo ${repo_rcnee_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
-			deb_additional_pkgs="${deb_additional_pkgs} ${include}"
+			repo_rcnee_pkg_list=$(echo ${repo_rcnee_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
 		fi
 
 		if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
 			if [ ! "x${repo_rcnee_sgx_pkg_list}" = "x" ] ; then
 				include=$(echo ${repo_rcnee_sgx_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
-				deb_additional_pkgs="${deb_additional_pkgs} ${include}"
+				repo_rcnee_pkg_list="${repo_rcnee_pkg_list} ${include}"
 			fi
 		fi
 	fi
@@ -804,42 +803,42 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_pkgs () {
 		if [ ! "x${deb_additional_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_additional_pkgs}"
+			echo "Log: (chroot) Installing (deb_additional_pkgs): ${deb_additional_pkgs}"
 			apt-get update || true
 			apt-get install -y -qq ${deb_additional_pkgs}
 		fi
 
 		if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_console_application_pkgs}"
+			echo "Log: (chroot) Installing (deb_console_application_pkgs): ${deb_console_application_pkgs}"
 			apt-get update || true
 			apt-get install -y -qq ${deb_console_application_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_prerequisite_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_prerequisite_pkgs}"
+			echo "Log: (chroot) Installing (deb_desktop_prerequisite_pkgs): ${deb_desktop_prerequisite_pkgs}"
 			apt-get update || true
 			apt-get install -y -qq ${deb_desktop_prerequisite_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_pkgs}"
+			echo "Log: (chroot) Installing (deb_desktop_pkgs): ${deb_desktop_pkgs}"
 			apt-get update || true
 			apt-get install -y -qq ${deb_desktop_pkgs}
 		fi
 
 		if [ ! "x${deb_desktop_application_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Installing: ${deb_desktop_application_pkgs}"
+			echo "Log: (chroot) Installing (deb_desktop_application_pkgs): ${deb_desktop_application_pkgs}"
 			apt-get update || true
 			apt-get install -y -qq ${deb_desktop_application_pkgs}
 		fi
 
 		if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
 			#Install the user choosen list.
-			echo "Log: (chroot) Removing: ${deb_purge_pkgs}"
+			echo "Log: (chroot) Removing (deb_purge_pkgs): ${deb_purge_pkgs}"
 			apt-get purge -y ${deb_purge_pkgs}
 		fi
 
@@ -851,12 +850,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
-			echo "Log: (chroot) Installing (from external repo): ${repo_external_pkg_list}"
+			echo "Log: (chroot) Installing (from external repo) (repo_external_pkg_list): ${repo_external_pkg_list}"
 			apt-get install -y -qq ${repo_external_pkg_list}
 		fi
 
+		if [ ! "x${repo_rcnee_pkg_list}" = "x" ] ; then
+			#Install the user choosen list.
+			echo "Log: (chroot) Installing (repo_rcnee_pkg_list): ${repo_rcnee_pkg_list}"
+			apt-get update || true
+			apt-get install -y -qq ${repo_rcnee_pkg_list}
+		fi
+
 		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
-			echo "Log: (chroot) Installing (from external repo): ${repo_ros_pkg_list}"
+			echo "Log: (chroot) Installing (from external repo) (repo_ros_pkg_list): ${repo_ros_pkg_list}"
 			apt-get install -y -qq ${repo_ros_pkg_list}
 			#ROS: ubuntu, extra crude, cleanup....
 			apt autoremove -y || true
