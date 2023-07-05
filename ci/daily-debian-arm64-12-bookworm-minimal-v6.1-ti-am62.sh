@@ -4,7 +4,7 @@ export apt_proxy=192.168.1.12:3142/
 
 config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-am62
 filesize=4gb
-rootfs="debian-arm64-bookworm-minimal-v6.1-ti"
+rootfs="debian-arm64-12-bookworm-minimal-v6.1-ti"
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true

@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=bb.org-debian-bookworm-minimal-v5.10-ti-arm64-k3-am62
-filesize=4gb
-rootfs="debian-arm64-12-bookworm-minimal-v5.10-ti"
+config=bb.org-debian-bookworm-xfce-mainline-arm64
+filesize=10gb
+rootfs="debian-arm64-12-bookworm-xfce-mainline"
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
@@ -19,17 +19,17 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64
+	mv ./*.img ../
+
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay --enable-extlinux-flasher --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay --enable-extlinux-flasher --hostname BeaglePlay
-	mv ./*.img ../
-
 	cd ..
 
-	device="beagleplay"
+	device="bbai64"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
@@ -37,7 +37,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
-	device="beagleplay-emmc-flasher"
+	device="beagleplay"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
