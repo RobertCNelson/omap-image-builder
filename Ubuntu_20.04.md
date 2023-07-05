@@ -2,7 +2,7 @@ Generate: Base Ubuntu 20.04 Image:
 
     git clone https://github.com/RobertCNelson/omap-image-builder
     cd ./omap-image-builder
-    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-focal-v5.10-ti-armhf
+    ./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-2004-v5.10-ti-armhf
 
 Archive will be under "./deploy/"
 

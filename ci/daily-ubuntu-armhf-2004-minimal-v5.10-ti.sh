@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=rcn-ee.net-console-ubuntu-2204-v5.10-ti-armhf
+config=rcn-ee.net-console-ubuntu-2004-v5.10-ti-armhf
 filesize=4gb
-rootfs="ubuntu-armhf-22.04-console-v5.10-ti"
+rootfs="ubuntu-armhf-20.04-console-v5.10-ti"
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
