@@ -22,7 +22,6 @@ current_kernel () {
 		echo "kernel bump: ${git_msg}: ($latest_kernel)"
 		echo "[sed -i -e 's:'$old_kernel':'$latest_kernel':g']"
 		sed -i -e 's:'$old_kernel':'$latest_kernel':g' configs/*.conf
-		sed -i -e 's:'$old_kernel':'$latest_kernel':g' configs/legacy/*.conf
 		sed -i -e 's:'$old_kernel':'$latest_kernel':g' configs/kernel.data
 		git commit -a -m "kernel bump: ${git_msg}: ($latest_kernel)" -s
 	else
