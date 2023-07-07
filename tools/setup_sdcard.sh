@@ -448,17 +448,17 @@ unmount_all_drive_partitions () {
 sfdisk_partition_layout () {
 	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}M"
-	partition_one_end_mb="${conf_boot_endmb}M"
+	partition_one_size_mb="${conf_boot_endmb}M"
 	partition_two_start_mb=$(($conf_boot_startmb + $conf_boot_endmb))
 	partition_two_start_mb="${partition_two_start_mb}M"
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
-	echo "sfdisk: [${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*]"
+	echo "sfdisk: [${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*]"
 	echo "sfdisk: [${partition_two_start_mb},,,-]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*
+		${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*
 		${partition_two_start_mb},,,-
 	__EOF__
 
