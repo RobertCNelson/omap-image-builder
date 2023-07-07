@@ -1090,9 +1090,6 @@ populate_rootfs () {
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
 			if [ -f "${TEMPDIR}/disk/${extlinux_firmware_file}" ] ; then
 				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
-				if [ "x${swap_enable}" = "xenable" ] ; then
-					sed -i -e 's:p2:p3:g' ${wfile}
-				fi
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					sed -i -e 's:net.ifnames=0:net.ifnames=0 init=/usr/sbin/init-beagle-flasher:g' ${wfile}
@@ -1674,9 +1671,9 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beagleplay-microsd-to-emmc ] ; then
-			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/beagleplay-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+	if [ ! "x${flasher_script}" = "x" ] ; then
+		if [ -f ${TEMPDIR}/disk${flasher_script} ] ; then
+			cp -v ${TEMPDIR}/disk${flasher_script} ${TEMPDIR}/disk/etc/default/beagle-flasher
 		fi
 	fi
 
