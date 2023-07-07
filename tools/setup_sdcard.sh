@@ -1689,7 +1689,7 @@ populate_rootfs () {
 		fi
 
 		if [ "x${swap_enable}" = "xenable" ] ; then
-			sed -i -e 's:ROOT_PARTITION=2:ROOT_PARTITION=3:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+			sed -i -e "s:ROOT_PARTITION=2:ROOT_PARTITION=3:g" ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		cat ${TEMPDIR}/disk/etc/default/generic-sys-mods
 	fi
@@ -1697,7 +1697,7 @@ populate_rootfs () {
 	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/hostapd/hostapd.conf ] ; then
 			sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
-			sed -i -e "s:passphrase=BeagleBone:passphrase=BeaglePlay" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
+			sed -i -e "s:passphrase=BeagleBone:passphrase=BeaglePlay:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
 		fi
 
 		if [ -f ${TEMPDIR}/disk/etc/systemd/network/mlan0.network ] ; then
