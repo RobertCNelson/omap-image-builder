@@ -455,26 +455,26 @@ unmount_all_drive_partitions () {
 
 sfdisk_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
-	sfdisk_partition_one="${conf_boot_startmb}"
+	partition_one_start_mb="${conf_boot_startmb}"
 	partition_one_end_mb="${conf_boot_endmb}"
-	sfdisk_rootfs_startmb=$(($sfdisk_partition_one + $partition_one_end_mb))
+	sfdisk_rootfs_startmb=$(($partition_one_start_mb + $partition_one_end_mb))
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force ${sfdisk_gpt}"
-		sfdisk_partition_one="${sfdisk_partition_one}M"
+		partition_one_start_mb="${partition_one_start_mb}M"
 		partition_one_end_mb="${partition_one_end_mb}M"
 		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
 	fi
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
-	echo "sfdisk: [${sfdisk_partition_one},${partition_one_end_mb},${partition_one_fstype},*]"
+	echo "sfdisk: [${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*]"
 	echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${sfdisk_partition_one},${partition_one_end_mb},${partition_one_fstype},*
+		${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*
 		${sfdisk_rootfs_startmb},,,-
 	__EOF__
 
@@ -483,21 +483,21 @@ sfdisk_partition_layout () {
 
 sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
-	sfdisk_partition_one="${conf_boot_startmb}"
+	partition_one_start_mb="${conf_boot_startmb}"
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force ${sfdisk_gpt}"
-		sfdisk_partition_one="${sfdisk_partition_one}M"
+		partition_one_start_mb="${partition_one_start_mb}M"
 	fi
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
-	echo "sfdisk: [${sfdisk_partition_one},,${partition_one_fstype},*]"
+	echo "sfdisk: [${partition_one_start_mb},,${partition_one_fstype},*]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${sfdisk_partition_one},,${partition_one_fstype},*
+		${partition_one_start_mb},,${partition_one_fstype},*
 	__EOF__
 
 	sync
