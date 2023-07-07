@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2022 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2023 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -457,7 +457,6 @@ sfdisk_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
 	sfdisk_boot_size_mb="${conf_boot_endmb}"
-	sfdisk_var_size_mb="${conf_var_startmb}"
 	sfdisk_rootfs_startmb=$(($sfdisk_boot_startmb + $sfdisk_boot_size_mb))
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
@@ -467,7 +466,6 @@ sfdisk_partition_layout () {
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_boot_size_mb="${sfdisk_boot_size_mb}M"
 		sfdisk_var_startmb="${sfdisk_var_startmb}M"
-		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
 		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
 	fi
 
@@ -487,14 +485,12 @@ sfdisk_partition_layout () {
 sfdisk_single_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	sfdisk_boot_startmb="${conf_boot_startmb}"
-	sfdisk_var_size_mb="${conf_var_startmb}"
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
 		echo "log: sfdisk: 2.26.x or greater detected"
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
-		sfdisk_var_size_mb="${sfdisk_var_size_mb}M"
 	fi
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
