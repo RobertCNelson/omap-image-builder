@@ -397,7 +397,7 @@ generate_soc () {
 	echo "boot_fstype=${conf_boot_fstype}" >> ${wfile}
 	echo "conf_boot_startmb=${conf_boot_startmb}" >> ${wfile}
 	echo "conf_boot_endmb=${conf_boot_endmb}" >> ${wfile}
-	echo "sfdisk_fstype=${sfdisk_fstype}" >> ${wfile}
+	echo "sfdisk_partition_one_fstype=${sfdisk_partition_one_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
 
 	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
@@ -470,11 +470,11 @@ sfdisk_partition_layout () {
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
-	echo "sfdisk: [${sfdisk_partition_one},${sfdisk_partition_one_endmb},${sfdisk_fstype},*]"
+	echo "sfdisk: [${sfdisk_partition_one},${sfdisk_partition_one_endmb},${sfdisk_partition_one_fstype},*]"
 	echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${sfdisk_partition_one},${sfdisk_partition_one_endmb},${sfdisk_fstype},*
+		${sfdisk_partition_one},${sfdisk_partition_one_endmb},${sfdisk_partition_one_fstype},*
 		${sfdisk_rootfs_startmb},,,-
 	__EOF__
 
@@ -494,10 +494,10 @@ sfdisk_single_partition_layout () {
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
-	echo "sfdisk: [${sfdisk_partition_one},,${sfdisk_fstype},*]"
+	echo "sfdisk: [${sfdisk_partition_one},,${sfdisk_partition_one_fstype},*]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${sfdisk_partition_one},,${sfdisk_fstype},*
+		${sfdisk_partition_one},,${sfdisk_partition_one_fstype},*
 	__EOF__
 
 	sync
@@ -709,7 +709,7 @@ create_partitions () {
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
 			conf_boot_endmb=${conf_boot_endmb:-"96"}
 			conf_boot_fstype=${conf_boot_fstype:-"fat"}
-			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+			sfdisk_partition_one_fstype=${sfdisk_partition_one_fstype:-"0xE"}
 			sfdisk_partition_layout
 		else
 			sfdisk_single_partition_layout
@@ -731,13 +731,13 @@ create_partitions () {
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
 			conf_boot_endmb=${conf_boot_endmb:-"96"}
 			conf_boot_fstype=${conf_boot_fstype:-"fat"}
-			sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+			sfdisk_partition_one_fstype=${sfdisk_partition_one_fstype:-"0xE"}
 			sfdisk_partition_layout
 		else
 			if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 				conf_boot_endmb="16"
 				conf_boot_fstype="fat"
-				sfdisk_fstype="U"
+				sfdisk_partition_one_fstype="U"
 				BOOT_LABEL="EFI"
 				sfdisk_partition_layout
 			else
@@ -1819,13 +1819,13 @@ process_dtb_conf () {
 
 	case "${conf_boot_fstype}" in
 	fat|fat16)
-		sfdisk_fstype=${sfdisk_fstype:-"0xE"}
+		sfdisk_partition_one_fstype=${sfdisk_partition_one_fstype:-"0xE"}
 		;;
 	fat32)
-		sfdisk_fstype=${sfdisk_fstype:-"0xC"}
+		sfdisk_partition_one_fstype=${sfdisk_partition_one_fstype:-"0xC"}
 		;;
 	ext2|ext3|ext4|btrfs)
-		sfdisk_fstype="L"
+		sfdisk_partition_one_fstype="L"
 		;;
 	*)
 		echo "Error: [conf_boot_fstype] not recognized, stopping..."
