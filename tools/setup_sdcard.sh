@@ -452,15 +452,34 @@ sfdisk_partition_layout () {
 	partition_two_start_mb=$(($conf_boot_startmb + $conf_boot_endmb))
 	partition_two_start_mb="${partition_two_start_mb}M"
 
+	if [ "x${swap_enable}" = "xenable" ] ; then
+		partition_two_size_mb="${conf_swap_sizemb}M"
+		partition_three_start_mb=$(($conf_boot_startmb + $conf_boot_endmb + $conf_swap_sizemb))
+		partition_three_start_mb="${partition_three_start_mb}M"
+	fi
+
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
 	echo "sfdisk: [${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*]"
-	echo "sfdisk: [${partition_two_start_mb},,,-]"
+	if [ "x${swap_enable}" = "xenable" ] ; then
+		echo "sfdisk: [${partition_two_start_mb},${partition_two_size_mb},0x82,-]"
+		echo "sfdisk: [${partition_three_start_mb},,,-]"
+	else
+		echo "sfdisk: [${partition_two_start_mb},,,-]"
+	fi
 
-	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
-		${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*
-		${partition_two_start_mb},,,-
-	__EOF__
+	if [ "x${swap_enable}" = "xenable" ] ; then
+		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
+			${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*
+			${partition_two_start_mb},${partition_two_size_mb},0x82,-
+			${partition_three_start_mb},,,-
+		__EOF__
+	else
+		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
+			${partition_one_start_mb},${partition_one_size_mb},${partition_one_fstype},*
+			${partition_two_start_mb},,,-
+		__EOF__
+	fi
 
 	sync
 }
@@ -636,8 +655,15 @@ create_partitions () {
 	unset bootloader_installed
 	unset sfdisk_gpt
 
-	media_boot_partition=1
-	media_rootfs_partition=2
+	if [ "x${swap_enable}" = "xenable" ] ; then
+		media_boot_partition=1
+		media_swap_partition=2
+		media_rootfs_partition=3
+	else
+		unset media_swap_partition
+		media_boot_partition=1
+		media_rootfs_partition=2
+	fi
 
 	unset ext4_options
 
@@ -790,6 +816,13 @@ create_partitions () {
 		format_rootfs_partition
 	else
 		format_boot_partition
+		if [ ! "x${conf_swap_sizemb}" = "x" ] ; then
+			echo "Log: Generating Swap Partition: [mkswap ${media_prefix}${media_swap_partition}]"
+			echo "-----------------------------"
+			LC_ALL=C mkswap "${media_prefix}${media_swap_partition}"
+			swap_drive="${conf_root_device}p${media_swap_partition}"
+			sync
+		fi
 		format_rootfs_partition
 	fi
 }
@@ -1057,6 +1090,9 @@ populate_rootfs () {
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
 			if [ -f "${TEMPDIR}/disk/${extlinux_firmware_file}" ] ; then
 				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
+				if [ "x${swap_enable}" = "xenable" ] ; then
+					sed -i -e 's:p2:p3:g' ${wfile}
+				fi
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					sed -i -e 's:net.ifnames=0:net.ifnames=0 init=/usr/sbin/init-beagle-flasher:g' ${wfile}
@@ -1435,6 +1471,10 @@ populate_rootfs () {
 			echo "${boot_drive}  /boot/firmware vfat defaults 0 0" >> ${wfile}
 		fi
 
+		if [ "x${swap_enable}" = "xenable" ] ; then
+			echo "${swap_drive}       none    swap    sw      0       0" >> ${wfile}
+		fi
+
 		echo "debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0" >> ${wfile}
 
 		if [ ! -f ${TEMPDIR}/disk//etc/systemd/network/eth0.network ] ; then
@@ -1647,6 +1687,10 @@ populate_rootfs () {
 		if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] ; then
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
+
+		if [ "x${swap_enable}" = "xenable" ] ; then
+			sed -i -e 's:ROOT_PARTITION=2:ROOT_PARTITION=3:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
 		cat ${TEMPDIR}/disk/etc/default/generic-sys-mods
 	fi
 
@@ -1813,6 +1857,10 @@ process_dtb_conf () {
 
 	if [ "x${uboot_cape_overlays}" = "xenable" ] ; then
 		echo "U-Boot Overlays Enabled..."
+	fi
+
+	if [ ! "x${conf_swap_sizemb}" = "x" ] ; then
+		swap_enable="enable"
 	fi
 }
 
