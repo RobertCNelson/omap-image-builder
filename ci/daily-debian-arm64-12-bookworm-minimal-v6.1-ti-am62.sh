@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.12:3142/
 
 config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-am62
-filesize=4gb
+filesize=6gb
 rootfs="debian-arm64-12-bookworm-minimal-v6.1-ti"
 
 if [ -d ./deploy ] ; then
@@ -22,8 +22,8 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-6gb beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-6gb beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
 	mv ./*.img ../
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay --enable-extlinux-flasher --hostname BeaglePlay"
