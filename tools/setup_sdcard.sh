@@ -446,8 +446,7 @@ unmount_all_drive_partitions () {
 }
 
 sfdisk_partition_layout () {
-	sfdisk_options="--force ${sfdisk_gpt}"
-
+	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}M"
 	partition_one_end_mb="${conf_boot_endmb}M"
 	partition_two_start_mb=$(($conf_boot_startmb + $conf_boot_endmb))
@@ -467,7 +466,7 @@ sfdisk_partition_layout () {
 }
 
 sfdisk_single_partition_layout () {
-	sfdisk_options="--force ${sfdisk_gpt}"
+	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}"
 	partition_one_start_mb="${partition_one_start_mb}M"
 
