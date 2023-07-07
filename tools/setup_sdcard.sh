@@ -1697,6 +1697,7 @@ populate_rootfs () {
 	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/hostapd/hostapd.conf ] ; then
 			sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
+			sed -i -e "s:passphrase=BeagleBone:passphrase=BeaglePlay" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
 		fi
 
 		if [ -f ${TEMPDIR}/disk/etc/systemd/network/mlan0.network ] ; then
@@ -1742,6 +1743,12 @@ populate_rootfs () {
 	else
 		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/beagle-flasher-init-shutdown.service ] ; then
 			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/beagle-flasher-init-shutdown.service || true
+		fi
+	fi
+
+	if [ "x${disable_resize}" = "xenable" ] ; then
+		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
+			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
 		fi
 	fi
 
@@ -1949,6 +1956,7 @@ while [ ! -z "$1" ] ; do
 		echo ${media} | grep mmcblk >/dev/null && media_prefix="${media}p"
 		check_root
 		check_mmc
+		disable_resize="enable"
 		;;
 	--img|--img-[12468]gb)
 		checkparm $2
