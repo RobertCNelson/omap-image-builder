@@ -26,6 +26,7 @@
 
 #REQUIREMENTS:
 #uEnv.txt bootscript support
+#sfdisk 2.26.x or greater...
 
 BOOT_LABEL="BOOT"
 
@@ -134,6 +135,7 @@ detect_software () {
 	check_for_command git git
 	check_for_command partprobe parted
 	check_for_command tree tree
+	check_for_command sfdisk fdisk
 
 	if [ "x${build_img_file}" = "xenable" ] ; then
 		check_for_command kpartx kpartx
@@ -145,16 +147,6 @@ detect_software () {
 		echo "Debian/Ubuntu: sudo apt-get install dosfstools git kpartx wget tree parted"
 		echo "Fedora: yum install dosfstools dosfstools git wget"
 		echo "Gentoo: emerge dosfstools git wget"
-		echo ""
-		exit
-	fi
-
-	unset test_sfdisk
-	test_sfdisk=$(LC_ALL=C sfdisk -v 2>/dev/null | grep 2.17.2 | awk '{print $1}')
-	if [ "x${test_sdfdisk}" = "xsfdisk" ] ; then
-		echo ""
-		echo "Detected known broken sfdisk:"
-		echo "See: https://github.com/RobertCNelson/netinstall/issues/20"
 		echo ""
 		exit
 	fi
@@ -454,19 +446,12 @@ unmount_all_drive_partitions () {
 }
 
 sfdisk_partition_layout () {
-	sfdisk_options="--force --in-order --Linux --unit M"
-	partition_one_start_mb="${conf_boot_startmb}"
-	partition_one_end_mb="${conf_boot_endmb}"
-	partition_two_start_mb=$(($partition_one_start_mb + $partition_one_end_mb))
+	sfdisk_options="--force ${sfdisk_gpt}"
 
-	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
-	if [ "x${test_sfdisk}" = "x" ] ; then
-		echo "log: sfdisk: 2.26.x or greater detected"
-		sfdisk_options="--force ${sfdisk_gpt}"
-		partition_one_start_mb="${partition_one_start_mb}M"
-		partition_one_end_mb="${partition_one_end_mb}M"
-		partition_two_start_mb="${partition_two_start_mb}M"
-	fi
+	partition_one_start_mb="${conf_boot_startmb}M"
+	partition_one_end_mb="${conf_boot_endmb}M"
+	partition_two_start_mb=$(($conf_boot_startmb + $conf_boot_endmb))
+	partition_two_start_mb="${partition_two_start_mb}M"
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
@@ -482,15 +467,9 @@ sfdisk_partition_layout () {
 }
 
 sfdisk_single_partition_layout () {
-	sfdisk_options="--force --in-order --Linux --unit M"
+	sfdisk_options="--force ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}"
-
-	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
-	if [ "x${test_sfdisk}" = "x" ] ; then
-		echo "log: sfdisk: 2.26.x or greater detected"
-		sfdisk_options="--force ${sfdisk_gpt}"
-		partition_one_start_mb="${partition_one_start_mb}M"
-	fi
+	partition_one_start_mb="${partition_one_start_mb}M"
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
