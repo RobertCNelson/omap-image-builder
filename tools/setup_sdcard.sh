@@ -457,7 +457,7 @@ sfdisk_partition_layout () {
 	sfdisk_options="--force --in-order --Linux --unit M"
 	partition_one_start_mb="${conf_boot_startmb}"
 	partition_one_end_mb="${conf_boot_endmb}"
-	sfdisk_rootfs_startmb=$(($partition_one_start_mb + $partition_one_end_mb))
+	partition_two_start_mb=$(($partition_one_start_mb + $partition_one_end_mb))
 
 	test_sfdisk=$(LC_ALL=C sfdisk --help | grep -m 1 -e "--in-order" || true)
 	if [ "x${test_sfdisk}" = "x" ] ; then
@@ -465,17 +465,17 @@ sfdisk_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		partition_one_start_mb="${partition_one_start_mb}M"
 		partition_one_end_mb="${partition_one_end_mb}M"
-		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
+		partition_two_start_mb="${partition_two_start_mb}M"
 	fi
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
 	echo "sfdisk: [${sfdisk_options} ${media}]"
 	echo "sfdisk: [${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*]"
-	echo "sfdisk: [${sfdisk_rootfs_startmb},,,-]"
+	echo "sfdisk: [${partition_two_start_mb},,,-]"
 
 	LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 		${partition_one_start_mb},${partition_one_end_mb},${partition_one_fstype},*
-		${sfdisk_rootfs_startmb},,,-
+		${partition_two_start_mb},,,-
 	__EOF__
 
 	sync
