@@ -465,7 +465,6 @@ sfdisk_partition_layout () {
 		sfdisk_options="--force ${sfdisk_gpt}"
 		sfdisk_boot_startmb="${sfdisk_boot_startmb}M"
 		sfdisk_boot_size_mb="${sfdisk_boot_size_mb}M"
-		sfdisk_var_startmb="${sfdisk_var_startmb}M"
 		sfdisk_rootfs_startmb="${sfdisk_rootfs_startmb}M"
 	fi
 
