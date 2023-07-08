@@ -449,11 +449,11 @@ sfdisk_partition_layout () {
 	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}"
 	partition_one_size_mb="${conf_boot_endmb}"
-	partition_two_start_mb=$(($conf_boot_startmb + $conf_boot_endmb))
+	partition_two_start_mb=$(($partition_one_start_mb + $partition_one_size_mb))
 
 	if [ "x${swap_enable}" = "xenable" ] ; then
 		partition_two_size_mb="${conf_swap_sizemb}"
-		partition_three_start_mb=$(($conf_boot_startmb + $conf_boot_endmb + $conf_swap_sizemb))
+		partition_three_start_mb=$(($partition_one_start_mb + $partition_one_size_mb + $partition_two_size_mb))
 	fi
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
