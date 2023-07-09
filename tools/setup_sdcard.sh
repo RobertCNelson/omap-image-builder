@@ -389,7 +389,7 @@ generate_soc () {
 	echo "boot_fstype=${conf_boot_fstype}" >> ${wfile}
 	echo "conf_boot_startmb=${conf_boot_startmb}" >> ${wfile}
 	echo "conf_boot_endmb=${conf_boot_endmb}" >> ${wfile}
-	echo "partition_one_fstype=${partition_one_fstype}" >> ${wfile}
+	echo "sfdisk_fstype=${partition_one_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
 
 	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
