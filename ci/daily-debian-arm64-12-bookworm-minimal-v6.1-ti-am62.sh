@@ -10,10 +10,7 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
-if [ -f .notar ] ; then
-	rm -rf .notar
-fi
-#touch .notar
+touch .notar
 echo "./RootStock-NG.sh -c ${config}"
 ./RootStock-NG.sh -c ${config}
 
@@ -48,11 +45,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
-	echo "Compressing...${export_filename}.tar"
-	xz -T4 -z ${export_filename}.tar
-	sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
-	sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#echo "Compressing...${export_filename}.tar"
+	#xz -T4 -z ${export_filename}.tar
+	#sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
 else
