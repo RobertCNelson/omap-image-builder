@@ -1952,7 +1952,7 @@ while [ ! -z "$1" ] ; do
 		check_mmc
 		disable_resize="enable"
 		;;
-	--img|--img-[12468]gb)
+	--img|--img-[1246]gb)
 		checkparm $2
 		name=${2:-image}
 		gsize=$(echo "$1" | sed -ne 's/^--img-\([[:digit:]]\+\)gb$/\1/p')
@@ -1982,6 +1982,23 @@ while [ ! -z "$1" ] ; do
 		## x 900 (90%) #1GB = 900 #2GB = 1800 #4GB = 3600
 		#
 		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 900)))
+		;;
+	--img-8gb)
+		###FIXME, someone with better sed skills can add this to ^. ;)
+		checkparm $2
+		name=${2:-image}
+		# --img defaults to --img-8gb
+		gsize=${gsize:-8}
+		imagename=${name%.img}-${gsize}gb.img
+		media="${DIR}/${imagename}"
+		build_img_file="enable"
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+
+		###For bigger storage let's assume closer to 100% capacity...
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 960)))
 		;;
 	--img-10gb)
 		###FIXME, someone with better sed skills can add this to ^. ;)
