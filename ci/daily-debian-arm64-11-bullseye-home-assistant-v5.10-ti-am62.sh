@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.12:3142/
 
 config=bb.org-debian-bullseye-home-assistant-v5.10-ti-arm64-k3-am62
-filesize=6gb
+filesize=8gb
 rootfs="debian-arm64-11-bullseye-home-assistant-v5.10-ti"
 
 if [ -d ./deploy ] ; then
