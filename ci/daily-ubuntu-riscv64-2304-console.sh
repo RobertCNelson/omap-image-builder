@@ -29,6 +29,8 @@ if [ -f ./deploy/${export_filename}.tar ] ; then
 	sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
 	sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	echo "${export_filename}.tar.xz" > latest
+	sudo -uvoodoo cp -v ./latest /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/
 
 	rm -rf ${tempdir} || true
 else
