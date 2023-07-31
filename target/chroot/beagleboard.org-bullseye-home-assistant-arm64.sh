@@ -164,8 +164,8 @@ install_git_repos () {
 	debconf-set-selections <<<'homeassistant-supervised ha/machine-type select qemuarm-64'
 	dpkg -i /opt/source/home-assistant/homeassistant-supervised*.deb
 
-	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleplay/emmc-extlinux.conf
-	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleplay/microsd-extlinux.conf
+	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleboneai64/*-extlinux.conf
+	sed -i -e 's:quiet:systemd.unified_cgroup_hierarchy=false quiet:g' /opt/u-boot/bb-u-boot-beagleplay/*-extlinux.conf
 }
 
 other_source_links () {
