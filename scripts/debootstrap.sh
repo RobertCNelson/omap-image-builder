@@ -108,9 +108,9 @@ check_defines () {
 		case "${deb_distribution}" in
 		debian)
 			deb_mirror="deb.debian.org/debian"
-			#if [ "x${deb_arch}" = "xriscv64" ] ; then
-			#	deb_mirror="deb.debian.org/debian-ports"
-			#fi
+			if [ "x${deb_arch}" = "xriscv64" ] ; then
+				deb_mirror="deb.debian.org/debian-ports"
+			fi
 			;;
 		ubuntu)
 			deb_mirror="ports.ubuntu.com/"
