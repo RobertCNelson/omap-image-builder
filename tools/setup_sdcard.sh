@@ -1089,7 +1089,7 @@ populate_rootfs () {
 				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
-					sed -i -e 's:net.ifnames=0:net.ifnames=0 init=/usr/sbin/init-beagle-flasher:g' ${wfile}
+					sed -i -e 's:net.ifnames=0 quiet:net.ifnames=0 quiet init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					if [ "x${board_hacks}" = "xbeagleplay" ] ; then
 						if [ -f "${TEMPDIR}/disk/boot/firmware/overlays/k3-am625-beagleplay-bcfserial-no-firmware.dtbo" ] ; then
 							echo "    fdtoverlays /overlays/k3-am625-beagleplay-bcfserial-no-firmware.dtbo" | sudo tee -a  ${wfile}
