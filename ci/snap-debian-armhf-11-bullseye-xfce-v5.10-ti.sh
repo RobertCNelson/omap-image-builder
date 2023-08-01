@@ -15,7 +15,7 @@ compress_snapshot_image () {
 	echo "                    \"description\": \"A port of Debian Bullseye with the ${image_type} package set\"," >> ${json_file}
 	echo "                    \"icon\": \"https://downloads.raspberrypi.org/raspios_armhf/Raspberry_Pi_OS_(32-bit).png\"," >> ${json_file}
 	echo "                    \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
-	extract_size=$(du -b ./2022-01-28-raspios-bullseye-armhf.img | awk '{print $1}')
+	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "                    \"extract_size\": ${extract_size}," >> ${json_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "                    \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
