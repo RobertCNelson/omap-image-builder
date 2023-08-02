@@ -60,7 +60,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
-	device="beagleplay" ; compress_snapshot_imagedevice
+	device="beagleplay" ; compress_snapshot_image
 	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
