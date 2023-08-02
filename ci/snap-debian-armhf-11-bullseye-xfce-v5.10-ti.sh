@@ -13,7 +13,7 @@ compress_snapshot_image () {
 	echo "                {" >> ${json_file}
 	echo "                    \"name\": \"Debian 11 ${image_type} (${deb_arch})\"," >> ${json_file}
 	echo "                    \"description\": \"A port of Debian Bullseye with the ${image_type} package set\"," >> ${json_file}
-	echo "                    \"icon\": \"https://downloads.raspberrypi.org/raspios_armhf/Raspberry_Pi_OS_(32-bit).png\"," >> ${json_file}
+	echo "                    \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
 	echo "                    \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "                    \"extract_size\": ${extract_size}," >> ${json_file}
