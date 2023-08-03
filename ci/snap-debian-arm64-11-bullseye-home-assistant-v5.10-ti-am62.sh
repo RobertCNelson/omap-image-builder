@@ -38,7 +38,6 @@ compress_snapshot_image () {
 }
 
 combine_json () {
-{
 	json_file="imager.json"
 
 	echo "{" > ${json_file}
