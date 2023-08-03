@@ -10,31 +10,47 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 	sync
 
-	echo "                {" >> ${json_file}
-	echo "                    \"name\": \"Debian 11 ${image_type} (${deb_arch})\"," >> ${json_file}
-	echo "                    \"description\": \"A port of Debian Bullseye with the ${image_type} package set\"," >> ${json_file}
-	echo "                    \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
-	echo "                    \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
+	echo "        {" >> ${json_file}
+	echo "            \"name\": \"Debian 11 ${image_type} (${deb_arch})\"," >> ${json_file}
+	echo "            \"description\": \"A port of Debian Bullseye with the ${image_type} package set\"," >> ${json_file}
+	echo "            \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
+	echo "            \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "                    \"extract_size\": ${extract_size}," >> ${json_file}
+	echo "            \"extract_size\": ${extract_size}," >> ${json_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "                    \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
+	echo "            \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
 
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
-	echo "                    \"image_download_size\": ${image_download_size}," >> ${json_file}
-	echo "                    \"release_date\": \"${time}\"," >> ${json_file}
-	echo "                    \"init_format\": \"systemd\"" >> ${json_file}
-	echo "                }," >> ${json_file}
+	echo "            \"image_download_size\": ${image_download_size}," >> ${json_file}
+	echo "            \"release_date\": \"${time}\"," >> ${json_file}
+	echo "            \"init_format\": \"systemd\"" >> ${json_file}
+	echo "        }," >> ${json_file}
 	sync
 
 	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+}
+
+combine_json () {
+{
+	json_file="imager.json"
+
+	echo "{" > ${json_file}
+	echo "    \"os_list\": [" >> ${json_file}
+
+	cat /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/*img.xz.json >> ${json_file}
+
+	echo "    ]" >> ${json_file}
+	echo "}" >> ${json_file}
+	sync
+
+	sudo -uvoodoo cp -v ./${json_file} /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 }
 
 if [ -d ./deploy ] ; then
@@ -62,6 +78,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="bbai64" ; compress_snapshot_image
 	device="bbai64-emmc-flasher" ; compress_snapshot_image
+
+	combine_json
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
