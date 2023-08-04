@@ -460,7 +460,7 @@ sfdisk_partition_layout () {
 	echo "sfdisk: [${sfdisk_options} ${media}]"
 	echo "sfdisk: [${partition_one_start_mb}M,${partition_one_size_mb}M,${partition_one_fstype},*]"
 	if [ "x${swap_enable}" = "xenable" ] ; then
-		echo "sfdisk: [${partition_two_start_mb}M,${partition_two_size_mb},0x82,-]"
+		echo "sfdisk: [${partition_two_start_mb}M,${partition_two_size_mb}M,0x82,-]"
 		echo "sfdisk: [${partition_three_start_mb}M,,,-]"
 	else
 		echo "sfdisk: [${partition_two_start_mb}M,,,-]"
@@ -469,7 +469,7 @@ sfdisk_partition_layout () {
 	if [ "x${swap_enable}" = "xenable" ] ; then
 		LC_ALL=C sfdisk ${sfdisk_options} "${media}" <<-__EOF__
 			${partition_one_start_mb}M,${partition_one_size_mb}M,${partition_one_fstype},*
-			${partition_two_start_mb}M,${partition_two_size_mb},0x82,-
+			${partition_two_start_mb}M,${partition_two_size_mb}M,0x82,-
 			${partition_three_start_mb}M,,,-
 		__EOF__
 	else
