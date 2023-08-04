@@ -147,20 +147,20 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	if [ -f /usr/bin/make ] ; then
-		echo "Installing pip packages"
-		git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-		git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-		git_clone
-		if [ -f ${git_target_dir}/.git/config ] ; then
-			cd ${git_target_dir}/
-			sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
-			if [ -f /usr/bin/python3 ] ; then
-				python3 setup.py install || true
-			fi
-			git reset HEAD --hard || true
-		fi
-	fi
+	#if [ -f /usr/bin/make ] ; then
+	#	echo "Installing pip packages"
+	#	git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
+	#	git_target_dir="/opt/source/adafruit-beaglebone-io-python"
+	#	git_clone
+	#	if [ -f ${git_target_dir}/.git/config ] ; then
+	#		cd ${git_target_dir}/
+	#		sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
+	#		if [ -f /usr/bin/python3 ] ; then
+	#			python3 setup.py install || true
+	#		fi
+	#		git reset HEAD --hard || true
+	#	fi
+	#fi
 
 	if [ -f /var/www/html/index.nginx-debian.html ] ; then
 		rm -rf /var/www/html/index.nginx-debian.html || true
@@ -176,9 +176,9 @@ install_git_repos () {
 	git_branch="v5.15.x"
 	git_clone_branch
 
-	git_repo="https://github.com/beagleboard/bb.org-overlays"
-	git_target_dir="/opt/source/bb.org-overlays"
-	git_clone
+	#git_repo="https://github.com/beagleboard/bb.org-overlays"
+	#git_target_dir="/opt/source/bb.org-overlays"
+	#git_clone
 
 	git_repo="https://github.com/mvduin/bbb-pin-utils"
 	git_target_dir="/opt/source/bbb-pin-utils"
