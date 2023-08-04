@@ -40,13 +40,7 @@ compress_snapshot_image () {
 combine_json () {
 	json_file="imager.json"
 
-	echo "{" > ${json_file}
-	echo "    \"os_list\": [" >> ${json_file}
-
-	cat /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/*img.xz.json >> ${json_file}
-
-	echo "    ]" >> ${json_file}
-	echo "}" >> ${json_file}
+	jq -s . /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/*img.xz.json >> ${json_file}
 	sync
 
 	sudo -uvoodoo cp -v ./${json_file} /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/

@@ -2,8 +2,8 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=bb.org-debian-bullseye-home-assistant-v5.10-ti-arm64-k3-am62
-filesize=8gb
+config=bb.org-debian-bookworm-minimal-v5.10-ti-armhf
+filesize=2gb
 
 compress_snapshot_image () {
 	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
@@ -59,18 +59,28 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay --enable-extlinux-flasher --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay --enable-extlinux-flasher --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-eMMC-flasher-${export_filename} --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts --emmc-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-eMMC-flasher-${export_filename} --dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts --emmc-flasher
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am57xx-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts"
+	sudo ./setup_sdcard.sh --img-${filesize} am57xx-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am57xx-eMMC-flasher-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts --emmc-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} am57xx-eMMC-flasher-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts --emmc-flasher
 	mv ./*.img ../
 
 	cd ../
 
-	device="beagleplay" ; compress_snapshot_image
-	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+	device="am335x" ; compress_snapshot_image
+	device="am335x-eMMC-flasher" ; compress_snapshot_image
+	device="am57xx" ; compress_snapshot_image
+	device="am57xx-eMMC-flasher" ; compress_snapshot_image
 
 	combine_json
 
