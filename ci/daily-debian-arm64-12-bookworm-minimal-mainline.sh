@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.12:3142/
 
 config=bb.org-debian-bookworm-minimal-mainline-arm64
-filesize=6gb
+filesize=4gb
 rootfs="debian-arm64-12-bookworm-minimal-mainline"
 
 if [ -d ./deploy ] ; then
