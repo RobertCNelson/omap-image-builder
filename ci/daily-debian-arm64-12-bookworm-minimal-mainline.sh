@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.12:3142/
 
 config=bb.org-debian-bookworm-minimal-mainline-arm64
-filesize=4gb
+filesize=6gb
 rootfs="debian-arm64-12-bookworm-minimal-mainline"
 
 if [ -d ./deploy ] ; then
@@ -23,8 +23,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-ti-2023.04 --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-ti-2023.04 --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay
 	mv ./*.img ../
 
 	cd ../
