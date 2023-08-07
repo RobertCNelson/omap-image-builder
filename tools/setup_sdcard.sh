@@ -884,6 +884,9 @@ populate_boot () {
 		if [ ! "x${bootloader_distro_img}" = "x" ] ; then
 			cp -v ./${bootloader_distro_img} "${TEMPDIR}/disk/"
 		fi
+		if [ ! "x${bootloader_distro_sysfw}" = "x" ] ; then
+			cp -v ./${bootloader_distro_sysfw} "${TEMPDIR}/disk/"
+		fi
 		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
 			cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
 		fi
