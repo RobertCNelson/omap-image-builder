@@ -27,8 +27,12 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-ti-2023.04-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-ti-2023.04-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay
 	mv ./*.img ../
 
 	cd ../
@@ -50,6 +54,14 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	device="beagleplay"
+	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	echo "Compressing...${device}-${export_filename}-${filesize}.img"
+	xz -T4 -z ${device}-${export_filename}-${filesize}.img
+	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+
+	device="beagleplay-ti-2023.04"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
