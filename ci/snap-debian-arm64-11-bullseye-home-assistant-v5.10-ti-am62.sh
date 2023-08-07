@@ -37,15 +37,6 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 }
 
-combine_json () {
-	json_file="imager.json"
-
-	jq -s . /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/*img.xz.json >> ${json_file}
-	sync
-
-	sudo -uvoodoo cp -v ./${json_file} /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
-}
-
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
@@ -71,8 +62,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="beagleplay" ; compress_snapshot_image
 	device="beagleplay-emmc-flasher" ; compress_snapshot_image
-
-	combine_json
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
