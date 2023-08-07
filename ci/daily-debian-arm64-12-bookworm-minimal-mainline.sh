@@ -19,8 +19,12 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
 	mv ./*.img ../
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
@@ -30,6 +34,14 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ../
 
 	device="bbai64"
+	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	echo "Compressing...${device}-${export_filename}-${filesize}.img"
+	xz -T4 -z ${device}-${export_filename}-${filesize}.img
+	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+
+	device="bbai64-ti-2023.04"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
