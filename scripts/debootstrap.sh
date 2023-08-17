@@ -135,7 +135,7 @@ fi
 echo "Log: Running: debootstrap in [${tempdir}]"
 
 case "${deb_codename}" in
-bookworm|trixie|sid|jammy|lunar)
+bookworm|trixie|sid|jammy|lunar|mantic)
 	echo "Log: [sudo debootstrap ${options} ${suite} ${target} ${mirror}]"
 	sudo debootstrap ${options} ${suite} "${target}" ${mirror}
 	;;
