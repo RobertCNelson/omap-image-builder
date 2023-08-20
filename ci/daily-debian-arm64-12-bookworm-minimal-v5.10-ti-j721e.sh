@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-j721e
+config=bb.org-debian-bookworm-minimal-v5.10-ti-arm64-k3-j721e
 filesize=6gb
-rootfs="debian-arm64-12-bookworm-minimal-v6.1-ti"
+rootfs="debian-arm64-12-bookworm-minimal-v5.10-ti"
 
 compress_snapshot_image () {
 	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
@@ -50,13 +50,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
 	mv ./*.img ../
 
 	cd ../
 
-	device="bbai64" ; compress_snapshot_image
+	device="beagleplay" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
