@@ -1653,24 +1653,6 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${board_hacks}" = "xj721e_evm" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-microsd-to-emmc ] ; then
-			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
-		fi
-	fi
-
-	if [ "x${board_hacks}" = "xbbai64_staging" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-staging-microsd-to-emmc ] ; then
-			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/bbai64-staging-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
-		fi
-	fi
-
-	if [ "x${board_hacks}" = "xsk_am62" ]  ; then
-		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ] ; then
-			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/am62-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
-		fi
-	fi
-
 	if [ ! "x${flasher_script}" = "x" ] ; then
 		if [ -f ${TEMPDIR}/disk${flasher_script} ] ; then
 			cp -v ${TEMPDIR}/disk${flasher_script} ${TEMPDIR}/disk/etc/default/beagle-flasher
