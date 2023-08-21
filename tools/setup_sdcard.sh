@@ -1739,10 +1739,6 @@ populate_rootfs () {
 		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
 			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
 		fi
-	else
-		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/beagle-flasher-init-shutdown.service ] ; then
-			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/beagle-flasher-init-shutdown.service || true
-		fi
 	fi
 
 	if [ "x${disable_resize}" = "xenable" ] ; then
