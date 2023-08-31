@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=rcn-ee.net-console-ubuntu-2204-v5.10-ti-arm64-k3-j721e
+config=rcn-ee.net-console-ubuntu-2204-v5.10-ti-arm64-k3-am62
 filesize=4gb
 rootfs="ubuntu-arm64-22.04-console-v5.10-ti"
 
@@ -50,13 +50,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay
 	mv ./*.img ../
 
 	cd ../
 
-	device="bbai64" ; compress_snapshot_image
+	device="beagleplay" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
