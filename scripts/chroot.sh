@@ -1276,11 +1276,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				systemctl enable systemd-networkd.service || true
 			fi
 
-			if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
-				systemctl enable wpa_supplicant@wlan0 || true
+			if [ -f /lib/systemd/system/iwd.service ] ; then
+				systemctl enable iwd.service || true
+			else
+				if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
+					systemctl enable wpa_supplicant@wlan0 || true
 
-				if [ -f /etc/bbb.io/templates/mlan0-DHCP.network ] ; then
-					systemctl enable wpa_supplicant@mlan0 || true
+					if [ -f /etc/bbb.io/templates/mlan0-DHCP.network ] ; then
+						systemctl enable wpa_supplicant@mlan0 || true
+					fi
 				fi
 			fi
 
