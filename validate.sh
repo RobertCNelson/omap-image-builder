@@ -16,6 +16,9 @@ run_config () {
 	if [ ! -f ./deploy/${export_filename}.tar ] ; then
 		echo "Error: deploy/${export_filename}.tar"
 		exit 1
+	else
+		echo "Compressing: deploy/${export_filename}.tar"
+		xz ./deploy/${export_filename}.tar
 	fi
 }
 
@@ -34,7 +37,10 @@ run_config () {
 #config="bela.io-debian-stretch-armhf-v4.14-ti-xenomai"
 #run_config
 
-config="bela.io-debian-bullseye-v4.14-ti-xenomai-armhf"
+#config="bela.io-debian-bullseye-v4.14-ti-xenomai-armhf"
+#run_config
+
+config="eewiki_minfs_ubuntu_focal_arm64"
 run_config
 
 if [ -d ./ignore ] ; then
