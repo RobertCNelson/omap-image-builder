@@ -19,7 +19,7 @@ compress_snapshot_image () {
 	echo "            \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
 
 	echo "Creating... ${device}-${export_filename}-${filesize}.bmap"
-	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./{device}-${export_filename}-${filesize}.img
+	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
 
 	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
