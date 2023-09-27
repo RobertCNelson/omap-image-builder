@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_images:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - dist: ubuntu
+            suite: bionic
+            major: 18
+            arch: arm64
+          - dist: ubuntu
+            suite: focal
+            major: 20
+            arch: arm64
+          - dist: ubuntu
+            suite: jammy
+            major: 22
+            arch: arm64
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout linux firmware
+        uses: actions/checkout@v4
+        with:
+          repository: CirrusLogic/linux-firmware
+          path: git/linux-firmware
+
+      - name: Common dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y debootstrap qemu-user-static binfmt-support
+
+      - name: Build image
+        run: |
+          ./.github/ci_build.sh ${{ matrix.dist }} ${{ matrix.suite }}
+          ls -lh deploy/*.tar.xz
+
+      - name: Upload image
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.dist }}-${{ matrix.suite }}-${{ matrix.arch }}
+          path: deploy/${{ matrix.dist }}-${{ matrix.major }}*${{ matrix.arch }}*.tar.xz
