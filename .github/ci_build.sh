@@ -41,8 +41,19 @@ echo "ROOTFS is: ${rootfs_tarball}"
 
 CMD="./RootStock-NG.sh -c ${target_config}"
 echo "CMD is: ${CMD}"
-#$CMD
-[[ -f deploy/${rootfs_tarball} ]] && ${archive} deploy/${rootfs_tarball}
+echo ""
+
+./RootStock-NG.sh -c ${target_config}
+
+source .project
+if [ ! -f ./deploy/${export_filename}.tar ] ; then
+    echo "Error: deploy/${export_filename}.tar"
+    exit 1
+else
+    echo "Compressing: deploy/${export_filename}.tar"
+    sudo chown $(id -u):$(id -g) ./deploy/${export_filename}.tar || true
+    ${archive} ./deploy/${export_filename}.tar
+fi
 
 if ((failures != 0)); then
     echo "Something went wrong !!!"

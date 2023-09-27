@@ -48,7 +48,7 @@ jobs:
       - name: Build image
         run: |
           ./.github/ci_build.sh ${{ matrix.dist }} ${{ matrix.suite }}
-          ls -lh deploy/*.tar.xz
+          ls -lh deploy/
 
       - name: Upload image
         uses: actions/upload-artifact@v3
