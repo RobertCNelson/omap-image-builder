@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    # release on tag push
+    tags:
+      - '*'
+
+jobs:
+  build_images:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - dist: ubuntu
+            suite: bionic
+            major: 18
+            arch: arm64
+          - dist: ubuntu
+            suite: focal
+            major: 20
+            arch: arm64
+          - dist: ubuntu
+            suite: jammy
+            major: 22
+            arch: arm64
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout linux firmware
+        uses: actions/checkout@v4
+        with:
+          repository: CirrusLogic/linux-firmware
+          path: git/linux-firmware
+
+      - name: Common dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y debootstrap qemu-user-static binfmt-support
+
+      - name: Build image
+        run: |
+          ./.github/ci_build.sh ${{ matrix.dist }} ${{ matrix.suite }}
+          ls -lh deploy/
+
+      - name: Upload image
+        uses: actions/upload-artifact@v3
+        with:
+          name: rootfs
+          path: deploy/${{ matrix.dist }}-${{ matrix.major }}*${{ matrix.arch }}*.tar.xz
+
+  create_release:
+    name: Create Release
+    needs: [build_images]
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Get version
+        id: get_version
+        run: |
+          echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+          echo ${{ env.VERSION }}
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # download all artifacts to project dir
+      - uses: actions/download-artifact@v3
+
+      - name: Generate changes file
+        uses: sarnold/gitchangelog-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          body_path: CHANGES.md
+          draft: false
+          prerelease: false
+          files: |
+            rootfs/*.tar.xz
