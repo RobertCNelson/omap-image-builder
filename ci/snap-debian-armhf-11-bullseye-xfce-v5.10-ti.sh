@@ -43,6 +43,7 @@ if [ -d ./deploy ] ; then
 fi
 
 touch .notar
+touch .gitea.mirror
 echo "./RootStock-NG.sh -c ${config}"
 ./RootStock-NG.sh -c ${config}
 

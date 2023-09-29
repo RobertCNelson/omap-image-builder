@@ -10,6 +10,7 @@ if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
 fi
 
+touch .gitea.mirror
 echo "./RootStock-NG.sh -c ${config}"
 ./RootStock-NG.sh -c ${config}
 

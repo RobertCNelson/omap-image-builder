@@ -174,7 +174,11 @@ git_trees () {
 	fi
 
 	git_project_name="linux-firmware"
-	git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+	if [ -f ./.gitea.mirror ] ; then
+		git_clone_address="https://gitea.gfnd.rcn-ee.org/kernel.org/linux-firmware.git"
+	else
+		git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+	fi
 	generic_git
 	update_git
 }
