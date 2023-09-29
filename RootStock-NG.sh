@@ -160,6 +160,12 @@ generic_git () {
 	fi
 }
 
+generic_git_mirror () {
+	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
+		git clone -c http.sslVerify=false ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
+	fi
+}
+
 update_git () {
 	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		cd ${DIR}/git/${git_project_name}/
@@ -176,10 +182,11 @@ git_trees () {
 	git_project_name="linux-firmware"
 	if [ -f ./.gitea.mirror ] ; then
 		git_clone_address="https://gitea.gfnd.rcn-ee.org/kernel.org/linux-firmware.git"
+		generic_git_mirror
 	else
 		git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+		generic_git
 	fi
-	generic_git
 	update_git
 }
 
