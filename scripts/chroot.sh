@@ -1372,10 +1372,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
-		if [ -f /lib/systemd/system/beagle-flasher-init-shutdown.service ] ; then
-			systemctl enable beagle-flasher-init-shutdown.service || true
-		fi
-
 		if [ "x${rfs_enable_edgeai}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bb-start-vision-apps-eaik-8-2.service ] ; then
 				systemctl enable bb-start-vision-apps-eaik-8-2.service || true
