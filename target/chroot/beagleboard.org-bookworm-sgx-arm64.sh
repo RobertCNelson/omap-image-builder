@@ -136,6 +136,11 @@ install_git_repos () {
 	git_clone_branch
 
 	git_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.1-ti"
+	git_branch="v6.1.x-ti"
+	git_clone_branch
+
+	git_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.3"
 	git_branch="v6.3.x"
 	git_clone_branch
