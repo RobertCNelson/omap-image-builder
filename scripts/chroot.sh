@@ -464,7 +464,12 @@ fi
 
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
-stretch|buster)
+stretch)
+	echo "deb http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	;;
+buster)
 	echo "deb http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -492,7 +497,12 @@ esac
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
-stretch|buster|bullseye|bookworm)
+stretch)
+	echo "deb http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "" >> ${wfile}
+	;;
+buster|bullseye|bookworm)
 	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -516,7 +526,12 @@ esac
 #https://wiki.debian.org/Backports
 if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 	case "${deb_codename}" in
-	stretch|buster|bullseye|bookworm)
+	stretch)
+		echo "deb http://archive.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "#deb-src http://archive.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+		echo "" >> ${wfile}
+		;;
+	buster|bullseye|bookworm)
 		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "" >> ${wfile}
