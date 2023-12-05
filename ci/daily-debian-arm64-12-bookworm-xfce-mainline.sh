@@ -59,8 +59,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	#sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
 	#mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay --hostname BeaglePlay
 	mv ./*.img ../
 
 	#echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-ti-2023.04-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
