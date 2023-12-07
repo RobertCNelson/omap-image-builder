@@ -781,6 +781,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		echo "debug: cat /etc/apt/sources.list-"
 		cat /etc/apt/sources.list
+		if [ -f /etc/apt/sources.list.d/beagle.list ] ; then
+			cat /etc/apt/sources.list.d/beagle.list
+		fi
 		echo "---------------------------------"
 
 		echo "debug: apt-get update------------"
