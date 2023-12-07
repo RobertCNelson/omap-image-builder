@@ -575,6 +575,12 @@ if [ "x${repo_ros}" = "xros2" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/ros-archive-keyring.gpg"
 fi
 
+if [ -f /tmp/sources.list ] ; then
+	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
+	sudo chown root:root "${tempdir}/etc/apt/sources.list"
+fi
+
+wfile="/tmp/beagle.list"
 if [ "x${repo_rcnee}" = "xenable" ] ; then
 	repo_rcnee_arch=${repo_rcnee_arch:-"armhf"}
 	repo_rcnee_mirror=${repo_rcnee_mirror:-"repos.rcn-ee.com"}
@@ -625,9 +631,9 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/rcn-ee-archive-keyring.gpg"
 fi
 
-if [ -f /tmp/sources.list ] ; then
-	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
-	sudo chown root:root "${tempdir}/etc/apt/sources.list"
+if [ -f /tmp/beagle.list ] ; then
+	sudo mv /tmp/beagle.list "${tempdir}/etc/apt/sources.list.d/beagle.list"
+	sudo chown root:root "${tempdir}/etc/apt/sources.list.d/beagle.list"
 fi
 
 if [ "x${repo_external}" = "xenable" ] ; then
