@@ -662,19 +662,17 @@ create_partitions () {
 		media_rootfs_partition=2
 	fi
 
+	#https://packages.debian.org/source/bookworm/e2fsprogs
+	#e2fsprogs (1.47.0) added orphan_file first added in v5.15.x
 	unset ext4_options
-
-	if [ ! "x${uboot_supports_csum}" = "xtrue" ] ; then
-		#Debian Stretch, mfks.ext4 default to metadata_csum, 64bit disable till u-boot works again..
+	unset test_mke2fs
+	LC_ALL=C mkfs.ext4 -V &> /tmp/mkfs
+	test_mkfs=$(cat /tmp/mkfs | grep mke2fs | grep 1.47 || true)
+	if [ "x${test_mkfs}" = "x" ] ; then
 		unset ext4_options
-		unset test_mke2fs
-		LC_ALL=C mkfs.ext4 -V &> /tmp/mkfs
-		test_mkfs=$(cat /tmp/mkfs | grep mke2fs | grep 1.43 || true)
-		if [ "x${test_mkfs}" = "x" ] ; then
-			unset ext4_options
-		else
-			ext4_options="-O ^metadata_csum,^64bit"
-		fi
+	else
+		ext4_options="-O ^orphan_file"
+		echo "log: e2fsprogs (1.47.0) disabling orphan_file"
 	fi
 
 	echo ""
