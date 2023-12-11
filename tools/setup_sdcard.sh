@@ -671,8 +671,13 @@ create_partitions () {
 	if [ "x${test_mkfs}" = "x" ] ; then
 		unset ext4_options
 	else
-		ext4_options="-O ^orphan_file"
-		echo "log: e2fsprogs (1.47.0) disabling orphan_file"
+		if [ "x${bootloader_location}" = "xdd_spl_uboot_boot" ] ; then
+			ext4_options="-O ^metadata_csum,^64bit,^orphan_file"
+			echo "log: e2fsprogs (1.47.0) disabling metadata_csum,64bit,orphan_file"
+		else
+			ext4_options="-O ^orphan_file"
+			echo "log: e2fsprogs (1.47.0) disabling orphan_file"
+		fi
 	fi
 
 	echo ""
