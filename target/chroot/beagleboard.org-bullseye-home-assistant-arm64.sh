@@ -149,6 +149,11 @@ install_git_repos () {
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
 
+	git_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.1-Beagle"
+	git_branch="v6.1.x-Beagle"
+	git_clone_branch
+
 	git_repo="https://github.com/mvduin/py-uio"
 	git_target_dir="/opt/source/py-uio"
 	git_clone
