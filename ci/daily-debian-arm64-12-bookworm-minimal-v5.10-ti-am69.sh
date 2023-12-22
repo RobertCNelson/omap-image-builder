@@ -12,8 +12,6 @@ compress_snapshot_image () {
 	sync
 
 	echo "        {" >> ${json_file}
-	echo "            \"name\": \"Debian 12 ${image_type} (${deb_arch})\"," >> ${json_file}
-	echo "            \"description\": \"A port of Debian Bookworm with the ${image_type} package set\"," >> ${json_file}
 	echo "            \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
 	echo "            \"url\": \"https://rcn-ee.net/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
@@ -21,18 +19,21 @@ compress_snapshot_image () {
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "            \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
 
-	echo "Compressing...${device}-${export_filename}-${filesize}.img"
+	echo "Creating... ${device}-${export_filename}-${filesize}.bmap"
+	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
+
+	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
 	xz -T4 -z ${device}-${export_filename}-${filesize}.img
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
 	echo "            \"image_download_size\": ${image_download_size}," >> ${json_file}
 	echo "            \"release_date\": \"${time}\"," >> ${json_file}
-	echo "            \"init_format\": \"systemd\"" >> ${json_file}
 	echo "        }," >> ${json_file}
 	sync
 
 	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
