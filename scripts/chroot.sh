@@ -1303,6 +1303,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			if [ -f /lib/systemd/system/iwd.service ] ; then
 				systemctl enable iwd.service || true
+				if [ -f /etc/iwd/main.conf ] ; then
+					sed -i -e 's:#NameResolvingService:NameResolvingService:g' /etc/iwd/main.conf
+				fi
 			else
 				if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
 					systemctl enable wpa_supplicant@wlan0 || true
