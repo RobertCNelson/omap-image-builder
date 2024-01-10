@@ -1125,6 +1125,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
 		grep ${rfs_username} /etc/passwd
 
+		chage -l ${rfs_username}
+		if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
+			if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+				chage --lastday 0 ${rfs_username}
+				chage -l ${rfs_username}
+			fi
+		fi
+
 		if [ ! "x${rfs_desktop_icon}" = "x" ] ; then
 			if [ -f /usr/share/applications/${rfs_desktop_icon} ] ; then
 				mkdir -p /home/${rfs_username}/Desktop
@@ -1144,6 +1152,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				${rfs_root_password}
 				EOF
 				echo "export PATH=\$PATH:/usr/local/sbin:/usr/sbin:/sbin" >> /root/.bashrc
+
+				chage -l root
+				if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
+					if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+						chage --lastday 0 root
+						chage -l root
+					fi
+				fi
 			fi
 
 			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
