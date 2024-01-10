@@ -93,7 +93,7 @@ setup_system () {
 }
 
 install_git_repos () {
-	git_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
