@@ -660,6 +660,7 @@ echo "127.0.0.1	localhost" > /tmp/hosts
 echo "::1		localhost ip6-localhost ip6-loopback" >> /tmp/hosts
 echo "ff02::1		ip6-allnodes" >> /tmp/hosts
 echo "ff02::2		ip6-allrouters" >> /tmp/hosts
+echo "127.0.1.1	${rfs_hostname}.localdomain	${rfs_hostname}" >> /tmp/hosts
 sudo mv /tmp/hosts "${tempdir}/etc/hosts"
 sudo chown root:root "${tempdir}/etc/hosts"
 
