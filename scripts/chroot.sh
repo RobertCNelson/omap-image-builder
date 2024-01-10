@@ -1638,6 +1638,8 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 	if [ ! "x${rfs_console_user_pass}" = "x" ] ; then
 		if [ ! "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
+		else
+			sudo sh -c "echo 'default username is [${rfs_username}]' >> ${wfile}"
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
@@ -1656,6 +1658,8 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 	if [ ! "x${rfs_ssh_user_pass}" = "x" ] ; then
 		if [ ! "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
+		else
+			sudo sh -c "echo 'default username is [${rfs_username}]' >> ${wfile}"
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
