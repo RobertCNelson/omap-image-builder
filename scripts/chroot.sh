@@ -1426,6 +1426,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /lib/systemd/system/ti-ew-2022.service ] ; then
 			systemctl enable ti-ew-2022.service || true
 		fi
+
+		if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+			systemctl enable bbbio-set-sysconf.service || true
+		fi
 	}
 
 	grub_tweaks () {
