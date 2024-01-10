@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2023 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2024 Robert Nelson <robertcnelson@gmail.com>
 # Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1722,6 +1722,12 @@ populate_rootfs () {
 			fi
 		fi
 		cp -v ${TEMPDIR}/disk/boot/initrd.img-${select_kernel} ${TEMPDIR}/disk/boot/firmware/initrd.img
+
+		if [ -f ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ] ; then
+			cp -v ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ${TEMPDIR}/disk/boot/firmware/sysconf.txt
+			echo "sysconf: [cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt]"
+			cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt
+		fi
 	fi
 
 	if [ "x${emmc_flasher}" = "xenable" ] ; then
