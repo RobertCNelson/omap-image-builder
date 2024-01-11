@@ -1627,10 +1627,12 @@ populate_rootfs () {
 
 		wfile="/etc/hosts"
 		echo "127.0.0.1	localhost" > ${TEMPDIR}/disk${wfile}
+		echo "127.0.1.1	${new_hostname}.localdomain	${new_hostname}" >> ${TEMPDIR}/disk${wfile}
+		echo "" >> ${TEMPDIR}/disk${wfile}
+		echo "# The following lines are desirable for IPv6 capable hosts" >> ${TEMPDIR}/disk${wfile}
 		echo "::1		localhost ip6-localhost ip6-loopback" >> ${TEMPDIR}/disk${wfile}
 		echo "ff02::1		ip6-allnodes" >> ${TEMPDIR}/disk${wfile}
 		echo "ff02::2		ip6-allrouters" >> ${TEMPDIR}/disk${wfile}
-		echo "127.0.1.1	${new_hostname}.localdomain	${new_hostname}" >> ${TEMPDIR}/disk${wfile}
 
 		wfile="/etc/hostname"
 		echo "${new_hostname}" > ${TEMPDIR}/disk${wfile}
