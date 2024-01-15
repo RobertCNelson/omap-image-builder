@@ -1325,9 +1325,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			if [ -f /lib/systemd/system/iwd.service ] || [ -f /usr/lib/systemd/system/iwd.service ] ; then
 				systemctl enable iwd.service || true
-				if [ -f /etc/iwd/main.conf ] ; then
-					sed -i -e 's:#NameResolvingService:NameResolvingService:g' /etc/iwd/main.conf
-				fi
 			else
 				if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
 					systemctl enable wpa_supplicant@wlan0 || true
@@ -1344,6 +1341,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
 				systemctl enable systemd-resolved.service || true
+			else
+				if [ -f /etc/iwd/main.conf ] ; then
+					sed -i -e 's:#NameResolvingService:NameResolvingService:g' /etc/iwd/main.conf
+				fi
 			fi
 
 			if [ -f /etc/systemd/system/multi-user.target.wants/ModemManager.service ] ; then
