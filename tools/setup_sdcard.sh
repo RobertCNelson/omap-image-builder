@@ -1616,12 +1616,6 @@ populate_rootfs () {
 		echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 	fi
 
-	if [ "${need_wandboard_firmware}" ] ; then
-		http_brcm="https://raw.githubusercontent.com/Freescale/meta-fsl-arm-extra/master/recipes-bsp/broadcom-nvram-config/files/wandboard"
-		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4329-sdio.txt
-		${dl_quiet} --directory-prefix="${TEMPDIR}/disk/lib/firmware/brcm/" ${http_brcm}/brcmfmac4330-sdio.txt
-	fi
-
 	if [ ! "x${new_hostname}" = "x" ] ; then
 		echo "Updating Image hostname too: [${new_hostname}]"
 
