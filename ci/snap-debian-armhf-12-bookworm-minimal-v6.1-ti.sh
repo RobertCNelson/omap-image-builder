@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.12:3142/
 
-config=bb.org-debian-bookworm-minimal-v5.10-ti-armhf-am57xx
+config=bb.org-debian-bookworm-minimal-v6.1-ti-armhf
 filesize=2gb
 
 compress_snapshot_image () {
@@ -52,6 +52,14 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone --distro-bootloader --enable-bypass-bootup-scripts"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone --distro-bootloader --enable-bypass-bootup-scripts
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-eMMC-flasher-${export_filename} --dtb beaglebone --distro-bootloader --enable-bypass-bootup-scripts --emmc-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-eMMC-flasher-${export_filename} --dtb beaglebone --distro-bootloader --enable-bypass-bootup-scripts --emmc-flasher
+	mv ./*.img ../
+
 	echo "sudo ./setup_sdcard.sh --img-${filesize} am57xx-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts"
 	sudo ./setup_sdcard.sh --img-${filesize} am57xx-${export_filename} --dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts
 	mv ./*.img ../
@@ -62,6 +70,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
+	device="am335x" ; compress_snapshot_image
+	device="am335x-eMMC-flasher" ; compress_snapshot_image
 	device="am57xx" ; compress_snapshot_image
 	device="am57xx-eMMC-flasher" ; compress_snapshot_image
 
