@@ -1742,6 +1742,8 @@ populate_rootfs () {
 		fi
 	fi
 
+	cat ${TEMPDIR}/disk/etc/resolv.conf
+
 	cd ${TEMPDIR}/disk/
 	sync
 	sync

@@ -1821,7 +1821,8 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		ln -s /run/connman/resolv.conf /etc/resolv.conf
 	fi
 
-	if [ -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service ] || [ -f /etc/systemd/system/sysinit.target.wants/systemd-resolved.service ] ; then
+	if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
+		echo "Log: systemd-resolved creating /etc/resolv.conf symlink"
 		rm -rf /etc/resolv.conf.bak || true
 		rm -rf /etc/resolv.conf || true
 		ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
@@ -1875,14 +1876,6 @@ fi
 if [ -f "${tempdir}/etc/dogtag" ] ; then
 	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
 	sudo chown root:root "${DIR}/deploy/${export_filename}/ID.txt"
-fi
-
-#Add Google IPv4 nameservers
-if [ ! -f "${tempdir}/etc/resolv.conf" ] ; then
-	echo "Log: missing /etc/resolv.conf"
-	wfile="${tempdir}/etc/resolv.conf"
-	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
-	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
 fi
 
 report_size
