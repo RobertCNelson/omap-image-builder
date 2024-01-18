@@ -1821,7 +1821,7 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 		ln -s /run/connman/resolv.conf /etc/resolv.conf
 	fi
 
-	if [ -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service ] ; then
+	if [ -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service ] || [ -f /etc/systemd/system/sysinit.target.wants/systemd-resolved.service ] ; then
 		rm -rf /etc/resolv.conf.bak || true
 		rm -rf /etc/resolv.conf || true
 		ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
