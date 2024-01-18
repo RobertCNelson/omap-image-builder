@@ -1690,6 +1690,8 @@ if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; the
 	report_size
 
 	#Most likely we will need working network...
+	echo "Log: setting up: /etc/resolv.conf"
+	sudo rm -f "${tempdir}/etc/resolv.conf" || true
 	wfile="${tempdir}/etc/resolv.conf"
 	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
 	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
@@ -1711,6 +1713,8 @@ if [ ! "x${chroot_script_external}" = "x" ] ; then
 	report_size
 
 	#Most likely we will need working network...
+	echo "Log: setting up: /etc/resolv.conf"
+	sudo rm -f "${tempdir}/etc/resolv.conf" || true
 	wfile="${tempdir}/etc/resolv.conf"
 	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
 	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
