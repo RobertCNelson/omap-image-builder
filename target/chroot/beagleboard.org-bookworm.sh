@@ -37,6 +37,16 @@ export USERNAME=${rfs_username}
 
 echo "env: [`env`]"
 
+ls -lha /etc/resolv.conf
+echo "Log: /etc/resolv.conf"
+if [ -f /etc/resolv.conf ] ; then
+	cat /etc/resolv.conf
+fi
+
+echo 'nameserver 8.8.8.8' > /etc/resolv.conf
+echo 'nameserver 8.8.4.4' >> /etc/resolv.conf
+cat /etc/resolv.conf
+
 is_this_qemu () {
 	unset warn_qemu_will_fail
 	if [ -f /usr/bin/qemu-arm-static ] ; then
