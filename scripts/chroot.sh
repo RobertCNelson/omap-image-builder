@@ -1688,6 +1688,12 @@ fi
 
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
+
+	#Most likely we will need working network...
+	wfile="${tempdir}/etc/resolv.conf"
+	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
+	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
+
 	echo "Calling chroot_script script: ${chroot_script}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
 	sudo cp -v "${DIR}/target/chroot/${chroot_script}" "${tempdir}/final.sh"
@@ -1703,6 +1709,12 @@ fi
 
 if [ ! "x${chroot_script_external}" = "x" ] ; then
 	report_size
+
+	#Most likely we will need working network...
+	wfile="${tempdir}/etc/resolv.conf"
+	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
+	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
+
 	echo "Calling chroot_script script: ${chroot_script_external}"
 	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
 	sudo cp -v "${chroot_script_external}" "${tempdir}/final.sh"
@@ -1862,7 +1874,8 @@ if [ -f "${tempdir}/etc/dogtag" ] ; then
 fi
 
 #Add Google IPv4 nameservers
-if [ -f "${tempdir}/etc/resolv.conf" ] ; then
+if [ ! -f "${tempdir}/etc/resolv.conf" ] ; then
+	echo "Log: missing /etc/resolv.conf"
 	wfile="${tempdir}/etc/resolv.conf"
 	sudo sh -c "echo 'nameserver 8.8.8.8' > ${wfile}"
 	sudo sh -c "echo 'nameserver 8.8.4.4' >> ${wfile}"
