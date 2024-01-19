@@ -381,7 +381,6 @@ fi
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
-
 if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	#apt: emulate apt-get clean:
 	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
@@ -400,6 +399,11 @@ sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
 echo 'Acquire::PDiffs "0";' > /tmp/02-no-pdiffs
 sudo mv /tmp/02-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
 sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
+
+#apt: disable Progress-Fancy (apt and tio/serial terminal gets messed up)
+echo 'Dpkg::Progress-Fancy "0";' > /tmp/99progressbar
+sudo mv /tmp/99progressbar "${tempdir}/etc/apt/apt.conf.d/99progressbar"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/99progressbar"
 
 if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 	if [ "x${deb_distribution}" = "xdebian" ] ; then
