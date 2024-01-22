@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export apt_proxy=192.168.1.12:3142/
+export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bullseye-home-assistant-v5.10-ti-arm64-k3-am62
 filesize=8gb

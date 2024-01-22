@@ -3,7 +3,7 @@
 time=$(date +%Y-%m-%d)
 DIR="$PWD"
 
-export apt_proxy=proxy.gfnd.rcn-ee.org:3142/
+export apt_proxy=192.168.1.10:3142/
 
 ./RootStock-NG.sh -c eewiki_minfs_debian_stretch_arm64
 

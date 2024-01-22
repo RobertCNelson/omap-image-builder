@@ -9,7 +9,7 @@ DIR="$PWD"
 
 git pull --no-edit https://github.com/beagleboard/image-builder master
 
-export apt_proxy=192.168.1.12:3142/
+export apt_proxy=192.168.1.10:3142/
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true

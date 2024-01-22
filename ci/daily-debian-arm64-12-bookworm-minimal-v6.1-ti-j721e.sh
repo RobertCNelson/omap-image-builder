@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export apt_proxy=192.168.1.12:3142/
+export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-j721e
 filesize=6gb
