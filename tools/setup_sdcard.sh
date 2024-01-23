@@ -1438,6 +1438,21 @@ populate_rootfs () {
 		echo "/boot/uEnv.txt---------------"
 	fi
 
+	#Starting in v6.5, overlays/dtbo files get dumped in the same directory as dtb's CONFIG_ARCH_WANT_FLAT_DTB_INSTALL
+	#https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/Makefile.dtbinst?h=v6.5-rc1#n37
+	#copy these under /boot/dtbs/${version}/overlays/ for older versions of u-boot.
+	if [ "x${kernel_override}" = "x" ] ; then
+		if [ -d /boot/dtbs/${select_kernel}/ ] ; then
+			mkdir -p /boot/dtbs/${select_kernel}/overlays/ || true
+			cp -v /boot/dtbs/${select_kernel}/*.dtbo /boot/dtbs/${select_kernel}/overlays/
+		fi
+	else
+		if [ -d /boot/dtbs/${kernel_override}/ ] ; then
+			mkdir -p /boot/dtbs/${kernel_override}/overlays/ || true
+			cp -v /boot/dtbs/${kernel_override}/*.dtbo /boot/dtbs/${kernel_override}/overlays/
+		fi
+	fi
+
 	cat ${wfile}
 	chown -R 1000:1000 ${wfile} || true
 	echo "-----------------------------"
