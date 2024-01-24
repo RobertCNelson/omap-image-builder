@@ -1442,14 +1442,14 @@ populate_rootfs () {
 	#https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/Makefile.dtbinst?h=v6.5-rc1#n37
 	#copy these under /boot/dtbs/${version}/overlays/ for older versions of u-boot.
 	if [ "x${kernel_override}" = "x" ] ; then
-		if [ -d /boot/dtbs/${select_kernel}/ ] ; then
-			mkdir -p /boot/dtbs/${select_kernel}/overlays/ || true
-			cp -v /boot/dtbs/${select_kernel}/*.dtbo /boot/dtbs/${select_kernel}/overlays/
+		if [ -d ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ ] ; then
+			mkdir -p ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
+			cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/
 		fi
 	else
-		if [ -d /boot/dtbs/${kernel_override}/ ] ; then
-			mkdir -p /boot/dtbs/${kernel_override}/overlays/ || true
-			cp -v /boot/dtbs/${kernel_override}/*.dtbo /boot/dtbs/${kernel_override}/overlays/
+		if [ -d ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/ ] ; then
+			mkdir -p ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
+			cp -v ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/
 		fi
 	fi
 
