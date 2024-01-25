@@ -1436,20 +1436,20 @@ populate_rootfs () {
 		fi
 
 		echo "/boot/uEnv.txt---------------"
-	fi
 
-	#Starting in v6.5, overlays/dtbo files get dumped in the same directory as dtb's CONFIG_ARCH_WANT_FLAT_DTB_INSTALL
-	#https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/Makefile.dtbinst?h=v6.5-rc1#n37
-	#copy these under /boot/dtbs/${version}/overlays/ for older versions of u-boot.
-	if [ "x${kernel_override}" = "x" ] ; then
-		if [ -d ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ ] ; then
-			mkdir -p ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
-			cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/
-		fi
-	else
-		if [ -d ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/ ] ; then
-			mkdir -p ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
-			cp -v ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/
+		#Starting in v6.5, overlays/dtbo files get dumped in the same directory as dtb's CONFIG_ARCH_WANT_FLAT_DTB_INSTALL
+		#https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/Makefile.dtbinst?h=v6.5-rc1#n37
+		#copy these under /boot/dtbs/${version}/overlays/ for older versions of u-boot.
+		if [ "x${kernel_override}" = "x" ] ; then
+			if [ -d ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ ] ; then
+				mkdir -p ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
+				cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/
+			fi
+		else
+			if [ -d ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/ ] ; then
+				mkdir -p ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
+				cp -v ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/
+			fi
 		fi
 	fi
 
