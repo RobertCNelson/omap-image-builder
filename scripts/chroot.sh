@@ -1136,6 +1136,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "Log: (chroot): [expire ${rfs_username} password]"
 				chage --lastday 0 ${rfs_username}
 				chage -l ${rfs_username}
+				passwd -d ${rfs_username}
 			fi
 		fi
 
@@ -1166,6 +1167,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 						echo "Log: (chroot): [expire root password]"
 						chage --lastday 0 root
 						chage -l root
+						passwd -d root
 					fi
 				fi
 			fi
@@ -1644,7 +1646,14 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 		if [ ! "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 		else
-			sudo sh -c "echo 'default username is [${rfs_username}]' >> ${wfile}"
+			case "${deb_distribution}" in
+			debian)
+				sudo sh -c "echo 'default username is [${rfs_username} and root] make sure you setup your passwords' >> ${wfile}"
+				;;
+			ubuntu)
+				sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
+				;;
+			esac
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
@@ -1664,7 +1673,14 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 		if [ ! "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 		else
-			sudo sh -c "echo 'default username is [${rfs_username}]' >> ${wfile}"
+			case "${deb_distribution}" in
+			debian)
+				sudo sh -c "echo 'default username is [${rfs_username} and root] make sure you setup your passwords' >> ${wfile}"
+				;;
+			ubuntu)
+				sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
+				;;
+			esac
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
