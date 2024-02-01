@@ -1723,10 +1723,11 @@ populate_rootfs () {
 			if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
 				mkdir -p ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
 				cp ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/
-				cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/
+				cp ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/
 				if [ -d ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/overlays/ ] ; then
 					mkdir -p ${TEMPDIR}/disk/boot/firmware/overlays/
-					cp -v ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/
+					cp ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/
+					cp ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/${extlinux_dtb_vendor}/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/
 				fi
 			fi
 		fi
