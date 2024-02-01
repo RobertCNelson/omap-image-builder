@@ -1129,8 +1129,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		useradd -G "\${default_groups}" -s /bin/bash -m -p \${pass_crypt} -c "${rfs_fullname}" ${rfs_username}
 		grep ${rfs_username} /etc/passwd
 
-		echo "Log: (chroot): [chage -l ${rfs_username}]"
-		chage -l ${rfs_username}
 		if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
 				echo "Log: (chroot): [expire ${rfs_username} password]"
@@ -1162,8 +1160,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				EOF
 				echo "export PATH=\$PATH:/usr/local/sbin:/usr/sbin:/sbin" >> /root/.bashrc
 
-				echo "Log: (chroot): [chage -l root]"
-				chage -l root
 				if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 					if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
 						echo "Log: (chroot): [expire root password]"
