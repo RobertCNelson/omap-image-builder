@@ -1673,14 +1673,8 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 		if [ ! "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 		else
-			case "${deb_distribution}" in
-			debian)
-				sudo sh -c "echo 'default username is [${rfs_username} and root] make sure you setup your passwords' >> ${wfile}"
-				;;
-			ubuntu)
-				sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
-				;;
-			esac
+			###ROOT over ssh is blocked...
+			sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
