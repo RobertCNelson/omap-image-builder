@@ -1650,10 +1650,11 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 		else
 			case "${deb_distribution}" in
 			debian)
-				sudo sh -c "echo 'default username is [${rfs_username} and root] make sure you setup your passwords' >> ${wfile}"
+				sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
+				sudo sh -c "echo 'debian's [root] account is also enabled, make sure to login once to setup your password' >> ${wfile}"
 				;;
 			ubuntu)
-				sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
+				sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
 				;;
 			esac
 		fi
@@ -1676,7 +1677,7 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 			sudo sh -c "echo 'default username:password is [${rfs_username}:${rfs_password}]' >> ${wfile}"
 		else
 			###ROOT over ssh is blocked...
-			sudo sh -c "echo 'default username is [${rfs_username}] make sure you setup your passwords' >> ${wfile}"
+			sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
