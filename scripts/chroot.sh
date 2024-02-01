@@ -1647,7 +1647,7 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 			case "${deb_distribution}" in
 			debian)
 				sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
-				sudo sh -c "echo 'debian's [root] account is also enabled, make sure to login once to setup your password' >> ${wfile}"
+				sudo sh -c "echo 'default [root] account is also enabled, make sure to login once as [root] to setup your password' >> ${wfile}"
 				;;
 			ubuntu)
 				sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
