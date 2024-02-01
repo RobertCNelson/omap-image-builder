@@ -1136,7 +1136,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "Log: (chroot): [expire ${rfs_username} password]"
 				chage --lastday 0 ${rfs_username}
 				chage -l ${rfs_username}
-				passwd -d ${rfs_username}
+				###passwd -d works great for a default serial 'sign-up'
+				###but sadly ssh needs a default password, after which it'll ask for new one...
+				#passwd -d ${rfs_username}
 			fi
 		fi
 
