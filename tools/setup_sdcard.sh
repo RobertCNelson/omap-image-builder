@@ -879,19 +879,29 @@ populate_boot () {
 	if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
 		#cp -rv ./${bootloader_distro_dir}/* "${TEMPDIR}/disk/"
 		if [ ! "x${bootloader_distro_mcu}" = "x" ] ; then
-			cp -v ./${bootloader_distro_mcu} "${TEMPDIR}/disk/"
+			if [ -f ./${bootloader_distro_mcu} ] ; then
+				cp -v ./${bootloader_distro_mcu} "${TEMPDIR}/disk/"
+			fi
 		fi
 		if [ ! "x${bootloader_distro_spl}" = "x" ] ; then
-			cp -v ./${bootloader_distro_spl} "${TEMPDIR}/disk/"
+			if [ -f ./${bootloader_distro_spl} ] ; then
+				cp -v ./${bootloader_distro_spl} "${TEMPDIR}/disk/"
+			fi
 		fi
 		if [ ! "x${bootloader_distro_img}" = "x" ] ; then
-			cp -v ./${bootloader_distro_img} "${TEMPDIR}/disk/"
+			if [ -f ./${bootloader_distro_img} ] ; then
+				cp -v ./${bootloader_distro_img} "${TEMPDIR}/disk/"
+			fi
 		fi
 		if [ ! "x${bootloader_distro_sysfw}" = "x" ] ; then
-			cp -v ./${bootloader_distro_sysfw} "${TEMPDIR}/disk/"
+			if [ -f ./${bootloader_distro_sysfw} ] ; then
+				cp -v ./${bootloader_distro_sysfw} "${TEMPDIR}/disk/"
+			fi
 		fi
 		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
-			cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
+			if [ -d ./${bootloader_distro_dir_sysfw}/ ] ; then
+				cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
+			fi
 		fi
 	fi
 
