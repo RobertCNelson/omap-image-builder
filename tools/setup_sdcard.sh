@@ -1682,8 +1682,9 @@ populate_rootfs () {
 			cp ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ${TEMPDIR}/disk/boot/firmware/sysconf.txt
 			echo "sysconf: [cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt]"
 			cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt
-			if [ -f ${TEMPDIR}/disk/etc/bbb.io/templates/ssid.psk ] ; then
-				cp ${TEMPDIR}/disk/etc/bbb.io/templates/ssid.psk ${TEMPDIR}/disk/boot/firmware/ssid.psk
+			if [ -d ${TEMPDIR}/disk/etc/bbb.io/templates/services/ ] ; then
+				mkdir -p ${TEMPDIR}/disk/boot/firmware/services
+				cp -r ${TEMPDIR}/disk/etc/bbb.io/templates/services/* ${TEMPDIR}/disk/boot/firmware/services/
 			fi
 		fi
 	fi
