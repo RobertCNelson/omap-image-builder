@@ -1629,7 +1629,9 @@ populate_rootfs () {
 		if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] ; then
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
-
+		if [ "x${board_hacks}" = "xj722s" ] ; then
+			sed -i -e 's:/dev/mmcblk1:/dev/mmcblk0:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
 		if [ "x${swap_enable}" = "xenable" ] ; then
 			sed -i -e "s:ROOT_PARTITION=2:ROOT_PARTITION=3:g" ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
