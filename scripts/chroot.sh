@@ -1448,8 +1448,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 					echo "cert: true" >> /home/${rfs_username}/.config/code-server/config.yaml
 					mkdir -p /home/${rfs_username}/.local/share/code-server/User/ || true
 					cp -v /opt/bb-code-server/settings.json /home/${rfs_username}/.local/share/code-server/User/ || true
-					chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
-					chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
+					chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
+					chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
 				fi
 			else
 				if [ -f /lib/systemd/system/bb-code-server.service ] || [ -f /usr/lib/systemd/system/bb-code-server.service ] ; then
