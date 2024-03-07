@@ -1442,6 +1442,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ "x${rfs_enable_vscode_user}" = "xenable" ] ; then
 				if [ -f /lib/systemd/system/code-server@.service ] || [ -f /usr/lib/systemd/system/code-server@.service ] ; then
 					systemctl enable code-server@${rfs_username} || true
+				fi
 			else
 				if [ -f /lib/systemd/system/bb-code-server.service ] || [ -f /usr/lib/systemd/system/bb-code-server.service ] ; then
 					systemctl enable bb-code-server.service || true
