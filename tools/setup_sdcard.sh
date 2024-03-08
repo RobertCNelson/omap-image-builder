@@ -1494,12 +1494,12 @@ populate_rootfs () {
 
 		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 			echo "# All other file systems have fs_passno=2 as per fstab(5) for automatic fsck." >> ${wfile}
-			echo "${boot_drive}  /boot/efi vfat defaults 0 2" >> ${wfile}
+			echo "${boot_drive}  /boot/efi vfat user,uid=1000,gid=1000,defaults 0 2" >> ${wfile}
 		fi
 
 		if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
 			echo "# All other file systems have fs_passno=2 as per fstab(5) for automatic fsck." >> ${wfile}
-			echo "${boot_drive}  /boot/firmware vfat defaults 0 2" >> ${wfile}
+			echo "${boot_drive}  /boot/firmware vfat user,uid=1000,gid=1000,defaults 0 2" >> ${wfile}
 		fi
 
 		if [ "x${swap_enable}" = "xenable" ] ; then
