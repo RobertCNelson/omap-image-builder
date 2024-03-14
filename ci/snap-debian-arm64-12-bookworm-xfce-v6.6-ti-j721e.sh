@@ -2,8 +2,8 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-am62
-filesize=6gb
+config=bb.org-debian-bookworm-xfce-v6.6-ti-arm64-k3-j721e
+filesize=10gb
 
 compress_snapshot_image () {
 	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
@@ -52,18 +52,18 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64 --hostname BeagleBone-AI64
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64 --enable-extlinux-flasher --hostname BeagleBone-AI64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64 --enable-extlinux-flasher --hostname BeagleBone-AI64
 	mv ./*.img ../
 
 	cd ../
 
-	device="beagleplay" ; compress_snapshot_image
-	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+	device="bbai64" ; compress_snapshot_image
+	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
