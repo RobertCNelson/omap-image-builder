@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-j721e
+config=bb.org-debian-bookworm-minimal-v6.6-ti-arm64-k3-j721e
 filesize=6gb
 
 compress_snapshot_image () {
