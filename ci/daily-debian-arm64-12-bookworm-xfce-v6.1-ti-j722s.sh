@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-bookworm-xfce-v6.1-ti-arm64-k3-am62
+config=bb.org-debian-bookworm-xfce-v6.1-ti-arm64-k3-j722s
 filesize=10gb
 rootfs="debian-arm64-12-bookworm-xfce-v6.1-ti"
 
@@ -53,13 +53,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} j722s-${export_filename} --dtb j722s"
-	sudo ./setup_sdcard.sh --img-${filesize} j722s-${export_filename} --dtb j722s
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
+	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
 
 	cd ../
 
-	device="j722s" ; compress_snapshot_image
+	device="beagley-ai" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
