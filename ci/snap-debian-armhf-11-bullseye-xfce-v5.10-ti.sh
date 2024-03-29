@@ -6,13 +6,13 @@ config=bb.org-debian-bullseye-xfce-v5.10-ti-armhf
 filesize=4gb
 
 compress_snapshot_image () {
-	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
+	json_file="${device}-${export_filename}-${filesize}.img.zst.json"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 	sync
 
 	echo "        {" >> ${json_file}
 	echo "            \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
-	echo "            \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
+	echo "            \"url\": \"https://rcn-ee.net/rootfs/release/${time}/${device}-${export_filename}-${filesize}.img.zst\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "            \"extract_size\": ${extract_size}," >> ${json_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
@@ -22,20 +22,20 @@ compress_snapshot_image () {
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
 
 	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
-	xz -T4 -z ${device}-${export_filename}-${filesize}.img
+	zstd -T0 -18 -z ${device}-${export_filename}-${filesize}.img
 	sync
 
-	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
+	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.zst | awk '{print $1}')
 	echo "            \"image_download_size\": ${image_download_size}," >> ${json_file}
 	echo "            \"release_date\": \"${time}\"," >> ${json_file}
 	echo "        }," >> ${json_file}
 	sync
 
-	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	sha256sum ${device}-${export_filename}-${filesize}.img.zst > ${device}-${export_filename}-${filesize}.img.zst.sha256sum
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.zst /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.zst.sha256sum /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.zst.json /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 }
 
 if [ -d ./deploy ] ; then
@@ -76,10 +76,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	device="am57xx-eMMC-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
-	#xz -T4 -z ${export_filename}.tar
-	#sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+	#zstd -T0 -18 -z ${export_filename}.tar
+	#sha256sum ${export_filename}.tar.zst > ${export_filename}.tar.zst.sha256sum
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.zst /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.zst.sha256sum /mnt/mirror/rcn-ee.us/rootfs/snapshot/${time}/${deb_codename}-${image_type}-${deb_arch}/
 
 	rm -rf ${tempdir} || true
 else
