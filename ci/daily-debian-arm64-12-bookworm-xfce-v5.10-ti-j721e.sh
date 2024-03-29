@@ -57,14 +57,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64
 	mv ./*.img ../
 
-	#echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-mainline --enable-extlinux-flasher --hostname BeagleBone-AI64"
-	#sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-mainline --enable-extlinux-flasher --hostname BeagleBone-AI64
-	#mv ./*.img ../
-
 	cd ../
 
 	device="bbai64" ; compress_snapshot_image
-	#device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T4 -z ${export_filename}.tar
