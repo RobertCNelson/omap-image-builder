@@ -29,16 +29,16 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	device="am57xx"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
-	zstd -T0 -18 -z ${device}-${export_filename}-${filesize}.img
-	sha256sum ${device}-${export_filename}-${filesize}.img.zst > ${device}-${export_filename}-${filesize}.img.zst.sha256sum
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.zst /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.zst.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	bzip2 -9 -z ${device}-${export_filename}-${filesize}.img
+	sha256sum ${device}-${export_filename}-${filesize}.img.bz2 > ${device}-${export_filename}-${filesize}.img.bz2.sha256sum
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.bz2 /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.bz2.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	#echo "Compressing...${export_filename}.tar"
-	#zstd -T0 -18 -z ${export_filename}.tar
-	#sha256sum ${export_filename}.tar.zst > ${export_filename}.tar.zst.sha256sum
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.zst /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.zst.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#bzip2 -9 -z ${export_filename}.tar
+	#sha256sum ${export_filename}.tar.bz2 > ${export_filename}.tar.bz2.sha256sum
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.bz2 /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.bz2.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
 else

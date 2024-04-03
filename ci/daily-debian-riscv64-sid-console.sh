@@ -26,11 +26,11 @@ if [ -f ./deploy/${export_filename}.tar ] ; then
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	echo "Compressing...${export_filename}.tar"
-	zstd -T0 -18 -z ${export_filename}.tar
-	sha256sum ${export_filename}.tar.zst > ${export_filename}.tar.zst.sha256sum
-	sudo -uvoodoo cp -v ./${export_filename}.tar.zst /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${export_filename}.tar.zst.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	echo "${export_filename}.tar.zst" > latest
+	bzip2 -9 -z ${export_filename}.tar
+	sha256sum ${export_filename}.tar.bz2 > ${export_filename}.tar.bz2.sha256sum
+	sudo -uvoodoo cp -v ./${export_filename}.tar.bz2 /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${export_filename}.tar.bz2.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	echo "${export_filename}.tar.bz2" > latest
 	sudo -uvoodoo cp -v ./latest /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/
 
 	rm -rf ${tempdir} || true
