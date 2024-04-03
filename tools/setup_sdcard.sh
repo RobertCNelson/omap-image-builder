@@ -1452,17 +1452,17 @@ populate_rootfs () {
 		#copy these under /boot/dtbs/${version}/overlays/ for older versions of u-boot.
 		if [ "x${kernel_override}" = "x" ] ; then
 			if [ -d ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/ ] ; then
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/*.dtb ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/*.dtb ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/ || true
 				mkdir -p ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/overlays/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/overlays/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${select_kernel}/overlays/ || true
 			fi
 		else
 			if [ -d ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/ ] ; then
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/*.dtb ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/*.dtb ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/ || true
 				mkdir -p ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/overlays/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${kernel_override}/overlays/*.dtbo ${TEMPDIR}/disk/boot/dtbs/${kernel_override}/overlays/ || true
 			fi
 		fi
 	fi
@@ -1675,11 +1675,11 @@ populate_rootfs () {
 		if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
 			if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
 				mkdir -p ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
 				mkdir -p ${TEMPDIR}/disk/boot/firmware/overlays/ || true
-				cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/
+				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
 				if [ -d ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/ ] ; then
-					cp -v ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/
+					cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
 				fi
 			fi
 		fi
