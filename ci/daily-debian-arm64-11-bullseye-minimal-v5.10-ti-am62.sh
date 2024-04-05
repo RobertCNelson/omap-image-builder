@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bullseye-minimal-v5.10-ti-arm64-k3-am62
-filesize=4gb
+filesize=6gb
 rootfs="debian-arm64-11-bullseye-minimal-v5.10-ti"
 
 compress_snapshot_image () {
