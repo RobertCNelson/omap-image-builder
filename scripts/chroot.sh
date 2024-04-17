@@ -901,13 +901,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot): [apt-get install -y -q ${repo_ros_pkg_list}]"
 			apt-get install -y -q ${repo_ros_pkg_list}
 			#ROS: ubuntu, extra crude, cleanup....
-			apt autoremove -y || true
+			apt-get autoremove -y || true
 		fi
 
 		if [ ! "x${repo_rcnee_chromium_special}" = "x" ] ; then
 			echo "Log: (chroot) Chromium Special:"
 			apt-cache madison chromium || true
-			apt -y --allow-downgrades install chromium=${repo_rcnee_chromium_special}* || true
+			apt-get -y --allow-downgrades install chromium=${repo_rcnee_chromium_special}* || true
 			apt-mark hold chromium || true
 		fi
 
