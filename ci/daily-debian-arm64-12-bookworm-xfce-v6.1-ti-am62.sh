@@ -7,13 +7,13 @@ filesize=10gb
 rootfs="debian-arm64-12-bookworm-xfce-v6.1-ti"
 
 compress_snapshot_image () {
-	json_file="${device}-${export_filename}-${filesize}.img.bz2.json"
+	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
 	echo "        {" >> ${json_file}
 	echo "            \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
-	echo "            \"url\": \"https://rcn-ee.net/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.img.bz2\"," >> ${json_file}
+	echo "            \"url\": \"https://rcn-ee.net/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "            \"extract_size\": ${extract_size}," >> ${json_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
@@ -23,20 +23,20 @@ compress_snapshot_image () {
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
 
 	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
-	bzip2 -9 -z ${device}-${export_filename}-${filesize}.img
+	xz -T0 -z ${device}-${export_filename}-${filesize}.img
 	sync
 
-	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.bz2 | awk '{print $1}')
+	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
 	echo "            \"image_download_size\": ${image_download_size}," >> ${json_file}
 	echo "            \"release_date\": \"${time}\"," >> ${json_file}
 	echo "        }," >> ${json_file}
 	sync
 
-	sha256sum ${device}-${export_filename}-${filesize}.img.bz2 > ${device}-${export_filename}-${filesize}.img.bz2.sha256sum
+	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.bz2 /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.bz2.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.bz2.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 }
 
 if [ -d ./deploy ] ; then
@@ -62,10 +62,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	device="beagleplay" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
-	#bzip2 -9 -z ${export_filename}.tar
-	#sha256sum ${export_filename}.tar.bz2 > ${export_filename}.tar.bz2.sha256sum
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.bz2 /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.bz2.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#xz -T0 -z ${export_filename}.tar
+	#sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
 else
