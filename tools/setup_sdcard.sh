@@ -1627,6 +1627,7 @@ populate_rootfs () {
 	fi
 
 	if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
+		echo "patching /etc/default/generic-sys-mods"
 		if [ "x${board_hacks}" = "xj721e_evm" ] || [ "x${board_hacks}" = "xbbai64_staging" ] ; then
 			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
@@ -1634,7 +1635,7 @@ populate_rootfs () {
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		if [ "x${board_hacks}" = "xbeagley_ai" ] ; then
-			sed -i -e 's:/dev/mmcblk1:/dev/mmcblk0:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
+			echo "ARCH_SOC_MODULES=j722s" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		if [ "x${swap_enable}" = "xenable" ] ; then
 			sed -i -e "s:ROOT_PARTITION=2:ROOT_PARTITION=3:g" ${TEMPDIR}/disk/etc/default/generic-sys-mods
