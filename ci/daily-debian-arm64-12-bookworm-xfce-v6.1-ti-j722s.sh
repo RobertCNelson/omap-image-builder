@@ -57,14 +57,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-evt-${export_filename} --dtb beagley-ai-evt"
-	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-evt-${export_filename} --dtb beagley-ai-evt
-	mv ./*.img ../
-
 	cd ../
 
 	device="beagley-ai" ; compress_snapshot_image
-	device="beagley-ai-evt" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar
