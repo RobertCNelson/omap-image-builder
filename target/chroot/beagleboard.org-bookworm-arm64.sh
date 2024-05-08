@@ -93,10 +93,16 @@ setup_system () {
 }
 
 setup_desktop () {
-	if [ -f /etc/bbb.io/templates/xfce4/xfce4-desktop.xml ] ; then
-		mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
-		cp -v /etc/bbb.io/templates/xfce4/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
-		chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+	if [ "x${rfs_default_desktop}" = "xxfce" ] ; then
+		if [ -f /etc/bbb.io/templates/xfce4/xfce4-desktop.xml ] ; then
+			mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
+			cp -v /etc/bbb.io/templates/xfce4/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
+			chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/
+		fi
+	fi
+
+	if [ -f /etc/bbb.io/templates/beagleboard-logo.svg ] ; then
+		update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background /etc/bbb.io/templates/beagleboard-logo.svg 100
 	fi
 
 	#Disable dpms mode and screen blanking
