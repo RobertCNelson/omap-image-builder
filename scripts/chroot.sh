@@ -911,6 +911,17 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-mark hold chromium || true
 		fi
 
+		###PPA's
+		if [ ! "x${repo_ppa_openbeagle}" = "x" ] ; then
+			echo "Log: (chroot) openbeagle ppa's:"
+			if [ ! "x${repo_ppa_openbeagle_mesa}" = "x" ] ; then
+				echo "Log: (chroot) openbeagle mesa ppa:"
+				echo "deb [trusted=yes] https://pages.openbeagle.org/beagleboard/ci-mesa-sgx-23.3 stable main" >/etc/apt/sources.list.d/openbeagle.list
+			fi
+			apt-get update || true
+			apt-get dist-upgrade -yq || true
+		fi
+
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version} (it's okay if these fail to install...)"
