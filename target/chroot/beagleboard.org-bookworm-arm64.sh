@@ -93,7 +93,8 @@ setup_system () {
 }
 
 setup_desktop () {
-	if [ "x${rfs_default_desktop}" = "xxfce" ] ; then
+	#From: xfce4-settings
+	if [ -f /usr/share/xfce4/settings/appearance-install-theme ] ; then
 		if [ -f /etc/bbb.io/templates/xfce4/xfce4-desktop.xml ] ; then
 			mkdir -p /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/ || true
 			cp -v /etc/bbb.io/templates/xfce4/xfce4-desktop.xml /home/${rfs_username}/.config/xfce4/xfconf/xfce-perchannel-xml/
@@ -101,9 +102,9 @@ setup_desktop () {
 		fi
 	fi
 
-	if [ -f /etc/bbb.io/templates/beagleboard-logo.svg ] ; then
-		update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background /etc/bbb.io/templates/beagleboard-logo.svg 100
-	fi
+#	if [ -f /etc/bbb.io/templates/beagleboard-logo.svg ] ; then
+#		update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background /etc/bbb.io/templates/beagleboard-logo.svg 100
+#	fi
 
 	#Disable dpms mode and screen blanking
 	#Better fix for missing cursor
