@@ -916,7 +916,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot) openbeagle ppa's:"
 			if [ ! "x${repo_ppa_openbeagle_mesa}" = "x" ] ; then
 				echo "Log: (chroot) openbeagle mesa ppa:"
-				echo "deb [trusted=yes] https://pages.openbeagle.org/beagleboard/ci-mesa-sgx-23.3 stable main" >/etc/apt/sources.list.d/openbeagle.list
+				echo "deb [trusted=yes] https://repos.rcn-ee.com/pages/bookworm/ci-mesa-sgx-23.3 stable main" >/etc/apt/sources.list.d/openbeagle.list
+				#echo "deb [trusted=yes] https://pages.openbeagle.org/beagleboard/ci-mesa-sgx-23.3 stable main" >/etc/apt/sources.list.d/openbeagle.list
 				#echo "deb [trusted=yes] https://beagleboard.beagleboard.io/ci-mesa-sgx-23.3 stable main" >/etc/apt/sources.list.d/openbeagle.list
 			fi
 			apt-get update || true
