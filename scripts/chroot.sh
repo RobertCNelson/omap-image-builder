@@ -1490,6 +1490,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
 			systemctl enable bbbio-set-sysconf.service || true
 		fi
+
+		if [ -f /usr/lib/systemd/system/plymouth-quit-wait.service ] ; then
+			systemctl disable plymouth-quit-wait.service || true
+		fi
 	}
 
 	grub_tweaks () {
