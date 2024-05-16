@@ -1103,9 +1103,15 @@ populate_rootfs () {
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
 			if [ -f "${TEMPDIR}/disk${extlinux_firmware_file}" ] ; then
 				cp -v "${TEMPDIR}/disk${extlinux_firmware_file}" ${wfile}
-					if [ ! "x${extlinux_reference}" = "x" ] ; then
-						cp -v "${TEMPDIR}/disk${extlinux_reference}*extlinux.conf" "${TEMPDIR}/disk/boot/firmware/extlinux/"
-					fi
+
+				if [ -f "${TEMPDIR}/disk${extlinux_firmware_microsd}" ] ; then
+					cp -v "${TEMPDIR}/disk${extlinux_firmware_microsd}" "${TEMPDIR}/disk/boot/firmware/extlinux/microsd-extlinux.conf"
+				fi
+
+				if [ -f "${TEMPDIR}/disk${extlinux_firmware_nvme}" ] ; then
+					cp -v "${TEMPDIR}/disk${extlinux_firmware_nvme}" "${TEMPDIR}/disk/boot/firmware/extlinux/nvme-extlinux.conf"
+				fi
+
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					#sed -i -e 's:net.ifnames=0 quiet:net.ifnames=0 quiet init=/usr/sbin/init-beagle-flasher:g' ${wfile}
