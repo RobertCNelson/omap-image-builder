@@ -641,7 +641,7 @@ if [ -f /tmp/beagle.list ] ; then
 fi
 
 if [ "x${repo_mozilla}" = "xenable" ] ; then
-	echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" /tmp/repo.list
+	echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /tmp/repo.list
 	sudo mv /tmp/repo.list "${tempdir}/etc/apt/sources.list.d/mozilla.list"
 	sudo chown root:root "${tempdir}/etc/apt/sources.list.d/mozilla.list"
 	sudo cp -v "${OIB_DIR}/target/keyring/packages.mozilla.org.asc" "${tempdir}/usr/share/keyrings/packages.mozilla.org.asc"
