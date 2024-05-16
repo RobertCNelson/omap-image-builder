@@ -640,6 +640,13 @@ if [ -f /tmp/beagle.list ] ; then
 	sudo chown root:root "${tempdir}/etc/apt/sources.list.d/beagle.list"
 fi
 
+if [ "x${repo_mozilla}" = "xenable" ] ; then
+	echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" /tmp/repo.list
+	sudo mv /tmp/repo.list "${tempdir}/etc/apt/sources.list.d/mozilla.list"
+	sudo chown root:root "${tempdir}/etc/apt/sources.list.d/mozilla.list"
+	sudo cp -v "${OIB_DIR}/target/keyring/packages.mozilla.org.asc" "${tempdir}/usr/share/keyrings/packages.mozilla.org.asc"
+fi
+
 if [ "x${repo_external}" = "xenable" ] ; then
 	if [ ! "x${repo_external_key}" = "x" ] ; then
 		sudo cp -v "${OIB_DIR}/target/keyring/${repo_external_key}" "${tempdir}/tmp/${repo_external_key}"
@@ -909,6 +916,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-cache madison chromium || true
 			apt-get -y --allow-downgrades install chromium=${repo_rcnee_chromium_special}* || true
 			apt-mark hold chromium || true
+		fi
+
+		if [ ! "x${repo_mozilla_package}" = "x" ] ; then
+			echo "Log: (chroot) mozilla firefox-nightly:"
+			apt-get install -yq ${repo_mozilla_package} || true
 		fi
 
 		###PPA's
