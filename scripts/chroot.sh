@@ -1455,22 +1455,16 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ "x${rfs_enable_vscode}" = "xenable" ] ; then
-			if [ "x${rfs_enable_vscode_user}" = "xenable" ] ; then
-				if [ -f /lib/systemd/system/code-server@.service ] || [ -f /usr/lib/systemd/system/code-server@.service ] ; then
-					mkdir -p /home/${rfs_username}/.config/code-server/ || true
-					echo "bind-addr: 0.0.0.0:3000" > /home/${rfs_username}/.config/code-server/config.yaml
-					echo "auth: none" >> /home/${rfs_username}/.config/code-server/config.yaml
-					echo "cert: true" >> /home/${rfs_username}/.config/code-server/config.yaml
-					mkdir -p /home/${rfs_username}/.local/share/code-server/User/ || true
-					cp -v /opt/bb-code-server/settings.json /home/${rfs_username}/.local/share/code-server/User/ || true
-					chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
-					chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
-					systemctl enable code-server@${rfs_username} || true
-				fi
-			else
-				if [ -f /lib/systemd/system/bb-code-server.service ] || [ -f /usr/lib/systemd/system/bb-code-server.service ] ; then
-					systemctl enable bb-code-server.service || true
-				fi
+			if [ -f /lib/systemd/system/code-server@.service ] || [ -f /usr/lib/systemd/system/code-server@.service ] ; then
+				mkdir -p /home/${rfs_username}/.config/code-server/ || true
+				echo "bind-addr: 0.0.0.0:3000" > /home/${rfs_username}/.config/code-server/config.yaml
+				echo "auth: none" >> /home/${rfs_username}/.config/code-server/config.yaml
+				echo "cert: true" >> /home/${rfs_username}/.config/code-server/config.yaml
+				mkdir -p /home/${rfs_username}/.local/share/code-server/User/ || true
+				cp -v /opt/bb-code-server/settings.json /home/${rfs_username}/.local/share/code-server/User/ || true
+				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
+				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
+				systemctl enable code-server@${rfs_username} || true
 			fi
 		else
 			if [ -f /lib/systemd/system/dphys-swapfile.service ] || [ -f /usr/lib/systemd/system/dphys-swapfile.service ] ; then
