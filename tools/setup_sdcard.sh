@@ -1101,8 +1101,11 @@ populate_rootfs () {
 		if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
 			mkdir -p "${TEMPDIR}/disk/boot/firmware/extlinux/"
 			wfile="${TEMPDIR}/disk/boot/firmware/extlinux/extlinux.conf"
-			if [ -f "${TEMPDIR}/disk/${extlinux_firmware_file}" ] ; then
-				cp -v "${TEMPDIR}/disk/${extlinux_firmware_file}" ${wfile}
+			if [ -f "${TEMPDIR}/disk${extlinux_firmware_file}" ] ; then
+				cp -v "${TEMPDIR}/disk${extlinux_firmware_file}" ${wfile}
+					if [ ! "x${extlinux_reference}" = "x" ] ; then
+						cp -v "${TEMPDIR}/disk${extlinux_reference}*.conf" "${TEMPDIR}/disk/boot/firmware/extlinux/"
+					fi
 				if [ "x${extlinux_flasher}" = "xenable" ] ; then
 					#sed -i -e 's:quiet:init=/usr/sbin/init-beagle-flasher:g' ${wfile}
 					#sed -i -e 's:net.ifnames=0 quiet:net.ifnames=0 quiet init=/usr/sbin/init-beagle-flasher:g' ${wfile}
