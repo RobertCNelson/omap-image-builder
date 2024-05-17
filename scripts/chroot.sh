@@ -1165,6 +1165,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				###passwd -d works great for a default serial 'sign-up'
 				###but sadly ssh needs a default password, after which it'll ask for new one...
 				#passwd -d ${rfs_username}
+
+				if [ -f /lib/systemd/system/lightdm.service ] || [ -f /usr/lib/systemd/system/lightdm.service ] ; then
+					echo "Log: disabling lightdm.service for first bootup"
+					systemctl disable lightdm.service || true
+				fi
 			fi
 		fi
 
