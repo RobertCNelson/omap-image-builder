@@ -940,6 +940,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get dist-upgrade -yq || true
 		fi
 
+		if [ ! "x${repo_remove_pkgs}" = "x" ] ; then
+			echo "Log: (chroot) Remove Packages:"
+			apt-get -yq remove ${repo_remove_pkgs} || true
+		fi
+
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version} (it's okay if these fail to install...)"
