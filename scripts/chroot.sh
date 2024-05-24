@@ -1502,6 +1502,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl enable bb-symlinks.service || true
 		fi
 
+		if [ -f /lib/systemd/system/beagle-camera-setup.service ] || [ -f /usr/lib/systemd/system/beagle-camera-setup.service ] ; then
+			systemctl enable beagle-camera-setup.service || true
+		fi
+
 		#EW 2022 demo...
 		if [ -f /lib/systemd/system/ti-ew-2022.service ] || [ -f /usr/lib/systemd/system/ti-ew-2022.service ] ; then
 			systemctl enable ti-ew-2022.service || true
