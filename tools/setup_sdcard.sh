@@ -1996,6 +1996,23 @@ while [ ! -z "$1" ] ; do
 		###For bigger storage let's assume closer to 100% capacity...
 		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 1024)))
 		;;
+	--img-12gb)
+		###FIXME, someone with better sed skills can add this to ^. ;)
+		checkparm $2
+		name=${2:-image}
+		# --img defaults to --img-12gb
+		gsize=${gsize:-12}
+		imagename=${name%.img}-${gsize}gb.img
+		media="${DIR}/${imagename}"
+		build_img_file="enable"
+		check_root
+		if [ -f "${media}" ] ; then
+			rm -rf "${media}" || true
+		fi
+
+		###For bigger storage let's assume closer to 100% capacity...
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 1024)))
+		;;
 	--dtb)
 		checkparm $2
 		dtb_board="$2"
