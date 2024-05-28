@@ -53,18 +53,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
-	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
-	mv ./*.img ../
-
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-swap-${export_filename} --dtb beagley-ai-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-swap-${export_filename} --dtb beagley-ai-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai-swap
 	mv ./*.img ../
 
 	cd ../
 
 	device="beagley-ai" ; compress_snapshot_image
-	device="beagley-ai-swap" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar

@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-minimal-v6.1-ti-arm64-k3-j722s
-filesize=6gb
+filesize=8gb
 rootfs="debian-arm64-12-bookworm-minimal-v6.1-ti"
 
 compress_snapshot_image () {
@@ -53,8 +53,8 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
-	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai-swap
 	mv ./*.img ../
 
 	cd ../
