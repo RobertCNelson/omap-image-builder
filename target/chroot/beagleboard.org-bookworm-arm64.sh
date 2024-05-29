@@ -168,11 +168,6 @@ install_git_repos () {
 	git_repo="https://openbeagle.org/beagleboard/cc33xx.git"
 	git_target_dir="/opt/source/cc33xx"
 	git_clone
-
-	#wget --directory-prefix=/opt/source/ https://github.com/carina-studio/PixelViewer/releases/download/3.0.5.214/PixelViewer-3.0.5.214-linux-arm64.zip
-	#mkdir /opt/source/PixelViewer/
-	#unzip /opt/source/PixelViewer-3.0.5.214-linux-arm64.zip -d /opt/source/PixelViewer/
-	#chown -R 1000:1000 /opt/source/PixelViewer/
 }
 
 other_source_links () {
