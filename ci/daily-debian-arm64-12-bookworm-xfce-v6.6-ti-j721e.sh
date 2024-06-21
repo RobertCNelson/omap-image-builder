@@ -11,13 +11,10 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "        {" >> ${json_file}
-	echo "            \"icon\": \"https://rcn-ee.net/rootfs/release/BorisImageWriter.png\"," >> ${json_file}
-	echo "            \"url\": \"https://rcn-ee.net/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.img.xz\"," >> ${json_file}
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "            \"extract_size\": ${extract_size}," >> ${json_file}
+	echo "\"extract_size\": ${extract_size}," >> ${json_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "            \"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
+	echo "\"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
 
 	echo "Creating... ${device}-${export_filename}-${filesize}.bmap"
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
@@ -27,9 +24,13 @@ compress_snapshot_image () {
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
-	echo "            \"image_download_size\": ${image_download_size}," >> ${json_file}
-	echo "            \"release_date\": \"${time}\"," >> ${json_file}
-	echo "        }," >> ${json_file}
+	echo "\"image_download_size\": ${image_download_size}," >> ${json_file}
+	image_download_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
+	echo "\"image_download_sha256\": \"${image_download_sha256}\"," >> ${json_file}
+
+	echo "\"release_date\": \"${time}\"," >> ${json_file}
+	echo "\"init_format\": \"sysconf\"," >> ${json_file}
+
 	sync
 
 	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
