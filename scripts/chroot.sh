@@ -1487,6 +1487,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
 				systemctl enable code-server@${rfs_username} || true
+			else
+				#As long as ^ code-server@.service is used, upgrade will now work, but for prior builds they will fail
+				apt-mark hold bb-code-server || true
 			fi
 		else
 			if [ -f /lib/systemd/system/dphys-swapfile.service ] || [ -f /usr/lib/systemd/system/dphys-swapfile.service ] ; then
@@ -1570,14 +1573,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
 		apt-mark hold c9-core-installer || true
-	fi
-
-	#We disable the ability to auto upgrade this specific pacakge as they might be insode VSCode, which will fail...
-	pkg="bb-code-server"
-	dpkg_check
-
-	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-		apt-mark hold bb-code-server || true
 	fi
 
 	if [ -f /lib/systemd/systemd ] ; then
