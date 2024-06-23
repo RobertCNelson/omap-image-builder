@@ -23,8 +23,8 @@
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
 #Debian Trixie/Sid usr merge....
-actual_debootstrap="134"
-minimal_debootstrap="134"
+actual_debootstrap="136"
+minimal_debootstrap="136"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
@@ -57,6 +57,7 @@ install_debootstrap () {
 		#if [ "$test_debootstrap" -lt "$minimal_debootstrap" ] ; then
 		if [ ! "x$test_debootstrap" = "x$actual_debootstrap" ] ; then
 			echo "Log: Installing minimal debootstrap version: 1.0.${minimal_debootstrap}..."
+			sudo apt-get install -yq distro-info || true
 			wget https://rcn-ee.com/mirror/debootstrap/debootstrap_1.0.${minimal_debootstrap}_all.deb
 			sudo dpkg -i debootstrap_1.0.${minimal_debootstrap}_all.deb
 			rm -rf debootstrap_1.0.${minimal_debootstrap}_all.deb || true
