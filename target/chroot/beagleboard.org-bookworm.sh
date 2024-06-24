@@ -176,6 +176,11 @@ install_git_repos () {
 	git_branch="v6.1.x-Beagle"
 	git_clone_branch
 
+	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.6-Beagle"
+	git_branch="v6.6.x-Beagle"
+	git_clone_branch
+
 	#git_repo="https://github.com/beagleboard/bb.org-overlays"
 	#git_target_dir="/opt/source/bb.org-overlays"
 	#git_clone

@@ -157,16 +157,8 @@ install_git_repos () {
 	git_branch="v6.9.x"
 	git_clone_branch
 
-	git_repo="https://github.com/mvduin/py-uio"
-	git_target_dir="/opt/source/py-uio"
-	git_clone
-
 	git_repo="https://github.com/rm-hull/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
-	git_clone
-
-	git_repo="https://openbeagle.org/beagleboard/cc33xx.git"
-	git_target_dir="/opt/source/cc33xx"
 	git_clone
 }
 
