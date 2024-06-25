@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-cinnamon-v6.6-ti-arm64-k3-am62
-filesize=10gb
+filesize=12gb
 rootfs="debian-arm64-12-bookworm-cinnamon-v6.6-ti"
 
 compress_snapshot_image () {

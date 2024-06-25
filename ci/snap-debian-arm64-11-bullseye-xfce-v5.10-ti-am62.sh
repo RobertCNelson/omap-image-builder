@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bullseye-xfce-v5.10-ti-arm64-k3-am62
-filesize=10gb
+filesize=12gb
 
 compress_snapshot_image () {
 	json_file="${device}-${export_filename}-${filesize}.img.xz.json"

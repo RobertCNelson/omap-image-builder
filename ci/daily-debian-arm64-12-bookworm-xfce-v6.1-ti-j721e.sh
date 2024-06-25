@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-xfce-v6.1-ti-arm64-k3-j721e
-filesize=10gb
+filesize=12gb
 rootfs="debian-arm64-12-bookworm-xfce-v6.1-ti"
 
 compress_snapshot_image () {
