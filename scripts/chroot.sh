@@ -1372,6 +1372,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				if [ -f /etc/systemd/system/multi-user.target.wants/wpa_supplicant.service ] ; then
 					systemctl disable wpa_supplicant.service || true
 				fi
+				if [ -d /etc/NetworkManager/conf.d/ ] ; then
+					echo "[device]" > /etc/NetworkManager/conf.d/iwd.conf
+					echo "wifi.backend=iwd" > /etc/NetworkManager/conf.d/iwd.conf
+				fi
 			else
 				if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
 					systemctl enable wpa_supplicant@wlan0 || true
