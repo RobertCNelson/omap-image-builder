@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-cinnamon-v6.6-ti-arm64-k3-j721e
-filesize=10gb
+filesize=12gb
 rootfs="debian-arm64-12-bookworm-cinnamon-v6.6-ti"
 
 compress_snapshot_image () {
@@ -58,9 +58,14 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
 	mv ./*.img ../
 
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher
+	mv ./*.img ../
+
 	cd ../
 
 	device="bbai64" ; compress_snapshot_image
+	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar
