@@ -194,7 +194,7 @@ git_trees () {
 		generic_git_mirror
 		update_git_mirror
 	else
-		git_clone_address="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+		git_clone_address="https://kernel.googlesource.com/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 		generic_git
 		update_git
 	fi
