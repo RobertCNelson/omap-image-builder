@@ -1976,8 +1976,8 @@ while [ ! -z "$1" ] ; do
 			rm -rf "${media}" || true
 		fi
 
-		###For bigger storage let's assume closer to 100% capacity...
-		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 960)))
+		###For bigger storage let's assume closer to 92% capacity...
+		dd if=/dev/zero of="${media}" bs=1024 count=0 seek=$((1024 * (gsize * 942)))
 		;;
 	--img-10gb)
 		###FIXME, someone with better sed skills can add this to ^. ;)
