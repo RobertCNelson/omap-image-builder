@@ -4,7 +4,6 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build_images:
@@ -28,6 +27,10 @@ jobs:
             suite: jammy
             major: 22
             arch: arm64
+          - dist: ubuntu
+            suite: noble
+            major: 24
+            arch: arm64
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +42,7 @@ jobs:
         with:
           repository: CirrusLogic/linux-firmware
           path: git/linux-firmware
+          ref: cs35l56-20241031
 
       - name: Common dependencies
         run: |
