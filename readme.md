@@ -100,7 +100,7 @@ BeagleY-AI:
 
       A0: [aa 55 33 ee 01 37 00 10  2e 00 42 45 41 47 4c 45  |.U3..7....BEAGLE|]
           [59 2d 41 49 2d 41 30 2d  4b 34 41 30 30 30 30 30  |Y-AI-A0-K4A00000|]
-          [4b 34 41 30 41 30 30 30  30 31 ww ww yy yy 42 59  |K4A0A000012224BY|]
+          [4b 34 41 30 41 30 30 30  30 31 ww ww yy yy 42 59  |K4A0A00001wwyyBY|]
           [41 49 ss ss ss ss ss ss  ss ss ss ss ss ss 11 02  |AIssssssssssss..|]
           [00 a8 12 fe                                       |....            |]
 
@@ -108,8 +108,8 @@ PocketBeagle 2:
 
       A0: [aa 55 33 ee 01 37 00 10  2e 00 50 4f 43 4b 45 54  |.U3..7....POCKET|]
           [42 45 41 47 4c 32 41 30  30 47 41 30 30 30 30 30  |BEAGL2A00GA00000|]
-          [30 47 41 30 41 30 30 30  30 31 WW 32 32 34 50 41  |0GA0A000012224PB|]
-          [32 30                                      11 02  |20ssssssssssss..|]
+          [30 47 41 30 41 30 30 30  30 31 ww ww yy yy 50 41  |0GA0A00001wwyyPB|]
+          [32 30 ss ss ss ss ss ss  ss ss ss ss ss ss 11 02  |20ssssssssssss..|]
           [00 a8 12 fe                                       |....            |]
 
 Scripts to support customized image generation for many arm systems
