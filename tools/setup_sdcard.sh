@@ -2106,8 +2106,8 @@ while [ ! -z "$1" ] ; do
 		flasher_uboot="am571x_sndrblock_flasher"
 		;;
 	--oem-flasher-script)
-		checkparm $2
-		oem_flasher_script="$2"
+		echo "[--oem-flasher-script] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--oem-flasher-img)
 		echo "[--oem-flasher-img] is obsolete, and has been removed..."
