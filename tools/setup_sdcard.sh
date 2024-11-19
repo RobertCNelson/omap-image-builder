@@ -910,10 +910,6 @@ populate_boot () {
 		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
 	fi
 
-	if [ "x${conf_board}" = "ximx8mqevk_buildroot" ] ; then
-		touch ${TEMPDIR}/disk/.imx8mq-evk
-	fi
-
 	if [ ${has_uenvtxt} ] ; then
 		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
 		echo "-----------------------------"
