@@ -2134,8 +2134,8 @@ while [ ! -z "$1" ] ; do
 		oem_flasher_eeprom="$2"
 		;;
 	--oem-flasher-job)
-		checkparm $2
-		oem_flasher_job="$2"
+		echo "[--oem-flasher-job] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--enable-systemd)
 		echo "--enable-systemd: option is depreciated (enabled by default Jessie+)"
