@@ -1070,18 +1070,6 @@ populate_rootfs () {
 		#	/usr/bin/stat ${TEMPDIR}/disk/
 		#fi
 		echo "-----------------------------"
-
-		if [ ! "x${oem_flasher_img}" = "x" ] ; then
-			if [ ! -d "${TEMPDIR}/disk/opt/emmc/" ] ; then
-				mkdir -p "${TEMPDIR}/disk/opt/emmc/"
-			fi
-			cp -v "${oem_flasher_img}" "${TEMPDIR}/disk/opt/emmc/"
-			sync
-			echo "Disk Size, with *.img"
-			du -sh ${TEMPDIR}/disk/
-		fi
-
-		echo "-----------------------------"
 	fi
 
 	dir_check="${TEMPDIR}/disk/boot/"
@@ -2122,8 +2110,8 @@ while [ ! -z "$1" ] ; do
 		oem_flasher_script="$2"
 		;;
 	--oem-flasher-img)
-		checkparm $2
-		oem_flasher_img="$2"
+		echo "[--oem-flasher-img] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--oem-flasher-eeprom)
 		echo "[--oem-flasher-eeprom] is obsolete, and has been removed..."
