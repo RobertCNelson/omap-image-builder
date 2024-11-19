@@ -1077,10 +1077,6 @@ populate_rootfs () {
 			fi
 			cp -v "${oem_flasher_img}" "${TEMPDIR}/disk/opt/emmc/"
 			sync
-			if [ ! "x${oem_flasher_eeprom}" = "x" ] ; then
-				cp -v "${oem_flasher_eeprom}" "${TEMPDIR}/disk/opt/emmc/"
-				sync
-			fi
 			echo "Disk Size, with *.img"
 			du -sh ${TEMPDIR}/disk/
 		fi
@@ -2130,8 +2126,8 @@ while [ ! -z "$1" ] ; do
 		oem_flasher_img="$2"
 		;;
 	--oem-flasher-eeprom)
-		checkparm $2
-		oem_flasher_eeprom="$2"
+		echo "[--oem-flasher-eeprom] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--oem-flasher-job)
 		echo "[--oem-flasher-job] is obsolete, and has been removed..."
