@@ -20,7 +20,6 @@ bb.org-debian-stretch-lxqt-v4.14
 bb.org-debian-stretch-lxqt-xm
 
 bb.org-debian-buster-iot-v4.14
-bb.org-debian-buster-efi-iot-v4.14
 
 bb.org-ubuntu-bionic-ros-iot-v4.14
 
@@ -49,7 +48,6 @@ fi
 #./RootStock-NG.sh -c bb.org-debian-stretch-lxqt-xm
 
 #./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.14
-#./RootStock-NG.sh -c bb.org-debian-buster-efi-iot-v4.14
 
 #./RootStock-NG.sh -c bb.org-ubuntu-bionic-ros-iot-v4.14
 

@@ -392,11 +392,6 @@ generate_soc () {
 	echo "sfdisk_fstype=${partition_one_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
 
-	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-		echo "uboot_efi_mode=${uboot_efi_mode}" >> ${wfile}
-		echo "" >> ${wfile}
-	fi
-
 	echo "boot_label=${BOOT_LABEL}" >> ${wfile}
 	echo "rootfs_label=${ROOTFS_LABEL}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -705,9 +700,6 @@ create_partitions () {
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
 			sfdisk_gpt="--label gpt"
 		fi
-		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
 		dd_uboot_boot
 		bootloader_installed=1
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
@@ -726,9 +718,6 @@ create_partitions () {
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
 			sfdisk_gpt="--label gpt"
 		fi
-		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
@@ -738,16 +727,8 @@ create_partitions () {
 			partition_one_fstype=${partition_one_fstype:-"0xE"}
 			sfdisk_partition_layout
 		else
-			if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-				conf_boot_endmb="16"
-				conf_boot_fstype="fat"
-				partition_one_fstype="U"
-				BOOT_LABEL="EFI"
-				sfdisk_partition_layout
-			else
-				sfdisk_single_partition_layout
-				media_rootfs_partition=1
-			fi
+			sfdisk_single_partition_layout
+			media_rootfs_partition=1
 		fi
 		;;
 	no_bootloader_single_partition)
@@ -755,9 +736,6 @@ create_partitions () {
 		echo "No Bootloader, Single Partition"
 		echo "-----------------------------"
 		if [ "x${bootrom_gpt}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
-		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
 			sfdisk_gpt="--label gpt"
 		fi
 		bootloader_installed=1
@@ -976,31 +954,6 @@ populate_rootfs () {
 			echo "Please retry running the script, sometimes rebooting your system helps."
 			echo "-----------------------------"
 			exit
-		fi
-	fi
-
-	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-
-		if [ ! -d ${TEMPDIR}/disk/boot/efi ] ; then
-			mkdir -p ${TEMPDIR}/disk/boot/efi
-		fi
-
-		if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/efi; then
-
-			echo "-----------------------------"
-			echo "BUG: [${media_prefix}${media_boot_partition}] was not available so trying to mount again in 5 seconds..."
-			partprobe ${media}
-			sync
-			sleep 5
-			echo "-----------------------------"
-
-			if ! mount -t vfat ${media_prefix}${media_boot_partition} ${TEMPDIR}/disk/boot/efi; then
-				echo "-----------------------------"
-				echo "Unable to mount ${media_prefix}${media_boot_partition} at ${TEMPDIR}/disk/boot/efi to complete populating rootfs Partition"
-				echo "Please retry running the script, sometimes rebooting your system helps."
-				echo "-----------------------------"
-				exit
-			fi
 		fi
 	fi
 
@@ -1485,11 +1438,6 @@ populate_rootfs () {
 			echo "${rootfs_drive}  /  ${ROOTFS_TYPE}  noatime,errors=remount-ro  0  1" >> ${wfile}
 		fi
 
-		if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-			echo "# All other file systems have fs_passno=2 as per fstab(5) for automatic fsck." >> ${wfile}
-			echo "${boot_drive}  /boot/efi vfat user,uid=1000,gid=1000,defaults 0 2" >> ${wfile}
-		fi
-
 		if [ "x${uboot_firwmare_dir}" = "xenable" ] ; then
 			echo "# All other file systems have fs_passno=2 as per fstab(5) for automatic fsck." >> ${wfile}
 			echo "${boot_drive}  /boot/firmware vfat user,uid=1000,gid=1000,defaults 0 2" >> ${wfile}
@@ -1711,10 +1659,6 @@ populate_rootfs () {
 	cd "${DIR}/"
 
 	tree ${TEMPDIR}/disk/boot/ || true
-
-	if [ "x${uboot_efi_mode}" = "xenable" ] ; then
-		umount ${TEMPDIR}/disk/boot/efi || true
-	fi
 
 	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
 		umount ${TEMPDIR}/disk/boot/firmware || true
@@ -2176,7 +2120,8 @@ while [ ! -z "$1" ] ; do
 		load_bela_overlay="enable"
 		;;
 	--efi)
-		uboot_efi_mode="enable"
+		echo "[--efi] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--enable-extlinux-flasher)
 		extlinux_flasher="enable"
