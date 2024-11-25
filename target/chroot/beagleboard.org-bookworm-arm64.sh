@@ -152,6 +152,11 @@ install_git_repos () {
 	git_branch="v6.6.x-Beagle"
 	git_clone_branch
 
+	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.12-Beagle"
+	git_branch="v6.12.x-Beagle"
+	git_clone_branch
+
 	git_repo="https://github.com/rm-hull/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
