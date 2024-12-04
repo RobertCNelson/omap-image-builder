@@ -62,10 +62,15 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
 	mv ./*.img ../
 
+	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
+	mv ./*.img ../
+
 	cd ../
 
 	device="beagleplay" ; compress_snapshot_image
 	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+	device="pocketbeagle2" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar
