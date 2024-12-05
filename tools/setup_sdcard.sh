@@ -2033,7 +2033,8 @@ while [ ! -z "$1" ] ; do
 		x15_force_revb_flash="enable"
 		;;
 	--am57xx-x15-flasher)
-		flasher_uboot="beagle_x15_flasher"
+		echo "[--am57xx-x15-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--am57xx-x15-revc-flasher)
 		echo "[--am57xx-x15-revc-flasher] is obsolete, and has been removed..."
