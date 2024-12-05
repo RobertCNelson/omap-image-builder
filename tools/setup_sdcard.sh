@@ -30,7 +30,6 @@
 
 BOOT_LABEL="BOOT"
 
-unset USE_BETA_BOOTLOADER
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
 unset USE_DISTRO_BOOTLOADER
@@ -273,11 +272,7 @@ dl_bootloader () {
 		exit
 	fi
 
-	if [ "${USE_BETA_BOOTLOADER}" ] ; then
-		ABI="ABX2"
-	else
-		ABI="ABI2"
-	fi
+	ABI="ABI2"
 
 	if [ "${spl_name}" ] ; then
 		SPL=$(cat ${TEMPDIR}/dl/${conf_bl_listfile} | grep "${ABI}:${conf_board}:SPL" | awk '{print $2}')
@@ -1977,7 +1972,8 @@ while [ ! -z "$1" ] ; do
 		USE_LOCAL_BOOT=1
 		;;
 	--use-beta-bootloader)
-		USE_BETA_BOOTLOADER=1
+		echo "[--use-beta-bootloader] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--a335-flasher)
 		echo "[--a335-flasher] is obsolete, and has been removed..."
