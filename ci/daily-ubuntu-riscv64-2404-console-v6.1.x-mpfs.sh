@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-ubuntu-2304-console-v6.1.x-mpfs-riscv64
+config=bb.org-ubuntu-2404-console-v6.1.x-mpfs-riscv64
 filesize=4gb
-rootfs="ubuntu-riscv64-23.04-minimal-v6.1.x-mpfs"
+rootfs="ubuntu-riscv64-24.04-minimal-v6.1.x-mpfs"
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
