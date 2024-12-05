@@ -2104,7 +2104,8 @@ while [ ! -z "$1" ] ; do
 		extlinux_flasher="enable"
 		;;
 	--offline)
-		offline=1
+		echo "[--offline] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--kernel)
 		checkparm $2
