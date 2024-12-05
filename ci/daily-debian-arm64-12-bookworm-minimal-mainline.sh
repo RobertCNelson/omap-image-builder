@@ -58,10 +58,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64
 	mv ./*.img ../
 
-	#echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64"
-	#sudo ./setup_sdcard.sh --img-${filesize} bbai64-ti-2023.04-${export_filename} --dtb bbai64-ti-2023.04 --hostname BeagleBone-AI64
-	#mv ./*.img ../
-
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap --hostname BeaglePlay"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap --hostname BeaglePlay
 	mv ./*.img ../
@@ -77,7 +73,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ../
 
 	device="bbai64" ; compress_snapshot_image
-	#device="bbai64-ti-2023.04" ; compress_snapshot_image
 	device="beagleplay" ; compress_snapshot_image
 	#device="beagleplay-ti-2023.04" ; compress_snapshot_image
 	#device="beagleplay-mainline" ; compress_snapshot_image
