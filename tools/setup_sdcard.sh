@@ -2036,7 +2036,8 @@ while [ ! -z "$1" ] ; do
 		flasher_uboot="beagle_x15_flasher"
 		;;
 	--am57xx-x15-revc-flasher)
-		flasher_uboot="beagle_x15_revc_flasher"
+		echo "[--am57xx-x15-revc-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--am571x-sndrblock-flasher)
 		echo "[--am571x-sndrblock-flasher] is obsolete, and has been removed..."
