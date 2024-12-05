@@ -2030,7 +2030,8 @@ while [ ! -z "$1" ] ; do
 		exit 2
 		;;
 	--x15-force-revb-flash)
-		x15_force_revb_flash="enable"
+		echo "[--x15-force-revb-flash] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--am57xx-x15-flasher)
 		echo "[--am57xx-x15-flasher] is obsolete, and has been removed..."
