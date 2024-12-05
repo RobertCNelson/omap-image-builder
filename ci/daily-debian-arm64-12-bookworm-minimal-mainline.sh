@@ -62,10 +62,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap --hostname BeaglePlay
 	mv ./*.img ../
 
-	#echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-ti-2023.04-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay"
-	#sudo ./setup_sdcard.sh --img-${filesize} beagleplay-ti-2023.04-${export_filename} --dtb beagleplay-swap-ti-2023.04 --hostname BeaglePlay
-	#mv ./*.img ../
-
 	#echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline --hostname BeaglePlay"
 	#sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline --hostname BeaglePlay
 	#mv ./*.img ../
@@ -74,7 +70,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="bbai64" ; compress_snapshot_image
 	device="beagleplay" ; compress_snapshot_image
-	#device="beagleplay-ti-2023.04" ; compress_snapshot_image
 	#device="beagleplay-mainline" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
