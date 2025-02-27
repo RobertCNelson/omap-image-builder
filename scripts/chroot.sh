@@ -1276,6 +1276,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ ! "x${rfs_use_systemdnetworkd}" = "x" ] ; then
 			if [ ! "x${rfs_use_systemdresolved}" = "x" ] ; then
 				apt-get install -yq systemd-resolved || true
+			else
+				apt-get install -yq openresolv || true
 			fi
 		fi
 
