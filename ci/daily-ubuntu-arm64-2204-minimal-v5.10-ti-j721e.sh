@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=rcn-ee.net-console-ubuntu-2204-v5.10-ti-arm64-k3-j721e
+config=bb.org-ubuntu-2204-console-v5.10-ti-arm64-k3-j721e
 filesize=4gb
 rootfs="ubuntu-arm64-22.04-console-v5.10-ti"
 
@@ -54,13 +54,18 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
+	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher
 	mv ./*.img ../
 
 	cd ../
 
 	device="bbai64" ; compress_snapshot_image
+	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar

@@ -2,8 +2,8 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=rcn-ee.net-console-ubuntu-2204-v5.10-ti-arm64-k3-am62
-filesize=4gb
+config=bb.org-ubuntu-2204-console-v5.10-ti-arm64-k3-am62
+filesize=8gb
 rootfs="ubuntu-arm64-22.04-console-v5.10-ti"
 
 compress_snapshot_image () {
@@ -54,13 +54,23 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
 	mv ./*.img ../
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
+	mv ./*.img ../
+
+	#echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
+	#sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
+	#mv ./*.img ../
 
 	cd ../
 
 	device="beagleplay" ; compress_snapshot_image
+	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+	#device="pocketbeagle2" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
 	#xz -T0 -z ${export_filename}.tar
