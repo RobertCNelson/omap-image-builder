@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-ubuntu-2204-console-v5.10-ti-arm64-k3-j721e
-filesize=4gb
-rootfs="ubuntu-arm64-22.04-console-v5.10-ti"
+config=bb.org-ubuntu-2404-console-v5.10-ti-arm64-k3-j721e
+filesize=8gb
+rootfs="ubuntu-arm64-24.04-console-v5.10-ti"
 
 compress_snapshot_image () {
 	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
