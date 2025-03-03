@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 #
-# Copyright (c) 2012-2024 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2012-2025 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -414,7 +414,7 @@ if [ "x${chroot_very_small_image}" = "xenable" ] ; then
 			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 			sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
 			;;
-		bullseye|bookworm|sid)
+		bullseye|bookworm|trixie|sid)
 			###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
 			echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
 			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
@@ -482,7 +482,7 @@ bullseye|bookworm)
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-sid)
+trixie|sid)
 	echo "#deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "##deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -510,7 +510,7 @@ buster|bullseye|bookworm)
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-sid)
+trixie|sid)
 	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
