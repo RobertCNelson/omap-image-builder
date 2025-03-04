@@ -920,7 +920,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ ! "x${repo_mozilla_package}" = "x" ] ; then
-			echo "Log: (chroot) mozilla firefox-nightly:"
+			echo "Log: (chroot) Install Firefox .deb package for Debian-based distributions:"
+			echo "Package: *" > /etc/apt/preferences.d/mozilla
+			echo "Pin: origin packages.mozilla.org" >> /etc/apt/preferences.d/mozilla
+			echo "Pin-Priority: 1000" >> /etc/apt/preferences.d/mozilla
+
 			apt-get install -yq ${repo_mozilla_package} || true
 		fi
 
