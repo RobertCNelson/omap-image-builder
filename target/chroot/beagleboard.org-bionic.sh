@@ -270,25 +270,6 @@ install_git_repos () {
 	git_clone
 }
 
-ros_initialize_rosdep () {
-	echo "ros: Initialize rosdep"
-	rosdep init
-
-	#su - ${rfs_username} -c "rosdep update"
-	ls -lha /home/
-
-	rosdep update
-
-	#13:38:25 Warning: running 'rosdep update' as root is not recommended.
-	#13:38:25   You should run 'sudo rosdep fix-permissions' and invoke 'rosdep update' again without sudo.
-	#13:40:15 reading in sources list data from /etc/ros/rosdep/sources.list.d
-
-	rosdep fix-permissions
-
-	echo "source /opt/ros/melodic/setup.bash" >> /home/${rfs_username}/.bashrc
-	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.bashrc
-}
-
 other_source_links () {
 	chown -R ${rfs_username}:${rfs_username} /opt/source/
 }
@@ -306,6 +287,5 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
-ros_initialize_rosdep
 #other_source_links
 #

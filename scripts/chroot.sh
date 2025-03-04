@@ -563,21 +563,6 @@ if [ "x${repo_azulsystems}" = "xenable" ] ; then
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.azulsystems.com.pubkey.asc" "${tempdir}/tmp/repos.azulsystems.com.pubkey.asc"
 fi
 
-if [ "x${repo_ros}" = "xenable" ] ; then
-	repo_ros_arch=${repo_ros_arch:-"armhf"}
-	echo "deb [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
-	echo "#deb-src [arch=${repo_ros_arch}] http://packages.ros.org/ros/${deb_distribution} ${deb_codename} main" >> ${wfile}
-	echo "" >> ${wfile}
-	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.asc" "${tempdir}/tmp/ros-archive-keyring.asc"
-fi
-
-if [ "x${repo_ros}" = "xros2" ] ; then
-	echo "deb [arch=${repo_ros_arch} signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu ${repo_ros_dist} main" >> ${wfile}
-	echo "#deb-src [arch=${repo_ros_arch} signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu ${repo_ros_dist} main" >> ${wfile}
-	echo "" >> ${wfile}
-	sudo cp -v "${OIB_DIR}/target/keyring/ros-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/ros-archive-keyring.gpg"
-fi
-
 if [ -f /tmp/sources.list ] ; then
 	sudo mv /tmp/sources.list "${tempdir}/etc/apt/sources.list"
 	sudo chown root:root "${tempdir}/etc/apt/sources.list"
@@ -768,10 +753,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-key add /tmp/repos.azulsystems.com.pubkey.asc
 			rm -f /tmp/repos.azulsystems.com.pubkey.asc || true
 		fi
-		if [ "x${repo_ros}" = "xenable" ] ; then
-			apt-key add /tmp/ros-archive-keyring.asc
-			rm -f /tmp/ros-archive-keyring.asc || true
-		fi
 		if [ "x${repo_external}" = "xenable" ] ; then
 			apt-key add /tmp/${repo_external_key}
 			rm -f /tmp/${repo_external_key} || true
@@ -902,14 +883,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get update || true
 			echo "Log: (chroot): [apt-get install -yq ${repo_rcnee_pkg_list}]"
 			apt-get install -yq ${repo_rcnee_pkg_list}
-		fi
-
-		if [ ! "x${repo_ros_pkg_list}" = "x" ] ; then
-			echo "Log: (chroot) Installing (from external repo) (repo_ros_pkg_list): ${repo_ros_pkg_list}"
-			echo "Log: (chroot): [apt-get install -yq ${repo_ros_pkg_list}]"
-			apt-get install -yq ${repo_ros_pkg_list}
-			#ROS: ubuntu, extra crude, cleanup....
-			apt-get autoremove -y || true
 		fi
 
 		if [ ! "x${repo_rcnee_chromium_special}" = "x" ] ; then
