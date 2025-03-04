@@ -1098,7 +1098,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		cat /etc/group | grep ^tisdk || groupadd -r tisdk || true
 		cat /etc/group | grep ^weston-launch || groupadd -r weston-launch || true
 		cat /etc/group | grep ^bluetooth || groupadd -r bluetooth || true
-		cat /etc/group | grep ^cloud9ide || groupadd -r cloud9ide || true
 		cat /etc/group | grep ^gpio || groupadd -r gpio || true
 
 		#echo "KERNEL==\"hidraw*\", GROUP=\"plugdev\", MODE=\"0660\"" > /etc/udev/rules.d/50-hidraw.rules
@@ -1107,7 +1106,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#echo "SUBSYSTEM==\"cmem\", GROUP=\"tisdk\", MODE=\"0660\"" > /etc/udev/rules.d/tisdk.rules
 		#echo "SUBSYSTEM==\"rpmsg_rpc\", GROUP=\"tisdk\", MODE=\"0660\"" >> /etc/udev/rules.d/tisdk.rules
 
-		default_groups="admin,adm,cloud9ide,dialout,gpio,i2c,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,render,systemd-journal,tisdk,weston-launch"
+		default_groups="admin,adm,dialout,gpio,i2c,input,kmem,cdrom,floppy,audio,dip,video,netdev,plugdev,bluetooth,users,render,systemd-journal,tisdk,weston-launch"
 
 		pkg="sudo"
 		dpkg_check
