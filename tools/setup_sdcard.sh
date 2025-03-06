@@ -667,32 +667,28 @@ create_partitions () {
 	LC_ALL=C fdisk -l "${media}"
 	echo "-----------------------------"
 
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		media_loop=$(losetup -f || true)
-		if [ ! "${media_loop}" ] ; then
-			echo "losetup -f failed"
-			echo "Unmount some via: [sudo losetup -a]"
-			echo "-----------------------------"
-			losetup -a
-			echo "sudo kpartx -d /dev/loopX ; sudo losetup -d /dev/loopX"
-			echo "-----------------------------"
-			exit
-		fi
+	media_loop=$(losetup -f || true)
+	if [ ! "${media_loop}" ] ; then
+		echo "losetup -f failed"
+		echo "Unmount some via: [sudo losetup -a]"
+		echo "-----------------------------"
+		losetup -a
+		echo "sudo kpartx -d /dev/loopX ; sudo losetup -d /dev/loopX"
+		echo "-----------------------------"
+		exit
+	fi
 
-		losetup ${media_loop} "${media}"
-		kpartx -av ${media_loop}
-		sleep 1
-		sync
-		test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
-		if [ -e /dev/mapper/${test_loop}p${media_boot_partition} ] && [ -e /dev/mapper/${test_loop}p${media_rootfs_partition} ] ; then
-			media_prefix="/dev/mapper/${test_loop}p"
-		else
-			ls -lh /dev/mapper/
-			echo "Error: not sure what to do (new feature)."
-			exit
-		fi
+	losetup ${media_loop} "${media}"
+	kpartx -av ${media_loop}
+	sleep 1
+	sync
+	test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
+	if [ -e /dev/mapper/${test_loop}p${media_boot_partition} ] && [ -e /dev/mapper/${test_loop}p${media_rootfs_partition} ] ; then
+		media_prefix="/dev/mapper/${test_loop}p"
 	else
-		partprobe ${media}
+		ls -lh /dev/mapper/
+		echo "Error: not sure what to do (new feature)."
+		exit
 	fi
 
 	if [ "x${media_boot_partition}" = "x${media_rootfs_partition}" ] ; then
