@@ -1380,23 +1380,6 @@ populate_rootfs () {
 	if [ "${usbnet_mem}" ] ; then
 		echo "vm.min_free_kbytes = ${usbnet_mem}" >> ${TEMPDIR}/disk/etc/sysctl.conf
 	fi
-
-	if [ ! "x${new_hostname}" = "x" ] ; then
-		echo "Updating Image hostname too: [${new_hostname}]"
-
-		wfile="/etc/hosts"
-		echo "127.0.0.1	localhost" > ${TEMPDIR}/disk${wfile}
-		echo "127.0.1.1	${new_hostname}.localdomain	${new_hostname}" >> ${TEMPDIR}/disk${wfile}
-		echo "" >> ${TEMPDIR}/disk${wfile}
-		echo "# The following lines are desirable for IPv6 capable hosts" >> ${TEMPDIR}/disk${wfile}
-		echo "::1		localhost ip6-localhost ip6-loopback" >> ${TEMPDIR}/disk${wfile}
-		echo "ff02::1		ip6-allnodes" >> ${TEMPDIR}/disk${wfile}
-		echo "ff02::2		ip6-allrouters" >> ${TEMPDIR}/disk${wfile}
-
-		wfile="/etc/hostname"
-		echo "${new_hostname}" > ${TEMPDIR}/disk${wfile}
-	fi
-
 	# setuid root ping+ping6 - capabilities does not survive tar
 	if [ -x  ${TEMPDIR}/disk/bin/ping ] ; then
 		echo "making ping/ping6 setuid root"
@@ -1658,8 +1641,8 @@ while [ ! -z "$1" ] ; do
 		media=1
 		;;
 	--hostname)
-		checkparm $2
-		new_hostname="$2"
+		echo "[--hostname] is obsolete, and has been removed, use new sysconf.txt or setup teh hostname up in the *.conf file..."
+		exit 2
 		;;
 	--probe-mmc)
 		echo "[--probe-mmc] direct access is being phased out moving script to --img/genimage only"
