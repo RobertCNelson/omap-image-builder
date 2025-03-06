@@ -25,13 +25,13 @@ ubuntu_stable="ubuntu-20.04.4-console-armhf-${time}"
 xz_img="xz -T2 -z -8"
 xz_tar="xz -T2 -z -8"
 
-beaglebone="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --enable-cape-universal"
+beaglebone="--dtb beaglebone --distro-bootloader --enable-cape-universal"
 pru_rproc_v414ti="--enable-uboot-pru-rproc-414ti"
 pru_rproc_v419ti="--enable-uboot-pru-rproc-419ti"
 
-beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
+beagle_xm="--dtb omap3-beagle-xm"
 
-beagle_x15="--dtb am57xx-beagle-x15 --rootfs_label rootfs"
+beagle_x15="--dtb am57xx-beagle-x15"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__
 #!/bin/bash

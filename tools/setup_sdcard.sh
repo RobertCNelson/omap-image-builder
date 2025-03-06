@@ -37,7 +37,6 @@ unset uboot_disable_pru
 
 #Defaults
 ROOTFS_TYPE=ext4
-ROOTFS_LABEL=rootfs
 
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
@@ -352,7 +351,7 @@ generate_soc () {
 	echo "" >> ${wfile}
 
 	echo "boot_label=${BOOT_LABEL}" >> ${wfile}
-	echo "rootfs_label=${ROOTFS_LABEL}" >> ${wfile}
+	echo "rootfs_label=rootfs" >> ${wfile}
 	echo "" >> ${wfile}
 	echo "#Kernel" >> ${wfile}
 	echo "dtb=${dtb}" >> ${wfile}
@@ -1749,8 +1748,8 @@ while [ ! -z "$1" ] ; do
 		BOOT_LABEL="$2"
 		;;
 	--rootfs_label)
-		checkparm $2
-		ROOTFS_LABEL="$2"
+		echo "[--rootfs_label] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--distro-bootloader)
 		USE_DISTRO_BOOTLOADER=1

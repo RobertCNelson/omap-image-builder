@@ -85,7 +85,7 @@ build_and_upload_image
 image_name="debian-9.13-lxqt-xm-armhf-${time}"
 size="4gb"
 target_name="bbxm"
-options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs"
+options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm"
 config_name="bb.org-debian-stretch-lxqt-xm"
 build_and_upload_image
 
