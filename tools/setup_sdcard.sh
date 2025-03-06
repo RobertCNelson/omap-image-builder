@@ -665,21 +665,6 @@ create_partitions () {
 		echo "-----------------------------"
 		sfdisk_partition_layout
 		;;
-	dd_uboot_boot)
-		echo "Using dd to place bootloader on drive"
-		echo "-----------------------------"
-		dd_uboot_boot
-		bootloader_installed=1
-		if [ "x${enable_fat_partition}" = "xenable" ] ; then
-			conf_boot_endmb=${conf_boot_endmb:-"96"}
-			conf_boot_fstype=${conf_boot_fstype:-"fat"}
-			partition_one_fstype=${partition_one_fstype:-"0xE"}
-			sfdisk_partition_layout
-		else
-			sfdisk_single_partition_layout
-			media_rootfs_partition=1
-		fi
-		;;
 	dd_spl_uboot_boot)
 		echo "Using dd to place bootloader on drive"
 		echo "-----------------------------"
