@@ -1530,17 +1530,6 @@ populate_rootfs () {
 	fi
 
 	if [ "x${board_hacks}" = "xbeagleplay" ] ; then
-		if [ ! -f ${TEMPDIR}/disk/etc/bbb.io/templates/services/SoftAp0.conf ] ; then
-			if [ -f ${TEMPDIR}/disk/etc/hostapd/hostapd.conf ] ; then
-				sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
-				sed -i -e "s:passphrase=BeagleBone:passphrase=BeaglePlay:g" ${TEMPDIR}/disk/etc/hostapd/hostapd.conf
-			fi
-			if [ -f ${TEMPDIR}/disk/etc/hostapd/SoftAp0.conf ] ; then
-				sed -i -e "s:BeagleBone-WXYZ:BeaglePlay-WXYZ:g" ${TEMPDIR}/disk/etc/hostapd/SoftAp0.conf
-				sed -i -e "s:passphrase=BeagleBone:passphrase=BeaglePlay:g" ${TEMPDIR}/disk/etc/hostapd/SoftAp0.conf
-			fi
-		fi
-
 		if [ -f ${TEMPDIR}/disk/etc/systemd/network/mlan0.network ] ; then
 			rm ${TEMPDIR}/disk/etc/systemd/network/mlan0.network || true
 		fi
