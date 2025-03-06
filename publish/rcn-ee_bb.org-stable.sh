@@ -185,7 +185,6 @@ options="--img-1gb bone-\${rootfs}                 ${am335x_v419ti}"            
 options="--img-1gb bone-eMMC-flasher-\${rootfs}    ${am335x_v419ti} --emmc-flasher"  ; generate_img
 
 options="--img-1gb BBB-blank-\${rootfs}            ${am335x_v419ti} --bbb-flasher"   ; generate_img
-options="--img-1gb BBBL-blank-\${rootfs}           ${am335x_v419ti} --bbbl-flasher"  ; generate_img
 #options="--img-1gb BBGG-blank-\${rootfs}           ${am335x_v419ti} --bbgg-flasher"  ; generate_img
 
 ###DEBIAN BUSTER: console-xm
