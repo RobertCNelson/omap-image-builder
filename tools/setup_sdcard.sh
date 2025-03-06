@@ -329,21 +329,13 @@ generate_soc () {
 		echo "" >> ${wfile}
 		echo "dd_spl_uboot_count=${dd_spl_uboot_count}" >> ${wfile}
 		echo "dd_spl_uboot_seek=${dd_spl_uboot_seek}" >> ${wfile}
-		if [ "x${build_img_file}" = "xenable" ] ; then
-			echo "dd_spl_uboot_conf=notrunc" >> ${wfile}
-		else
-			echo "dd_spl_uboot_conf=${dd_spl_uboot_conf}" >> ${wfile}
-		fi
+		echo "dd_spl_uboot_conf=notrunc" >> ${wfile}
 		echo "dd_spl_uboot_bs=${dd_spl_uboot_bs}" >> ${wfile}
 		echo "dd_spl_uboot_backup=/opt/backup/uboot/${spl_uboot_name}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "dd_uboot_count=${dd_uboot_count}" >> ${wfile}
 		echo "dd_uboot_seek=${dd_uboot_seek}" >> ${wfile}
-		if [ "x${build_img_file}" = "xenable" ] ; then
-			echo "dd_uboot_conf=notrunc" >> ${wfile}
-		else
-			echo "dd_uboot_conf=${dd_uboot_conf}" >> ${wfile}
-		fi
+		echo "dd_uboot_conf=notrunc" >> ${wfile}
 		echo "dd_uboot_bs=${dd_uboot_bs}" >> ${wfile}
 		echo "dd_uboot_backup=/opt/backup/uboot/${uboot_name}" >> ${wfile}
 	else
@@ -446,13 +438,7 @@ dd_uboot_boot () {
 		dd_uboot="${dd_uboot}seek=${dd_uboot_seek} "
 	fi
 
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		dd_uboot="${dd_uboot}conv=notrunc "
-	else
-		if [ ! "x${dd_uboot_conf}" = "x" ] ; then
-			dd_uboot="${dd_uboot}conv=${dd_uboot_conf} "
-		fi
-	fi
+	dd_uboot="${dd_uboot}conv=notrunc "
 
 	if [ ! "x${dd_uboot_bs}" = "x" ] ; then
 		dd_uboot="${dd_uboot}bs=${dd_uboot_bs}"
@@ -488,13 +474,7 @@ dd_spl_uboot_boot () {
 		dd_spl_uboot="${dd_spl_uboot}seek=${dd_spl_uboot_seek} "
 	fi
 
-	if [ "x${build_img_file}" = "xenable" ] ; then
-			dd_spl_uboot="${dd_spl_uboot}conv=notrunc "
-	else
-		if [ ! "x${dd_spl_uboot_conf}" = "x" ] ; then
-			dd_spl_uboot="${dd_spl_uboot}conv=${dd_spl_uboot_conf} "
-		fi
-	fi
+	dd_spl_uboot="${dd_spl_uboot}conv=notrunc "
 
 	if [ ! "x${dd_spl_uboot_bs}" = "x" ] ; then
 		dd_spl_uboot="${dd_spl_uboot}bs=${dd_spl_uboot_bs}"
