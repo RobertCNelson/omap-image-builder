@@ -330,7 +330,6 @@ generate_soc () {
 		echo "board=${board}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "bootloader_location=${bootloader_location}" >> ${wfile}
-		echo "bootrom_gpt=${bootrom_gpt}" >> ${wfile}
 		echo "" >> ${wfile}
 		echo "dd_spl_uboot_count=${dd_spl_uboot_count}" >> ${wfile}
 		echo "dd_spl_uboot_seek=${dd_spl_uboot_seek}" >> ${wfile}
@@ -669,9 +668,6 @@ create_partitions () {
 	dd_uboot_boot)
 		echo "Using dd to place bootloader on drive"
 		echo "-----------------------------"
-		if [ "x${bootrom_gpt}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
 		dd_uboot_boot
 		bootloader_installed=1
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
@@ -687,9 +683,6 @@ create_partitions () {
 	dd_spl_uboot_boot)
 		echo "Using dd to place bootloader on drive"
 		echo "-----------------------------"
-		if [ "x${bootrom_gpt}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
 		dd_spl_uboot_boot
 		dd_uboot_boot
 		bootloader_installed=1
@@ -707,9 +700,6 @@ create_partitions () {
 		bypass_bootup_scripts="enable"
 		echo "No Bootloader, Single Partition"
 		echo "-----------------------------"
-		if [ "x${bootrom_gpt}" = "xenable" ] ; then
-			sfdisk_gpt="--label gpt"
-		fi
 		bootloader_installed=1
 		sfdisk_single_partition_layout
 		media_rootfs_partition=1
