@@ -1677,7 +1677,6 @@ while [ ! -z "$1" ] ; do
 		gsize=${gsize:-2}
 		imagename=${name%.img}-${gsize}gb.img
 		media="${DIR}/${imagename}"
-		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1708,7 +1707,6 @@ while [ ! -z "$1" ] ; do
 		gsize=${gsize:-8}
 		imagename=${name%.img}-${gsize}gb.img
 		media="${DIR}/${imagename}"
-		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1725,7 +1723,6 @@ while [ ! -z "$1" ] ; do
 		gsize=${gsize:-10}
 		imagename=${name%.img}-${gsize}gb.img
 		media="${DIR}/${imagename}"
-		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
@@ -1742,7 +1739,6 @@ while [ ! -z "$1" ] ; do
 		gsize=${gsize:-12}
 		imagename=${name%.img}-${gsize}gb.img
 		media="${DIR}/${imagename}"
-		build_img_file="enable"
 		check_root
 		if [ -f "${media}" ] ; then
 			rm -rf "${media}" || true
