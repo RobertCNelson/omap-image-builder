@@ -1538,10 +1538,8 @@ populate_rootfs () {
 		cat "${DIR}/user_password.list"
 		echo "-----------------------------"
 	fi
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		echo "Image file: ${imagename}"
-		echo "-----------------------------"
-	fi
+	echo "Image file: ${imagename}"
+	echo "-----------------------------"
 }
 
 process_dtb_conf () {
