@@ -147,21 +147,6 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	#if [ -f /usr/bin/make ] ; then
-	#	echo "Installing pip packages"
-	#	git_repo="https://github.com/adafruit/adafruit-beaglebone-io-python.git"
-	#	git_target_dir="/opt/source/adafruit-beaglebone-io-python"
-	#	git_clone
-	#	if [ -f ${git_target_dir}/.git/config ] ; then
-	#		cd ${git_target_dir}/
-	#		sed -i -e 's:4.1.0:3.4.0:g' setup.py || true
-	#		if [ -f /usr/bin/python3 ] ; then
-	#			python3 setup.py install || true
-	#		fi
-	#		git reset HEAD --hard || true
-	#	fi
-	#fi
-
 	if [ -f /var/www/html/index.nginx-debian.html ] ; then
 		rm -rf /var/www/html/index.nginx-debian.html || true
 	fi
@@ -177,13 +162,8 @@ install_git_repos () {
 	git_clone_branch
 
 	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.6-Beagle"
-	git_branch="v6.6.x-Beagle"
-	git_clone_branch
-
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.12-Beagle"
-	git_branch="v6.12.x-Beagle"
+	git_target_dir="/opt/source/dtb-6.12"
+	git_branch="v6.12.x"
 	git_clone_branch
 
 	#git_repo="https://github.com/beagleboard/bb.org-overlays"
