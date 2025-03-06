@@ -1394,26 +1394,6 @@ populate_rootfs () {
 
 	fi #RootStock-NG
 
-	if [ ! "x${spl_uboot_name}" = "x" ] ; then
-		echo "Backup version of u-boot (${spl_uboot_name}): /opt/backup/uboot/"
-		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
-		if [ "${conf_bl_distro_SPL}" ] ; then
-			cp -v ./${conf_bl_distro_SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
-		else
-			cp -v ${TEMPDIR}/dl/${SPL} ${TEMPDIR}/disk/opt/backup/uboot/${spl_uboot_name}
-		fi
-	fi
-
-	if [ ! "x${uboot_name}" = "x" ] ; then
-		echo "Backup version of u-boot (${uboot_name}): /opt/backup/uboot/"
-		mkdir -p ${TEMPDIR}/disk/opt/backup/uboot/
-		if [ "${conf_bl_distro_UBOOT}" ] ; then
-			cp -v ./${conf_bl_distro_UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
-		else
-			cp -v ${TEMPDIR}/dl/${UBOOT} ${TEMPDIR}/disk/opt/backup/uboot/${uboot_name}
-		fi
-	fi
-
 	if [ -f ${TEMPDIR}/disk/etc/init.d/cpufrequtils ] ; then
 		if [ "x${conf_board}" = "xbeagle_x15" ] ; then
 			sed -i 's/GOVERNOR="ondemand"/GOVERNOR="powersave"/g' ${TEMPDIR}/disk/etc/init.d/cpufrequtils
