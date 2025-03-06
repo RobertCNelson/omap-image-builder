@@ -387,29 +387,6 @@ drive_error_ro () {
 	exit
 }
 
-unmount_all_drive_partitions () {
-	echo ""
-	echo "Unmounting Partitions"
-	echo "-----------------------------"
-
-	NUM_MOUNTS=$(mount | grep -v none | grep "${media}" | wc -l)
-
-##	for (i=1;i<=${NUM_MOUNTS};i++)
-	for ((i=1;i<=${NUM_MOUNTS};i++))
-	do
-		DRIVE=$(mount | grep -v none | grep "${media}" | tail -1 | awk '{print $1}')
-		umount ${DRIVE} >/dev/null 2>&1 || true
-	done
-
-	dd_erase_count=${dd_erase_count:-"100"}
-	echo "Zeroing out Drive, First ${dd_erase_count}MB"
-	echo "-----------------------------"
-	dd if=/dev/zero of=${media} bs=1M count=${dd_erase_count} || drive_error_ro
-	sync
-	dd if=${media} of=/dev/null bs=1M count=${dd_erase_count}
-	sync
-}
-
 sfdisk_partition_layout () {
 	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
 	partition_one_start_mb="${conf_boot_startmb}"
@@ -2073,9 +2050,6 @@ if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
 	fi
 fi
 
-if [ ! "x${build_img_file}" = "xenable" ] ; then
-	unmount_all_drive_partitions
-fi
 create_partitions
 populate_boot
 populate_rootfs
