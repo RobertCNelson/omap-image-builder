@@ -134,10 +134,7 @@ detect_software () {
 	check_for_command partprobe parted
 	check_for_command tree tree
 	check_for_command sfdisk fdisk
-
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		check_for_command kpartx kpartx
-	fi
+	check_for_command kpartx kpartx
 
 	if [ "${NEEDS_COMMAND}" ] ; then
 		echo ""
