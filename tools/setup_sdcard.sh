@@ -27,8 +27,6 @@
 #uEnv.txt bootscript support
 #sfdisk 2.26.x or greater...
 
-unset USE_LOCAL_BOOT
-unset LOCAL_BOOTLOADER
 unset USE_DISTRO_BOOTLOADER
 unset bypass_bootup_scripts
 unset uboot_disable_pru
@@ -160,25 +158,6 @@ detect_software () {
 
 	dl_continue="${dl} -c"
 	dl_quiet="${dl} --no-verbose"
-}
-
-local_bootloader () {
-	echo ""
-	echo "Using Locally Stored Device Bootloader"
-	echo "-----------------------------"
-	mkdir -p ${TEMPDIR}/dl/oem/
-
-	if [ "${spl_name}" ] ; then
-		cp ${LOCAL_SPL} ${TEMPDIR}/dl/
-		SPL=${LOCAL_SPL##*/}
-		echo "SPL Bootloader: ${SPL}"
-	fi
-
-	if [ "${boot_name}" ] ; then
-		cp ${LOCAL_BOOTLOADER} ${TEMPDIR}/dl/
-		UBOOT=${LOCAL_BOOTLOADER##*/}
-		echo "UBOOT Bootloader: ${UBOOT}"
-	fi
 }
 
 distro_bootloader () {
@@ -1753,18 +1732,12 @@ while [ ! -z "$1" ] ; do
 		USE_DISTRO_BOOTLOADER=1
 		;;
 	--spl)
-		checkparm $2
-		LOCAL_SPL="$2"
-		SPL="${LOCAL_SPL##*/}"
-		blank_SPL="${SPL}"
-		USE_LOCAL_BOOT=1
+		echo "[--bootloader] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bootloader)
-		checkparm $2
-		LOCAL_BOOTLOADER="$2"
-		UBOOT="${LOCAL_BOOTLOADER##*/}"
-		blank_UBOOT="${UBOOT}"
-		USE_LOCAL_BOOT=1
+		echo "[--bootloader] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--use-beta-bootloader)
 		echo "[--use-beta-bootloader] is obsolete, and has been removed..."
@@ -1986,9 +1959,7 @@ find_issue
 detect_software
 
 if [ "${spl_name}" ] || [ "${boot_name}" ] ; then
-	if [ "${USE_LOCAL_BOOT}" ] ; then
-		local_bootloader
-	elif [ "${USE_DISTRO_BOOTLOADER}" ] ; then
+	if [ "${USE_DISTRO_BOOTLOADER}" ] ; then
 		distro_bootloader
 	else
 		dl_bootloader
