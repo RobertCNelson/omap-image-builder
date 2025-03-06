@@ -693,6 +693,12 @@ create_partitions () {
 		bypass_bootup_scripts="enable"
 		echo "Distro Bootloader, Dual Partition"
 		echo "-----------------------------"
+		if [ ! "x${conf_bl_distro_SPL}" = "x" ] ; then
+			dd_spl_uboot_boot
+		fi
+		if [ ! "x${conf_bl_distro_UBOOT}" = "x" ] ; then
+			dd_uboot_boot
+		fi
 		sfdisk_partition_layout
 		;;
 	*)
