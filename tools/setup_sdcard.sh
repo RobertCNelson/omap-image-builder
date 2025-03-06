@@ -1674,7 +1674,7 @@ process_dtb_conf () {
 	fatfs_boot)
 		conf_boot_startmb=${conf_boot_startmb:-"1"}
 		;;
-	dd_uboot_boot|dd_spl_uboot_boot)
+	dd_spl_uboot_boot)
 		conf_boot_startmb=${conf_boot_startmb:-"4"}
 		;;
 	*)
