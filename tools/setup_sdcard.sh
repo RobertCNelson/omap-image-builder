@@ -1524,11 +1524,9 @@ populate_rootfs () {
 	fi
 
 	umount ${TEMPDIR}/disk || true
-	if [ "x${build_img_file}" = "xenable" ] ; then
-		sync
-		kpartx -d ${media_loop} || true
-		losetup -d ${media_loop} || true
-	fi
+	sync
+	kpartx -d ${media_loop} || true
+	losetup -d ${media_loop} || true
 
 	echo "Finished populating rootfs Partition"
 	echo "-----------------------------"
