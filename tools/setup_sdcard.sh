@@ -27,8 +27,6 @@
 #uEnv.txt bootscript support
 #sfdisk 2.26.x or greater...
 
-BOOT_LABEL="BOOT"
-
 unset USE_LOCAL_BOOT
 unset LOCAL_BOOTLOADER
 unset USE_DISTRO_BOOTLOADER
@@ -350,7 +348,7 @@ generate_soc () {
 	echo "sfdisk_fstype=${partition_one_fstype}" >> ${wfile}
 	echo "" >> ${wfile}
 
-	echo "boot_label=${BOOT_LABEL}" >> ${wfile}
+	echo "boot_label=BOOT" >> ${wfile}
 	echo "rootfs_label=rootfs" >> ${wfile}
 	echo "" >> ${wfile}
 	echo "#Kernel" >> ${wfile}
@@ -1744,8 +1742,8 @@ while [ ! -z "$1" ] ; do
 		ROOTFS_TYPE="$2"
 		;;
 	--boot_label)
-		checkparm $2
-		BOOT_LABEL="$2"
+		echo "[--boot_label] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--rootfs_label)
 		echo "[--rootfs_label] is obsolete, and has been removed..."
