@@ -834,11 +834,6 @@ populate_boot () {
 		fi
 	fi
 
-	if [ "x${distro_defaults}" = "xenable" ] ; then
-		${dl_quiet} --directory-prefix="${TEMPDIR}/dl/" https://raw.githubusercontent.com/RobertCNelson/netinstall/master/lib/distro_defaults.scr
-		cp -v ${TEMPDIR}/dl/distro_defaults.scr ${TEMPDIR}/disk/boot.scr
-	fi
-
 	if [ ${has_uenvtxt} ] ; then
 		cp -v "${DIR}/uEnv.txt" ${TEMPDIR}/disk/uEnv.txt
 		echo "-----------------------------"
