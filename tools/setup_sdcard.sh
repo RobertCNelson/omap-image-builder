@@ -1547,29 +1547,34 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
-		if [ ! "x${extlinux_kernel}" = "x" ] ; then
-			echo "Un-Compressed Kernel: [cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image]"
-			cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image
-		fi
-		if [ ! "x${extlinux_compressed_kernel}" = "x" ] ; then
-			echo "Compressed Kernel: [cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image]"
-			cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image
-		fi
-		if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
-			if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
-				mkdir -p ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
-				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/ || true
-				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
-				mkdir -p ${TEMPDIR}/disk/boot/firmware/overlays/ || true
-				cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
-				if [ -d ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/ ] ; then
-					cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
+	if [ "x${extlinux}" = "xenable" ] ; then
+		if [ "x${extlinux_firmware_partition}" = "xenable" ] ; then
+			if [ ! "x${extlinux_kernel}" = "x" ] ; then
+				echo "Un-Compressed Kernel: [cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image]"
+				cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image
+			fi
+			if [ ! "x${extlinux_compressed_kernel}" = "x" ] ; then
+				echo "Compressed Kernel: [cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image]"
+				cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image
+			fi
+			if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
+				if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
+					mkdir -p ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
+					cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/ || true
+					cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/${extlinux_dtb_fam}*dtb ${TEMPDIR}/disk/boot/firmware/${extlinux_dtb_vendor}/ || true
+					mkdir -p ${TEMPDIR}/disk/boot/firmware/overlays/ || true
+					cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
+					if [ -d ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/ ] ; then
+						cp ${TEMPDIR}/disk/usr/lib/linux-image-${select_kernel}/${extlinux_dtb_vendor}/overlays/*.dtbo ${TEMPDIR}/disk/boot/firmware/overlays/ || true
+					fi
 				fi
 			fi
+			cp -v ${TEMPDIR}/disk/boot/initrd.img-${select_kernel} ${TEMPDIR}/disk/boot/firmware/initrd.img
+			firmware_sysconf="enable"
 		fi
-		cp -v ${TEMPDIR}/disk/boot/initrd.img-${select_kernel} ${TEMPDIR}/disk/boot/firmware/initrd.img
+	fi
 
+	if [ "x${firmware_sysconf}" = "xenable" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ] ; then
 			cp ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ${TEMPDIR}/disk/boot/firmware/sysconf.txt
 			echo "sysconf: [cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt]"
