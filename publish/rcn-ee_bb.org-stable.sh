@@ -62,17 +62,17 @@ debian_bullseye_minimal="debian-11.9-minimal-armhf-${time}"
 xz_img="xz -T4 -z -8"
 xz_tar="xz -T4 -z -8"
 
-beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
+beagle_xm="--dtb omap3-beagle-xm --rootfs_label rootfs"
 
-  am335x_v414ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
-  am335x_v419ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-419ti"
-   am335x_v54ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-54ti"
+  am335x_v414ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --enable-cape-universal --enable-uboot-pru-rproc-414ti"
+  am335x_v419ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --enable-cape-universal --enable-uboot-pru-rproc-419ti"
+   am335x_v54ti="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --enable-cape-universal --enable-uboot-pru-rproc-54ti"
   am335x_v510ti="--dtb beaglebone --distro-bootloader --enable-cape-universal --enable-uboot-disable-pru --enable-bypass-bootup-scripts"
-am335x_mainline="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-cape-universal"
+am335x_mainline="--dtb beaglebone --distro-bootloader --rootfs_label rootfs --enable-cape-universal"
 
-am57xx_v414ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone"
-am57xx_v419ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone --enable-uboot-cape-overlays"
- am57xx_v54ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --hostname beaglebone"
+am57xx_v414ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs"
+am57xx_v419ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs --enable-uboot-cape-overlays"
+ am57xx_v54ti="--dtb am57xx-beagle-x15 --distro-bootloader --rootfs_label rootfs"
 am57xx_v510ti="--dtb am57xx-beagle-x15 --distro-bootloader --enable-uboot-cape-overlays --enable-bypass-bootup-scripts"
 
 cat > ${DIR}/deploy/gift_wrap_final_images.sh <<-__EOF__

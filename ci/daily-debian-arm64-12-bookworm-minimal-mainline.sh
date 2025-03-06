@@ -54,16 +54,16 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline --hostname BeagleBone-AI64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-mainline
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap --hostname BeaglePlay"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap --hostname BeaglePlay
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-mainline-swap
 	mv ./*.img ../
 
-	#echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline --hostname BeaglePlay"
-	#sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline --hostname BeaglePlay
+	#echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline"
+	#sudo ./setup_sdcard.sh --img-${filesize} beagleplay-mainline-${export_filename} --dtb beagleplay-mainline
 	#mv ./*.img ../
 
 	cd ../

@@ -64,7 +64,7 @@ image_name="debian-9.13-iot-armhf-${time}"
 size="4gb"
 target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone --distro-bootloader \
---hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
+--enable-cape-universal --enable-uboot-pru-rproc-414ti"
 config_name="bb.org-debian-stretch-iot-v4.14"
 build_and_upload_image
 
@@ -75,7 +75,7 @@ image_name="debian-9.13-lxqt-armhf-${time}"
 size="4gb"
 target_name="bone"
 options="--img-4gb ${target_name}-${image_name} --dtb beaglebone --distro-bootloader \
---hostname beaglebone --enable-cape-universal --enable-uboot-pru-rproc-414ti"
+--enable-cape-universal --enable-uboot-pru-rproc-414ti"
 config_name="bb.org-debian-stretch-lxqt-v4.14"
 build_and_upload_image
 
@@ -85,7 +85,7 @@ build_and_upload_image
 image_name="debian-9.13-lxqt-xm-armhf-${time}"
 size="4gb"
 target_name="bbxm"
-options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs --hostname beagleboard"
+options="--img-4gb ${target_name}-${image_name} --dtb omap3-beagle-xm --rootfs_label rootfs"
 config_name="bb.org-debian-stretch-lxqt-xm"
 build_and_upload_image
 
@@ -95,7 +95,7 @@ build_and_upload_image
 image_name="debian-9.13-lxqt-tidl-armhf-${time}"
 size="6gb"
 target_name="am57xx"
-options="--img-6gb ${target_name}-${image_name} --dtb am57xx-beagle-x15 --hostname beaglebone"
+options="--img-6gb ${target_name}-${image_name} --dtb am57xx-beagle-x15"
 config_name="bb.org-debian-stretch-lxqt-tidl-v4.14"
 build_and_upload_image
 
