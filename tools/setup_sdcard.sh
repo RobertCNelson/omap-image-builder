@@ -1511,6 +1511,9 @@ populate_rootfs () {
 
 	if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
 		echo "patching /etc/default/generic-sys-mods"
+		if [ "x${board_hacks}" = "xam335x_evm_sysconf" ] ; then
+			sed -i -e "s:ROOT_PARTITION=1:ROOT_PARTITION=2:g" ${TEMPDIR}/disk/etc/default/generic-sys-mods
+		fi
 		if [ "x${board_hacks}" = "xj721e_evm" ] || [ "x${board_hacks}" = "xbbai64_staging" ] ; then
 			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
