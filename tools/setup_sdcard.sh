@@ -1885,10 +1885,8 @@ while [ ! -z "$1" ] ; do
 		exit 2
 		;;
 	--bbgg-flasher)
-		oem_blank_eeprom="enable"
-		uboot_eeprom="bbgg_blank"
-		#default:
-		emmc_flasher="enable"
+		echo "[--bbgg-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--m10a-flasher)
 		echo "[--m10a-flasher] is obsolete, and has been removed..."

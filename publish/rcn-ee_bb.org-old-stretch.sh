@@ -171,7 +171,6 @@ options="--img-1gb bone-\${rootfs}                 ${am335x_v414ti}"            
 options="--img-1gb bone-eMMC-flasher-\${rootfs}    ${am335x_v414ti} --emmc-flasher"  ; generate_img
 
 options="--img-1gb BBB-blank-\${rootfs}            ${am335x_v414ti} --bbb-flasher"   ; generate_img
-options="--img-1gb BBGG-blank-\${rootfs}           ${am335x_v414ti} --bbgg-flasher"  ; generate_img
 
 ###DEBIAN STRETCH: imgtec
 rootfs="${debian_stretch_imgtec}" ; blend="stretch-imgtec" ; extract_base_rootfs
