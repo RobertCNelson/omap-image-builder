@@ -502,6 +502,7 @@ dd_uboot_boot () {
 	echo "-----------------------------"
 	dd if=${TEMPDIR}/${wdir}/${uboot_blob} of=${media} ${dd_uboot}
 	echo "-----------------------------"
+	bootloader_installed=1
 }
 
 dd_spl_uboot_boot () {
@@ -543,6 +544,7 @@ dd_spl_uboot_boot () {
 	echo "-----------------------------"
 	dd if=${TEMPDIR}/${wdir}/${spl_uboot_blob} of=${media} ${dd_spl_uboot}
 	echo "-----------------------------"
+	bootloader_installed=1
 }
 
 format_partition_error () {
@@ -670,7 +672,6 @@ create_partitions () {
 		echo "-----------------------------"
 		dd_spl_uboot_boot
 		dd_uboot_boot
-		bootloader_installed=1
 		if [ "x${enable_fat_partition}" = "xenable" ] ; then
 			conf_boot_endmb=${conf_boot_endmb:-"96"}
 			conf_boot_fstype=${conf_boot_fstype:-"fat"}
@@ -685,7 +686,6 @@ create_partitions () {
 		bypass_bootup_scripts="enable"
 		echo "No Bootloader, Single Partition"
 		echo "-----------------------------"
-		bootloader_installed=1
 		sfdisk_single_partition_layout
 		media_rootfs_partition=1
 		;;
@@ -790,7 +790,6 @@ populate_boot () {
 			fi
 		fi
 	fi
-
 
 	if [ "${boot_name}" ] ; then
 		if [ -f ${TEMPDIR}/dl/${UBOOT} ] ; then
