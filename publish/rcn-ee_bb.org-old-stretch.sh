@@ -172,7 +172,6 @@ options="--img-1gb bone-eMMC-flasher-\${rootfs}    ${am335x_v414ti} --emmc-flash
 
 options="--img-1gb BBB-blank-\${rootfs}            ${am335x_v414ti} --bbb-flasher"   ; generate_img
 options="--img-1gb BBBL-blank-\${rootfs}           ${am335x_v414ti} --bbbl-flasher"  ; generate_img
-options="--img-1gb BBBW-blank-\${rootfs}           ${am335x_v414ti} --bbbw-flasher"  ; generate_img
 options="--img-1gb BBGG-blank-\${rootfs}           ${am335x_v414ti} --bbgg-flasher"  ; generate_img
 
 ###DEBIAN STRETCH: imgtec

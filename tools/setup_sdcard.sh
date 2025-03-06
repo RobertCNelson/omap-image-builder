@@ -1294,9 +1294,6 @@ populate_rootfs () {
 			elif [ "x${bbbl_flasher}" = "xenable" ] ; then
 				echo "##enable bbbl: eMMC Flasher:" >> ${wfile}
 				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbbl.sh" >> ${wfile}
-			elif [ "x${bbbw_flasher}" = "xenable" ] ; then
-				echo "##enable bbbw: eMMC Flasher:" >> ${wfile}
-				echo "cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-bbbw.sh" >> ${wfile}
 			else
 				echo "##enable Generic eMMC Flasher:" >> ${wfile}
 				if [ -f ${TEMPDIR}/disk/usr/sbin/init-beagle-flasher ] ; then
@@ -1926,9 +1923,8 @@ while [ ! -z "$1" ] ; do
 		uboot_eeprom="bbbl_blank"
 		;;
 	--bbbw-flasher)
-		oem_blank_eeprom="enable"
-		bbbw_flasher="enable"
-		uboot_eeprom="bbbw_blank"
+		echo "[--bbbw-flasher] is obsolete, and has been removed..."
+		exit 2
 		;;
 	--bbb-old-bootloader-in-emmc)
 		echo "[--bbb-old-bootloader-in-emmc] is obsolete, and has been removed..."
