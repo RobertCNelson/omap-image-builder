@@ -1,7 +1,6 @@
 #!/bin/bash -e
 #
 # Copyright (c) 2009-2024 Robert Nelson <robertcnelson@gmail.com>
-# Copyright (c) 2010 Mario Di Francesco <mdf-code@digitalexile.it>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -1607,12 +1606,6 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${disable_resize}" = "xenable" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
-			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
-		fi
-	fi
-
 	cd ${TEMPDIR}/disk/
 	sync
 	sync
@@ -1644,34 +1637,6 @@ populate_rootfs () {
 	if [ "x${build_img_file}" = "xenable" ] ; then
 		echo "Image file: ${imagename}"
 		echo "-----------------------------"
-	fi
-}
-
-check_mmc () {
-	FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${media}:" | awk '{print $2}')
-
-	if [ "x${FDISK}" = "x${media}:" ] ; then
-		echo ""
-		echo "I see..."
-		echo ""
-		echo "lsblk:"
-		lsblk | grep -v sr0
-		echo ""
-		unset response
-		echo -n "Are you 100% sure, on selecting [${media}] (y/n)? "
-		read response
-		if [ "x${response}" != "xy" ] ; then
-			exit
-		fi
-		echo ""
-	else
-		echo ""
-		echo "Are you sure? I Don't see [${media}], here is what I do see..."
-		echo ""
-		echo "lsblk:"
-		lsblk | grep -v sr0
-		echo ""
-		exit
 	fi
 }
 
@@ -1767,15 +1732,12 @@ usage () {
 			Bugs email: "bugs at rcn-ee.com"
 
 			Required Options:
-			--mmc </dev/sdX> or --img <filename.img>
+			--img <filename.img>
 
 			--dtb <dev board>
 
 			Additional Options:
 			        -h --help
-
-			--probe-mmc
-			        <list all partitions: sudo ./setup_sdcard.sh --probe-mmc>
 
 			__EOF__
 	exit
@@ -1802,18 +1764,12 @@ while [ ! -z "$1" ] ; do
 		new_hostname="$2"
 		;;
 	--probe-mmc)
-		media="/dev/idontknow"
-		check_root
-		check_mmc
+		echo "[--probe-mmc] direct access is being phased out moving script to --img/genimage only"
+		exit 2
 		;;
 	--mmc)
-		checkparm $2
-		media="$2"
-		media_prefix="${media}"
-		echo ${media} | grep mmcblk >/dev/null && media_prefix="${media}p"
-		check_root
-		check_mmc
-		disable_resize="enable"
+		echo "[--mmc] direct access is being phased out moving script to --img/genimage only"
+		exit 2
 		;;
 	--img|--img-[1246]gb)
 		checkparm $2
