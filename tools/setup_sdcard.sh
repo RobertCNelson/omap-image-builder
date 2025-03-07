@@ -519,15 +519,15 @@ format_boot_partition () {
 	if [ "x${conf_boot_fstype}" = "xfat" ] || [ "x${conf_boot_fstype}" = "xfat16" ]; then
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 16"
-		mkfs_label="-n ${BOOT_LABEL}"
+		mkfs_label="-n BOOT"
 	elif [ "x${conf_boot_fstype}" = "xfat32" ] ; then
 		mount_partition_format="vfat"
 		mkfs="mkfs.vfat -F 32"
-		mkfs_label="-n ${BOOT_LABEL}"
+		mkfs_label="-n BOOT"
 	else
 		mount_partition_format="${conf_boot_fstype}"
 		mkfs="mkfs.${conf_boot_fstype}"
-		mkfs_label="-L ${BOOT_LABEL}"
+		mkfs_label="-L BOOT"
 	fi
 
 	format_partition
