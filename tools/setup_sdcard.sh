@@ -63,7 +63,7 @@ is_element_of () {
 #
 #########################################################################
 
-VALID_ROOTFS_TYPES="ext2 ext3 ext4"
+VALID_ROOTFS_TYPES="ext4"
 
 is_valid_rootfs_type () {
 	if is_element_of $1 "${VALID_ROOTFS_TYPES}" ] ; then
@@ -1524,7 +1524,7 @@ process_dtb_conf () {
 	fat32)
 		partition_one_fstype=${partition_one_fstype:-"0xC"}
 		;;
-	ext2|ext3|ext4)
+	ext4)
 		partition_one_fstype="L"
 		;;
 	*)
