@@ -538,7 +538,7 @@ format_boot_partition () {
 format_rootfs_partition () {
 	mkfs="mkfs.${ROOTFS_TYPE}"
 	mkfs_partition="${media_prefix}${media_rootfs_partition}"
-	mkfs_label="-L ${ROOTFS_LABEL}"
+	mkfs_label="-L rootfs"
 
 	format_partition
 
