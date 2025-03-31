@@ -477,12 +477,12 @@ buster)
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-bullseye|bookworm)
+bullseye|bookworm|trixie)
 	echo "deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-trixie|sid)
+forky|sid)
 	echo "#deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "##deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -505,12 +505,12 @@ stretch)
 	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-buster|bullseye|bookworm)
+buster|bullseye|bookworm|trixie)
 	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
 	;;
-trixie|sid)
+forky|sid)
 	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "" >> ${wfile}
@@ -534,7 +534,7 @@ if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 		echo "#deb-src http://archive.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "" >> ${wfile}
 		;;
-	buster|bullseye|bookworm)
+	buster|bullseye|bookworm|trixie)
 		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "" >> ${wfile}
