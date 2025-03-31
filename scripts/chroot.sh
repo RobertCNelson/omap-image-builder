@@ -405,25 +405,6 @@ echo 'Dpkg::Progress-Fancy "0";' > /tmp/99progressbar
 sudo mv /tmp/99progressbar "${tempdir}/etc/apt/apt.conf.d/99progressbar"
 sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/99progressbar"
 
-if [ "x${chroot_very_small_image}" = "xenable" ] ; then
-	if [ "x${deb_distribution}" = "xdebian" ] ; then
-		#apt: /var/lib/apt/lists/, store compressed only
-		case "${deb_codename}" in
-		stretch|buster)
-			echo 'Acquire::GzipIndexes "true"; APT::Compressor::xz::Cost "40";' > /tmp/02compress-indexes
-			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-			sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-			;;
-		bullseye|bookworm|trixie|sid)
-			###FIXME: close to release switch to ^ xz, right now <next> is slow on apt...
-			echo 'Acquire::GzipIndexes "true"; APT::Compressor::gzip::Cost "40";' > /tmp/02compress-indexes
-			sudo mv /tmp/02compress-indexes "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-			sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02compress-indexes"
-			;;
-		esac
-	fi
-fi
-
 if [ "x${deb_distribution}" = "xdebian" ] || [ "x${deb_distribution}" = "xubuntu" ] ; then
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
