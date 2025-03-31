@@ -158,9 +158,3 @@ Release Process:
     git tag -a v202y.mm -m 'v202y.mm'
     git push origin --tags
 
-MachineKit:
-------------
-
-    ./RootStock-NG.sh -c machinekit-debian-stretch
-    http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#BBW.2FBBB_.28All_Revs.29_Machinekit
-

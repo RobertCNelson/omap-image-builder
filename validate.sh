@@ -31,9 +31,6 @@ run_config () {
 #config="bb.org-debian-bullseye-console-arm64"
 #run_config
 
-#config="bela.io-debian-stretch-armhf-v4.14-ti-xenomai"
-#run_config
-
 config="bela.io-debian-bullseye-v4.14-ti-xenomai-armhf"
 run_config
 
