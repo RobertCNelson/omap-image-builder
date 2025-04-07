@@ -1441,10 +1441,6 @@ populate_rootfs () {
 			cp ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ${TEMPDIR}/disk/boot/firmware/sysconf.txt
 			echo "sysconf: [cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt]"
 			cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt
-			if [ -d ${TEMPDIR}/disk/etc/bbb.io/templates/services/ ] ; then
-				mkdir -p ${TEMPDIR}/disk/boot/firmware/services/enable/
-				cp -r ${TEMPDIR}/disk/etc/bbb.io/templates/services/* ${TEMPDIR}/disk/boot/firmware/services/
-			fi
 		fi
 	fi
 
