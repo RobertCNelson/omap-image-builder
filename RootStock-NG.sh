@@ -190,7 +190,7 @@ git_trees () {
 
 	git_project_name="linux-firmware"
 	if [ -f ./.gitea.mirror ] ; then
-		git_clone_address="https://git.gfnd.rcn-ee.org/kernel.org/linux-firmware.git"
+		git_clone_address="http://forgejo.gfnd.rcn-ee.org:3000/kernel.org/linux-firmware.git"
 		generic_git_mirror
 		update_git_mirror
 	else
