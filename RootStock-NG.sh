@@ -169,6 +169,7 @@ generic_git_mirror () {
 update_git () {
 	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		cd ${DIR}/git/${git_project_name}/
+		git remote -v
 		git pull --rebase || true
 		cd -
 	fi
@@ -178,6 +179,7 @@ update_git_mirror () {
 	if [ -f ${DIR}/git/${git_project_name}/.git/config ] ; then
 		cd ${DIR}/git/${git_project_name}/
 		git remote set-url origin ${git_clone_address}
+		git remote -v
 		git pull --rebase || true
 		cd -
 	fi
