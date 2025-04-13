@@ -162,7 +162,7 @@ generic_git () {
 
 generic_git_mirror () {
 	if [ ! -f ${DIR}/git/${git_project_name}/.git/config ] ; then
-		git clone -c http.sslVerify=false ${git_clone_address} ${DIR}/git/${git_project_name}
+		git clone -c http.sslVerify=false ${git_clone_address} ${DIR}/git/${git_project_name} --depth=1
 	fi
 }
 
