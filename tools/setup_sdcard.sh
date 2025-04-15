@@ -1441,6 +1441,8 @@ populate_rootfs () {
 			cp ${TEMPDIR}/disk/etc/bbb.io/templates/sysconf.txt ${TEMPDIR}/disk/boot/firmware/sysconf.txt
 			echo "sysconf: [cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt]"
 			cat ${TEMPDIR}/disk/boot/firmware/sysconf.txt
+			#needed for WiFi *.psk files
+			mkdir -p ${TEMPDIR}/disk/boot/firmware/services/
 		fi
 	fi
 
