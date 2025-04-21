@@ -569,12 +569,6 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		fi
 	fi
 
-	echo "#Kernel source (repos.rcn-ee.com) : https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
-	echo "#" >> ${wfile}
-	echo "#git clone https://github.com/RobertCNelson/linux-stable-rcn-ee" >> ${wfile}
-	echo "#cd ./linux-stable-rcn-ee" >> ${wfile}
-	echo "#git checkout \`uname -r\` -b tmp" >> ${wfile}
-	echo "" >> ${wfile}
 	if [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
