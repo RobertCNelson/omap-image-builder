@@ -1283,7 +1283,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable ureadahead.service || true
 		fi
 
-		if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades ] ; then
+		if [ ! -f /usr/bin/unattended-upgrade ] ; then
 			#No guarantee we will have an active network connection...
 			#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily.service
 			#     9.445s apt-daily.services
