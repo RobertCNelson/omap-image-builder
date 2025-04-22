@@ -1235,7 +1235,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] || [ -f /usr/lib/systemd/system/systemd-timesyncd.service ] ; then
-			echo "Log: (chroot): enabling: systemd-timesyncd.service"
+			echo "Log: (chroot-systemd): enabling: systemd-timesyncd.service"
 			systemctl enable systemd-timesyncd.service || true
 
 			#systemd v232: (Debian Stretch): Legacy...
@@ -1260,22 +1260,26 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /usr/bin/connmanctl ] ; then
 			#kill systemd/connman-wait-online.service, as it delays serial console upto 2 minutes...
 			if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
+				echo "Log: (chroot-systemd): disable: connman-wait-online.service"
 				systemctl disable connman-wait-online.service || true
 			fi
 		fi
 
 		#We manually start dnsmasq, usb0/SoftAp0 are not available till late in boot...
 		if [ -f /lib/systemd/system/dnsmasq.service ] || [ -f /usr/lib/systemd/system/dnsmasq.service ] ; then
+			echo "Log: (chroot-systemd): disable: dnsmasq.service"
 			systemctl disable dnsmasq.service || true
 		fi
 
 		#We use, so make sure udhcpd is disabled at bootup...
 		if [ -f /lib/systemd/system/udhcpd.service ] || [ -f /usr/lib/systemd/system/udhcpd.service ] ; then
+			echo "Log: (chroot-systemd): disable: udhcpd.service"
 			systemctl disable udhcpd.service || true
 		fi
 
 		#Our kernels do not have ubuntu's ureadahead patches...
 		if [ -f /lib/systemd/system/ureadahead.service ] || [ -f /usr/lib/systemd/system/ureadahead.service ] ; then
+			echo "Log: (chroot-systemd): disable: ureadahead.service"
 			systemctl disable ureadahead.service || true
 		fi
 
@@ -1284,6 +1288,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily.service
 			#     9.445s apt-daily.services
 			if [ -f /lib/systemd/system/apt-daily.service ] || [ -f /usr/lib/systemd/system/apt-daily.service ] ; then
+				echo "Log: (chroot-systemd): disable: apt-daily.service"
 				systemctl disable apt-daily.service || true
 				systemctl disable apt-daily.timer || true
 			fi
@@ -1292,6 +1297,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily-upgrade.service
 			#     10.300s apt-daily-upgrade.service
 			if [ -f /lib/systemd/system/apt-daily-upgrade.service ] || [ -f /usr/lib/systemd/system/apt-daily-upgrade.service ] ; then
+				echo "Log: (chroot-systemd): disable: apt-daily-upgrade.service"
 				systemctl disable apt-daily-upgrade.service || true
 				systemctl disable apt-daily-upgrade.timer || true
 			fi
@@ -1300,6 +1306,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /usr/bin/connmanctl ] ; then
 			#We use connman...
 			if [ -f /lib/systemd/system/systemd-networkd.service ] || [ -f /usr/lib/systemd/system/systemd-networkd.service ] ; then
+				echo "Log: (chroot-systemd): disable: systemd-networkd.service"
 				systemctl disable systemd-networkd.service || true
 			fi
 		fi
@@ -1307,6 +1314,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /usr/bin/connmanctl ] ; then
 			#We use dnsmasq & connman...
 			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
+				echo "Log: (chroot-systemd): disable: systemd-resolved.service"
 				systemctl disable systemd-resolved.service || true
 			fi
 		fi
@@ -1317,29 +1325,36 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			if [ -f /lib/systemd/system/systemd-networkd.service ] || [ -f /usr/lib/systemd/system/systemd-networkd.service ] ; then
+				echo "Log: (chroot-systemd): enable: systemd-networkd.service"
 				systemctl enable systemd-networkd.service || true
 			fi
 
 			if [ -f /lib/systemd/system/iwd.service ] || [ -f /usr/lib/systemd/system/iwd.service ] ; then
+				echo "Log: (chroot-systemd): enable: iwd.service"
 				systemctl enable iwd.service || true
 				if [ -f /etc/systemd/system/multi-user.target.wants/wpa_supplicant.service ] ; then
+					echo "Log: (chroot-systemd): disable: wpa_supplicant.service"
 					systemctl disable wpa_supplicant.service || true
 				fi
 			else
 				if [ -f /lib/systemd/system/wpa_supplicant@.service ] ; then
+					echo "Log: (chroot-systemd): enable: wpa_supplicant@wlan0"
 					systemctl enable wpa_supplicant@wlan0 || true
 
 					if [ -f /etc/bbb.io/templates/mlan0-DHCP.network ] ; then
+						echo "Log: (chroot-systemd): enable: wpa_supplicant@mlan0"
 						systemctl enable wpa_supplicant@mlan0 || true
 					fi
 				fi
 			fi
 
 			if [ -f /lib/systemd/system/systemd-networkd-wait-online.service ] || [ -f /usr/lib/systemd/system/systemd-networkd-wait-online.service ] ; then
+				echo "Log: (chroot-systemd): disable: systemd-networkd-wait-online.service"
 				systemctl disable systemd-networkd-wait-online.service || true
 			fi
 
 			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
+				echo "Log: (chroot-systemd): enable: systemd-resolved.service"
 				systemctl enable systemd-resolved.service || true
 			else
 				if [ -f /etc/iwd/main.conf ] ; then
@@ -1348,16 +1363,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			if [ -f /etc/systemd/system/multi-user.target.wants/ModemManager.service ] ; then
+				echo "Log: (chroot-systemd): disable: ModemManager.service"
 				systemctl disable ModemManager.service || true
 			fi
 
 			if [ -f /etc/systemd/system/multi-user.target.wants/NetworkManager.service ] ; then
+				echo "Log: (chroot-systemd): disable: NetworkManager.service"
 				systemctl disable NetworkManager.service || true
 			fi
 
 			if [ "x${rfs_disable_usb_gadgets}" = "x" ] ; then
 				#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
 				if [ -f /lib/systemd/system/bb-usb-gadgets.service ] || [ -f /usr/lib/systemd/system/bb-usb-gadgets.service ] ; then
+					echo "Log: (chroot-systemd): enable: bb-usb-gadgets.service"
 					systemctl enable bb-usb-gadgets.service || true
 				fi
 			fi
@@ -1365,16 +1383,19 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${rfs_use_networkmanager}" = "x" ] ; then
 			if [ -f /lib/systemd/system/NetworkManager.service ] || [ -f /usr/lib/systemd/system/NetworkManager.service ] ; then
+				echo "Log: (chroot-systemd): enable: NetworkManager.service"
 				systemctl enable NetworkManager.service || true
 			fi
 
 			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
+				echo "Log: (chroot-systemd): enable: systemd-resolved.service"
 				systemctl enable systemd-resolved.service || true
 			fi
 
 			if [ "x${rfs_disable_usb_gadgets}" = "x" ] ; then
 				#Starting with Bullseye, we have a version of systemd with After=usb-gadget.target!!!
 				if [ -f /lib/systemd/system/bb-usb-gadgets.service ] || [ -f /usr/lib/systemd/system/bb-usb-gadgets.service ] ; then
+					echo "Log: (chroot-systemd): enable: enable bb-usb-gadgets.service"
 					systemctl enable bb-usb-gadgets.service || true
 				fi
 			fi
@@ -1384,32 +1405,38 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		#debian@beaglebone:~$ sudo systemd-analyze blame | grep man-db.service
 		#    4min 10.587s man-db.service
 		if [ -f /lib/systemd/system/man-db.service ] || [ -f /usr/lib/systemd/system/man-db.service ] ; then
+			echo "Log: (chroot-systemd): disable: man-db.service"
 			systemctl disable man-db.service || true
 			systemctl disable man-db.timer || true
 		fi
 
 		#Anyone who needs this can enable it...
 		if [ -f /lib/systemd/system/pppd-dns.service ] || [ -f /usr/lib/systemd/system/pppd-dns.service ] ; then
+			echo "Log: (chroot-systemd): disable: pppd-dns.service"
 			systemctl disable pppd-dns.service || true
 		fi
 
 		if [ -f /lib/systemd/system/hostapd.service ] || [ -f /usr/lib/systemd/system/hostapd.service ] ; then
+			echo "Log: (chroot-systemd): disable: hostapd.service"
 			systemctl disable hostapd.service || true
 		fi
 
 		#Starting with Bullseye, we are copying RPi's regenerate_ssh_host_keys service...
 		if [ -f /lib/systemd/system/regenerate_ssh_host_keys.service ] || [ -f /usr/lib/systemd/system/regenerate_ssh_host_keys.service ] ; then
+			echo "Log: (chroot-systemd): enable: regenerate_ssh_host_keys.service"
 			systemctl enable regenerate_ssh_host_keys.service || true
 		fi
 
 		if [ "x${rfs_disable_grow_partition}" = "x" ] ; then
 			if [ -f /lib/systemd/system/grow_partition.service ] || [ -f /usr/lib/systemd/system/grow_partition.service ] ; then
+				echo "Log: (chroot-systemd): enable: grow_partition.service"
 				systemctl enable grow_partition.service || true
 			fi
 		fi
 
 		if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bb_install_modules.service ] || [ -f /usr/lib/systemd/system/bb_install_modules.service ] ; then
+				echo "Log: (chroot-systemd): enable: bb_install_modules.service"
 				systemctl enable bb_install_modules.service || true
 			fi
 		fi
@@ -1418,6 +1445,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			if [ -f /lib/systemd/system/nodered.service ] || [ -f /usr/lib/systemd/system/nodered.service ] ; then
 				#Don't just enable on the old socket version...
 				if [ ! -f /lib/systemd/system/nodered.socket ] ; then
+					echo "Log: (chroot-systemd): enable: nodered.service"
 					systemctl enable nodered.service || true
 				fi
 			fi
@@ -1425,6 +1453,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ "x${rfs_enable_edgeai}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bb-start-vision-apps-eaik-8-2.service ] || [ -f /usr/lib/systemd/system/bb-start-vision-apps-eaik-8-2.service ] ; then
+				echo "Log: (chroot-systemd): enable: bb-start-vision-apps-eaik-8-2.service"
 				systemctl enable bb-start-vision-apps-eaik-8-2.service || true
 			fi
 		fi
@@ -1439,6 +1468,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				cp -v /opt/bb-code-server/settings.json /home/${rfs_username}/.local/share/code-server/User/ || true
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
+				echo "Log: (chroot-systemd): enable: code-server"
 				systemctl enable code-server@${rfs_username} || true
 			else
 				#As long as ^ code-server@.service is used, upgrade will now work, but for prior builds they will fail
@@ -1446,28 +1476,34 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		else
 			if [ -f /lib/systemd/system/dphys-swapfile.service ] || [ -f /usr/lib/systemd/system/dphys-swapfile.service ] ; then
+				echo "Log: (chroot-systemd): disable: dphys-swapfile.service"
 				systemctl disable dphys-swapfile.service || true
 			fi
 		fi
 
 		if [ -f /lib/systemd/system/bb-symlinks.service ] || [ -f /usr/lib/systemd/system/bb-symlinks.service ] ; then
+			echo "Log: (chroot-systemd): enable: bb-symlinks.service"
 			systemctl enable bb-symlinks.service || true
 		fi
 
 		if [ -f /lib/systemd/system/beagle-camera-setup.service ] || [ -f /usr/lib/systemd/system/beagle-camera-setup.service ] ; then
+			echo "Log: (chroot-systemd): enable: beagle-camera-setup.service"
 			systemctl enable beagle-camera-setup.service || true
 		fi
 
 		#EW 2022 demo...
 		if [ -f /lib/systemd/system/ti-ew-2022.service ] || [ -f /usr/lib/systemd/system/ti-ew-2022.service ] ; then
+			echo "Log: (chroot-systemd): enable: ti-ew-2022.service"
 			systemctl enable ti-ew-2022.service || true
 		fi
 
 		if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+			echo "Log: (chroot-systemd): enable: bbbio-set-sysconf.service"
 			systemctl enable bbbio-set-sysconf.service || true
 		fi
 
 		if [ -f /usr/lib/systemd/system/plymouth-quit-wait.service ] ; then
+			echo "Log: (chroot-systemd): disable: plymouth-quit-wait.service"
 			systemctl disable plymouth-quit-wait.service || true
 		fi
 	}
