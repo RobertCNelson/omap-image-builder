@@ -1263,6 +1263,16 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "Log: (chroot-systemd): disable: connman-wait-online.service"
 				systemctl disable connman-wait-online.service || true
 			fi
+
+			if [ -f /lib/systemd/system/systemd-networkd.service ] || [ -f /usr/lib/systemd/system/systemd-networkd.service ] ; then
+				echo "Log: (chroot-systemd): disable: systemd-networkd.service"
+				systemctl disable systemd-networkd.service || true
+			fi
+
+			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
+				echo "Log: (chroot-systemd): disable: systemd-resolved.service"
+				systemctl disable systemd-resolved.service || true
+			fi
 		fi
 
 		#We manually start dnsmasq, usb0/SoftAp0 are not available till late in boot...
@@ -1300,22 +1310,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "Log: (chroot-systemd): disable: apt-daily-upgrade.service"
 				systemctl disable apt-daily-upgrade.service || true
 				systemctl disable apt-daily-upgrade.timer || true
-			fi
-		fi
-
-		if [ -f /usr/bin/connmanctl ] ; then
-			#We use connman...
-			if [ -f /lib/systemd/system/systemd-networkd.service ] || [ -f /usr/lib/systemd/system/systemd-networkd.service ] ; then
-				echo "Log: (chroot-systemd): disable: systemd-networkd.service"
-				systemctl disable systemd-networkd.service || true
-			fi
-		fi
-
-		if [ -f /usr/bin/connmanctl ] ; then
-			#We use dnsmasq & connman...
-			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
-				echo "Log: (chroot-systemd): disable: systemd-resolved.service"
-				systemctl disable systemd-resolved.service || true
 			fi
 		fi
 
