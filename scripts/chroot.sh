@@ -1375,15 +1375,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
-		#Kill man-db
-		#debian@beaglebone:~$ sudo systemd-analyze blame | grep man-db.service
-		#    4min 10.587s man-db.service
-		if [ -f /lib/systemd/system/man-db.service ] || [ -f /usr/lib/systemd/system/man-db.service ] ; then
-			echo "Log: (chroot-systemd): disable: man-db.service"
-			systemctl disable man-db.service || true
-			systemctl disable man-db.timer || true
-		fi
-
 		#Anyone who needs this can enable it...
 		if [ -f /lib/systemd/system/pppd-dns.service ] || [ -f /usr/lib/systemd/system/pppd-dns.service ] ; then
 			echo "Log: (chroot-systemd): disable: pppd-dns.service"
