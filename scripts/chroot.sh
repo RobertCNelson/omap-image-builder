@@ -1293,26 +1293,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl disable ureadahead.service || true
 		fi
 
-		if [ ! -f /usr/bin/unattended-upgrade ] ; then
-			#No guarantee we will have an active network connection...
-			#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily.service
-			#     9.445s apt-daily.services
-			if [ -f /lib/systemd/system/apt-daily.service ] || [ -f /usr/lib/systemd/system/apt-daily.service ] ; then
-				echo "Log: (chroot-systemd): disable: apt-daily.service"
-				systemctl disable apt-daily.service || true
-				systemctl disable apt-daily.timer || true
-			fi
-
-			#No guarantee we will have an active network connection...
-			#debian@beaglebone:~$ sudo systemd-analyze blame | grep apt-daily-upgrade.service
-			#     10.300s apt-daily-upgrade.service
-			if [ -f /lib/systemd/system/apt-daily-upgrade.service ] || [ -f /usr/lib/systemd/system/apt-daily-upgrade.service ] ; then
-				echo "Log: (chroot-systemd): disable: apt-daily-upgrade.service"
-				systemctl disable apt-daily-upgrade.service || true
-				systemctl disable apt-daily-upgrade.timer || true
-			fi
-		fi
-
 		if [ ! "x${rfs_use_systemdnetworkd}" = "x" ] ; then
 			if [ -f /etc/bbb.io/templates/eth0-DHCP.network ] ; then
 				cp -v /etc/bbb.io/templates/eth0-DHCP.network /etc/systemd/network/eth0.network
