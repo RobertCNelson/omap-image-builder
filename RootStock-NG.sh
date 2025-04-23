@@ -234,7 +234,7 @@ run_roostock_ng () {
 	echo 'Log: RootStock-NG.sh complete'
 }
 
-git_trees
+#git_trees
 
 cd ${DIR}/
 
