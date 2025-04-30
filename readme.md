@@ -20,6 +20,7 @@ BeagleBoard.org or Element14 BeagleBone Black:
        B: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 30 42 |.U3.A335BNLT000B|]
        C: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 30 43 |.U3.A335BNLT000C|]
        C: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 43 30 |.U3.A335BNLT00C0|]
+      D0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 43 30 |.U3.A335BNLT00D0|]
 
 BeagleBoard.org BeagleBone Blue:
 
@@ -53,6 +54,7 @@ Arrow BeagleBone Black Industrial:
 BeagleBone Black Industrial:
 
       A0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 45 49 41 30 |.U3.A335BNLTEIA0|]
+      D0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 43 30 |.U3.A335BNLTEID0|]
 
 SanCloud BeagleBone Enhanced:
 
