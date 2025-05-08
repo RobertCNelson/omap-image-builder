@@ -769,16 +769,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		apt-get update || true
 		echo "---------------------------------"
 
-		if [ "x${chroot_tasksel}" = "xenable" ] ; then
-			echo "---------------------------------"
-			LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
-			echo "---------------------------------"
-			#apt-get install \$(tasksel --task-packages standard)
-			#apt-get install -yq `LC_ALL=C tasksel --task-packages standard`
-			LC_ALL=C tasksel --task-packages standard | sort
-			echo "---------------------------------"
-			LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
-			echo "---------------------------------"
+		if [ -f /usr/bin/tasksel ] ; then
+			if [ "x${chroot_tasksel}" = "xenable" ] ; then
+				echo "---------------------------------"
+				LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
+				echo "---------------------------------"
+				tasksel --task-packages standard | sort
+				echo "---------------------------------"
+			fi
 		fi
 
 		echo "debug: apt-get upgrade -y--------"
