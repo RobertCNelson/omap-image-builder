@@ -726,7 +726,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "---------------------------------"
 		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 		echo "---------------------------------"
-		LC_ALL=C tasksel install standard
+		LC_ALL=C tasksel -t install standard
 		echo "---------------------------------"
 		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 		echo "---------------------------------"
