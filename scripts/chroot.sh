@@ -760,7 +760,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "---------------------------------"
 
 		if [ -f /usr/bin/tasksel ] ; then
-			if [ "x${chroot_tasksel_standard}" = "xenable" ] ; then
+			if [ "x${tasksel_standard}" = "xenable" ] ; then
 				echo "---------------------------------"
 				LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 				echo "---------------------------------"
@@ -769,6 +769,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "---------------------------------"
 				LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 				echo "---------------------------------"
+				exit 2
 			fi
 		fi
 
