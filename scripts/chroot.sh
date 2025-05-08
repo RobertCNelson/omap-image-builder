@@ -139,6 +139,16 @@ check_defines () {
 
 	if [ ! "x${deb_include}" = "x" ] ; then
 		include=$(echo ${deb_include} | sed 's/,/ /g' | sed 's/\t/,/g')
+
+		if [ "${tasksel_lang}" ] ; then
+			if [ "${tasksel_ssh_server}" ] ; then
+				task_include="tasksel,${tasksel_ssh_server},${tasksel_lang},${include}"
+			else
+				task_include="tasksel,${tasksel_lang},${include}"
+			fi
+			include="${task_include}"
+		fi
+
 		deb_additional_pkgs="${deb_additional_pkgs} ${include}"
 	fi
 
@@ -726,7 +736,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "---------------------------------"
 		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 		echo "---------------------------------"
-		LC_ALL=C tasksel -t install standard
+		echo "tasksel install standard"
+		LC_ALL=C apt-get -q -y -o APT::Install-Recommends=true -o APT::Get::AutomaticRemove=true -o Acquire::Retries=3 install
 		echo "---------------------------------"
 		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 		echo "---------------------------------"
