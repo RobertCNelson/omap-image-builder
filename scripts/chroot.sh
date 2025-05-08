@@ -762,14 +762,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ -f /usr/bin/tasksel ] ; then
 			if [ "x${tasksel_standard}" = "xenable" ] ; then
 				echo "---------------------------------"
-				echo "Log: (chroot): [apt-get install -y \$(tasksel --task-packages standard | sort)]"
+				echo "Log: (chroot): [tasksel --task-packages standard ]"
 				echo "---------------------------------"
-				#needs: apt-listchanges and wtmpdb to work...
+				### needs: apt-listchanges and wtmpdb to work...
 				apt-get install -y \$(tasksel --task-packages standard | sort)
+				#echo "---------------------------------"
+				#LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 				echo "---------------------------------"
-				LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
-				echo "---------------------------------"
-				exit 2
 			fi
 		fi
 
