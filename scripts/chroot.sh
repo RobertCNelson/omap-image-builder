@@ -723,6 +723,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkg_updates () {
+		echo "---------------------------------"
+		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
+		echo "---------------------------------"
+
 		echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume
 		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
 			apt-key add /tmp/repos.azulsystems.com.pubkey.asc
