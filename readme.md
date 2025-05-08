@@ -54,7 +54,7 @@ Arrow BeagleBone Black Industrial:
 BeagleBone Black Industrial:
 
       A0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 45 49 41 30 |.U3.A335BNLTEIA0|]
-      D0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 30 30 44 30 |.U3.A335BNLTEID0|]
+      D0: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 45 49 44 30 |.U3.A335BNLTEID0|]
 
 SanCloud BeagleBone Enhanced:
 
