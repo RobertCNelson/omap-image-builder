@@ -139,16 +139,6 @@ check_defines () {
 
 	if [ ! "x${deb_include}" = "x" ] ; then
 		include=$(echo ${deb_include} | sed 's/,/ /g' | sed 's/\t/,/g')
-
-		if [ "${tasksel_lang}" ] ; then
-			if [ "${tasksel_task}" ] ; then
-				task_include="tasksel,${tasksel_task},${tasksel_lang},${include}"
-			else
-				task_include="tasksel,${tasksel_lang},${include}"
-			fi
-			include="${task_include}"
-		fi
-
 		deb_additional_pkgs="${deb_additional_pkgs} ${include}"
 	fi
 
