@@ -20,9 +20,9 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat
-	mv ./*.img ../
+	#echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat"
+	#sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat
+	#mv ./*.img ../
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} am335x-swap-${export_filename} --dtb beaglebone-fat-swap
@@ -32,12 +32,12 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
-	device="am335x"
-	echo "Compressing...${device}-${export_filename}-${filesize}.img"
-	xz -T0 -z ${device}-${export_filename}-${filesize}.img
-	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#device="am335x"
+	#echo "Compressing...${device}-${export_filename}-${filesize}.img"
+	#xz -T0 -z ${device}-${export_filename}-${filesize}.img
+	#sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	#sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	#sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	device="am335x-swap"
 	echo "Compressing...${device}-${export_filename}-${filesize}.img"
