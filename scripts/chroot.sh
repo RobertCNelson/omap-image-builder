@@ -774,7 +774,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 			echo "---------------------------------"
 			#apt-get install -yq `LC_ALL=C tasksel --task-packages standard`
-			LC_ALL=C tasksel --task-packages standard > /tmp/task.log
+			LC_ALL=C tasksel --task-packages standard >/tmp/task.log 2>&1
 			cat /tmp/task.log
 			echo "---------------------------------"
 			LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
