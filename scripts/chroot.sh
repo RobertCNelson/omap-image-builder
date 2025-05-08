@@ -141,8 +141,8 @@ check_defines () {
 		include=$(echo ${deb_include} | sed 's/,/ /g' | sed 's/\t/,/g')
 
 		if [ "${tasksel_lang}" ] ; then
-			if [ "${tasksel_ssh_server}" ] ; then
-				task_include="tasksel,${tasksel_ssh_server},${tasksel_lang},${include}"
+			if [ "${tasksel_task}" ] ; then
+				task_include="tasksel,${tasksel_task},${tasksel_lang},${include}"
 			else
 				task_include="tasksel,${tasksel_lang},${include}"
 			fi
@@ -733,16 +733,9 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkg_updates () {
-		echo "---------------------------------"
-		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
-		echo "---------------------------------"
-		echo "tasksel install standard"
-		LC_ALL=C apt-get -q -y -o APT::Install-Recommends=true -o APT::Get::AutomaticRemove=true -o Acquire::Retries=3 install
-		echo "---------------------------------"
-		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
-		echo "---------------------------------"
-
-		echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume
+		if [ -f /etc/initramfs-tools/conf.d/resume ] ; then
+			echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume
+		fi
 		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
 			apt-key add /tmp/repos.azulsystems.com.pubkey.asc
 			rm -f /tmp/repos.azulsystems.com.pubkey.asc || true
@@ -774,6 +767,14 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		echo "debug: apt-get update------------"
 		apt-get update || true
+		echo "---------------------------------"
+
+		echo "---------------------------------"
+		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
+		echo "---------------------------------"
+		apt-get install -yq `LC_ALL=C tasksel --task-packages standard`
+		echo "---------------------------------"
+		LC_ALL=C dpkg -l | grep ^ii | awk '{print \$2}'
 		echo "---------------------------------"
 
 		echo "debug: apt-get upgrade -y--------"

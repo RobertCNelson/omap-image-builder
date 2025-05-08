@@ -42,8 +42,8 @@ check_defines () {
 		include=$(echo ${deb_include} | sed 's/ /,/g' | sed 's/\t/,/g')
 
 		if [ "${tasksel_lang}" ] ; then
-			if [ "${tasksel_ssh_server}" ] ; then
-				task_include="tasksel,${tasksel_ssh_server},${tasksel_lang},${include}"
+			if [ "${tasksel_task}" ] ; then
+				task_include="tasksel,${tasksel_task},${tasksel_lang},${include}"
 			else
 				task_include="tasksel,${tasksel_lang},${include}"
 			fi
