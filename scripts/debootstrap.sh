@@ -43,9 +43,10 @@ check_defines () {
 
 		if [ "${tasksel_lang}" ] ; then
 			if [ "${tasksel_task}" ] ; then
-				task_include="tasksel,apt-listchanges,wtmpdb,${tasksel_task},${tasksel_lang},${include}"
+				#Debian trixie: wtmpdb
+				task_include="tasksel,apt-listchanges,${tasksel_task},${tasksel_lang},${include}"
 			else
-				task_include="tasksel,apt-listchanges,wtmpdb,${tasksel_lang},${include}"
+				task_include="tasksel,apt-listchanges,${tasksel_lang},${include}"
 			fi
 			include="${task_include}"
 		fi
