@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-bookworm-base-v6.12-armhf-am335x
+config=bb.org-debian-bookworm-trixie-v6.12-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-12-bookworm-base-v6.12"
+rootfs="debian-armhf-13-trixie-base-v6.12"
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
