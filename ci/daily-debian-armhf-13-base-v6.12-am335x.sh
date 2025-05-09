@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-v6.12-armhf-am335x
+config=bb.org-debian-trixie-base-v6.12-armhf-am335x
 filesize=4gb
 rootfs="debian-armhf-13-base-v6.12"
 
