@@ -36,6 +36,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
+	cd ../
 else
 	echo "failure"
 	exit 2
@@ -75,6 +76,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
+	cd ../
 else
 	echo "failure"
 	exit 2
