@@ -144,12 +144,12 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.1-Beagle"
 	git_branch="v6.1.x-Beagle"
 	git_clone_branch
@@ -162,7 +162,7 @@ install_git_repos () {
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
 
-	git_repo="https://openbeagle.org/RobertCNelson/home-assistant.git"
+	git_repo="https://github.com/RobertCNelson/home-assistant.git"
 	git_target_dir="/opt/source/home-assistant"
 	git_clone
 	dpkg -i /opt/source/home-assistant/os-agent*.deb

@@ -151,22 +151,22 @@ install_git_repos () {
 		rm -rf /var/www/html/index.nginx-debian.html || true
 	fi
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.1-Beagle"
 	git_branch="v6.1.x-Beagle"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.12"
 	git_branch="v6.12.x"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.15"
 	git_branch="v6.15.x"
 	git_clone_branch

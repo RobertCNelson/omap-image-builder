@@ -212,27 +212,27 @@ install_git_repos () {
 		fi
 	fi
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-4.14-ti"
 	git_branch="v4.14.x-ti"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-4.19-ti"
 	git_branch="v4.19.x-ti-overlays"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-5.4-ti"
 	git_branch="v5.4.x-ti-overlays"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-5.10-ti"
 	git_branch="v5.10.x-ti-unified"
 	git_clone_branch
 
-	git_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.1-Beagle"
 	git_branch="v6.1.x-Beagle"
 	git_clone_branch
