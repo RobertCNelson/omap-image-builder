@@ -150,6 +150,10 @@ install_git_repos () {
 	git_repo="https://github.com/rm-hull/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
+
+	git_repo="https://github.com/beagleboard/vsx-examples.git"
+	git_target_dir="/opt/vsx-examples"
+	git_clone
 }
 
 other_source_links () {
