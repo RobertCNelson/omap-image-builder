@@ -7,14 +7,14 @@ filesize=10gb
 rootfs="debian-arm64-12-bookworm-xfce-mainline"
 
 compress_snapshot_image () {
-	json_file="${device}-${export_filename}-${filesize}.img.xz.json"
+	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "\"extract_size\": ${extract_size}," >> ${json_file}
+	echo "  extract_size: ${extract_size}" >> ${yml_file}
 	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
-	echo "\"extract_sha256\": \"${extract_sha256}\"," >> ${json_file}
+	echo "  extract_sha256: ${extract_sha256}" >> ${yml_file}
 
 	echo "Creating... ${device}-${export_filename}-${filesize}.bmap"
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
@@ -24,12 +24,12 @@ compress_snapshot_image () {
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
-	echo "\"image_download_size\": ${image_download_size}," >> ${json_file}
+	echo "  image_download_size: ${image_download_size}" >> ${yml_file}
 	image_download_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
-	echo "\"image_download_sha256\": \"${image_download_sha256}\"," >> ${json_file}
+	echo "  image_download_sha256: ${image_download_sha256}" >> ${yml_file}
 
-	echo "\"release_date\": \"${time}\"," >> ${json_file}
-	echo "\"init_format\": \"sysconf\"," >> ${json_file}
+	echo "  release_date: '${time}'" >> ${yml_file}
+	echo "  init_format: sysconf" >> ${yml_file}
 
 	sync
 
@@ -37,7 +37,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 }
 
 if [ -d ./deploy ] ; then
