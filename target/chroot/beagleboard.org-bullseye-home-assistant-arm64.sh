@@ -162,9 +162,14 @@ install_git_repos () {
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
 
-	git_repo="https://github.com/RobertCNelson/home-assistant.git"
-	git_target_dir="/opt/source/home-assistant"
-	git_clone
+	mkdir -p /opt/source/home-assistant/
+
+	#https://github.com/home-assistant/os-agent/releases
+	wget --directory-prefix=/opt/source/home-assistant/ https://github.com/home-assistant/os-agent/releases/download/1.5.1/os-agent_1.5.1_linux_aarch64.deb
+
+	#https://github.com/home-assistant/supervised-installer/releases
+	wget --directory-prefix=/opt/source/home-assistant/ https://github.com/home-assistant/supervised-installer/releases/download/1.4.3/homeassistant-supervised.deb
+
 	dpkg -i /opt/source/home-assistant/os-agent*.deb
 	debconf-set-selections <<<'homeassistant-supervised ha/machine-type select qemuarm-64'
 	dpkg -i /opt/source/home-assistant/homeassistant-supervised*.deb
