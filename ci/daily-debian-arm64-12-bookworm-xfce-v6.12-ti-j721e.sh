@@ -7,7 +7,7 @@ filesize=12gb
 rootfs="debian-arm64-12-bookworm-xfce-v6.12-ti"
 
 compress_snapshot_image () {
-	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml"
+	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
@@ -37,7 +37,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 }
 
 if [ -d ./deploy ] ; then
