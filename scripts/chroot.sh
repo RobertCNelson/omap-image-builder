@@ -1170,10 +1170,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				fi
 			fi
 
-			sed -i -e 's:#EXTRA_GROUPS:EXTRA_GROUPS:g' /etc/adduser.conf
-			sed -i -e 's:dialout:dialout gpio i2c:g' /etc/adduser.conf
-			sed -i -e 's:#ADD_EXTRA_GROUPS:ADD_EXTRA_GROUPS:g' /etc/adduser.conf
-
 			;;
 		Ubuntu)
 			passwd -l root || true
