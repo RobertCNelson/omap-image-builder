@@ -62,8 +62,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
 	mv ./*.img ../
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop"
+	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
 	mv ./*.img ../
 
 	cd ../

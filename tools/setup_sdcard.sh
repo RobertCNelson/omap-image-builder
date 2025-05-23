@@ -930,6 +930,11 @@ populate_rootfs () {
 					sed -i -e 's:label copy microSD to eMMC:label copy microSD to eMMC (default):g' ${wfile}
 					sed -i -e 's:default microSD (default):default copy microSD to eMMC (default):g' ${wfile}
 				fi
+				if [ "x${load_pb2_workshop}" = "xenable" ] ; then
+					sed -i -e 's:label microSD (default):label microSD:g' ${wfile}
+					sed -i -e 's:label techlab workshop:label techlab workshop (default):g' ${wfile}
+					sed -i -e 's:default microSD (default):default techlab workshop (default):g' ${wfile}
+				fi
 				echo "/boot/firmware/extlinux/extlinux.conf-"
 			else
 				echo "ERROR: not found [${extlinux_firmware_file}]"
@@ -1873,6 +1878,9 @@ while [ ! -z "$1" ] ; do
 	# enable bela overlay
 	--enable-load-bela-overlay)
 		load_bela_overlay="enable"
+		;;
+	--enable-load-pb2-workshop)
+		load_pb2_workshop="enable"
 		;;
 	--efi)
 		echo "[--efi] is obsolete, and has been removed..."
