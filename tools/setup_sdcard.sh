@@ -753,11 +753,6 @@ populate_boot () {
 				cp -v ./${bootloader_distro_sysfw} "${TEMPDIR}/disk/"
 			fi
 		fi
-		if [ ! "x${bootloader_distro_dir_sysfw}" = "x" ] ; then
-			if [ -d ./${bootloader_distro_dir_sysfw}/ ] ; then
-				cp -v ./${bootloader_distro_dir_sysfw}/* "${TEMPDIR}/disk/"
-			fi
-		fi
 	fi
 
 	if [ ${has_uenvtxt} ] ; then
