@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-bookworm-base-v6.12-armhf-am335x
+config=bb.org-debian-trixie-base-vscode-v6.12-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-12-bookworm-base-v6.12"
+rootfs="debian-armhf-13-base-v6.12"
 
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
@@ -54,13 +54,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-vscode-${export_filename} --dtb beaglebone-fat-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-vscode-${export_filename} --dtb beaglebone-fat-swap
 	mv ./*.img ../
 
 	cd ../
 
-	device="am335x" ; compress_snapshot_image
+	device="am335x-vscode" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
