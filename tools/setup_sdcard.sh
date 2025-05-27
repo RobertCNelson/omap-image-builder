@@ -1359,7 +1359,7 @@ populate_rootfs () {
 		fi
 		if [ ! "x${flasher_script}" = "x" ] ; then
 			if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/${flasher_script} ] ; then
-				cp -v ${TEMPDIR}/disk/etc/beagle-flasher/{flasher_script} ${TEMPDIR}/disk/etc/default/beagle-flasher
+				cp -v ${TEMPDIR}/disk/etc/beagle-flasher/${flasher_script} ${TEMPDIR}/disk/etc/default/beagle-flasher
 			fi
 		else
 			if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ] ; then
