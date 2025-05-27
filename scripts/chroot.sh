@@ -723,7 +723,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	}
 
 	install_pkg_updates () {
-		if [ -f /etc/initramfs-tools/conf.d/resume ] ; then
+		if [ -d /etc/initramfs-tools/conf.d/ ] ; then
 			echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume
 		fi
 		if [ -f /tmp/repos.azulsystems.com.pubkey.asc ] ; then
