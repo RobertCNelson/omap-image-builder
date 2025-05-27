@@ -1358,8 +1358,14 @@ populate_rootfs () {
 		if [ -f ${TEMPDIR}/disk/etc/default/generic-sys-mods ] ; then
 			sed -i -e 's:generic:am335x:g' ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
-		if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ] ; then
-			cp -v ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+		if [ ! "x${flasher_script}" = "x" ] ; then
+			if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/${flasher_script} ] ; then
+				cp -v ${TEMPDIR}/disk/etc/beagle-flasher/{flasher_script} ${TEMPDIR}/disk/etc/default/beagle-flasher
+			fi
+		else
+			if [ -f ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ] ; then
+				cp -v ${TEMPDIR}/disk/etc/beagle-flasher/beaglebone-black-microsd-to-emmc ${TEMPDIR}/disk/etc/default/beagle-flasher
+			fi
 		fi
 	fi
 
