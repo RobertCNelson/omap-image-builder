@@ -353,7 +353,7 @@ drive_error_ro () {
 }
 
 sfdisk_partition_layout () {
-	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
+	sfdisk_options="--force --wipe-partitions always"
 	partition_one_start_mb="${conf_boot_startmb}"
 	partition_one_size_mb="${conf_boot_endmb}"
 	partition_two_start_mb=$(($partition_one_start_mb + $partition_one_size_mb))
@@ -390,7 +390,7 @@ sfdisk_partition_layout () {
 }
 
 sfdisk_single_partition_layout () {
-	sfdisk_options="--force --wipe-partitions always ${sfdisk_gpt}"
+	sfdisk_options="--force --wipe-partitions always"
 	partition_one_start_mb="${conf_boot_startmb}"
 
 	echo "sfdisk: [$(LC_ALL=C sfdisk --version)]"
@@ -547,7 +547,6 @@ format_rootfs_partition () {
 
 create_partitions () {
 	unset bootloader_installed
-	unset sfdisk_gpt
 
 	if [ "x${swap_enable}" = "xenable" ] ; then
 		media_boot_partition=1
