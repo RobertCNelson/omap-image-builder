@@ -54,13 +54,13 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-vscode-${export_filename} --dtb beaglebone-fat-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-vscode-${export_filename} --dtb beaglebone-fat-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
 	mv ./*.img ../
 
 	cd ../
 
-	device="am335x-vscode" ; compress_snapshot_image
+	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
