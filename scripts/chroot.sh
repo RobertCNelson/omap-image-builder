@@ -348,13 +348,10 @@ echo ""  >> /tmp/01_noflash_kernel
 sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 
-sudo mkdir -p "${tempdir}/usr/share/flash-kernel/db/" || true
-sudo cp -v "${OIB_DIR}/target/other/rcn-ee.db" "${tempdir}/usr/share/flash-kernel/db/"
-
 if [ "x${host_arch}" != "xriscv64" ] ; then
 	case "${deb_distribution}" in
 	ubuntu)
-		echo "# neuter flash-kernel" > /tmp/01_ubuntu_big_firmware
+		echo "# neuter ubuntu big firmware" > /tmp/01_ubuntu_big_firmware
 		echo "path-exclude=/usr/lib/firmware/amdgpu/*" >> /tmp/01_ubuntu_big_firmware
 		echo "path-exclude=/usr/lib/firmware/dpaa2/*" >> /tmp/01_ubuntu_big_firmware
 		echo "path-exclude=/usr/lib/firmware/i915/*" >> /tmp/01_ubuntu_big_firmware
@@ -373,7 +370,6 @@ if [ "x${host_arch}" != "xriscv64" ] ; then
 
 		sudo mv /tmp/01_ubuntu_big_firmware "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
 		sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
-
 		;;
 	esac
 fi
