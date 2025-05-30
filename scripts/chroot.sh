@@ -572,7 +572,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	if [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
-		if [ "x${deb_codename}" = "xtrixie" ] || ; then
+		if [ "x${deb_codename}" = "xtrixie" ] ; then
 			echo "" >> ${wfile}
 			echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
@@ -588,7 +588,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			if [ "x${repo_rcnee_arch}" = "xriscv64" ] || [ "x${repo_rcnee_arch}" = "xarm64" ] ; then
 				echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
-				if [ "x${deb_codename}" = "xtrixie" ] || ; then
+				if [ "x${deb_codename}" = "xtrixie" ] ; then
 					echo "" >> ${wfile}
 					echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 					echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
@@ -596,7 +596,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			else
 				echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
 				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/${rcnee_url_directory_mirror}/ ${deb_codename} main" >> ${wfile}
-				if [ "x${deb_codename}" = "xtrixie" ] || ; then
+				if [ "x${deb_codename}" = "xtrixie" ] ; then
 					echo "" >> ${wfile}
 					echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 					echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://repos.rcn-ee.com/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
@@ -605,7 +605,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		else
 			echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
-			if [ "x${deb_codename}" = "xtrixie" ] || ; then
+			if [ "x${deb_codename}" = "xtrixie" ] ; then
 				echo "" >> ${wfile}
 				echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 				echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
