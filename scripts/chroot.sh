@@ -609,6 +609,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		fi
 	fi
 	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-archive-keyring.gpg" "${tempdir}${rcnee_keyring}"
+	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-2025-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 fi
 
 if [ -f /tmp/beagle.list ] ; then
