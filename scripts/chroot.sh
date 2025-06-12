@@ -1504,6 +1504,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot-systemd): disable: plymouth-quit-wait.service"
 			systemctl disable plymouth-quit-wait.service || true
 		fi
+
+		if [ -f /etc/systemd/system/sysinit.target.wants/apparmor.service ] ; then
+			echo "Log: (chroot-systemd): disable: apparmor.service"
+			systemctl disable apparmor.service || true
+		fi
 	}
 
 	#cat /chroot_script.sh
