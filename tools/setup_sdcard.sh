@@ -1420,9 +1420,13 @@ populate_rootfs () {
 				cp -v ${TEMPDIR}/disk/boot/${extlinux_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image
 			fi
 			if [ ! "x${extlinux_compressed_kernel}" = "x" ] ; then
-				echo "Compressed Kernel: [cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image]"
-				cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image
-				cp -v ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image.gz
+				if [ "x${extlinux_just_compressed_kernel}" = "xenable" ] ; then
+					cp -v ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image.gz
+				else
+					echo "Compressed Kernel: [cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image]"
+					cat ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} | gunzip -d > ${TEMPDIR}/disk/boot/firmware/Image
+					cp -v ${TEMPDIR}/disk/boot/${extlinux_compressed_kernel}-${select_kernel} ${TEMPDIR}/disk/boot/firmware/Image.gz
+				fi
 			fi
 			if [ ! "x${extlinux_dtb_vendor}" = "x" ] ; then
 				if [ ! "x${extlinux_dtb_fam}" = "x" ] ; then
