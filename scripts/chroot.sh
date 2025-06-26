@@ -1048,6 +1048,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				cat /etc/lightdm/lightdm.conf | grep autologin
 			fi
 		fi
+
+		if [ -f /etc/apt/apt.conf.d/50apt-file.conf ] ; then
+			echo "Log: (chroot): disable apt-file (Contents) download (slow on armhf/riscv64)"
+			mv /etc/apt/apt.conf.d/50apt-file.conf /etc/apt/apt.conf.d/50apt-file.conf.disabled
+		fi
 	}
 
 	set_locale () {
