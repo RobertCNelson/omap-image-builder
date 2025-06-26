@@ -1170,8 +1170,6 @@ populate_rootfs () {
 			cmdline="${cmdline} ${rng_core}"
 		fi
 
-		cmdline="${cmdline} quiet"
-
 		unset kms_video
 
 		drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
