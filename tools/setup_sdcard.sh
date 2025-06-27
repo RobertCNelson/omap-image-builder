@@ -761,6 +761,9 @@ populate_boot () {
 
 	if [ -f "${DIR}/ID.txt" ] ; then
 		cp -v "${DIR}/ID.txt" ${TEMPDIR}/disk/ID.txt
+		if [ -f "${DIR}/START.HTM" ] ; then
+			cp -v "${DIR}/START.HTM" ${TEMPDIR}/disk/START.HTM
+		fi
 	fi
 
 	cd ${TEMPDIR}/disk

@@ -1855,6 +1855,11 @@ fi
 if [ -f "${tempdir}/etc/dogtag" ] ; then
 	sudo cp "${tempdir}/etc/dogtag" "${DIR}/deploy/${export_filename}/ID.txt"
 	sudo chown root:root "${DIR}/deploy/${export_filename}/ID.txt"
+
+	if [ -f "${tempdir}/etc/bbb.io/templates/nginx/START.HTM" ] ; then
+		sudo cp "${tempdir}/etc/bbb.io/templates/nginx/START.HTM" "${DIR}/deploy/${export_filename}/START.HTM"
+		sudo chown root:root "${DIR}/deploy/${export_filename}/START.HTM"
+	fi
 fi
 
 report_size
