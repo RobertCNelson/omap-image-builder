@@ -573,6 +573,10 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		#	echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		#	echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		#fi
+	elif [ "x${repo_rcnee_arch}" = "xriscv64" ] && [ "x${deb_codename}" = "xtrixie" ] ; then
+		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
+		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-trixie-riscv64/ ${deb_codename} main" >> ${wfile}
+		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-trixie-riscv64/ ${deb_codename} main" >> ${wfile}
 	else
 		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
 			#use local mirror when building...
