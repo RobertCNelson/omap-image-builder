@@ -1329,13 +1329,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	startup_script
 
-	pkg="c9-core-installer"
-	dpkg_check
-
-	if [ "x\${pkg_is_not_installed}" = "x" ] ; then
-		apt-mark hold c9-core-installer || true
-	fi
-
 	if [ -f /lib/systemd/systemd ] ; then
 		systemd_tweaks
 	fi
@@ -1536,9 +1529,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 
 		rm -rf /root/.cache/pip
 
-		if [ -d /var/cache/c9-core-installer/ ] ; then
-			rm -rf /var/cache/c9-core-installer/ || true
-		fi
 		if [ -d /var/cache/ti-c6000-cgt-v8.0.x-installer/ ] ; then
 			rm -rf /var/cache/ti-c6000-cgt-v8.0.x-installer/ || true
 		fi
