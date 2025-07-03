@@ -425,7 +425,7 @@ echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfil
 
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
-stretch|buster)
+buster)
 	echo "" >> ${wfile}
 	echo "deb http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
@@ -444,11 +444,6 @@ esac
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
-stretch)
-	echo "" >> ${wfile}
-	echo "deb http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	;;
 buster|bullseye|bookworm|trixie)
 	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
@@ -1277,12 +1272,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			echo "Log: (chroot-systemd): enabling: systemd-timesyncd.service"
 			systemctl enable systemd-timesyncd.service || true
 
-			#systemd v232: (Debian Stretch): Legacy...
-			touch /var/lib/systemd/clock
-
-			#if systemd-timesync user exits, use that instead. (this user was removed in later systemd's)
-			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
-
 			#systemd v235+: (Debian Buster/Bullseye)
 			mkdir -p /var/lib/systemd/timesync/ || true
 			touch /var/lib/systemd/timesync/clock
@@ -1774,10 +1763,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 
 		#update time stamp before final cleanup...
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] ; then
-			#Legacy... Stretch???
-			touch /var/lib/systemd/clock
-			cat /etc/group | grep ^systemd-timesync && chown systemd-timesync:systemd-timesync /var/lib/systemd/clock || true
-
 			#systemd v235+: (Debian Buster/Bullseye)
 			mkdir -p /var/lib/systemd/timesync/ || true
 			touch /var/lib/systemd/timesync/clock
