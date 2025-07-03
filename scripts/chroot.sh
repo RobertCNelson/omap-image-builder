@@ -417,12 +417,6 @@ wfile="/tmp/sources.list"
 echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 
-if [ "x${enable_repo_debian_experimental}" = "xenable" ] ; then
-	echo "" >> ${wfile}
-	echo "deb http://${deb_mirror} experimental ${deb_components}" >> ${wfile}
-	echo "#deb-src http://${deb_mirror} experimental ${deb_components}" >> ${wfile}
-fi
-
 #Q) What should I use in sources.list for bullseye?
 #There is a change in the security repository compared to prior releases.
 #deb http://deb.debian.org/debian bullseye main
