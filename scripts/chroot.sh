@@ -531,18 +531,15 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	fi
 
 	if [ "x${deb_codename}" = "xtrixie" ] ; then
-		echo "" >> ${wfile}
 		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 	elif [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
-		echo "" >> ${wfile}
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 	else
 		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
 			#use local mirror when building...
-			echo "" >> ${wfile}
 			echo "#BeagleBoard.org Mirror on Cloudflare" >> ${wfile}
 			echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
