@@ -417,12 +417,6 @@ wfile="/tmp/sources.list"
 echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 
-if [ "x${enable_repo_debian_unreleased}" = "xenable" ] ; then
-	echo "" >> ${wfile}
-	echo "deb http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
-	echo "#deb-src http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
-fi
-
 if [ "x${enable_repo_debian_experimental}" = "xenable" ] ; then
 	echo "" >> ${wfile}
 	echo "deb http://${deb_mirror} experimental ${deb_components}" >> ${wfile}
