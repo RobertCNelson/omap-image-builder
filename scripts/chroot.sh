@@ -1398,13 +1398,6 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 	sudo sh -c "echo '' >> ${wfile}"
 fi
 
-if [ -n "${chroot_before_hook}" -a -r "${DIR}/${chroot_before_hook}" ] ; then
-	report_size
-	echo "Calling chroot_before_hook script: ${chroot_before_hook}"
-	. "${DIR}/${chroot_before_hook}"
-	chroot_before_hook=""
-fi
-
 if [ -n "${chroot_script}" -a -r "${DIR}/target/chroot/${chroot_script}" ] ; then
 	report_size
 
