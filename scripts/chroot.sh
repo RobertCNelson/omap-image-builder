@@ -870,13 +870,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get install -yq ${repo_rcnee_pkg_list}
 		fi
 
-		if [ ! "x${repo_rcnee_chromium_special}" = "x" ] ; then
-			echo "Log: (chroot) Chromium Special:"
-			apt-cache madison chromium || true
-			apt-get -y --allow-downgrades install chromium=${repo_rcnee_chromium_special}* || true
-			apt-mark hold chromium || true
-		fi
-
 		if [ ! "x${repo_mozilla_package}" = "x" ] ; then
 			echo "Log: (chroot) Install Firefox .deb package for Debian-based distributions:"
 			echo "Package: *" > /etc/apt/preferences.d/mozilla
