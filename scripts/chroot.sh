@@ -416,24 +416,23 @@ sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 wfile="/tmp/sources.list"
 echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
-echo "" >> ${wfile}
 
 if [ "x${enable_repo_debian_unstable}" = "xenable" ] ; then
+	echo "" >> ${wfile}
 	echo "deb http://${deb_mirror} unstable ${deb_components}" >> ${wfile}
 	echo "#deb-src http://${deb_mirror} unstable ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 fi
 
 if [ "x${enable_repo_debian_unreleased}" = "xenable" ] ; then
+	echo "" >> ${wfile}
 	echo "deb http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
 	echo "#deb-src http://${deb_mirror} unreleased ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 fi
 
 if [ "x${enable_repo_debian_experimental}" = "xenable" ] ; then
+	echo "" >> ${wfile}
 	echo "deb http://${deb_mirror} experimental ${deb_components}" >> ${wfile}
 	echo "#deb-src http://${deb_mirror} experimental ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 fi
 
 #Q) What should I use in sources.list for bullseye?
@@ -444,99 +443,88 @@ fi
 
 #https://wiki.debian.org/LTS/Using
 case "${deb_codename}" in
-stretch)
+stretch|buster)
+	echo "" >> ${wfile}
 	echo "deb http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	;;
-buster)
-	echo "deb http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 bullseye|bookworm|trixie)
+	echo "" >> ${wfile}
 	echo "deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 forky|sid)
+	echo "" >> ${wfile}
 	echo "#deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "##deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	;;
-esac
-
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-security/
-case "${deb_codename}" in
-bionic|focal|jammy|noble)
-	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 esac
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
 stretch)
+	echo "" >> ${wfile}
 	echo "deb http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 buster|bullseye|bookworm|trixie)
+	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 forky|sid)
+	echo "" >> ${wfile}
 	echo "#deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "##deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
-	;;
-esac
-
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-updates/
-case "${deb_codename}" in
-bionic|focal|jammy|noble)
-	echo "deb http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "" >> ${wfile}
 	;;
 esac
 
 #https://wiki.debian.org/Backports
 if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
 	case "${deb_codename}" in
-	stretch)
-		echo "deb http://archive.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://archive.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
+	bullseye|bookworm|trixie)
 		echo "" >> ${wfile}
-		;;
-	buster|bullseye|bookworm|trixie)
 		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
 		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "" >> ${wfile}
 		;;
 	esac
 fi
 
+#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-security/
+case "${deb_codename}" in
+bionic|focal|jammy|noble)
+	echo "" >> ${wfile}
+	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
+	;;
+esac
+
+#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-updates/
+case "${deb_codename}" in
+bionic|focal|jammy|noble)
+	echo "" >> ${wfile}
+	echo "deb http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	;;
+esac
+
 if [ "x${repo_external}" = "xenable" ] ; then
+	echo "" >> ${wfile}
 	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
 	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
-	echo "" >> ${wfile}
 fi
 
 if [ "x${repo_flat}" = "xenable" ] ; then
-	echo "" >> ${wfile}
 	for component in "${repo_flat_components[@]}" ; do
+		echo "" >> ${wfile}
 		echo "deb ${repo_flat_server} ${component}" >> ${wfile}
 		echo "#deb-src ${repo_flat_server} ${component}" >> ${wfile}
-		echo "" >> ${wfile}
 	done
 fi
 
 if [ "x${repo_azulsystems}" = "xenable" ] ; then
-	echo "deb http://repos.azulsystems.com/${deb_distribution} stable main" >> ${wfile}
 	echo "" >> ${wfile}
+	echo "deb http://repos.azulsystems.com/${deb_distribution} stable main" >> ${wfile}
 	sudo cp -v "${OIB_DIR}/target/keyring/repos.azulsystems.com.pubkey.asc" "${tempdir}/tmp/repos.azulsystems.com.pubkey.asc"
 fi
 
@@ -566,6 +554,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 	fi
 
 	if [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
+		echo "" >> ${wfile}
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		#if [ "x${deb_codename}" = "xtrixie" ] ; then
@@ -574,16 +563,19 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		#	echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		#fi
 	elif [ "x${repo_rcnee_arch}" = "xarm64" ] && [ "x${deb_codename}" = "xtrixie" ] ; then
+		echo "" >> ${wfile}
 		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 	elif [ "x${repo_rcnee_arch}" = "xriscv64" ] && [ "x${deb_codename}" = "xtrixie" ] ; then
+		echo "" >> ${wfile}
 		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 	else
 		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
 			#use local mirror when building...
+			echo "" >> ${wfile}
 			echo "#BeagleBoard.org Mirror on Cloudflare" >> ${wfile}
 			echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
