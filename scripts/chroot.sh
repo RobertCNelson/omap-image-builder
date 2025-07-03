@@ -456,17 +456,6 @@ forky|sid)
 	;;
 esac
 
-#https://wiki.debian.org/Backports
-if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-	case "${deb_codename}" in
-	bullseye|bookworm|trixie)
-		echo "" >> ${wfile}
-		echo "deb http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		echo "#deb-src http://deb.debian.org/debian ${deb_codename}-backports ${deb_components}" >> ${wfile}
-		;;
-	esac
-fi
-
 #Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-security/
 case "${deb_codename}" in
 bionic|focal|jammy|noble)
@@ -847,13 +836,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#Install the user choosen list.
 			echo "Log: (chroot) Removing (deb_purge_pkgs): ${deb_purge_pkgs}"
 			apt-get purge -y ${deb_purge_pkgs}
-		fi
-
-		if [ "x${chroot_enable_debian_backports}" = "xenable" ] ; then
-			if [ ! "x${chroot_debian_backports_pkg_list}" = "x" ] ; then
-				echo "Log: (chroot) Installing (from backports): ${chroot_debian_backports_pkg_list}"
-				apt-get -y -t ${deb_codename}-backports install ${chroot_debian_backports_pkg_list}
-			fi
 		fi
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
