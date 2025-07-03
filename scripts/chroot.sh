@@ -469,7 +469,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] http://${repo_rcnee_mirror}/${rcnee_url_directory}/ ${deb_codename} main" >> ${wfile}
 		fi
 	fi
-	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-archive-keyring.gpg" "${tempdir}${rcnee_keyring}"
+	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/rcn-ee-archive-keyring.gpg"
 	sudo cp -v "${OIB_DIR}/target/keyring/rcn-ee-2025-archive-keyring.gpg" "${tempdir}/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 fi
 
