@@ -771,14 +771,33 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			cp -v /etc/resolv.conf /etc/resolv.conf.bak
 		fi
 
-		echo "---------------------------------"
-
-		echo "debug: cat /etc/apt/sources.list-"
-		cat /etc/apt/sources.list
-		if [ -f /etc/apt/sources.list.d/beagle.list ] ; then
-			cat /etc/apt/sources.list.d/beagle.list
+		if [ -f /etc/apt/sources.list ] ; then
+			echo "---------------------------------"
+			echo "debug: cat /etc/apt/sources.list"
+			cat /etc/apt/sources.list
+			echo "---------------------------------"
 		fi
-		echo "---------------------------------"
+
+		if [ -f /etc/apt/sources.list.d/beagle.list ] ; then
+			echo "---------------------------------"
+			echo "debug: cat /etc/apt/sources.list.d/beagle.list"
+			cat /etc/apt/sources.list.d/beagle.list
+			echo "---------------------------------"
+		fi
+
+		if [ -f /etc/apt/sources.list.d/debian.sources ] ; then
+			echo "---------------------------------"
+			echo "debug: cat /etc/apt/sources.list.d/debian.sources"
+			cat /etc/apt/sources.list.d/debian.sources
+			echo "---------------------------------"
+		fi
+
+		if [ -f /etc/apt/sources.list.d/beagle.sources ] ; then
+			echo "---------------------------------"
+			echo "debug: cat /etc/apt/sources.list.d/beagle.sources"
+			cat /etc/apt/sources.list.d/beagle.sources
+			echo "---------------------------------"
+		fi
 
 		if [ -f /etc/apt/apt.conf.d/50apt-file.conf ] ; then
 			echo "Log: (chroot): disable apt-file (Contents) download (slow on armhf/riscv64)"
