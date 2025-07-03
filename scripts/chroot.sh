@@ -1452,13 +1452,6 @@ fi
 mkdir -p "${DIR}/deploy/${export_filename}/" || true
 cp -v "${DIR}/.project" "${DIR}/deploy/${export_filename}/image-builder.project"
 
-if [ -n "${chroot_after_hook}" -a -r "${DIR}/${chroot_after_hook}" ] ; then
-	report_size
-	echo "Calling chroot_after_hook script: ${DIR}/${chroot_after_hook}"
-	. "${DIR}/${chroot_after_hook}"
-	chroot_after_hook=""
-fi
-
 cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	#!/bin/sh -e
 	export LC_ALL=C
