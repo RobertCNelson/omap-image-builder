@@ -902,16 +902,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	manual_deborphan () {
-		echo "Log: (chroot): manual_deborphan"
-		if [ ! "x${chroot_manual_deborphan_list}" = "x" ] ; then
-			echo "Log: (chroot): cleanup: [${chroot_manual_deborphan_list}]"
-			apt-get -y remove ${chroot_manual_deborphan_list} --purge
-			apt-get -y autoremove --purge
-			apt-get clean
-		fi
-	}
-
 	add_user () {
 		echo "Log: (chroot): add_user"
 		groupadd -r admin || true
@@ -1331,7 +1321,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_docker_ce
 	system_tweaks
 	set_locale
-	manual_deborphan
 	add_user
 	add_user_group
 
