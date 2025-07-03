@@ -16,5 +16,4 @@ rfs_password
 
 Image Setup:
 rfs_hostname
-rfs_startup_scripts
 rfs_startup_scripts_rcnee
