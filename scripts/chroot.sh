@@ -1032,26 +1032,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		esac
 
 		if [ -f /lib/systemd/system/generic-board-startup.service ] ; then
+			echo "Log: (chroot-systemd): enable: generic-board-startup.service"
 			systemctl enable generic-board-startup.service || true
-		fi
-
-		if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
-			mkdir -p /opt/scripts/ || true
-
-			if [ -f /usr/bin/git ] ; then
-				qemu_command="git clone ${rfs_opt_scripts} /opt/scripts/ --depth 1"
-				qemu_warning
-				git clone -v ${rfs_opt_scripts} /opt/scripts/ --depth 1
-				sync
-				if [ -f /opt/scripts/.git/config ] ; then
-					echo "/opt/scripts/ : ${rfs_opt_scripts}" >> /opt/source/list.txt
-					chown -R ${rfs_username}:${rfs_username} /opt/scripts/
-				fi
-				if [ -f /opt/scripts/boot/default/bb-boot ] ; then
-					cp -v /opt/scripts/boot/default/bb-boot /etc/default/
-				fi
-			fi
-
 		fi
 	}
 
@@ -1414,19 +1396,6 @@ if [ ! "x${rfs_ssh_banner}" = "x" ] || [ ! "x${rfs_ssh_user_pass}" = "x" ] ; the
 		fi
 	fi
 	sudo sh -c "echo '' >> ${wfile}"
-fi
-
-#usually a qemu failure...
-if [ ! "x${rfs_opt_scripts}" = "x" ] ; then
-	#we might not have read permissions:
-	if [ -r "${tempdir}/opt/scripts/" ] ; then
-		if [ ! -f "${tempdir}/opt/scripts/.git/config" ] ; then
-			echo "Log: ERROR: git clone of ${rfs_opt_scripts} failed.."
-			exit 1
-		fi
-	else
-		echo "Log: unable to test /opt/scripts/.git/config no read permissions, assuming git clone success"
-	fi
 fi
 
 if [ -n "${chroot_before_hook}" -a -r "${DIR}/${chroot_before_hook}" ] ; then
