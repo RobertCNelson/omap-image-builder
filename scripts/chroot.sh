@@ -840,16 +840,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "ICON_NAME=computer-embedded" > /etc/machine-info
 		echo "CHASSIS=embedded" >> /etc/machine-info
 
-		#https://github.com/RobertCNelson/omap-image-builder/issues/131
-		if [ -f /var/lib/connman/settings ] ; then
-			echo "Log: (chroot): /var/lib/connman/settings"
-			cat /var/lib/connman/settings
-			sed -i -e 's:OfflineMode=false:OfflineMode=false\nTimezoneUpdates=manual:g' /var/lib/connman/settings
-			sed -i -e 's:OfflineMode=false:OfflineMode=false\nTimeUpdates=manual:g' /var/lib/connman/settings
-			echo "Log: (chroot): Patched: /var/lib/connman/settings"
-			cat /var/lib/connman/settings
-		fi
-
 		if [ ! "x${rfs_xorg_config}" = "x" ] ; then
 			if [ -f /etc/bbb.io/templates/${rfs_xorg_config} ] ; then
 				cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf
@@ -1059,24 +1049,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			#Remove ntpdate
 			if [ -f /usr/sbin/ntpdate ] ; then
 				apt-get remove -y ntpdate --purge || true
-			fi
-		fi
-
-		if [ -f /usr/bin/connmanctl ] ; then
-			#kill systemd/connman-wait-online.service, as it delays serial console upto 2 minutes...
-			if [ -f /etc/systemd/system/network-online.target.wants/connman-wait-online.service ] ; then
-				echo "Log: (chroot-systemd): disable: connman-wait-online.service"
-				systemctl disable connman-wait-online.service || true
-			fi
-
-			if [ -f /lib/systemd/system/systemd-networkd.service ] || [ -f /usr/lib/systemd/system/systemd-networkd.service ] ; then
-				echo "Log: (chroot-systemd): disable: systemd-networkd.service"
-				systemctl disable systemd-networkd.service || true
-			fi
-
-			if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
-				echo "Log: (chroot-systemd): disable: systemd-resolved.service"
-				systemctl disable systemd-resolved.service || true
 			fi
 		fi
 
@@ -1506,12 +1478,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	}
 
 	cleanup
-
-	if [ -f /usr/bin/connmanctl ] ; then
-		rm -rf /etc/resolv.conf.bak || true
-		rm -rf /etc/resolv.conf || true
-		ln -s /run/connman/resolv.conf /etc/resolv.conf
-	fi
 
 	if [ -f /lib/systemd/system/systemd-resolved.service ] || [ -f /usr/lib/systemd/system/systemd-resolved.service ] ; then
 		echo "Log: systemd-resolved creating /etc/resolv.conf symlink"
