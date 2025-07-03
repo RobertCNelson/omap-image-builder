@@ -155,10 +155,6 @@ check_defines () {
 		fi
 	fi
 
-	if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
-		deb_console_application_pkgs="$(echo ${deb_console_application_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-	fi
-
 	if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
 		deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
@@ -786,14 +782,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			echo "Log: (chroot): [apt-get install -yq unattended-upgrades]"
 			apt-get install -yq unattended-upgrades
-		fi
-
-		if [ ! "x${deb_console_application_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing (deb_console_application_pkgs): ${deb_console_application_pkgs}"
-			apt-get update || true
-			echo "Log: (chroot): [apt-get install -yq ${deb_console_application_pkgs}]"
-			apt-get install -yq ${deb_console_application_pkgs}
 		fi
 
 		if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
