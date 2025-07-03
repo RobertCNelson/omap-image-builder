@@ -1346,15 +1346,6 @@ __EOF__
 
 sudo mv "${DIR}/chroot_script.sh" "${tempdir}/chroot_script.sh"
 
-if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_script}" ] ; then
-	report_size
-	echo "Calling early_chroot_script script: ${early_chroot_script}"
-	sudo cp -v "${DIR}/.project" "${tempdir}/etc/oib.project"
-	sudo /bin/bash -e "${DIR}/target/chroot/${early_chroot_script}" "${tempdir}"
-	early_chroot_script=""
-	sudo rm -f "${tempdir}/etc/oib.project" || true
-fi
-
 chroot_mount
 sudo chroot "${tempdir}" /bin/bash -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/bash -e chroot_script.sh]"
