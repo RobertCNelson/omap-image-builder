@@ -780,6 +780,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 		echo "---------------------------------"
 
+		if [ -f /etc/apt/apt.conf.d/50apt-file.conf ] ; then
+			echo "Log: (chroot): disable apt-file (Contents) download (slow on armhf/riscv64)"
+			mv /etc/apt/apt.conf.d/50apt-file.conf /etc/apt/apt.conf.d/50apt-file.conf.disabled
+		fi
+
 		echo "debug: apt-get update------------"
 		apt-get update || true
 		echo "---------------------------------"
@@ -1055,11 +1060,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				sed -i -e 's:#autologin-session=:autologin-session='$rfs_default_desktop':g' /etc/lightdm/lightdm.conf
 				cat /etc/lightdm/lightdm.conf | grep autologin
 			fi
-		fi
-
-		if [ -f /etc/apt/apt.conf.d/50apt-file.conf ] ; then
-			echo "Log: (chroot): disable apt-file (Contents) download (slow on armhf/riscv64)"
-			mv /etc/apt/apt.conf.d/50apt-file.conf /etc/apt/apt.conf.d/50apt-file.conf.disabled
 		fi
 	}
 
