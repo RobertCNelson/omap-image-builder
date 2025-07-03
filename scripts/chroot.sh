@@ -1544,31 +1544,25 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp "${DIR}"/tools/hwpack/*.conf "${DIR}/deploy/${export_filename}/hwpack/"
 fi
 
-if [ "x${chroot_directory}" = "xenable" ]; then
-	echo "Log: moving rootfs to directory: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}]"
-	sudo mv -v "${tempdir}" "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
-	sudo du -h --max-depth=0 "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}"
-else
-	cd "${tempdir}" || true
-	if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
-		echo "Copying: sysconf.txt"
-		cp -v ./etc/bbb.io/templates/sysconf.txt "${DIR}/deploy/${export_filename}/sysconf.txt"
-	fi
-	if [ -d ./opt/u-boot/ ] ; then
-		cd ./opt/u-boot/ || true
-		echo "Copying: packaged version of U-Boot"
-		mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
-		cp -r ./* "${DIR}/deploy/${export_filename}/u-boot"
-		tree "${DIR}/deploy/${export_filename}/u-boot"
-	fi
-	tree "${DIR}/deploy/${export_filename}/"
-	cd "${tempdir}" || true
-	echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
-	sudo LANG=C tar --numeric-owner --acls --xattrs -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
-	cd "${DIR}/" || true
-	ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
-	sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
+cd "${tempdir}" || true
+if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
+	echo "Copying: sysconf.txt"
+	cp -v ./etc/bbb.io/templates/sysconf.txt "${DIR}/deploy/${export_filename}/sysconf.txt"
 fi
+if [ -d ./opt/u-boot/ ] ; then
+	cd ./opt/u-boot/ || true
+	echo "Copying: packaged version of U-Boot"
+	mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
+	cp -r ./* "${DIR}/deploy/${export_filename}/u-boot"
+	tree "${DIR}/deploy/${export_filename}/u-boot"
+fi
+tree "${DIR}/deploy/${export_filename}/"
+cd "${tempdir}" || true
+echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
+sudo LANG=C tar --numeric-owner --acls --xattrs -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
+cd "${DIR}/" || true
+ls -lh "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar"
+sudo chown -R ${USER}:${USER} "${DIR}/deploy/${export_filename}/"
 
 echo "Log: USER:${USER}"
 
