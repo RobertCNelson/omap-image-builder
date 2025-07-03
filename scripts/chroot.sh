@@ -902,23 +902,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	run_deborphan () {
-		echo "Log: (chroot): deborphan is not reliable, run manual and add pkg list to: [chroot_manual_deborphan_list]"
-		apt-get install -yq deborphan
-
-		# Prevent deborphan from removing explicitly required packages
-		deborphan -A ${deb_additional_pkgs} ${repo_external_pkg_list} ${deb_include}
-
-		deborphan | xargs apt-get -y remove --purge
-
-		# Purge keep file
-		deborphan -Z
-
-		#FIXME, only tested on jessie...
-		apt-get -y remove deborphan dialog gettext-base libasprintf0c2 --purge
-		apt-get clean
-	}
-
 	manual_deborphan () {
 		echo "Log: (chroot): manual_deborphan"
 		if [ ! "x${chroot_manual_deborphan_list}" = "x" ] ; then
@@ -1348,9 +1331,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_docker_ce
 	system_tweaks
 	set_locale
-	if [ "x${chroot_not_reliable_deborphan}" = "xenable" ] ; then
-		run_deborphan
-	fi
 	manual_deborphan
 	add_user
 	add_user_group
