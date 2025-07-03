@@ -163,10 +163,6 @@ check_defines () {
 		deb_desktop_common_pkgs="$(echo ${deb_desktop_common_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
 
-	if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
-		deb_desktop_pkgs="$(echo ${deb_desktop_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
-	fi
-
 	if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
 		deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
@@ -810,14 +806,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get update || true
 			echo "Log: (chroot): [apt-get install -yq ${deb_desktop_prerequisite_pkgs}]"
 			apt-get install -yq ${deb_desktop_prerequisite_pkgs}
-		fi
-
-		if [ ! "x${deb_desktop_pkgs}" = "x" ] ; then
-			#Install the user choosen list.
-			echo "Log: (chroot) Installing (deb_desktop_pkgs): ${deb_desktop_pkgs}"
-			apt-get update || true
-			echo "Log: (chroot): [apt-get install -yq ${deb_desktop_pkgs}]"
-			apt-get install -yq ${deb_desktop_pkgs}
 		fi
 
 		if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
