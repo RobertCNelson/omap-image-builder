@@ -146,13 +146,6 @@ check_defines () {
 		if [ ! "x${repo_rcnee_pkg_list}" = "x" ] ; then
 			repo_rcnee_pkg_list=$(echo ${repo_rcnee_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
 		fi
-
-		if [ "x${repo_rcnee_sgx}" = "xenable" ] ; then
-			if [ ! "x${repo_rcnee_sgx_pkg_list}" = "x" ] ; then
-				include=$(echo ${repo_rcnee_sgx_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
-				repo_rcnee_pkg_list="${repo_rcnee_pkg_list} ${include}"
-			fi
-		fi
 	fi
 
 	if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
