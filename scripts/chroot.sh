@@ -275,51 +275,6 @@ sudo chroot "${tempdir}" debootstrap/debootstrap --second-stage
 echo "Log: Complete: [sudo chroot ${tempdir} debootstrap/debootstrap --second-stage]"
 report_size
 
-if [ "x${chroot_very_small_image}" = "xenable" ] ; then
-	#so debootstrap just extracts the *.deb's, so lets clean this up hackish now,
-	#but then allow dpkg to delete these extra files when installed later..
-	sudo rm -rf "${tempdir}"/usr/share/locale/* || true
-	sudo rm -rf "${tempdir}"/usr/share/man/* || true
-	sudo rm -rf "${tempdir}"/usr/share/doc/* || true
-
-	#dpkg 1.15.8++, No Docs...
-	sudo mkdir -p "${tempdir}/etc/dpkg/dpkg.cfg.d/" || true
-	echo "# Delete locales" > /tmp/01_nodoc
-	echo "path-exclude=/usr/share/locale/*" >> /tmp/01_nodoc
-	echo ""  >> /tmp/01_nodoc
-
-	echo "# Delete man pages" >> /tmp/01_nodoc
-	echo "path-exclude=/usr/share/man/*" >> /tmp/01_nodoc
-	echo "" >> /tmp/01_nodoc
-
-	echo "# Delete docs" >> /tmp/01_nodoc
-	echo "path-exclude=/usr/share/doc/*" >> /tmp/01_nodoc
-	echo "path-include=/usr/share/doc/*/copyright" >> /tmp/01_nodoc
-	echo "" >> /tmp/01_nodoc
-
-	sudo mv /tmp/01_nodoc "${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc"
-	sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_nodoc"
-
-	sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
-
-	#apt: no local cache
-	echo "Dir::Cache {" > /tmp/02nocache
-	echo "  srcpkgcache \"\";" >> /tmp/02nocache
-	echo "  pkgcache \"\";" >> /tmp/02nocache
-	echo "}" >> /tmp/02nocache
-	sudo mv  /tmp/02nocache "${tempdir}/etc/apt/apt.conf.d/02nocache"
-	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02nocache"
-
-	#apt: drop translations...
-	echo "Acquire::Languages \"none\";" > /tmp/02translations
-	sudo mv /tmp/02translations "${tempdir}/etc/apt/apt.conf.d/02translations"
-	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02translations"
-
-	echo "Log: after locale/man purge"
-	report_size
-fi
-
-
 sudo mkdir -p "${tempdir}/etc/dpkg/dpkg.cfg.d/" || true
 
 echo "# neuter flash-kernel" > /tmp/01_noflash_kernel
@@ -360,15 +315,6 @@ fi
 
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
-
-if [ "x${chroot_very_small_image}" = "xenable" ] ; then
-	#apt: emulate apt-get clean:
-	echo '#Custom apt-get clean' > /tmp/02apt-get-clean
-	echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-	echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb || true"; };' >> /tmp/02apt-get-clean
-	sudo mv /tmp/02apt-get-clean "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
-	sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02apt-get-clean"
-fi
 
 #apt: drop translations
 echo 'Acquire::Languages "none";' > /tmp/02-no-languages
@@ -755,19 +701,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			cp -v --remove-destination /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 		echo "---------------------------------"
-
-		if [ "x${chroot_very_small_image}" = "xenable" ] ; then
-			if [ -f /bin/busybox ] ; then
-				echo "Log: (chroot): Setting up BusyBox"
-
-				#Install only non-existent commands to avoid conflicts
-				for cmd in \$(busybox --list)
-				do
-					type \${cmd} >/dev/null 2>&1 ||
-						ln -s /bin/busybox /usr/local/bin/\${cmd}
-				done
-			fi
-		fi
 	}
 
 	install_pkgs () {
