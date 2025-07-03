@@ -713,29 +713,29 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ -f /etc/apt/sources.list ] ; then
-			echo "---------------------------------"
 			echo "debug: cat /etc/apt/sources.list"
+			echo "---------------------------------"
 			cat /etc/apt/sources.list
 			echo "---------------------------------"
 		fi
 
 		if [ -f /etc/apt/sources.list.d/beagle.list ] ; then
-			echo "---------------------------------"
 			echo "debug: cat /etc/apt/sources.list.d/beagle.list"
+			echo "---------------------------------"
 			cat /etc/apt/sources.list.d/beagle.list
 			echo "---------------------------------"
 		fi
 
 		if [ -f /etc/apt/sources.list.d/debian.sources ] ; then
-			echo "---------------------------------"
 			echo "debug: cat /etc/apt/sources.list.d/debian.sources"
+			echo "---------------------------------"
 			cat /etc/apt/sources.list.d/debian.sources
 			echo "---------------------------------"
 		fi
 
 		if [ -f /etc/apt/sources.list.d/beagle.sources ] ; then
-			echo "---------------------------------"
 			echo "debug: cat /etc/apt/sources.list.d/beagle.sources"
+			echo "---------------------------------"
 			cat /etc/apt/sources.list.d/beagle.sources
 			echo "---------------------------------"
 		fi
