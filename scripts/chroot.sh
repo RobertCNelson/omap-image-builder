@@ -778,10 +778,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				apt-get install -yq ti-cmem-modules-${repo_rcnee_pkg_version} || true
 			fi
 
-			if [ ! "x${repo_rcnee_sgx_preinstall}" = "x" ] ; then
-				apt-get install -yq ${repo_rcnee_sgx_preinstall}-modules-${repo_rcnee_pkg_version} || true
-			fi
-
 			if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
 				mkdir -p /opt/modules/ || true
 				cd /opt/modules/
