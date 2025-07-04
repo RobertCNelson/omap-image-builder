@@ -310,14 +310,14 @@ fi
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
 #apt: drop translations
-echo 'Acquire::Languages "none";' > /tmp/02-no-languages
-sudo mv /tmp/02-no-languages "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
-sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-languages"
+echo "Acquire::Languages \"none\";" > /tmp/99translations
+sudo mv /tmp/99translations "${tempdir}/etc/apt/apt.conf.d/99translations"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/99translations"
 
 #apt: no PDiffs..
-echo 'Acquire::PDiffs "0";' > /tmp/02-no-pdiffs
-sudo mv /tmp/02-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
-sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/02-no-pdiffs"
+echo "Acquire::PDiffs \"false\";" > /tmp/99-no-pdiffs
+sudo mv /tmp/99-no-pdiffs "${tempdir}/etc/apt/apt.conf.d/99-no-pdiffs"
+sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/99-no-pdiffs"
 
 #apt: disable Progress-Fancy (apt and tio/serial terminal gets messed up)
 echo 'Dpkg::Progress-Fancy "0";' > /tmp/99progressbar
