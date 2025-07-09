@@ -444,6 +444,13 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 
 	if [ "x${deb_codename}" = "xtrixie" ] ; then
 		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
+		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
+			echo "#BeagleBoard.org Mirror on Cloudflare" >> ${wfile}
+			echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://debian.beagleboard.org/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
+			echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://debian.beagleboard.org/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
+			echo "" >> ${wfile}
+			echo "#Backup Mirror" >> ${wfile}
+		fi
 		echo "deb [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 		echo "#deb-src [arch=${repo_rcnee_arch} signed-by=${rcnee_keyring}] https://rcn-ee.com/repos/debian-${deb_codename}-${repo_rcnee_arch}/ ${deb_codename} main" >> ${wfile}
 	elif [ "x${repo_rcnee_arch}" = "xarmhf" ] ; then
