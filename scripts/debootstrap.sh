@@ -51,7 +51,7 @@ check_defines () {
 			include="${task_include}"
 		fi
 
-		options="${options} --include=${include}"
+		options="${options} --include=ca-certificates,${include}"
 	fi
 
 	if [ "${deb_exclude}" ] ; then
