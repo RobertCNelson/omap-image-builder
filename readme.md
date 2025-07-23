@@ -39,6 +39,10 @@ SeeedStudio BeagleBone Green:
       1A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 1a 00 00 00 |.U3.A335BNLT....|]
        ?: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 42 47 31 |.U3.A335BNLTBBG1|]
 
+BeagleBone Green Eco:
+
+        : [aa 55 33 ee 41 33 33 35  42 4e 4c 54 42 42 47 45 |.U3.A335BNLTBBGE|]
+
 SeeedStudio BeagleBone Green Wireless:
 
      W1A: [aa 55 33 ee 41 33 33 35  42 4e 4c 54 47 57 31 41 |.U3.A335BNLTGW1A|]
