@@ -137,6 +137,15 @@ setup_desktop () {
 }
 
 install_git_repos () {
+	if [ -f /var/www/html/index.nginx-debian.html ] ; then
+		rm -rf /var/www/html/index.nginx-debian.html || true
+	fi
+
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-5.10-ti"
+	git_branch="v5.10.x-ti-unified"
+	git_clone_branch
+
 	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
 	git_target_dir="/opt/source/dtb-6.1.x"
 	git_branch="v6.1.x"
