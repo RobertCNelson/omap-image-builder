@@ -4,7 +4,7 @@ export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-base-vscode-v6.15-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-12-bookworm-base-v6.15"
+rootfs="debian-armhf-12-base-v6.15"
 
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"

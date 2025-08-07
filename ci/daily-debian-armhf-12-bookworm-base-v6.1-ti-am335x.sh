@@ -4,7 +4,41 @@ export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-bookworm-base-v6.1-ti-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-12-bookworm-base-v6.1-ti"
+rootfs="debian-armhf-12-base-v6.1-ti"
+
+compress_snapshot_image () {
+	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
+	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sync
+
+	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
+	echo "  extract_size: ${extract_size}" >> ${yml_file}
+	extract_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
+	echo "  extract_sha256: ${extract_sha256}" >> ${yml_file}
+
+	echo "Creating... ${device}-${export_filename}-${filesize}.bmap"
+	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
+
+	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
+	xz -T0 -z ${device}-${export_filename}-${filesize}.img
+	sync
+
+	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
+	echo "  image_download_size: ${image_download_size}" >> ${yml_file}
+	image_download_sha256=$(sha256sum ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
+	echo "  image_download_sha256: ${image_download_sha256}" >> ${yml_file}
+
+	echo "  release_date: '${time}'" >> ${yml_file}
+	echo "  init_format: sysconf" >> ${yml_file}
+
+	sync
+
+	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+}
 
 if [ -d ./deploy ] ; then
 	sudo rm -rf ./deploy || true
@@ -20,33 +54,16 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	#echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat"
-	#sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat
-	#mv ./*.img ../
-
 	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-swap-${export_filename} --dtb beaglebone-fat-swap
+	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
 	mv ./*.img ../
 
 	cd ../
 
-	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-
-	#device="am335x"
-	#echo "Compressing...${device}-${export_filename}-${filesize}.img"
-	#xz -T0 -z ${device}-${export_filename}-${filesize}.img
-	#sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
-	#sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	#sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-
-	device="am335x-swap"
-	echo "Compressing...${device}-${export_filename}-${filesize}.img"
-	xz -T0 -z ${device}-${export_filename}-${filesize}.img
-	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
+	cd ../
 else
 	echo "failure"
 	exit 2
