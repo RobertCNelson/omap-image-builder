@@ -1163,7 +1163,7 @@ populate_rootfs () {
 			echo "console=${extlinux_console}" >> ${wfile}
 		fi
 
-		cmdline="coherent_pool=1M net.ifnames=0"
+		cmdline="earlycon coherent_pool=1M net.ifnames=0"
 
 		if [ ! "x${loops_per_jiffy}" = "x" ] ; then
 			cmdline="${cmdline} ${loops_per_jiffy}"
