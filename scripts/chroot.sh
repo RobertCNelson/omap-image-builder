@@ -442,7 +442,7 @@ if [ "x${repo_rcnee}" = "xenable" ] ; then
 		fi
 	fi
 
-	if [ "x${deb_codename}" = "xtrixie" ] ; then
+	if [ "x${deb_codename}" = "xtrixie" ] || [ "x${deb_codename}" = "xforky" ] ; then
 		rcnee_keyring="/usr/share/keyrings/rcn-ee-2025-archive-keyring.gpg"
 		if [ "x${repo_rcnee_mirror}" = "xdebian.beagleboard.org" ] ; then
 			echo "#BeagleBoard.org Mirror on Cloudflare" >> ${wfile}
