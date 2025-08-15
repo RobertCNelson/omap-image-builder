@@ -1216,8 +1216,8 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				cp -v /opt/bb-code-server/settings.json /home/${rfs_username}/.local/share/code-server/User/ || true
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.config/ || true
 				chown -R ${rfs_username}:${rfs_username} /home/${rfs_username}/.local/ || true
-				echo "Log: (chroot-systemd): enable: code-server"
-				systemctl enable code-server@${rfs_username} || true
+				#echo "Log: (chroot-systemd): enable: code-server"
+				#systemctl enable code-server@${rfs_username} || true
 			else
 				#As long as ^ code-server@.service is used, upgrade will now work, but for prior builds they will fail
 				apt-mark hold bb-code-server || true
