@@ -757,12 +757,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get -yq remove ${repo_remove_pkgs} || true
 		fi
 
-		if [ "x${rfs_enable_rtw88}" = "xenable" ] ; then
-			if [ -f /etc/bbb.io/kernel/rtw88.conf ] ; then
-				cp -v /etc/bbb.io/kernel/rtw88.conf /etc/modprobe.d/
-			fi
-		fi
-
 		##Install last...
 		if [ ! "x${repo_rcnee_pkg_version}" = "x" ] ; then
 			echo "Log: (chroot) Installing modules for: ${repo_rcnee_pkg_version} (it's okay if these fail to install...)"
