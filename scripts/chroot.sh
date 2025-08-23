@@ -1233,6 +1233,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+			touch /etc/bbb.io/ssh_regenerate || true
 			if [ "x${rfs_disable_grow_partition}" = "x" ] ; then
 				mkdir -p /etc/bbb.io/ || true
 				touch /etc/bbb.io/growpart || true
