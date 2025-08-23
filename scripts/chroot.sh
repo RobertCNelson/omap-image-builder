@@ -1169,13 +1169,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			systemctl enable regenerate_ssh_host_keys.service || true
 		fi
 
-		if [ "x${rfs_disable_grow_partition}" = "x" ] ; then
-			if [ -f /lib/systemd/system/grow_partition.service ] || [ -f /usr/lib/systemd/system/grow_partition.service ] ; then
-				echo "Log: (chroot-systemd): enable: grow_partition.service"
-				systemctl enable grow_partition.service || true
-			fi
-		fi
-
 		if [ "x${repo_rcnee_modules}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bb_install_modules.service ] || [ -f /usr/lib/systemd/system/bb_install_modules.service ] ; then
 				echo "Log: (chroot-systemd): enable: bb_install_modules.service"
@@ -1240,6 +1233,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 
 		if [ -f /lib/systemd/system/bbbio-set-sysconf.service ] || [ -f /usr/lib/systemd/system/bbbio-set-sysconf.service ] ; then
+			if [ "x${rfs_disable_grow_partition}" = "x" ] ; then
+				mkdir -p /etc/bbb.io/ || true
+				touch /etc/bbb.io/growpart || true
+			fi
 			echo "Log: (chroot-systemd): enable: bbbio-set-sysconf.service"
 			systemctl enable bbbio-set-sysconf.service || true
 		fi

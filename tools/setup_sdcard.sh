@@ -1455,15 +1455,12 @@ populate_rootfs () {
 		fi
 	fi
 
-	if [ "x${emmc_flasher}" = "xenable" ] ; then
+	if [ "x${emmc_flasher}" = "xenable" ] || [ "x${extlinux_flasher}" = "xenable" ] ; then
 		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
 			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
 		fi
-	fi
-
-	if [ "x${extlinux_flasher}" = "xenable" ] ; then
-		if [ -f ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service ] ; then
-			rm -rf ${TEMPDIR}/disk/etc/systemd/system/multi-user.target.wants/grow_partition.service || true
+		if [ -f ${TEMPDIR}/disk/etc/bbb.io/growpart ] ; then
+			rm -rf ${TEMPDIR}/disk/etc/bbb.io/growpart || true
 		fi
 	fi
 
