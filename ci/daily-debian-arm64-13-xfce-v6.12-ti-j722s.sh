@@ -13,7 +13,7 @@ compress_snapshot_image () {
 
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
-	echo "  bmap: https://rcn-ee.net/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
+	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "  extract_size: ${extract_size}" >> ${yml_file}
