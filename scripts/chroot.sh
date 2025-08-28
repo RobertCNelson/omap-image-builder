@@ -1033,6 +1033,13 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
+		#Debian 13 (trixie)
+		### https://www.debian.org/releases/trixie/release-notes/issues.en.html#the-temporary-files-directory-tmp-is-now-stored-in-a-tmpfs
+		### The default is to allocate up to 50% of memory to /tmp
+		if [ -f /usr/lib/systemd/system/tmp.mount ] ; then
+			systemctl mask tmp.mount || true
+		fi
+
 		#systemd v215: systemd-timesyncd.service replaces ntpdate
 		#enabled by default in v216 (not in jessie)
 		if [ -f /lib/systemd/system/systemd-timesyncd.service ] || [ -f /usr/lib/systemd/system/systemd-timesyncd.service ] ; then
