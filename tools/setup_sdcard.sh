@@ -1392,7 +1392,7 @@ populate_rootfs () {
 		if [ "x${board_hacks}" = "xj721e_evm" ] || [ "x${board_hacks}" = "xbbai64_staging" ] ; then
 			echo "ARCH_SOC_MODULES=j721e" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
-		if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] || [ "x${board_hacks}" = "xpocketbeagle2" ] ; then
+		if [ "x${board_hacks}" = "xsk_am62" ] || [ "x${board_hacks}" = "xbeagleplay" ] || [ "x${board_hacks}" = "xpocketbeagle2" ] || [ "x${board_hacks}" = "xam625-osd625-brk" ]; then
 			echo "ARCH_SOC_MODULES=am62" >> ${TEMPDIR}/disk/etc/default/generic-sys-mods
 		fi
 		if [ "x${board_hacks}" = "xbeagley_ai" ] ; then
