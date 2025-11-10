@@ -176,6 +176,10 @@ install_git_repos () {
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
 
+	git_repo="https://github.com/TexasInstruments/open-pru.git"
+	git_target_dir="/opt/source/open-pru"
+	git_clone
+
 	git_repo="https://github.com/beagleboard/vsx-examples.git"
 	git_target_dir="/opt/vsx-examples"
 	git_clone
