@@ -1573,7 +1573,7 @@ fi
 
 if [ -f ./opt/source/dpkg-sbom.txt ] ; then
 	echo "Copying: dpkg-sbom.txt"
-	cp -r ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
+	cp -v ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
 fi
 
 if [ -d ./opt/u-boot/ ] ; then
