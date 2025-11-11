@@ -1571,17 +1571,17 @@ if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
 	cp -v ./etc/bbb.io/templates/sysconf.txt "${DIR}/deploy/${export_filename}/sysconf.txt"
 fi
 
+if [ -f ./opt/source/dpkg-sbom.txt ] ; then
+	echo "Copying: dpkg-sbom.txt"
+	cp -r ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
+fi
+
 if [ -d ./opt/u-boot/ ] ; then
 	cd ./opt/u-boot/ || true
 	echo "Copying: packaged version of U-Boot"
 	mkdir -p "${DIR}/deploy/${export_filename}/u-boot"
 	cp -r ./* "${DIR}/deploy/${export_filename}/u-boot"
 	tree "${DIR}/deploy/${export_filename}/u-boot"
-fi
-
-if [ -f ./opt/source/dpkg-sbom.txt ] ; then
-	echo "Copying: dpkg-sbom.txt"
-	cp -r ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
 fi
 
 tree "${DIR}/deploy/${export_filename}/"
