@@ -1497,6 +1497,9 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	fi
 
 	rm -f /cleanup_script.sh || true
+
+	#Run Last for Cyber Resilience Act
+	dpkg -l > /opt/source/dpkg-sbom.txt
 __EOF__
 
 ###MUST BE LAST...
@@ -1562,10 +1565,12 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 fi
 
 cd "${tempdir}" || true
+
 if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
 	echo "Copying: sysconf.txt"
 	cp -v ./etc/bbb.io/templates/sysconf.txt "${DIR}/deploy/${export_filename}/sysconf.txt"
 fi
+
 if [ -d ./opt/u-boot/ ] ; then
 	cd ./opt/u-boot/ || true
 	echo "Copying: packaged version of U-Boot"
@@ -1573,7 +1578,14 @@ if [ -d ./opt/u-boot/ ] ; then
 	cp -r ./* "${DIR}/deploy/${export_filename}/u-boot"
 	tree "${DIR}/deploy/${export_filename}/u-boot"
 fi
+
+if [ -f ./opt/source/dpkg-sbom.txt ] ; then
+	echo "Copying: dpkg-sbom.txt"
+	cp -r ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
+fi
+
 tree "${DIR}/deploy/${export_filename}/"
+
 cd "${tempdir}" || true
 echo "Log: packaging rootfs: [${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar]"
 sudo LANG=C tar --numeric-owner --acls --xattrs -cf "${DIR}/deploy/${export_filename}/${deb_arch}-rootfs-${deb_distribution}-${deb_codename}.tar" .
