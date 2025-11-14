@@ -11,6 +11,8 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
+	echo "- name: BeagleBone Black Debian 12 v6.16.x (Stable)" >> ${yml_file}
+	echo "  description: Debian 12 (Bookworm) with no desktop environment for BeagleBone Black based on TI AM335x processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -34,6 +36,9 @@ compress_snapshot_image () {
 
 	echo "  release_date: '${time}'" >> ${yml_file}
 	echo "  init_format: sysconf" >> ${yml_file}
+	echo "  devices:" >> ${yml_file}
+	echo "    - beagle-am335" >> ${yml_file}
+	echo "    - recommended" >> ${yml_file}
 
 	sync
 
@@ -42,6 +47,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./dpkg-sbom.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.dpkg-sbom.txt || true
 }
 
 if [ -d ./deploy ] ; then
@@ -61,6 +67,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
 
