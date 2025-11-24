@@ -812,19 +812,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		fi
 	}
 
-	install_docker_ce () {
-		if [ "x${rfs_enable_docker_ci}" = "xenable" ] ; then
-			echo "Log: (chroot): install_docker_ce"
-			DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-transport-https ca-certificates curl gpg
-			mkdir -p /etc/apt/keyrings && chmod -R 0755 /etc/apt/keyrings
-			curl -fsSL "https://download.docker.com/linux/debian/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
-			chmod a+r /etc/apt/keyrings/docker.gpg
-			echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
-			apt-get update || true
-			apt-get install -yq docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin || true
-		fi
-	}
-
 	system_tweaks () {
 		echo "Log: (chroot): system_tweaks"
 		echo "[options]" > /etc/e2fsck.conf
@@ -1272,7 +1259,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 	install_pkg_updates
 	install_pkgs
 	install_python_pkgs
-	install_docker_ce
 	system_tweaks
 	set_locale
 	add_user
