@@ -6,11 +6,17 @@ config=bb.org-debian-trixie-base-v6.12-ti-arm64-k3-am62
 filesize=8gb
 rootfs="debian-arm64-13-base-v6.12-ti"
 
+r_board="BeaglePlay"
+r_processor="TI AM62"
+r_devices="beagle-am62"
+
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
+	echo "- name: ${r_board} Debian 13 v6.12.x-ti ${r_name}" >> ${yml_file}
+	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -34,6 +40,9 @@ compress_snapshot_image () {
 
 	echo "  release_date: '${time}'" >> ${yml_file}
 	echo "  init_format: sysconf" >> ${yml_file}
+	echo "  devices:" >> ${yml_file}
+	echo "    - ${r_devices}" >> ${yml_file}
+	echo "    - recommended" >> ${yml_file}
 
 	sync
 
@@ -72,8 +81,19 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
+	r_description="no desktop environment"
+
+	r_name="Minimal"
 	device="beagleplay" ; compress_snapshot_image
+
+	r_name="eMMC Minimal Flasher"
 	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+
+	r_board="PocketBeagle 2"
+	r_processor="TI AM62"
+	r_devices="pocketbeagle2-am62"
+
+	r_name="Minimal (Recommended)"
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
