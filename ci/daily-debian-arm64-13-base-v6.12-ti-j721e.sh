@@ -7,6 +7,7 @@ filesize=8gb
 rootfs="debian-arm64-13-base-v6.12-ti"
 
 r_board="BeagleBone AI-64"
+r_processor="TI TDA4VM"
 r_devices="beagle-tda4vm"
 
 compress_snapshot_image () {
@@ -15,7 +16,7 @@ compress_snapshot_image () {
 	sync
 
 	echo "- name: ${r_board} Debian 13 v6.12.x-ti ${r_name}" >> ${yml_file}
-	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on TI TDA4VM processor" >> ${yml_file}
+	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
