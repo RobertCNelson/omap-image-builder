@@ -75,7 +75,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="the Xfce Desktop"
 
-	r_name="XFCE (Recommended)"
+	r_name="XFCE (Testing)"
 	device="beagley-ai" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
