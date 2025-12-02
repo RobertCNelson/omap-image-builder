@@ -23,8 +23,8 @@
 #http://ftp.us.debian.org/debian/pool/main/d/debootstrap/
 #1.0.${minimal_debootstrap}
 #Debian Trixie/Sid usr merge....
-actual_debootstrap="141"
-minimal_debootstrap="141"
+actual_debootstrap="142"
+minimal_debootstrap="142"
 host_arch="$(uname -m)"
 
 debootstrap_is_installed () {
