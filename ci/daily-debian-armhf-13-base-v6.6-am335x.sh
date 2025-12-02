@@ -6,13 +6,17 @@ config=bb.org-debian-trixie-base-v6.6-armhf-am335x
 filesize=4gb
 rootfs="debian-armhf-13-base-v6.6"
 
+r_board="BeagleBone Black"
+r_processor="TI AM335x"
+r_devices="beagle-am335"
+
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: BeagleBone Black Debian 13 v6.6.x (LTS)" >> ${yml_file}
-	echo "  description: Debian 13 (Trixie) with no desktop environment for BeagleBone Black based on TI AM335x processor" >> ${yml_file}
+	echo "- name: ${r_board} Debian 13 ${r_name}" >> ${yml_file}
+	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -37,7 +41,7 @@ compress_snapshot_image () {
 	echo "  release_date: '${time}'" >> ${yml_file}
 	echo "  init_format: sysconf" >> ${yml_file}
 	echo "  devices:" >> ${yml_file}
-	echo "    - beagle-am335" >> ${yml_file}
+	echo "    - ${r_devices}" >> ${yml_file}
 	echo "    - recommended" >> ${yml_file}
 
 	sync
@@ -71,6 +75,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
+	r_description="no desktop environment"
+
+	r_name="v6.6.x (LTS)"
 	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
