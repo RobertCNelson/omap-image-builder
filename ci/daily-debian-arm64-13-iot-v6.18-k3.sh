@@ -11,6 +11,8 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
+	echo "- name: ${r_board} Debian 13 ${r_name}" >> ${yml_file}
+	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -34,6 +36,9 @@ compress_snapshot_image () {
 
 	echo "  release_date: '${time}'" >> ${yml_file}
 	echo "  init_format: sysconf" >> ${yml_file}
+	echo "  devices:" >> ${yml_file}
+	echo "    - ${r_devices}" >> ${yml_file}
+	echo "    - recommended" >> ${yml_file}
 
 	sync
 
@@ -42,6 +47,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./dpkg-sbom.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.dpkg-sbom.txt || true
 }
 
 if [ -d ./deploy ] ; then
@@ -76,9 +82,32 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
+	r_description="no desktop environment"
+
+	r_name="v6.18.x-k3 IoT (LTS)"
+
+	r_board="BeagleBone AI-64"
+	r_processor="TI TDA4VM"
+	r_devices="beagle-tda4vm"
+
 	device="bbai64" ; compress_snapshot_image
+
+	r_board="BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
+
 	device="beagleplay" ; compress_snapshot_image
+
+	r_board="BeagleY-AI"
+	r_processor="TI AM67A (J722S)"
+	r_devices="beagle-am67"
+
 	device="beagley-ai" ; compress_snapshot_image
+
+	r_board="PocketBeagle 2"
+	r_processor="TI AM62"
+	r_devices="pocketbeagle2-am62"
+
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	#echo "Compressing...${export_filename}.tar"
