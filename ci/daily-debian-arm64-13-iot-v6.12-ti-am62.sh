@@ -84,6 +84,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
 	mv ./*.img ../
 
+	cp -v ./dpkg-sbom.txt ../ || true
 	cd ../
 
 	r_description="no desktop environment"

@@ -64,8 +64,8 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64
 	mv ./*.img ../
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
@@ -80,6 +80,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
 	mv ./*.img ../
 
+	cp -v ./dpkg-sbom.txt ../ || true
 	cd ../
 
 	r_description="no desktop environment"
