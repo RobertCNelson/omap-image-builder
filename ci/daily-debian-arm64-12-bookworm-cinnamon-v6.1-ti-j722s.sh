@@ -2,12 +2,12 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-xfce-v6.12-ti-arm64-k3-j722s
+config=bb.org-debian-bookworm-cinnamon-v6.1-ti-arm64-k3-j722s
 filesize=12gb
-rootfs="debian-arm64-13-xfce-v6.12-ti"
+rootfs="debian-arm64-12-bookworm-cinnamon-v6.1-ti"
 
-debian_short="Debian 13"
-debian_long="Debian 13 (Trixie)"
+debian_short="Debian 12"
+debian_long="Debian 12 (Bookworm)"
 
 r_board="BeagleY-AI"
 r_processor="TI AM67A (J722S)"
@@ -78,9 +78,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
-	r_description="the Xfce Desktop"
+	r_description="the Cinnamon Desktop"
 
-	r_name="v6.12.x-ti XFCE (Testing)"
+	r_name="v6.1.x-ti Cinnamon (Testing)"
 	device="beagley-ai" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true

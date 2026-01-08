@@ -6,6 +6,9 @@ config=bb.org-debian-trixie-iot-v6.18-k3-arm64
 filesize=8gb
 rootfs="debian-arm64-13-iot-v6.18-k3"
 
+debian_short="Debian 13"
+debian_long="Debian 13 (Trixie)"
+
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
@@ -67,20 +70,23 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64"
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
 	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
 	mv ./*.img ../
-
 	cp -v ./dpkg-sbom.txt ../ || true
+
 	cd ../
 
 	r_description="no desktop environment"
@@ -118,6 +124,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
+	cd ../
 else
 	echo "failure"
 	exit 2
