@@ -658,6 +658,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			mv /etc/apt/apt.conf.d/50apt-file.conf /etc/apt/apt.conf.d/50apt-file.conf.disabled
 		fi
 
+		echo "debug: BLOCK NVIDIA ------------"
+		apt-mark hold nvidia-support || true
+		echo "---------------------------------"
+
 		echo "debug: apt-get update------------"
 		apt-get update || true
 		echo "---------------------------------"
