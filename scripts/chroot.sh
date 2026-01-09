@@ -677,6 +677,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		echo "debug: BLOCK NVIDIA ------------"
 		apt-mark hold nvidia-support || true
+		apt-mark hold nvidia-kernel-common || true
 		echo "---------------------------------"
 
 		echo "debug: apt-get upgrade -y--------"
