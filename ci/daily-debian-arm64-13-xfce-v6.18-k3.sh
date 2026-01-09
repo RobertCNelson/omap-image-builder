@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-iot-v6.18-k3-arm64
-filesize=8gb
-rootfs="debian-arm64-13-iot-v6.18-k3"
+config=bb.org-debian-trixie-xfce-v6.18-k3-arm64
+filesize=12gb
+rootfs="debian-arm64-13-xfce-v6.18-k3"
 
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
@@ -82,16 +82,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
-	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
-
 	cd ../
 
-	r_description="no desktop environment"
+	r_description="the Xfce Desktop"
 
-	r_name="v6.18.x-k3 IoT (LTS)"
+	r_name="v6.18.x-k3 XFCE (LTS)"
 
 	r_board="BeagleBone AI-64"
 	r_processor="TI TDA4VM"
@@ -110,12 +105,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_devices="beagle-am67"
 
 	device="beagley-ai" ; compress_snapshot_image
-
-	r_board="PocketBeagle 2"
-	r_processor="TI AM62"
-	r_devices="pocketbeagle2-am62"
-
-	device="pocketbeagle2" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
