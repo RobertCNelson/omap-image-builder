@@ -662,10 +662,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		apt-get update || true
 		echo "---------------------------------"
 
-		echo "debug: BLOCK NVIDIA ------------"
-		apt-mark hold nvidia-support || true
-		echo "---------------------------------"
-
 		if [ -f /usr/bin/tasksel ] ; then
 			if [ "x${tasksel_standard}" = "xenable" ] ; then
 				echo "---------------------------------"
@@ -678,6 +674,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 				echo "---------------------------------"
 			fi
 		fi
+
+		echo "debug: BLOCK NVIDIA ------------"
+		apt-mark hold nvidia-support || true
+		echo "---------------------------------"
 
 		echo "debug: apt-get upgrade -y--------"
 		apt-get upgrade -y
