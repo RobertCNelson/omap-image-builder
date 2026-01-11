@@ -6,6 +6,9 @@ config=bb.org-debian-trixie-base-v6.16-armhf-am335x
 filesize=4gb
 rootfs="debian-armhf-13-base-v6.16"
 
+debian_short="Debian 13"
+debian_long="Debian 13 (Trixie)"
+
 r_board="BeagleBone Black"
 r_processor="TI AM335x"
 r_devices="beagle-am335"
@@ -15,8 +18,8 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: ${r_board} Debian 13 ${r_name}" >> ${yml_file}
-	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
+	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
+	echo "  description: ${debian_long} with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}

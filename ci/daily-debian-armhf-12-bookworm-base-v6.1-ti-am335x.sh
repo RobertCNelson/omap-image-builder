@@ -6,11 +6,20 @@ config=bb.org-debian-bookworm-base-v6.1-ti-armhf-am335x
 filesize=4gb
 rootfs="debian-armhf-12-base-v6.1-ti"
 
+debian_short="Debian 12"
+debian_long="Debian 12 (Bookworm)"
+
+r_board="BeagleBone Black"
+r_processor="TI AM335x"
+r_devices="beagle-am335"
+
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
+	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
+	echo "  description: ${debian_long} with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -34,6 +43,9 @@ compress_snapshot_image () {
 
 	echo "  release_date: '${time}'" >> ${yml_file}
 	echo "  init_format: sysconf" >> ${yml_file}
+	echo "  devices:" >> ${yml_file}
+	echo "    - ${r_devices}" >> ${yml_file}
+	echo "    - recommended" >> ${yml_file}
 
 	sync
 
@@ -42,6 +54,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./dpkg-sbom.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.dpkg-sbom.txt || true
 }
 
 if [ -d ./deploy ] ; then
@@ -61,9 +74,13 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
 
+	r_description="no desktop environment"
+
+	r_name="v6.1.x-ti"
 	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
