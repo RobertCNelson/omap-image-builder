@@ -91,7 +91,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
-	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027)"
+	r_name="v6.18.x-k3 IoT (LTS-Dec-2027)"
 
 	r_board="BeagleBone AI-64"
 	r_processor="TI TDA4VM"

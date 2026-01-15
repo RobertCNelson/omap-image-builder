@@ -9,10 +9,6 @@ rootfs="debian-arm64-13-iot-v6.12-ti"
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
 
-r_board="BeaglePlay"
-r_processor="TI AM62"
-r_devices="beagle-am62"
-
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
@@ -92,6 +88,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
+
+	r_board="BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
 
 	r_description="no desktop environment"
 

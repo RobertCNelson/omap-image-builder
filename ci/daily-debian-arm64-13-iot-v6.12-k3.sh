@@ -14,8 +14,8 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: ${r_board} Debian 13 ${r_name}" >> ${yml_file}
-	echo "  description: Debian 13 (Trixie) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
+	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
+	echo "  description: ${debian_long} with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -91,7 +91,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
-	r_name="v6.12.x-k3 IoT (LTS)"
+	r_name="v6.12.x-k3 IoT (LTS-Dec-2026)"
 
 	r_board="BeagleBone AI-64"
 	r_processor="TI TDA4VM"
@@ -99,29 +99,23 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="bbai64" ; compress_snapshot_image
 
-	r_board="BeaglePlay"
-	r_processor="TI AM62"
-	r_devices="beagle-am62"
-
-	device="beagleplay" ; compress_snapshot_image
-
 	r_board="BeagleY-AI"
 	r_processor="TI AM67A (J722S)"
 	r_devices="beagle-am67"
 
 	device="beagley-ai" ; compress_snapshot_image
 
+	r_board="BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
+
+	device="beagleplay" ; compress_snapshot_image
+
 	r_board="PocketBeagle 2"
 	r_processor="TI AM62"
 	r_devices="pocketbeagle2-am62"
 
 	device="pocketbeagle2" ; compress_snapshot_image
-
-	#echo "Compressing...${export_filename}.tar"
-	#xz -T0 -z ${export_filename}.tar
-	#sha256sum ${export_filename}.tar.xz > ${export_filename}.tar.xz.sha256sum
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	#sudo -uvoodoo cp -v ./${export_filename}.tar.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 
 	rm -rf ${tempdir} || true
 	cd ../
