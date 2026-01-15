@@ -86,7 +86,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="the Xfce Desktop"
 
-	r_name="v6.18.x-k3 XFCE (LTS)"
+	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027)"
 
 	r_board="BeagleBone AI-64"
 	r_processor="TI TDA4VM"
@@ -94,17 +94,19 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="bbai64" ; compress_snapshot_image
 
-	r_board="BeaglePlay"
-	r_processor="TI AM62"
-	r_devices="beagle-am62"
-
-	device="beagleplay" ; compress_snapshot_image
-
 	r_board="BeagleY-AI"
 	r_processor="TI AM67A (J722S)"
 	r_devices="beagle-am67"
 
 	device="beagley-ai" ; compress_snapshot_image
+
+	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027) (Vulkan/mesa 25.3)"
+
+	r_board="BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
+
+	device="beagleplay" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
