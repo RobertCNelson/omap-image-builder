@@ -9,10 +9,6 @@ rootfs="debian-arm64-13-xfce-v6.12-ti"
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
 
-r_board="BeagleBone AI-64"
-r_processor="TI TDA4VM"
-r_devices="beagle-tda4vm"
-
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
@@ -84,6 +80,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ../
 
 	r_description="the Xfce Desktop"
+
+	r_board="BeagleBone AI-64"
+	r_processor="TI TDA4VM"
+	r_devices="beagle-tda4vm"
 
 	r_name="v6.12.x-ti XFCE (Recommended)"
 	device="bbai64" ; compress_snapshot_image
