@@ -87,6 +87,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
+	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop"
+	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
 	cd ../
 
 	r_description="no desktop environment"
@@ -116,6 +121,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_devices="pocketbeagle2-am62"
 
 	device="pocketbeagle2" ; compress_snapshot_image
+
+	r_name="v6.18.x-k3 IoT (TechLab Workshop) (LTS-Dec-2027)"
+	device="pocketbeagle2-workshop" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
