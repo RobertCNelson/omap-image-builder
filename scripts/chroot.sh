@@ -616,8 +616,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			rm -f /tmp/repos.azulsystems.com.pubkey.asc || true
 		fi
 		if [ "x${repo_external}" = "xenable" ] ; then
-			apt-key add /tmp/${repo_external_key}
-			rm -f /tmp/${repo_external_key} || true
+			if [ ! "x${repo_external_key}" = "x" ] ; then
+				apt-key add /tmp/${repo_external_key}
+				rm -f /tmp/${repo_external_key} || true
+			fi
 		fi
 		if [ "x${repo_flat}" = "xenable" ] ; then
 			apt-key add /tmp/${repo_flat_key}
