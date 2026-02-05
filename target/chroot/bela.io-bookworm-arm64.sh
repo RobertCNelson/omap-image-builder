@@ -246,8 +246,6 @@ echo blacklist rtc_ti_k3 >> /etc/modprobe.d/blacklist.conf
 ### stop and disable services. Some of these may not be installed, hence the || true
 # BB IDE running on :3000
 systemctl disable code-server@debian.service || true
-# node-red (some dataflow language for IoT)
-systemctl disable  nodered  || true
 # Debian auto updates
 systemctl disable unattended-upgrades || true
 
