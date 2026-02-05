@@ -30,7 +30,7 @@ compress_snapshot_image () {
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
 
 	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
-	xz -T0 -z ${device}-${export_filename}-${filesize}.img
+	xz -T0 -z ${device}-${export_filename}-${filesize}.img || true
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
