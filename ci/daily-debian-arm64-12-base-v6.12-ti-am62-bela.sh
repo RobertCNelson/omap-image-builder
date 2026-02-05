@@ -6,7 +6,7 @@ set -e
 OPT=$(getent passwd voodoo && echo true || echo false)
 config=bela.io-debian-bookworm-iot-v6.12-ti-arm64-k3-am62
 filesize=8gb
-rootfs="debian-arm64-12-iot-v6.12-ti-bela"
+rootfs="debian-arm64-12-iot-v6.12-ti-bela-testing"
 
 r_processor="TI AM62"
 
