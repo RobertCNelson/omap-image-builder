@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 set -e
-
+set -x
 OPT=$(getent passwd voodoo && echo true || echo false)
 config=bela.io-debian-bookworm-iot-v6.12-ti-arm64-k3-am62
 filesize=8gb
@@ -15,11 +15,11 @@ compress_snapshot_image () {
 	$OPT && sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: ${r_board} Debian 12 ${r_name}" >> ${yml_file}
+	echo "- name: Bela Gem ${r_board} Debian 12 ${r_name}" >> ${yml_file}
 	echo "  description: Debian 12 (Bookworm) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
-	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
+	echo "  icon: https://raw.githubusercontent.com/BelaPlatform/bela_sample/refs/heads/master/src/images/bela_logo_colour.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
-	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
+	echo "  bmap: https://raw.githubusercontent.com/BelaPlatform/bela-distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "  extract_size: ${extract_size}" >> ${yml_file}
@@ -42,7 +42,6 @@ compress_snapshot_image () {
 	echo "  init_format: sysconf" >> ${yml_file}
 	echo "  devices:" >> ${yml_file}
 	echo "    - ${r_devices}" >> ${yml_file}
-	echo "    - recommended" >> ${yml_file}
 
 	sync
 
@@ -73,13 +72,13 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	cd ../
 
-	r_description="no desktop environment"
+	r_description="Bela environment"
 
 	r_board="PocketBeagle 2"
 	r_processor="TI AM62"
 	r_devices="pocketbeagle2-am62"
 
-	r_name="v6.12.x-ti Minimal (Recommended)"
+	r_name="v6.12.x-ti-evl"
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
