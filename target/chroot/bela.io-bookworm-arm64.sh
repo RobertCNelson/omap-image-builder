@@ -187,6 +187,9 @@ bash -x setup_22.x # includes apt-get update
 
 # apt-get update not needed because it's already performed by node's setup_*.x above
 apt-get install -y \
+	bela-all \
+	bela-utils \
+	bela-ide \
 	nodejs \
 	apt-offline=1.8.6-bela \
 	# this line left blank
