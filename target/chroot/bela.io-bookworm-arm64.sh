@@ -176,9 +176,6 @@ HEREDOC
 echo 'PINS="/sys/kernel/debug/pinctrl/4084000.pinctrl-pinctrl-single/pins /sys/kernel/debug/pinctrl/f4000.pinctrl-pinctrl-single/pins"' >> ~/.bashrc
 echo "export HISTIGNORE='reset:fg:bg:clear:exit:ls:reboot:poweroff:shutdown'" >> ~/.bashrc
 
-echo "en_GB.UTF-8 UTF-8" > /etc/locale.gen
-locale-gen
-
 ### add more apt repos and install more stuff
 # get more repos
 mkdir -p /etc/sources.list.d
