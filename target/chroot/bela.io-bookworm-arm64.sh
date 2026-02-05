@@ -182,7 +182,6 @@ locale-gen
 ### add more apt repos and install more stuff
 # get more repos
 mkdir -p /etc/sources.list.d
-echo "deb [trusted=yes] http://deb.bela.io/debian stable main" > /etc/apt/sources.list.d/bela.list
 wget https://deb.nodesource.com/setup_22.x
 bash -x setup_22.x # includes apt-get update
 
