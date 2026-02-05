@@ -148,6 +148,12 @@ check_defines () {
 		fi
 	fi
 
+	if [ "x${repo_external}" = "xenable" ] ; then
+		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
+			repo_external_pkg_list=$(echo ${repo_external_pkg_list} | sed 's/,/ /g' | sed 's/\t/,/g')
+		fi
+	fi
+
 	if [ ! "x${deb_purge_pkgs}" = "x" ] ; then
 		deb_purge_pkgs="$(echo ${deb_purge_pkgs} | sed 's/,/ /g' | sed 's/\t/,/g')"
 	fi
@@ -727,6 +733,7 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${repo_external_pkg_list}" = "x" ] ; then
 			echo "Log: (chroot) Installing (from external repo) (repo_external_pkg_list): ${repo_external_pkg_list}"
+			apt-get update || true
 			echo "Log: (chroot): [apt-get install -yq ${repo_external_pkg_list}]"
 			apt-get install -yq ${repo_external_pkg_list}
 		fi
