@@ -334,6 +334,7 @@ if [ "x${deb_distribution}" = "xdebian" ] || [ "x${deb_distribution}" = "xubuntu
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
 		echo 'Acquire::https::Proxy::debian.beagle.cc "DIRECT";' > /tmp/03-proxy-https
+		echo 'Acquire::http::Proxy::deb.bela.io "DIRECT";' >> /tmp/03-proxy-https
 		sudo mv /tmp/03-proxy-https "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
 		sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/03-proxy-https"
 	fi
