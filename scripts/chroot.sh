@@ -722,6 +722,16 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			apt-get install -yq ${deb_additional_pkgs}
 		fi
 
+		if [ ! "x${nodesource}" = "x" ] ; then
+			apt-get update || true
+			echo "Log: (chroot) Installing (apt-transport-https ca-certificates curl gnupg)"
+			apt-get install -yq apt-transport-https ca-certificates curl gnupg
+			echo "Log: (chroot): [https://deb.nodesource.com/${nodesource}]"
+			curl -fsSL https://deb.nodesource.com/${nodesource} | bash -
+			echo "Log: (chroot) Installing (nodejsg)"
+			apt-get install -yq nodejs
+		fi
+
 		if [ "x${rfs_cyber_resilience_act}" = "xenable" ] ; then
 			echo "Log: (chroot): [apt-get install -yq unattended-upgrades]"
 			apt-get install -yq unattended-upgrades

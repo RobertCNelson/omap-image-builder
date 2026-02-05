@@ -182,8 +182,6 @@ locale-gen
 ### add more apt repos and install more stuff
 # get more repos
 mkdir -p /etc/sources.list.d
-wget https://deb.nodesource.com/setup_22.x
-bash -x setup_22.x # includes apt-get update
 
 # apt-get update not needed because it's already performed by node's setup_*.x above
 apt-get install -y \
