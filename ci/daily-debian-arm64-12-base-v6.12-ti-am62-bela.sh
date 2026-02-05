@@ -80,9 +80,9 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_devices="pocketbeagle2-am62"
 
 	r_name="v6.12.x-ti Minimal (Recommended)"
-	#device="pocketbeagle2" ; compress_snapshot_image
+	device="pocketbeagle2" ; compress_snapshot_image
 
-	#rm -rf ${tempdir} || true
+	rm -rf ${tempdir} || true
 else
 	echo "failure"
 	exit 2
