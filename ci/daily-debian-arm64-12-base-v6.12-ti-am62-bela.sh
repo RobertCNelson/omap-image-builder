@@ -1,8 +1,5 @@
 #!/bin/bash
 
-export apt_proxy=192.168.1.10:3142/
-set -e
-set -x
 OPT=$(getent passwd voodoo && echo true || echo false)
 config=bela.io-debian-bookworm-iot-v6.12-ti-arm64-k3-am62
 filesize=8gb
@@ -30,7 +27,7 @@ compress_snapshot_image () {
 	bmaptool -d create -o ./${device}-${export_filename}-${filesize}.bmap ./${device}-${export_filename}-${filesize}.img
 
 	echo "Compressing... ${device}-${export_filename}-${filesize}.img"
-	xz -T0 -z ${device}-${export_filename}-${filesize}.img || true
+	xz -T0 -z ${device}-${export_filename}-${filesize}.img
 	sync
 
 	image_download_size=$(du -b ./${device}-${export_filename}-${filesize}.img.xz | awk '{print $1}')
