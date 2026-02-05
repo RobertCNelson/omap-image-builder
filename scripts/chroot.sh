@@ -399,8 +399,8 @@ esac
 
 if [ "x${repo_external}" = "xenable" ] ; then
 	echo "" >> ${wfile}
-	echo "deb [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
-	echo "#deb-src [arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
+	echo "deb [trusted=yes arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
+	echo "#deb-src [trusted=yes arch=${repo_external_arch}] ${repo_external_server} ${repo_external_dist} ${repo_external_components}" >> ${wfile}
 fi
 
 if [ "x${repo_flat}" = "xenable" ] ; then
