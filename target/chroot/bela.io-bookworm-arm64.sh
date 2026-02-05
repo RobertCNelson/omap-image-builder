@@ -248,8 +248,6 @@ echo blacklist rtc_ti_k3 >> /etc/modprobe.d/blacklist.conf
 systemctl disable code-server@debian.service || true
 # node-red (some dataflow language for IoT)
 systemctl disable  nodered  || true
-# OTA update client
-systemctl disable mender-client || true
 # Debian auto updates
 systemctl disable unattended-upgrades || true
 
