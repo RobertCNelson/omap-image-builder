@@ -1,19 +1,21 @@
 #!/bin/bash
 
-OPT=$(getent passwd voodoo && echo true || echo false)
+export apt_proxy=192.168.1.10:3142/
+
 config=bela.io-debian-bookworm-iot-v6.12-ti-arm64-k3-am62
 filesize=8gb
 rootfs="debian-arm64-12-iot-v6.12-ti-bela-testing"
 
-r_processor="TI AM62"
+debian_short="Debian 12"
+debian_long="Debian 12 (Bookworm)"
 
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
-	$OPT && sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: Bela Gem ${r_board} Debian 12 ${r_name}" >> ${yml_file}
-	echo "  description: Debian 12 (Bookworm) with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
+	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
+	echo "  description: ${debian_long} with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
 	echo "  icon: https://raw.githubusercontent.com/BelaPlatform/bela_sample/refs/heads/master/src/images/bela_logo_colour.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/BelaPlatform/bela-distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -43,14 +45,15 @@ compress_snapshot_image () {
 	sync
 
 	sha256sum ${device}-${export_filename}-${filesize}.img.xz > ${device}-${export_filename}-${filesize}.img.xz.sha256sum
-	$OPT && sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	$OPT && sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	$OPT && sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	$OPT && sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.bmap /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
+	sudo -uvoodoo cp -v ./dpkg-sbom.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.dpkg-sbom.txt || true
 }
 
 if [ -d ./deploy ] ; then
-	sudo rm -rf ./deploy/* || true
+	sudo rm -rf ./deploy || true
 fi
 
 touch .notar
@@ -66,8 +69,13 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb bela-pocketbeagle2"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb bela-pocketbeagle2
 	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
+
+	r_board="Bela Gem BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
 
 	r_description="Bela environment"
 
@@ -79,6 +87,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
+	cd ../
 else
 	echo "failure"
 	exit 2
