@@ -100,7 +100,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	device="beagley-ai" ; compress_snapshot_image
 
-	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027) (Vulkan/mesa 25.3)"
+	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027) (Vulkan/Mesa 26.0.x)"
 
 	r_board="BeaglePlay"
 	r_processor="TI AM62"
