@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-base-v6.16-armhf-am335x
+config=bb.org-debian-trixie-base-v6.19-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-13-base-v6.16"
+rootfs="debian-armhf-13-base-v6.19"
 
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
@@ -80,7 +80,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
-	r_name="v6.16.x (Stable)"
+	r_name="v6.19.x (Stable)"
 	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
