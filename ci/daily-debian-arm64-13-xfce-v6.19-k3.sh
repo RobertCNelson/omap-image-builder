@@ -2,9 +2,9 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-base-v6.19-armhf-am335x
-filesize=4gb
-rootfs="debian-armhf-13-base-v6.19"
+config=bb.org-debian-trixie-xfce-v6.19-k3-arm64
+filesize=12gb
+rootfs="debian-arm64-13-xfce-v6.19-k3"
 
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
@@ -67,22 +67,46 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
+	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
 
-	r_description="no desktop environment"
+	r_description="the Xfce Desktop"
 
-	r_name="v6.19.x (Stable)"
+	r_name="v6.19.x-k3 XFCE (Stable v6.19.x)"
 
-	r_board="BeagleBone Black"
-	r_processor="TI AM335x"
-	r_devices="beagle-am335"
+	r_board="BeagleBone AI-64"
+	r_processor="TI TDA4VM"
+	r_devices="beagle-tda4vm"
 
-	device="am335x" ; compress_snapshot_image
+	device="bbai64" ; compress_snapshot_image
+
+	r_board="BeagleY-AI"
+	r_processor="TI AM67A (J722S)"
+	r_devices="beagle-am67"
+
+	device="beagley-ai" ; compress_snapshot_image
+
+	r_name="v6.19.x-k3 XFCE (Stable v6.19.x) (Vulkan/Mesa 26.0.x)"
+
+	r_board="BeaglePlay"
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
+
+	device="beagleplay" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
