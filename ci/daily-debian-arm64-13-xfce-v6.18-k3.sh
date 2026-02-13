@@ -96,12 +96,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="the Xfce Desktop"
 
-	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027)"
-
 	r_board="BeagleY-AI"
 	r_processor="TI AM67A (J722S)"
 	r_devices="beagle-am67"
 
+	r_name="v6.18.x-k3 XFCE (LTS-Dec-2027)"
 	device="beagley-ai" ; compress_snapshot_image
 
 	r_board="BeagleBone AI-64"
@@ -117,8 +116,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_board="BeaglePlay"
 	r_processor="TI AM62"
 	r_devices="beagle-am62"
-
-	r_description="the Xfce Desktop"
 
 	r_name="v6.18.x-k3 XFCE (Recommended) (LTS-Dec-2027) (Vulkan/Mesa 26.0.x)"
 	device="beagleplay" ; compress_snapshot_image

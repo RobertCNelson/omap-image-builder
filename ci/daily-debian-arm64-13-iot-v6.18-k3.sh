@@ -67,13 +67,23 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
@@ -96,30 +106,38 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
+	r_board="BeagleY-AI"
+	r_processor="TI AM67A (J722S)"
+	r_devices="beagle-am67"
+
 	r_name="v6.18.x-k3 IoT (LTS-Dec-2027)"
+	device="beagley-ai" ; compress_snapshot_image
 
 	r_board="BeagleBone AI-64"
 	r_processor="TI TDA4VM"
 	r_devices="beagle-tda4vm"
 
+	r_name="v6.18.x-k3 IoT (Recommended) (LTS-Dec-2027)"
 	device="bbai64" ; compress_snapshot_image
 
-	r_board="BeagleY-AI"
-	r_processor="TI AM67A (J722S)"
-	r_devices="beagle-am67"
-
-	device="beagley-ai" ; compress_snapshot_image
+	r_name="v6.18.x-k3 IoT Flasher (Recommended) (LTS-Dec-2027)"
+	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	r_board="BeaglePlay"
 	r_processor="TI AM62"
 	r_devices="beagle-am62"
 
+	r_name="v6.18.x-k3 IoT (Recommended) (LTS-Dec-2027)"
 	device="beagleplay" ; compress_snapshot_image
+
+	r_name="v6.18.x-k3 IoT Flasher (Recommended) (LTS-Dec-2027)"
+	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	r_board="PocketBeagle 2"
 	r_processor="TI AM62"
 	r_devices="pocketbeagle2-am62"
 
+	r_name="v6.18.x-k3 IoT (LTS-Dec-2027)"
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	r_name="v6.18.x-k3 IoT (TechLab Workshop) (LTS-Dec-2027)"

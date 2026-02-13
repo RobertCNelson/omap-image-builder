@@ -72,10 +72,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
-	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+#	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
+#	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
+#	mv ./*.img ../
+#	cp -v ./dpkg-sbom.txt ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
@@ -93,8 +93,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_name="v6.12.x-ti Minimal"
 	device="beagleplay" ; compress_snapshot_image
 
-	r_name="v6.12.x-ti eMMC Minimal Flasher"
-	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+#	r_name="v6.12.x-ti eMMC Minimal Flasher"
+#	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	r_board="PocketBeagle 2"
 	r_processor="TI AM62"
@@ -102,7 +102,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_name="v6.12.x-ti Minimal (Recommended)"
 	device="pocketbeagle2" ; compress_snapshot_image
-
 
 	rm -rf ${tempdir} || true
 	cd ../
