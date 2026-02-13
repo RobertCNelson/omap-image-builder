@@ -72,10 +72,10 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
-	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+#	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
+#	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
+#	mv ./*.img ../
+#	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
 
@@ -85,11 +85,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="the Xfce Desktop"
 
-	r_name="v6.12.x-ti XFCE (Recommended)"
+	r_name="v6.12.x-ti XFCE"
 	device="beagleplay" ; compress_snapshot_image
 
-	r_name="v6.12.x-ti eMMC XFCE Flasher (Recommended)"
-	device="beagleplay-emmc-flasher" ; compress_snapshot_image
+#	r_name="v6.12.x-ti eMMC XFCE Flasher (Recommended)"
+#	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
