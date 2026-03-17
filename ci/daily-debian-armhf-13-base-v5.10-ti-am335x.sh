@@ -9,10 +9,6 @@ rootfs="debian-armhf-13-base-v5.10-ti"
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
 
-r_board="BeagleBone Black"
-r_processor="TI AM335x"
-r_devices="beagle-am335"
-
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
@@ -81,6 +77,11 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_description="no desktop environment"
 
 	r_name="v5.10.x-ti (Old Compatible)"
+
+	r_board="BeagleBone Black"
+	r_processor="TI AM335x"
+	r_devices="beagle-am335"
+
 	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true

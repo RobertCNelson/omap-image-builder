@@ -9,9 +9,10 @@ rootfs="debian-armhf-12-base-v6.18"
 debian_short="Debian 12"
 debian_long="Debian 12 (Bookworm)"
 
-r_board="BeagleBone Black"
-r_processor="TI AM335x"
-r_devices="beagle-am335"
+#https://www.kernel.org/category/releases.html
+r_kernel="6.18"
+r_support_date="Dec, 2028"
+unset r_board_adv
 
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
@@ -19,7 +20,7 @@ compress_snapshot_image () {
 	sync
 
 	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
-	echo "  description: ${debian_long} with ${r_description} for ${r_board} based on ${r_processor} processor" >> ${yml_file}
+	echo "  description: ${debian_long} with ${r_description} for ${r_board}${r_board_adv} based on ${r_processor} processor running linux ${r_kernel}, mainline support till ${r_support_date}." >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
@@ -80,7 +81,12 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
-	r_name="v6.18.x (LTS-Dec-2028)"
+	r_name="v${r_kernel}.x"
+
+	r_board="BeagleBone Black"
+	r_processor="TI AM335x"
+	r_devices="beagle-am335"
+
 	device="am335x" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
