@@ -172,7 +172,7 @@ install_git_repos () {
 	git_branch="v6.18.x"
 	git_clone_branch
 
-	git_repo="https://github.com/rm-hull/spidev-test"
+	git_repo="https://github.com/beagleboard/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
 

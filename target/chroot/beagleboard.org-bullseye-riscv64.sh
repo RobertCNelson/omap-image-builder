@@ -137,7 +137,7 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/rm-hull/spidev-test"
+	git_repo="https://github.com/beagleboard/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
 }
