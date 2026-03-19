@@ -156,6 +156,16 @@ install_git_repos () {
 	git_branch="v6.18.x"
 	git_clone_branch
 
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-6.19.x"
+	git_branch="v6.19.x"
+	git_clone_branch
+
+	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
+	git_target_dir="/opt/source/dtb-7.0.x"
+	git_branch="v7.0.x"
+	git_clone_branch
+
 	git_repo="https://github.com/beagleboard/spidev-test"
 	git_target_dir="/opt/source/spidev-test"
 	git_clone
