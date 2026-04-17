@@ -836,9 +836,15 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		if [ ! "x${rfs_xorg_config}" = "x" ] ; then
 			if [ -f /etc/bbb.io/templates/${rfs_xorg_config} ] ; then
-				cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf
-				echo "Log: (chroot): Configured /etc/X11/xorg.conf"
-				cat /etc/X11/xorg.conf
+				if [ -d /etc/X11/xorg.conf.d/ ] ; then
+					cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf.d/10-xorg.conf
+					echo "Log: (chroot): Configured /etc/X11/xorg.conf.d/10-xorg.conf"
+					cat /etc/X11/xorg.conf.d/10-xorg.conf
+				else
+					cp -v /etc/bbb.io/templates/${rfs_xorg_config} /etc/X11/xorg.conf
+					echo "Log: (chroot): Configured /etc/X11/xorg.conf"
+					cat /etc/X11/xorg.conf
+				fi
 			fi
 		fi
 
