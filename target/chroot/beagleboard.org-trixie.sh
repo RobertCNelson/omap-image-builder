@@ -70,7 +70,8 @@ setup_system () {
 		if [ -f /etc/bbb.io/templates/nginx/nginx-autoindex ] ; then
 			rm -f /etc/nginx/sites-enabled/default || true
 			cp -v /etc/bbb.io/templates/nginx/nginx-autoindex /etc/nginx/sites-enabled/default
-			cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
+			cp -v /etc/bbb.io/templates/nginx/Cockpit.html /var/www/html/ || true
+			#cp -v /etc/bbb.io/templates/nginx/*.html /var/www/html/
 			rm -f /var/www/html/index.nginx-debian.html || true
 		fi
 	fi
