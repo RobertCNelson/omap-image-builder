@@ -140,6 +140,8 @@ setup_system
 setup_desktop
 
 if [ -f /usr/bin/git ] ; then
+	mkdir -p /opt/source/
+	chown -R ${rfs_username}:${rfs_username} /opt/source/
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
