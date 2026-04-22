@@ -122,58 +122,8 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-5.10-ti"
-	git_branch="v5.10.x-ti-unified"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.1-Beagle"
-	git_branch="v6.1.x-Beagle"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.6-Beagle"
-	git_branch="v6.6.x-Beagle"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.12-Beagle"
-	git_branch="v6.12.x-Beagle"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.16.x"
-	git_branch="v6.16.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.17.x"
-	git_branch="v6.17.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.18.x"
-	git_branch="v6.18.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.19.x"
-	git_branch="v6.19.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-7.0.x"
-	git_branch="v7.0.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/spidev-test"
-	git_target_dir="/opt/source/spidev-test"
-	git_clone
-
-	git_repo="https://github.com/TexasInstruments/open-pru.git"
-	git_target_dir="/opt/source/open-pru"
-	git_clone
+	echo "Log: (chroot): Running: [/usr/bin/beagle-dtb-source]"
+	/usr/bin/beagle-dtb-source
 
 	git_repo="https://github.com/beagleboard/vsx-examples.git"
 	git_target_dir="/opt/vsx-examples"
@@ -190,6 +140,8 @@ setup_system
 setup_desktop
 
 if [ -f /usr/bin/git ] ; then
+	mkdir -p /opt/source/
+	chown -R ${rfs_username}:${rfs_username} /opt/source/
 	git config --global user.email "${rfs_username}@example.com"
 	git config --global user.name "${rfs_username}"
 	install_git_repos
