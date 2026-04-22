@@ -122,50 +122,8 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-5.10-ti"
-	git_branch="v5.10.x-ti-unified"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.1.x"
-	git_branch="v6.1.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.6.x"
-	git_branch="v6.6.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.12.x"
-	git_branch="v6.12.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.16.x"
-	git_branch="v6.16.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.17.x"
-	git_branch="v6.17.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.18.x"
-	git_branch="v6.18.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-6.19.x"
-	git_branch="v6.19.x"
-	git_clone_branch
-
-	git_repo="https://github.com/beagleboard/BeagleBoard-DeviceTrees.git"
-	git_target_dir="/opt/source/dtb-7.0.x"
-	git_branch="v7.0.x"
-	git_clone_branch
+	echo "Log: (chroot): Running: [/usr/bin/beagle-dtb-source]"
+	/usr/bin/beagle-dtb-source
 
 	git_repo="https://github.com/mvduin/bbb-pin-utils"
 	git_target_dir="/opt/source/bbb-pin-utils"
@@ -180,10 +138,6 @@ install_git_repos () {
 
 	git_repo="https://github.com/mvduin/overlay-utils"
 	git_target_dir="/opt/source/overlay-utils"
-	git_clone
-
-	git_repo="https://github.com/beagleboard/spidev-test"
-	git_target_dir="/opt/source/spidev-test"
 	git_clone
 }
 
