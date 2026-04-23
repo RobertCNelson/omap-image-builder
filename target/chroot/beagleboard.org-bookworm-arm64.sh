@@ -122,8 +122,10 @@ setup_desktop () {
 }
 
 install_git_repos () {
-	echo "Log: (chroot): Running: [/usr/bin/beagle-dtb-source]"
-	/usr/bin/beagle-dtb-source
+	if [ -f /usr/bin/beagle-dtb-source ] ; then
+		echo "Log: (chroot): Running: [/usr/bin/beagle-dtb-source]"
+		/usr/bin/beagle-dtb-source
+	fi
 
 	git_repo="https://github.com/beagleboard/vsx-examples.git"
 	git_target_dir="/opt/vsx-examples"
