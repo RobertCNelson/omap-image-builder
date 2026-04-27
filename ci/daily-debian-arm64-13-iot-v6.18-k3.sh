@@ -128,7 +128,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
 	device="bbai64" ; compress_snapshot_image
 
-	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher (Recommended)"
+	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher"
 	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	r_board="BeaglePlay"
@@ -139,7 +139,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
 	device="beagleplay" ; compress_snapshot_image
 
-	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher (Recommended)"
+	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher"
 	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	r_board="PocketBeagle 2"
