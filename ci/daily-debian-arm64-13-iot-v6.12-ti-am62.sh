@@ -105,7 +105,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_processor="TI AM62"
 	r_devices="pocketbeagle2-am62"
 
-	r_name="v6.12.x-ti IoT (Stable)"
+	r_name="v6.12.x-ti IoT"
 	device="pocketbeagle2" ; compress_snapshot_image
 
 	r_name="v6.12.x-ti (TechLab Workshop)"

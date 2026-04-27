@@ -76,7 +76,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="no desktop environment"
 
-	r_name="v7.0.x (Stable)"
+	r_name="v7.0.x"
 
 	r_board="BeagleBone Black"
 	r_processor="TI AM335x"
