@@ -113,6 +113,13 @@ check_defines () {
 		esac
 	fi
 	mirror="http://${apt_proxy}${deb_mirror}"
+
+	if [ ! "${deb_cache}" ] ; then
+		echo "Log: No package cache directory specified"
+	else
+		echo "Log: Using package cache directory ${deb_cache}"
+		options="${options} --cache-dir=${deb_cache}"
+	fi
 }
 
 report_size () {
