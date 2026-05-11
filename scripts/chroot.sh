@@ -1312,6 +1312,13 @@ if [ -n "${early_chroot_script}" -a -r "${DIR}/target/chroot/${early_chroot_scri
 	sudo rm -f "${tempdir}/etc/oib.project" || true
 fi
 
+if [ ! "${deb_cache}" ] ; then
+	echo "Log: No package cache directory specified"
+else
+	echo "Log: Using package cache directory ${deb_cache}"
+	sudo mount --bind ${deb_cache} ${tempdir}/var/cache/apt/archives
+fi
+
 chroot_mount
 sudo chroot "${tempdir}" /bin/bash -e chroot_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/bash -e chroot_script.sh]"
@@ -1511,6 +1518,12 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 __EOF__
 
 ###MUST BE LAST...
+if [ ! "${deb_cache}" ] ; then
+	echo
+else
+	echo "Log: Removing bind mount ${deb_cache}"
+	sudo umount ${tempdir}/var/cache/apt/archives
+fi
 sudo mv "${DIR}/cleanup_script.sh" "${tempdir}/cleanup_script.sh"
 sudo chroot "${tempdir}" /bin/bash -e cleanup_script.sh
 echo "Log: Complete: [sudo chroot ${tempdir} /bin/bash -e cleanup_script.sh]"
