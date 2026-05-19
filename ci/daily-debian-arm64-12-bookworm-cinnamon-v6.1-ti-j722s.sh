@@ -80,7 +80,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_description="the Cinnamon Desktop"
 
-	r_name="v6.1.x-ti Cinnamon (Testing)"
+	r_name="v6.1.x-ti Cinnamon"
 	device="beagley-ai" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true

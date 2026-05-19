@@ -80,7 +80,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_processor="TI AM67A (J722S)"
 	r_devices="beagle-am67"
 
-	r_name="v6.12.x-ti XFCE (Testing)"
+	r_name="v6.12.x-ti XFCE"
 	device="beagley-ai" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
