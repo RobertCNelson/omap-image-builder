@@ -2,7 +2,7 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-xfce-v7.0-k3-arm64
+config=bb.org-debian-trixie-xfce-v7.1-k3-arm64
 filesize=12gb
 rootfs="debian-arm64-13-xfce-v7.1-k3"
 
