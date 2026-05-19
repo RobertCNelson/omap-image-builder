@@ -72,11 +72,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
-#	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher"
-#	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher
-#	mv ./*.img ../
-#	cp -v ./dpkg-sbom.txt ../ || true
-
 	cd ../
 
 	r_description="no desktop environment"
@@ -87,9 +82,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_name="v6.12.x-ti Minimal"
 	device="bbai64" ; compress_snapshot_image
-
-#	r_name="v6.12.x-ti eMMC Minimal Flasher"
-#	device="bbai64-emmc-flasher" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../

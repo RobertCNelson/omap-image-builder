@@ -77,18 +77,8 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher"
-	sudo ./setup_sdcard.sh --img-${filesize} bbai64-emmc-flasher-${export_filename} --dtb bbai64-swap --enable-extlinux-flasher
-	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
-
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
-	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
-
-	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
-	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
@@ -118,9 +108,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
 	device="bbai64" ; compress_snapshot_image
 
-	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher"
-	device="bbai64-emmc-flasher" ; compress_snapshot_image
-
 	r_board="BeaglePlay"
 	unset r_board_adv
 	r_processor="TI AM62"
@@ -128,9 +115,6 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 
 	r_name="v${r_kernel}.x-k3 ${r_short_desc} (Vulkan/Mesa 26.0.x)"
 	device="beagleplay" ; compress_snapshot_image
-
-	r_name="v${r_kernel}.x-k3 ${r_short_desc} Flasher (Vulkan/Mesa 26.0.x)"
-	device="beagleplay-emmc-flasher" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
