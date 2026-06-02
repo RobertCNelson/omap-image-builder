@@ -22,6 +22,36 @@ if [ -f "${DIR}/.notar" ] ; then
 	unset chroot_tarball
 fi
 
+check_command () {
+	command -v -- "$1" >/dev/null 2>&1
+}
+
+check_and_copy_qemu () {
+	local arch_name=$1  # e.g., "arm", "aarch64", "riscv64"
+	local dest_dir=$2   # e.g., "${tempdir}/usr/bin/"
+
+	local static_tool="${arch_name}-static"
+	local standard_tool="${arch_name}"
+
+	local found_tool=""
+	local qemu_path=""
+
+	if check_command "$static_tool"; then
+		found_tool="$static_tool"
+		qemu_path=$(which "$static_tool")
+	elif check_command "$standard_tool"; then
+		found_tool="$standard_tool"
+		qemu_path=$(which "$standard_tool")
+	else
+		echo "Error: Missing required userspace tool ($static_tool or $standard_tool) for ${arch_name}." >&2
+		exit 1
+	fi
+
+	echo "Found ${arch_name} tool: $found_tool at $qemu_path"
+	echo "sudo cp -v \"$qemu_path\" \"${dest_dir}\""
+	sudo cp -v "$qemu_path" "${dest_dir}/"
+}
+
 check_defines () {
 	if [ ! "${tempdir}" ] ; then
 		echo "scripts/deboostrap_first_stage.sh: Error: tempdir undefined"
@@ -235,19 +265,16 @@ check_defines
 
 if [ "x${host_arch}" != "xarmv7l" ] && [ "x${host_arch}" != "xaarch64" ] ; then
 	if [ "x${deb_arch}" = "xarmel" ] || [ "x${deb_arch}" = "xarmhf" ] ; then
-		echo "sudo cp -v $(which qemu-arm-static) \"${tempdir}/usr/bin/\""
-		sudo cp -v $(which qemu-arm-static) "${tempdir}/usr/bin/"
+		check_and_copy_qemu "arm" "${tempdir}/usr/bin/"
 	fi
 	if [ "x${deb_arch}" = "xarm64" ] ; then
-		echo "sudo cp -v $(which qemu-aarch64-static) \"${tempdir}/usr/bin/\""
-		sudo cp -v $(which qemu-aarch64-static) "${tempdir}/usr/bin/"
+		check_and_copy_qemu "aarch64" "${tempdir}/usr/bin/"
 	fi
 fi
 
 if [ "x${host_arch}" != "xriscv64" ] ; then
 	if [ "x${deb_arch}" = "xriscv64" ] ; then
-		echo "sudo cp -v $(which qemu-riscv64-static) \"${tempdir}/usr/bin/\""
-		sudo cp -v $(which qemu-riscv64-static) "${tempdir}/usr/bin/"
+		check_and_copy_qemu "riscv64" "${tempdir}/usr/bin/"
 	fi
 fi
 
