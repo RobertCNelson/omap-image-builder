@@ -16,11 +16,12 @@ debootstrap_is_installed () {
 		unset deb_pkgs
 		dpkg -l | grep debootstrap >/dev/null || deb_pkgs="${deb_pkgs}debootstrap "
 
-		if [ "x${host_arch}" = "xx86_64" ] ; then
-			#FIXME: while this is not a catch-all, x86_64 users would need qemu...
-			#If your building RISC-V on ARM64, i'm just going to assume you have qemu installed, instead of fancy logic here...
-			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
-		fi
+# Starting with: qemu (1:10.0.3+ds-4) qemu-user-static -> qemu-user-binfmt rework this...
+#		if [ "x${host_arch}" = "xx86_64" ] ; then
+#			#FIXME: while this is not a catch-all, x86_64 users would need qemu...
+#			#If your building RISC-V on ARM64, i'm just going to assume you have qemu installed, instead of fancy logic here...
+#			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
+#		fi
 
 		if [ "${deb_pkgs}" ] ; then
 			echo "Installing: ${deb_pkgs}"
