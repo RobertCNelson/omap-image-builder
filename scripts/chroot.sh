@@ -30,8 +30,8 @@ check_and_copy_qemu () {
 	local arch_name=$1  # e.g., "arm", "aarch64", "riscv64"
 	local dest_dir=$2   # e.g., "${tempdir}/usr/bin/"
 
-	local static_tool="${arch_name}-static"
-	local standard_tool="${arch_name}"
+	local static_tool="qemu-${arch_name}-static"
+	local standard_tool="qemu-${arch_name}"
 
 	local found_tool=""
 	local qemu_path=""
@@ -585,10 +585,10 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 	is_this_qemu () {
 		unset warn_qemu_will_fail
-		if [ -f /usr/bin/qemu-arm-static ] ; then
+		if [ -f /usr/bin/qemu-aarch64-static ] ; then
 			warn_qemu_will_fail=1
 		fi
-		if [ -f /usr/bin/qemu-aarch64-static ] ; then
+		if [ -f /usr/bin/qemu-arm-static ] ; then
 			warn_qemu_will_fail=1
 		fi
 		if [ -f /usr/bin/qemu-riscv64-static ] ; then
@@ -1567,12 +1567,24 @@ if [ "x${deb_arch}" = "xarmhf" ] ; then
 	fi
 fi
 
-if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
-	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
+if [ -f "${tempdir}/usr/bin/qemu-aarch64" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-aarch64" || true
 fi
 
 if [ -f "${tempdir}/usr/bin/qemu-aarch64-static" ] ; then
 	sudo rm -f "${tempdir}/usr/bin/qemu-aarch64-static" || true
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-arm" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-arm" || true
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-arm-static" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-arm-static" || true
+fi
+
+if [ -f "${tempdir}/usr/bin/qemu-riscv64" ] ; then
+	sudo rm -f "${tempdir}/usr/bin/qemu-riscv64" || true
 fi
 
 if [ -f "${tempdir}/usr/bin/qemu-riscv64-static" ] ; then
