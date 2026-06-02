@@ -21,6 +21,7 @@ debootstrap_is_installed () {
 #			#FIXME: while this is not a catch-all, x86_64 users would need qemu...
 #			#If your building RISC-V on ARM64, i'm just going to assume you have qemu installed, instead of fancy logic here...
 #			dpkg -l | grep qemu-user-static >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-static "
+#			dpkg -l | grep qemu-user-binfmt >/dev/null || deb_pkgs="${deb_pkgs}qemu-user-binfmt "
 #		fi
 
 		if [ "${deb_pkgs}" ] ; then
