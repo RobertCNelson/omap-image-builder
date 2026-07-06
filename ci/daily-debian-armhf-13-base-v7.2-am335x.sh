@@ -2,15 +2,15 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-base-v7.1-armhf-am335x
+config=bb.org-debian-trixie-base-v7.2-armhf-am335x
 filesize=4gb
-rootfs="debian-armhf-13-base-v7.1"
+rootfs="debian-armhf-13-base-v7.2"
 
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
 
 #https://www.kernel.org/category/releases.html
-r_kernel="7.1"
+r_kernel="7.2"
 unset r_support_date
 unset r_board_adv
 

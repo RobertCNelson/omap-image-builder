@@ -2,15 +2,15 @@
 
 export apt_proxy=192.168.1.10:3142/
 
-config=bb.org-debian-trixie-base-v7.1-armhf-am335x
-filesize=4gb
-rootfs="debian-armhf-13-base-v7.1"
+config=bb.org-debian-trixie-iot-v7.2-k3-arm64
+filesize=8gb
+rootfs="debian-arm64-13-iot-v7.2-k3"
 
 debian_short="Debian 13"
 debian_long="Debian 13 (Trixie)"
 
 #https://www.kernel.org/category/releases.html
-r_kernel="7.1"
+r_kernel="7.2"
 unset r_support_date
 unset r_board_adv
 
@@ -72,22 +72,70 @@ source .project
 if [ -d ./deploy/${export_filename}/ ] ; then
 	cd ./deploy/${export_filename}/
 
-	echo "sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap"
-	sudo ./setup_sdcard.sh --img-${filesize} am335x-${export_filename} --dtb beaglebone-fat-swap
+	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
+	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
+	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
+	mv ./*.img ../
+	cp -v ./dpkg-sbom.txt ../ || true
+
+	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop"
+	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
 	mv ./*.img ../
 	cp -v ./dpkg-sbom.txt ../ || true
 
 	cd ../
 
 	r_description="no desktop environment"
+	r_short_desc="IoT"
 
-	r_name="v${r_kernel}.x"
+	r_board="BeagleY-AI"
+	unset r_board_adv
+	r_processor="TI AM67A (J722S)"
+	r_devices="beagle-am67"
 
-	r_board="BeagleBone Black"
-	r_processor="TI AM335x"
-	r_devices="beagle-am335"
+	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
+	device="beagley-ai" ; compress_snapshot_image
 
-	device="am335x" ; compress_snapshot_image
+	r_board="BeagleBone AI-64"
+	unset r_board_adv
+	r_processor="TI TDA4VM"
+	r_devices="beagle-tda4vm"
+
+	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
+	device="bbai64" ; compress_snapshot_image
+
+	r_board="BeaglePlay"
+	unset r_board_adv
+	r_processor="TI AM62"
+	r_devices="beagle-am62"
+
+	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
+	device="beagleplay" ; compress_snapshot_image
+
+	r_board="PocketBeagle 2"
+	r_board_adv=" (and PocketBeagle 2 Industrial)"
+	r_processor="TI AM62"
+	r_devices="pocketbeagle2-am62"
+
+	r_name="v${r_kernel}.x-k3 ${r_short_desc}"
+	device="pocketbeagle2" ; compress_snapshot_image
+
+	r_name="v${r_kernel}.x-k3 ${r_short_desc} (TechLab Workshop)"
+	device="pocketbeagle2-workshop" ; compress_snapshot_image
 
 	rm -rf ${tempdir} || true
 	cd ../
