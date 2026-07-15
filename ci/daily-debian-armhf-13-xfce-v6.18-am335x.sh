@@ -82,7 +82,7 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	r_description="the Xfce Desktop"
 	r_short_desc="XFCE"
 
-	r_name="v${r_kernel}.x"
+	r_name="v${r_kernel}.x ${r_short_desc}"
 
 	r_board="BeagleBone Black"
 	r_processor="TI AM335x"
