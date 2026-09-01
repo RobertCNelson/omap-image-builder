@@ -402,21 +402,21 @@ forky|sid)
 	;;
 esac
 
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-security/
-case "${deb_codename}" in
-bionic|focal|jammy|noble)
-	echo "" >> ${wfile}
-	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
-	;;
-esac
-
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/focal-updates/
+#Ubuntu ports updates: http://ports.ubuntu.com/dists/noble-updates/
 case "${deb_codename}" in
 bionic|focal|jammy|noble)
 	echo "" >> ${wfile}
 	echo "deb http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	;;
+esac
+
+#Ubuntu ports updates: http://ports.ubuntu.com/dists/noble-security/
+case "${deb_codename}" in
+bionic|focal|jammy|noble)
+	echo "" >> ${wfile}
+	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
+	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
 	;;
 esac
 
