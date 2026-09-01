@@ -390,12 +390,7 @@ buster)
 	echo "deb http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://archive.debian.org/debian-security ${deb_codename}/updates ${deb_components}" >> ${wfile}
 	;;
-bullseye)
-	echo "" >> ${wfile}
-	echo "deb http://archive.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "#deb-src http://archive.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
-	;;
-bookworm|trixie)
+bullseye|bookworm|trixie)
 	echo "" >> ${wfile}
 	echo "deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "#deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
