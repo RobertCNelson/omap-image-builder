@@ -358,11 +358,11 @@ wfile="/tmp/sources.list"
 echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
 echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 
-#Q) What should I use in sources.list for bullseye?
+#Q) What should I use in sources.list for trixie?
 #There is a change in the security repository compared to prior releases.
-#deb http://deb.debian.org/debian bullseye main
-#deb http://deb.debian.org/debian bullseye-updates main
-#deb http://security.debian.org/debian-security bullseye-security main
+#deb http://deb.debian.org/debian trixie main
+#deb http://deb.debian.org/debian trixie-updates main
+#deb http://security.debian.org/debian-security trixie-security main
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
