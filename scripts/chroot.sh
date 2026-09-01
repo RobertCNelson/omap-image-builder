@@ -355,17 +355,8 @@ fi
 sudo sh -c "date --utc \"+%4Y%2m%2d%2H%2M\" > ${tempdir}/etc/timestamp"
 
 wfile="/tmp/sources.list"
-
-case "${deb_codename}" in
-buster)
-	echo "deb http://archive.debian.org/debian ${deb_codename} ${deb_components}" >> ${wfile}
-	echo "#deb-src http://archive.debian.org/debian ${deb_codename} ${deb_components}" >> ${wfile}
-	;;
-*)
-	echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
-	echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
-	;;
-esac
+echo "deb http://${deb_mirror} ${deb_codename} ${deb_components}" > ${wfile}
+echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfile}
 
 #Q) What should I use in sources.list for bullseye?
 #There is a change in the security repository compared to prior releases.
