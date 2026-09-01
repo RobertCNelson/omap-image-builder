@@ -366,12 +366,12 @@ echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfil
 
 #https://wiki.debian.org/StableUpdates
 case "${deb_codename}" in
-buster)
+buster|bullseye)
 	echo "" >> ${wfile}
 	echo "deb http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	;;
-bullseye|bookworm|trixie)
+bookworm|trixie)
 	echo "" >> ${wfile}
 	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
