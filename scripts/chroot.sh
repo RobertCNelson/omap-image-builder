@@ -368,8 +368,8 @@ echo "#deb-src http://${deb_mirror} ${deb_codename} ${deb_components}" >> ${wfil
 case "${deb_codename}" in
 buster)
 	echo "" >> ${wfile}
-	echo "deb http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://deb.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "deb http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
+	echo "#deb-src http://archive.debian.org/debian ${deb_codename}-updates ${deb_components}" >> ${wfile}
 	;;
 bullseye|bookworm|trixie)
 	echo "" >> ${wfile}
