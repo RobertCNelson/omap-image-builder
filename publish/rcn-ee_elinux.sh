@@ -14,13 +14,11 @@ fi
 
 if [ ! -f jenkins.build ] ; then
 ./RootStock-NG.sh -c rcn-ee.net-console-debian-buster-armhf
-./RootStock-NG.sh -c rcn-ee.net-console-ubuntu-focal-armhf
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
 debian_stable="debian-10.13-console-armhf-${time}"
-ubuntu_stable="ubuntu-20.04.4-console-armhf-${time}"
 
 xz_img="xz -T2 -z -8"
 xz_tar="xz -T2 -z -8"
@@ -138,38 +136,6 @@ options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"
 options="--img bone-\${base_rootfs}                ${beaglebone}"                 ; generate_img
 options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"  ; generate_img
 options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                  ; generate_img
-
-#Ubuntu Stable
-base_rootfs="${ubuntu_stable}" ; blend="elinux" ; extract_base_rootfs
-
-options="--img am57xx-\${base_rootfs}              ${beagle_x15}"                 ; generate_img
-options="--img am57xx-eMMC-flasher-\${base_rootfs} ${beagle_x15} --emmc-flasher"  ; generate_img
-options="--img bone-\${base_rootfs}                ${beaglebone}"                 ; generate_img
-options="--img bone-eMMC-flasher-\${base_rootfs}   ${beaglebone} --emmc-flasher"  ; generate_img
-options="--img bbxm-\${base_rootfs}                ${beagle_xm}"                  ; generate_img
-
-#Archive tar:
-base_rootfs="${debian_stable}" ; blend="elinux" ; archive_base_rootfs
-base_rootfs="${ubuntu_stable}" ; blend="elinux" ; archive_base_rootfs
-
-#Archive img:
-base_rootfs="${debian_stable}" ; blend="microsd"
-wfile="am57xx-\${base_rootfs}-2gb" ; archive_img
-wfile="bone-\${base_rootfs}-2gb"   ; archive_img
-wfile="bbxm-\${base_rootfs}-2gb"   ; archive_img
-
-base_rootfs="${ubuntu_stable}" ; blend="microsd"
-wfile="am57xx-\${base_rootfs}-2gb" ; archive_img
-wfile="bone-\${base_rootfs}-2gb"   ; archive_img
-wfile="bbxm-\${base_rootfs}-2gb"   ; archive_img
-
-base_rootfs="${debian_stable}" ; blend="flasher"
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
-wfile="bone-eMMC-flasher-\${base_rootfs}-2gb"   ; archive_img
-
-base_rootfs="${ubuntu_stable}" ; blend="flasher"
-wfile="am57xx-eMMC-flasher-\${base_rootfs}-2gb" ; archive_img
-wfile="bone-eMMC-flasher-\${base_rootfs}-2gb"   ; archive_img
 
 __EOF__
 

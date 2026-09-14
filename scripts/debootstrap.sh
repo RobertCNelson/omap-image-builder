@@ -76,14 +76,6 @@ check_defines () {
 			options="${options} --no-check-gpg"
 		fi
 		;;
-	ubuntu)
-		if [ ! -f /usr/share/debootstrap/scripts/${suite} ] ; then
-			sudo ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/${suite}
-		fi
-		if [ ! -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ] ; then
-			options="${options} --no-check-gpg"
-		fi
-		;;
 	esac
 	options="${options} --foreign"
 
@@ -106,9 +98,6 @@ check_defines () {
 			#if [ "x${deb_arch}" = "xriscv64" ] ; then
 			#	deb_mirror="deb.debian.org/debian-ports"
 			#fi
-			;;
-		ubuntu)
-			deb_mirror="ports.ubuntu.com/"
 			;;
 		esac
 	fi

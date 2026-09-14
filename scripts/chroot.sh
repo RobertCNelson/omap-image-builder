@@ -96,10 +96,6 @@ check_defines () {
 		deb_components=${deb_components:-"main contrib non-free"}
 		deb_mirror=${deb_mirror:-"deb.debian.org/debian"}
 		;;
-	ubuntu)
-		deb_components=${deb_components:-"main universe multiverse"}
-		deb_mirror=${deb_mirror:-"ports.ubuntu.com/"}
-		;;
 	esac
 
 	if [ ! "${rfs_username}" ] ; then
@@ -297,32 +293,6 @@ echo ""  >> /tmp/01_noflash_kernel
 sudo mv /tmp/01_noflash_kernel "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_noflash_kernel"
 
-if [ "x${host_arch}" != "xriscv64" ] ; then
-	case "${deb_distribution}" in
-	ubuntu)
-		echo "# neuter ubuntu big firmware" > /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/amdgpu/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/dpaa2/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/i915/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/intel/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/iwlwifi-*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/liquidio/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/mellanox/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/mrvl/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/netronome/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/nvidia/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/qcom/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/qed/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/radeon/*" >> /tmp/01_ubuntu_big_firmware
-		echo "path-exclude=/usr/lib/firmware/vsc/*" >> /tmp/01_ubuntu_big_firmware
-		echo ""  >> /tmp/01_ubuntu_big_firmware
-
-		sudo mv /tmp/01_ubuntu_big_firmware "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
-		sudo chown root:root "${tempdir}/etc/dpkg/dpkg.cfg.d/01_ubuntu_big_firmware"
-		;;
-	esac
-fi
-
 #generic apt.conf tweaks for flash/mmc devices to save on wasted space...
 sudo mkdir -p "${tempdir}/etc/apt/apt.conf.d/" || true
 
@@ -341,7 +311,7 @@ echo 'Dpkg::Progress-Fancy "0";' > /tmp/99progressbar
 sudo mv /tmp/99progressbar "${tempdir}/etc/apt/apt.conf.d/99progressbar"
 sudo chown root:root "${tempdir}/etc/apt/apt.conf.d/99progressbar"
 
-if [ "x${deb_distribution}" = "xdebian" ] || [ "x${deb_distribution}" = "xubuntu" ] ; then
+if [ "x${deb_distribution}" = "xdebian" ] ; then
 	if [ "${apt_proxy}" ] ; then
 		#apt: make sure apt-cacher-ng doesn't break https repos
 		echo 'Acquire::https::Proxy::debian.beagle.cc "DIRECT";' > /tmp/03-proxy-https
@@ -399,24 +369,6 @@ forky|sid)
 	echo "" >> ${wfile}
 	echo "#deb http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
 	echo "##deb-src http://security.debian.org/debian-security ${deb_codename}-security ${deb_components}" >> ${wfile}
-	;;
-esac
-
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/noble-updates/
-case "${deb_codename}" in
-bionic|focal|jammy|noble)
-	echo "" >> ${wfile}
-	echo "deb http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-updates ${deb_components}" >> ${wfile}
-	;;
-esac
-
-#Ubuntu ports updates: http://ports.ubuntu.com/dists/noble-security/
-case "${deb_codename}" in
-bionic|focal|jammy|noble)
-	echo "" >> ${wfile}
-	echo "deb http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
-	echo "#deb-src http://ports.ubuntu.com/ ${deb_codename}-security ${deb_components}" >> ${wfile}
 	;;
 esac
 
@@ -553,9 +505,6 @@ case "${deb_distribution}" in
 debian)
 	distro="Debian"
 	;;
-ubuntu)
-	distro="Ubuntu"
-	;;
 esac
 
 #Backward compatibility, as setup_sdcard.sh expects [lsb_release -si > /etc/rcn-ee.conf]
@@ -618,11 +567,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 
 		#set distro:
 		. /etc/rcn-ee.conf
-
-		if [ "x\${distro}" = "xUbuntu" ] ; then
-			dpkg-divert --local --rename --add /sbin/initctl
-			ln -s /bin/true /sbin/initctl
-		fi
 	}
 
 	install_pkg_updates () {
@@ -1011,9 +955,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 
 			;;
-		Ubuntu)
-			passwd -l root || true
-			;;
 		esac
 	}
 
@@ -1026,24 +967,11 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 		echo "Log: (chroot): debian_startup_script"
 	}
 
-	ubuntu_startup_script () {
-		echo "Log: (chroot): ubuntu_startup_script"
-
-		#Not Optional...
-		#(protects your kernel, from Ubuntu repo which may try to take over your system on an upgrade)...
-		if [ -f /etc/flash-kernel.conf ] ; then
-			chown root:root /etc/flash-kernel.conf
-		fi
-	}
-
 	startup_script () {
 		echo "Log: (chroot): startup_script"
 		case "\${distro}" in
 		Debian)
 			debian_startup_script
-			;;
-		Ubuntu)
-			ubuntu_startup_script
 			;;
 		esac
 
@@ -1391,9 +1319,6 @@ if [ ! "x${rfs_console_banner}" = "x" ] || [ ! "x${rfs_console_user_pass}" = "x"
 					sudo sh -c "echo 'default [root] account is also enabled, make sure to login once as [root] to setup your password' >> ${wfile}"
 				fi
 				;;
-			ubuntu)
-				sudo sh -c "echo 'default username is [${rfs_username}] with a one time password of [${rfs_password}]' >> ${wfile}"
-				;;
 			esac
 		fi
 	fi
@@ -1507,11 +1432,6 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 			rm -rf /var/cache/ti-pru-cgt-installer/ || true
 		fi
 		rm -f /usr/sbin/policy-rc.d
-
-		if [ "x\${distro}" = "xUbuntu" ] ; then
-			rm -f /sbin/initctl || true
-			dpkg-divert --local --rename --remove /sbin/initctl
-		fi
 
 		if [ -f /etc/apt/apt.conf.d/03-proxy-https ] ; then
 			rm -rf /etc/apt/apt.conf.d/03-proxy-https || true
