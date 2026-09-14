@@ -16,20 +16,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c bb.org-debian-buster-console-v4.19
-#./RootStock-NG.sh -c bb.org-debian-buster-console-v5.4
-./RootStock-NG.sh -c bb.org-debian-buster-iot-v4.19
-#./RootStock-NG.sh -c bb.org-debian-buster-iot-v5.4
-./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.14
-#./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v4.19
-#./RootStock-NG.sh -c bb.org-debian-buster-iot-tidl-v5.4
-./RootStock-NG.sh -c bb.org-debian-buster-iot-mikrobus
-./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v4.19
-#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-v5.4
-./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.14
-#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v4.19
-#./RootStock-NG.sh -c bb.org-debian-buster-lxqt-tidl-v5.4
-./RootStock-NG.sh -c bb.org-debian-buster-lxqt-xm
 
 ./RootStock-NG.sh -c bb.org-debian-bullseye-minimal-v5.10-ti-armhf
 ./RootStock-NG.sh -c bb.org-debian-bullseye-iot-v5.10-ti-armhf
@@ -37,17 +23,6 @@ if [ ! -f jenkins.build ] ; then
 else
 	mkdir -p ${DIR}/deploy/ || true
 fi
-
-         debian_buster_tiny="debian-10.13-tiny-armhf-${time}"
-      debian_buster_console="debian-10.13-console-armhf-${time}"
-   debian_buster_console_xm="debian-10.13-console-xm-armhf-${time}"
-          debian_buster_iot="debian-10.13-iot-armhf-${time}"
-     debian_buster_iot_tidl="debian-10.13-iot-tidl-armhf-${time}"
-debian_buster_iot_grove_kit="debian-10.13-iot-grove-kit-armhf-${time}"
- debian_buster_iot_mikrobus="debian-10.13-iot-mikrobus-armhf-${time}"
-         debian_buster_lxqt="debian-10.13-lxqt-armhf-${time}"
-    debian_buster_lxqt_tidl="debian-10.13-lxqt-tidl-armhf-${time}"
-      debian_buster_lxqt_xm="debian-10.13-lxqt-xm-armhf-${time}"
 
 debian_bullseye_minimal="debian-11.9-minimal-armhf-${time}"
     debian_bullseye_iot="debian-11.9-iot-armhf-${time}"
@@ -170,63 +145,6 @@ generate_img () {
         fi
 }
 
-###DEBIAN BUSTER: console
-rootfs="${debian_buster_console}" ; blend="buster-console" ; extract_base_rootfs
-
-options="--img-1gb am57xx-\${rootfs}               ${am57xx_v419ti}"                 ; generate_img
-options="--img-1gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v419ti} --emmc-flasher"  ; generate_img
-options="--img-1gb bone-\${rootfs}                 ${am335x_v419ti}"                 ; generate_img
-options="--img-1gb bone-eMMC-flasher-\${rootfs}    ${am335x_v419ti} --emmc-flasher"  ; generate_img
-
-options="--img-1gb BBB-blank-\${rootfs}            ${am335x_v419ti} --bbb-flasher"   ; generate_img
-
-###DEBIAN BUSTER: console-xm
-rootfs="${debian_buster_console_xm}" ; blend="buster-console-xm" ; extract_base_rootfs
-
-options="--img-1gb bbxm-\${rootfs}  ${beagle_xm}"  ; generate_img
-
-###DEBIAN BUSTER: iot
-rootfs="${debian_buster_iot}" ; blend="buster-iot" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${rootfs}               ${am57xx_v419ti}"                 ; generate_img
-options="--img-4gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v419ti} --emmc-flasher"  ; generate_img
-options="--img-4gb bone-\${rootfs}                 ${am335x_v419ti}"                 ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${rootfs}    ${am335x_v419ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN BUSTER: iot-tidl
-rootfs="${debian_buster_iot_tidl}" ; blend="buster-iot-tidl" ; extract_base_rootfs
-
-options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                 ; generate_img
-options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN BUSTER: iot-grove-kit
-rootfs="${debian_buster_iot_grove_kit}" ; blend="buster-iot-grove-kit" ; extract_base_rootfs
-
-options="--img-4gb bone-\${rootfs}  ${am335x_v54ti}"  ; generate_img
-
-###DEBIAN BUSTER: iot-mikrobus
-rootfs="${debian_buster_iot_mikrobus}" ; blend="buster-iot-mikrobus" ; extract_base_rootfs
-
-options="--img-4gb bone-\${rootfs}  ${am335x_mainline}"  ; generate_img
-
-###DEBIAN BUSTER: lxqt
-rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt" ; extract_base_rootfs
-
-options="--img-4gb am57xx-\${rootfs}             ${am57xx_v419ti}"                 ; generate_img
-options="--img-4gb bone-\${rootfs}               ${am335x_v419ti}"                 ; generate_img
-options="--img-4gb bone-eMMC-flasher-\${rootfs}  ${am335x_v419ti} --emmc-flasher"  ; generate_img
-
-###DEBIAN BUSTER: lxqt-tidl
-rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl" ; extract_base_rootfs
-
-options="--img-6gb am57xx-\${rootfs}               ${am57xx_v414ti}"                                   ; generate_img
-options="--img-6gb am57xx-eMMC-flasher-\${rootfs}  ${am57xx_v414ti} --emmc-flasher"                    ; generate_img
-
-###DEBIAN BUSTER: lxqt-xm
-rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm" ; extract_base_rootfs
-
-options="--img-4gb bbxm-\${rootfs}  ${beagle_xm}"  ; generate_img
-
 ###debian bullseye minimal
 rootfs="${debian_bullseye_minimal}" ; blend="bullseye-minimal" ; extract_base_rootfs
 
@@ -246,85 +164,11 @@ options="--img-4gb am335x-\${rootfs}  ${am335x_v510ti}"  ; generate_img
 options="--img-4gb am57xx-\${rootfs}  ${am57xx_v510ti}"  ; generate_img
 
 ###archive *.tar
-rootfs="${debian_buster_tiny}"           ; blend="buster-tiny"       ; archive_base_rootfs
-rootfs="${debian_buster_console}"        ; blend="buster-console"    ; archive_base_rootfs
-rootfs="${debian_buster_console_xm}"     ; blend="buster-console-xm" ; archive_base_rootfs
-rootfs="${debian_buster_iot}"            ; blend="buster-iot"        ; archive_base_rootfs
-rootfs="${debian_buster_iot_tidl}"       ; blend="buster-iot-tidl"   ; archive_base_rootfs
-rootfs="${debian_buster_iot_grove_kit}"  ; blend="buster-iot-grove-kit"   ; archive_base_rootfs
-rootfs="${debian_buster_iot_mikrobus}"   ; blend="buster-iot-mikrobus"    ; archive_base_rootfs
-rootfs="${debian_buster_lxqt}"           ; blend="buster-lxqt"       ; archive_base_rootfs
-rootfs="${debian_buster_lxqt_tidl}"      ; blend="buster-lxqt-tidl"  ; archive_base_rootfs
-rootfs="${debian_buster_lxqt_xm}"        ; blend="buster-lxqt-xm"    ; archive_base_rootfs
-
 rootfs="${debian_bullseye_minimal}"  ; blend="bullseye-minimal"  ; archive_base_rootfs
 rootfs="${debian_bullseye_iot}"      ; blend="bullseye-iot"      ; archive_base_rootfs
 rootfs="${debian_bullseye_xfce}"     ; blend="bullseye-xfce"     ; archive_base_rootfs
 
 ###archive *.img
-###DEBIAN BUSTER: console
-rootfs="${debian_buster_console}" ; blend="buster-console"
-
-wfile="am57xx-\${rootfs}-1gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-1gb"  ; archive_img
-wfile="bone-\${rootfs}-1gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-1gb"    ; archive_img
-
-wfile="BBB-blank-\${rootfs}-1gb"            ; archive_img
-wfile="BBBL-blank-\${rootfs}-1gb"           ; archive_img
-wfile="BBBW-blank-\${rootfs}-1gb"           ; archive_img
-#wfile="BBGG-blank-\${rootfs}-1gb"           ; archive_img
-
-###DEBIAN BUSTER: console-xm
-rootfs="${debian_buster_console_xm}" ; blend="buster-console-xm"
-
-wfile="bbxm-\${rootfs}-1gb"               ; archive_img
-
-###DEBIAN BUSTER: iot
-rootfs="${debian_buster_iot}" ; blend="buster-iot"
-
-wfile="am57xx-\${rootfs}-4gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-4gb"  ; archive_img
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-4gb"    ; archive_img
-
-###DEBIAN BUSTER: iot-tidl
-rootfs="${debian_buster_iot_tidl}" ; blend="buster-iot-tidl"
-
-wfile="am57xx-\${rootfs}-6gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
-
-###DEBIAN BUSTER: iot-grove-kit
-rootfs="${debian_buster_iot_grove_kit}" ; blend="buster-iot-grove-kit"
-
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-
-###DEBIAN BUSTER: iot-mikrobus
-rootfs="${debian_buster_iot_mikrobus}" ; blend="buster-iot-mikrobus"
-
-wfile="bone-\${rootfs}-4gb"                 ; archive_img
-
-wfile="am57xx-\${rootfs}-4gb"  ; archive_img
-wfile="bone-\${rootfs}-4gb"    ; archive_img
-
-###DEBIAN BUSTER: lxqt
-rootfs="${debian_buster_lxqt}" ; blend="buster-lxqt"
-
-wfile="am57xx-\${rootfs}-4gb"  ; archive_img
-wfile="bone-\${rootfs}-4gb"    ; archive_img
-wfile="bone-eMMC-flasher-\${rootfs}-4gb"    ; archive_img
-
-###DEBIAN BUSTER: lxqt-tidl
-rootfs="${debian_buster_lxqt_tidl}" ; blend="buster-lxqt-tidl"
-
-wfile="am57xx-\${rootfs}-6gb"               ; archive_img
-wfile="am57xx-eMMC-flasher-\${rootfs}-6gb"  ; archive_img
-
-###DEBIAN BUSTER: lxqt-xm
-rootfs="${debian_buster_lxqt_xm}" ; blend="buster-lxqt-xm"
-
-wfile="bbxm-\${rootfs}-4gb"  ; archive_img
-
 ###debian bullseye minimal
 rootfs="${debian_bullseye_minimal}" ; blend="bullseye-minimal"
 

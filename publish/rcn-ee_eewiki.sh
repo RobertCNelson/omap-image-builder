@@ -13,10 +13,6 @@ if [ -d ./deploy ] ; then
 fi
 
 if [ ! -f jenkins.build ] ; then
-./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
-./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
-./RootStock-NG.sh -c eewiki_minfs_debian_buster_arm64
-
 ./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armel
 ./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_armhf
 ./RootStock-NG.sh -c eewiki_minfs_debian_bullseye_arm64
@@ -25,7 +21,6 @@ else
 	mkdir -p ${DIR}/deploy/ || true
 fi
 
-debian_buster="debian-10.13"
 debian_bullseye="debian-11.9"
 
 xz_img="xz -T4 -z -8"
@@ -51,10 +46,6 @@ copy_base_rootfs_to_mirror () {
 }
 
 blend=minfs
-base_rootfs="${debian_buster}-minimal-armel-${time}"   ; copy_base_rootfs_to_mirror
-base_rootfs="${debian_buster}-minimal-armhf-${time}"   ; copy_base_rootfs_to_mirror
-base_rootfs="${debian_buster}-minimal-arm64-${time}"   ; copy_base_rootfs_to_mirror
-
 base_rootfs="${debian_bullseye}-minimal-armel-${time}" ; copy_base_rootfs_to_mirror
 base_rootfs="${debian_bullseye}-minimal-armhf-${time}" ; copy_base_rootfs_to_mirror
 base_rootfs="${debian_bullseye}-minimal-arm64-${time}" ; copy_base_rootfs_to_mirror

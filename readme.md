@@ -136,19 +136,6 @@ Master branch:
 
     git clone https://github.com/RobertCNelson/omap-image-builder
 
-eewiki.net: Debian Stable (armel) minfs:
-
-    ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armel
-
-eewiki.net: Debian Stable (armhf) minfs:
-
-    ./RootStock-NG.sh -c eewiki_minfs_debian_buster_armhf
-
-elinux.org: Debian Images:
-
-    ./RootStock-NG.sh -c rcn-ee.net-console-debian-buster-armhf
-    http://elinux.org/BeagleBoardDebian#Demo_Image
-
 Release Process:
 
     vYEAR.MONTH
