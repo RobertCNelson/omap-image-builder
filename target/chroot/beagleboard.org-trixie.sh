@@ -151,5 +151,10 @@ if [ -f /usr/bin/git ] ; then
 	git config --global --unset-all user.name
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
+
+if [ -f /usr/bin/pipx ] ; then
+	pipx install debsbom
+fi
+
 other_source_links
 #
