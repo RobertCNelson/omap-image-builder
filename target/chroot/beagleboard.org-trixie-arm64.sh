@@ -153,7 +153,12 @@ if [ -f /usr/bin/git ] ; then
 fi
 
 if [ -f /usr/bin/pipx ] ; then
-	pipx install debsbom
+	pipx install debsbom[spdx]
+	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
+		/home/${rfs_username}/.local/bin/debsbom generate -o /opt/source/sbom.spdx.json
+	fi
+	pipx list
+	pipx uninstall-all
 fi
 
 other_source_links
