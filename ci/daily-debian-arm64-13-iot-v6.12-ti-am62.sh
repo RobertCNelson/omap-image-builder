@@ -3,7 +3,7 @@
 export apt_proxy=192.168.1.10:3142/
 
 config=bb.org-debian-trixie-iot-v6.12-ti-arm64-k3-am62
-filesize=8gb
+filesize=10gb
 rootfs="debian-arm64-13-iot-v6.12-ti"
 
 debian_short="Debian 13"
