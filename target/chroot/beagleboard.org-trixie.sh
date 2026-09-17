@@ -153,7 +153,7 @@ if [ -f /usr/bin/git ] ; then
 fi
 
 if [ -f /usr/bin/pipx ] ; then
-	pipx install debsbom[spdx]
+	pipx install debsbom[cdx]
 	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
 		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom.cdx.json
 	fi
