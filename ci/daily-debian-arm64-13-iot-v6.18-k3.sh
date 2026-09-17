@@ -19,11 +19,14 @@ compress_snapshot_image () {
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sync
 
-	echo "- name: ${r_board} ${debian_short} ${r_name}" >> ${yml_file}
+	echo "- name: ${r_board} ${debian_short} ${r_name} ${time}" >> ${yml_file}
 	echo "  description: ${debian_long} with ${r_description} for ${r_board}${r_board_adv} based on ${r_processor} processor running linux ${r_kernel}, mainline support till ${r_support_date}." >> ${yml_file}
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
+	if [ -f ./sbom.spdx.json ] ; then
+		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.sbom.spdx.json" >> ${yml_file}
+	fi
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
 	echo "  extract_size: ${extract_size}" >> ${yml_file}
@@ -55,7 +58,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./dpkg-sbom.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.dpkg-sbom.txt || true
+	sudo -uvoodoo cp -v ./sbom.spdx.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.sbom.spdx.json || true
 }
 
 if [ -d ./deploy ] ; then
@@ -75,27 +78,27 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
 	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+	cp -v ./sbom.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
 	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+	cp -v ./sbom.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
 	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+	cp -v ./sbom.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
 	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+	cp -v ./sbom.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
 	mv ./*.img ../
-	cp -v ./dpkg-sbom.txt ../ || true
+	cp -v ./sbom.spdx.json ../ || true
 
 	cd ../
 
