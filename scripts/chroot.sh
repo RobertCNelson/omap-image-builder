@@ -1561,9 +1561,9 @@ if [ -f ./opt/source/dpkg-sbom.txt ] ; then
 	cp -v ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
 fi
 
-if [ -f ./opt/source/sbom.spdx.json ] ; then
-	echo "Copying: sbom.spdx.json"
-	cp -v ./opt/source/sbom.spdx.json "${DIR}/deploy/${export_filename}/"
+if [ -f ./opt/source/sbom.cdx.json ] ; then
+	echo "Copying: sbom.cdx.json"
+	cp -v ./opt/source/sbom.cdx.json "${DIR}/deploy/${export_filename}/"
 fi
 
 if [ -d ./opt/u-boot/ ] ; then
