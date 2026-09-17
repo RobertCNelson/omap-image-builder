@@ -167,7 +167,6 @@ if [ -f /usr/bin/pipx ] ; then
 	rm -rf /home/${rfs_username}/.local || true
 	du -sh /home/${rfs_username}/
 	tree -a --du -h /home/${rfs_username}/
-	du -sh /home/${rfs_username}/
 fi
 
 other_source_links

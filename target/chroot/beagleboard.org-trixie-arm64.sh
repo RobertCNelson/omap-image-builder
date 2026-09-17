@@ -160,14 +160,13 @@ if [ -f /usr/bin/pipx ] ; then
 	tree -a --du -h /home/${rfs_username}/
 	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
 		/home/${rfs_username}/.local/bin/debsbom generate -o /opt/source/sbom.spdx.json
-		du -sh /home/${rfs_username}/
-		tree -a --du -h /home/${rfs_username}/
 	fi
 	pipx list
 	pipx uninstall-all
+	rm -rf /home/${rfs_username}/.cache || true
+	rm -rf /home/${rfs_username}/.local || true
 	du -sh /home/${rfs_username}/
 	tree -a --du -h /home/${rfs_username}/
-	du -sh /home/${rfs_username}/
 fi
 
 other_source_links
