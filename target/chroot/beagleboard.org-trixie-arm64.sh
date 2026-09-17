@@ -153,11 +153,15 @@ if [ -f /usr/bin/git ] ; then
 fi
 
 if [ -f /usr/bin/pipx ] ; then
+	echo "Log: (chroot): [pipx install debsbom[cdx]]"
 	pipx install debsbom[cdx]
 	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
+		echo "Log: (chroot): [debsbom generate -t cdx -o /opt/source/sbom.cdx.json]"
 		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom.cdx.json
 	fi
+	echo "Log: (chroot): [pipx list]"
 	pipx list
+	echo "Log: (chroot): [pipx uninstall-all]"
 	pipx uninstall-all
 	rm -rf /home/${rfs_username}/.cache || true
 	rm -rf /home/${rfs_username}/.local || true
