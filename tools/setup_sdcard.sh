@@ -1,7 +1,9 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
+set -o pipefail
 
 # SPDX-FileCopyrightText: 2009 Robert Nelson <robertcnelson@gmail.com>
-#
 # SPDX-License-Identifier: MIT
 
 #REQUIREMENTS:
