@@ -24,8 +24,8 @@ compress_snapshot_image () {
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
-	if [ -f ./sbom.spdx.json ] ; then
-		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.sbom.spdx.json" >> ${yml_file}
+	if [ -f ./sbom.cdx.json ] ; then
+		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.sbom.cdx.json" >> ${yml_file}
 	fi
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
@@ -58,7 +58,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./sbom.spdx.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.sbom.spdx.json || true
+	sudo -uvoodoo cp -v ./sbom.cdx.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.sbom.cdx.json || true
 }
 
 if [ -d ./deploy ] ; then
@@ -78,17 +78,17 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} bbai64-${export_filename} --dtb bbai64-swap
 	mv ./*.img ../
-	cp -v ./sbom.spdx.json ../ || true
+	cp -v ./sbom.cdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
 	mv ./*.img ../
-	cp -v ./sbom.spdx.json ../ || true
+	cp -v ./sbom.cdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai"
 	sudo ./setup_sdcard.sh --img-${filesize} beagley-ai-${export_filename} --dtb beagley-ai
 	mv ./*.img ../
-	cp -v ./sbom.spdx.json ../ || true
+	cp -v ./sbom.cdx.json ../ || true
 
 	cd ../
 

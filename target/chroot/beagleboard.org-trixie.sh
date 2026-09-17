@@ -153,20 +153,14 @@ if [ -f /usr/bin/git ] ; then
 fi
 
 if [ -f /usr/bin/pipx ] ; then
-	du -sh /home/${rfs_username}/
-	tree -a --du -h /home/${rfs_username}/
 	pipx install debsbom[spdx]
-	du -sh /home/${rfs_username}/
-	tree -a --du -h /home/${rfs_username}/
 	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
-		/home/${rfs_username}/.local/bin/debsbom generate -o /opt/source/sbom.spdx.json
+		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom.cdx.json
 	fi
 	pipx list
 	pipx uninstall-all
 	rm -rf /home/${rfs_username}/.cache || true
 	rm -rf /home/${rfs_username}/.local || true
-	du -sh /home/${rfs_username}/
-	tree -a --du -h /home/${rfs_username}/
 fi
 
 other_source_links
