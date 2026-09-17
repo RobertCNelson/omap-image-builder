@@ -1148,16 +1148,6 @@ cat > "${DIR}/chroot_script.sh" <<-__EOF__
 			fi
 		fi
 
-		if [ "x${rfs_enable_nodered}" = "xenable" ] ; then
-			if [ -f /lib/systemd/system/nodered.service ] || [ -f /usr/lib/systemd/system/nodered.service ] ; then
-				#Don't just enable on the old socket version...
-				if [ ! -f /lib/systemd/system/nodered.socket ] ; then
-					echo "Log: (chroot-systemd): enable: nodered.service"
-					systemctl enable nodered.service || true
-				fi
-			fi
-		fi
-
 		if [ "x${rfs_enable_edgeai}" = "xenable" ] ; then
 			if [ -f /lib/systemd/system/bb-start-vision-apps-eaik-8-2.service ] || [ -f /usr/lib/systemd/system/bb-start-vision-apps-eaik-8-2.service ] ; then
 				echo "Log: (chroot-systemd): enable: bb-start-vision-apps-eaik-8-2.service"
