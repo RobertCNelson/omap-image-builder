@@ -161,6 +161,7 @@ if [ -f /usr/bin/pipx ] ; then
 		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom/debsbom.cdx.json
 		echo "Log: (chroot): [debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json]"
 		/home/${rfs_username}/.local/bin/debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json
+		dpkg -l > /opt/source/sbom/dpkg-list.txt
 		tar -czvf /opt/source/sbom.tar.gz -C /opt/source/sbom .
 	fi
 	echo "Log: (chroot): [pipx list]"
