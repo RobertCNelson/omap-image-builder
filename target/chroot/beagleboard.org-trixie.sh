@@ -153,11 +153,15 @@ if [ -f /usr/bin/git ] ; then
 fi
 
 if [ -f /usr/bin/pipx ] ; then
-	echo "Log: (chroot): [pipx install debsbom[cdx]]"
-	pipx install debsbom[cdx]
+	mkdir -p /opt/source/sbom/
+	echo "Log: (chroot): [pipx install debsbom[cdx,spdx]]"
+	pipx install debsbom[cdx,spdx]
 	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
-		echo "Log: (chroot): [debsbom generate -t cdx -o /opt/source/sbom.cdx.json]"
-		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom.cdx.json
+		echo "Log: (chroot): [debsbom generate -t cdx -o /opt/source/sbom/debsbom.cdx.json]"
+		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom/debsbom.cdx.json
+		echo "Log: (chroot): [debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json]"
+		/home/${rfs_username}/.local/bin/debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json
+		tar -czvf /opt/source/sbom.tar.gz -C /opt/source/sbom .
 	fi
 	echo "Log: (chroot): [pipx list]"
 	pipx list
