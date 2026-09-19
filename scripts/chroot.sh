@@ -1456,7 +1456,7 @@ cat > "${DIR}/cleanup_script.sh" <<-__EOF__
 	rm -f /cleanup_script.sh || true
 
 	#Run Last for Cyber Resilience Act
-	dpkg -l > /opt/source/dpkg-sbom.txt
+	dpkg -l > /opt/source/dpkg-list.txt
 __EOF__
 
 ###MUST BE LAST...
@@ -1571,7 +1571,10 @@ package:
       - squashed
 EOF
 
-	/usr/bin/syft scan -c "$SYFT_CONF" dir:"${tempdir}" > "${DIR}/deploy/${export_filename}/syft.spdx.json"
+	SYFT_OUTPUT="${DIR}/deploy/${export_filename}/syft.spdx.json"
+
+	/usr/bin/syft scan -c "$SYFT_CONF" dir:"${tempdir}" > "$SYFT_OUTPUT"
+	xz "$SYFT_OUTPUT"
 fi
 
 cd "${tempdir}" || true
@@ -1581,14 +1584,9 @@ if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
 	cp -v ./etc/bbb.io/templates/sysconf.txt "${DIR}/deploy/${export_filename}/sysconf.txt"
 fi
 
-if [ -f ./opt/source/dpkg-sbom.txt ] ; then
-	echo "Copying: dpkg-sbom.txt"
-	cp -v ./opt/source/dpkg-sbom.txt "${DIR}/deploy/${export_filename}/"
-fi
-
-if [ -f ./opt/source/sbom.tar.gz ] ; then
-	echo "Copying: sbom.tar.gz"
-	cp -v ./opt/source/sbom.tar.gz "${DIR}/deploy/${export_filename}/"
+if [ -f ./opt/source/dpkg-list.txt ] ; then
+	echo "Copying: dpkg-list.txt"
+	cp -v ./opt/source/dpkg-list.txt "${DIR}/deploy/${export_filename}/"
 fi
 
 if [ -d ./opt/u-boot/ ] ; then

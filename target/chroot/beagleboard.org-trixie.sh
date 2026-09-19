@@ -152,25 +152,5 @@ if [ -f /usr/bin/git ] ; then
 	chown ${rfs_username}:${rfs_username} /home/${rfs_username}/.gitconfig
 fi
 
-if [ -f /usr/bin/pipx ] ; then
-	mkdir -p /opt/source/sbom/
-	echo "Log: (chroot): [pipx install debsbom[cdx,spdx]]"
-	pipx install debsbom[cdx,spdx]
-	if [ -f /home/${rfs_username}/.local/bin/debsbom ] ; then
-		echo "Log: (chroot): [debsbom generate -t cdx -o /opt/source/sbom/debsbom.cdx.json]"
-		/home/${rfs_username}/.local/bin/debsbom generate -t cdx -o /opt/source/sbom/debsbom.cdx.json
-		echo "Log: (chroot): [debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json]"
-		/home/${rfs_username}/.local/bin/debsbom generate -t spdx -o /opt/source/sbom/debsbom.spdx.json
-		dpkg -l > /opt/source/sbom/dpkg-list.txt
-		tar -czvf /opt/source/sbom.tar.gz -C /opt/source sbom
-	fi
-	echo "Log: (chroot): [pipx list]"
-	pipx list
-	echo "Log: (chroot): [pipx uninstall-all]"
-	pipx uninstall-all
-	rm -rf /home/${rfs_username}/.cache || true
-	rm -rf /home/${rfs_username}/.local || true
-fi
-
 other_source_links
 #
