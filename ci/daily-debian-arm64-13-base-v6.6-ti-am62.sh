@@ -6,6 +6,9 @@ config=bb.org-debian-trixie-base-v6.6-ti-arm64-k3-am62
 filesize=8gb
 rootfs="debian-arm64-13-base-v6.6-ti"
 
+debian_short="Debian 13"
+debian_long="Debian 13 (Trixie)"
+
 compress_snapshot_image () {
 	yml_file="${device}-${export_filename}-${filesize}.img.xz.yml.txt"
 	sudo -uvoodoo mkdir -p /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
