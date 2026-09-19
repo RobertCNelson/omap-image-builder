@@ -1539,6 +1539,41 @@ if [ "x${chroot_COPY_SETUP_SDCARD}" = "xenable" ] ; then
 	sudo cp "${DIR}"/tools/hwpack/*.conf "${DIR}/deploy/${export_filename}/hwpack/"
 fi
 
+if [ -f /usr/bin/syft ]; then
+	echo "Log: found syft running scan:"
+
+	SYFT_CONF=$(mktemp /tmp/syft_cfg.XXXXXX.yaml)
+
+	trap 'rm -f "$SYFT_CONF"' EXIT
+
+	#from: https://github.com/raspberrypi/rpi-image-gen/blob/master/layer/sbom/syft.yaml
+	cat <<EOF > "$SYFT_CONF"
+file:
+  metadata:
+    selection: all
+    digests:
+      - sha256
+
+output:
+  - spdx-json
+
+format:
+  pretty: true
+
+source:
+  file:
+    digests:
+      - sha256
+
+package:
+  cataloger:
+    scope:
+      - squashed
+EOF
+
+	/usr/bin/syft scan -c "$SYFT_CONF" dir:"${tempdir}" > "${DIR}/deploy/${export_filename}/syft.spdx.json"
+fi
+
 cd "${tempdir}" || true
 
 if [ -f ./etc/bbb.io/templates/sysconf.txt ] ; then
