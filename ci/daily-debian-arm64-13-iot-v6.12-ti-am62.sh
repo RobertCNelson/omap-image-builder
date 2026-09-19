@@ -19,8 +19,8 @@ compress_snapshot_image () {
 	echo "  icon: https://media.githubusercontent.com/media/beagleboard/bb-imager-rs/refs/heads/main/assets/os/debian.png" >> ${yml_file}
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
-	if [ -f ./sbom.tar.gz ] ; then
-		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.sbom.tar.gz" >> ${yml_file}
+	if [ -f ./syft.spdx.json ] ; then
+		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.syft.spdx.json" >> ${yml_file}
 	fi
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
@@ -53,7 +53,7 @@ compress_snapshot_image () {
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.sha256sum /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
 	sudo -uvoodoo cp -v ./${device}-${export_filename}-${filesize}.img.xz.yml.txt /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/
-	sudo -uvoodoo cp -v ./sbom.tar.gz /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.sbom.tar.gz || true
+	sudo -uvoodoo cp -v ./syft.spdx.json /mnt/mirror/rcn-ee.us/rootfs/${rootfs}/${time}/${device}-${export_filename}-${filesize}.syft.spdx.json || true
 }
 
 if [ -d ./deploy ] ; then
@@ -73,22 +73,22 @@ if [ -d ./deploy/${export_filename}/ ] ; then
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-${export_filename} --dtb beagleplay-swap
 	mv ./*.img ../
-	cp -v ./sbom.tar.gz ../ || true
+	cp -v ./syft.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher"
 	sudo ./setup_sdcard.sh --img-${filesize} beagleplay-emmc-flasher-${export_filename} --dtb beagleplay-swap --enable-extlinux-flasher
 	mv ./*.img ../
-	cp -v ./sbom.tar.gz ../ || true
+	cp -v ./syft.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-${export_filename} --dtb pocketbeagle2-swap
 	mv ./*.img ../
-	cp -v ./sbom.tar.gz ../ || true
+	cp -v ./syft.spdx.json ../ || true
 
 	echo "sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop"
 	sudo ./setup_sdcard.sh --img-${filesize} pocketbeagle2-workshop-${export_filename} --dtb pocketbeagle2-swap --enable-load-pb2-workshop
 	mv ./*.img ../
-	cp -v ./sbom.tar.gz ../ || true
+	cp -v ./syft.spdx.json ../ || true
 
 	cd ../
 
