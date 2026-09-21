@@ -18,7 +18,7 @@ compress_snapshot_image () {
 	echo "  url: https://files.beagle.cc/file/beagleboard-public-2021/images/${device}-${export_filename}-${filesize}.img.xz" >> ${yml_file}
 	echo "  bmap: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/bmap-temp/${device}-${export_filename}-${filesize}.bmap" >> ${yml_file}
 	if [ -f ./syft.spdx.json.xz ] ; then
-		echo "  sbom: https://raw.githubusercontent.com/beagleboard/distros/refs/heads/main/sbom-temp/${device}-${export_filename}-${filesize}.syft.spdx.json.xz" >> ${yml_file}
+		echo "  sbom: https://raw.githubusercontent.com/beagleboard/sbom-archive/refs/heads/main/sbom/${device}-${export_filename}-${filesize}.syft.spdx.json.xz" >> ${yml_file}
 	fi
 
 	extract_size=$(du -b ./${device}-${export_filename}-${filesize}.img | awk '{print $1}')
