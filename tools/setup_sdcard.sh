@@ -1153,6 +1153,10 @@ populate_rootfs () {
 			cmdline="${cmdline} ${rng_core}"
 		fi
 
+		if [ ! "x${omap_wdt_core}" = "x" ] ; then
+			cmdline="${cmdline} ${omap_wdt_core}"
+		fi
+
 		unset kms_video
 
 		drm_device_identifier=${drm_device_identifier:-"HDMI-A-1"}
